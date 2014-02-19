@@ -14,6 +14,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+// ReSharper disable InconsistentNaming
     public class HighLevel_ActivityTests : BaseActivityUnitTest
     {
         #region Fields
@@ -37,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             _activityList = GetAllActivities();
@@ -399,7 +400,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             MemberInfo[] OutputFormat = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "OutputFormat");
             MemberInfo[] TimeModifierType = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierType");
             MemberInfo[] TimeModifierAmountDisplay = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmountDisplay");
-            MemberInfo[] TimeModifierAmount = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmount");
+            type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmount");
             MemberInfo[] Result = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "Result");
 
             Assert.IsTrue(DateTime != null && DateTime.Length == 1

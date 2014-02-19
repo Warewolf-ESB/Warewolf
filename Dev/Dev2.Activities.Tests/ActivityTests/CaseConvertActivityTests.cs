@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -16,6 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class CaseConvertActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion GetWizardData Tests
-        
+
 
         #region ForEach Update/Get Inputs/Outputs
 
@@ -379,11 +379,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 	        };
 
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-	        {
+            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
+                {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
 	        }, null);
 
@@ -406,11 +406,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 	        };
 
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-	        {
+            dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
+                {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
 	        }, null);
 
@@ -432,11 +432,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
 	        };
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>()
-	        {
+            dsfCaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
+                {
 		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
 	        }, null);
 
@@ -458,7 +458,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 		        new CaseConvertTO( "[[rs(*).val]]","text", "[[result]]",1)
 	        };
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             var inputs = dsfCaseConvert.GetForEachInputs();
@@ -481,7 +481,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 		        new CaseConvertTO( "[[result]]","text", "[[rs(*).val]]",1)
 	        };
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfCaseConvert = new DsfCaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             var inputs = dsfCaseConvert.GetForEachOutputs();

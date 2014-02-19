@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Dev2;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Tests.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Dev2;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -19,6 +18,7 @@ namespace ActivityUnitTests.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -110,8 +110,6 @@ namespace ActivityUnitTests.ActivityTests
         public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
         // ReSharper restore InconsistentNaming
         {
-            DateTime now = DateTime.Now;
-
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL

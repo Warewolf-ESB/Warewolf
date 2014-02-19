@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -16,6 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class ReplaceActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -49,13 +49,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
-                Assert.AreEqual("It Worked", replacedRes);                
+                Assert.AreEqual("It Worked", replacedRes);
             }
             else
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -165,14 +165,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                
+
                 Assert.AreEqual("TheUnlimted", actual);
             }
             else
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("barney", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -260,7 +260,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -279,7 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -289,7 +289,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -347,7 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -380,7 +380,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -395,7 +395,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"<InnerError>Please insert only variables into Fields To Search</InnerError>";
-            string actual; ;
+            string actual; 
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
             // remove test datalist ;)
@@ -406,7 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -420,7 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -430,7 +430,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -453,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -493,8 +493,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

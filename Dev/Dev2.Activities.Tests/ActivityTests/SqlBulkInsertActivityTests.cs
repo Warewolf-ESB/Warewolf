@@ -1,19 +1,17 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.Common.Enums;
-using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -23,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
     {
-        public TestContext TestContext { get; set; }    
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -85,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNull(returnedDataTable);            
+            Assert.IsNull(returnedDataTable);
         }
 
         [TestMethod]
@@ -97,18 +95,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); 
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>", mockSqlBulkInserter.Object, null, "[[result]]");
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));  
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));  
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(0, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
@@ -123,7 +121,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); 
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
@@ -147,8 +145,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
-            Assert.IsNotNull(returnedSqlBulkCopy);  
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
+            Assert.IsNotNull(returnedSqlBulkCopy);
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -168,12 +166,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); 
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
-                    InputMappings = null, 
+                    InputMappings = null,
                     Database = new DbSource(),
                     TableName = "TestTable",
                     CheckConstraints = true,
@@ -194,7 +192,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -202,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(120, returnedSqlBulkCopy.BulkCopyTimeout);
-            Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize); 
+            Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize);
         }
 
         [TestMethod]
@@ -214,12 +212,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
             SqlBulkCopy returnedSqlBulkCopy = null;
             mockSqlBulkInserter = mockSqlBulkInserter.SetupAllProperties();
-            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); ;
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>())).Callback<SqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedSqlBulkCopy = sqlBulkCopy); 
             TestStartNode = new FlowStep
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
-                    InputMappings = null, 
+                    InputMappings = null,
                     BatchSize = "[[batchsize]]",
                     Database = new DbSource(),
                     TableName = "TestTable",
@@ -240,7 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -248,7 +246,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(240, returnedSqlBulkCopy.BulkCopyTimeout);
-            Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize); 
+            Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize);
         }
 
         [TestMethod]
@@ -360,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.IsNotNull(returnedDataTable);
             Assert.AreEqual(4, returnedDataTable.Columns.Count);
-            
+
             Assert.AreEqual("TestCol", returnedDataTable.Columns[0].ColumnName);
             Assert.AreEqual(typeof(String), returnedDataTable.Columns[0].DataType);
             Assert.AreEqual(100, returnedDataTable.Columns[0].MaxLength); // Max Length Only applies to strings            
@@ -495,7 +493,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
             Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -558,7 +556,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
             Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -631,7 +629,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Z", returnedDataTable.Rows[4]["field3"]);
             Assert.AreEqual("60", returnedDataTable.Rows[4]["field4"]);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -977,7 +975,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("C", returnedDataTable.Rows[0]["TestCol3"]);
             Assert.AreEqual("21.2", returnedDataTable.Rows[0]["TestCol4"]);
             Assert.AreEqual("", returnedDataTable.Rows[0]["Val"]);
-            
+
             Assert.AreEqual("Jill", returnedDataTable.Rows[1]["TestCol"]);
             Assert.AreEqual("1999", returnedDataTable.Rows[1]["TestCol2"]);
             Assert.AreEqual("Z", returnedDataTable.Rows[1]["TestCol3"]);
@@ -1371,7 +1369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[recset1(*).field3]]", dsfForEachItems[8].Value);
             Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Name);
             Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Value);
-            
+
         }
 
         [TestMethod]
@@ -1423,7 +1421,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
             if(dbSource == null)
             {
-                dbSource = new DbSource();                
+                dbSource = new DbSource();
             }
             if(destinationTableName == null)
             {
@@ -1435,7 +1433,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     Database = dbSource,
                     TableName = destinationTableName,
-                    InputMappings = inputMappings, 
+                    InputMappings = inputMappings,
                     SqlBulkInserter = sqlBulkInserter,
                     Result = resultString,
                     IgnoreBlankRows = ignoreBlankRows

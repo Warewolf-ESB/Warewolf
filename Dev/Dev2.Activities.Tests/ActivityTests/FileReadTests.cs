@@ -1,15 +1,14 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
+
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
@@ -28,7 +27,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Get Input/Output Tests
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void FileReadActivity_GetInputs_Expected_Four_Input()
+// ReSharper restore InconsistentNaming
         {
             DsfFileRead testAct = new DsfFileRead();
 
@@ -54,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
+
         // ReSharper disable InconsistentNaming
 
         [TestMethod]

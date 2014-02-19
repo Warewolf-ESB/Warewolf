@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Mail;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Enums;
@@ -11,6 +6,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Mail;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -18,6 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class SendEmailActivityTests : BaseActivityUnitTest
     {
         [TestMethod]

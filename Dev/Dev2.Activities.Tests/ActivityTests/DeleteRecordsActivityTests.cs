@@ -1,15 +1,16 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
+    // ReSharper disable InconsistentNaming
+    // ReSharper disable InconsistentNaming
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
@@ -31,7 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(1)]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(5, recsetData.Count);
             Assert.AreEqual("f1r2", recsetData[0]);
 
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(*)]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string actual;
             List<string> recsetData;
             string error;
@@ -65,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(0, recsetData.Count);
         }
 
@@ -79,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1()]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -88,7 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(5, recsetData.Count);
             Assert.AreEqual("f1r5", recsetData[4]);
 
@@ -105,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CanDeleteRecordWithValidEvaluatedIndex()
         {
 
-            const string data = @"<root>
+            const string Data = @"<root>
 	                    <recset1>
 		                    <field1>f1r1</field1>
 		                    <field2>f2r1</field2>		
@@ -134,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                         <idx>1</idx>
                     </root>";
 
-            const string shape = @"<root>
+            const string Shape = @"<root>
 	                    <recset1>
 		                    <field1></field1>
 		                    <field2></field2>		
@@ -143,10 +144,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                         <idx/>
                     </root>";
 
-            SetupArguments(data, shape, "[[recset1([[idx]])]]", "[[res]]");
+            SetupArguments(Data, Shape, "[[recset1([[idx]])]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -155,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(5, recsetData.Count);
             Assert.AreEqual("f1r2", recsetData[0]);
 
@@ -169,7 +170,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CanThrowExceptionWhenDeleteRecordWithInValidEvaluatedIndex()
         {
 
-            const string data = @"<root>
+            const string Data = @"<root>
 	                    <recset1>
 		                    <field1>f1r1</field1>
 		                    <field2>f2r1</field2>		
@@ -198,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                         <idx>1</idx>
                     </root>";
 
-            const string shape = @"<root>
+            const string Shape = @"<root>
 	                    <recset1>
 		                    <field1></field1>
 		                    <field2></field2>		
@@ -206,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 	                    <res></res>
                     </root>";
 
-            SetupArguments(data, shape, "[[recset1([[idx]])]]", "[[res]]");
+            SetupArguments(Data, Shape, "[[recset1([[idx]])]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -225,7 +226,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Failure";
+            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -234,7 +235,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -266,7 +267,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[res]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Failure";
+            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -274,7 +275,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -285,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(8)]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Failure";
+            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -293,7 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -304,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(3).field1]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string actual;
             List<string> recsetData;
             string error;
@@ -313,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(5, recsetData.Count);
             Assert.AreEqual("f1r4", recsetData[2]);
 
@@ -326,14 +327,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actual;
-            const string expected = @"Failure";
+            const string Expected = @"Failure";
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -345,7 +346,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actual;
-            const string expected = @"Failure";
+            const string Expected = @"Failure";
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
@@ -353,7 +354,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -392,7 +393,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string recordSetName, string resultVar)
+        private void SetupArguments(string currentDl, string testData, string recordSetName, string resultVar)
         {
             TestStartNode = new FlowStep
             {
@@ -400,7 +401,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CurrentDl = testData;
-            TestData = currentDL;
+            TestData = currentDl;
         }
 
         #endregion Private Test Methods
@@ -413,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithDataWithExtraScalar, ActivityStrings.DeleteRecordsDataListShapeWithExtraScalar, "[[recset1(2)]]", "[[res]], [[res2]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"Success";
+            const string Expected = @"Success";
             string firstActual;
             string secondActual;
             string error;
@@ -422,8 +423,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, firstActual);
-            Assert.AreEqual(expected, secondActual);
+            Assert.AreEqual(Expected, firstActual);
+            Assert.AreEqual(Expected, secondActual);
 
         }
 

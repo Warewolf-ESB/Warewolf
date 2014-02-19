@@ -1,11 +1,9 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -15,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class PathCreateTests : BaseActivityUnitTest
     {
 
@@ -28,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Get Input/Output Tests
 
         [TestMethod]
+
         public void PathCreateActivity_GetInputs_Expected_Five_Input()
         {
             DsfPathCreate testAct = new DsfPathCreate();
@@ -54,8 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
-        // ReSharper disable InconsistentNaming
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -90,8 +89,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(outputPath, act.OutputPath);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCreate_UpdateForEachInputs")]

@@ -1,11 +1,9 @@
-﻿using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Activities.Statements;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -15,6 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class FindRecordsActivityTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -324,7 +323,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(res);
         }
-        
+
         #region Get Input/Output Tests
 
         [TestMethod]

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,9 +9,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using ActivityUnitTests;
-using Dev2.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-        public string _commandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+        public string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -214,8 +214,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            const string randomString = @"cmd.exe /c dir C:\";
-            activity.CommandFileName = randomString;
+            const string RandomString = @"cmd.exe /c dir C:\";
+            activity.CommandFileName = RandomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
             {
@@ -240,8 +240,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            const string randomString = @"C:\Windows\explorer.exe";
-            activity.CommandFileName = randomString;
+            const string RandomString = @"C:\Windows\explorer.exe";
+            activity.CommandFileName = RandomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
             {
@@ -442,7 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.CommandResult = "[[OutVar1]]";
             var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
             SetUpForExecution(activity, testData, "<ADL><recset1><rec1></rec1></recset1><OutVar1/></ADL>");
-            const string expected = "This is a different output from the user";
+            const string Expected = "This is a different output from the user";
             string error;
             string actual;
             //------------Execute Test---------------------------
@@ -450,7 +450,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
-            StringAssert.Contains(actual, expected);
+            StringAssert.Contains(actual, Expected);
         }
 
         [TestMethod]

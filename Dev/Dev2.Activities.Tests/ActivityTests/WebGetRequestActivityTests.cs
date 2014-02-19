@@ -1,26 +1,27 @@
-﻿using System;
+﻿using Dev2.Activities;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Enums;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Dev2.Activities;
-using Dev2.Common;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTest
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+
     public class WebGetRequestActivityTests : BaseActivityUnitTest
     {
         private TestContext _testContextInstance;
@@ -132,8 +133,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
-            const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
+            const string Message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -148,7 +149,7 @@ namespace ActivityUnitTests.ActivityTest
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
             string errorString = Compiler.FetchErrors(executeProcess.DataListID, false);
-            StringAssert.Contains(errorString, message);
+            StringAssert.Contains(errorString, Message);
         }
 
 
@@ -159,8 +160,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
-            const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
+            const string Message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.OnErrorVariable = "[[Err]]";
             activity.Method = "GET";
@@ -179,7 +180,7 @@ namespace ActivityUnitTests.ActivityTest
             string actual;
             string error;
             GetScalarValueFromDataList(executeProcess.DataListID, "Err", out actual, out error);
-            StringAssert.Contains(actual, message);
+            StringAssert.Contains(actual, Message);
         }
 
         [TestMethod]
@@ -189,8 +190,8 @@ namespace ActivityUnitTests.ActivityTest
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
-            const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
+            const string Message = "This is a forced exception";
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
             var activity = GetWebGetRequestActivity(mock);
             activity.OnErrorVariable = "[[Errors().Error]]";
             activity.Method = "GET";
@@ -211,7 +212,7 @@ namespace ActivityUnitTests.ActivityTest
             string error;
             GetRecordSetFieldValueFromDataList(executeProcess.DataListID, "Errors", "Error", out actual, out error);
             List<IBinaryDataListItem> resultData = actual.ToList();
-            StringAssert.Contains(resultData[0].TheValue, message);
+            StringAssert.Contains(resultData[0].TheValue, Message);
         }
 
         [TestMethod]

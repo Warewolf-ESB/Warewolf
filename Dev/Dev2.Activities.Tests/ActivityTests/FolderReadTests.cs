@@ -1,12 +1,9 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using ActivityUnitTests;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable once InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -30,7 +27,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
 
+// ReSharper disable InconsistentNaming
         public void FolderReadActivity_GetInputs_Expected_Four_Input()
+// ReSharper restore InconsistentNaming
         {
             DsfFolderRead testAct = new DsfFolderRead();
 
@@ -60,7 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
+
         // ReSharper disable InconsistentNaming
 
         [TestMethod]

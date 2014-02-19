@@ -47,7 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDatabaseActivity_UnitTest_ExecutionImpl_InvokesDatabaseServiceExecution()
         // ReSharper restore InconsistentNaming
         {
-            var errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             var dataObj = new Mock<IDSFDataObject>();
 

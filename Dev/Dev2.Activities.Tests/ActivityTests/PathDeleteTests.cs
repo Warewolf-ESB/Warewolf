@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -15,6 +14,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class PathDeleteTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -59,7 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Get Input/Output Tests
 
         #region GetDebugInputs/Outputs
-        
+
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("DsfPathDelete_Execution")]
@@ -84,9 +84,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
-
-
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

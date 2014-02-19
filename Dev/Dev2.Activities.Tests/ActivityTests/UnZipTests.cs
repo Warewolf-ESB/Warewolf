@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class UnZipTests : BaseActivityUnitTest
     {
 
@@ -105,8 +106,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetOperationBroker = () => activityOperationBrokerMock
             };
 
-            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                       ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
@@ -120,7 +121,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void UnZip_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
         {
             var unzip = new DsfUnZip();
-            Assert.IsTrue(unzip is IDestinationUsernamePassword);
+            IDestinationUsernamePassword password = unzip;
+            Assert.IsNotNull(password);
         }
     }
 }

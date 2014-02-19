@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ActivityUnitTests;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -16,6 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DataSplitActivityTest
     /// </summary>
     [TestClass]
+    // ReSharper disable InconsistentNaming
     [ExcludeFromCodeCoverage]
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             if(_resultsCollection == null)
@@ -81,10 +81,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string>() { "RSA ID", "" };
-            var col2Expected = new List<string>() { "FirstName", "" };
-            var col3Expected = new List<string>() { "LastName", "" };
-            var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
+            var col1Expected = new List<string> { "RSA ID", "" };
+            var col2Expected = new List<string> { "FirstName", "" };
+            var col3Expected = new List<string> { "LastName", "" };
+            var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(col1Expected, col1List, comparer);
@@ -129,10 +129,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string>() { "RSA ID", "" };
-            var col2Expected = new List<string>() { "FirstName", "" };
-            var col3Expected = new List<string>() { "LastName", "" };
-            var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
+            var col1Expected = new List<string> { "RSA ID", "" };
+            var col2Expected = new List<string> { "FirstName", "" };
+            var col3Expected = new List<string> { "LastName", "" };
+            var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(col1Expected, col1List, comparer);

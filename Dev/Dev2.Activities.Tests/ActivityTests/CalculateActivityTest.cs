@@ -1,12 +1,11 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
-using ActivityUnitTests;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -368,7 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expression, dsfForEachItems[0].Name);
             Assert.AreEqual(expression, dsfForEachItems[0].Value);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]

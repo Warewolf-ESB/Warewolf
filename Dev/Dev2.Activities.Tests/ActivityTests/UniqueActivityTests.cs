@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Activities;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ActivityUnitTests;
-using Dev2.Activities;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -28,8 +27,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void EmptyInFieldsStringExpectedNoUnique()
         {
-            const string dataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
-            SetupArguments("<root>" + dataList + "</root>", dataList, "", "[[recset1().field1]]", "[[OutVar1]]");
+            const string DataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
+            SetupArguments("<root>" + DataList + "</root>", DataList, "", "[[recset1().field1]]", "[[OutVar1]]");
             IDSFDataObject result = ExecuteProcess();
 
             string actual;
@@ -45,8 +44,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithNoRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -63,8 +62,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[recset2().id]]");
             List<string> expected = new List<string> { "1", "2", "5" };
@@ -88,8 +87,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void ScalarExpectedUniqueAsCsv()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -106,11 +105,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[OutVar1]]");
-            const string expected = "1,2,5";
+            const string Expected = "1,2,5";
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -122,15 +121,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
+            Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
         }
 
 
         [TestMethod]
         public void RecordsetWithWithRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -150,8 +149,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<id>10</id><value>zz</value>" +
                                             "</recset2>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[recset2().id]]");
             List<string> expected = new List<string> { "10", "1", "2", "5" };
@@ -175,8 +174,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithMulitpleRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -193,8 +192,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
             List<string> expectedID = new List<string> { "1", "2", "5" };
@@ -209,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer); 
+            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
@@ -228,8 +227,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("UniqueTool,UnitTest")]
         public void CanUniqueToolUseStarNotationInResultsFields()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -246,8 +245,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
             List<string> expectedID = new List<string> { "1", "2", "5" };
@@ -281,8 +280,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("UniqueTool,UnitTest")]
         public void CanUniqueToolUseStarAndAppendNotationInResultsFields()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string dataListWithData = "<ADL>" +
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
                                             "</recset1>" +
@@ -300,8 +299,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "</recset1>" +
                                             "<recset2><id>99</id></recset2>" +
                                             "<OutVar1/></ADL>";
-            SetupArguments("<root>" + dataListWithData + "</root>"
-                , dataList
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2(*).value]]");
             List<string> expectedID = new List<string> { "99", "1", "2", "5" };

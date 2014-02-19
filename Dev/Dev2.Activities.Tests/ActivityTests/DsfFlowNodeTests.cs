@@ -1,4 +1,14 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.Data.Decision;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.DataList.Contract;
+using Dev2.Utilities;
+using Microsoft.CSharp.Activities;
+using Microsoft.VisualBasic.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities;
 using System.Activities.Expressions;
 using System.Activities.Presentation;
@@ -6,17 +16,6 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.Data.Decision;
-using Dev2.Data.Decisions.Operations;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
-using Dev2.Utilities;
-using Microsoft.CSharp.Activities;
-using Microsoft.VisualBasic.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests

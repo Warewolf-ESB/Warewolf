@@ -1,14 +1,13 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ActivityUnitTests;
-using Dev2.Common;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -18,6 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {
         IList<string> _fieldName;
@@ -1414,7 +1414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            act.UpdateForEachInputs(new List<Tuple<string, string>>()
+            act.UpdateForEachInputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);
@@ -1441,7 +1441,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            act.UpdateForEachInputs(new List<Tuple<string, string>>()
+            act.UpdateForEachInputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);
@@ -1468,7 +1468,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            act.UpdateForEachOutputs(new List<Tuple<string, string>>()
+            act.UpdateForEachOutputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -18,13 +18,14 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class PathMoveTests : BaseActivityUnitTest
     {
-        #pragma warning disable 649
+#pragma warning disable 649
         static string _tempFile;
-        #pragma warning restore 649
-        
-        const string _newFileName = "MovedTempFile";
+#pragma warning restore 649
+
+        const string NewFileName = "MovedTempFile";
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfPathMove" /> is overwrite.
@@ -43,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-        
+
         //
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup]
@@ -65,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 try
                 {
-                    File.Delete(Path.GetTempPath() + _newFileName);
+                    File.Delete(Path.GetTempPath() + NewFileName);
                 }
                 catch(Exception e)
                 {
@@ -112,8 +113,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -285,8 +284,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
+                                                       ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
@@ -300,7 +299,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Move_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
         {
             var pathMove = new DsfPathMove();
-            Assert.IsTrue(pathMove is IDestinationUsernamePassword);
+            IDestinationUsernamePassword password = pathMove;
+            Assert.IsNotNull(password);
         }
     }
 }

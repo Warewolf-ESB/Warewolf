@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Dev2;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Tests.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Tests.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace ActivityUnitTests.ActivityTests
 // ReSharper restore CheckNamespace
 {
@@ -232,7 +232,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion Negative Tests
-        
+
         #region GetWizardData Tests
 
         [TestMethod]
@@ -280,11 +280,11 @@ namespace ActivityUnitTests.ActivityTests
             };
 
 
-            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfBaseConvert = new DsfBaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-            {
+            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
+                {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);
 
@@ -307,11 +307,11 @@ namespace ActivityUnitTests.ActivityTests
             };
 
 
-            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfBaseConvert = new DsfBaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-            {
+            dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>
+                {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);
 
@@ -334,11 +334,11 @@ namespace ActivityUnitTests.ActivityTests
             };
 
 
-            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfBaseConvert = new DsfBaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
-            dsfBaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>()
-            {
+            dsfBaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>
+                {
                 new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
             }, null);
 
@@ -362,7 +362,7 @@ namespace ActivityUnitTests.ActivityTests
             };
 
 
-            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfBaseConvert = new DsfBaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -389,7 +389,7 @@ namespace ActivityUnitTests.ActivityTests
             };
 
 
-            var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
+            var dsfBaseConvert = new DsfBaseConvertActivity { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 

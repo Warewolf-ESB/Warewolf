@@ -1,15 +1,14 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -31,9 +30,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GenerateRandomNumberWithStaticInputsExpectedARandomNumberToBeOutput()
         {
-            const int start = 10;
-            const int end = 20;
-            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, start.ToString(CultureInfo.InvariantCulture), end.ToString(CultureInfo.InvariantCulture), string.Empty, "[[OutVar1]]");
+            const int Start = 10;
+            const int End = 20;
+            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, Start.ToString(CultureInfo.InvariantCulture), End.ToString(CultureInfo.InvariantCulture), string.Empty, "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -48,11 +47,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.IsTrue(actualNum >= start && actualNum <= end);
+                Assert.IsTrue(actualNum >= Start && actualNum <= End);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -91,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -130,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -155,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -167,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -176,11 +175,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -208,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -220,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that you have entered an integer for Start.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that you have entered an integer for Start.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -229,11 +228,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -245,7 +244,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that you have entered an integer for End.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -254,11 +253,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -270,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that the End is an integer.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that the End is an integer.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -279,11 +278,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -295,7 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that the Start is an integer.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that the Start is an integer.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -304,11 +303,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -319,8 +318,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GenerateRandomLettersWithLengthOfTenStaticValueExpectedFiveRandomCharString()
         {
-            const int length = 10;
-            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, length.ToString(), "[[OutVar1]]");
+            const int Length = 10;
+            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Letters, string.Empty, string.Empty, Length.ToString(CultureInfo.InvariantCulture), "[[OutVar1]]");
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -333,11 +332,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(length, actual.Length);
+                Assert.AreEqual(Length, actual.Length);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -361,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -390,7 +389,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -402,7 +401,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please enter a positive integer for the Length.</InnerError>";
+            const string Expected = "<InnerError>Please enter a positive integer for the Length.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -411,11 +410,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -427,7 +426,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that the Length is an integer value.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that the Length is an integer value.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -436,11 +435,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -452,7 +451,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
 
             string error;
-            const string expected = "<InnerError>Please ensure that you have entered an integer for Length.</InnerError>";
+            const string Expected = "<InnerError>Please ensure that you have entered an integer for Length.</InnerError>";
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
 
@@ -461,16 +460,16 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(Expected, actual);
             }
             else
             {
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
         #endregion
-        
+
         // ReSharper disable InconsistentNaming
 
         [TestMethod]

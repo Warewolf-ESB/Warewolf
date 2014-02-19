@@ -7,7 +7,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class DsfActivityAbstractTest //: NativeActivityTest
+    public class DsfActivityAbstractTest
     {
 
         #region Public Methods
@@ -15,9 +15,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Get General Settings Tests
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void GetGeneralSettingsFromActivityAbstract_Expected_SettingsReturned()
+// ReSharper restore InconsistentNaming
         {
-            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity() { IsSimulationEnabled = false };
+            DsfCountRecordsetActivity testAct = new DsfCountRecordsetActivity { IsSimulationEnabled = false };
 
             IBinaryDataList testDl = testAct.GetGeneralSettingData();
 

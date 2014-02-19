@@ -1,19 +1,16 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Activities;
+using Dev2.Data.Enums;
+using Dev2.Enums;
+using Dev2.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
-using ActivityUnitTests;
-using Dev2.Activities;
-using Dev2.Common;
-using Dev2.Common.ExtMethods;
-using Dev2.Data.Enums;
-using Dev2.Diagnostics;
-using Dev2.Enums;
-using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -22,6 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class GatherSystemInformationTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -30,7 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-       
+
         [TestMethod]
         public void GatherSystemInformationWhereGetSystemInformationHelperNullExpectConcreateImplementation()
         {
@@ -46,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GatherSystemInformationWhereConstructedExpectIsICollectionActivity()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             var activity = GetGatherSystemInformationActivity();
             //------------Assert Results-------------------------
@@ -72,28 +70,28 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "my awesome OS";
-            mock.Setup(information => information.GetOperatingSystemInformation()).Returns(expectedValue);
+            const string ExpectedValue = "my awesome OS";
+            mock.Setup(information => information.GetOperatingSystemInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             //------------Execute Test---------------------------
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.OperatingSystem);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue, operatingSystemInformation);
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
         }
-        
+
         [TestMethod]
         public void GatherSystemInformationWhereGetServicePackInformationExpectOSDetails()
         {
             //------------Setup for test--------------------------
             var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Service Pack greatness";
-            mock.Setup(information => information.GetServicePackInformation()).Returns(expectedValue);
+            const string ExpectedValue = "Service Pack greatness";
+            mock.Setup(information => information.GetServicePackInformation()).Returns(ExpectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             //------------Execute Test---------------------------
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.ServicePack);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue, operatingSystemInformation);
+            Assert.AreEqual(ExpectedValue, operatingSystemInformation);
         }
 
         [TestMethod]
@@ -127,8 +125,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(result.Millisecond > 0);
             }
             Assert.IsTrue(result.Millisecond > 0);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDateTimeFormatInformationExpectDateTimeInformation()
         {
@@ -155,8 +153,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var diskInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DiskAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, diskInformation);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDiskSpaceTotalInformationInformationExpectDiskInformation()
         {
@@ -183,8 +181,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, memoryInformation);
-        }  
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetMemoryTotalInformationExpectMemoryInformation()
         {
@@ -197,8 +195,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryTotal);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, memoryInformation);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUAvailableInformationExpectProcessorInformation()
         {
@@ -211,8 +209,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var processorInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.CPUAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, processorInformation);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUTotalInformationExpectProcessorInformation()
         {
@@ -281,8 +279,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.UserName);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, userNameInformation);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDomainInformationExpectDomainInformation()
         {
@@ -295,8 +293,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.Domain);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, userNameInformation);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetNumberOfWareWolfAgentsInformationExpectNumberOfWareWolfAgentsInformation()
         {
@@ -309,8 +307,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var numWareWolfAgents = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.NumberOfWarewolfAgents);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, numWareWolfAgents);
-        }       
-        
+        }
+
         [TestMethod]
         public void GetFindMissingTypeExpectDataGridActivityType()
         {
@@ -325,7 +323,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GatherSystemInformationWhereExecuteExpectCorrectResultsWithScalar()
         {
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, "[[testVar]]", 1) };
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.OperatingSystem, "[[testVar]]", 1) };
             var mock = new Mock<IGetSystemInformation>();
             const string ExpectedValue = "my awesome OS";
             mock.Setup(information => information.GetOperatingSystemInformation()).Returns(ExpectedValue);
@@ -353,7 +351,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GatherSystemInformationWithBlankNotationWhereExecuteExpectCorrectResultsWithRecordsetAppend()
         {
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.UserName, "[[recset1().field1]]", 1) };
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.UserName, "[[recset1().field1]]", 1) };
             var mock = new Mock<IGetSystemInformation>();
             const string expectedValue = "IAMUSER";
             var expected = new List<string> { "Some Other Value", expectedValue };
@@ -381,11 +379,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-        
+
         [TestMethod]
         public void GatherSystemInformationWithStarNotationWhereExecuteExpectCorrectResultsWithRecordsetOverwrite()
         {
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.DiskAvailable, "[[recset1(*).field1]]", 1) };
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.DiskAvailable, "[[recset1(*).field1]]", 1) };
             var mock = new Mock<IGetSystemInformation>();
             const string expectedValue = "C: Drive";
             mock.Setup(information => information.GetDiskSpaceAvailableInformation()).Returns(expectedValue);
@@ -416,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void GatherSystemInformationWithSpecificIndexNotationWhereExecuteExpectCorrectResultsWithInsertIntoRecordset()
         {
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[recset1(2).field1]]", 1) };
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[recset1(2).field1]]", 1) };
             var mock = new Mock<IGetSystemInformation>();
             const string expectedValue = "Intel i7";
             mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
@@ -502,7 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
-        
+
         [TestMethod]
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
@@ -523,8 +521,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
-
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -661,9 +658,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                activity = GetGatherSystemInformationActivity();                
-            }            
-            
+                activity = GetGatherSystemInformationActivity();
+            }
+
             return activity;
         }
 

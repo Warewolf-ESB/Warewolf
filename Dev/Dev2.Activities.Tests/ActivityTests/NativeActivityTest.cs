@@ -24,6 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class NativeActivityTest
     {
         static string _simulationShape;
@@ -53,14 +54,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
-            var activity = new TestActivity(null);
-
+            new TestActivity(null);
         }
 
         [TestMethod]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
-            var activity = new TestActivity(DebugDispatcher.Instance);
+            new TestActivity(DebugDispatcher.Instance);
         }
 
         [TestMethod]
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape, out errors);
 
             var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape, out errors);
-            var simulationDataList = compiler.FetchBinaryDataList(simulationDataID, out errors);
+            compiler.FetchBinaryDataList(simulationDataID, out errors);
 
             #region Setup simulation repository
 
@@ -585,7 +585,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion
 
-        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNativeActivity_GetForEachItems")]

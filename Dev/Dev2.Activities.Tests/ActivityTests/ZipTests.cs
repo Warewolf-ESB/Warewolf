@@ -12,24 +12,21 @@ using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;
         static string tempFile;
         const string NewFileName = "ZippedTempFile";
-        public ZipTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
         private TestContext testContextInstance;
 
@@ -55,14 +52,14 @@ namespace ActivityUnitTests.ActivityTests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             myTestContext = testContext;
         }
         
          //Use ClassCleanup to run code after all tests in a class have run
-         [ClassCleanup()]
+         [ClassCleanup]
          public static void MyClassCleanup()
          {
              if(tempFile != null)
@@ -160,7 +157,9 @@ namespace ActivityUnitTests.ActivityTests
 
             foreach(string fileName in fileNames)
             {
+// ReSharper disable LocalizableElement
                 File.WriteAllText(fileName, "TestData");
+// ReSharper restore LocalizableElement
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
@@ -195,7 +194,8 @@ namespace ActivityUnitTests.ActivityTests
         public void Zip_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
         {
             var zip = new DsfZip();
-            Assert.IsTrue(zip is IDestinationUsernamePassword);
+            IDestinationUsernamePassword password = zip;
+            Assert.IsNotNull(password);
         }
 
         #endregion

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -342,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Output Mapping Tests
-        
+
         #region Private Test Methods
 
         private DsfActivity CreateWorkflow()
@@ -379,7 +377,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
-        private void SetupArguments(string currentDL, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        private void SetupArguments(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {
             var activityFunction = new ActivityFunc<string, bool>();
             DsfActivity activity;
@@ -408,7 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CurrentDl = testData;
-            TestData = currentDL;
+            TestData = currentDl;
         }
 
         #endregion Private Test Methods

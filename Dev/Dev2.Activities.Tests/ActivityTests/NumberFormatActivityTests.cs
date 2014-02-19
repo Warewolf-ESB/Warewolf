@@ -1,19 +1,19 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class NumberFormatActivityTests : BaseActivityUnitTest
     {
         #region Class Members
@@ -32,7 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Methods
 
-        private void SetupArguments(string currentDL, string testData, string result, string expression,
+        private void SetupArguments(string currentDl, string testData, string result, string expression,
             enRoundingType roundingType, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
             TestStartNode = new FlowStep
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CurrentDl = testData;
-            TestData = currentDL;
+            TestData = currentDl;
         }
 
         #endregion Private Methods
@@ -199,8 +199,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion GetWizardData Tests
         
-        // ReSharper disable InconsistentNaming
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]

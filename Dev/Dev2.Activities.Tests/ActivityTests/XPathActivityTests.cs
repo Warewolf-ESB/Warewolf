@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.Activities;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ActivityUnitTests;
-using Dev2.Activities;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -17,10 +16,11 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class XPathActivityTests : BaseActivityUnitTest
     {
         IList<XPathDTO> _resultsCollection = new List<XPathDTO>();
-        private const string _source = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
+        private const string Source = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -126,7 +126,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
+            const string Expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
@@ -136,13 +136,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
+                Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
             }
             else
             {
-                // ReSharper disable RedundantStringFormatCall
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-                // ReSharper restore RedundantStringFormatCall
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -152,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpath]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpath/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpath>//type/method</xpath><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             const string expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
@@ -167,9 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                // ReSharper disable RedundantStringFormatCall
-                Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-                // ReSharper restore RedundantStringFormatCall
+                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -212,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpaths(*).path]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
@@ -240,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "[[xpaths(*).path]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
             List<string> expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
@@ -296,7 +292,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 2));
 
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root></root>", dataSplitPreDataList, _source, _resultsCollection);
+            SetupArguments("<root></root>", dataSplitPreDataList, Source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { "void(object)","void(object)",
@@ -330,7 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1().rec1]]", "//type/method/@name", 1));
             _resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 2));
 
-            SetupArguments("<root></root>", "<ADL><xmlData/><recset1>\r\n\t\t<field1/>\r\n\t\t<rec1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>", _source, _resultsCollection);
+            SetupArguments("<root></root>", "<ADL><xmlData/><recset1>\r\n\t\t<field1/>\r\n\t\t<rec1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>", Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             List<string> expected = new List<string> { "ExtractInMergeDataFromRequest","ExtractOutMergeDataFromRequest",
                                                     "SetID","<GetUsage>b__0","GetUsage","CreateForm",
@@ -380,7 +376,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-        
+
         [TestMethod]
         [TestCategory("XPathActivity_Execution")]
         [Description("XPathActivity execute upserts one result only")]
@@ -539,7 +535,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         void SetUpActivityArguments()
         {
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, _source, _resultsCollection);
+            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, Source, _resultsCollection);
         }
 
 

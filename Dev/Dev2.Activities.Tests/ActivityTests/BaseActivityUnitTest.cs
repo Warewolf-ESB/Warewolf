@@ -345,7 +345,7 @@ namespace ActivityUnitTests
 
         public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData, string recsetName, string fieldName, out string dataListShape, out string dataListWithData)
         {
-            const bool result = false;
+            const bool Result = false;
 
             dataListShape = "<ADL>";
             dataListWithData = "<ADL>";
@@ -365,13 +365,11 @@ namespace ActivityUnitTests
 
             #endregion
 
-            return result;
+            return Result;
         }
 
         public bool CreateDataListWithMultipleRecsetAndCreateShape(List<List<string>> recsetData, List<string> recsetName, List<string> fieldName, out string dataListShape, out string dataListWithData)
         {
-            bool result = false;
-
             dataListShape = "<ADL>";
             dataListWithData = "<ADL>";
             #region Create DataList With Data
@@ -395,7 +393,7 @@ namespace ActivityUnitTests
 
             #endregion
 
-            return result;
+            return false;
         }
         #endregion
 

@@ -14,6 +14,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class IndexActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -66,7 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1().field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "1";
+            const string Expected = "1";
 
             string actual;
             string error;
@@ -75,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -102,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "2", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "4";
+            const string Expected = "4";
 
             string actual;
             string error;
@@ -111,7 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -121,7 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "2", "Right to Left", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "1";
+            const string Expected = "1";
 
             string actual;
             string error;
@@ -129,7 +130,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -139,7 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "zz", "Right to Left", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "-1";
+            const string Expected = "-1";
 
             string actual;
             string error;
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -161,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(0).field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
+            const string Expected = "<InnerError>Recordset index [ 0 ] is not greater than zero</InnerError>";
 
             string actual;
             string error;
@@ -170,7 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -180,7 +181,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
                            "[[recset1(-1).field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>";
+            const string Expected = "<InnerError>Recordset index [ -1 ] is not greater than zero</InnerError>";
 
             string actual;
             string error;
@@ -189,7 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -199,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
                            "ABCFDEFGH", "All Occurrences", "F", "Left To Right", "[[res]]", "0");
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "4,7";
+            const string Expected = "4,7";
 
             string actual;
             string error;
@@ -208,7 +209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
         }
 
         [TestMethod]
@@ -260,8 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

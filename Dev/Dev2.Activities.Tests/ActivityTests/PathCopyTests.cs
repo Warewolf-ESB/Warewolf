@@ -17,6 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class PathCopyTests : BaseActivityUnitTest
     {
 
@@ -49,8 +50,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -191,7 +190,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             foreach(string fileName in fileNames)
             {
+// ReSharper disable LocalizableElement
                 File.WriteAllText(fileName, "TestData");
+// ReSharper restore LocalizableElement
             }
 
             string dataListWithData;
@@ -231,7 +232,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Copy_Construct_Object_Must_Be_OfType_IDestinationUsernamePassword()
         {
             var pathCopy = new DsfPathCopy();
-            Assert.IsTrue(pathCopy is IDestinationUsernamePassword);
+            IDestinationUsernamePassword password = pathCopy;
+            Assert.IsTrue(password != null);
         }
     }
 }

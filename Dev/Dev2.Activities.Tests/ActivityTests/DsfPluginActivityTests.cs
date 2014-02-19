@@ -24,7 +24,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfPluginActivity_Execute")]
+// ReSharper disable InconsistentNaming
         public void DsfPluginActivity_Execute_WhenErrors_ExpectErrors()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var dsfPluginActivity = new FaultyMockDsfPluginActivity();
