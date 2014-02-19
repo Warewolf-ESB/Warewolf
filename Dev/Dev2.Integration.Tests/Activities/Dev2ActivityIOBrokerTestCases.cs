@@ -11064,7 +11064,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11092,7 +11092,7 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11106,7 +11106,7 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11120,7 +11120,7 @@ namespace Dev2.Integration.Tests.Activities
             var result = actionToPerform(source.EndPoint);
             //------------Assert Results-------------------------
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11139,7 +11139,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11158,7 +11158,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11177,7 +11177,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11199,7 +11199,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11219,7 +11219,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11267,7 +11267,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11287,7 +11287,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11307,7 +11307,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11354,8 +11354,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
-
+            StringAssert.Contains(result, "Success");
         }
 
         private void RunsFtpTosFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
@@ -11374,7 +11373,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11394,7 +11393,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11415,7 +11414,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11435,7 +11434,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11455,7 +11454,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
@@ -11475,7 +11474,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
             CleanDestination(destination);
             CleanSource(source);
-            Assert.AreEqual("Success", result);
+            StringAssert.Contains(result, "Success");
 
         }
 
