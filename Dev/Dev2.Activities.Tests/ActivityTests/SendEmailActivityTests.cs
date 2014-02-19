@@ -5,15 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
@@ -324,9 +324,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Host = "TestHost",
                 UserName = TestSourceAccount,
-                Password = TestSourcePassword
+                Password = TestSourcePassword,
+                ResourceName = Guid.NewGuid().ToString(),
+                ResourceID = Guid.NewGuid()
             };
-
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, testSource);
             EmailSource sendSource = null;
             MailMessage sendMessage = null;
             var emailSender = new Mock<IEmailSender>();
@@ -385,7 +387,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.AreEqual(TestSourceAccount, sendMessage.From.Address);
             }
         }
-        
+
         [TestMethod]
         [TestCategory("SendEmail_UpdateForEachInputs")]
         public void SendEmail_UpdateForEachInputs_ScalarValuesShouldSetValues()
@@ -492,9 +494,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         static EmailSource EmailSourceForTesting()
         {
             var emailSourceForTesting = new EmailSource();
+            emailSourceForTesting.ResourceName = Guid.NewGuid().ToString();
+            emailSourceForTesting.ResourceID = Guid.NewGuid();
             emailSourceForTesting.Host = "TestHost";
             emailSourceForTesting.UserName = "from.someone@amail.account";
             emailSourceForTesting.Password = "TestPassword";
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSourceForTesting);
             return emailSourceForTesting;
         }
     }

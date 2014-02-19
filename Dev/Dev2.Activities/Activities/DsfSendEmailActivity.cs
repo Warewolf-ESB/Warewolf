@@ -15,6 +15,7 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -122,7 +123,7 @@ namespace Dev2.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
-            int indexToUpsertTo = 0;   
+            int indexToUpsertTo = 0;
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             toUpsert.IsDebug = dataObject.IsDebugMode();
 
@@ -172,7 +173,7 @@ namespace Dev2.Activities
                 IDev2DataListEvaluateIterator attachmentsItr = Dev2ValueObjectFactory.CreateEvaluateIterator(attachmentsEntry);
                 colItr.AddIterator(attachmentsItr);
 
-                var runtimeSource = new EmailSource(SelectedEmailSource.ToXml());
+                var runtimeSource = ResourceCatalog.Instance.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
 
                 if(!allErrors.HasErrors())
                 {
@@ -227,7 +228,7 @@ namespace Dev2.Activities
             {
                 allErrors.AddError(e.Message);
             }
-                
+
             finally
             {
                 // Handle Errors
@@ -309,7 +310,7 @@ namespace Dev2.Activities
             }
             mailMessage.Subject = subjectValue;
             AddToAddresses(toValue, mailMessage);
-              try
+            try
             {
                 // Always use source account unless specifically overridden by From Account
                 if(!string.IsNullOrEmpty(fromAccountValue))
@@ -320,10 +321,10 @@ namespace Dev2.Activities
                 mailMessage.From = new MailAddress(runtimeSource.UserName);
             }
             catch(Exception)
-              {
+            {
                 errors.AddError(string.Format("From address is not in the valid format: {0}", fromAccountValue));
                 return "Failure";
-              }
+            }
             mailMessage.Body = bodyValue;
             if(!String.IsNullOrEmpty(ccValue))
             {
@@ -358,15 +359,15 @@ namespace Dev2.Activities
         }
         void AddAttachmentsValue(string attachmentsValue, MailMessage mailMessage)
         {
-             try
+            try
             {
-            var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
-            attachements.ForEach(s => mailMessage.Attachments.Add(new Attachment(s)));
+                var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
+                attachements.ForEach(s => mailMessage.Attachments.Add(new Attachment(s)));
             }
             catch(Exception exception)
-             {
-                 throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
-             }
+            {
+                throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
+            }
         }
 
         void AddToAddresses(string toValue, MailMessage mailMessage)
@@ -384,28 +385,28 @@ namespace Dev2.Activities
 
         void AddCcAddresses(string toValue, MailMessage mailMessage)
         {
-             try
+            try
             {
-            var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-            ccAddresses.ForEach(s => mailMessage.CC.Add(new MailAddress(s)));
+                var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
+                ccAddresses.ForEach(s => mailMessage.CC.Add(new MailAddress(s)));
             }
             catch(FormatException exception)
-             {
-                 throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
-             }
+            {
+                throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
+            }
         }
 
         void AddBccAddresses(string toValue, MailMessage mailMessage)
         {
-              try
+            try
             {
-            var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-            bccAddresses.ForEach(s => mailMessage.Bcc.Add(new MailAddress(s)));
+                var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
+                bccAddresses.ForEach(s => mailMessage.Bcc.Add(new MailAddress(s)));
             }
             catch(FormatException exception)
-              {
-                  throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
-              }
+            {
+                throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
+            }
         }
 
         public override enFindMissingType GetFindMissingType()
