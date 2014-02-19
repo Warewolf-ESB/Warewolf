@@ -67,7 +67,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             if(uiTestControl != null)
             {
-                uiTestControl.WaitForControlEnabled();
+            uiTestControl.WaitForControlEnabled();
             }
             WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{ESC}");
@@ -81,10 +81,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             StudioWindow.WaitForControlReady(1000);
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            if(!WizardsUIMap.TryWaitForWizard(10000))
-            {
-                Assert.Fail("New db service shortcut key doesnt work");
-            }
+            WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
@@ -124,7 +121,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var serviceName = "codeduitest" + serviceNameId;
-            const string sourceUrl = "http://www.webservicex.net/globalweather.asmx";
+            const string sourceUrl = "http://RSAKLFSVRTFSBLD/IntegrationTestSite/proxy.ashx";
 
             //Open wizard
             RibbonUIMap.ClickNewWebService();
@@ -230,9 +227,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, pt);
             WizardsUIMap.WaitForWizard();
-            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SendTabs(5);
             Playback.Wait(500);
-            _decisionWizardUiMap.SelectMenuItem(15); // select between ;)
+            _decisionWizardUiMap.SelectMenuItem(17); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
@@ -304,9 +301,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             Playback.Wait(5000);
             //------------Execute Test---------------------------
-            _decisionWizardUiMap.SendTabs(4);
+            _decisionWizardUiMap.SendTabs(5);
             Playback.Wait(1000);
-            _decisionWizardUiMap.SelectMenuItem(15);
+            _decisionWizardUiMap.SelectMenuItem(17);
             //Assert intellisense works
             Playback.Wait(1000);
             _decisionWizardUiMap.SendTabs(11);
@@ -335,10 +332,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
             if(getDecisionText != null)
             {
-                var displayValue = getDecisionText.Text;
+            var displayValue = getDecisionText.Text;
 
-                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
-            }
+            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+        }
             else
             {
                 Assert.Fail();

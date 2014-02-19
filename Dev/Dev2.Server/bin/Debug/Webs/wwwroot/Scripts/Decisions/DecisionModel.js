@@ -196,6 +196,9 @@ function DecisionViewModel() {
                 var decision = ko.mapping.fromJS({ Col1: response.TheStack[i].Col1, Col2: response.TheStack[i].Col2, Col3: response.TheStack[i].Col3, PopulatedColumnCnt: response.TheStack[i].PopulatedColumnCount, EvaluationFn: response.TheStack[i].EvaluationFn });
                 self.AddDecision(decision);               
             }
+            if (response.TheStack.length == 0) {
+                self.AddDecision(self.createEmptyDecision());
+            }
 
             // set Stack data
             self.data.Mode(response.Mode);

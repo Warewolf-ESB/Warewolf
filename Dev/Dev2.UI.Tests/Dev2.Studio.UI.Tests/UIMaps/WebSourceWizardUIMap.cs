@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
@@ -6,11 +7,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     {
         public void ClickSave()
         {
-            //var control = StudioWindow.GetChildren()[0].GetChildren()[0];
-            //control.WaitForControlEnabled();
-            //Mouse.Click(control, new Point(648, 501));
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{ENTER}");
-            Playback.Wait(1000);
+            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            control.WaitForControlEnabled();
+            Mouse.Click(control, new Point(648, 501));
         }
 
         public void EnterDefaultQuery(string textToEnter)

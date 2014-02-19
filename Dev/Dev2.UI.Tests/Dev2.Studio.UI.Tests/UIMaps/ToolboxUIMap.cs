@@ -82,7 +82,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public UITestControl FindToolboxItemByAutomationId(ToolType tool, string properSearchTerm = "")
         {
-            var theTerm = tool.GetDescription();
+            var theTerm = tool.ToString();
             if(!string.IsNullOrEmpty(properSearchTerm))
             {
                 theTerm = properSearchTerm;

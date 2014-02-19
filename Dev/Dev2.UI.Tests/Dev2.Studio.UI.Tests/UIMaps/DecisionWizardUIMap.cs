@@ -51,6 +51,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         {
             for(int i = 0; i < n; i++)
             {
+                Playback.Wait(50);
                 SendKeys.SendWait("{DOWN}");
             }
         }
@@ -90,7 +91,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             {
                 Keyboard.SendKeys(wizard, "{DOWN}");
                 Playback.Wait(250);
-                Keyboard.SendKeys(wizard, "{ENTER}");
+                Keyboard.SendKeys(wizard, "{ENTER}");     
             }
 
             if(deleteText)
