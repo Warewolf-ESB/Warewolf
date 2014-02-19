@@ -429,7 +429,7 @@ namespace Dev2.Data.PathOperations
                 var fromPath = ExtractFileNameFromPath(src.Path);
                 var fileList = sftp.GetFileList(fromPath);
                 result.AddRange(from string file in fileList
-                                where file != ".."
+                                where file != ".." && file != "."
                                 select BuildValidPathForFTP(src, file)
                                     into uri
                                     select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password));
@@ -773,7 +773,7 @@ namespace Dev2.Data.PathOperations
                 foreach(ChannelSftp.LsEntry filePath in fileList)
                 {
                     string filename = filePath.getFilename();
-                    if(filename.Contains("..") || filename.Contains("."))
+                    if(filename == ".." || filename == ".")
                     {
                         continue;
                     }
