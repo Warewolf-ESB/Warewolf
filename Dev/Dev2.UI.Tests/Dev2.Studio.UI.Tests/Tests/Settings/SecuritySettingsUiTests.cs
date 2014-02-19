@@ -72,7 +72,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
             List<WindowsGroupPermission> permissionList = new List<WindowsGroupPermission>();
             for(int i = 0; i < 20; i++)
             {
-                permissionList.Add(new WindowsGroupPermission { ResourceName = "Utility - Email", ResourceID = new Guid(), View = true, IsServer = false });
+                permissionList.Add(new WindowsGroupPermission { ResourceName = "Utility - Email", ResourceID = new Guid(), View = true, IsServer = false, WindowsGroup = "Users" });
             }
             permissionList.Add(WindowsGroupPermission.CreateAdministrators());
             var securityTO = new SecuritySettingsTO(permissionList);

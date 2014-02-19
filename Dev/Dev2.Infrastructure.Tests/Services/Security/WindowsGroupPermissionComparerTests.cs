@@ -20,7 +20,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new WindowsGroupPermissionComparer(ListSortDirection.Ascending, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }

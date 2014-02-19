@@ -175,7 +175,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_DecryptThrowsException_ReturnsDefaultPermissions()
         {
             //------------Setup for test--------------------------
-            File.WriteAllText("secure.config", "Invalid content.");
+            File.WriteAllText("secure.config", @"Invalid content.");
             var securityRead = new SecurityRead();
 
             //------------Execute Test---------------------------

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -608,7 +609,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(3, _mainViewModel.Items.Count);
             Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
         }
-        
+
         [TestMethod]
         [Owner("Jai Holloway")]
         [TestCategory("MainViewModel_ChangeActiveItem")]
@@ -621,7 +622,7 @@ namespace Dev2.Core.Tests
 
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            
+
 
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
@@ -635,10 +636,42 @@ namespace Dev2.Core.Tests
             var vm = dependencyCtx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
             Assert.IsNotNull(vm);
             //Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
-            
+
             _mainViewModel.DeactivateItem(dependencyCtx, false);
-            
+
             Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
+        }
+
+        [TestMethod]
+        [Owner("Jai Holloway")]
+        [TestCategory("MainViewModel_ChangeActiveItem")]
+        [Ignore]
+        public void MainViewModel_CloseWorkSurfaceContext_PreviousItemActivatedWhenNotItemDependenciesViewForCorrectlySet()
+        {
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            AddAdditionalContext();
+            Assert.AreEqual(3, _mainViewModel.Items.Count);
+
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+
+
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+
+            _mainViewModel.ActivateItem(firstCtx);
+            _mainViewModel.ActivateItem(secondCtx);
+            _mainViewModel.ActivateItem(firstCtx);
+            var msg = new ShowDependenciesMessage(_secondResource.Object);
+            _mainViewModel.Handle(msg);
+            var dependencyCtx = _mainViewModel.ActiveItem;
+            var vm = dependencyCtx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
+            Assert.IsNotNull(vm);
+
+            _mainViewModel.DeactivateItem(dependencyCtx, false);
+
+            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
         }
 
         [TestMethod]
@@ -1469,7 +1502,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(null, mockMainViewModel.ActiveItem);
         }
 
-       
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("MainViewModel_UnsavedWorkflowDialog")]
@@ -2025,10 +2058,7 @@ namespace Dev2.Core.Tests
                 var workspaceItemRepository = new Mock<IWorkspaceItemRepository>();
                 workspaceItemRepository.SetupGet(p => p.WorkspaceItems).Returns(new List<IWorkspaceItem>());
 
-                vm.GetWorkspaceItemRepository = () =>
-                {
-                    return workspaceItemRepository.Object;
-                };
+                vm.GetWorkspaceItemRepository = () => workspaceItemRepository.Object;
 
                 var tasks = new List<Task>
                 {
@@ -2044,7 +2074,7 @@ namespace Dev2.Core.Tests
                 Task.WaitAll(tasks.ToArray());
 
 
-                Assert.AreEqual(1, callCount, callCount.ToString());
+                Assert.AreEqual(1, callCount, callCount.ToString(CultureInfo.InvariantCulture));
             });
 
         }
