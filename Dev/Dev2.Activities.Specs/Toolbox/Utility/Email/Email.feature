@@ -162,8 +162,8 @@ Scenario: Send email with a negative index recordset for From Accounts
 	Then the email result will be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  
-	| From Account    | To              | Subject      | Body                                 |
-	| [[me(-1).from]] | me@freemail.com | Just testing | testing email from the cool specflow |
+	| From Account      | To              | Subject      | Body                                 |
+	| [[me(-1).from]] = | me@freemail.com | Just testing | testing email from the cool specflow |
 	And the debug output as 
 	| Result               |
 	| [[result]] = Failure |
@@ -177,8 +177,8 @@ Scenario: Send email with a negative index recordset for Recipients
 	Then the email result will be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  
-	| From Account    | To            | Subject      | Body                                 |
-	| me@freemail.com | [[me(-1).to]] | Just testing | testing email from the cool specflow |
+	| From Account    | To              | Subject      | Body                                 |
+	| me@freemail.com | [[me(-1).to]] = | Just testing | testing email from the cool specflow |
 	And the debug output as 
 	| Result               |
 	| [[result]] = Failure |
@@ -192,8 +192,8 @@ Scenario: Send email with a negative index recordset for Subject
 	Then the email result will be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  
-	| From Account    | To                 | Subject            | Body                                 |
-	| me@freemail.com | test1@freemail.com | [[my(-1).subject]] | testing email from the cool specflow |
+	| From Account    | To                 | Subject              | Body                                 |
+	| me@freemail.com | test1@freemail.com | [[my(-1).subject]] = | testing email from the cool specflow |
 	And the debug output as 
 	| Result               |
 	| [[result]] = Failure |
@@ -206,8 +206,8 @@ Scenario: Send email with a negative index recordset for Body
 	Then the email result will be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  
-	| From Account    | To                 | Subject | Body            |
-	| me@freemail.com | test1@freemail.com |         | [[my(-1).body]] |
+	| From Account    | To                 | Subject | Body              |
+	| me@freemail.com | test1@freemail.com |         | [[my(-1).body]] = |
 	And the debug output as 
 	| Result               |
 	| [[result]] = Failure |

@@ -2,12 +2,14 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Operations;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -16,7 +18,9 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfDataMergeActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
@@ -130,12 +134,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(dataObject.IsDebugMode())
                     {
                         DebugItem debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", row.IndexNumber.ToString()), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams("", row.IndexNumber.ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.InputVariable, "Input", inputVariableExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.Padding, "Pad", paddingExpressionEntry, executionId), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
+
+                        if(DataListUtil.IsEvaluated(row.Alignment))
+                        {
+                            AddDebugItem(new DebugItemStaticDataParams("",row.Alignment, "Align"), debugItem);
+                        }
+                        else
+                        {
+                            AddDebugItem(new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
+                        }
+
                         _debugInputs.Add(debugItem);
                     }
 
@@ -359,13 +372,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string recordsetName = "MergeCollection";
+            const string RecordsetName = "MergeCollection";
             result.TryCreateScalarValue(Result, "Result", out error);
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("MergeType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
+            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("MergeType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
             foreach(DataMergeDTO item in MergeCollection)
             {
-                result.TryCreateRecordsetValue(item.MergeType, "MergeType", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.At, "At", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.MergeType, "MergeType", RecordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.At, "At", RecordsetName, item.IndexNumber, out error);
             }
             return result;
         }

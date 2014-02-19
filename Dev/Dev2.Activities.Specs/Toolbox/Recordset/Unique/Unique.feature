@@ -20,12 +20,12 @@ Scenario: Find unique records in a recordset
 	| rec().unique | 30     |
 	And the execution has "NO" error
 	And the debug inputs as  
-	|   #         |                    | Return Fields |
-	| In Field(s) | [[rs(1).row]] = 10 |               |
-	|             | [[rs(2).row]] = 20 |               |
-	|             | [[rs(3).row]] = 20 |               |
-	|             | [[rs(4).row]] = 30 |               |
-	|             |                    | [[rs().row]]  |
+	| #           |                    | Return Fields  |
+	| In Field(s) | [[rs(1).row]] = 10 |                |
+	|             | [[rs(2).row]] = 20 |                |
+	|             | [[rs(3).row]] = 20 |                |
+	|             | [[rs(4).row]] = 30 |                |
+	|             |                    | [[rs().row]] = |
 	And the debug output as 
 	| # | Result                 |
 	| 1 | [[rec(1).unique]] = 10 |
@@ -95,8 +95,8 @@ Scenario: Find unique records in a recordset and the in field is blank
 	| rec       | unique |
 	And the execution has "AN" error
 	And the debug inputs as  
-	|   #         |  | Return Fields |
-	| In Field(s) |  | [[rs().row]]  |
+	| #           |  | Return Fields  |
+	| In Field(s) |  | [[rs().row]] = |
 	And the debug output as 
 	|   | Result                 |	
 		
@@ -137,9 +137,9 @@ Scenario: Find unique records using a negative recordset index for In Field
 	| rec       | unique |
 	And the execution has "AN" error
 	And the debug inputs as  
-	| #           |                  | Return Fields |
-	| In Field(s) | [[rs(-1).row]] = |               |
-	|             |                  | [[rs().row]]  |
+	| #           |                  | Return Fields   |
+	| In Field(s) | [[rs(-1).row]] = |                 |
+	|             |                  | [[rs().row]]  = |
 	And the debug output as 
 	|   | Result                 |
 
@@ -160,12 +160,12 @@ Scenario: Find unique records using a * for In Field
 	| rec().unique | 3      |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| #           |                   | Return Fields |
-	| In Field(s) | [[rs(1).row]] = 1 |               |
-	|             | [[rs(2).row]] = 2 |               |
-	|             | [[rs(3).row]] = 2 |               |
-	|             | [[rs(4).row]] = 3 |               |
-	|             |                   | [[rs().row]]  |
+	| #           |                   | Return Fields  |
+	| In Field(s) | [[rs(1).row]] = 1 |                |
+	|             | [[rs(2).row]] = 2 |                |
+	|             | [[rs(3).row]] = 2 |                |
+	|             | [[rs(4).row]] = 3 |                |
+	|             |                   | [[rs().row]] = |
 	And the debug output as 
 	| # | Result                |
 	| 1 | [[rec(1).unique]] = 1 |
@@ -186,12 +186,12 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	| rec       | unique |
 	And the execution has "AN" error	
 	And the debug inputs as  
-	| #           |                   | Return Fields  |
-	| In Field(s) | [[rs(1).row]] = 1 |                |
-	|             | [[rs(2).row]] = 2 |                |
-	|             | [[rs(3).row]] = 2 |                |
-	|             | [[rs(4).row]] = 3 |                |
-	|             |                   | [[rs(-1).row]] |
+	| #           |                   | Return Fields    |
+	| In Field(s) | [[rs(1).row]] = 1 |                  |
+	|             | [[rs(2).row]] = 2 |                  |
+	|             | [[rs(3).row]] = 2 |                  |
+	|             | [[rs(4).row]] = 3 |                  |
+	|             |                   | [[rs(-1).row]] = |
 	And the debug output as 
 	|   | Result                |
 	
@@ -212,12 +212,12 @@ Scenario: Find unique records using a * for Return Field
 	| rec().unique | 3   |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| #           |                   | Return Fields |
-	| In Field(s) | [[rs(1).row]] = 1 |               |
-	|             | [[rs(2).row]] = 2 |               |
-	|             | [[rs(3).row]] = 2 |               |
-	|             | [[rs(4).row]] = 3 |               |
-	|             |                   | [[rs(*).row]] |
+	| #           |                   | Return Fields   |
+	| In Field(s) | [[rs(1).row]] = 1 |                 |
+	|             | [[rs(2).row]] = 2 |                 |
+	|             | [[rs(3).row]] = 2 |                 |
+	|             | [[rs(4).row]] = 3 |                 |
+	|             |                   | [[rs(*).row]] = |
 	And the debug output as 
 	| # | Result                |
 	| 1 | [[rec(1).unique]] = 1 |

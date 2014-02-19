@@ -101,8 +101,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
+// ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            object res = converter.ConvertFrom(actualValue);
+// ReSharper restore AssignNullToNotNullAttribute
+            converter.ConvertFrom(actualValue);
             Assert.AreEqual(length, actualValue.Length);
         }
 

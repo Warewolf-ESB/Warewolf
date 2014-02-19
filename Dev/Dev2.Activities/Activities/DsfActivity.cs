@@ -530,11 +530,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                string displayName = dev2Definition.Name;
-                if(!string.IsNullOrEmpty(dev2Definition.RecordSetName))
-                {
-                    displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
-                }
                 ErrorResultTO errors;
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 

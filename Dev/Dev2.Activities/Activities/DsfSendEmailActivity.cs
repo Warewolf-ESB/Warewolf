@@ -257,7 +257,15 @@ namespace Dev2.Activities
             {
                 return;
             }
-            AddDebugInputItem(new DebugItemStaticDataParams(value, label));
+
+            if(DataListUtil.IsEvaluated(value))
+            {
+                AddDebugInputItem(new DebugItemStaticDataParams("", value, label));
+            }
+            else
+            {
+                AddDebugInputItem(new DebugItemStaticDataParams(value, label));
+            }
         }
 
         private int UpsertResult(int indexToUpsertTo, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)

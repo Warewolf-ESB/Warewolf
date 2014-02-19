@@ -75,7 +75,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace('"', ' ').Trim();
+            expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);

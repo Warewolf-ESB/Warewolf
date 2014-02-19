@@ -117,20 +117,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 var debugItem = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+
                                 var dataList = compiler.FetchBinaryDataList(executionID, out errors);
 
-                                string error;
-                                IBinaryDataListEntry theEntry;
-
-                                var found = dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(t.FieldName), out theEntry, out error);
-                                if((found && theEntry.IsEmpty()) || !found)
+                                if(DataListUtil.IsEvaluated(t.FieldName))
                                 {
-                                    AddDebugInputForEmptyVariable(t, debugItem);
+                                    EvaluateFieldForDebug(dataList, t.FieldName, "Variable", debugItem, compiler, executionID);
                                 }
                                 else
                                 {
-                                    AddDebugInputForVariableInDataList(compiler, executionID, t, debugItem);
+                                    AddDebugItem(new DebugItemStaticDataParams(t.FieldName, "Variable"), debugItem);
                                 }
+
+                                if(DataListUtil.IsEvaluated(t.FieldValue))
+                                {
+                                    EvaluateFieldForDebug(dataList, t.FieldValue, "New Value", debugItem, compiler, executionID);
+                                }
+                                else
+                                {
+                                    AddDebugItem(new DebugItemStaticDataParams(t.FieldValue, "New Value"), debugItem);
+                                }
+
                                 _debugInputs.Add(debugItem);
                                 index++;
                             }
@@ -150,6 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     compiler.Upsert(executionID, toUpsert, out errors);
+
                     allErrors.MergeErrors(errors);
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
@@ -182,41 +190,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddDebugInputForVariableInDataList(IDataListCompiler compiler, Guid executionID, ActivityDTO t, DebugItem debugItem)
+        void EvaluateFieldForDebug(IBinaryDataList dataList, string field, string labelText, DebugItem debugItem, IDataListCompiler compiler, Guid executionID)
         {
             ErrorResultTO errors;
-            IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, t.FieldName, false, out errors);
-            AddDebugItem(new DebugItemVariableParams(t.FieldName, "Variable", expressionsEntry, executionID), debugItem);
+            IBinaryDataListEntry theEntry;
+            string error;
             string calculationExpression;
-            if(DataListUtil.IsCalcEvaluation(t.FieldValue, out calculationExpression))
-            {
-                AddDebugItem(new DebugItemStaticDataParams(string.Format("={0}", calculationExpression), "New Value"), debugItem);
-            }
-            else
-            {
-                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, t.FieldValue, false, out errors);
-                AddDebugItem(new DebugItemVariableParams(t.FieldValue, "New Value", expressionsEntry, executionID), debugItem);
-            }
-        }
+            IBinaryDataListEntry expressionsEntry;
 
-        void AddDebugInputForEmptyVariable(ActivityDTO t, DebugItem debugItem)
-        {
-            AddDebugItem(new DebugItemStaticDataParams("", t.FieldName, "Variable"), debugItem);
-            string calculationExpression;
-            if(DataListUtil.IsCalcEvaluation(t.FieldValue, out calculationExpression))
+
+            if(DataListUtil.IsValueRecordset(field))
             {
-                AddDebugItem(new DebugItemStaticDataParams(string.Format("={0}", calculationExpression), "New Value"), debugItem);
+                var found = dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(field), out theEntry, out error);
+                if((found && theEntry.IsEmpty()) || !found)
+                {
+                    if(DataListUtil.IsCalcEvaluation(field, out calculationExpression))
+                    {
+                        var expression = string.Format("={0}", calculationExpression);
+                        expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
+                        AddDebugItem(new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID), debugItem);
+                    }
+                    else
+                    {
+                        AddDebugItem(new DebugItemStaticDataParams("", field, labelText), debugItem);
+                    }
+                    return;
+                }
+            }
+
+            if(DataListUtil.IsCalcEvaluation(field, out calculationExpression))
+            {
+                var expression = string.Format("={0}", calculationExpression);
+                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
+                AddDebugItem(new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID), debugItem);
             }
             else
             {
-                if(DataListUtil.IsEvaluated(t.FieldValue))
-                {
-                    AddDebugItem(new DebugItemStaticDataParams("", t.FieldValue, "New Value"), debugItem);
-                }
-                else
-                {
-                    AddDebugItem(new DebugItemStaticDataParams(t.FieldValue, "New Value"), debugItem);
-                }
+                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, field, false, out errors);
+                AddDebugItem(new DebugItemVariableParams(field, labelText, expressionsEntry, executionID), debugItem);
             }
         }
 

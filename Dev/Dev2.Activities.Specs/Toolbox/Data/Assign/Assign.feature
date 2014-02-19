@@ -40,9 +40,9 @@ Scenario: Assign multiple variables with a calculate expression to a variable
 	Then the value of "[[test]]" equals 1
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable   | New Value    |
-	| 1 | [[var]]  = | SUM(1,2,3)-5 |
-	| 2 | [[test]] = | =[[var]]     |	
+	| # | Variable   | New Value          |
+	| 1 | [[var]]  = | SUM(1,2,3)-5       |
+	| 2 | [[test]] = | =[[var]]  = String |  
 	And the debug output as
     | # |                        |
     | 1 | [[var]] = SUM(1,2,3)-5 |
@@ -173,9 +173,9 @@ Scenario: Assign a scalar equal to a calculation
 	Then the value of "[[Result]]" equals "0"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable     | New Value   |
-	| 1 | [[var]]    = | 30          |
-	| 2 | [[Result]] = | =30-[[var]] |
+	| # | Variable     | New Value            |
+	| 1 | [[var]]    = | 30                   |
+	| 2 | [[Result]] = | =30-[[var]] = String |
 	And the debug output as
 	| # |                |
 	| 1 | [[var]] = 30   |
@@ -189,10 +189,10 @@ Scenario: Assign a variable equal to a group calculation (sum)
 	Then the value of "[[Result]]" equals "60"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable     | New Value               |
-	| 1 | [[var1]]   = | 30                      |
-	| 2 | [[var2]]   = | 30                      |
-	| 3 | [[Result]] = | =SUM([[var1]],[[var2]]) |
+	| # | Variable     | New Value                        |
+	| 1 | [[var1]]   = | 30                               |
+	| 2 | [[var2]]   = | 30                               |
+	| 3 | [[Result]] = | =SUM([[var1]],[[var2]]) = String |
 	And the debug output as
 	| # |                |
 	| 1 | [[var1]] = 30    |

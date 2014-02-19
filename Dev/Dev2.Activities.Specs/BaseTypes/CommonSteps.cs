@@ -81,9 +81,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         void CreateSourceFileWithSomeDummyData()
         {
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
-                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
+                            ScenarioContext.Current.Get<string>(SourceUsernameHolder),
+                            ScenarioContext.Current.Get<string>(SourcePasswordHolder),
                             true);
             var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
@@ -197,15 +197,18 @@ namespace Dev2.Activities.Specs.BaseTypes
                 else
                 {
                     Type component = Type.GetType("System." + type);
-                    TypeConverter converter = TypeDescriptor.GetConverter(component);
+                    if(component != null)
+                    {
+                        TypeConverter converter = TypeDescriptor.GetConverter(component);
 
-                    try
-                    {
-                        converter.ConvertFrom(actualValue);
-                    }
-                    catch
-                    {
-                        Assert.Fail("Value is not expected type");
+                        try
+                        {
+                            converter.ConvertFrom(actualValue);
+                        }
+                        catch
+                        {
+                            Assert.Fail("Value is not expected type");
+                        }
                     }
                 }
 
@@ -304,7 +307,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     string[] multipleVarsOneLine;
 
-                    if(rowValue.Split('=').Length < 3)
+                    if(rowValue.Split('=').Length < 3 || rowValue.StartsWith("="))
                     {
                         multipleVarsOneLine = new[] { rowValue };
                     }
@@ -377,7 +380,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                 }
             }
-            return;
         }
 
         static void CollectionsAssert(List<DebugItemResult> expectedDebugItems, List<DebugItemResult> inputDebugItems)
@@ -417,15 +419,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             else
             {
                 Type component = Type.GetType("System." + type);
-                TypeConverter converter = TypeDescriptor.GetConverter(component);
+                if(component != null)
+                {
+                    TypeConverter converter = TypeDescriptor.GetConverter(component);
 
-                try
-                {
-                    converter.ConvertFrom(actualValue);
-                }
-                catch
-                {
-                    Assert.Fail("Value is not expected type");
+                    try
+                    {
+                        converter.ConvertFrom(actualValue);
+                    }
+                    catch
+                    {
+                        Assert.Fail("Value is not expected type");
+                    }
                 }
             }
         }

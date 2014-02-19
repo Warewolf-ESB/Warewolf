@@ -130,13 +130,13 @@ namespace Dev2.Activities
                     var result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
                     allErrors.MergeErrors(errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, toUpsert, result, dataObject, executionId, IndexToUpsertTo, compiler, allErrors);
+                    PushResultsToDataList(expression, toUpsert, result, dataObject, executionId, compiler, allErrors);
                 }
             }
             catch(Exception e)
             {
                 var expression = GetExpression(1);
-                PushResultsToDataList(expression, toUpsert, "", dataObject, executionId, 1, compiler, allErrors);
+                PushResultsToDataList(expression, toUpsert, "", dataObject, executionId, compiler, allErrors);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -168,9 +168,9 @@ namespace Dev2.Activities
             return expression;
         }
 
-        void PushResultsToDataList(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, IDSFDataObject dataObject, Guid executionId, int indexToUpsertTo, IDataListCompiler compiler, ErrorResultTO allErrors)
+        void PushResultsToDataList(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, IDSFDataObject dataObject, Guid executionId, IDataListCompiler compiler, ErrorResultTO allErrors)
         {
-            UpdateResultRegions(expression, toUpsert, result, indexToUpsertTo);
+            UpdateResultRegions(expression, toUpsert, result);
             compiler.Upsert(executionId, toUpsert, out errorsTo);
             if(dataObject.IsDebugMode())
             {
@@ -182,13 +182,12 @@ namespace Dev2.Activities
             allErrors.MergeErrors(errorsTo);
         }
 
-        void UpdateResultRegions(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, int indexToUpsertTo)
+        void UpdateResultRegions(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
         {
             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 toUpsert.Add(region, result);
                 toUpsert.FlushIterationFrame();
-                indexToUpsertTo++;
             }
         }
 

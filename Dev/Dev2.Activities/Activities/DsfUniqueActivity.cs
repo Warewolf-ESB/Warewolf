@@ -148,7 +148,14 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    AddDebugInputItem(new DebugItemStaticDataParams(token, "Return Fields"));
+                    if(DataListUtil.IsEvaluated(token))
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams("", token, "Return Fields"));
+                    }
+                    else
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams(token, "Return Fields"));
+                    }
                 }
             }
 

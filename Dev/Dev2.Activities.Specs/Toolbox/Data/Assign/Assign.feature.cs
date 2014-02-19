@@ -197,7 +197,7 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "2",
                         "[[test]] =",
-                        "=[[var]]"});
+                        "=[[var]]  = String"});
 #line 42
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
@@ -622,7 +622,7 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "2",
                         "[[Result]] =",
-                        "=30-[[var]]"});
+                        "=30-[[var]] = String"});
 #line 175
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
@@ -677,7 +677,7 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
-                        "=SUM([[var1]],[[var2]])"});
+                        "=SUM([[var1]],[[var2]]) = String"});
 #line 191
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden

@@ -109,8 +109,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         private static void Verify(string type, string actualValue, string error)
         {
             Type component = Type.GetType("System." + type);
-            TypeConverter converter = TypeDescriptor.GetConverter(component);
-            converter.ConvertFrom(actualValue);
+            if(component != null)
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(component);
+                converter.ConvertFrom(actualValue);
+            }
             Assert.AreEqual(string.Empty, error);
         }
     }
