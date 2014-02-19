@@ -82,7 +82,16 @@ namespace Dev2.Services.Security
         {
             get
             {
-                return IsServer && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
+                return IsServer && IsBuiltInGuestsForExecution;
+            }
+        }      
+        
+        [JsonIgnore]
+        public bool IsBuiltInGuestsForExecution
+        {
+            get
+            {
+                return WindowsGroup != null && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
             }
         }
 

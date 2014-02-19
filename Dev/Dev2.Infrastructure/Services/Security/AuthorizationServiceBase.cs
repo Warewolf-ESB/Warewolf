@@ -91,7 +91,7 @@ namespace Dev2.Services.Security
 
         static bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
-            return principal.IsInRole(p.WindowsGroup) || p.IsBuiltInGuests;
+            return principal.IsInRole(p.WindowsGroup) || p.IsBuiltInGuestsForExecution;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

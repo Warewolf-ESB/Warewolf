@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Nuane.Net;
 using TechTalk.SpecFlow;
@@ -57,7 +58,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                 try
                 {
+                    if(dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
+                    {
                     broker.Delete(dstEndPoint);
+                }
                 }
                 catch(Exception)
                 {
@@ -75,8 +79,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                  IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                  try
                  {
+                    if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+                    {
                      broker.Delete(sourceEndPoint);
                  }
+                }
                  catch(Exception)
                  {
                      //The file may already be deleted
