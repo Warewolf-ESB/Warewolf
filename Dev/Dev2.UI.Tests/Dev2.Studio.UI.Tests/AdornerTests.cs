@@ -487,7 +487,7 @@ namespace Dev2.Studio.UI.Tests
             allTextBoxesFromLargeView[0].SetFocus();
 
             //Tab through the controlls
-            int numberOfTabsToLastTextbox = 8;
+            int numberOfTabsToLastTextbox = 9;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
                 KeyboardCommands.SendTab(50);

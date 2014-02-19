@@ -66,7 +66,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SecuritySettingsUiTests")]
-        public void SecuritySettingsUiTestsAdd15ResourcesMakeSureScrollBarIsThere()
+        public void SecuritySettingsUiTestsAdd20ResourcesMakeSureScrollBarIsThere()
         {
             //Set the settings file to have 20 resource permissions
             List<WindowsGroupPermission> permissionList = new List<WindowsGroupPermission>();
