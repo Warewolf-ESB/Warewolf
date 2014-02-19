@@ -69,32 +69,39 @@ namespace Dev2.Activities.Specs.BaseTypes
              if(ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
              {
                  IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
-                     ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                     ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                     true);
-                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-                 try
-                 {
-                     broker.Delete(sourceEndPoint);
-                 }
-                 catch(Exception)
-                 {
-                     //The file may already be deleted
-                 }
+                ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                true);
+            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+            try
+            {
+                broker.Delete(sourceEndPoint);
+            }
+            catch(Exception)
+            {
+                //The file may already be deleted
+            }
              }
-            
-             try
-             {
-                 if(Server != null)
-                 {
-                     Server.Bindings.Clear();
-                     Server.Stop();
-                 }
-             }
-             catch
-             {
-                 //Server may already be stopped
-             }
+
+            // SOME SILLY CHICKEN BUNDLED TWO DIS-JOIN OPERATIONS IN THIS METHOD. 
+            // THIS CAUSED THE SFTP SERVER TO NEVER SHUTDOWN WHEN THE COMMONSTEPS.ACTUALSOURCEHOLDER KEY WAS NOT PRESENT! 
+            // ;)
+        }
+
+        protected static void ShutdownSftpServer()
+        {
+            try
+            {
+                if(Server != null)
+                {
+                    Server.Bindings.Clear();
+                    Server.Stop();
+                }
+            }
+            catch
+            {
+                //Server may already be stopped
+            }
 
             Server = null;
         }

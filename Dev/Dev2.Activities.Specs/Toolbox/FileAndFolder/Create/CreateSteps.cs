@@ -52,6 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         public void CleanUpFiles()
         {
             RemovedFilesCreatedForTesting();
+            ShutdownSftpServer();
         }
     }
 }
