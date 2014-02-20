@@ -74,10 +74,10 @@ Scenario: Assign a variable to mixed scalar, char and recordset values
 	Then the value of "[[value]]" equals "Hello World !"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value                  |
-	| 1 | [[var]]        = | Hello                      |
-	| 2 | [[rec(1).set]] = | World                      |
-	| 3 | [[value]]      = | [[var]] [[rec(1).set]] ! = |
+	| # | Variable         | New Value                    |
+	| 1 | [[var]]        = | Hello                        |
+	| 2 | [[rec(1).set]] = | World                        |
+	| 3 | [[value]]      = | [[var]] [[rec(1).set]] ! = ! |
 	And the debug output as
     | # |                           |
     | 1 | [[var]] = Hello           |
@@ -143,7 +143,7 @@ Scenario: Assign a record set to a scalar
 	| 1 | [[rec(1).set]] = | 10               |
 	| 2 | [[rec(2).set]] = | 20               |
 	| 3 | [[rec(3).set]] = | 30               |
-	| 4 | [[var]]        = | [[rec(*).set]] = |
+	| 4 | [[var]]        = | [[rec(1).set]] = |
 	And the debug output as
 	| # |                     |
 	| 1 | [[rec(1).set]] = 10 |

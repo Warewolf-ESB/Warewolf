@@ -310,7 +310,7 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "3",
                         "[[value]]      =",
-                        "[[var]] [[rec(1).set]] ! ="});
+                        "[[var]] [[rec(1).set]] ! = !"});
 #line 76
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
@@ -518,7 +518,7 @@ this.ScenarioSetup(scenarioInfo);
             table15.AddRow(new string[] {
                         "4",
                         "[[var]]        =",
-                        "[[rec(*).set]] ="});
+                        "[[rec(1).set]] ="});
 #line 141
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
