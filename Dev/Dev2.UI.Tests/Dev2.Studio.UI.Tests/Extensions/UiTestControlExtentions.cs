@@ -157,21 +157,36 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void EnterText(this UITestControl control, string text)
         {
-            //Clear Text
+            ////Clear Text
             control.ClearText();
-            //Enter text
-            SendKeys.SendWait(text);
+            ////Enter text
+            control.AppendText(text);
+        }
+
+        public static void AppendText(this UITestControl control, string text)
+        {
+            ////Enter text
+            WpfEdit editControl = control as WpfEdit;
+
+            if(editControl == null)
+            {
+                throw new Exception("Cannot enter text in a non editable control");
+            }
+
+            editControl.Text = text;
             control.WaitForControlReady();
         }
 
-        static void ClearText(this UITestControl control)
+        public static void ClearText(this UITestControl control)
         {
-            control.Click();
-            SendKeys.SendWait("{HOME}");
+            WpfEdit editControl = control as WpfEdit;
+            if(editControl == null)
+            {
+                throw new Exception("Cannot enter text in a non editable control");
+            }
+
+            editControl.Text = string.Empty;
             control.WaitForControlReady();
-            SendKeys.SendWait("+{END}");
-            control.WaitForControlReady();
-            SendKeys.SendWait("{DELETE}");
         }
 
         public static void Check(this UITestControl control, bool isChecked)

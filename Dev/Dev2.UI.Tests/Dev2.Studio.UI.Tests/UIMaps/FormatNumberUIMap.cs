@@ -1,4 +1,6 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
+﻿using Dev2.Studio.UI.Tests.Extensions;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -32,8 +34,7 @@
         public void InputNumber(string numberToInput)
         {
             UITestControl numberInput = GetInput("UI__Number_Inputtxt_AutoID");
-            Mouse.Click(numberInput, new Point(5,5));
-            SendKeys.SendWait(numberToInput);
+            numberInput.EnterText(numberToInput);
         }
 
         public void SelectRoundingType(string roundingType)
@@ -46,22 +47,19 @@
         public void InputRounding(string rounding)
         {
             UITestControl roundingInputBox = GetInput("UI__Rounding_Inputtxt_AutoID");
-            Mouse.Click(roundingInputBox, new Point(5, 5));
-            SendKeys.SendWait(rounding);
+            roundingInputBox.EnterText(rounding);
         }
 
         public void InputDecimalsToShow(string decimalsToShow)
         {
             UITestControl decimalsToShowInput = GetInput("UI__DecimalsToShow_Inputtxt_AutoID");
-            Mouse.Click(decimalsToShowInput, new Point(5, 5));
-            SendKeys.SendWait(decimalsToShow);
+            decimalsToShowInput.EnterText(decimalsToShow);
         }
 
         public void InputResult(string result)
         {
             UITestControl decimalsToShowInput = GetInput("UI__Result_Inputtxt_AutoID");
-            Mouse.Click(decimalsToShowInput, new Point(5, 5));
-            SendKeys.SendWait(result);
+            decimalsToShowInput.EnterText(result);
         }
 
         public bool IsRoundingInputEnabled()

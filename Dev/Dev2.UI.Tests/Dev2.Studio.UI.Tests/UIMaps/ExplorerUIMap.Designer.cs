@@ -10,6 +10,7 @@
 
 using System.Linq;
 using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Extensions;
 using Dev2.Studio.UI.Tests.Utils;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
@@ -182,13 +183,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="textToSearchWith">The text automatic search with.</param>
         public void EnterExplorerSearchText(string textToSearchWith)
         {
-            // clear before we search ;)
-            ClearExplorerSearchText();
-
-            Mouse.Click(_explorerSearch, new Point(12, 8));
-            Playback.Wait(100);
-            SendKeys.SendWait(textToSearchWith);
-            Playback.Wait(500);
+            _explorerSearch.EnterText(textToSearchWith);
         }
 
         #region filter box mappings
@@ -295,18 +290,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
 
         #endregion
-
-        public void ClearExplorerSearchText()
-        {
-            Mouse.Click(_explorerSearch, new Point(_explorerSearch.BoundingRectangle.X + 5, _explorerSearch.BoundingRectangle.Y + 5));
-            Playback.Wait(100);
-            Mouse.Click(_explorerSearch, new Point(_explorerSearch.BoundingRectangle.X + 5, _explorerSearch.BoundingRectangle.Y + 5));
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{CTRL}a");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{DELETE}");
-        }
-
+        
         public void ConnectToAllServers(WpfComboBox comboBox)
         {
             for(int itemIdx = 1; itemIdx <= comboBox.Items.Count; itemIdx++)
