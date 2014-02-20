@@ -1,12 +1,9 @@
-﻿using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.InterfaceImplementors;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -18,7 +15,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Data.Interfaces;
+using Dev2.DataList.Contract;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.InterfaceImplementors;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 namespace Dev2.UI
 {
     /// <summary>
@@ -71,6 +74,7 @@ namespace Dev2.UI
                     {
                         constrainingParent = VisualTreeHelper.GetParent(constrainingParent) as FrameworkElement;
                     }
+                    // ReSharper disable PossibleUnintendedReferenceComparison
                     while(constrainingParent != null && listBox != constrainingParent && !(constrainingParent is ScrollContentPresenter));
 
                     if(null != constrainingParent)
@@ -301,7 +305,7 @@ namespace Dev2.UI
         {
             get
             {
-                return (object)GetValue(DefaultTextProperty);
+                return GetValue(DefaultTextProperty);
             }
             set
             {
@@ -501,6 +505,7 @@ namespace Dev2.UI
         #endregion SelectedItems
 
         #region SelectedValue
+        // ReSharper disable AccessToStaticMemberViaDerivedType
         public static readonly DependencyProperty SelectedValueProperty = ListBox.SelectedValueProperty.AddOwner(typeof(IntellisenseTextBox));
 
         public object SelectedValue
@@ -580,16 +585,16 @@ namespace Dev2.UI
                 SetValue(IsOpenProperty, value);
             }
         }
-
-        private static void OnIsOpenChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            IntellisenseTextBox box = o as IntellisenseTextBox;
-
-            if(box != null)
-            {
-                box.OnIsOpenChanged((bool)e.OldValue, (bool)e.NewValue);
-            }
-        }
+        //
+        //        private static void OnIsOpenChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        //        {
+        //            IntellisenseTextBox box = o as IntellisenseTextBox;
+        //
+        //            if(box != null)
+        //            {
+        //                box.OnIsOpenChanged((bool)e.OldValue, (bool)e.NewValue);
+        //            }
+        //        }
         #endregion IsOpen
 
         #endregion Dependency Properties
@@ -601,7 +606,7 @@ namespace Dev2.UI
         private bool _expectOpen;
         private bool _suppressChangeOpen;
         private IntellisenseDesiredResultSet _desiredResultSet;
-        private int _possibleCaretPositionOnPopup = 0;
+        private int _possibleCaretPositionOnPopup;
         private int _caretPositionOnPopup;
         private string _textOnPopup;
         private object _cachedState;
@@ -674,6 +679,7 @@ namespace Dev2.UI
             EnsureIntellisenseProvider();
         }
 
+        // ReSharper disable InconsistentNaming
         private void ToolTip_ToolTipOpening(object sender, ToolTipEventArgs e)
         {
             if(!_fromPopup && IsOpen)
@@ -1216,6 +1222,8 @@ namespace Dev2.UI
                 {
                     DependencyObject parent = e.OriginalSource as DependencyObject;
 
+
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
                     if(parent != null)
                     {
                         if(parent is System.Windows.Documents.Run)
@@ -1304,12 +1312,12 @@ namespace Dev2.UI
                 CloseDropDown(true);
             }
 
-            if(this.WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
+            if(WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
             }
 
-            if(this.IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
+            if(IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
             {
                 Text = AddRecordsetNotationToExpresion(Text);
             }
@@ -1375,7 +1383,6 @@ namespace Dev2.UI
             bool isOpen = IsOpen;
             string appendText = null;
             bool isInsert = false;
-            bool expand = false;
             int index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider();//Bug 8437
 
@@ -1418,7 +1425,7 @@ namespace Dev2.UI
                     if(currentProvider.HandlesResultInsertion)//Bug 8437
                     {
                         _suppressChangeOpen = true;
-                        IntellisenseProviderContext context = new IntellisenseProviderContext() { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
+                        IntellisenseProviderContext context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
 
                         try
                         {
@@ -1440,7 +1447,6 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        int minimum = Math.Max(0, index - appendText.Length);
                         int foundMinimum = -1;
                         int foundLength = 0;
 
@@ -1451,7 +1457,7 @@ namespace Dev2.UI
                                 foundMinimum = i;
                                 foundLength = index - i;
                             }
-                            else if(foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(), StringComparison.OrdinalIgnoreCase) == -1)
+                            else if(foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
                             {
                                 i = -1;
                             }
@@ -1484,11 +1490,8 @@ namespace Dev2.UI
                 }
             }
 
-            if(expand)
-            {
-                double lineHeight = FontSize * FontFamily.LineSpacing;
-                Height += lineHeight;
-            }
+            double lineHeight = FontSize * FontFamily.LineSpacing;
+            Height += lineHeight;
 
             UpdateErrorState();
             EnsureErrorStatus();
@@ -1534,21 +1537,27 @@ namespace Dev2.UI
 
                 InsertItem(appendText, isInsert);
 
-                if(expand)
-                {
-                    double lineHeight = FontSize * FontFamily.LineSpacing;
-                    Height += lineHeight;
-                }
+
 
                 if(e.Key != Key.Tab)
                 {
-                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
                     {
                     }
                     else
                     {
+                        if(!AcceptsReturn)
+                        {
+                            MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                        }
                         e.Handled = true;
                     }
+                }
+
+                if(expand)
+                {
+                    double lineHeight = FontSize * FontFamily.LineSpacing;
+                    Height += lineHeight;
                 }
             }
             else if(e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
