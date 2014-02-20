@@ -18,6 +18,9 @@ Global
 		SccProjectName1 = Dev2.Server/bin/Debug/Webs
 		SccLocalPath1 = Dev2.Server\\bin\\Debug\\Webs
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 9c9850a3-6308-4cfb-865f-a3037ce62c9f
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

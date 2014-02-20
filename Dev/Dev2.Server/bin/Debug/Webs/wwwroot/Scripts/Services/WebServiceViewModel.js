@@ -404,12 +404,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                     paramVars = srcHeaderPrev.match(/\[\[\w*\]\]/g);    // match our variables!
                 }
             }
-
-            for (var q = 0; q < paramVars.length; q++) {
-                if (!paramVars[q].endsWith("]]")) {
-                    forceRemoveItems[q] = paramVars[q] + "]";
-                } else {
-                    forceRemoveItems[q] = paramVars[q];
+            if (paramVars) {
+                for (var q = 0; q < paramVars.length; q++) {
+                    if (!paramVars[q].endsWith("]]")) {
+                        forceRemoveItems[q] = paramVars[q] + "]";
+                    } else {
+                        forceRemoveItems[q] = paramVars[q];
+                    }
                 }
             }
         }
