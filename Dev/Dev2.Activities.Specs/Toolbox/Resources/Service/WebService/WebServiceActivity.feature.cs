@@ -19,7 +19,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class WebServiceActivityFeature
     {
         
@@ -32,9 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WebServiceActivity", "In order to use data from a webservice\r\nAs a Warewolf user\r\nI want to be able to " +
-                    "execute a webservice and use the data", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WebServiceActivity", "In order to use WebService \r\nAs a Warewolf user\r\nI want a tool that calls the Web" +
+                    "Services into the workflow", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -72,19 +70,331 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a webservice")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing WebService using recordsets")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebServiceActivity")]
-        public virtual void ExecuteAWebservice()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
+        public virtual void ExecutingWebServiceUsingRecordsets()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a webservice", ((string[])(null)));
-#line 7
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using recordsets", new string[] {
+                        "mytag"});
 #line 8
- testRunner.Given("I have the Get Cities Webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.When("I execute the activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.Then("the result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+      testRunner.And("the output is mapped as \"[[rec(*).CountryID]] \" and \"[[rec(*).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 13
+      testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[json]]=",
+                        ""});
+            table1.AddRow(new string[] {
+                        "[[json]]=",
+                        ""});
+            table1.AddRow(new string[] {
+                        "[[rec(1).CountryID]]",
+                        "[[rec(1).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(2).CountryID]]",
+                        "[[rec(2).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(3).CountryID]]",
+                        "[[rec(3).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(4).CountryID]]",
+                        "[[rec(4).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(5).CountryID]]",
+                        "[[rec(5).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(6).CountryID]]",
+                        "[[rec(6).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(7).CountryID]]",
+                        "[[rec(7).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(8).CountryID]]",
+                        "[[rec(8).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(9).CountryID]]",
+                        "[[rec(9).Description]]"});
+            table1.AddRow(new string[] {
+                        "[[rec(10).CountryID]]",
+                        "[[rec(10).Description]]"});
+#line 14
+   testRunner.And("the debug input as", ((string)(null)), table1, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[rec(1).CountryID]] = 1",
+                        "[[rec(1).Description]] = Afghanistan"});
+            table2.AddRow(new string[] {
+                        "[[rec(2).CountryID]] = 2",
+                        "[[rec(2).Description]] = Albania"});
+            table2.AddRow(new string[] {
+                        "[[rec(3).CountryID]] = 3",
+                        "[[rec(3).Description]] = Algeria"});
+            table2.AddRow(new string[] {
+                        "[[rec(4).CountryID]] = 4",
+                        "[[rec(4).Description]] = Andorra"});
+            table2.AddRow(new string[] {
+                        "[[rec(5).CountryID]] = 5",
+                        "[[rec(5).Description]] = Angola"});
+            table2.AddRow(new string[] {
+                        "[[rec(6).CountryID]] = 6",
+                        "[[rec(6).Description]] = Argentina"});
+            table2.AddRow(new string[] {
+                        "[[rec(7).CountryID]] = 7",
+                        "[[rec(7).Description]] = Armenia"});
+            table2.AddRow(new string[] {
+                        "[[rec(8).CountryID]] = 8",
+                        "[[rec(8).Description]] = Australia"});
+            table2.AddRow(new string[] {
+                        "[[rec(9).CountryID]] = 9",
+                        "[[rec(9).Description]] = Austria"});
+            table2.AddRow(new string[] {
+                        "[[rec(10).CountryID]] = 10",
+                        "[[rec(10).Description]] = Azerbaijan"});
+#line 28
+      testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing WebService using negative recordset index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebServiceActivity")]
+        public virtual void ExecutingWebServiceUsingNegativeRecordsetIndex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using negative recordset index", ((string[])(null)));
+#line 40
+this.ScenarioSetup(scenarioInfo);
+#line 41
+      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+      testRunner.And("the output is mapped as \"[[rec(-1).CountryID]] \" and \"[[rec(1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 45
+      testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[json]]=",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[json]]=",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rec(-1).CountryID]]",
+                        "[[rec(1).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(2).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(3).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(4).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(5).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(6).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(7).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(8).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(9).Description]]"});
+            table3.AddRow(new string[] {
+                        "",
+                        "[[rec(10).Description]]"});
+#line 46
+   testRunner.And("the debug input as", ((string)(null)), table3, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[rec(-1).CountryID]] =",
+                        "[[rec(1).Description]] = Afghanistan"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(2).Description]] = Albania"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(3).Description]] = Algeria"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(4).Description]] = Andorra"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(5).Description]] = Angola"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(6).Description]] = Argentina"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(7).Description]] = Armenia"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(8).Description]] = Australia"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(9).Description]] = Austria"});
+            table4.AddRow(new string[] {
+                        "",
+                        "[[rec(10).Description]] = Azerbaijan"});
+#line 60
+      testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing WebService using negative recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebServiceActivity")]
+        public virtual void ExecutingWebServiceUsingNegativeRecordset()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using negative recordset", ((string[])(null)));
+#line 73
+this.ScenarioSetup(scenarioInfo);
+#line 74
+      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 75
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+      testRunner.And("the output is mapped as \"[[rec(*).CountryID]] \" and \"[[rec(-1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 77
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 78
+      testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[json]]=",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[json]]=",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(1).CountryID]]",
+                        "[[rec(-1).Description]]"});
+            table5.AddRow(new string[] {
+                        "[[rec(2).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(3).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(4).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(5).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(6).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(7).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(8).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(9).CountryID]]",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[rec(10).CountryID]]",
+                        ""});
+#line 79
+   testRunner.And("the debug input as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[json]]=",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[json]]=",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(1).CountryID]] = 1",
+                        "[[rec(-1).Description]] ="});
+            table6.AddRow(new string[] {
+                        "[[rec(2).CountryID]] = 2",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(3).CountryID]] = 3",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(4).CountryID]] = 4",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(5).CountryID]] = 5",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(6).CountryID]] = 6",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(7).CountryID]] = 7",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(8).CountryID]] = 8",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(9).CountryID]] = 9",
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[rec(10).CountryID]] = 10",
+                        ""});
+#line 92
+       testRunner.And("the debug output as", ((string)(null)), table6, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing WebService using scalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebServiceActivity")]
+        public virtual void ExecutingWebServiceUsingScalar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using scalar", ((string[])(null)));
+#line 106
+this.ScenarioSetup(scenarioInfo);
+#line 107
+         testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 108
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
+      testRunner.And("the output is mapped as \"[[id]] \" and \"[[dsc]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 111
+      testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[json]]=",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[json]]=",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[id]]",
+                        "[[dsc]]"});
+#line 112
+    testRunner.And("the debug input as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[id]] = 10",
+                        "[[dsc]] = Azerbaijan"});
+#line 116
+    testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
