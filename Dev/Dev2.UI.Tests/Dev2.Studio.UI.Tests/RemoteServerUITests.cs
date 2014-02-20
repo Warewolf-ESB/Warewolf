@@ -227,19 +227,18 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote web source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
-            WebSourceWizardUIMap.EnterDefaultQuery("?extension=json&prefix=b");
-
-            WebSourceWizardUIMap.ClickSave();
+            WebSourceWizardUIMap.EnterTextIntoWizardTextBox(3, "?extension=json&prefix=b");
+            WebSourceWizardUIMap.PressButtonOnWizard(3);
             SaveDialogUIMap.ClickSave();
 
             //Change it back
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
             //Get textbox text
             var persistClipboard = Clipboard.GetText();
-            WebSourceWizardUIMap.DefaultQuerySetFocus();
+            KeyboardCommands.SendTabs(3);
             WebSourceWizardUIMap.PressCtrlC();
-            WebSourceWizardUIMap.EnterTextForDefaultQueryIfFocusIsSet("?extension=json&prefix=a");
-            WebSourceWizardUIMap.ClickSave();
+            WebSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "?extension=json&prefix=a");
+            WebSourceWizardUIMap.PressButtonOnWizard(3);
             string query = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
             SaveDialogUIMap.ClickSave();

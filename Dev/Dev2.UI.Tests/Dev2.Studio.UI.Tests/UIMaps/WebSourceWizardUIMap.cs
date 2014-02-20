@@ -12,18 +12,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Mouse.Click(control, new Point(648, 501));
         }
 
-        public void EnterDefaultQuery(string textToEnter)
-        {
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + textToEnter);
-            Playback.Wait(100);
-        }
-
-
-        public void DefaultQuerySetFocus()
-        {
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}");
-        }
-
         public void EnterTextForDefaultQueryIfFocusIsSet(string textToEnter)
         {
             Keyboard.SendKeys(textToEnter);

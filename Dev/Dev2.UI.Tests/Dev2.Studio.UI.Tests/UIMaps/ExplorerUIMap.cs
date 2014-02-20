@@ -209,7 +209,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             //Wait for the connect control to be ready
             int counter = 0;
-            while(!ddlBase.Enabled && counter < 5)
+            while(!ddlBase.Enabled && counter < 15)
             {
                 Playback.Wait(2000);
                 counter++;
@@ -678,7 +678,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(4000);
             if(serverName != "localhost")
             {
-                Playback.Wait(3000);
+                Playback.Wait(5000);
             }
         }
     }

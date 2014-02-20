@@ -688,6 +688,7 @@ namespace Dev2.Studio.UI.Tests
             for(int i = 0; i < numberOfTabsToGetToTextBox; i++)
             {
                 Keyboard.SendKeys("{TAB}");
+                Playback.Wait(50);
             }
             Keyboard.SendKeys(textToEnter);
             Playback.Wait(waitAftertextEntered);
