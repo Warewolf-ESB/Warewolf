@@ -157,7 +157,8 @@ namespace Dev2.Activities.Debug
                     var rawExpression = item.RawExpression;
                     if(displayExpression.Contains("().") || displayExpression.Contains("(*).") || (!string.IsNullOrEmpty(overrideGroupName) && overrideGroupName.Contains("(*).")))
                     {
-                        grpIdx = int.Parse(DataListUtil.ExtractIndexRegionFromRecordset(rawExpression));
+                        //grpIdx = int.Parse(DataListUtil.ExtractIndexRegionFromRecordset(rawExpression));
+                        grpIdx++;
                         groupName = string.IsNullOrEmpty(overrideGroupName) ? displayExpression : overrideGroupName;
                         displayExpression = rawExpression;
                     }

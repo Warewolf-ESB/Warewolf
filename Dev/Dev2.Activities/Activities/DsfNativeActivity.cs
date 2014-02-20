@@ -718,7 +718,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult(); 
-            debugItem.ResultsList.AddRange(debugItemResults);
+            debugItem.AddRange(debugItemResults);
         }
 
         #endregion

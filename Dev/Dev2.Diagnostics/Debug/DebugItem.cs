@@ -86,16 +86,20 @@ namespace Dev2.Diagnostics
                     if(itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
                     {
                         ClearFile(_fileName);
-                        ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(itemToAdd.Value, _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
+                        ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(itemToAdd.GetMoreLinkItem(), _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
                         _isMoreLinkCreated = true;
                         return;
                     }
-                    
-                    _stringBuilder.Append(itemToAdd.Value);
-                    if(itemToAdd.Type == DebugItemResultType.Value)
+
+                    _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
+                    if(itemToAdd.Type == DebugItemResultType.Value ||
+                        itemToAdd.Type == DebugItemResultType.Variable)
                     {
-                        _stringBuilder.Append(Environment.NewLine);
+                        SaveFile(_stringBuilder.ToString(), _fileName);
+                        _stringBuilder.Clear();
                     }
+                    
+
                     if(_stringBuilder.Length > 10000)
                     {
                         SaveFile(_stringBuilder.ToString(), _fileName);
@@ -107,7 +111,8 @@ namespace Dev2.Diagnostics
 
             }
 
-            if(itemToAdd.Type == DebugItemResultType.Value)
+            if(itemToAdd.Type == DebugItemResultType.Value ||
+                itemToAdd.Type == DebugItemResultType.Variable)
             {
                 TryCache(itemToAdd);
             }
@@ -137,7 +142,8 @@ namespace Dev2.Diagnostics
                 throw new ArgumentNullException("item");
             }
 
-            if(!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
+            var moreLinkItem = item.GetMoreLinkItem();
+            if(!string.IsNullOrEmpty(moreLinkItem) && moreLinkItem.Length > MaxCharDispatchCount)
             {
                 item.MoreLink = SaveFile(item.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
                 item.Value = item.Value.Substring(0, ActCharDispatchCount);

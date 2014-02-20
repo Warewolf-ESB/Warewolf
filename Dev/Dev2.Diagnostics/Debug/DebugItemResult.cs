@@ -25,6 +25,11 @@ namespace Dev2.Diagnostics
             return null;
         }
 
+        public string GetMoreLinkItem()
+        {
+            return string.IsNullOrEmpty(Variable) ? Value : string.Format("{0} {1} {2}", Variable, Operator, Value);
+        }
+
         public void ReadXml(XmlReader reader)
         {
             reader.MoveToContent();
