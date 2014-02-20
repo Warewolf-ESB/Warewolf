@@ -1541,15 +1541,11 @@ namespace Dev2.UI
 
                 if(e.Key != Key.Tab)
                 {
-                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
+                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn && !isInsert)
                     {
                     }
                     else
                     {
-                        //                        if(!AcceptsReturn)
-                        //                        {
-                        //                            MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                        //                        }
                         e.Handled = true;
                     }
                 }
