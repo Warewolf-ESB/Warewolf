@@ -224,23 +224,55 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             foreach(var expectedParameter in expected.Method.Parameters)
             {
-                var actualParameter = actual.Method.Parameters.First(p => p.Name == expectedParameter.Name);
+                MethodParameter parameter = expectedParameter;
+                var actualParameter = actual.Method.Parameters.First(p => p.Name == parameter.Name);
                 Assert.AreEqual(expectedParameter.DefaultValue, actualParameter.DefaultValue);
             }
 
             foreach(var expectedRecordset in expected.Recordsets)
             {
                 // expect actual to have removed recordset notation ()...
-                var actualRecordset = actual.Recordsets.First(rs => rs.Name == expectedRecordset.Name.Replace("()", ""));
+                Recordset recordset = expectedRecordset;
+                var actualRecordset = actual.Recordsets.First(rs => rs.Name == recordset.Name.Replace("()", ""));
                 foreach(var expectedField in expectedRecordset.Fields)
                 {
-                    var actualField = actualRecordset.Fields.First(f => f.Name == expectedField.Name);
+                    RecordsetField field = expectedField;
+                    var actualField = actualRecordset.Fields.First(f => f.Name == field.Name);
                     Assert.AreEqual(expectedField.Alias, actualField.Alias);
                     // expect actual to have removed recordset notation ()...
                     var expectedRecordsetAlias = string.IsNullOrEmpty(expectedField.RecordsetAlias) ? string.Empty : expectedField.RecordsetAlias.Replace("()", "");
                     Assert.AreEqual(expectedRecordsetAlias, actualField.RecordsetAlias);
                 }
             }
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ToXml")]
+        public void WebService_ToXml_WhenRequestValuesHaveEnter_ShouldBeRespectedWhenReHydrated()
+        {
+            //------------Setup for test--------------------------
+            var expected = new WebService
+            {
+                Source = new WebSource
+                {
+                    ResourceID = Guid.NewGuid(),
+                    ResourceName = "TestWebSource",
+                },
+                RequestUrl = "pqr",
+                RequestMethod = WebRequestMethod.Get,
+                RequestHeaders = "Content-Type: text/xml\nBearer: Trusted",
+                RequestBody = "abc\nhas an enter\nin it",
+                RequestResponse = "xyz",
+                JsonPath = "$.somepath"
+            };
+            //------------Execute Test---------------------------
+            var xml = expected.ToXml();
+            var actual = new WebService(xml);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual.RequestHeaders, "\n");
+            StringAssert.Contains(actual.RequestBody, "\n");
         }
 
         #endregion

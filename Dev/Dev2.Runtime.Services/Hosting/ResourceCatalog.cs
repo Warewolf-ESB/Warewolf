@@ -223,12 +223,16 @@ namespace Dev2.Runtime.Hosting
                 {
                     while(!sr.EndOfStream)
                     {
-                        contents.Append(sr.ReadLine());
+                        var readLine = sr.ReadLine();
+                        if(!string.IsNullOrEmpty(readLine))
+                        {
+                            contents.Append(readLine);
+                            contents.Append(Environment.NewLine);
+                        }
                     }
                 }
 
             }
-
             return contents;
         }
 

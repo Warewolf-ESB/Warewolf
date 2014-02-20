@@ -1546,10 +1546,10 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        if(!AcceptsReturn)
-                        {
-                            MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                        }
+                        //                        if(!AcceptsReturn)
+                        //                        {
+                        //                            MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                        //                        }
                         e.Handled = true;
                     }
                 }

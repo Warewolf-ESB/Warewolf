@@ -270,7 +270,7 @@ namespace Dev2.Tests.Runtime
 
             var obj = ConvertToMsg(xaml.ToString());
 
-            Assert.AreEqual(expected, obj.Message.ToString());
+            Assert.AreEqual(expected, obj.Message.Replace(Environment.NewLine, "").ToString());
         }
 
         [TestMethod]
