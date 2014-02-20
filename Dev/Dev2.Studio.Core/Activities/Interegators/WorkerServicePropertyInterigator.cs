@@ -26,8 +26,9 @@ namespace Dev2.Studio.Core.Activities.Interegators
                         var fragment = resource.WorkflowXaml.Substring(startIdx, len);
 
                         fragment += "</Action>";
-
+                        fragment = fragment.Replace("&", "&amp;");
                         XmlDocument document = new XmlDocument();
+
                         document.LoadXml(fragment);
 
                         if(document.DocumentElement != null)
