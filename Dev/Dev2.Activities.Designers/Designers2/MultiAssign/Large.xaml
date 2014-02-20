@@ -93,7 +93,7 @@
                                         d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                            <ui:IntellisenseTextBox 
                                                     VerticalAlignment="Center"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
@@ -146,7 +146,7 @@
                                                     TextWrapping="Wrap"
                                                     Margin="0,0,1,0"
                                                     AcceptsReturn="True"
-                                                    MaxHeight="50"
+                                                    MaxHeight="80"
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                         Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"

@@ -68,7 +68,7 @@
                                     d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                        <ui:IntellisenseTextBox 
                                                 DefaultText="{Binding WatermarkTextVariable}"
                                                 WrapInBrackets="True"
                                                 Padding="3"
@@ -111,12 +111,12 @@
                     <DataTemplate>
                         <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
                                                 AllowMultilinePaste="True"
-                                                AllowUserCalculateMode="True"
+                                                AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
+                                                AllowUserCalculateMode="True"
                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                 VerticalScrollBarVisibility="Auto"
                                                 TextWrapping="Wrap"
-                                                AcceptsReturn="True"
                                                 MaxHeight="52"
                                                 Padding="3"
                                                 Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"                                                

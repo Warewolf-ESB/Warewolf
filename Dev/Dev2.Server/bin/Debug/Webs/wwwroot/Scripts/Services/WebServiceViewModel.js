@@ -374,8 +374,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {
+                self.extractAndPushRequestVariable(newValue, start, varSrc);
                 // handle more normal use case ;)
-                self.ProperlyHandleVariableInput(newValue);
+               // self.ProperlyHandleVariableInput(newValue);
             }
         } else { // SRC_BODY
 

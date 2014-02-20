@@ -58,7 +58,9 @@
                                     d:DataContext="{d:DesignInstance Type=dev2:CaseConvertTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                        <ui:IntellisenseTextBox AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
                                                 MaxHeight="52"
                                                 Padding="3"
                                                 DefaultText="{Binding WatermarkTextVariable}"

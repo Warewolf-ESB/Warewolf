@@ -60,7 +60,9 @@
                                         IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
+                            <ui:IntellisenseTextBox AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Padding="3"
