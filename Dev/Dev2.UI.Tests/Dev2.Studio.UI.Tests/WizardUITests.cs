@@ -82,7 +82,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             StudioWindow.WaitForControlReady(1000);
             ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            WizardsUIMap.WaitForWizard();
+            if(!WizardsUIMap.TryWaitForWizard())
+            {
+                Assert.Fail("New Database service shortcut key doesnt work");
+            }
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
@@ -92,7 +95,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             StudioWindow.WaitForControlReady(1000);
             ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}P");
-            WizardsUIMap.WaitForWizard();
+            if(!WizardsUIMap.TryWaitForWizard())
+            {
+                Assert.Fail("New plugin service shortcut key doesnt work");
+            }
             PluginServiceWizardUIMap.ClickCancel();
         }
 
@@ -102,7 +108,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             StudioWindow.WaitForControlReady(1000);
             ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
-            if(!WizardsUIMap.TryWaitForWizard(10000))
+            if(!WizardsUIMap.TryWaitForWizard())
             {
                 Assert.Fail("New web service shortcut key doesnt work");
             }
@@ -223,8 +229,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //------------Execute Test---------------------------
-            VariablesUIMap.ClickScalarVariableName(0);
-            SendKeys.SendWait("VariableName");
+            VariablesUIMap.EnterTextIntoScalarName(0, "VariableName");
 
             var pt = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 

@@ -167,8 +167,10 @@ namespace Dev2.CodedUI.Tests
             ExplorerUIMap.DoubleClickWorkflow(ResourceName, "INTEGRATION TEST SERVICES");
 
             //Edit the inputs and outputs
-            VariablesUIMap.CheckScalarInputAndOuput(0);
-            VariablesUIMap.CheckScalarInput(0);
+            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Input);
+            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Output);
+
+            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Input);
 
             //Save the workflow
             RibbonUIMap.ClickRibbonMenuItem("Save");
@@ -290,7 +292,7 @@ namespace Dev2.CodedUI.Tests
             VariablesUIMap.ClickScalarVariableName(1);
 
             // The box should be invalid, and have the tooltext saying as much.
-            bool isValid = VariablesUIMap.CheckVariableIsValid(0);
+            bool isValid = VariablesUIMap.CheckVariableNameIsValid(0);
 
             if(isValid)
             {
