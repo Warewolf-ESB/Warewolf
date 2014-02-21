@@ -413,7 +413,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
 
 
-            if(string.IsNullOrEmpty(type))
+            if(string.IsNullOrEmpty(type) && actualValue != null)
             {
                 Assert.AreEqual(expectedValue, actualValue, name + " are not equal at index" + index);
             }

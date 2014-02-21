@@ -149,9 +149,9 @@ namespace Dev2.Activities.Debug
             var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
             if(auditor != null)
             {
+                var grpIdx = 0;
                 foreach(var item in auditor.FetchAuditItems())
                 {
-                    var grpIdx = 0;
                     string groupName = null;
                     var displayExpression = item.Expression;
                     var rawExpression = item.RawExpression;

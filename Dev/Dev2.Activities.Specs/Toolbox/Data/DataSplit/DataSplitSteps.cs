@@ -164,7 +164,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             for(int i = 0; i < tableRows.Count; i++)
             {
-                Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
+                var expected = tableRows[i][0];
+                Assert.AreEqual(expected, recordSetValues[i]);
             }
         }
 

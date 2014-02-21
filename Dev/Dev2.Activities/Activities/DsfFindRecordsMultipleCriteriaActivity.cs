@@ -224,10 +224,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         toUpsert.Add(region, concatRes);
                         toUpsert.FlushIterationFrame();
-                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                        {
-                            AddDebugOutputItem(new DebugOutputParams(region, concatRes, executionID, iterationIndex));
-                        }
                     }
                     else
                     {
@@ -237,16 +233,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             toUpsert.Add(region, r);
                             toUpsert.FlushIterationFrame();
-                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                AddDebugOutputItem(new DebugOutputParams(region, r, executionID, iterationIndex));
-                            }
-
                             iterationIndex++;
                         }
                     }
                     compiler.Upsert(executionID, toUpsert, out errorResultTO);
                     allErrors.MergeErrors(errorResultTO);
+
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(region, "", executionID, 1));
+                    }
                 }
             }
             catch(Exception exception)

@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var lines = File.ReadLines(debugItemFilePath);
                 foreach(var line in lines)
                 {
-                    result.Message.Append(line);
+                    result.Message.AppendLine(line);
                 }
 
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

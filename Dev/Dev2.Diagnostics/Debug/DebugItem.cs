@@ -86,7 +86,9 @@ namespace Dev2.Diagnostics
                     if(itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
                     {
                         ClearFile(_fileName);
-                        ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(itemToAdd.GetMoreLinkItem(), _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
+                        _stringBuilder.AppendLine(itemToAdd.GetMoreLinkItem());
+                        ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(_stringBuilder.ToString(), _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
+                        _stringBuilder.Clear();
                         _isMoreLinkCreated = true;
                         return;
                     }

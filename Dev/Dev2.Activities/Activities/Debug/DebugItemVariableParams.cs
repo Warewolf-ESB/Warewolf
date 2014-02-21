@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -101,12 +102,11 @@ namespace Dev2.Activities.Debug
                         Value = "",
                         Label = LabelText,
                         Variable = Expression
-                    }};
+                    }
+                    };
                 }
             }
             return debugItemsResults;
         }
-
-
     }
 }
