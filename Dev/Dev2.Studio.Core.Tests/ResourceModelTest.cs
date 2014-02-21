@@ -108,6 +108,8 @@ namespace Dev2.Core.Tests
             const string comment = "TestComment";
             const string displayName = "DisplayName";
             const string resourceName = "TestResourceName";
+            const string inputs = "this is the inputs";
+            const string outputs = "this is the outputs";
             var id = Guid.NewGuid();
             const string tags = "TestTags";
             resourceModel.Category = category;
@@ -117,7 +119,8 @@ namespace Dev2.Core.Tests
             resourceModel.ResourceName = resourceName;
             resourceModel.Tags = tags;
             resourceModel.UserPermissions = UserPermissions;
-
+            resourceModel.Inputs = inputs;
+            resourceModel.Outputs = outputs;
             //------------Execute Test---------------------------
             var updateResourceModel = new ResourceModel(environmentModel.Object);
             updateResourceModel.Update(resourceModel);
@@ -128,6 +131,8 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(id, updateResourceModel.ID);
             Assert.AreEqual(tags, updateResourceModel.Tags);
             Assert.AreEqual(UserPermissions, updateResourceModel.UserPermissions);
+            Assert.AreEqual(inputs, updateResourceModel.Inputs);
+            Assert.AreEqual(outputs, updateResourceModel.Outputs);
         }
         #endregion Update Tests
 

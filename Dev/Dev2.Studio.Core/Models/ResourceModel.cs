@@ -542,7 +542,8 @@ namespace Dev2.Studio.Core.Models
             ID = resourceModel.ID;
             ServerResourceType = resourceModel.ServerResourceType;
             UserPermissions = resourceModel.UserPermissions;
-
+            Inputs = resourceModel.Inputs;
+            Outputs = resourceModel.Outputs;
             _errors.Clear();
             if(resourceModel.Errors != null)
             {
