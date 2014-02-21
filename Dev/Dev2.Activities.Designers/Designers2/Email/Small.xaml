@@ -119,14 +119,16 @@
                                 DefaultText="Email Content"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AllowUserInsertLine="True"
+                               AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
+                                                MaxHeight="52"
                                 AcceptsTab="True"
                                 Margin="0,2"
                                 VerticalContentAlignment="Top"
                                 MinLines="2"
                                 Height="32"
                                 MinHeight="32"
-                                MaxHeight="32"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpBody}"
