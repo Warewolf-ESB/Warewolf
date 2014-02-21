@@ -19,13 +19,10 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
-            Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
-            {
-                var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
-                var broker = new SqlDatabaseBroker();
-                var result = broker.GetServiceMethods(dbSource);
-                Assert.AreEqual(true, result.Count > 0);
-            });
+            var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
+            var broker = new SqlDatabaseBroker();
+            var result = broker.GetServiceMethods(dbSource);
+            Assert.AreEqual(true, result.Count > 0);
         }
 
         //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
