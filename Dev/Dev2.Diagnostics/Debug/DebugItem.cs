@@ -98,7 +98,7 @@ namespace Dev2.Diagnostics
                         SaveFile(_stringBuilder.ToString(), _fileName);
                         _stringBuilder.Clear();
                     }
-                    
+
 
                     if(_stringBuilder.Length > 10000)
                     {
@@ -142,8 +142,7 @@ namespace Dev2.Diagnostics
                 throw new ArgumentNullException("item");
             }
 
-            var moreLinkItem = item.GetMoreLinkItem();
-            if(!string.IsNullOrEmpty(moreLinkItem) && moreLinkItem.Length > MaxCharDispatchCount)
+            if(!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
             {
                 item.MoreLink = SaveFile(item.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
                 item.Value = item.Value.Substring(0, ActCharDispatchCount);
