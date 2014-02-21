@@ -63,9 +63,12 @@
         <ui:IntellisenseTextBox Grid.Row="0"
                                 Grid.Column="1"
                                 x:Name="InitialFocusElement"  
+                                AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
+                                                MaxHeight="80"
                                 Height="37"
                                 MinHeight="37"
-                                MaxHeight="37"
                                 VerticalAlignment="Top"                                                           
                                 VerticalContentAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
@@ -83,10 +86,10 @@
                                      SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>            
-            <ui:IntellisenseTextBox.IntellisenseProvider>
-                <!--Disable variable validation-->
-                <provider:BlankIntellisenseProvider />
-            </ui:IntellisenseTextBox.IntellisenseProvider>
+<!--            <ui:IntellisenseTextBox.IntellisenseProvider>-->
+<!--                ~1~Disable variable validation@1@-->
+<!--                <provider:BlankIntellisenseProvider />-->
+<!--            </ui:IntellisenseTextBox.IntellisenseProvider>-->
         </ui:IntellisenseTextBox>
 
         <Label Grid.Row="1"

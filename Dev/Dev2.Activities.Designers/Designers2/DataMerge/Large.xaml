@@ -80,7 +80,10 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox MaxHeight="52"
+                            <ui:IntellisenseTextBox AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
+                                                MaxHeight="80"
                                                     Padding="3"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"

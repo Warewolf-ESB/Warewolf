@@ -83,6 +83,10 @@
                Content="Characters" />
         <ui:IntellisenseTextBox Grid.Column="1" 
                                 Grid.Row="2"
+                                AllowMultilinePaste="True"
+                                                AcceptsReturn="True"
+                                                AllowUserInsertLine="True"
+                                                MaxHeight="52"
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
