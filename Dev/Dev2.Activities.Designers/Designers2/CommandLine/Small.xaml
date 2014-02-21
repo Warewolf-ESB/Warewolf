@@ -43,6 +43,7 @@
                                 Grid.Row="0" 
                                 Grid.ColumnSpan="2"
                                 DefaultText="CMD"
+                                VerticalContentAlignment="Top"
                                 VerticalAlignment="Stretch"
                                 AllowMultilinePaste="True"
                                                 AcceptsReturn="True"
