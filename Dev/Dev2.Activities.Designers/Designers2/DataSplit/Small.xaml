@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -44,26 +44,24 @@
                    Margin="0,5,5,0"
                    Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                    Grid.Column="1"
                                     Grid.Row="0"
                                     AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="52"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="True"
+                                    MaxHeight="52"
                                     TextWrapping="Wrap"
-                                    MinWidth="125"
-                                    Width="125"
-                                    Height="37"
-                                    MinHeight="37"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Right"                                    
+                                    Width="142"
+                                    VerticalAlignment="Stretch"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="Data to split"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipString}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Right">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpString}"
                                      DataContext="{Binding}" />
@@ -72,10 +70,10 @@
                                          SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
-<!--                <ui:IntellisenseTextBox.IntellisenseProvider>   -->
-<!--                    ~1~Disable variable validation@1@-->
-<!--                    <provider:BlankIntellisenseProvider/>-->
-<!--                </ui:IntellisenseTextBox.IntellisenseProvider>-->
+                <!--                <ui:IntellisenseTextBox.IntellisenseProvider>   -->
+                <!--                    ~1~Disable variable validation@1@-->
+                <!--                    <provider:BlankIntellisenseProvider/>-->
+                <!--                </ui:IntellisenseTextBox.IntellisenseProvider>-->
             </ui:IntellisenseTextBox>
         </Grid>
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
@@ -84,7 +82,7 @@
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
-             <i:Interaction.Behaviors>
+            <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recordset().F1]]</sys:String>
@@ -96,54 +94,54 @@
             </i:Interaction.Behaviors>
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}"
-                                    IsReadOnly="True">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding IndexNumber}"
-                               VerticalAlignment="Center" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="25"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding IndexNumber}"
+                                   VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                <DataGridTemplateColumn Width="*"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                     MaxHeight="52"
                                                     Padding="3"
-                                                    DefaultText="{Binding WatermarkTextVariable}" 
-                                                    WrapInBrackets="True"                                                     
+                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpResult}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="OutputVariable"
-                                                     SourcePropertyValue="{Binding OutputVariable, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ui:IntellisenseTextBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpResult}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="OutputVariable"
+                                                         SourcePropertyValue="{Binding OutputVariable, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputVariable_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                <DataGridTemplateColumn Width="*"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -155,29 +153,29 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpWithType}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="SplitType"
-                                                     SourcePropertyValue="{Binding SplitType, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_SplitType_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ComboBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            
-             <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpWithType}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="SplitType"
+                                                         SourcePropertyValue="{Binding SplitType, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_SplitType_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="25"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                     MaxHeight="52"
                                                     Padding="3"
@@ -204,9 +202,9 @@
                                 </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </controls:Dev2DataGrid>
     </Grid>
 </core:ActivityDesignerTemplate>
