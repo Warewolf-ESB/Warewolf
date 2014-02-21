@@ -15,7 +15,7 @@ namespace Dev2.Integration.Tests.Services.Sql
     {
         //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
         [TestMethod]
-        [Owner("Ashley.Lewis")]
+        [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
         {
@@ -30,7 +30,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
         [TestMethod]
-        [Owner("Ashley.Lewis")]
+        [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         }
 
         [TestMethod]
-        [Owner("Ashley.Lewis")]
+        [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         [ExpectedException(typeof(SqlException))]
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
@@ -67,7 +67,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         }
 
         [TestMethod]
-        [Owner("Ashley.Lewis")]
+        [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         {
