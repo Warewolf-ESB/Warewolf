@@ -623,7 +623,6 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
-
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
 

@@ -427,8 +427,6 @@
     <Compile Include="Services\Communication\MapiEmailCommService.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
-    <Compile Include="Services\Communication\Mapi\IMapiMailMessage.cs" />
-    <Compile Include="Services\Communication\Mapi\MapiMailMessage.cs" />
     <Compile Include="Services\Communication\Mapi\SendFileTo.cs" />
     <Compile Include="Services\Configuration\ConfigurationService.cs" />
     <Compile Include="Services\Configuration\HelpConfiguration.cs" />
