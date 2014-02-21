@@ -1,9 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,21 +20,6 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         #region Cleanup
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext tctx)
-        {
-            Playback.Initialize();
-            Playback.PlaybackSettings.ContinueOnError = true;
-            Playback.PlaybackSettings.ShouldSearchFailFast = true;
-            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackSettings.MatchExactHierarchy = true;
-            Playback.PlaybackSettings.DelayBetweenActions = 1;
-
-            // make the mouse quick ;)
-            Mouse.MouseMoveSpeed = 10000;
-            Mouse.MouseDragSpeed = 10000;
-        }
 
         [TestCleanup]
         public void MyTestCleanup()
@@ -122,9 +105,9 @@ namespace Dev2.Studio.UI.Tests
             WaitForControlLoad();
             if(dbDropDown != null)
             {
-            var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            Mouse.Click(databaseName, new Point(5, 5));
+                var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
+                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
+                Mouse.Click(databaseName, new Point(5, 5));
             }
             WaitForControlLoad();
 
@@ -134,9 +117,9 @@ namespace Dev2.Studio.UI.Tests
             WaitForControlLoad();
             if(tableDropDown != null)
             {
-            var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
+                var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
                 WaitForControlLoad();
-            Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
+                Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             }
             WaitForControlLoad();
 

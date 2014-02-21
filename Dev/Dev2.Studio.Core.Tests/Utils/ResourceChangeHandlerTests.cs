@@ -13,7 +13,8 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Utils
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerTests
     {
         [TestMethod]
@@ -26,8 +27,8 @@ namespace Dev2.Core.Tests.Utils
             //------------Execute Test---------------------------
             new ResourceChangeHandler(null);
             //------------Assert Results-------------------------
-        }     
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceChangeHandler_ShowResourceChanged")]
@@ -37,7 +38,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Setup for test--------------------------
             var showResourceChangedUtil = CreateShowResourceChangedUtil();
             //------------Execute Test---------------------------
-            showResourceChangedUtil.ShowResourceChanged(null,new List<string>());
+            showResourceChangedUtil.ShowResourceChanged(null, new List<string>());
             //------------Assert Results-------------------------
         }
 
@@ -50,7 +51,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Setup for test--------------------------
             var showResourceChangedUtil = CreateShowResourceChangedUtil();
             //------------Execute Test---------------------------
-            showResourceChangedUtil.ShowResourceChanged(new Mock<IContextualResourceModel>().Object,null);
+            showResourceChangedUtil.ShowResourceChanged(new Mock<IContextualResourceModel>().Object, null);
             //------------Assert Results-------------------------
         }
 
@@ -73,9 +74,9 @@ namespace Dev2.Core.Tests.Utils
             //------------Execute Test---------------------------
             var mock = new Mock<IResourceChangedDialog>();
             mock.Setup(dialog => dialog.OpenDependencyGraph).Returns(true);
-            showResourceChangedUtil.ShowResourceChanged(mockResource.Object,new List<string>{"MyResource"},mock.Object);
+            showResourceChangedUtil.ShowResourceChanged(mockResource.Object, new List<string> { "MyResource" }, mock.Object);
             //------------Assert Results-------------------------
-            mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()),Times.Once());
+            mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
         }
 
 
@@ -98,7 +99,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Execute Test---------------------------
             var mock = new Mock<IResourceChangedDialog>();
             mock.Setup(dialog => dialog.OpenDependencyGraph).Returns(true);
-            showResourceChangedUtil.ShowResourceChanged(mockResource.Object,new List<string>{"MyResource","MyOtherResource"},mock.Object);
+            showResourceChangedUtil.ShowResourceChanged(mockResource.Object, new List<string> { "MyResource", "MyOtherResource" }, mock.Object);
             //------------Assert Results-------------------------
             mockAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ShowReverseDependencyVisualizer>()), Times.Once());
         }
@@ -107,7 +108,7 @@ namespace Dev2.Core.Tests.Utils
         {
             return CreateShowResourceChangedUtil(new Mock<IEventAggregator>().Object);
         }
-        
+
         static ResourceChangeHandler CreateShowResourceChangedUtil(IEventAggregator eventAggregator)
         {
             return new ResourceChangeHandler(eventAggregator);

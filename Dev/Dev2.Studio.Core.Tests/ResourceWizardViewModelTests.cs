@@ -12,7 +12,8 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceWizardViewModelTests
     {
         #region Variables
@@ -30,7 +31,7 @@ namespace Dev2.Core.Tests
         public void Dev2Done_Where_ResourceModelExists_Expected_ResourceModelUpdated()
         {
             var mockEventAggregator = Dev2MockFactory.SetupMockEventAggregator();
-            ImportService.CurrentContext = 
+            ImportService.CurrentContext =
                 CompositionInitializer.InitializeWithMockEventAggregator(mockEventAggregator);
 
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -106,7 +107,7 @@ namespace Dev2.Core.Tests
             mockEventAggregator.Setup(c => c.Publish(It.IsAny<UpdateResourceMessage>()))
                                .Callback<object>(msg =>
                                    {
-                                       var resourcemodelMsg = (UpdateResourceMessage) msg;
+                                       var resourcemodelMsg = (UpdateResourceMessage)msg;
                                        Assert.IsTrue(resourcemodelMsg.ResourceModel == _mockResourceModel.Object);
                                    });
 
@@ -131,7 +132,7 @@ namespace Dev2.Core.Tests
 
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
-            
+
             bool messageShown = false;
             Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
             _mockPopup.Setup(p => p.Show()).Callback(() => messageShown = true);
@@ -178,7 +179,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             ResourceWizardViewModel resourceWizardViewModel = new ResourceWizardViewModel(_mockResourceModel.Object);
 
-            Mock<IMainViewModel> mainVM = Dev2MockFactory.SetupMainViewModel();;
+            Mock<IMainViewModel> mainVM = Dev2MockFactory.SetupMainViewModel(); ;
 
             Mock<IPopupController> _mockPopup = new Mock<IPopupController>();
 

@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,21 +13,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
     {
 
         #region Cleanup
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext tctx)
-        {
-            Playback.Initialize();
-            Playback.PlaybackSettings.ContinueOnError = true;
-            Playback.PlaybackSettings.ShouldSearchFailFast = true;
-            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackSettings.MatchExactHierarchy = true;
-            Playback.PlaybackSettings.DelayBetweenActions = 1;
-
-            // make the mouse quick ;)
-            Mouse.MouseMoveSpeed = 10000;
-            Mouse.MouseDragSpeed = 10000;
-        }
 
         [TestCleanup]
         public void MyTestCleanup()

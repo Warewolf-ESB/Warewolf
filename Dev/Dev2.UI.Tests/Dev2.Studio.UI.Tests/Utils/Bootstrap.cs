@@ -5,6 +5,8 @@ using System.Linq;
 using System.Management;
 using System.Threading;
 using BuildEventLogging;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -15,15 +17,13 @@ namespace Dev2.Studio.UI.Tests.Utils
     [TestClass()]
     public class Bootstrap
     {
-        private static Process _serverProc;
-        private static Process _studioProc;
-
         private const string ServerName = "Warewolf Server.exe";
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
         private const int ServerTimeOut = 30000;
         private const int StudioTimeOut = 30000;
+        private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
         public static string ServerLocation;
         public static Process ServerProc;
@@ -41,6 +41,19 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
+            if(!Playback.IsInitialized)
+            {
+                Playback.PlaybackSettings.ContinueOnError = true;
+                Playback.PlaybackSettings.ShouldSearchFailFast = true;
+                Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+                Playback.PlaybackSettings.MatchExactHierarchy = true;
+                Playback.PlaybackSettings.DelayBetweenActions = 1;
+
+                // make the mouse quick ;)
+                Mouse.MouseMoveSpeed = 10000;
+                Mouse.MouseDragSpeed = 10000;
+            }
+
             testCtx = textCtx;
             lock(_tumbler)
             {
@@ -51,7 +64,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     //Local, assume server is running
                     ServerLocation = GetProcessPath(serverProcess);
                     StudioLocation = GetProcessPath(studioProcess);
-                    return;
+                    //return;
                 }
 
                 var deployLocation = textCtx.DeploymentDirectory;
@@ -65,72 +78,148 @@ namespace Dev2.Studio.UI.Tests.Utils
                     // term any existing server processes ;)
                     KillProcess(serverProcess);
 
-                    var args = "-t";
-
-                    ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
-                    //startInfo.RedirectStandardOutput = true;
-                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-                    var started = false;
-                    var startCnt = 0;
-                    startInfo.FileName = ServerLocation;
-
-                    while(!started && startCnt < 5)
-                    {
-                        try
-                        {
-                            _serverProc = Process.Start(startInfo);
-
-                            // Wait for server to start
-                            Thread.Sleep(ServerTimeOut); // wait for server to start ;)
-                            if(_serverProc != null && !_serverProc.HasExited)
-                            {
-                                ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
-                                started = true;
-                            }
-                        }
-                        catch
-                        {
-                            // most likely a server is already running, kill it and try again ;)
-                            startCnt++;
-                        }
-                    }
-
-                    started = false;
-                    startCnt = 0;
-                    startInfo.FileName = StudioLocation;
-
-                    while(!started && startCnt < 5)
-                    {
-                        try
-                        {
-                            _studioProc = Process.Start(startInfo);
-
-                            // Wait for studio to start
-                            Thread.Sleep(StudioTimeOut); // wait for server to start ;)
-                            if(_studioProc != null && !_studioProc.HasExited)
-                            {
-                                StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-                                started = true;
-                            }
-                        }
-                        catch
-                        {
-                            // most likely a studio is already running, kill it and try again ;)
-                            startCnt++;
-                        }
-                    }
+                    StartServer();
+                    StartStudio();
                 }
                 else
                 {
-                    //Remote, assume server is running
-                    ServerLocation = GetProcessPath(serverProcess);
-                    StudioLocation = GetProcessPath(studioProcess);
                     var buildLabel = new BuildLabel(textCtx.DeploymentDirectory);
-                    //Remote by a build agent
-                    if(buildLabel.LoggingURL != string.Empty)
+                    //Remote, assume server is running
+                    if(serverProcess == null)
                     {
-                        BuildEventLogger.LogBuildEvent(buildLabel, "Started coded UI testing.");
+                        //Remote by a build agent
+                        ServerLocation = LocalBuildRunDirectory + ServerName;
+                        if(File.Exists(ServerLocation))
+                        {
+                            //Try start
+                            StartServer();
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the server for coded UI test! It should already have been started!");
+                            }
+                        }
+                        else
+                        {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Server is not running for coded UI test pack and no build is deployed to start!");
+                            }
+                            throw new Exception("Cannot run coded UI test pack because server is not running and no build is available.");
+                        }
+                    }
+                    else
+                    {
+                        ServerLocation = GetProcessPath(serverProcess);
+                    }
+
+                    //Remote, assume studio is running
+                    if(studioProcess == null)
+                    {
+                        //Remote by a build agent
+                        StudioLocation = LocalBuildRunDirectory + StudioName;
+                        if(File.Exists(StudioLocation))
+                        {
+                            //Try start
+                            StartStudio();
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the studio for coded UI test! It should already have been started!");
+                            }
+                        }
+                        else
+                        {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Studio is not running for coded UI test pack and no build is deployed to start!");
+                            }
+                            throw new Exception("Cannot run coded UI test pack because studio is not running and no build is available.");
+                        }
+                    }
+                    else
+                    {
+                        if((from ManagementObject process in studioProcess select process.Properties["ExecutionState"].Value).FirstOrDefault() == null && (from ManagementObject process in studioProcess select process.Properties["Status"].Value).FirstOrDefault() == null)
+                        {
+                            StudioLocation = GetProcessPath(studioProcess);
+                        }
+                        else
+                        {
+                            throw new Exception("Studio state cannot be determined for Coded UI run.");
+                        }
+                    }
+                }
+            }
+        }
+
+        static void StartStudio()
+        {
+            var args = "-t";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
+            startInfo.FileName = StudioLocation;
+            //startInfo.RedirectStandardOutput = true;
+            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            var started = false;
+            var startCnt = 0;
+
+            while(!started && startCnt < 5)
+            {
+                try
+                {
+                    StudioProc = Process.Start(startInfo);
+
+                    // Wait for studio to start
+                    Thread.Sleep(StudioTimeOut); // wait for server to start ;)
+                    if(StudioProc != null && !StudioProc.HasExited)
+                    {
+                        StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+                        started = true;
+                    }
+                }
+                catch
+                {
+                    // most likely a studio is already running, kill it and try again ;)
+                    startCnt++;
+                }
+            }
+        }
+
+        static void StartServer()
+        {
+            var args = "-t";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
+            startInfo.FileName = ServerLocation;
+            //startInfo.RedirectStandardOutput = true;
+            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            var started = false;
+            var startCnt = 0;
+
+            while(!started && startCnt < 5)
+            {
+                try
+                {
+                    ServerProc = Process.Start(startInfo);
+
+                    // Wait for server to start
+                    Thread.Sleep(ServerTimeOut); // wait for server to start ;)
+                    if(ServerProc != null && !ServerProc.HasExited)
+                    {
+                        started = true;
+                    }
+                }
+                catch(Exception)
+                {
+                    // most likely a server is already running, kill it and try again ;)
+                    startCnt++;
+                }
+                finally
+                {
+                    if(!started)
+                    {
+                        // term any existing server processes ;)
+                        KillProcess(TryGetProcess(ServerProcName));
                     }
                 }
             }
@@ -142,13 +231,13 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyCleanup()]
         public static void Teardown()
         {
-            if(_serverProc != null && !_serverProc.HasExited)
+            if(ServerProc != null && !ServerProc.HasExited)
             {
-                _serverProc.Kill();
+                ServerProc.Kill();
             }
-            if(_studioProc != null && !_studioProc.HasExited)
+            if(StudioProc != null && !StudioProc.HasExited)
             {
-                _studioProc.Kill();
+                StudioProc.Kill();
             }
 
             if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName) && File.Exists(testCtx.DeploymentDirectory + @"\" + StudioName))

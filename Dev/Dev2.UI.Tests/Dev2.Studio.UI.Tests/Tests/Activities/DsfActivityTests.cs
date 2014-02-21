@@ -1,7 +1,6 @@
 ﻿using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 
 namespace Dev2.Studio.UI.Tests.Tests.Activities
@@ -19,26 +18,13 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         #endregion
 
         #region Setup
-        [ClassInitialize]
-        public static void ClassInit(TestContext tctx)
-        {
-            Playback.Initialize();
-            Playback.PlaybackSettings.ContinueOnError = true;
-            Playback.PlaybackSettings.ShouldSearchFailFast = true;
-            Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackSettings.MatchExactHierarchy = true;
-            Playback.PlaybackSettings.DelayBetweenActions = 1;
-
-            // make the mouse quick ;)
-            Mouse.MouseMoveSpeed = 10000;
-            Mouse.MouseDragSpeed = 10000;
-        }
 
         [TestInitialize()]
         public void MyTestInitialize()
         {
             _dsfActivityUiMap = new DsfActivityUiMap();
         }
+
         #endregion
 
         #region Cleanup

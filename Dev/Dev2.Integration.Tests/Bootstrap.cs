@@ -7,7 +7,6 @@ using System.Threading;
 using BuildEventLogging;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nuane.Net;
 
 namespace Dev2.Integration.Tests
 {
@@ -26,13 +25,14 @@ namespace Dev2.Integration.Tests
         public static Process ServerProc;
 
         private static readonly object _tumbler = new object();
+        private static readonly object serverLock = new object();
 
         private static TestContext testCtx;
 
         /// <summary>
         /// Inits the specified test CTX.
         /// </summary>
-        /// <param name="testCtx">The test CTX.</param>
+        /// <param name="textCtx">The test CTX.</param>
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
@@ -55,59 +55,85 @@ namespace Dev2.Integration.Tests
                     // term any existing server processes ;)
                     KillProcess(serverProcess);
 
-                    ServerLogger.LogMessage("Server Loc -> " + ServerLocation);
-                    ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
-
-                    var args = "-t";
-
-                    ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = ServerLocation, Arguments = args };
-                    //startInfo.RedirectStandardOutput = true;
-                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-                    var started = false;
-                    var startCnt = 0;
-
-                    while(!started && startCnt < 5)
-                    {
-                        try
-                        {
-                            ServerProc = Process.Start(startInfo);
-
-                            // Wait for server to start
-                            Thread.Sleep(ServerTimeOut); // wait for server to start ;)
-                            if(ServerProc != null && !ServerProc.HasExited)
-                            {
-                                started = true;
-                                ServerLogger.LogMessage("** Server Started for Integration Test Run");
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            ServerLogger.LogMessage("Exception : " + e.Message);
-
-                            // most likely a server is already running, kill it and try again ;)
-                            startCnt++;
-                        }
-                        finally
-                        {
-                            if(!started)
-                            {
-                                ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
-                                // term any existing server processes ;)
-                                KillProcess(TryGetProcess(ServerProcName));
-                            }
-                        }
-                    }
+                    StartServer();
                 }
                 else
                 {
-                    //Remote, assume server is running
-                    ServerLocation = GetProcessPath(serverProcess);
                     var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    //Remote by a build agent
-                    if(buildLabel.LoggingURL != string.Empty)
+                    //Remote, assume server is running
+                    if(serverProcess == null)
                     {
-                        BuildEventLogger.LogBuildEvent(buildLabel, "Started integration testing.");
+                        //Remote by a build agent
+                        ServerLocation = LocalBuildRunDirectory + ServerName;
+                        if(File.Exists(ServerLocation))
+                        {
+                            //Try start
+                            StartServer();
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the server for integration test! It should already have been started!");
+                            }
+                        }
+                        else
+                        {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
+                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Server is not running for integration test pack and no build is deployed to start!");
+                            }
+                            throw new Exception("Cannot run integration test pack because server is not running and no build is available.");
+                        }
+                    }
+                    else
+                    {
+                        ServerLocation = GetProcessPath(serverProcess);
+                    }
+                }
+            }
+        }
+
+        static void StartServer()
+        {
+            ServerLogger.LogMessage("Server Loc -> " + ServerLocation);
+            ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+
+            var args = "-t";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
+            startInfo.FileName = ServerLocation;
+            //startInfo.RedirectStandardOutput = true;
+            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            var started = false;
+            var startCnt = 0;
+
+            while(!started && startCnt < 5)
+            {
+                try
+                {
+                    ServerProc = Process.Start(startInfo);
+
+                    // Wait for server to start
+                    Thread.Sleep(ServerTimeOut); // wait for server to start ;)
+                    if(ServerProc != null && !ServerProc.HasExited)
+                    {
+                        started = true;
+                        ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                    }
+                }
+                catch(Exception e)
+                {
+                    ServerLogger.LogMessage("Exception : " + e.Message);
+
+                    // most likely a server is already running, kill it and try again ;)
+                    startCnt++;
+                }
+                finally
+                {
+                    if(!started)
+                    {
+                        ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                        // term any existing server processes ;)
+                        KillProcess(TryGetProcess(ServerProcName));
                     }
                 }
             }

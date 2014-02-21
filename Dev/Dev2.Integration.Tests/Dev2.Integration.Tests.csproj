@@ -259,7 +259,6 @@
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Activities\Dev2ActivityIOBrokerTestCases.cs" />
     <Compile Include="Bootstrap.cs" />
     <Compile Include="Dev2.Activities.Tests\WorkflowInputMapping.cs" />
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
