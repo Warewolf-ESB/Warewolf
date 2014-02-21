@@ -134,7 +134,6 @@
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0"
                                                     WrapInBrackets="False"

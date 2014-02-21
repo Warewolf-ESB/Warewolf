@@ -154,7 +154,7 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox MaxHeight="52"
+                            <ui:IntellisenseTextBox 
                                                     Padding="3"
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnableAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -189,7 +189,7 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox MaxHeight="52"
+                            <ui:IntellisenseTextBox 
                                                     Padding="3"
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnablePadding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
