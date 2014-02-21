@@ -6,15 +6,15 @@
         <LocationID>1</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses>
-        <Longitude>-0.1479966</Longitude>
-        <Latitude>51.2057295</Latitude>
+        <Longitude>-0.1479965</Longitude>
+        <Latitude>51.2057294</Latitude>
         <Address>Redhill, Surrey, UK</Address>
         <LocationID>2</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses>
-        <Longitude>30.8352541</Longitude>
-        <Latitude>-29.8269011</Latitude>
-        <Address>Westmead Road, Pinetown 3610, South Africa</Address>
+        <Longitude>150.986410880291</Longitude>
+        <Latitude>-33.8144494802915</Latitude>
+        <Address>Hawkesbury Road Family Medical Centre, Westmead NSW 2145</Address>
         <LocationID>3</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses>
@@ -30,9 +30,9 @@
         <LocationID>5</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses>
-        <Longitude>-83.512615</Longitude>
-        <Latitude>31.395239</Latitude>
-        <Address>2, 6700 Douglas Boulevard, Douglasville, GA 30135, USA</Address>
+        <Longitude>-71.3809388</Longitude>
+        <Latitude>41.890518</Latitude>
+        <Address>2, 1245 Worcester Street, Natick, MA 01760, USA</Address>
         <LocationID>7</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses>
