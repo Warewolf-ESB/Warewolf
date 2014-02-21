@@ -62,6 +62,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="53"
+                                 TextWrapping="Wrap"
                                  Height="53"
                                  MinHeight="53"
                                  FilterType="All"

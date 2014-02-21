@@ -12,6 +12,8 @@
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                Padding="7"
                                mc:Ignorable="d"
+                               Width="200"
+                               MaxWidth="200"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:FindIndexDesignerViewModel}">
 
@@ -87,6 +89,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
+                                TextWrapping="Wrap"
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

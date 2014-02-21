@@ -47,6 +47,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
+                                    TextWrapping="Wrap"
                                     MinWidth="86"
                                     Width="86"
                                     HorizontalAlignment="Right"

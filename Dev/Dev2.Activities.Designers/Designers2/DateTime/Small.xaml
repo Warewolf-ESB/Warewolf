@@ -48,6 +48,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="17"
+                                TextWrapping="Wrap"
                                 DefaultText="Date Time"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
@@ -75,6 +76,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="17"
+                                TextWrapping="Wrap"
                                 DefaultText="{Binding Dev2DefaultDateTime, Mode=OneTime}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -141,6 +143,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="17"
+                                TextWrapping="Wrap"
                                 DefaultText="{Binding Dev2DefaultDateTime, Mode=OneTime}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.OutputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

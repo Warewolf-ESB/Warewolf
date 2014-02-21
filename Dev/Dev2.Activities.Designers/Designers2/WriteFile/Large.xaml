@@ -109,6 +109,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="80"
+                                TextWrapping="Wrap"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipContent}"

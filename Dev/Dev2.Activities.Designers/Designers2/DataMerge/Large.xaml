@@ -84,6 +84,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="80"
+                                                    TextWrapping="Wrap"
                                                     Padding="3"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"

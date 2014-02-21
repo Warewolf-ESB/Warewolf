@@ -128,6 +128,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
+                                                    TextWrapping="Wrap"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

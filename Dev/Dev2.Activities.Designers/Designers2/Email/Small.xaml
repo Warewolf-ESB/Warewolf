@@ -123,6 +123,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
+                                TextWrapping="Wrap"
                                 AcceptsTab="True"
                                 Margin="0,2"
                                 VerticalContentAlignment="Top"

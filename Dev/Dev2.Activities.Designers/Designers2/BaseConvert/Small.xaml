@@ -63,6 +63,7 @@
                             <ui:IntellisenseTextBox AllowMultilinePaste="True"
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
+                                                    TextWrapping="Wrap"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Padding="3"

@@ -139,7 +139,7 @@
                                                         AllowUserCalculateMode="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
-                                                        TextWrapping="NoWrap"
+                                                        TextWrapping="Wrap"
                                                        AllowMultilinePaste="True"
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"

@@ -75,6 +75,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
+                                 TextWrapping="Wrap"
                                  FilterType="All"
                                  WrapInBrackets="False"
                                  Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

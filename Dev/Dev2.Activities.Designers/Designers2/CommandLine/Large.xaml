@@ -65,6 +65,7 @@
                                                 AcceptsReturn="True"
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="152"
+                                TextWrapping="Wrap"
                                 MinHeight="53"
                                 FilterType="All" 
                                 WrapInBrackets="False" 
