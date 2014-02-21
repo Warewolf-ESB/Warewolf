@@ -39,7 +39,7 @@ namespace Dev2.Integration.Tests.Activities
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
 
 
-            Assert.IsTrue(tmp.Count >= 6);
+            Assert.AreEqual(6, tmp.Count);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
 
-            Assert.IsTrue(tmp.Count >= 6);
+            Assert.AreEqual(6, tmp.Count);
         }
 
         #endregion ListDirectory Tests
