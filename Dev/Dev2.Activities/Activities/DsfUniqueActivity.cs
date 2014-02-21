@@ -132,16 +132,15 @@ namespace Dev2.Activities
                         // TODO : if EvaluateforDebug
                         if(!string.IsNullOrEmpty(field))
                         {
-                            var debugField = field.Replace("()", "(*)");
-                            var debugEval = compiler.Evaluate(dlID, enActionType.User, debugField, false, out invokeErrors);
+                            var debugEval = compiler.Evaluate(dlID, enActionType.User, field, false, out invokeErrors);
                             errors.MergeErrors(invokeErrors);
                             if(errors.HasErrors())
                             {
-                                AddDebugInputItem(new DebugItemStaticDataParams("", debugField, ""));
+                                AddDebugInputItem(new DebugItemStaticDataParams("", field, ""));
                             }
                             else
                             {
-                                AddDebugInputItem(new DebugItemVariableParams(debugField, "", debugEval, dlID));
+                                AddDebugInputItem(new DebugItemVariableParams(field, "", debugEval, dlID));
                             }
                         }
                     }
@@ -177,14 +176,13 @@ namespace Dev2.Activities
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
             InitializeDebug(dataObject);
+            IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             try
             {
-                IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 toUpsert.AttachDebugFromExpression = false;
                 toUpsert.RecordSetDataAsCSVToScalar = true;
                 toUpsert.ReplaceStarWithFixedIndex = true;
-
                 IBinaryDataListEntry rsEntry;
 
                 // We need to break up by , for InFields ;)
@@ -251,14 +249,14 @@ namespace Dev2.Activities
                             {
                                 var itemToAdd = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, regions: targetExpressions), itemToAdd);
                                 _debugOutputs.Add(itemToAdd);
                                 innerCount++;
                             }
                         }
                     }
                 }
-            }
+            }   
             catch(Exception e)
             {
                 allErrors.AddError(e.Message);
@@ -266,7 +264,8 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfUniqueActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -274,6 +273,15 @@ namespace Dev2.Activities
 
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        List<string> targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
+                        foreach(var expression in targetExpressions)
+                        {
+                            IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
+                            AddDebugOutputItem(new DebugItemVariableParams(expression, "Result", entry, dlID));
+                        }
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -314,9 +322,6 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfNativeActivity<string>
-
-
-
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             foreach(IDebugItem debugInput in _debugInputs)

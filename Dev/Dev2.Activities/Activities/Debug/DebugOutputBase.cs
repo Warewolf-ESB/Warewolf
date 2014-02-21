@@ -143,7 +143,7 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        public List<DebugItemResult> CreateDebugItemFromDebugOutputTO(DebugOutputTO debugOutputTO, string labelText, string overrideGroupName)
+        public List<DebugItemResult> CreateDebugItemFromDebugOutputTO(DebugOutputTO debugOutputTO, string labelText, List<string> regions)
         {
             List<DebugItemResult> results = new List<DebugItemResult>();
             var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
@@ -155,14 +155,39 @@ namespace Dev2.Activities.Debug
                     string groupName = null;
                     var displayExpression = item.Expression;
                     var rawExpression = item.RawExpression;
-                    if(displayExpression.Contains("().") || displayExpression.Contains("(*).") || (!string.IsNullOrEmpty(overrideGroupName) && overrideGroupName.Contains("(*).")))
+                    if(regions != null && regions.Count > 0)
                     {
-                        //grpIdx = int.Parse(DataListUtil.ExtractIndexRegionFromRecordset(rawExpression));
-                        grpIdx++;
-                        groupName = string.IsNullOrEmpty(overrideGroupName) ? displayExpression : overrideGroupName;
-                        displayExpression = rawExpression;
+                    //    
                     }
 
+                    if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                    {
+                        grpIdx++;
+                        groupName = displayExpression;
+                        displayExpression = rawExpression;
+                    }
+                    else 
+                    {
+                        if(regions != null && regions.Count > 0)
+                        {
+                            var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                            int indexForRecset;
+                            int.TryParse(indexRegionFromRecordset, out indexForRecset);
+
+                            if(indexForRecset > 0)
+                            {
+                                var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+
+                                if(regions.Contains(group))
+                                {
+                                    grpIdx++;
+                                    groupName = group;
+                                }
+                            }
+                        }
+                    }
+                  
                     results.Add(new DebugItemResult
                     {
                         Type = DebugItemResultType.Variable,

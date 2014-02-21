@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Data.TO;
-using Dev2.Data.Util;
+﻿using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Activities.Debug
 {
@@ -15,8 +14,8 @@ namespace Dev2.Activities.Debug
         readonly IBinaryDataListEntry _valueEntry;
         readonly Guid _executionId;
         readonly bool _groupedItem;
-        DebugOutputTO _debugOutputTO;
-        string _groupName;
+        readonly DebugOutputTO _debugOutputTO;
+        readonly List<string> _regions;
 
         public DebugItemVariableParams(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId, bool groupedItem = false)
         {
@@ -27,11 +26,11 @@ namespace Dev2.Activities.Debug
             _groupedItem = groupedItem;
         }
 
-        public DebugItemVariableParams(DebugOutputTO debugOutputTO, string labelText = "Result", string groupName = "")
+        public DebugItemVariableParams(DebugOutputTO debugOutputTO, string labelText = "Result", List<string> regions = null)
         {
             _debugOutputTO = debugOutputTO;
             _labelText = labelText;
-            _groupName = groupName;
+            _regions = regions;
         }
 
         public string Expression
@@ -85,7 +84,7 @@ namespace Dev2.Activities.Debug
             List<DebugItemResult> debugItemsResults;
             if(DebugOutputTO != null)
             {
-                debugItemsResults = CreateDebugItemFromDebugOutputTO(DebugOutputTO, LabelText, _groupName);
+                debugItemsResults = CreateDebugItemFromDebugOutputTO(DebugOutputTO, LabelText, _regions);
             }
             else
             {
