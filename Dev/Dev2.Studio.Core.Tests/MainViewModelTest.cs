@@ -643,38 +643,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Jai Holloway")]
-        [TestCategory("MainViewModel_ChangeActiveItem")]
-        [Ignore]
-        public void MainViewModel_CloseWorkSurfaceContext_PreviousItemActivatedWhenNotItemDependenciesViewForCorrectlySet()
-        {
-            CreateFullExportsAndVm();
-            AddAdditionalContext();
-            AddAdditionalContext();
-            Assert.AreEqual(3, _mainViewModel.Items.Count);
-
-            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-
-
-            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-
-            _mainViewModel.ActivateItem(firstCtx);
-            _mainViewModel.ActivateItem(secondCtx);
-            _mainViewModel.ActivateItem(firstCtx);
-            var msg = new ShowDependenciesMessage(_secondResource.Object);
-            _mainViewModel.Handle(msg);
-            var dependencyCtx = _mainViewModel.ActiveItem;
-            var vm = dependencyCtx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
-            Assert.IsNotNull(vm);
-
-            _mainViewModel.DeactivateItem(dependencyCtx, false);
-
-            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(secondCtx));
-        }
-
-        [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrue_PreviousItemActivatedAndOneLessItem()
         {
             CreateFullExportsAndVm();
