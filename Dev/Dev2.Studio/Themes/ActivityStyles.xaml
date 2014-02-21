@@ -45,7 +45,7 @@
         <Setter Property="AllowUserInsertLine" Value="False"/>
         <Setter Property="AllowMultilinePaste" Value="False"/>
         <Setter Property="Margin" Value="0,2,1,2"/>
-        <Setter Property="Padding" Value="2,5,0,0"/>
+        <Setter Property="Padding" Value="2,5,0,2" />
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="MinHeight" Value="24"></Setter>
