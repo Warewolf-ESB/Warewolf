@@ -24,6 +24,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Server = "RSAKLFSVRGENDEV",
                 AuthenticationType = authenticationType,
                 ServerType = enSourceType.SqlDatabase,
+                ReloadActions = true,
                 UserID = authenticationType == AuthenticationType.User ? "testUser" : null,
                 Password = authenticationType == AuthenticationType.User ? "test123" : null
             };

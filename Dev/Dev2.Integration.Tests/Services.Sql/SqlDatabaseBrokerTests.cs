@@ -34,6 +34,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
+
             Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
