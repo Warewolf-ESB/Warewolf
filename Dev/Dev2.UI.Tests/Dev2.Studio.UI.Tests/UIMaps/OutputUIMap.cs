@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Common;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
@@ -282,6 +284,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Playback.Wait(200);
             }
+        }
+
+        public UITestControl GetLastStep()
+        {
+            UITestControlCollection uiTestControlCollection = GetOutputWindow();
+            Assert.IsTrue(uiTestControlCollection.Count > 0);
+            return uiTestControlCollection[uiTestControlCollection.Count - 1];
+        }
+
+        public UITestControl GetStep(int stepIndex)
+        {
+            UITestControlCollection uiTestControlCollection = GetOutputWindow();
+            Assert.IsTrue(uiTestControlCollection.Count > 0);
+            return uiTestControlCollection[stepIndex];
         }
     }
 }

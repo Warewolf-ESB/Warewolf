@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Tests.Debug
@@ -33,16 +32,12 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         [TestMethod]
         public void CheckIfDebugProcessingBarIsShowingDurningExecutionExpectedToShowDuringExecutionOnly()
         {
-
             //Open the correct workflow
-            ExplorerUIMap.EnterExplorerSearchText("LargeFileTesting");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTS", "LargeFileTesting", 3500);
+            ExplorerUIMap.DoubleClickWorkflow("LargeFileTesting", "TESTS");
 
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            DebugUIMap.WaitForDebugWindow(7000);
+            RibbonUIMap.ClickDebug();
 
             DebugUIMap.ClickExecute();
-
 
             var status = OutputUIMap.GetStatusBarStatus();
             var spinning = OutputUIMap.IsSpinnerSpinning();
@@ -55,7 +50,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         [TestCategory("DebugInput_whenRun10Time")]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
-
             // Remove the PersistSettings.dat ;)
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "");
             var settingPath = Path.Combine(appData, @"Local\Warewolf\DebugData\PersistSettings.dat");
@@ -67,21 +61,11 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
-
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "BUGS");
             // prime the values ;)
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
-
-            Playback.Wait(100);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(200);
-            SendKeys.SendWait("1");
-            Playback.Wait(200);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(200);
-            SendKeys.SendWait("2");
+            RibbonUIMap.ClickDebug();
+            DebugUIMap.EnterTextIntoRow(0, "1");
+            DebugUIMap.EnterTextIntoRow(1, "2");
 
             DebugUIMap.ClickExecute();
             OutputUIMap.WaitForExecution();
@@ -91,37 +75,25 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             // Check for valid input in the input boxes ;)
             for(int i = 0; i < 9; i++)
             {
-                RibbonUIMap.ClickRibbonMenuItem("Debug");
-                PopupDialogUIMap.WaitForDialog();
+                RibbonUIMap.ClickDebug();
+                DebugUIMap.WaitForDebugWindow(7000);
 
-                var getInput = DebugUIMap.GetRow(0).Cells[1].GetChildren()[0] as WpfEdit;
-                if(getInput != null)
-                {
-                    Assert.AreEqual("1", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
-                }
+                Assert.AreEqual("1", DebugUIMap.GetTextFromRow(0), "After executing " + i + " times the debug input dialog did not persist");
+                Assert.AreEqual("2", DebugUIMap.GetTextFromRow(1), "After executing " + i + " times the debug input dialog did not persist");
 
-                getInput = DebugUIMap.GetRow(1).Cells[1].GetChildren()[0] as WpfEdit;
-                if(getInput != null)
-                {
-                    Assert.AreEqual("2", getInput.Text, "After executing " + i + " times the debug input dialog did not persist");
-                }
 
                 DebugUIMap.ClickExecute();
                 OutputUIMap.WaitForExecution();
             }
 
             //Now check the XML tab works ;)
-            OutputUIMap.WaitForExecution();
-            SendKeys.SendWait(KeyboardCommands.Debug);
-            Playback.Wait(200);
+
+            RibbonUIMap.ClickDebug();
             DebugUIMap.ClickXMLTab();
-            Playback.Wait(200);
 
             // flip back and forth to check persistence ;)
             DebugUIMap.ClickInputDataTab();
-            Playback.Wait(200);
             DebugUIMap.ClickXMLTab();
-            Playback.Wait(200);
 
             SendKeys.SendWait(KeyboardCommands.TabCommand);
             Playback.Wait(200);
@@ -159,35 +131,24 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.EnterExplorerSearchText("Bug9394");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug9394");
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "BUGS");
 
             // prime the values ;)
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
+            RibbonUIMap.ClickDebug();
 
-            Playback.Wait(100);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(200);
-            SendKeys.SendWait("1");
-            Playback.Wait(200);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(200);
-            SendKeys.SendWait("2");
+            DebugUIMap.EnterTextIntoRow(0, "1");
+            DebugUIMap.EnterTextIntoRow(1, "2");
 
             DebugUIMap.ClickExecute();
             OutputUIMap.WaitForExecution();
-            RibbonUIMap.ClickRibbonMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
+            RibbonUIMap.ClickDebug();
             DebugUIMap.CloseDebugWindow_ByCancel();
             //---------------Execute------------------------------                
-            SendKeys.SendWait("{F6}");
+            SendKeys.SendWait(KeyboardCommands.QuickDebug);
             //------------Assert Results-------------------------
             OutputUIMap.WaitForExecution();
-            UITestControlCollection uiTestControlCollection = OutputUIMap.GetOutputWindow();
-            Assert.IsTrue(uiTestControlCollection.Count > 1);
-            UITestControl executionStep = uiTestControlCollection[uiTestControlCollection.Count - 1];
-            string workflowStepName = OutputUIMap.GetStepName(executionStep);
+            UITestControl lastStep = OutputUIMap.GetLastStep();
+            string workflowStepName = OutputUIMap.GetStepName(lastStep);
             Assert.AreEqual("Bug9394", workflowStepName);
         }
 
@@ -200,24 +161,18 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             {
                 //------------Setup for test--------------------------
                 //Open the correct workflow
-                ExplorerUIMap.EnterExplorerSearchText("TravsTestFlow");
-                ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TRAV", "TravsTestFlow");
-                Playback.Wait(1000);
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
 
                 //------------Assert Results-------------------------
 
                 // Check for valid input in the input boxes ;)
                 for(int i = 0; i < 9; i++)
                 {
-                    RibbonUIMap.ClickRibbonMenuItem("Debug");
-                    PopupDialogUIMap.WaitForDialog();
-                    Playback.Wait(1000);
+                    RibbonUIMap.ClickDebug();
 
                     DebugUIMap.ClickExecute();
                     OutputUIMap.WaitForExecution();
-                    UITestControlCollection uiTestControlCollection = OutputUIMap.GetOutputWindow();
-                    Assert.IsTrue(uiTestControlCollection.Count > 1);
-                    UITestControl lastStep = uiTestControlCollection[uiTestControlCollection.Count - 1];
+                    UITestControl lastStep = OutputUIMap.GetLastStep();
                     string workflowStepName = OutputUIMap.GetStepName(lastStep);
                     Assert.AreEqual("TravsTestFlow", workflowStepName);
                 }

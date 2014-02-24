@@ -1,4 +1,6 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
+﻿using Dev2.Studio.UI.Tests.Extensions;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 {
     using System;
     using System.Drawing;
@@ -70,29 +72,28 @@
         public bool DebugWindowExists()
         {
             WpfWindow uIDebugWindow = UIDebugWindow;
-            Point p = new Point();
+            Point p;
             if(uIDebugWindow.TryGetClickablePoint(out p))
             {
                 return true;
             }
-            else
-            {
                 return false;
             }
-        }
 
         public void ClickXMLTab()
         {
-            WpfWindow uIDebugWindow = this.UIDebugWindow;
+            WpfWindow uIDebugWindow = UIDebugWindow;
             WpfTabPage XMLTabPage = (WpfTabPage)uIDebugWindow.GetChildren()[1].GetChildren()[1];
             Mouse.Click(XMLTabPage, new Point(5, 5));
+            Playback.Wait(200);
         }
 
         public void ClickInputDataTab()
         {
-            WpfWindow uIDebugWindow = this.UIDebugWindow;
+            WpfWindow uIDebugWindow = UIDebugWindow;
             WpfTabPage TabPage = (WpfTabPage)uIDebugWindow.GetChildren()[1].GetChildren()[0];
             Mouse.Click(TabPage, new Point(5, 5));
+            Playback.Wait(200);
         }
 
         /// <summary>
@@ -115,6 +116,24 @@
                 }
             }
             return type == typeof(WpfWindow);
+        }
+
+        public void EnterTextIntoRow(int rowIndex, string stringToEnter)
+        {
+            WpfRow wpfRow = GetRow(rowIndex);
+
+            WpfEdit requiredEdit = (WpfEdit)wpfRow.GetChildren()[2].GetChildren()[0];
+            requiredEdit.EnterText(stringToEnter);
+        }
+
+        public string GetTextFromRow(int rowIndex)
+        {
+            WpfEdit textFromRow = DebugUIMap.GetRow(rowIndex).Cells[1].GetChildren()[0] as WpfEdit;
+            if(textFromRow != null)
+            {
+                return textFromRow.Text;
+            }
+            return null;
         }
     }
 }

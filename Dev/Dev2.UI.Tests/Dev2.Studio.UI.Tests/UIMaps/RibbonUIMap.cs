@@ -116,7 +116,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public UITestControl ClickDebug()
         {
-            return ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
+            UITestControl clickRibbonMenuItem = ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
+            DebugUIMap.WaitForDebugWindow(7000);
+            return clickRibbonMenuItem;
         }
 
         public UITestControl ClickRibbonMenuItem(string itemName, int waitAmt = 100)
