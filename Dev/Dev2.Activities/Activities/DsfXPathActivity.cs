@@ -166,7 +166,7 @@ namespace Dev2.Activities
                             allErrors.MergeErrors(errors);
                         }
                     }
-                    if(_isDebugMode)
+                    if(_isDebugMode && !allErrors.HasErrors())
                     {
                         var innerCount = 1;
                         foreach(var debugOutputTO in toUpsert.DebugOutputs)
@@ -184,34 +184,37 @@ namespace Dev2.Activities
             }
             catch(Exception ex)
             {
-                if(_isDebugMode)
-                {
-                    ResultsCollection[i].XPath = "";
-                    var itemToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", (i + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                    _debugOutputs.Add(itemToAdd);
-                    AddDebugOutputItem(new DebugOutputParams(ResultsCollection[i].OutputVariable, "", executionID, i + 1, ""));
-                }
                 allErrors.AddError(ex.Message);
             }
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfXPathActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(_isDebugMode)
                 {
+                    if(hasErrors)
+                    {
+                        if(_isDebugMode)
+                        {
+                            ResultsCollection[i].XPath = "";
+                            var itemToAdd = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", (i + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                            AddDebugItem(new DebugOutputParams(ResultsCollection[i].OutputVariable, "", executionID, i + 1, ""), itemToAdd);
+                            _debugOutputs.Add(itemToAdd);
+                        }
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
-
         }
 
-        void AddResultDebugInputs(IList<XPathDTO> resultsCollection, Guid executionID, IDataListCompiler compiler, out ErrorResultTO errors)
+        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, Guid executionID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var i = 1;
@@ -223,16 +226,14 @@ namespace Dev2.Activities
                     errors.MergeErrors(errorsTo);
                     compiler.Evaluate(executionID, enActionType.User, xPathDto.OutputVariable, false, out errorsTo);
                     errors.MergeErrors(errorsTo);
-                    if(errors.HasErrors() && _isDebugMode)
+                    if(_isDebugMode)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        _debugOutputs.Add(itemToAdd);
-                        AddDebugOutputItem(new DebugOutputParams(xPathDto.OutputVariable, "", executionID, i, ""));
+                        AddDebugItem(new DebugItemVariableParams(xPathDto.OutputVariable, "", expressionsEntry, executionID), itemToAdd);
+                        _debugInputs.Add(itemToAdd);
+                        i++;
                     }
-
-                    AddDebugInputItem(new DebugItemVariableParams(xPathDto.OutputVariable, "", expressionsEntry, executionID));
-                    i++;
                 }
             }
         }

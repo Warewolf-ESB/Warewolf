@@ -95,10 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
 
-            if(dataObject.IsDebugMode())
-            {
-                InitializeDebug(dataObject);
-            }
+            InitializeDebug(dataObject);
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();

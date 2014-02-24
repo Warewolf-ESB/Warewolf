@@ -70,13 +70,15 @@ namespace Dev2.Activities
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
             allErrors.MergeErrors(errors);
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
+            toUpsert.IsDebug = (dataObject.IsDebugMode());
+            toUpsert.ResourceID = dataObject.ResourceID;
+
             InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
-                    IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    toUpsert.IsDebug = dataObject.IsDebugMode();
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
@@ -111,7 +113,7 @@ namespace Dev2.Activities
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
-                    if(dataObject.IsDebug && !allErrors.HasErrors())
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
                         foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
@@ -141,11 +143,11 @@ namespace Dev2.Activities
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if(dataObject.IsDebug)
+                if(dataObject.IsDebugMode())
                 {
                     if(allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, "Result"));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

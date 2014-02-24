@@ -112,6 +112,7 @@
     <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputParams.cs" />
     <Compile Include="Activities\Debug\DebugOutputBase.cs" />
+    <Compile Include="Activities\Debug\DebugUtil.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dev2.Activities.Debug;
-using Dev2.Common;
+﻿using Dev2.Activities.Debug;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -17,6 +9,12 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
+using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
@@ -88,67 +86,63 @@ namespace Dev2.Activities
             Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
+            toUpsert.IsDebug = (dataObject.IsDebugMode());
+            toUpsert.ResourceID = dataObject.ResourceID;
+
             InitializeDebug(dataObject);
             try
             {
                 CleanArgs();
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                if(dataObject.IsDebugMode())
-                {
-                    toUpsert.IsDebug = true;
-                }
+
                 foreach(GatherSystemInformationTO item in SystemInformationCollection)
                 {
                     _indexCounter++;
 
                     IBinaryDataListEntry resultEntry = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
                     allErrors.MergeErrors(errors);
+
+                    var inputToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
+                    AddDebugItem(new DebugItemStaticDataParams(GetCorrectSystemInformation(item.EnTypeOfSystemInformation), ""), inputToAdd);
+                    _debugInputs.Add(inputToAdd);
+
                     var hasErrors = allErrors.HasErrors();
-                    if(hasErrors)
-                    {
-                        var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugOutputParams(item.Result, "", executionId, 1), itemToAdd);
-                        _debugOutputs.Add(itemToAdd);
-                    }
                     if(resultEntry != null && !hasErrors)
                     {
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(resultEntry);
                         while(itr.HasMoreRecords())
                         {
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                            foreach(IBinaryDataListItem c in cols)
+
+                            if(cols != null)
                             {
-                                int indexToUpsertTo = c.ItemCollectionIndex;
                                 string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                                 string expression = item.Result;
 
-                                if(DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)
-                                {
-                                    expression = item.Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                }
-                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
                                 }
                             }
-                            compiler.Upsert(executionId, toUpsert, out errors);
-                            if(dataObject.IsDebugMode())
-                            {
-                                int innerCount = 1;
-                                foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
-                                {
-                                    var itemToAdd = new DebugItem();
-                                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                                    AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
-                                    _debugOutputs.Add(itemToAdd);
-                                    innerCount++;
-                                }
-                            }
-                            allErrors.MergeErrors(errors);
-                            toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                         }
+                    }
+                }
+
+                compiler.Upsert(executionId, toUpsert, out errors);
+                allErrors.MergeErrors(errors);
+
+                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                {
+                    int innerCount = 1;
+                    foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                    {
+                        var itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), itemToAdd);
+                        _debugOutputs.Add(itemToAdd);
+                        innerCount++;
                     }
                 }
             }
@@ -159,13 +153,27 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        int innerCount = 1;
+                        foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                        {
+                            var itemToAdd = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                            AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), itemToAdd);
+                            _debugOutputs.Add(itemToAdd);
+                            innerCount++;
+                        }
+                    }
+
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -272,6 +280,11 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfNativeActivity<string>
+
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {
+            return _debugInputs;
+        }
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {

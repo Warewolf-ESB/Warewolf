@@ -75,14 +75,18 @@ namespace Dev2.Activities
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
             allErrors.MergeErrors(errors);
+
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
+            toUpsert.ResourceID = dataObject.ResourceID;
+
             InitializeDebug(dataObject);
 
             try
             {
                 if(!errors.HasErrors())
                 {
-                    IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    toUpsert.IsDebug = dataObject.IsDebugMode();
+                   
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator lengthItr = CreateDataListEvaluateIterator(Length, executionId, compiler, colItr, allErrors);
@@ -159,13 +163,20 @@ namespace Dev2.Activities
                         }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
+                   
                     if(dataObject.IsDebugMode())
                     {
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        if(string.IsNullOrEmpty(Result))
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
                         }
-
+                        else
+                        {
+                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            }
+                        }
                     }
                     allErrors.MergeErrors(errors);
                 }

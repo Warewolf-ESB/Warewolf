@@ -370,7 +370,7 @@ Scenario: Split blank text
 	And the execution has "NO" error
 	And the debug inputs as  
 	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	| " "             | Forward           | No              | 1 | [[vowels(1).letters]] = | Index | 1     | No      |        |
+	| " "             | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 1     | No      |        |
 	And the debug output as
 	| # |                   | 
 

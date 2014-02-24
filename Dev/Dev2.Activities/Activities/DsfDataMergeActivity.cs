@@ -100,6 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid executionId = DataListExecutionID.Get(context);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             toUpsert.IsDebug = dataObject.IsDebugMode();
+            toUpsert.ResourceID = dataObject.ResourceID;
 
             InitializeDebug(dataObject);
             try
@@ -139,6 +140,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.Padding, "Pad", paddingExpressionEntry, executionId), debugItem);
+
+                        //Old workflows don't have this set. 
+                        if(row.Alignment == null)
+                        {
+                            row.Alignment = string.Empty;
+                        }
 
                         if(DataListUtil.IsEvaluated(row.Alignment))
                         {
@@ -197,19 +204,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if(!allErrors.HasErrors())
                     {
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        if(string.IsNullOrEmpty(Result))
                         {
-                            toUpsert.Add(region, mergeOperations.MergeData.ToString());
-                            toUpsert.FlushIterationFrame();
-                            compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                            allErrors.MergeErrors(errorResultTO);
+                            AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
                         }
-
-                        if(dataObject.IsDebugMode())
+                        else
                         {
-                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                             {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                                toUpsert.Add(region, mergeOperations.MergeData.ToString());
+                                toUpsert.FlushIterationFrame();
+                                compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                                allErrors.MergeErrors(errorResultTO);
+                            }
+
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                                foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                                {
+                                    if(debugOutputTo.FromEntry != null && debugOutputTo.TargetEntry != null)
+                                    {
+                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                                    }
+                                }
                             }
                         }
                     }

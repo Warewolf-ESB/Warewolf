@@ -10,8 +10,8 @@ Scenario: Use XPath to get data off XML - Id = 1
 	Then the variable "[[firstNum]]" should have a value "One"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |                                              |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[firstNum]] = //root/number[@id='1']/text() |
+	| XML                                                                                              | # |                                              |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[firstNum]] = //root/number[@id='1']/text() |
 	And the debug output as 
 	| # |                    |
 	| 1 | [[firstNum]] = One |       
@@ -23,8 +23,8 @@ Scenario: Use XPath to get data off XML - Id = 2
 	Then the variable "[[firstNum]]" should have a value "Two"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |                                              |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[firstNum]] = //root/number[@id='2']/text() |
+	| XML                                                                                              | # |                                              |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[firstNum]] = //root/number[@id='2']/text() |
 	And the debug output as 
 	| # |                    |
 	| 1 | [[firstNum]] = Two |
@@ -46,9 +46,9 @@ Scenario: Use XPath to build a recordset with 2 fields
 	| Three      |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |                                        |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[rec(*).id]] = //root/number/@id       |
-	|                                                                                                  | [[rec2(*).text]] = //root/number/text() |
+	| XML                                                                                              | # |                                         |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(*).id]] = //root/number/@id       |
+	|                                                                                                  | 2 | [[rec2(*).text]] = //root/number/text() |
 	And the debug output as 
 	| # |                          |
 	| 1 | [[rec(1).id]] = 1        |
@@ -65,8 +65,8 @@ Scenario: Use XPath that does not exist
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |                          |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[ids]] = //root/num/@id |
+	| XML                                                                                              | # |                          |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[ids]] = //root/num/@id |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = |
@@ -79,8 +79,8 @@ Scenario: Use invalid xpath query
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML                                                                                                          |                |
-	| [[myxml]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[ids]] = @@#$ |
+	| XML                                                                                                          | # |                |
+	| [[myxml]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[ids]] = @@#$ |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = | 
@@ -91,15 +91,15 @@ Scenario: Use XPath with append notation should add
 	And I have a variable "[[rec().set]]" output with xpath "//root/number/@id"
 	When the xpath tool is executed
 	Then the xpath result for this varibale "[[rec().set]]" will be
-	| rec().set |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>         |
-	| 1        |
-	| 2        |
-	| 3        |
+	| rec().set                                                                                        |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |
+	| 1                                                                                                |
+	| 2                                                                                                |
+	| 3                                                                                                |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                                               |                                    |
-	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[rec(1).set]] = //root/number/@id |
+	| XML                                                                                                               | # |                                    |
+	| [[rec(1).set]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(1).set]] = //root/number/@id |
 	And the debug output as 
 	| # |                    |
 	| 1 | [[rec(2).set]] = 1 |
@@ -129,8 +129,8 @@ Scenario: Use XPath with no  result but valid xpath
 	When the xpath tool is executed	
 	Then the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |  |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |  |
+	| XML                                                                                              | # |  |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |   |  |
 	And the debug output as 
 	| #  |  |
 
@@ -141,8 +141,8 @@ Scenario: Use XPath to get multiple results into a scalar in CSV
 	Then the variable "[[ids]]" should have a value "1,2,3"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| XML                                                                                              |                             |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[ids]] = //root/number/@id |
+	| XML                                                                                              | # |                             |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[ids]] = //root/number/@id |
 	And the debug output as 
 	| # |                 |
 	| 1 | [[ids]] = 1,2,3 | 
@@ -154,8 +154,8 @@ Scenario: Use the XPath to process blank XML
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML |                              |
-	| ""  | [[ids]] =  //root/number/@id |
+	| XML | # |                              |
+	| ""  | 1 | [[ids]] =  //root/number/@id |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = |  
@@ -167,8 +167,8 @@ Scenario: Use the XPath without any xpath query
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML                                                                                              |           |
-	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[ids]] = |
+	| XML                                                                                              | # |           |
+	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[ids]] = |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = | 
@@ -181,8 +181,8 @@ Scenario: Use XPath with blank  as XML input
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML         |                          |
-	| [[myxml]] = | [[ids]] = //root/num/@id |
+	| XML         | # |                          |
+	| [[myxml]] = | 1 | [[ids]] = //root/num/@id |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = |
@@ -195,8 +195,8 @@ Scenario: Use XPath with negative recordset index as XML input
 	Then the variable "[[ids]]" should have a value ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| XML                 |               |
-	| [[rec(-1).myxml]] = | [[ids]] = //b |
+	| XML                 | # |               |
+	| [[rec(-1).myxml]] = | 1 | [[ids]] = //b |
 	And the debug output as 
 	| # |           |
 	| 1 | [[ids]] = |
@@ -208,8 +208,8 @@ Scenario: Use XPath with negative recordset index as output
 	When the xpath tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| XML                                                                                                        |                                                 |
-	| [[xml]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[rec(-1).ids]] = //root/number[@id='2']/text() |
+	| XML                                                                                                        | # |                                                 |
+	| [[xml]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(-1).ids]] = //root/number[@id='2']/text() |
 	And the debug output as 
 	| # |                   |
 	| 1 | [[rec(-1).ids]] = |  

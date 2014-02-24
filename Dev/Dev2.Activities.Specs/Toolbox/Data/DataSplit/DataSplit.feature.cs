@@ -1503,7 +1503,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Forward",
                         "No",
                         "1",
-                        "[[vowels(1).letters]] =",
+                        "[[vowels(*).letters]] =",
                         "Index",
                         "1",
                         "No",

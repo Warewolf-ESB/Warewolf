@@ -129,17 +129,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
+
+                if(dataObject.IsDebugMode())
+                {
+                    AddDebugInputItem(new DebugItemVariableParams(SourceString, "String to Split", expressionsEntry, dlID));
+                    AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
+                    AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
+                }
+
                 CleanArguments(ResultsCollection);
 
                 if(ResultsCollection.Count > 0)
                 {
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
-
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(SourceString, "String to Split", expressionsEntry, dlID));
-                        AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
-                        AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
                         AddDebug(ResultsCollection, compiler, dlID);
                     }
 
@@ -538,7 +542,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 DebugItem debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
-                AddDebugItem(EvaluateEmptyRecordsetBeforeAddingToDebugOutput(t.OutputVariable, "", dlID), debugItem);
+                AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(t.OutputVariable, "", dlID), debugItem);
                 AddDebugItem(new DebugItemStaticDataParams(t.SplitType, "With"), debugItem);
 
                 switch(t.SplitType)
@@ -570,30 +574,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
             }
-        }
-
-
-        private DebugOutputBase EvaluateEmptyRecordsetBeforeAddingToDebugOutput(string expression, string labelText, Guid executionID)
-        {
-            ErrorResultTO errors;
-            string error;
-            IBinaryDataListEntry expressionsEntry;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            var dataList = compiler.FetchBinaryDataList(executionID, out errors);
-
-            if(DataListUtil.IsValueRecordset(expression))
-            {
-                var found = dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression), out expressionsEntry, out error);
-                if((found && expressionsEntry.IsEmpty()) || !found)
-                {
-                    return new DebugItemStaticDataParams("", expression, labelText);
-                }
-                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
-                return new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID);
-            }
-
-            expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
-            return new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID);
         }
 
         private void CleanArguments(IList<DataSplitDTO> args)
