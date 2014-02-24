@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
+using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -57,88 +58,34 @@ namespace Dev2.CodedUI.Tests
         [TestCategory("ToolDesigners_AssignLargeView")]
         public void ToolDesigners_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
         {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
-
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
-                                                                           "Open Large View");
-
-            // Click it
-            MouseCommands.MoveAndClick(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-
+            DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap();
+            activityUiMap.ClickOpenLargeView();
             // Add the data!
-            WorkflowDesignerUIMap.AssignControl_LargeViewClickLeftTextboxInRow(theTab, "Assign", 0);
-            // moved from 100 to 20 for time
-            for(int j = 0; j < 20; j++)
+            // moved from 100 to 10 for time
+            for(int j = 0; j < 10; j++)
             {
-                // Sleeps are due to the delay when adding a lot of items
-                KeyboardCommands.SendKey("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                KeyboardCommands.SendTab();
-                KeyboardCommands.SendKey(j.ToString(CultureInfo.InvariantCulture));
-                KeyboardCommands.SendTab();
+                activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
             }
 
             // Click it
-            MouseCommands.MoveAndClick(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5), 500);
-
-            var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
-            if(leftTextBoxInRowLastRow != null)
-            {
-                string text = leftTextBoxInRowLastRow.Text;
-                StringAssert.Contains(text, "[[theVar19]]");
-            }
+            Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
         }
 
         [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
-
+            DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap();
             // Add the data!
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
-            // moved from 100 to 20 for time
-            for(int j = 0; j < 20; j++)
+            // moved from 100 to 10 for time
+            for(int j = 0; j < 10; j++)
             {
-                // Sleeps are due to the delay when adding a lot of items
-                KeyboardCommands.SendKey("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                KeyboardCommands.SendTab();
-                KeyboardCommands.SendKey(j.ToString(CultureInfo.InvariantCulture));
-                KeyboardCommands.SendTab();
+                activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
             }
 
-            Playback.Wait(500);
-            var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
-            if(leftTextBoxInRowLastRow != null)
-            {
-                string text = leftTextBoxInRowLastRow.Text;
-
-                Assert.IsFalse(string.IsNullOrEmpty(text));
-            }
-            else
-            {
-                Assert.Fail("Null last row");
-            }
-
-            // Yet if it did not crash the act of copy and paste should provide something ;)
-            //StringAssert.Contains(text, "[[theVar19]]");
+            // Click it
+            Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
         }
 
         ////PBI 9461

@@ -122,6 +122,7 @@
     <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
     <Compile Include="Enums\Dev2MappingType.cs" />
+    <Compile Include="UIMaps\Activities\DsfMultiAssignUiMap.cs" />
     <Compile Include="Utils\MouseCommands.cs" />
     <Compile Include="UIMaps\Settings\SecuritySettingsUiMap.cs" />
     <Compile Include="Utils\Bootstrap.cs" />

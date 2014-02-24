@@ -277,6 +277,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             UITestControl findTabByName = FindTabByName(tabName);
             Mouse.Click(findTabByName);
+            findTabByName.WaitForControlReady();
         }
     }
 }

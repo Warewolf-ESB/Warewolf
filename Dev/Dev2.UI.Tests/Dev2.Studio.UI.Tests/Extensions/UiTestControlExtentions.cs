@@ -156,10 +156,14 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void EnterText(this UITestControl control, string text)
         {
-            ////Clear Text
-            control.ClearText();
-            ////Enter text
-            control.AppendText(text);
+            WpfEdit editControl = control as WpfEdit;
+            if(editControl == null)
+            {
+                throw new Exception("Cannot enter text in a non editable control");
+            }
+
+            editControl.Text = text;
+            control.WaitForControlReady();
         }
 
         public static void AppendText(this UITestControl control, string text)
@@ -172,7 +176,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("Cannot enter text in a non editable control");
             }
 
-            editControl.Text = text;
+            editControl.Text += text;
             control.WaitForControlReady();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Dev2.Studio.UI.Tests.Enums;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -14,6 +15,17 @@ namespace Dev2.Common.ExtMethods
                         as DescriptionAttribute;
 
             return attribute == null ? value.ToString() : attribute.Description;
+        }
+
+        public static string GetToolboxName(this Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+
+            var attribute
+                    = Attribute.GetCustomAttribute(field, typeof(ToolboxNameAttribute))
+                        as ToolboxNameAttribute;
+
+            return attribute == null ? value.ToString() : attribute.ToolboxName;
         }
     }
 }
