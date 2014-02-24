@@ -132,12 +132,17 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     utils.makeClearFilterButton("clearSaveFilterButton");
 
     self.isValidName = function (name) {
-        var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
-        return result;
+        if ($.trim(name).length == 0) {
+            return false;
+        }
+        else{
+            var result = /^[a-zA-Z0-9._\s-]+$/.test(name);
+            return result;
+        }   
     }; 
 
     self.RemoveInvalidCharacters = function (name) {
-        var newName = name;
+        var newName = $.trim(name);
         while (!self.isValidName(newName) && newName !== "") {
             newName = newName.replace(/[^a-zA-Z0-9._\s-]/, "");
         }
