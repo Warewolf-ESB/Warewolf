@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -60,6 +60,30 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(24, actual.Count);
 
         }
+        /// <summary>
+        /// This method takes a recordset as input and outputs a single value
+        /// </summary>
+        [TestMethod]
+        public void Index_Recordset_With_Star_And_Star_Search_Criteria_Numeric_Return_Field_Expected_RowWithValuesAsCSV()
+        {
+            const int Expected = 1;
+            string error;
+            //Create datalist
+            SetupArguments(ActivityStrings.IndexDataListShapeWithThreeRecordsets, ActivityStrings.IndexDataListWithDataAndThreeRecordsets,
+                           "[[Customers(*).FirstName]]", "First Occurrence", "[[recset1(*).field1]]", "Left To Right", "[[results(1).resField]]", "0");
+            //Execute Find Index
+            IDSFDataObject result = ExecuteProcess();
+
+            //Get the result from Find Index
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "results", "resField", out error);
+
+            //Datalist dispose
+            DataListRemoval(result.DataListID);
+
+            //check that there is only one row
+            Assert.AreEqual(Expected, actual.Count);
+
+        }
 
         [TestMethod]
         public void Index_Recordset_With_No_Index_Expected_Index_Of_One_Returned()
@@ -96,24 +120,30 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("-1", actual[0]);
 
         }
-
+        /// <summary>
+        /// getting a scalar, returning a scalar
+        /// </summary>
         [TestMethod]
         public void Index_Scalar_Expected_Index_Of_Four_Returned()
         {
-            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
-                           "[[CompanyName]]", "First Occurrence", "2", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
             const string Expected = "4";
 
             string actual;
             string error;
+
+            //create datalist
+            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
+                           "[[CompanyName]]", "First Occurrence", "2", "Left To Right", "[[res]]", "0");
+            //run the tool
+            IDSFDataObject result = ExecuteProcess();
+            
+            //get the result
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            // remove test datalist ;)
+            //datalist dispose
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(Expected, actual);
-
         }
 
         [TestMethod]
@@ -261,7 +291,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
