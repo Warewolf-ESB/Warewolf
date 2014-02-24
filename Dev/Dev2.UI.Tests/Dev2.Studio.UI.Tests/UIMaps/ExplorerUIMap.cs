@@ -565,7 +565,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             {
                 pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(tabToDropOnto);
             }
-
+            EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
