@@ -459,7 +459,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DispatchServerDebugMessage(result, ContextualResourceModel);
 
             //Bug 10912 - Only set the Debug Status to Finished when rendering has completed
-            //SetDebugStatus(DebugStatus.Finished);
+            SetDebugStatus(DebugStatus.Finished);
         }
 
         public void ViewInBrowser()

@@ -1,4 +1,12 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
@@ -10,14 +18,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics

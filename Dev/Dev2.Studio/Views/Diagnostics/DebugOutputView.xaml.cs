@@ -1,8 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-
-using System;
-using Dev2.Studio.ViewModels.Diagnostics;
-//using System.Windows;
+﻿// ReSharper disable CheckNamespace
 
 namespace Dev2.Studio.Views.Diagnostics
 {
@@ -15,24 +11,23 @@ namespace Dev2.Studio.Views.Diagnostics
         public DebugOutputView()
         {
             InitializeComponent();
-            DebugOutputTree.ItemContainerGenerator.StatusChanged += ItemContainerGenerator_StatusChanged;
+            //DebugOutputTree.ItemContainerGenerator.StatusChanged += ItemContainerGenerator_StatusChanged;
         }
 
-        void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
-        {
-            DebugOutputViewModel viewmodel = DataContext as DebugOutputViewModel;
-            if(viewmodel != null && viewmodel.ContentItemCount == 0)
-            {
-                return;
-            }
-            if(viewmodel != null)
-            {
-                if(DebugOutputTree.Items.Count == viewmodel.ContentItemCount && viewmodel.DebugStatus == DebugStatus.Stopping)
-                {
-                    viewmodel.DebugStatus = DebugStatus.Finished;
-                }
-            }
-        }
+        //        // ReSharper disable InconsistentNaming
+        //        void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
+        //        // ReSharper restore InconsistentNaming
+        //        {
+        //            DebugOutputViewModel viewmodel = DataContext as DebugOutputViewModel;
+        //            if(viewmodel != null && viewmodel.ContentItemCount == 0)
+        //            {
+        //                return;
+        //            }
+        //            if(viewmodel != null && DebugOutputTree.Items.Count == viewmodel.RootItems.Count && viewmodel.DebugStatus == DebugStatus.Stopping)
+        //            {
+        //                viewmodel.DebugStatus = DebugStatus.Finished;
+        //            }
+        //        }
 
     }
 }
