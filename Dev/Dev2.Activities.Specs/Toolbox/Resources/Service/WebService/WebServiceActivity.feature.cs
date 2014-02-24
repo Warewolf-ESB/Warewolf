@@ -19,6 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class WebServiceActivityFeature
     {
         
@@ -32,7 +33,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WebServiceActivity", "In order to use WebService \r\nAs a Warewolf user\r\nI want a tool that calls the Web" +
-                    "Services into the workflow", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "Services into the workflow", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -91,10 +93,10 @@ this.ScenarioSetup(scenarioInfo);
       testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[json]]=",
+                        "",
                         ""});
             table1.AddRow(new string[] {
-                        "[[json]]=",
+                        "[[json]]= json",
                         ""});
             table1.AddRow(new string[] {
                         "[[rec(1).CountryID]]",
@@ -130,6 +132,9 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("the debug input as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table2.AddRow(new string[] {
                         "[[rec(1).CountryID]] = 1",
                         "[[rec(1).Description]] = Afghanistan"});
             table2.AddRow(new string[] {
@@ -171,17 +176,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingWebServiceUsingNegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using negative recordset index", ((string[])(null)));
-#line 40
-this.ScenarioSetup(scenarioInfo);
 #line 41
-      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 42
-   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 43
-      testRunner.And("the output is mapped as \"[[rec(-1).CountryID]] \" and \"[[rec(1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
-      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+      testRunner.And("the output is mapped as \"[[rec(-1).CountryID]] \" and \"[[rec(1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 46
       testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -220,7 +225,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "",
                         "[[rec(10).Description]]"});
-#line 46
+#line 47
    testRunner.And("the debug input as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -253,7 +258,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "",
                         "[[rec(10).Description]] = Azerbaijan"});
-#line 60
+#line 61
       testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -265,24 +270,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingWebServiceUsingNegativeRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing WebService using negative recordset", ((string[])(null)));
-#line 73
-this.ScenarioSetup(scenarioInfo);
 #line 74
-      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 75
-   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+      testRunner.Given("I have a WebService \"country list\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 76
-      testRunner.And("the output is mapped as \"[[rec(*).CountryID]] \" and \"[[rec(-1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("the input is mapped as \"[[json]]\" and \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
-      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+      testRunner.And("the output is mapped as \"[[rec(*).CountryID]] \" and \"[[rec(-1).Description]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 78
+      testRunner.When("the Service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 79
       testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[json]]=",
+                        "",
                         ""});
             table5.AddRow(new string[] {
-                        "[[json]]=",
+                        "[[json]]= json",
                         ""});
             table5.AddRow(new string[] {
                         "[[rec(1).CountryID]]",
@@ -314,14 +319,11 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "[[rec(10).CountryID]]",
                         ""});
-#line 79
+#line 80
    testRunner.And("the debug input as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[json]]=",
-                        ""});
-            table6.AddRow(new string[] {
-                        "[[json]]=",
+                        "",
                         ""});
             table6.AddRow(new string[] {
                         "[[rec(1).CountryID]] = 1",
@@ -353,7 +355,7 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[rec(10).CountryID]] = 10",
                         ""});
-#line 92
+#line 93
        testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -379,10 +381,10 @@ this.ScenarioSetup(scenarioInfo);
       testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[json]]=",
+                        "",
                         ""});
             table7.AddRow(new string[] {
-                        "[[json]]=",
+                        "[[json]]=json",
                         ""});
             table7.AddRow(new string[] {
                         "[[id]]",
@@ -391,8 +393,14 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.And("the debug input as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        ""});
+            table8.AddRow(new string[] {
                         "[[id]] = 10",
-                        "[[dsc]] = Azerbaijan"});
+                        ""});
+            table8.AddRow(new string[] {
+                        "[[dsc]] = Azerbaijan",
+                        ""});
 #line 116
     testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden

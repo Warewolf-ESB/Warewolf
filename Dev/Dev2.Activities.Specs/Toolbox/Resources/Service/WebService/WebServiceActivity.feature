@@ -1,4 +1,4 @@
-﻿
+﻿@ignore
 Feature: WebServiceActivity
 	In order to use WebService 
 	As a Warewolf user
@@ -12,8 +12,8 @@ Scenario: Executing WebService using recordsets
 	     When the Service is executed
 	     Then the execution has "NO" error
 		 And the debug input as 
-		 | [[json]]=             |                         |
-		 | [[json]]=             |                         |
+		 |                       |                         |
+		 | [[json]]= json        |                         |
 		 | [[rec(1).CountryID]]  | [[rec(1).Description]]  |
 		 | [[rec(2).CountryID]]  | [[rec(2).Description]]  |
 		 | [[rec(3).CountryID]]  | [[rec(3).Description]]  |
@@ -26,6 +26,7 @@ Scenario: Executing WebService using recordsets
 		 | [[rec(10).CountryID]] | [[rec(10).Description]] |
 
 	     And the debug output as
+	     |                            |                                      |
 	     | [[rec(1).CountryID]] = 1   | [[rec(1).Description]] = Afghanistan |
 	     | [[rec(2).CountryID]] = 2   | [[rec(2).Description]] = Albania     |
 	     | [[rec(3).CountryID]] = 3   | [[rec(3).Description]] = Algeria     |
@@ -77,8 +78,8 @@ Scenario: Executing WebService using negative recordset
 	     When the Service is executed
 	     Then the execution has "AN" error
 		 And the debug input as 
-		 | [[json]]=             |                         |
-		 | [[json]]=             |                         |
+		 |                       |                         |
+		 | [[json]]= json        |                         |
 		 | [[rec(1).CountryID]]  | [[rec(-1).Description]] |
 		 | [[rec(2).CountryID]]  |                         |
 		 | [[rec(3).CountryID]]  |                         |
@@ -90,8 +91,7 @@ Scenario: Executing WebService using negative recordset
 		 | [[rec(9).CountryID]]  |                         |
 		 | [[rec(10).CountryID]] |                         |
 	      And the debug output as
-		   | [[json]]=                  |                           |
-		   | [[json]]=                  |                           |
+		   |                            |                           |
 		   | [[rec(1).CountryID]] = 1   | [[rec(-1).Description]] = |
 		   | [[rec(2).CountryID]] = 2   |                           |
 		   | [[rec(3).CountryID]] = 3   |                           |
@@ -110,9 +110,11 @@ Scenario: Executing WebService using scalar
 	     When the Service is executed
 	     Then the execution has "NO" error     
 		  And the debug input as 
-		 | [[json]]= |         |
-		 | [[json]]= |         |
-		 | [[id]]    | [[dsc]] |
+		 |               |         |
+		 | [[json]]=json |         |
+		 | [[id]]        | [[dsc]] |
 		  And the debug output as
-		  |[[id]] = 10 | [[dsc]] = Azerbaijan |
+		  |                      |  |
+		  | [[id]] = 10          |  |
+		  | [[dsc]] = Azerbaijan |  |
 
