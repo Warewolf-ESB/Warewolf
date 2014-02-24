@@ -9,8 +9,8 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DateTimeDifference"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-    Width="250"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               Width="250"
                                MaxWidth="250"
                                Padding="7"
                                mc:Ignorable="d"
@@ -43,9 +43,9 @@
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="17"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDateTime1}"
@@ -69,9 +69,9 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="17"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
                                 FilterType="All"
@@ -98,9 +98,9 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="2"
                                 AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="17"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="d MM yyyy 24h:min.ss sp"
                                 FilterType="All"
@@ -117,14 +117,14 @@
                                      SourcePropertyValue="{Binding ModelItem.InputFormat, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-               <ui:IntellisenseTextBox.IntellisenseProvider>
+            <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />
                     <interfaceImplementors:DateTimeIntellisenseProvider />
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
         </ui:IntellisenseTextBox>
-        
+
         <Label Grid.Column="0"
                Grid.Row="3"
                Style="{StaticResource ActivityLabelStyle}"
@@ -151,9 +151,9 @@
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="4"
-                                DefaultText="[[Difference]]" 
+                                DefaultText="[[Difference]]"
                                 FilterType="All"
-                                WrapInBrackets="True" 
+                                WrapInBrackets="True"
                                 ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

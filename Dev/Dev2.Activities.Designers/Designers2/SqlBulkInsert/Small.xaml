@@ -32,27 +32,27 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
                Grid.Row="0"
                Content="DB"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ComboBox Grid.Column="1"
-                  Grid.Row="0" 
+                  Grid.Row="0"
                   x:Name="InitialFocusElement"
-                  Style="{StaticResource ActivityMapppingComboBoxStyle}"   
-                  ItemsSource="{Binding Databases}" 
+                  Style="{StaticResource ActivityMapppingComboBoxStyle}"
+                  ItemsSource="{Binding Databases}"
                   DisplayMemberPath="ResourceName"
-                  SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"                                        
+                  SelectedItem="{Binding SelectedDatabase, Mode=TwoWay}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
-           <i:Interaction.Behaviors>
+            <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpDatabase}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
@@ -61,14 +61,14 @@
                 Grid.Row="0"
                 Content="..."
                 Command="{Binding EditDatabaseCommand}"
-                Style="{StaticResource ActivityEditButtonStyle}"               
-                ToolTip="Edit Database Source"                
+                Style="{StaticResource ActivityEditButtonStyle}"
+                ToolTip="Edit Database Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
         <Label Grid.Column="0"
                Grid.Row="1"
                Content="Table"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"
@@ -84,16 +84,16 @@
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
-                Grid.Row="1"               
+                Grid.Row="1"
                 Command="{Binding RefreshTablesCommand}"
-                Style="{StaticResource ActivityRefreshButtonStyle}"  
-                ToolTip="Refresh tables"                
+                Style="{StaticResource ActivityRefreshButtonStyle}"
+                ToolTip="Refresh tables"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
 
         <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
-                               x:Name="SmallDataGrid"           
+                               x:Name="SmallDataGrid"
                                HeadersVisibility="None"
                                Height="78"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -101,24 +101,24 @@
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
-            <DataGrid.Columns>                
+            <DataGrid.Columns>
                 <DataGridTemplateColumn Width="*"
-                                        MinWidth="125"                                        
-                                        Header="Input Data or [[Variable]]"  
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"                                       
+                                        MinWidth="125"
+                                        Header="Input Data or [[Variable]]"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
                                                     AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="17"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="52"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">                               
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpInputColumn}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -140,9 +140,9 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="65"     
-                                        Header="To Field"     
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"                                        
+                                        MinWidth="65"
+                                        Header="To Field"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -167,15 +167,14 @@
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-        
         <Label Grid.Row="3"
                Grid.Column="0"
                Content="Result"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ui:IntellisenseTextBox Grid.Row="3"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
-                                DefaultText="[[InsertSuccess]]"   
+                                DefaultText="[[InsertSuccess]]"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"

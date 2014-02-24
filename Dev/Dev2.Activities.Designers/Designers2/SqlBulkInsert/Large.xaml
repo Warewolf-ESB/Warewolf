@@ -16,7 +16,7 @@
                                MinWidth="350"
                                MinHeight="400"
                                MaxWidth="Infinity"
-                               MaxHeight="Infinity"                               
+                               MaxHeight="Infinity"
                                Padding="10,7,10,10"
                                mc:Ignorable="d"
                                d:DesignHeight="260"
@@ -27,14 +27,14 @@
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
- 
+
     <core:ActivityDesignerTemplate.RightButtons>
-          <core:ActivityDesignerButton x:Name="DoneButton"
+        <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">      
+                                     Style="{StaticResource ActivityDesignerButtonStyle}">
         </core:ActivityDesignerButton>
     </core:ActivityDesignerTemplate.RightButtons>
 
@@ -51,19 +51,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-       </Grid.RowDefinitions>
+        </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
                Grid.Row="0"
                Content="DB"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ComboBox Grid.Column="1"
-                  Grid.Row="0" 
+                  Grid.Row="0"
                   x:Name="InitialFocusElement"
-                  Style="{StaticResource ActivityMapppingComboBoxStyle}"   
-                  ItemsSource="{Binding Databases}" 
+                  Style="{StaticResource ActivityMapppingComboBoxStyle}"
+                  ItemsSource="{Binding Databases}"
                   DisplayMemberPath="ResourceName"
-                  SelectedItem="{Binding SelectedDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"            
+                  SelectedItem="{Binding SelectedDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
@@ -76,14 +76,14 @@
                 Grid.Row="0"
                 Content="..."
                 Command="{Binding EditDatabaseCommand}"
-                Style="{StaticResource ActivityEditButtonStyle}"  
-                ToolTip="Edit Database Source"                
+                Style="{StaticResource ActivityEditButtonStyle}"
+                ToolTip="Edit Database Source"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
 
         <Label Grid.Column="0"
                Grid.Row="1"
                Content="Table"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"
@@ -99,16 +99,16 @@
             </i:Interaction.Behaviors>
         </ComboBox>
         <Button Grid.Column="2"
-                Grid.Row="1"                
+                Grid.Row="1"
                 Command="{Binding RefreshTablesCommand}"
-                Style="{StaticResource ActivityRefreshButtonStyle}"  
-                ToolTip="Refresh tables"                
+                Style="{StaticResource ActivityRefreshButtonStyle}"
+                ToolTip="Refresh tables"
                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" />
 
         <controls:Dev2DataGrid Grid.Row="2"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
-                               x:Name="LargeDataGrid"                              
+                               x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                Margin="0,3">
@@ -117,22 +117,22 @@
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="*"
-                                        MinWidth="125"                                        
+                                        MinWidth="125"
                                         Header="Input Data or [[Variable]]"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
-                                                     AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="52"
+                                                    AllowMultilinePaste="True"
+                                                    AcceptsReturn="True"
+                                                    AllowUserInsertLine="True"
+                                                    MaxHeight="80"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">                               
+                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpInputColumn}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -154,7 +154,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="65"      
+                                        MinWidth="65"
                                         Header="To Field"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
@@ -177,11 +177,11 @@
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>                
-                
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="65"      
-                                        Header="Type"    
+                                        MinWidth="65"
+                                        Header="Type"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -218,7 +218,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -247,7 +247,7 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-            
+
             <Label Grid.Row="0"
                    Grid.Column="3"
                    Content="Timeout"
@@ -273,7 +273,7 @@
             <CheckBox Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      Content="Check Constraints"                      
+                      Content="Check Constraints"
                       IsChecked="{Binding ModelItem.CheckConstraints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipCheckConstraints}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_CheckConstraints_AutoID}">
@@ -286,11 +286,11 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-            
+
             <CheckBox Grid.Row="1"
                       Grid.Column="3"
                       Grid.ColumnSpan="2"
-                      Content="Keep Table Lock"                      
+                      Content="Keep Table Lock"
                       IsChecked="{Binding ModelItem.KeepTableLock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepTableLock}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepTableLock_AutoID}">
@@ -303,12 +303,11 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-       
-            
+
             <CheckBox Grid.Row="2"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      Content="Fire Triggers"                      
+                      Content="Fire Triggers"
                       IsChecked="{Binding ModelItem.FireTriggers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipFireTriggers}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FireTriggers_AutoID}">
@@ -321,11 +320,11 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-            
+
             <CheckBox Grid.Row="2"
                       Grid.Column="3"
                       Grid.ColumnSpan="2"
-                      Content="Keep Identity"                      
+                      Content="Keep Identity"
                       IsChecked="{Binding ModelItem.KeepIdentity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepIdentity}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepIdentity_AutoID}">
@@ -339,12 +338,10 @@
                 </i:Interaction.Behaviors>
             </CheckBox>
 
-            
-                       
             <CheckBox Grid.Row="3"
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      Content="Use Internal Transaction"                      
+                      Content="Use Internal Transaction"
                       IsChecked="{Binding ModelItem.UseInternalTransaction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipUseInternalTransaction}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UseInternalTransaction_AutoID}">
@@ -357,11 +354,11 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </CheckBox>
-            
+
             <CheckBox Grid.Row="3"
                       Grid.Column="3"
                       Grid.ColumnSpan="2"
-                      Content="Skip blank rows"                      
+                      Content="Skip blank rows"
                       IsChecked="{Binding ModelItem.IgnoreBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipIgnoreBlankRows}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IgnoreBlankRows_AutoID}">
@@ -376,16 +373,15 @@
             </CheckBox>
 
         </Grid>
-        
-                
+
         <Label Grid.Row="4"
                Grid.Column="0"
                Content="Result"
-               Style="{StaticResource ActivityMapppingLabelStyle}"/>
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ui:IntellisenseTextBox Grid.Row="4"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
-                                DefaultText="[[InsertSuccess]]"   
+                                DefaultText="[[InsertSuccess]]"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
@@ -404,7 +400,7 @@
 
         <errors:OnError Grid.Column="0"
                         Grid.Row="5"
-                        Grid.ColumnSpan="3"/>
+                        Grid.ColumnSpan="3" />
     </Grid>
-    
+
 </core:ActivityDesignerTemplate>
