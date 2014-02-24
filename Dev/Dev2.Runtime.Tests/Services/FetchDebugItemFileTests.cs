@@ -95,6 +95,28 @@ namespace Dev2.Tests.Runtime.Services
             StringAssert.Contains(msg.Message.ToString(), Expected);
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FetchDebugItemFile_Execute")]
+// ReSharper disable InconsistentNaming
+        public void FetchDebugItemFile_Execute_FileHasMultiLines_ReturnedMessageWillBeMultiLines()
+// ReSharper restore InconsistentNaming
+        {
+            var multiLines = new StringBuilder();
+            multiLines.AppendLine("Line One");
+            multiLines.AppendLine("Line Two");
+            multiLines.AppendLine("Line Three");
+
+            var serverLogPath = Path.Combine(_testDir, string.Format("ServerLog_{0}.txt", Guid.NewGuid()));
+            var multiLineString = multiLines.ToString();    
+            File.WriteAllText(serverLogPath, multiLineString);
+
+            var esb = new FetchDebugItemFile();
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugItemFilePath", new StringBuilder(serverLogPath) } }, null);
+            var msg = ConvertToMsg(actual);
+            StringAssert.Contains(msg.Message.ToString(), multiLineString);
+        }
+
         #endregion
 
         #region HandlesType
