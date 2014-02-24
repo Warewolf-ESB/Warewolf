@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -18,13 +18,21 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resultVar;
+            if (ScenarioContext.Current.TryGetValue("resultVariable", out resultVar))
+            {
+                resultVariable = resultVar;
+                var resultVars = resultVariable.Split(',');
+                variableList.AddRange(resultVars.Select(resVar => new Tuple<string, string>(resVar, "")));
+            }
             BuildShapeAndTestData();
 
             string inField;
@@ -38,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             var findIndex = new DsfIndexActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     InField = inField,
                     Index = index,
                     Characters = characters,
@@ -82,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -125,10 +133,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             Assert.AreEqual(tableRows.Count, records.Count);
 
-            for(int i = 0; i < tableRows.Count; i++)
+            for (int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][0], records[i]);
             }
         }
+
+        [Given(@"result variable as ""(.*)""")]
+        public void GivenResultVariableAs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resultVariable", resultVar);
+        }
+
     }
 }

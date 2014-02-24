@@ -175,49 +175,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                 }
-                bool scalar = false;
+
                 foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
                     var rsType = DataListUtil.GetRecordsetIndexType(region);
                     if (rsType == enRecordsetIndexType.Numeric)
                     {
-                        scalar = true;
+
                         toUpsertScalar.Add(region, string.Join(",", completeResultList));
                         compiler.Upsert(executionId, toUpsertScalar, out errors);
+                        allErrors.MergeErrors(errors);
+                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        {
+                            foreach (var debugOutputTO in toUpsertScalar.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            }
+                            toUpsert.DebugOutputs.Clear();
+                        }
                     }
                     else
                     {
                         toUpsert.Add(region, completeResultList);
                         compiler.Upsert(executionId, toUpsert, out errors);
+                        allErrors.MergeErrors(errors);
+                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        {
+                            foreach (var debugOutputTO in toUpsert.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            }
+                            toUpsert.DebugOutputs.Clear();
+                        }
                     }
                 }
-
                 #endregion
 
-                #region Add Result to DataList
 
-                allErrors.MergeErrors(errors);
-
-                #endregion Add Result to DataList
-
-                if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                {
-                    if (!scalar)
-                    {
-                        foreach (var debugOutputTO in toUpsert.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                        }
-                    }
-                    else
-                    {
-                        foreach (var debugOutputTO in toUpsertScalar.DebugOutputs)
-                        {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                        }
-                    }
-
-                }
             }
             catch (Exception e)
             {

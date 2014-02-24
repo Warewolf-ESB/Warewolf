@@ -169,18 +169,52 @@ Scenario: Find something with a negative recordset index as Input
 	| Result          |
 	| [[result]] = -1 |
 
-#Scenario: Output values in recordset
-#    Given the sentence "abc3cde3fgh3"
-#	And I selected Index "First Occurrence"
-#	And I search for characters "3"
-#	And I selected direction as "Left to Right"
-#	When the data find index tool is executed
-#	Then the execution has "NO" error
-#	And the debug inputs as
-#	| In Field     | Index            | Characters | Direction     |
-#	| abc3cde3fgh3 | First Occurrence | 3          | Left to Right |
-#	And the debug output as
-#	| Result           |
-#	| [[rs(1).a]] = 4  |
-#	| [[rs(2).a]] = 8  |
-#	| [[rs(3).a]] = 12 | 
+Scenario: Output values in recordset with star notation
+    Given the sentence "abc3cde3fgh3"
+	And I selected Index "All Occurrences"
+	And I search for characters "3"
+	And I selected direction as "Left to Right"
+	And result variable as "[[rs(*).a]]"
+	When the data find index tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| In Field     | Index           | Characters | Direction     |
+	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
+	And the debug output as
+	| Result           |
+	| [[rs(1).a]] = 4  |
+	| [[rs(2).a]] = 8  |
+	| [[rs(3).a]] = 12 | 
+
+Scenario: Output values in recordset with numeric notation
+    Given the sentence "abc3cde3fgh3"
+	And I selected Index "All Occurrences"
+	And I search for characters "3"
+	And I selected direction as "Left to Right"
+	And result variable as "[[rs(1).a]]"
+	When the data find index tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| In Field     | Index           | Characters | Direction     |
+	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
+	And the debug output as
+	| Result               |
+	| [[rs(1).a]] = 4,8,12 |
+
+Scenario: Output values in multiple result variables
+    Given the sentence "abc3cde3fgh3"
+	And I selected Index "All Occurrences"
+	And I search for characters "3"
+	And I selected direction as "Left to Right"
+	And result variable as "[[res]],[[rs(*).a]]"
+	When the data find index tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| In Field     | Index           | Characters | Direction     |
+	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
+	And the debug output as
+	| Result           |
+	| [[res]] = 4,8,12 |
+	| [[rs(1).a]] = 4  |
+	| [[rs(2).a]] = 8  |
+	| [[rs(3).a]] = 12 |
