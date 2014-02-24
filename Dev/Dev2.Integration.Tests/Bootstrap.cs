@@ -64,7 +64,7 @@ namespace Dev2.Integration.Tests
                     if(serverProcess == null)
                     {
                         //Remote by a build agent
-                        ServerLocation = LocalBuildRunDirectory + ServerName;
+                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + ServerName;
                         if(File.Exists(ServerLocation))
                         {
                             //Try start

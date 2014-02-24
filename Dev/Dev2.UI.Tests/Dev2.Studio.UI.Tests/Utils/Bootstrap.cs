@@ -73,7 +73,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(serverProcess == null)
                     {
                         //Remote by a build agent
-                        ServerLocation = LocalBuildRunDirectory + ServerName;
+                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + ServerName;
                         if(File.Exists(ServerLocation))
                         {
                             //Try start
@@ -101,7 +101,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(studioProcess == null)
                     {
                         //Remote by a build agent
-                        StudioLocation = LocalBuildRunDirectory + StudioName;
+                        StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + StudioName;
                         if(File.Exists(StudioLocation))
                         {
                             //Try start
