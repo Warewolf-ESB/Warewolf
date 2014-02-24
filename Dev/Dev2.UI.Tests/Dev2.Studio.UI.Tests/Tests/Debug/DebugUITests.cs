@@ -197,7 +197,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                 Assert.AreEqual("Ready", status);
                 UITestControl debugButton = RibbonUIMap.ClickDebug();
                 Point debugButtonPoint = new Point(debugButton.BoundingRectangle.X + 5, debugButton.BoundingRectangle.Y + 5);
-                DebugUIMap.ClickExecute(1000);
+                DebugUIMap.ClickExecute(1500);
                 MouseCommands.ClickPoint(debugButtonPoint, 500);
 
                 //------------Assert Results-------------------------
@@ -205,7 +205,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                 status = OutputUIMap.GetStatusBarStatus();
                 StringAssert.Contains(status, "Stopping");
 
-                Playback.Wait(60000); // we need to wait for a very long time ;)
+                Playback.Wait(40000); // we need to wait for a very long time ;)
                 status = OutputUIMap.GetStatusBarStatus();
                 StringAssert.Contains(status, "Ready");
             }

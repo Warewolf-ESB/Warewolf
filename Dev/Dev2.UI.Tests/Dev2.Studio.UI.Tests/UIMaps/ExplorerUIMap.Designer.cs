@@ -17,7 +17,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
     using System.CodeDom.Compiler;
     using System.Drawing;
-    using System.Windows.Forms;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -181,9 +180,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// Enters the explorer search text.
         /// </summary>
         /// <param name="textToSearchWith">The text automatic search with.</param>
-        public void EnterExplorerSearchText(string textToSearchWith)
+        public void EnterExplorerSearchText(string textToSearchWith, int waitAmt = 0)
         {
             _explorerSearch.EnterText(textToSearchWith);
+            Playback.Wait(waitAmt);
         }
 
         #region filter box mappings
@@ -290,7 +290,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
 
         #endregion
-        
+
         public void ConnectToAllServers(WpfComboBox comboBox)
         {
             for(int itemIdx = 1; itemIdx <= comboBox.Items.Count; itemIdx++)

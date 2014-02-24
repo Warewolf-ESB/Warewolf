@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
             TabManagerUIMap.ClickTab(firstName);
 
             //Check that the tabs names dont have stars in them
-            Assert.AreEqual(2, TabManagerUIMap.GetTabCount());
+            Assert.IsTrue(TabManagerUIMap.GetTabCount() >= 2);
             Assert.IsFalse(TabManagerUIMap.GetTabNameAtPosition(0).Contains("*"));
             Assert.IsFalse(TabManagerUIMap.GetTabNameAtPosition(1).Contains("*"));
         }
