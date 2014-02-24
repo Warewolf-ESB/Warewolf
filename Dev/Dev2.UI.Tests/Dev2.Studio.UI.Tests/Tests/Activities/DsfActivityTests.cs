@@ -18,10 +18,10 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         #endregion
 
         #region Setup
-
-        [TestInitialize()]
-        public void MyTestInitialize()
+        [TestInitialize]
+        public void TestInit()
         {
+            Init();
             _dsfActivityUiMap = new DsfActivityUiMap();
         }
 

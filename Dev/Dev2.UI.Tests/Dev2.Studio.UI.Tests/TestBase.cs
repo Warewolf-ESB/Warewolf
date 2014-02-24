@@ -23,7 +23,14 @@ namespace Dev2.CodedUI.Tests
             return "Warewolf";
         }
 
-        #region Cleanup
+        #region Init/Cleanup
+
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
 
         [TestCleanup]
         public void MyTestCleanup()

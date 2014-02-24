@@ -11,6 +11,12 @@ namespace Dev2.Studio.UI.Tests
 
         const string LocalServerName = "localhost";
 
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
         [TestCleanup]
         public void MyTestCleanup()
         {

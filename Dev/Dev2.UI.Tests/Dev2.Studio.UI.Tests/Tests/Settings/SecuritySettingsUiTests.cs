@@ -16,6 +16,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
     [CodedUITest]
     public class SecuritySettingsUiTests
     {
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SecuritySettingsUiTests")]

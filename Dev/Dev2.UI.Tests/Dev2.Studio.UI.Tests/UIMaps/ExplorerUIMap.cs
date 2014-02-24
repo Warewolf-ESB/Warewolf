@@ -137,7 +137,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(connectDropdown, new Point(5, 5));
         }
 
-        public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
+        public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName, int waitAmt = 0)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
             if(theControl != null)
@@ -159,6 +159,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
                 theControl.WaitForControlReady();
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+                Playback.Wait(waitAmt);
             }
         }
 
@@ -678,7 +679,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(4000);
             if(serverName != "localhost")
             {
-                Playback.Wait(5000);
+                Playback.Wait(10000);
             }
         }
     }

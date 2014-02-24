@@ -228,7 +228,6 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             {
                 return true;
             }
-
             return false;
         }
 

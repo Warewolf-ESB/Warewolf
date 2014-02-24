@@ -12,6 +12,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Mouse.Click();
         }
 
+        public static void ClickAndWait(int waitAmt)
+        {
+            Mouse.Click();
+            Playback.Wait(waitAmt);
+        }
+
         public static void ClickPoint(Point p, int waitAmt = 0)
         {
             Mouse.Click(p);

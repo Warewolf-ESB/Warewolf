@@ -41,7 +41,7 @@
             SendKeys.SendWait("{ESCAPE}");
         }
 
-        public void ClickExecute()
+        public void ClickExecute(int waitAmt = 0)
         {
             var debugWindow = GetDebugWindow();
             int counter = 0;
@@ -63,6 +63,8 @@
                     break;
                 }
             }
+
+            Playback.Wait(waitAmt);
         }
 
         public bool DebugWindowExists()

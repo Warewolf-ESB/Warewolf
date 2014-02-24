@@ -25,8 +25,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// ClickOK
         /// </summary>
-        public void ClickDone()
+        public void ClickDone(int waitAmt = 0)
         {
+            Playback.Wait(waitAmt);
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(wizard, new Point(650, 484));
         }
@@ -47,25 +48,29 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// Select nth menu item
         /// </summary>
-        public void SelectMenuItem(int n)
+        public void SelectMenuItem(int n, int waitAmt = 0)
         {
             for(int i = 0; i < n; i++)
             {
                 Playback.Wait(50);
                 SendKeys.SendWait("{DOWN}");
             }
+
+            Playback.Wait(waitAmt);
         }
 
         /// <summary>
         /// Send n tabs
         /// </summary>
-        public void SendTabs(int n)
+        public void SendTabs(int n, int waitAmt = 0)
         {
             for(int i = 0; i < n; i++)
             {
                 Playback.Wait(50);
                 SendKeys.SendWait("{TAB}");
             }
+
+            Playback.Wait(waitAmt);
         }
 
         /// <summary>
@@ -91,7 +96,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             {
                 Keyboard.SendKeys(wizard, "{DOWN}");
                 Playback.Wait(250);
-                Keyboard.SendKeys(wizard, "{ENTER}");     
+                Keyboard.SendKeys(wizard, "{ENTER}");
             }
 
             if(deleteText)

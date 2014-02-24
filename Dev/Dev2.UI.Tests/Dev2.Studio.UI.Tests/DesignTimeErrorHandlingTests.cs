@@ -10,6 +10,12 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Cleanup
 
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
         [TestCleanup]
         public void MyTestCleanup()
         {
@@ -29,16 +35,11 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.Clear();
 
             // Open the Workflow
-            ExplorerUIMap.EnterExplorerSearchText(workflowToUse);
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", workflowToUse);
-            var theTab = TabManagerUIMap.GetActiveTab();
+            var theTab = ExplorerUIMap.DoubleClickWorkflow(workflowToUse, "BUGS");
 
             // Edit the DbService
-            ExplorerUIMap.EnterExplorerSearchText(serviceToUse);
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "UTILITY", serviceToUse);
+            ExplorerUIMap.DoubleClickService(serviceToUse, "UTILITY");
 
-            // Get wizard window
-            WizardsUIMap.WaitForWizard();
             // Tab to mappings
             DatabaseServiceWizardUIMap.TabToOutputMappings();
             // Remove column 1+2's mapping
@@ -80,7 +81,6 @@ namespace Dev2.Studio.UI.Tests
             const string dbResourceName = "UserIsPromptedToAddRequiredDbServiceMappingsTest";
 
             // Open the Workflow
-            ExplorerUIMap.EnterExplorerSearchText(workflowResourceName);
             UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow(workflowResourceName, "UI TEST");
 
             // Edit the DbService

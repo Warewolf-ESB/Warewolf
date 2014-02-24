@@ -14,6 +14,12 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
         [TestCleanup]
         public void MyTestCleanup()
         {
@@ -46,6 +52,7 @@ namespace Dev2.Studio.UI.Tests
         // BUG 8876 : This test ensure that the input box is empty when selecting none in the Format Tool
         [TestMethod]
         [Owner("Travis Frisinger")]
+        // FRAMEWORK  BROKE THIS ;)
         public void SetRoundingType_None_ExpectedRoundingInputIsDisabled()
         {
             DsfActivityUiMap activityUiMap = new DsfActivityUiMap();

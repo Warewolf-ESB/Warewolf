@@ -12,8 +12,12 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class DbServiceTests : UIMapBase
     {
-        #region Fields
-
+        #region Setup
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
 
         #endregion
 
@@ -39,6 +43,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
 
             activityUiMap.ClickEdit();
+            WizardsUIMap.WaitForWizard();
+
             //Wizard actions
             DatabaseServiceWizardUIMap.ClickMappingTab();
             DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);

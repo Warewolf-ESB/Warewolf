@@ -23,17 +23,14 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        #region Setup
-
+        #region Cleanup
         [TestInitialize]
-        public void MyTestInit()
+        public void TestInit()
         {
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            Init();
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
         }
-
-        #endregion
-
-        #region Cleanup
 
         [TestCleanup]
         public void MyTestCleanup()
@@ -261,7 +258,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickTestAction();
             DatabaseServiceWizardUIMap.ClickOK();
             //Assert remote db service changed its action
-            Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
+            Assert.AreEqual("dbo.fn_diagram", actionName, "Cannot edit remote db service");
         }
 
         [TestMethod]
@@ -357,7 +354,7 @@ namespace Dev2.Studio.UI.Tests
             PluginServiceWizardUIMap.ClickTest();
             PluginServiceWizardUIMap.ClickOK();
 
-            Assert.AreEqual("ToString", actionName, "Cannot change remote plugin service");
+            Assert.AreEqual("ToStrin", actionName, "Cannot change remote plugin service");
         }
 
         [TestMethod]
@@ -368,21 +365,23 @@ namespace Dev2.Studio.UI.Tests
             const string CategoryName = "Unassigned";
 
             //CREATE A WORKFLOW
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap();
-            activityUiMap.DragToolOntoDesigner(ToolType.Assign);
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
+            {
+                activityUiMap.DragToolOntoDesigner(ToolType.Assign);
 
-            //SAVE A WORKFLOW
-            RibbonUIMap.ClickSave();
-            string InitialName = Guid.NewGuid().ToString();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(InitialName);
+                //SAVE A WORKFLOW
+                RibbonUIMap.ClickSave();
+                string InitialName = Guid.NewGuid().ToString();
+                SaveDialogUIMap.ClickAndTypeInNameTextbox(InitialName);
 
-            //RENAME A WORKFLOW
-            string RenameTo = Guid.NewGuid().ToString();
-            ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, ServiceType.Workflows, RenameTo, RemoteServerName);
+                //RENAME A WORKFLOW
+                string RenameTo = Guid.NewGuid().ToString();
+                ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, ServiceType.Workflows, RenameTo, RemoteServerName);
 
-            //DELETE A WORKFLOW
-            ExplorerUIMap.RightClickDeleteResource(RenameTo, CategoryName, ServiceType.Workflows, RemoteServerName);
-            Assert.IsFalse(ExplorerUIMap.ValidateServiceExists(RenameTo, CategoryName, RemoteServerName));
+                //DELETE A WORKFLOW
+                ExplorerUIMap.RightClickDeleteResource(RenameTo, CategoryName, ServiceType.Workflows, RemoteServerName);
+                Assert.IsFalse(ExplorerUIMap.ValidateServiceExists(RenameTo, CategoryName, RemoteServerName));
+            }
 
         }
 

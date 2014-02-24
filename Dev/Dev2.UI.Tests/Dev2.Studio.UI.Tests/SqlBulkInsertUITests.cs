@@ -1,7 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +21,13 @@ namespace Dev2.Studio.UI.Tests
         const int TableIndex = 1;
         #endregion
 
-        #region Cleanup
+        #region Init/Cleanup
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
 
         [TestCleanup]
         public void MyTestCleanup()

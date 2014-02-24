@@ -17,6 +17,15 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
 
         #endregion
 
+        #region Setup
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
+        #endregion
+
         #region Cleanup
         [TestCleanup]
         public void MyTestCleanup()

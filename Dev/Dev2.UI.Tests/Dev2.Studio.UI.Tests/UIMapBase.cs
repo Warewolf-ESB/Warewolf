@@ -26,6 +26,7 @@ using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
@@ -712,6 +713,30 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
+        #endregion
+
+        #region Init
+        public void Init()
+        {
+            try
+            {
+                Playback.PlaybackSettings.ContinueOnError = true;
+                Playback.PlaybackSettings.ShouldSearchFailFast = true;
+                Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+                Playback.PlaybackSettings.MatchExactHierarchy = true;
+                Playback.PlaybackSettings.DelayBetweenActions = 1;
+
+                // make the mouse quick ;)
+                Mouse.MouseMoveSpeed = 10000;
+                Mouse.MouseDragSpeed = 10000;
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+
+            }
+        }
         #endregion
     }
 }

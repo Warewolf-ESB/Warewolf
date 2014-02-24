@@ -7,8 +7,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
     public class DsfActivityUiMap : ActivityUiMapBase
     {
-        public DsfActivityUiMap(bool createNewtab = true)
-            : base(createNewtab)
+        public DsfActivityUiMap(bool createNewtab = true, int waitAmt = 1000)
+            : base(createNewtab, waitAmt)
         {
 
         }

@@ -507,6 +507,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public UITestControl AssignControl_GetLeftTextboxInRow(string controlAutomationId, int row)
         {
             var activeTab = TabManagerUIMap.GetActiveTab();
+            Playback.Wait(2000);
             WpfTable middleBox = AssignControl_GetSmallViewTable(activeTab, controlAutomationId, row);
             // Get the textbox
             var getRow = middleBox.Rows[row];

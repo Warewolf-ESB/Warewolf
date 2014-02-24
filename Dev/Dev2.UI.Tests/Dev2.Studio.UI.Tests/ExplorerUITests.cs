@@ -9,6 +9,12 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Cleanup
 
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
         [TestCleanup]
         public void MyTestCleanup()
         {

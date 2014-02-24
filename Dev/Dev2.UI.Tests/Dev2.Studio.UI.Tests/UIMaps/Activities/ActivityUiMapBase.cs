@@ -13,10 +13,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         private UITestControl _activity;
         private UITestControl _theTab;
 
-        protected ActivityUiMapBase(bool createNewtab = true)
+        protected ActivityUiMapBase(bool createNewtab = true, int waitAmt = 1000)
         {
             if(createNewtab)
             {
+                Playback.Wait(waitAmt);
                 _theTab = RibbonUIMap.CreateNewWorkflow();
             }
         }

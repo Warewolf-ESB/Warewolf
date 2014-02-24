@@ -18,24 +18,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     [CodedUITest]
     public class WizardUITests : UIMapBase
     {
-        #region Context Init
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
-        #endregion
-
-        #region Cleanup
+        #region Init/Cleanup
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
 
         [TestCleanup]
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
         }
-
         #endregion
 
         #region Service Wizards
@@ -50,12 +45,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
 
-            if(uiTestControl != null)
-            {
-                uiTestControl.WaitForControlEnabled();
-            }
+            uiTestControl.WaitForControlEnabled();
             WizardsUIMap.WaitForWizard();
-            SendKeys.SendWait("{ESC}");
+            KeyboardCommands.SendEsc();
         }
 
         /// <summary>
@@ -191,7 +183,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             EmailSourceWizardUIMap.CreateEmailSource(name);
 
             //Assert
-            Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(name, "Unassigned"));
+            Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(name, "Unassigned"), "Email source was not created.");
 
             TestUtils.StopEmailServer(startEmailServer);
         }
@@ -220,20 +212,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, pt);
             WizardsUIMap.WaitForWizard();
-            _decisionWizardUiMap.SendTabs(5);
-            Playback.Wait(500);
-            _decisionWizardUiMap.SelectMenuItem(17); // select between ;)
+            _decisionWizardUiMap.SendTabs(5, 500);
+            _decisionWizardUiMap.SelectMenuItem(17, 100); // select between ;)
 
-            _decisionWizardUiMap.SendTabs(11);
+            _decisionWizardUiMap.SendTabs(11, 500);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
 
-            _decisionWizardUiMap.SendTabs(2);
+            _decisionWizardUiMap.SendTabs(2, 500);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(400, 150));
-            _decisionWizardUiMap.SendTabs(1);
+            _decisionWizardUiMap.SendTabs(1, 500);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(600, 150));
 
-            _decisionWizardUiMap.SendTabs(6);
-            SendKeys.SendWait("{ENTER}");
+            _decisionWizardUiMap.SendTabs(6, 500);
+            KeyboardCommands.SendEnter();
 
             //------------Assert Results-------------------------
 
@@ -294,29 +285,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             Playback.Wait(5000);
             //------------Execute Test---------------------------
-            _decisionWizardUiMap.SendTabs(5);
-            Playback.Wait(1000);
-            _decisionWizardUiMap.SelectMenuItem(17);
-            //Assert intellisense works
-            Playback.Wait(1000);
-            _decisionWizardUiMap.SendTabs(11);
-            Playback.Wait(1000);
+            _decisionWizardUiMap.SendTabs(5, 1000);
+            _decisionWizardUiMap.SelectMenuItem(17, 2000);
+            _decisionWizardUiMap.SendTabs(11, 1000);
 
             //First field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
-            _decisionWizardUiMap.SendTabs(2);
-            Playback.Wait(1000);
+            _decisionWizardUiMap.SendTabs(2, 1000);
 
             //Second field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
-            _decisionWizardUiMap.SendTabs(1);
-            Playback.Wait(1000);
+            _decisionWizardUiMap.SendTabs(1, 1000);
 
             //Third field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
-            _decisionWizardUiMap.SendTabs(6);
-            Playback.Wait(1000);
-            SendKeys.SendWait("{ENTER}");
+            _decisionWizardUiMap.SendTabs(6, 1000);
+
+            //Wait for wizard to close
+            KeyboardCommands.SendEnter(1500);
 
             // Assert Decision Title Updates Correctly
             const string expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";

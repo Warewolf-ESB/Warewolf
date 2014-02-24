@@ -5,8 +5,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-
-
+    
+    
     public partial class FormatNumberUIMap
     {
         UITestControl _numberFormatTool;
@@ -15,8 +15,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.FormatNumberUIMapClasses
             _numberFormatTool = numberFormatTool;
             InputNumber(number);
             SelectRoundingType(roundingType);
+            if(roundingType != "None")
+            {
             InputRounding(roundingValue);
             InputDecimalsToShow(decimalsToShow);
+            }
             InputResult(result);
         }
 

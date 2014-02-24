@@ -121,7 +121,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             var persistClipboard = Clipboard.GetText();
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.StartDragging(wizard, new Point(398, 83));
-            Mouse.StopDragging(wizard, 45, 0);
+            Mouse.StopDragging(wizard, 55, 0);
             Keyboard.SendKeys(wizard, "{CTRL}c");
             var actionName = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);

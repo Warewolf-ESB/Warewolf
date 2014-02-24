@@ -14,9 +14,10 @@ namespace Dev2.Studio.UI.Tests
     public class AdornerTests : UIMapBase
     {
         #region Cleanup
-        [ClassInitialize]
-        public static void ClassInit(TestContext tctx)
+        [TestInitialize]
+        public void TestInit()
         {
+            Init();
         }
 
         [TestCleanup]
