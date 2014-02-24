@@ -82,17 +82,19 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
         {
-            DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap();
-            // Add the data!
-            // moved from 100 to 10 for time
-            for(int j = 0; j < 10; j++)
+            using(DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap())
             {
-                activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
-            }
+                // Add the data!
+                // moved from 100 to 10 for time
+                for(int j = 0; j < 10; j++)
+                {
+                    activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                    activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
+                }
 
-            // Click it
-            Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
+                // Click it
+                Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
+            }
         }
 
         ////PBI 9461

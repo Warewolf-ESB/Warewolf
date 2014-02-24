@@ -11,7 +11,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
     public class DsfMultiAssignUiMap : ActivityUiMapBase
     {
         public DsfMultiAssignUiMap(bool createNewtab = true, bool dragAssignOntoNewTab = true)
-            : base(createNewtab)
+            : base(createNewtab, 1500)
         {
             if(dragAssignOntoNewTab)
             {

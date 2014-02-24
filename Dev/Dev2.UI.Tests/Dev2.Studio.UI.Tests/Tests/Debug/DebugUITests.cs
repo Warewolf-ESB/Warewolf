@@ -186,6 +186,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         [TestMethod]
         [Owner("Jai Holloway")]
         [TestCategory("DebugOutput_WhenStopped")]
+        [Ignore]
+        // Work removed from dev ;)
         public void DebugOutput_WhenStopped_WaitsForRenderToCompleteBeforeStoppedMessage()
         {
             try
