@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -242,7 +240,7 @@ namespace Dev2.Studio.UI.Tests
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             MouseCommands.ClickControlAtPoint(dbDropDown, new Point(10, 10));
-            WaitForControlLoad(5000);
+            WaitForControlLoad(15000);
             if(dbDropDown != null)
             {
                 var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
@@ -253,7 +251,7 @@ namespace Dev2.Studio.UI.Tests
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             MouseCommands.ClickControlAtPoint(tableDropDown, new Point(10, 10));
-            WaitForControlLoad(2500);
+            WaitForControlLoad(15000);
             if(tableDropDown != null)
             {
                 var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();

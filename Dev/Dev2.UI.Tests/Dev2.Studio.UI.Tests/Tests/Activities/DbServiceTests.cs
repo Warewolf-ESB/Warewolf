@@ -54,7 +54,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
             //Click the fix errors button
             activityUiMap.ClickFixErrors();
-            activityUiMap.ClickCloseMapping();
+            activityUiMap.ClickCloseMapping(5000);
             //Assert that the fix errors button isnt there anymore
             Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
         }

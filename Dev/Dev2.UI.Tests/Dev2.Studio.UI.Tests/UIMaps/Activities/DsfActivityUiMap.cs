@@ -30,9 +30,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             Mouse.Click(button, new Point(5, 5));
         }
 
-        public void ClickCloseMapping()
+        public void ClickCloseMapping(int waitAmt = 0)
         {
             UITestControl button = AdornersGetButton("Close Mapping");
+            Playback.Wait(waitAmt);
             Mouse.Click(button, new Point(5, 5));
         }
 

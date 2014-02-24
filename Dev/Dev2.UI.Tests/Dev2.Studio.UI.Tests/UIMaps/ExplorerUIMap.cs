@@ -252,14 +252,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl ddlBase = GetServerDDL();
 
             int counter = 0;
-            while(!ddlBase.Enabled && counter < 5)
+            while(!ddlBase.Enabled && counter < 15)
             {
                 Playback.Wait(2000);
                 counter++;
             }
             if(!ddlBase.Enabled)
             {
-                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+                throw new Exception("The connect control drop down is still disabled after 30 sec wait.");
             }
 
             var theDdl = ddlBase as WpfComboBox;
