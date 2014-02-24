@@ -210,14 +210,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             //Wait for the connect control to be ready
             int counter = 0;
-            while(!ddlBase.Enabled && counter < 15)
+            while(!ddlBase.Enabled && counter < 30)
             {
                 Playback.Wait(2000);
                 counter++;
             }
             if(!ddlBase.Enabled)
             {
-                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+                throw new Exception("The connect control drop down is still disabled after 1 minute wait.");
             }
 
             // Click it to expand it

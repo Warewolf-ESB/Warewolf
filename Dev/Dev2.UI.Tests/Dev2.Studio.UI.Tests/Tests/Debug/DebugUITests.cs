@@ -171,7 +171,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                     RibbonUIMap.ClickDebug();
 
                     DebugUIMap.ClickExecute();
-                    OutputUIMap.WaitForExecution();
+                    OutputUIMap.WaitForExecution(2500);
                     UITestControl lastStep = OutputUIMap.GetLastStep();
                     string workflowStepName = OutputUIMap.GetStepName(lastStep);
                     Assert.AreEqual("TravsTestFlow", workflowStepName);
@@ -205,7 +205,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                 status = OutputUIMap.GetStatusBarStatus();
                 StringAssert.Contains(status, "Stopping");
 
-                Playback.Wait(40000); // we need to wait for a very long time ;)
+                Playback.Wait(100000); // we need to wait for a very long time ;)
                 status = OutputUIMap.GetStatusBarStatus();
                 StringAssert.Contains(status, "Ready");
             }

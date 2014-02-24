@@ -59,7 +59,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             StudioWindow.WaitForControlReady(1000);
             ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            if(!WizardsUIMap.TryWaitForWizard())
+            if(!WizardsUIMap.TryWaitForWizard(15000))
             {
                 Assert.Fail("New Database service shortcut key doesnt work");
             }

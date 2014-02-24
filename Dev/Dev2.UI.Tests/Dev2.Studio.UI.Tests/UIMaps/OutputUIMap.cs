@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Common;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -277,12 +276,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        public void WaitForExecution()
+        public void WaitForExecution(int waitAmt = 200)
         {
             Playback.Wait(1000);
             while(IsSpinnerSpinning())
             {
-                Playback.Wait(200);
+                Playback.Wait(waitAmt);
             }
         }
 
