@@ -182,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "OutputVariable":
                     var outputExprRule = new IsValidExpressionRule(() => OutputVariable, "1");
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsStringEmptyRule(() => outputExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue));
                     break;
 
                 case "At":

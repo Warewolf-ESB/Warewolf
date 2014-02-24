@@ -272,19 +272,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "OutputVariable", null);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSetOutputVariable_IsNullOrEmpty_ValidateRulesReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "", At = "1" };
-
-            //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "OutputVariable", "cannot be empty");
-        }
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
