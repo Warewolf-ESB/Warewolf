@@ -6,7 +6,7 @@
     <DeploymentItem filename="Dev2.Server\Bin\Test\" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <RemoteController name="rsaklfashley:6901" />
   <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
     <Timeouts runTimeout="5400000" testTimeout="300000" />

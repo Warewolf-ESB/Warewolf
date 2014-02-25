@@ -49,7 +49,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     //Local, assume server is running
                     ServerLocation = GetProcessPath(serverProcess);
                     StudioLocation = GetProcessPath(studioProcess);
-                    //return;
+                    return;
                 }
 
                 var deployLocation = textCtx.DeploymentDirectory;
