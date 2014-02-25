@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
 {
     /// <summary>
@@ -272,7 +273,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "OutputVariable", null);
         }
-        
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]

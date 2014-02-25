@@ -26,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-        
+
         #region Get Input/Output Tests
 
         [TestMethod]
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, dsfForEachItems.Count);
             Assert.AreEqual(inputPath, dsfForEachItems[0].Name);
-            Assert.AreEqual(inputPath, dsfForEachItems[0].Value); 
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Value);
             Assert.AreEqual(outputPath, dsfForEachItems[1].Name);
             Assert.AreEqual(outputPath, dsfForEachItems[1].Value);
         }
@@ -179,7 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathCopy_Execute")]
@@ -190,9 +190,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             foreach(string fileName in fileNames)
             {
-// ReSharper disable LocalizableElement
+                // ReSharper disable LocalizableElement
                 File.WriteAllText(fileName, "TestData");
-// ReSharper restore LocalizableElement
+                // ReSharper restore LocalizableElement
             }
 
             string dataListWithData;
@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var pathCopy = new DsfPathCopy();
             IDestinationUsernamePassword password = pathCopy;
-            Assert.IsTrue(password != null);
+            Assert.IsNotNull(password);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Dev2.Tests.Diagnostics
             reader.Setup(w => w.ReadGuid()).Verifiable();
             reader.Setup(w => w.ReadDateTime()).Verifiable();
 
-            var debugState = new DebugState(reader.Object);
+            new DebugState(reader.Object);
 
             reader.Verify(w => w.ReadInt32());
             reader.Verify(w => w.ReadString());
@@ -78,7 +78,9 @@ namespace Dev2.Tests.Diagnostics
 
             debugState.Write(writer.Object);
 
+            // ReSharper disable PossibleUnintendedReferenceComparison
             writer.Verify(w => w.Write(It.Is<IDebugState>(state => state == debugState)));
+            // ReSharper restore PossibleUnintendedReferenceComparison
         }
 
         [TestMethod]
@@ -146,6 +148,7 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsTrue(debugStateOut.Inputs[0].FetchResultsList().SequenceEqual(debugStateIn.Inputs[0].FetchResultsList(), new DebugItemResultEqualityComparer()));
         }
 
+        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DebugItem_Add")]
@@ -184,13 +187,6 @@ namespace Dev2.Tests.Diagnostics
         #endregion
 
         #region CreateDebugItemWithLongValue
-
-        static DebugItem CreateDebugItemWithLongValue()
-        {
-            DebugItem result = new DebugItem();
-            result.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = LongText });
-            return result;
-        }
 
         #endregion
 

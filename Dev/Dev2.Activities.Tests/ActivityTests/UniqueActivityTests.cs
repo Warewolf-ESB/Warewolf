@@ -1,13 +1,14 @@
-﻿using ActivityUnitTests;
-using Dev2.Activities;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ActivityUnitTests;
+using Dev2.Activities;
+using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable AccessToModifiedClosure
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -206,6 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "id", out actual, out error);
             List<string> actualRet = new List<string>();
+
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedID, actualRet, comparer);
