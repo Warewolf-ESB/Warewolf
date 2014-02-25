@@ -310,9 +310,8 @@ namespace Gui
             catch(Exception) { }
             // ReSharper restore EmptyGeneralCatchClause
 
-            // We need to stop and restart the server - V 0.2.15.2 ;)
+            // Start the service
             StartService(serverInstallLocation);
-            RestartService();
 
             // clean up any log files and junk ;)
             var serverRoot = Path.Combine(installRoot, "Server");
@@ -324,7 +323,7 @@ namespace Gui
         private bool VerifyPortsAreOpen()
         {
             // WindowStyle = ProcessWindowStyle.Hidden 
-            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, CreateNoWindow = true} };
+            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, CreateNoWindow = true } };
             p.OutputDataReceived += OutputHandler;
             p.Start();
             p.BeginOutputReadLine();

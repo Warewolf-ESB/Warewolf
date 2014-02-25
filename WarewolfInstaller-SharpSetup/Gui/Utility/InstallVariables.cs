@@ -19,7 +19,7 @@
         /// <summary>
         /// The default wait in seconds
         /// </summary>
-        public static int DefaultWaitInSeconds = 120;
+        public static int DefaultWaitInSeconds = 300;
 
         /// <summary>
         /// Gets or sets the install root.
