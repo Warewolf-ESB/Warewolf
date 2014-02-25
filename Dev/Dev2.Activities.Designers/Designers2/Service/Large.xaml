@@ -21,8 +21,8 @@
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
-                               d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">
-
+                               d:DataContext="{d:DesignInstance local:ServiceDesignerViewModel}">    
+    
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
@@ -30,11 +30,13 @@
 
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
-                                     Content="Done"
+                                     Content="{Binding ButtonDisplayValue}"
                                      Margin="0,0,7,12"
-                                     IsValidatedBefore="True"
-                                     IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">
+                                     IsValidatedBefore="{Binding IsFixed}"
+                                     IsClosedAfter="{Binding IsFixed}"                  
+                                     CustomCommand ="{Binding DoneCommand}"
+                                     PostCommand ="{Binding DoneCompletedCommand}"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}">            
         </core:ActivityDesignerButton>
     </core:ActivityDesignerTemplate.RightButtons>
 
@@ -43,7 +45,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0"
               x:Name="ContentGrid">
             <Grid.RowDefinitions>
@@ -73,7 +75,7 @@
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    MinHeight="53"
                                    Height="Auto"
-                                   Margin="0"                                   
+                                   Margin="0"
                                    BorderThickness="1"
                                    Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
 

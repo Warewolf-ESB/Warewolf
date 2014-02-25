@@ -13,7 +13,6 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
@@ -53,10 +52,10 @@ namespace Dev2.Activities.Designers2.Core
             ShowExampleWorkflowLink = Visibility.Visible;
             IsValid = true;
             IsClosed = true;
-            ShowItemHelpCommand = new RelayCommand(o => showExampleWorkflow(modelItem.ItemType), o => true);
-            ShowHelpToggleCommand = new RelayCommand(o => ShowHelp = !ShowHelp, o => true);
-            ShowErrorsToggleCommand = new RelayCommand(o => ClearErrors(), o => true);
-            OpenErrorsLinkCommand = new RelayCommand(o =>
+            ShowItemHelpCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => showExampleWorkflow(modelItem.ItemType), o => true);
+            ShowHelpToggleCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => ShowHelp = !ShowHelp, o => true);
+            ShowErrorsToggleCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => ClearErrors(), o => true);
+            OpenErrorsLinkCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o =>
             {
                 var actionableErrorInfo = o as IActionableErrorInfo;
                 if(actionableErrorInfo != null)

@@ -23,7 +23,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 
@@ -42,6 +41,8 @@ namespace Dev2.Activities.Designers2.Service
         IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _isDisposed;
+        const string DoneText = "Done";
+        const string FixText = "Fix";
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
             : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator)
@@ -61,11 +62,14 @@ namespace Dev2.Activities.Designers2.Service
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
             _eventPublisher = eventPublisher;
+            ButtonDisplayValue = DoneText;
 
             ShowExampleWorkflowLink = Visibility.Collapsed;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new RelayCommand(o => FixErrors());
+            FixErrorsCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => FixErrors());
+            DoneCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => Done());
+            DoneCompletedCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => DoneCompleted());
 
             InitializeDisplayName();
             InitializeProperties();
@@ -88,9 +92,36 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
+        void DoneCompleted()
+        {
+            IsFixed = true;
+        }
+
+        void Done()
+        {
+            if(!IsWorstErrorReadOnly)
+            {
+                FixErrors();
+            }
+        }
+
+        public bool IsFixed
+        {
+            get { return (bool)GetValue(IsFixedProperty); }
+            set { SetValue(IsFixedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
+
+
+
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
         public ICommand FixErrorsCommand { get; private set; }
+
+        public ICommand DoneCommand { get; private set; }
+
+        public ICommand DoneCompletedCommand { get; private set; }
 
         public IDataMappingViewModel DataMappingViewModel { get; private set; }
 
@@ -117,7 +148,19 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsWorstErrorReadOnly
         {
             get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
-            private set { SetValue(IsWorstErrorReadOnlyProperty, value); }
+            private set
+            {
+                if(value)
+                {
+                    ButtonDisplayValue = DoneText;
+                }
+                else
+                {
+                    ButtonDisplayValue = FixText;
+                    IsFixed = false;
+                }
+                SetValue(IsWorstErrorReadOnlyProperty, value);
+            }
         }
 
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
@@ -195,6 +238,18 @@ namespace Dev2.Activities.Designers2.Service
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         string OutputMapping { set { SetProperty(value); } }
         string InputMapping { set { SetProperty(value); } }
+
+
+
+        public string ButtonDisplayValue
+        {
+            get { return (string)GetValue(ButtonDisplayValueProperty); }
+            set { SetValue(ButtonDisplayValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ButtonDisplayValue.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ButtonDisplayValueProperty =
+            DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
 
         public override void Validate()
         {

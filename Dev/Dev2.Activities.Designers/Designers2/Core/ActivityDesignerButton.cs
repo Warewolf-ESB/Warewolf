@@ -9,8 +9,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ActivityDesignerButton : Button
     {
-        static ICommand _underlyingCommand;
-
         public ActivityDesignerButton()
         {
             IsValid = true;
@@ -44,12 +42,18 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public static readonly DependencyProperty CustomCommandProperty =
-            DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(ActivityDesignerButton), new PropertyMetadata(OnCustomCommandPropertyChanged));
+            DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(ActivityDesignerButton), new PropertyMetadata(default(ICommand)));
 
-        static void OnCustomCommandPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+        public ICommand PostCommand
         {
-            _underlyingCommand = args.NewValue as ICommand;
+            get { return (ICommand)GetValue(PostCommandProperty); }
+            set { SetValue(PostCommandProperty, value); }
         }
+
+        public static readonly DependencyProperty PostCommandProperty =
+            DependencyProperty.Register("PostCommand", typeof(ICommand), typeof(ActivityDesignerButton), new PropertyMetadata(default(ICommand)));
+
+
 
         void CommandAction(object o)
         {
@@ -60,15 +64,20 @@ namespace Dev2.Activities.Designers2.Core
 
             if(IsValid)
             {
-                if(_underlyingCommand != null)
+                if(CustomCommand != null)
                 {
-                    _underlyingCommand.Execute(null);
+                    CustomCommand.Execute(null);
                 }
 
                 if(IsClosedAfter)
                 {
                     DoClose();
                 }
+            }
+
+            if(PostCommand != null)
+            {
+                PostCommand.Execute(null);
             }
         }
 

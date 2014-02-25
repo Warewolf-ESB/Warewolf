@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -106,6 +107,42 @@ namespace Dev2.Studio.UI.Tests
             activityUiMap.ClickFixErrors();
             activityUiMap.ClickCloseMapping();
             Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DesignTimeErrorHandling_CodedUiTests")]
+        public void DesignTimeErrorHandling_CodedUiTests_WhenOpeningMapping_FixButtonIsVisible()
+        {
+            //------------Setup for test--------------------------
+            var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
+
+            UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+
+            activityUiMap.ClickEdit();
+            WizardsUIMap.WaitForWizard();
+
+            //Wizard actions
+            DatabaseServiceWizardUIMap.ClickMappingTab();
+            DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
+            DatabaseServiceWizardUIMap.ClickSaveButton(3);
+            ResourceChangedPopUpUIMap.ClickCancel();
+            //Assert the the error button is there
+            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
+            //Click the fix errors button
+            activityUiMap.ClickOpenMapping();
+            Assert.AreEqual("Fix", activityUiMap.GetDoneButtonDisplayName());
+            activityUiMap.ClickDoneButton();
+            Assert.AreEqual("Done", activityUiMap.GetDoneButtonDisplayName());
+            activityUiMap.ClickDoneButton();
+            //Assert that the fix errors button isnt there anymore
+            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
         }
     }
 }

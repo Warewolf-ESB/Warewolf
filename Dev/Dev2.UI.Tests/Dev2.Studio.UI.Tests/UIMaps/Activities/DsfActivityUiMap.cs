@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
@@ -57,7 +59,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             }
         }
 
+        public string GetDoneButtonDisplayName()
+        {
+            return GetDoneButton().DisplayText;
+        }
+
+        public void ClickDoneButton()
+        {
+            Mouse.Click(GetDoneButton());
+        }
+
         #endregion
+
+        WpfButton GetDoneButton()
+        {
+            UITestControl doneButton = Activity.FindByAutomationId("DoneButton");
+            return doneButton as WpfButton;
+        }
 
         UITestControl GetFixErrorsButton()
         {
