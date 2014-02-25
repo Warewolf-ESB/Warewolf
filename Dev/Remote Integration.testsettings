@@ -5,7 +5,7 @@
     <DeploymentItem filename="Dev2.Server\Bin\Test\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <RemoteController name="rsaklfashley:6901" />
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="120000" />
     <TestTypeSpecific>
@@ -25,7 +25,10 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="AllAgentsDefaultRole">
+    <AgentRule name="Run in Ashley's Testing Environment Pool">
+      <SelectionCriteria>
+        <AgentProperty name="Pool" value="Test" />
+      </SelectionCriteria>
     </AgentRule>
   </Execution>
 </TestSettings>
