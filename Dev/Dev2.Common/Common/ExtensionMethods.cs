@@ -341,6 +341,30 @@ namespace Dev2.Common.Common
             return new StringBuilder();
         }
 
+        public static bool IsEqual(this StringBuilder sb, StringBuilder that)
+        {
+            if(sb.Length == that.Length)
+            {
+                // length check passes, check content ;)
+                for(int i = 0; i < sb.Length; i++)
+                {
+                    if(sb[i] != that[i])
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
+        // -- End StringBuilder Methods
+
         public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)
         {
             var attr = elem.Attribute(name);

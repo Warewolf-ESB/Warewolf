@@ -54,6 +54,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
@@ -189,8 +190,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IPopupController PopUp { get; set; }
 
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public UserControl PopupContent
         {
@@ -1289,10 +1291,24 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if((Designer != null && Designer.View.IsKeyboardFocusWithin) || sender != null)
             {
-                var checkServiceDefinition = CheckServiceDefinition();
-                var checkDataList = CheckDataList();
-                ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
-                NotifyOfPropertyChange(() => DisplayName);
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+
+                // If we are opening from server skip this check, it cannot have "real" changes!
+                if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+                {
+                    var checkServiceDefinition = CheckServiceDefinition();
+                    var checkDataList = CheckDataList();
+                    ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
+                    NotifyOfPropertyChange(() => DisplayName);
+                }
+                else
+                {
+                    // When opening from server, save the hydrated changes for future comparison ;)
+                    if(!CheckServiceDefinition())
+                    {
+                        ResourceModel.WorkflowXaml = ServiceDefinition;
+                    }
+                }
             }
         }
 
@@ -1309,7 +1325,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CheckServiceDefinition()
         {
-            return ServiceDefinition == ResourceModel.WorkflowXaml;
+            // This method was flawed with sb1 == sb2, that is object comparison. 
+            // I needed to change the equality comparison to ensure my assignment works as expected ;)
+            return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
 
         /// <summary>
@@ -1319,6 +1337,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(DataListSingleton.ActiveDataList != null)
             {
+                // given the flipping messaging, do this here, silly but works ;(
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+                if(OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+                {
+                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
+                }
+
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
                 DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
             }

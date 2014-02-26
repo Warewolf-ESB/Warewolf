@@ -171,8 +171,9 @@ namespace Dev2.Studio.Core
                         {
                             case "text/html":
                                 openWindow = true;
-                                // ReSharper disable once AssignNullToNotNullAttribute
+                                // ReSharper disable AssignNullToNotNullAttribute
                                 using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                                // ReSharper restore AssignNullToNotNullAttribute
                                 {
                                     htmlToRender = reader.ReadToEnd();
                                 }
@@ -214,8 +215,9 @@ namespace Dev2.Studio.Core
                         {
                             case "text/html":
                                 openWindow = true;
-                                // ReSharper disable once AssignNullToNotNullAttribute
+                                // ReSharper disable AssignNullToNotNullAttribute
                                 using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                                // ReSharper restore AssignNullToNotNullAttribute
                                 {
                                     htmlToRender = reader.ReadToEnd();
                                 }
@@ -241,8 +243,10 @@ namespace Dev2.Studio.Core
                 {
                     if(response != null)
                     {
-                        // ReSharper disable once AssignNullToNotNullAttribute
+
+                        // ReSharper disable AssignNullToNotNullAttribute
                         using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        // ReSharper restore AssignNullToNotNullAttribute
                         {
                             returnValue = reader.ReadToEnd();
                         }
@@ -276,8 +280,10 @@ namespace Dev2.Studio.Core
                 {
                     if(response != null)
                     {
-                        // ReSharper disable once AssignNullToNotNullAttribute
+
+                        // ReSharper disable AssignNullToNotNullAttribute
                         using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        // ReSharper restore AssignNullToNotNullAttribute
                         {
                             returnValue = reader.ReadToEnd();
                         }

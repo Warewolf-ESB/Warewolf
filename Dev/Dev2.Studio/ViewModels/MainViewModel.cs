@@ -45,6 +45,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
 using Dev2.Threading;
+using Dev2.Utils;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
@@ -100,7 +101,6 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showStartPageCommand;
         readonly IAsyncWorker _asyncWorker;
         bool _hasActiveConnection;
-        readonly List<WorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<WorkSurfaceKey>();
         bool _canDebug = true;
 
         #endregion
@@ -1196,7 +1196,7 @@ namespace Dev2.Studio.ViewModels
                             var resourceDef = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
                             resource.WorkflowXaml = resourceDef.Message;
 
-                            AddWorkSurfaceContext(resource);
+                            AddWorkSurfaceContextFromWorkspace(resource);
                         }
                         else
                         {
@@ -1338,7 +1338,17 @@ namespace Dev2.Studio.ViewModels
             return FindWorkSurfaceContextViewModel(key);
         }
 
+        public void AddWorkSurfaceContextFromWorkspace(IContextualResourceModel resourceModel)
+        {
+            AddWorkSurfaceContextImpl(resourceModel, true);
+        }
+
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)
+        {
+            AddWorkSurfaceContextImpl(resourceModel, false);
+        }
+
+        private void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace)
         {
             if(resourceModel == null)
             {
@@ -1356,7 +1366,11 @@ namespace Dev2.Studio.ViewModels
             }
 
             _canDebug = false;
-            _resourcesCurrentlyInOpeningState.Add(workSurfaceKey);
+
+            if(!isLoadingWorkspace)
+            {
+                OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
+            }
 
             //This is done for when the app starts up because the item isnt open but it must load it from the server or the user will lose all thier changes
             IWorkspaceItem workspaceItem = GetWorkspaceItemRepository().WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
@@ -1365,10 +1379,16 @@ namespace Dev2.Studio.ViewModels
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
 
+            // NOTE: only if from server ;)
+            if(!isLoadingWorkspace)
+            {
+                resourceModel.IsWorkflowSaved = true;
+            }
+
             AddWorkspaceItem(resourceModel);
             AddAndActivateWorkSurface(GetWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel);
 
-            _resourcesCurrentlyInOpeningState.Remove(workSurfaceKey);
+            OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _canDebug = true;
         }
 
@@ -1380,7 +1400,7 @@ namespace Dev2.Studio.ViewModels
         private bool IsInOpeningState(IContextualResourceModel resource)
         {
             WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(resource);
-            return _resourcesCurrentlyInOpeningState.Any(c => WorkSurfaceKeyEqualityComparer.Current.Equals(key, c));
+            return OpeningWorkflowsHelper.FetchOpeningKeys().Any(c => WorkSurfaceKeyEqualityComparer.Current.Equals(key, c));
         }
 
         private void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context)

@@ -12,13 +12,43 @@ namespace Dev2.Common.Tests
     {
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_IsEqual")]
+        public void ExtensionMethods_IsEqual_WhenComparingTwoStringBuilder_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var thisValue = new StringBuilder("<a></a>");
+            var thatValue = new StringBuilder("<a></a>");
+
+            //------------Execute Test---------------------------
+            var result = thisValue.IsEqual(thatValue);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_IsEqual")]
+        public void ExtensionMethods_IsEqual_WhenComparingTwoStringBuilderNotTheSame_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var thisValue = new StringBuilder("<a></a>");
+            var thatValue = new StringBuilder("<a></a><x/>");
+
+            //------------Execute Test---------------------------
+            var result = thisValue.IsEqual(thatValue);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
         [TestCategory("ExtensionMethods_ToStringBuilder")]
         public void ExtensionMethods_ToStringBuilder_XElement_ExpectStringBuilder()
         {
             //------------Setup for test--------------------------
             var expected = "<x><y /></x>";
             var xe = XElement.Parse(expected);
-            
+
             //------------Execute Test---------------------------
             var result = xe.ToStringBuilder();
 
@@ -33,7 +63,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             var tmpFile = Path.GetTempFileName();
-            File.WriteAllText(tmpFile,"this is going to be some very long test just to ensure we can over write it");
+            File.WriteAllText(tmpFile, "this is going to be some very long test just to ensure we can over write it");
             const string val = "<x><y>1</y></x>";
             StringBuilder value = new StringBuilder(val);
 
@@ -86,7 +116,7 @@ namespace Dev2.Common.Tests
             var sb = new StringBuilder();
             using(var sw = new StringWriter(sb))
             {
-                xe.Save(sw,SaveOptions.DisableFormatting);
+                xe.Save(sw, SaveOptions.DisableFormatting);
             }
 
             var res = sb.CleanEncodingHeaderForXmlSave();
@@ -108,11 +138,11 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
-            var result = string.Empty;
+            string result;
             var xe = value.ToXElement();
 
             result = xe.ToString(SaveOptions.DisableFormatting);
-            
+
             //------------Assert Results-------------------------
             Assert.AreEqual(val, result);
         }
@@ -124,7 +154,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             StringBuilder value = new StringBuilder("a b c");
-            
+
             //------------Execute Test---------------------------
             var result = value.IndexOf("b", 0, true);
 
@@ -217,10 +247,9 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
-            var result = value.Substring(0, 20);
+            value.Substring(0, 20);
 
             //------------Assert Results-------------------------
-
         }
 
         [TestMethod]
@@ -265,7 +294,7 @@ namespace Dev2.Common.Tests
             var result = value.Escape();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;",result.ToString());
+            Assert.AreEqual("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;", result.ToString());
         }
 
         [TestMethod]
@@ -322,7 +351,7 @@ namespace Dev2.Common.Tests
             StringBuilder value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
 
             //------------Execute Test---------------------------
-            var result = value.LastIndexOf("bbb",false);
+            var result = value.LastIndexOf("bbb", false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(28, result);
