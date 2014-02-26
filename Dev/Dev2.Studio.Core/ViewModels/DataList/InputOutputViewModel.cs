@@ -1,12 +1,14 @@
-﻿using System;
-using Dev2.Data.Interfaces;
+﻿using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using System;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
+// ReSharper restore CheckNamespace
 {
     public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable
     {
@@ -148,7 +150,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if(!value.Equals(_required))
                 {
                     _required = value;
-                    base.OnPropertyChanged("Required");
+                    NotifyOfPropertyChange(() => Required);
                 }
             }
         }
@@ -204,12 +206,16 @@ namespace Dev2.Studio.ViewModels.DataList
             if(RecordSetName == string.Empty)
             {
                 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = Name;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             else
             {
                 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = RecordSetName + "(*)." + Name;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
         }
 
@@ -227,7 +233,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
 
             // ReSharper disable once ObjectCreationAsStatement
+// ReSharper disable ObjectCreationAsStatement
             new ObjectCloner<IDataListItemModel>();
+// ReSharper restore ObjectCreationAsStatement
             IInputOutputViewModel result = new InputOutputViewModel(Name, Value, MapsTo, DefaultValue, Required, RecordSetName, EmptyToNull);
 
             return result;
