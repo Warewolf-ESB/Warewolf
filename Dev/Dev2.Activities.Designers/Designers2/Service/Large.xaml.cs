@@ -33,22 +33,25 @@ namespace Dev2.Activities.Designers2.Service
         {
             var viewModel = (ServiceDesignerViewModel)DataContext;
 
-            var inputsCount = viewModel.DataMappingViewModel.Inputs.Count;
-            var outputsCount = viewModel.DataMappingViewModel.Outputs.Count;
-
-            if(inputsCount == 0 && outputsCount == 0)
+            if(viewModel.DataMappingViewModel != null)
             {
-                viewModel.ThumbVisibility = Visibility.Collapsed;
-                return;
+                var inputsCount = viewModel.DataMappingViewModel.Inputs.Count;
+                var outputsCount = viewModel.DataMappingViewModel.Outputs.Count;
+
+                if(inputsCount == 0 && outputsCount == 0)
+                {
+                    viewModel.ThumbVisibility = Visibility.Collapsed;
+                    return;
+                }
+                viewModel.ThumbVisibility = Visibility.Visible;
+
+                var totalCount = (double)(inputsCount + outputsCount);
+
+                var inputsRowDef = InitializeHeight(InputsDataGrid, 0, inputsCount, totalCount);
+                var outputsRowDef = InitializeHeight(OutputsDataGrid, 1, outputsCount, totalCount);
+
+                MinHeight = inputsRowDef.MinHeight + outputsRowDef.MinHeight + OnErrorControl.ActualHeight + 12;
             }
-            viewModel.ThumbVisibility = Visibility.Visible;
-
-            var totalCount = (double)(inputsCount + outputsCount);
-
-            var inputsRowDef = InitializeHeight(InputsDataGrid, 0, inputsCount, totalCount);
-            var outputsRowDef = InitializeHeight(OutputsDataGrid, 1, outputsCount, totalCount);
-
-            MinHeight = inputsRowDef.MinHeight + outputsRowDef.MinHeight + OnErrorControl.ActualHeight + 12;
         }
 
         RowDefinition InitializeHeight(Dev2DataGrid dataGrid, int contentGridRow, int itemCount, double totalCount)

@@ -55,7 +55,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
-        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false);
         ExecuteMessage Save(IResourceModel instanceObj);
         void Save(ICollection<IResourceModel> instanceObjs);
         event EventHandler ItemAdded;

@@ -236,7 +236,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return ResourceModels.FindAll(func.Invoke);
         }
 
-        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression)
+        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchPayload = false)
         {
             if(expression != null && _reservedServices != null)
             {
@@ -246,7 +246,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     var result = ResourceModels.Find(func.Invoke);
 
                     // force a payload fetch ;)
-                    if(result != null && result.ResourceType == Enums.ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0)
+                    if(result != null && ((result.ResourceType == Enums.ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0) || fetchPayload))
                     {
                         var msg = FetchResourceDefinition(_environmentModel, GlobalConstants.ServerWorkspaceID, result.ID);
                         result.WorkflowXaml = msg.Message;

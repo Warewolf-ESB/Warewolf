@@ -20,6 +20,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Email
 {
     [TestClass]
@@ -994,7 +995,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
                 .Returns(sources);
-            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
                 .Returns(resourceModel);
 
             return new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher);

@@ -466,6 +466,8 @@ namespace Dev2.Studio.Core.Models
         public void ClearErrors()
         {
             _errors.Clear();
+            NotifyOfPropertyChange(() => Errors);
+            NotifyOfPropertyChange(() => IsValid);
         }
 
         public event EventHandler<DesignValidationMemo> OnEnvironmentValidationReceived;
@@ -689,7 +691,10 @@ namespace Dev2.Studio.Core.Models
                 xElement.Add(new XAttribute("Message", errorInfo.Message ?? ""));
                 xElement.Add(new XAttribute("ErrorType", errorInfo.ErrorType));
                 xElement.Add(new XAttribute("FixType", errorInfo.FixType));
-                xElement.Add(new XCData(errorInfo.FixData));
+                if(!string.IsNullOrEmpty(errorInfo.FixData))
+                {
+                    xElement.Add(new XCData(errorInfo.FixData));
+                }
                 errorElements.Add(xElement);
             }
 

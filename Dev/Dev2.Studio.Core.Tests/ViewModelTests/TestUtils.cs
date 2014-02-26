@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             Mock<IResourceRepository> resourceRepository;
             Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             return resourceModel;
         }
 

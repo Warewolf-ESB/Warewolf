@@ -28,8 +28,6 @@ namespace Dev2.Core.Tests.Webs
     {
         static ImportServiceContext _importContext;
 
-        private static Mock<IEventAggregator> _eventAgrregator;
-
         #region Class/TestInitialize
 
         [ClassInitialize]
@@ -42,7 +40,7 @@ namespace Dev2.Core.Tests.Webs
             {
                 new FullTestAggregateCatalog()
             });
-            _eventAgrregator = new Mock<IEventAggregator>();
+            new Mock<IEventAggregator>();
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);
 
@@ -61,13 +59,13 @@ namespace Dev2.Core.Tests.Webs
         [TestMethod]
         public void ServiceCallbackHandlerSaveWithValidArgsExpectedPublishesUpdateResourceMessage()
         {
-            Guid ResourceID = Guid.NewGuid();
+            Guid resourceID = Guid.NewGuid();
 
             var showDependencyProvider = new Mock<IShowDependencyProvider>();
 
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ResourceName).Returns("Some Testing Display Name");
-            resourceModel.Setup(r => r.ID).Returns(ResourceID);
+            resourceModel.Setup(r => r.ID).Returns(resourceID);
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true))
@@ -84,11 +82,11 @@ namespace Dev2.Core.Tests.Webs
                 .Callback<Object>(m =>
                 {
                     var msg = (UpdateResourceMessage)m;
-                    Assert.AreEqual(ResourceID, msg.ResourceModel.ID);
+                    Assert.AreEqual(resourceID, msg.ResourceModel.ID);
                 })
                 .Verifiable();
 
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "','ResourceType':'Service'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceID + "','ResourceType':'Service'}");
             handler.TestSave(envModel.Object, jsonObj);
 
             aggregator.Verify(e => e.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
@@ -100,12 +98,12 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID);
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Some Testing Dependant" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "Some Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -115,7 +113,7 @@ namespace Dev2.Core.Tests.Webs
             var envRepo = new Mock<IEnvironmentRepository>();
             var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "','ResourceType':'Service'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceID + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
@@ -124,9 +122,7 @@ namespace Dev2.Core.Tests.Webs
 
         static Mock<IEnvironmentConnection> SetupConnectionWithCompileMessageList(List<CompileMessageTO> compileMessageTos, List<string> deps)
         {
-            CompileMessageList compileMessageList = new CompileMessageList();
-            compileMessageList.MessageList = compileMessageTos;
-            compileMessageList.Dependants = deps;
+            CompileMessageList compileMessageList = new CompileMessageList { MessageList = compileMessageTos, Dependants = deps };
             string serializeObject = JsonConvert.SerializeObject(compileMessageList);
             var envConnection = new Mock<IEnvironmentConnection>();
             envConnection.Setup(e => e.IsConnected).Returns(true);
@@ -141,8 +137,8 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID);
 
             var envConnection = SetupConnectionWithCompileMessageList(new List<CompileMessageTO>(), new List<string>());
 
@@ -153,14 +149,14 @@ namespace Dev2.Core.Tests.Webs
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
             var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "','ResourceType':'Service'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceID + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(),  new List<string>{""}), Times.Never());
         }
 
-        static IResourceModel SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, Guid resourceID, ResourceType type = ResourceType.WorkflowService)
+        static void SetupObjects(out Mock<IShowDependencyProvider> showDependencyProvider, out Mock<IResourceRepository> resourceRepo, Guid resourceID, ResourceType type = ResourceType.WorkflowService)
         {
             showDependencyProvider = new Mock<IShowDependencyProvider>();
 
@@ -173,9 +169,8 @@ namespace Dev2.Core.Tests.Webs
             resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true))
                 .Returns(new List<IResourceModel> { resourceModel.Object });
-            resourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+            resourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
                 .Returns(resourceModel.Object);
-            return resourceModel.Object;
         }
 
         [TestMethod]
@@ -187,12 +182,12 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID);
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Unsaved 1" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "Unsaved 1" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -204,10 +199,10 @@ namespace Dev2.Core.Tests.Webs
 
             var workspace = new Mock<IWorkspaceItemRepository>();
             var workspaceItem = new WorkspaceItem(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()) { ServiceName = "Unsaved 1" };
-            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>() { workspaceItem });
+            workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem> { workspaceItem });
 
             //------------------------------Execute -------------------------------------------------
-            handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
+            handler.TestCheckForServerMessages(envModel.Object, resourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
@@ -221,12 +216,12 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID);
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "Unsaved 1", "Another Testing Dependant" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "Unsaved 1", "Another Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -236,7 +231,7 @@ namespace Dev2.Core.Tests.Webs
             var envRepo = new Mock<IEnvironmentRepository>();
             var handler = new ServiceCallbackHandlerMock(aggregator.Object, envRepo.Object, showDependencyProvider.Object);
 
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "','ResourceType':'Service'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceID + "','ResourceType':'Service'}");
             //------------------------------Execute -------------------------------------------------
             handler.TestSave(envModel.Object, jsonObj);
             //------------------------------Assert Result -------------------------------------------------
@@ -252,14 +247,14 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID, ResourceType.Source);
             showDependencyProvider.Setup(
                 c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "CheckForServerMessages 1", "Another Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -273,7 +268,7 @@ namespace Dev2.Core.Tests.Webs
             workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
 
             //------------------------------Execute -------------------------------------------------
-            handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
+            handler.TestCheckForServerMessages(envModel.Object, resourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
@@ -287,14 +282,14 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID, ResourceType.Source);
             showDependencyProvider.Setup(
                 c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "CheckForServerMessages 1", "Another Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -308,7 +303,7 @@ namespace Dev2.Core.Tests.Webs
             workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
 
             //------------------------------Execute -------------------------------------------------
-            handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
+            handler.TestCheckForServerMessages(envModel.Object, resourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }
@@ -322,14 +317,14 @@ namespace Dev2.Core.Tests.Webs
             //------------------------------Setup-------------------------------------------------
             Mock<IShowDependencyProvider> showDependencyProvider;
             Mock<IResourceRepository> resourceRepo;
-            Guid ResourceID = Guid.NewGuid();
-            SetupObjects(out showDependencyProvider, out resourceRepo, ResourceID, ResourceType.Source);
+            Guid resourceID = Guid.NewGuid();
+            SetupObjects(out showDependencyProvider, out resourceRepo, resourceID, ResourceType.Source);
             showDependencyProvider.Setup(
                 c => c.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }));
 
             var compileMessageTos = new List<CompileMessageTO> { new CompileMessageTO() };
 
-            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string>() { "CheckForServerMessages 1", "Another Testing Dependant" });
+            var envConnection = SetupConnectionWithCompileMessageList(compileMessageTos, new List<string> { "CheckForServerMessages 1", "Another Testing Dependant" });
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -343,7 +338,7 @@ namespace Dev2.Core.Tests.Webs
             workspace.Setup(c => c.WorkspaceItems).Returns(new List<IWorkspaceItem>());
 
             //------------------------------Execute -------------------------------------------------
-            handler.TestCheckForServerMessages(envModel.Object, ResourceID, workspace.Object);
+            handler.TestCheckForServerMessages(envModel.Object, resourceID, workspace.Object);
             //------------------------------Assert Result -------------------------------------------------
             showDependencyProvider.Verify(provider => provider.ShowDependencyViewer(It.IsAny<IContextualResourceModel>(), new List<string> { "" }), Times.Never());
         }

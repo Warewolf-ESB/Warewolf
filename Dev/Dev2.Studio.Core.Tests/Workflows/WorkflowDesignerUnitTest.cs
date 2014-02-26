@@ -1734,7 +1734,10 @@ namespace Dev2.Core.Tests.Workflows
             {
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
-                Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
+                if(dev2Activity != null)
+                {
+                    Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
+                }
             }
         }
 
@@ -2048,7 +2051,7 @@ namespace Dev2.Core.Tests.Workflows
 
             // If the view model is able to resolve the remote server ID it will search it for the resource
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns((IResourceModel)null);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
             resourceRepository.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
             var parentEnvironment = new Mock<IEnvironmentModel>();
@@ -2086,53 +2089,6 @@ namespace Dev2.Core.Tests.Workflows
             viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironment.Object.ID, envRepository.Object));
 
             Assert.AreSame(parentEnvironment.Object, actualEnvironment);
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WorkflowDesignerViewModel_EditActivity")]
-        public void WorkflowDesignerViewModel_EditActivity_ResourceIDUsedToFindResourceToEdit()
-        {
-            var parentEnvironmentID = Guid.NewGuid();
-
-            #region Setup viewModel
-
-            var resourceModel = new Mock<IContextualResourceModel>();
-            var mockedResRepo = new Mock<IResourceRepository>();
-            Expression<Func<IResourceModel, bool>> actual = null;
-            mockedResRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
-            mockedResRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Callback<Expression<Func<IResourceModel, bool>>>(f =>
-            {
-                actual = f;
-            });
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(mockedResRepo.Object);
-
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
-
-            var viewModel = CreateWorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-
-            #endregion
-
-            var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.Name).Returns("ResourceID");
-            prop.Setup(p => p.ComputedValue).Returns(Guid.NewGuid());
-            var modelProperties = new[] { prop.Object };
-            var modelItem = TestUtils.CreateModelItem(Guid.NewGuid(), Guid.NewGuid(), parentEnvironmentID, modelProperties);
-            modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
-            var mockedEnvironmentRepository = new Mock<IEnvironmentRepository>();
-            var mockedEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockedEnvironmentModel.Setup(env => env.ResourceRepository).Returns(mockedResRepo.Object);
-            mockedEnvironmentRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockedEnvironmentModel.Object);
-
-            //------------Execute Test---------------------------
-            viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironmentID, mockedEnvironmentRepository.Object));
-
-            // Assert Result
-            var binaryExpression = actual.Body as BinaryExpression;
-            Assert.IsTrue(binaryExpression != null && binaryExpression.Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -2611,7 +2567,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion

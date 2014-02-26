@@ -68,7 +68,7 @@ namespace Dev2.Core.Tests.Utils
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
-            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(mockResourceModelDependant.Object);
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
@@ -93,7 +93,7 @@ namespace Dev2.Core.Tests.Utils
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
-            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(mockResourceModelDependant.Object);
+            mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             mockResource.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
             //------------Execute Test---------------------------

@@ -20,6 +20,7 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
     [TestClass]
@@ -35,7 +36,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), null, null, null);
+            new SqlBulkInsertDesignerViewModel(CreateModelItem(), null, null, null);
 
             //------------Assert Results-------------------------
         }
@@ -49,7 +50,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
+            new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
 
             //------------Assert Results-------------------------
         }
@@ -63,7 +64,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
 
             //------------Assert Results-------------------------
         }
@@ -246,7 +247,6 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
-            var selectedTable = selectedTables.Items[1];
 
             var initialDatabase = databases.Keys.Skip(1).First();
             var initialTable = databases[initialDatabase].Items[3];
@@ -664,7 +664,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(modelItem, databases);
 
             //------------Execute Test---------------------------
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: false, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true, toField: inputMapping.OutputColumn.ColumnName);
+            Verify_Validate_Variables_SetsErrors(viewModel, false, true, true, true, inputMapping.OutputColumn.ColumnName);
 
             inputMapping.InputColumn = null;
 
@@ -707,7 +707,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var viewModel = CreateViewModel(modelItem, databases);
 
             //------------Execute Test---------------------------
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true, toField: inputMapping.OutputColumn.ColumnName);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true, inputMapping.OutputColumn.ColumnName);
 
             inputMapping.InputColumn = null;
 
@@ -898,36 +898,45 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
 
             // setup the FindSourcesByType command
-            var dbs = sources.Keys.ToList();
-            resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SqlDatabase)).Returns(dbs);
+            if(sources != null)
+            {
+                var dbs = sources.Keys.ToList();
+                resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SqlDatabase)).Returns(dbs);
+            }
 
             var tableJson = new DbTableList();
             resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
             {
-                var tableList = sources[src];
-                tableJson = tableList;
+                if(sources != null)
+                {
+                    var tableList = sources[src];
+                    tableJson = tableList;
+                }
             }).Returns(() => tableJson);
 
             var columnsJson = new DbColumnList();
             resourceRepo.Setup(r => r.GetDatabaseTableColumns(It.IsAny<DbSource>(), It.IsAny<DbTable>())).Callback((DbSource src, DbTable tbl) =>
             {
                 var tableName = tbl.TableName;
-                var tables = sources[src];
-
-                var table = tables.Items.First(t => t.TableName == tableName.Trim(new[] { '"' }));
-                var columnList = new DbColumnList();
-                columnList.Items.AddRange(table.Columns);
-                if(!string.IsNullOrEmpty(columnListErrors))
+                if(sources != null)
                 {
-                    columnList.HasErrors = true;
-                    columnList.Errors = columnListErrors;
+                    var tables = sources[src];
+
+                    var table = tables.Items.First(t => t.TableName == tableName.Trim(new[] { '"' }));
+                    var columnList = new DbColumnList();
+                    columnList.Items.AddRange(table.Columns);
+                    if(!string.IsNullOrEmpty(columnListErrors))
+                    {
+                        columnList.HasErrors = true;
+                        columnList.Errors = columnListErrors;
+                    }
+                    columnsJson = columnList;
                 }
-                columnsJson = columnList;
             }).Returns(() => columnsJson);
 
             if(configureFindSingle)
             {
-                envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel);
+                envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel);
             }
 
             return new TestSqlBulkInsertDesignerViewModel(modelItem, envModel.Object, eventAggregator);

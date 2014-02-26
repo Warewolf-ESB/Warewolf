@@ -29,6 +29,8 @@ using Moq;
 using Newtonsoft.Json;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace BusinessDesignStudio.Unit.Tests
 {
     /// <summary>
@@ -49,9 +51,9 @@ namespace BusinessDesignStudio.Unit.Tests
         //readonly Mock<IStudioClientContext> _dataChannel = new Mock<IStudioClientContext>();
         readonly Mock<IResourceModel> _resourceModel = new Mock<IResourceModel>();
         ResourceRepository _repo;
-        private Guid _resourceGuid = Guid.NewGuid();
-        private Guid _serverID = Guid.NewGuid();
-        private Guid _workspaceID = Guid.NewGuid();
+        private readonly Guid _resourceGuid = Guid.NewGuid();
+        private readonly Guid _serverID = Guid.NewGuid();
+        private readonly Guid _workspaceID = Guid.NewGuid();
 
         #endregion Variables
 
@@ -96,8 +98,8 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestCategory("ResourceRepository_HydrateResourceModel")]
         public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWorkflow_InputAndOutputMappingsAreValid()
         {
-            string inputData = "inputs";
-            string outputData = "outputs";
+            const string inputData = "inputs";
+            const string outputData = "outputs";
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
             var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.DbService);
@@ -406,7 +408,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
 
-            var resultObj = BuildResourceObjectFromGuids(new Guid[] { guid1, guid2 });
+            var resultObj = BuildResourceObjectFromGuids(new[] { guid1, guid2 });
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -762,8 +764,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
-            var myItem = new ResourceModel(mockEnvironmentModel.Object);
-            myItem.ResourceName = "TestResource";
+            var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource" };
             mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
             int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
@@ -808,9 +809,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
-            var myItem = new ResourceModel(mockEnvironmentModel.Object);
-            myItem.ResourceName = "TestResource";
-            myItem.Category = string.Empty;
+            var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource", Category = string.Empty };
             ResourceRepository.Add(myItem);
             int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
@@ -1341,7 +1340,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindSourcesByType_With_NonNullParameters_Expected_ReturnsNonEmptyList()
         {
 
-            var res = new EmailSource() { ResourceID = Guid.NewGuid() };
+            var res = new EmailSource { ResourceID = Guid.NewGuid() };
             var resList = new List<EmailSource> { res };
             var src = JsonConvert.SerializeObject(resList);
 
@@ -1390,6 +1389,35 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModels = _repo.Find(null);
             //------------Assert Results-------------------------
             Assert.IsNull(resourceModels);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceRepository_FindSingle")]
+        public void ResourceRepository_FindSingle_WhenLoadDefinition_ExpectValidXAML()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(BuildResourceObjectFromGuids(new[] { newGuid }));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.ForceLoad();
+
+            const string modelDefinition = "model definition";
+            var msg = MakeMsg(modelDefinition);
+            var payload = JsonConvert.SerializeObject(msg);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
+
+            //------------Execute Test---------------------------
+            var result = _repo.FindSingle(model => model.ID == newGuid, true);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result.WorkflowXaml);
+            StringAssert.Contains(result.WorkflowXaml.ToString(), modelDefinition);
+
         }
         #endregion
 
@@ -1660,7 +1688,6 @@ namespace BusinessDesignStudio.Unit.Tests
                 .Returns(new StringBuilder(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2)));
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            int resources = _repo.All().Count;
             var guid = Guid.NewGuid();
             guid2 = guid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1715,7 +1742,6 @@ namespace BusinessDesignStudio.Unit.Tests
                 .Returns(new StringBuilder(string.Format("<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{0}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{1}\"></Service></Payload>", _resourceGuid, guid2)));
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            int resources = _repo.All().Count;
             var guid = Guid.NewGuid();
             guid2 = guid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
@@ -1753,7 +1779,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             // config the repos
             srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
                    .Returns(_resourceModel.Object);
 
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
@@ -1761,8 +1787,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
-            var theModel = new ResourceModel(srcModel.Object);
-            theModel.ID = theID;
+            var theModel = new ResourceModel(srcModel.Object) { ID = theID };
             deployModels.Add(theModel);
 
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
@@ -1797,7 +1822,7 @@ namespace BusinessDesignStudio.Unit.Tests
             findModel.ID = theID;
 
             srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
                    .Returns(findModel);
 
             targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
@@ -1816,8 +1841,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             IList<IResourceModel> deployModels = new List<IResourceModel>();
 
-            var theModel = new ResourceModel(srcEnvModel.Object);
-            theModel.ID = theID;
+            var theModel = new ResourceModel(srcEnvModel.Object) { ID = theID };
             deployModels.Add(theModel);
 
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
@@ -1948,7 +1972,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //init
             var resID = Guid.NewGuid();
-            var newResName = "New Test Name";
+            const string newResName = "New Test Name";
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
 
@@ -2085,7 +2109,7 @@ namespace BusinessDesignStudio.Unit.Tests
         private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
         {
 
-            SerializableResource sr = new SerializableResource()
+            SerializableResource sr = new SerializableResource
             {
                 ResourceCategory = "Test Category",
                 DataList = "",
@@ -2114,7 +2138,7 @@ namespace BusinessDesignStudio.Unit.Tests
             int cnt = names.Length;
             for(int i = 0; i < cnt; i++)
             {
-                SerializableResource sr = new SerializableResource()
+                SerializableResource sr = new SerializableResource
                 {
                     ResourceCategory = "Test Category",
                     DataList = "",
@@ -2138,6 +2162,8 @@ namespace BusinessDesignStudio.Unit.Tests
         /// </summary>
         /// <param name="ids">The ids.</param>
         /// <param name="theType">The type.</param>
+        /// <param name="errors"></param>
+        /// <param name="isValid"></param>
         /// <returns></returns>
         private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true)
         {
@@ -2195,7 +2221,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         public static ExecuteMessage MakeMsg(string msg)
         {
-            var result = new ExecuteMessage() { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
             return result;
         }

@@ -943,7 +943,7 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(resourceModel.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, mockEnvironmentModel.Object);
             //------------Execute Test---------------------------

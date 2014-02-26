@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
+using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -20,6 +21,7 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -28,8 +30,9 @@ using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IDisposable
+    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, IDisposable
     {
+        const string SourceNotFoundMessage = "Source was not found. This service will not execute.";
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
@@ -60,7 +63,6 @@ namespace Dev2.Activities.Designers2.Service
             VerifyArgument.IsNotNull("rootModel", rootModel);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-
             _eventPublisher = eventPublisher;
             ButtonDisplayValue = DoneText;
 
@@ -201,6 +203,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public static readonly DependencyProperty ShowParentProperty =
             DependencyProperty.Register("ShowParent", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(false, OnShowParentChanged));
+
 
         static void OnShowParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -384,7 +387,7 @@ namespace Dev2.Activities.Designers2.Service
 
                     // TODO : Fetch service data here ;)
 
-                    ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID) as IContextualResourceModel;
+                    ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID, true) as IContextualResourceModel;
                     if(ResourceModel == null)
                     {
                         if(environmentModel.IsConnected)
@@ -392,14 +395,35 @@ namespace Dev2.Activities.Designers2.Service
                             UpdateLastValidationMemoWithDeleteError();
                             return false;
                         }
-
                         // BUG 9634 - 2013.07.17 - TWR : added connection check
                         environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
+                    }
+                    else
+                    {
+                        if(ResourceModel.ResourceType == ResourceType.Service)
+                        {
+                            var xe = ResourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
+                            var srcID = xe.AttributeSafe("SourceID");
+                            Guid sourceID;
+                            if(Guid.TryParse(srcID, out sourceID))
+                            {
+                                SourceID = sourceID;
+                                var sourceResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == sourceID);
+                                if(sourceResource == null)
+                                {
+                                    UpdateLastValidationMemoWithSourceNotFoundError();
+                                    return false;
+                                }
+                }
+
+            }
                     }
                 }
             }
             return true;
         }
+
+        public Guid SourceID { get; set; }
 
         void InitializeValidationService(IEnvironmentModel environmentModel)
         {
@@ -532,6 +556,24 @@ namespace Dev2.Activities.Designers2.Service
             UpdateLastValidationMemo(memo);
         }
 
+        void UpdateLastValidationMemoWithSourceNotFoundError()
+        {
+            var uniqueID = UniqueID;
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = uniqueID,
+                IsValid = false,
+            };
+            memo.Errors.Add(new ErrorInfo
+            {
+                InstanceID = uniqueID,
+                ErrorType = ErrorType.Critical,
+                FixType = FixType.None,
+                Message = SourceNotFoundMessage
+            });
+            UpdateLastValidationMemo(memo);
+        }
+
         void UpdateLastValidationMemoWithOfflineError(ConnectResult result)
         {
             switch(result)
@@ -575,7 +617,10 @@ namespace Dev2.Activities.Designers2.Service
 
                     foreach(var input in inputOutputViewModels)
                     {
-                        var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
+                        IInputOutputViewModel currentInputViewModel = input;
+                        if(DataMappingViewModel != null)
+                        {
+                            var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
                         if(inputOutputViewModel != null)
                         {
                             inputOutputViewModel.Required = input.Required;
@@ -586,11 +631,12 @@ namespace Dev2.Activities.Designers2.Service
                         }
                     }
                 }
+                }
 
                 if(!keepError)
                 {
                     memo.Errors.Remove(reqiredMappingChanged);
-                    RemoveWorstError(reqiredMappingChanged);
+                    RemoveError(reqiredMappingChanged);
                 }
             }
         }
@@ -690,7 +736,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     SetInputs();
                     SetOuputs();
-                    RemoveWorstError(WorstDesignError);
+                    RemoveError(WorstDesignError);
                     UpdateWorstError();
 
                     break;
@@ -700,8 +746,9 @@ namespace Dev2.Activities.Designers2.Service
                     var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
                     foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
+                        IInputOutputViewModel model = inputOutputViewModel;
                         var actualViewModel =
-                        DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                        DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
                         if(actualViewModel != null)
                         {
                             if(actualViewModel.Value == string.Empty)
@@ -728,7 +775,8 @@ namespace Dev2.Activities.Designers2.Service
 
                 foreach(var newMapping in newMappings)
                 {
-                    var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(newMapping.Name, StringComparison.InvariantCultureIgnoreCase));
+                    IInputOutputViewModel mapping = newMapping;
+                    var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(mapping.Name, StringComparison.InvariantCultureIgnoreCase));
                     if(oldMapping != null)
                     {
                         newMapping.MapsTo = oldMapping.MapsTo;
@@ -759,7 +807,7 @@ namespace Dev2.Activities.Designers2.Service
 
         #region RemoveWorstError
 
-        void RemoveWorstError(IErrorInfo worstError)
+        void RemoveError(IErrorInfo worstError)
         {
             DesignValidationErrors.Remove(worstError);
             RootModel.RemoveError(worstError);
@@ -812,6 +860,21 @@ namespace Dev2.Activities.Designers2.Service
         #endregion
 
         #region Implementation of IDisposable
+
+        public void Handle(UpdateResourceMessage message)
+        {
+            if(message != null && message.ResourceModel != null && SourceID != Guid.Empty && SourceID == message.ResourceModel.ID)
+            {
+                IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == SourceNotFoundMessage);
+                if(sourceNotAvailableMessage != null)
+                {
+                    RemoveError(sourceNotAvailableMessage);
+                    UpdateWorstError();
+                    InitializeMappings();
+                    UpdateMappings();
+                }
+            }
+        }
 
         ~ServiceDesignerViewModel()
         {

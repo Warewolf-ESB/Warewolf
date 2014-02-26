@@ -24,6 +24,7 @@ using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
 {
     public static class Dev2MockFactory
@@ -50,10 +51,8 @@ namespace Dev2.Core.Tests
          * 
          */
         // required for IsSelected Property of LayoutGridObjectViewModel
-        private static bool[,] isSelected = new bool[,] { { false, false, false, false }, { false, false, false, false }, { false, false, false, false }, { false, false, false, false } };
+        private static bool[,] isSelected = { { false, false, false, false }, { false, false, false, false }, { false, false, false, false }, { false, false, false, false } };
         private static ILayoutObjectViewModel _sillyMoqResult;
-        private static ILayoutGridViewModel _model;
-
 
         public static void printIsSelected()
         {
@@ -75,7 +74,6 @@ namespace Dev2.Core.Tests
         public static ILayoutObjectViewModel LayoutObjectFromMock(ILayoutGridViewModel grid, int row, int col)
         {
             _sillyMoqResult = LayoutObject(grid, row, col).Object;
-            _model = grid;
             return _sillyMoqResult;
         }
 
@@ -110,7 +108,7 @@ namespace Dev2.Core.Tests
                     _mockEnvironmentModel = SetupEnvironmentModel();
                     return _mockEnvironmentModel;
                 }
-                    return _mockEnvironmentModel;
+                return _mockEnvironmentModel;
             }
             set
             {
@@ -130,8 +128,8 @@ namespace Dev2.Core.Tests
                     _mockIMainViewModel = SetupMainViewModel();
                     return _mockIMainViewModel;
                 }
-                    return _mockIMainViewModel;
-                }
+                return _mockIMainViewModel;
+            }
             set
             {
                 _mockIMainViewModel = value;
@@ -174,8 +172,8 @@ namespace Dev2.Core.Tests
                     _mockFilePersistenceProvider = SetupFilePersistenceProviderMock();
                     return _mockFilePersistenceProvider;
                 }
-                    return _mockFilePersistenceProvider;
-                }
+                return _mockFilePersistenceProvider;
+            }
             set
             {
                 _mockFilePersistenceProvider = value;
@@ -191,8 +189,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelMock();
                     return _mockResourceModel;
                 }
-                    return _mockResourceModel;
-                }
+                return _mockResourceModel;
+            }
             set
             {
                 _mockResourceModel = value;
@@ -208,8 +206,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelWithOnlyInputsMock();
                     return _mockResourceModel;
                 }
-                    return _mockResourceModel;
-                }
+                return _mockResourceModel;
+            }
             set
             {
                 _mockResourceModel = value;
@@ -225,8 +223,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelWithOnlyOuputsMock();
                     return _mockResourceModel;
                 }
-                    return _mockResourceModel;
-                }
+                return _mockResourceModel;
+            }
             set
             {
                 _mockResourceModel = value;
@@ -283,38 +281,38 @@ namespace Dev2.Core.Tests
 
         static public Mock<IEnvironmentModel> SetupEnvironmentModel()
         {
-            var _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            return _mockEnvironmentModel;
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            return mockEnvironmentModel;
         }
 
         static public Mock<IEnvironmentModel> SetupEnvironmentModel(Mock<IContextualResourceModel> returnResource, List<IResourceModel> resourceRepositoryFakeBacker)
         {
-            var _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
-            return _mockEnvironmentModel;
+            return mockEnvironmentModel;
         }
 
         static public Mock<IEnvironmentModel> SetupEnvironmentModel(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
         {
-            var _mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
-            return _mockEnvironmentModel;
+            return mockEnvironmentModel;
         }
 
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock()
@@ -330,10 +328,13 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(returnResource.Object);
-            mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(r => resourceRepositoryFakeBacker.Add(r));
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel>() { returnResource.Object });
-            mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel>() { returnResource.Object });
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
+            if(resourceRepositoryFakeBacker != null)
+            {
+                mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
+            }
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
+            mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel> { returnResource.Object });
 
             return mockResourceModel;
         }
@@ -341,9 +342,9 @@ namespace Dev2.Core.Tests
         static public Mock<IResourceRepository> SetupFrameworkRepositoryResourceModelMock(Mock<IContextualResourceModel> returnResource, List<IResourceModel> returnResources, List<IResourceModel> resourceRepositoryFakeBacker)
         {
             var mockResourceModel = new Mock<IResourceRepository>();
-            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(returnResource.Object);
-            mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(r => resourceRepositoryFakeBacker.Add(r));
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel>() { returnResource.Object });
+            mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
+            mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(returnResources);
 
             return mockResourceModel;
@@ -506,7 +507,6 @@ namespace Dev2.Core.Tests
         {
             var mockDataListItemViewModel = new Mock<IDataListItemModel>();
             mockDataListItemViewModel.Setup(itemVM => itemVM.Name).Returns("UnitTestDataListItem");
-            ObservableCollection<IDataListItemModel> children = new ObservableCollection<IDataListItemModel>();
             return mockDataListItemViewModel;
         }
 
@@ -533,7 +533,6 @@ namespace Dev2.Core.Tests
         {
             var mockDataListItemViewModel = new Mock<IDataListItemModel>();
             mockDataListItemViewModel.Setup(itemVM => itemVM.Name).Returns("UnitTestDataListItem");
-            ObservableCollection<IDataListItemModel> children = new ObservableCollection<IDataListItemModel>();
             return mockDataListItemViewModel;
         }
 
@@ -552,6 +551,7 @@ namespace Dev2.Core.Tests
             return _mockDev2Def;
         }
 
+        // ReSharper disable ParameterHidesMember
         public static Mock<IInputOutputViewModel> SetupIInputOutputViewModel(string name, string value, string recordSetName, bool isSelected, string mapsTo, bool isRequired, string displayName, string defaultValue)
         {
             Mock<IInputOutputViewModel> _mockInOut = new Mock<IInputOutputViewModel>();
@@ -564,9 +564,7 @@ namespace Dev2.Core.Tests
             _mockInOut.Setup(devDef => devDef.Required).Returns(isRequired);
             _mockInOut.Setup(devDef => devDef.DisplayName).Returns(displayName);
             _mockInOut.Setup(devDef => devDef.DefaultValue).Returns(defaultValue);
-            ObservableCollection<IDataListItemModel> dataList = new ObservableCollection<IDataListItemModel>();
-            dataList.Add(SetupDataListItemViewModel().Object);
-            //_mockInOut.Setup(inOut => inOut.DataList).Returns(dataList);
+            new ObservableCollection<IDataListItemModel> { SetupDataListItemViewModel().Object };
 
             return _mockInOut;
         }
@@ -574,9 +572,6 @@ namespace Dev2.Core.Tests
         public static Mock<IDataMappingViewModel> SetupIDataMappingViewModel()
         {
             Mock<IDataMappingViewModel> _mockDataMappingViewModel = new Mock<IDataMappingViewModel>();
-
-            //Mock<IDataMappingListFactory> _mockDataMappingListFactory = new Mock<IDataMappingListFactory>();
-            //Mock<IDataListViewModelFactory> _mockDataListViewModelFactory = new Mock<IDataListViewModelFactory>();
             Mock<IWebActivity> _mockWebActivity = SetupWebActivityMock();
             Mock<IContextualResourceModel> _mockresource = SetupResourceModelMock();
             Mock<IDataListViewModel> _mockDataListViewModel = new Mock<IDataListViewModel>();
@@ -648,15 +643,14 @@ namespace Dev2.Core.Tests
         {
             Mock<IDev2ConfigurationProvider> result = new Mock<IDev2ConfigurationProvider>();
             IDictionary d = new Dictionary<string, string>();
-            int pos = 0;
+            const int pos = 0;
 
             foreach(string k in key)
             {
                 d.Add(k, val[pos]);
             }
 
-            // result.SetupSet(c => c.IsSelected = It.IsAny<bool>()).Callback<bool>(value => isSelected[row,col] = value);
-            result.Setup(c => c.ReadKey(It.IsAny<string>())).Returns<string>((string kk) => (string)d[kk]);
+            result.Setup(c => c.ReadKey(It.IsAny<string>())).Returns((string kk) => (string)d[kk]);
 
             return result;
         }

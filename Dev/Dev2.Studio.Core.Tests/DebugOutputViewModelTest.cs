@@ -271,7 +271,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
 
             // If we get here then we've found the environment based on the environment ID!
-            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
+            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Verifiable();
 
             envList.Add(env.Object);
 
@@ -286,7 +286,7 @@ namespace Dev2.Core.Tests
 
             model.OpenItemCommand.Execute(debugState);
 
-            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()));
+            env.Verify(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false));
         }
 
         [TestMethod]

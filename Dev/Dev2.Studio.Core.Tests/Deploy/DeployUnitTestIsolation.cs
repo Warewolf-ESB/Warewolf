@@ -9,12 +9,12 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Deploy
 {
     /// <summary>
@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests.Deploy
             var id = Guid.NewGuid();
 
             //Setup Servers
-            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
             resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
                                        It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
 
@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests.Deploy
 
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
 
-            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel>() { server.Object, secondServer.Object });
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
 
             const string expectedResourceName = "Test Resource";
             var initialResource = new Mock<IContextualResourceModel>();
@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests.Deploy
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
+            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object);
 
             var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
             {

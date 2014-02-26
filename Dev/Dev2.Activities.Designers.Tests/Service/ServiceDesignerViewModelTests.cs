@@ -17,6 +17,7 @@ using Dev2.Providers.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -27,6 +28,7 @@ using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Service
 {
     [TestClass]
@@ -380,7 +382,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), true, null);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, Guid.Empty, null);
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(rootModel.Object.Environment);
@@ -405,7 +407,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Mock<IResourceRepository> resourceRepository;
             var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, null);
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
@@ -429,39 +431,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             var vm = CreateServiceDesignerViewModel(Guid.NewGuid(), new[] { friendlySourceName.Object, type.Object, actionName.Object, simulationMode.Object });
 
             Assert.IsTrue(vm.Properties.Count == 4);
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("ServiceDesignerViewModel_Constructor")]
-        public void ServiceDesignerViewModel_Constructor_ResourceIDUsedToFindResource()
-        {
-            var resourceID = Guid.NewGuid();
-            var rootModel = CreateResourceModel(resourceID);
-            var modelProperties = new[] { CreateModelProperty("ResourceID", resourceID).Object };
-            var modelItem = CreateModelItem(Guid.NewGuid(), rootModel.Object.ID, rootModel.Object.Environment.ID, modelProperties);
-            var mockedEnvironmentRepository = new Mock<IEnvironmentRepository>();
-            var mockedEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockedResRepo = new Mock<IResourceRepository>();
-            mockedEnvironmentModel.Setup(env => env.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
-
-            Expression<Func<IResourceModel, bool>> actual = null;
-            mockedResRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Callback<Expression<Func<IResourceModel, bool>>>(f =>
-            {
-                actual = f;
-            });
-            mockedEnvironmentModel.Setup(env => env.ResourceRepository).Returns(mockedResRepo.Object);
-            mockedEnvironmentRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockedEnvironmentModel.Object);
-
-            // ReSharper disable once ObjectCreationAsStatement
-            //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, mockedEnvironmentRepository.Object, new Mock<IEventAggregator>().Object);
-            // ReSharper restore ObjectCreationAsStatement
-
-            // Assert Resource ID Used To Find Resource
-            var binaryExpression = actual.Body as BinaryExpression;
-            Assert.IsTrue(binaryExpression != null && binaryExpression.Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -488,7 +457,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
                 foreach(var error in m.Errors)
                 {
-                    var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == error.ErrorType && me.Message == error.Message);
+                    ErrorInfo currentError = error;
+                    var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
                     Assert.AreSame(error, modelError);
                 }
                 Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
@@ -518,6 +488,89 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
+        public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasSource_NoErrorMessageAdded()
+        {
+            //------------Setup for test--------------------------
+            Guid instanceID;
+            Mock<IEnvironmentModel> environment;
+            Mock<IContextualResourceModel> resourceModel;
+            Guid sourceID;
+            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
+
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
+
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            //------------Execute Test---------------------------
+            var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, model.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.None, model.DesignValidationErrors[0].ErrorType);
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
+        public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasNoSource_ErrorMessageAdded()
+        {
+            //------------Setup for test--------------------------
+            Guid instanceID;
+            Mock<IEnvironmentModel> environment;
+            Mock<IContextualResourceModel> resourceModel;
+            Guid sourceID;
+            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
+
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            //------------Execute Test---------------------------
+            var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, model.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.Critical, model.DesignValidationErrors[0].ErrorType);
+            Assert.AreEqual(FixType.None, model.DesignValidationErrors[0].FixType);
+            StringAssert.Contains(model.DesignValidationErrors[0].Message, "Source was not found.");
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
+        public void ServiceDesignerViewModel_HandleUpdateResourceMessage_SourceMatchesSourceID_ErrorMessageRemoved()
+        {
+            //------------Setup for test--------------------------
+            Guid instanceID;
+            Mock<IEnvironmentModel> environment;
+            Mock<IContextualResourceModel> resourceModel;
+            Guid sourceID;
+            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
+            mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
+            environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
+
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
+            //------------Assert Preconditions--------------------
+            Assert.AreEqual(1, model.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.Critical, model.DesignValidationErrors[0].ErrorType);
+            Assert.AreEqual(FixType.None, model.DesignValidationErrors[0].FixType);
+            StringAssert.Contains(model.DesignValidationErrors[0].Message, "Source was not found.");
+            //------------Execute Test---------------------------
+            var sourceModelInMessage = new Mock<IContextualResourceModel>();
+            sourceModelInMessage.Setup(contextualResourceModel => contextualResourceModel.ID).Returns(sourceID);
+            model.Handle(new UpdateResourceMessage(sourceModelInMessage.Object));
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, model.DesignValidationErrors.Count);
+            Assert.AreEqual(ErrorType.None, model.DesignValidationErrors[0].ErrorType);
+
+        }
 
         #region OpenParent
 
@@ -977,7 +1030,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             Mock<IResourceRepository> resourceRepository;
             Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             return resourceModel;
         }
 
@@ -1018,6 +1071,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
             return model;
         }
+
         #endregion
 
         #region CreateServiceDesignerViewModel
@@ -1040,7 +1094,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
+            rootModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1052,6 +1108,48 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
 
             return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher);
+        }
+
+        static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, Mock<IContextualResourceModel> resourceModel, params IErrorInfo[] resourceErrors)
+        {
+            var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, modelProperties);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher);
+        }
+
+        static Mock<IResourceRepository> SetupForSourceCheck(out Guid instanceID, out Mock<IEnvironmentModel> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID)
+        {
+            Mock<IResourceRepository> mockRepo = new Mock<IResourceRepository>();
+            instanceID = Guid.NewGuid();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+
+            var src = @"1afe38e9-a6f5-403d-9e52-06dd7ae11198";
+            string xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
+            resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(xaml));
+            resourceModel.Setup(m => m.ID).Returns(instanceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.SetupProperty(m => m.IsValid);
+            sourceID = new Guid(src);
+            return mockRepo;
         }
 
         #endregion

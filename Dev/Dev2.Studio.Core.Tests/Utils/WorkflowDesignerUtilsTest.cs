@@ -13,12 +13,14 @@ using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Utils
 {
     /// <summary>
     /// Summary description for WorkflowDesignerUtilsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUtilsTest
     {
         /// <summary>
@@ -52,11 +54,11 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldHandleSpecialCharsWithNoException()
         {
-           WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
 
-           IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
+            IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
 
-           Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
+            Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }
 
         [TestMethod]
@@ -90,12 +92,12 @@ namespace Dev2.Core.Tests.Utils
             var handleMessages = new TestHandleMessages();
             eventAggregator.Subscribe(handleMessages);
             //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object,eventAggregator);
+            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.WorkSurfaceMessageCalled);
             Assert.IsFalse(handleMessages.EditResourceMessageCalled);
-        }        
-        
+        }
+
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereService_ExpectShowEditResourceWizardMessageHandled()
         {
@@ -106,11 +108,11 @@ namespace Dev2.Core.Tests.Utils
             var handleMessages = new TestHandleMessages();
             eventAggregator.Subscribe(handleMessages);
             //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object,eventAggregator);
+            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }          
+        }
 
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereSource_ExpectShowEditResourceWizardMessageHandled()
@@ -122,11 +124,11 @@ namespace Dev2.Core.Tests.Utils
             var handleMessages = new TestHandleMessages();
             eventAggregator.Subscribe(handleMessages);
             //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object,eventAggregator);
+            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, eventAggregator);
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }       
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -139,7 +141,7 @@ namespace Dev2.Core.Tests.Utils
             var handleMessages = new TestHandleMessages();
             eventAggregator.Subscribe(handleMessages);
             //------------Execute Test---------------------------
-            WorkflowDesignerUtils.EditResource(mockResourceModel.Object,null);
+            WorkflowDesignerUtils.EditResource(mockResourceModel.Object, null);
             //------------Assert Results-------------------------
         }
 
@@ -172,9 +174,9 @@ namespace Dev2.Core.Tests.Utils
             CompositionInitializer.DefaultInitialize();
             var aggregator = new Mock<EventAggregator>();
             IResourceModel actualResourceInvoked = null;
-            aggregator.Setup(a => a.Publish(It.IsAny <AddWorkSurfaceMessage>())).Callback<object>(msg =>
+            aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is AddWorkSurfaceMessage)?(msg as AddWorkSurfaceMessage).WorkSurfaceObject:null;
+                var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
                 actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
             });
             EventPublishers.Aggregator = aggregator.Object;
@@ -184,7 +186,7 @@ namespace Dev2.Core.Tests.Utils
             var mockedExampleWorkflow = new Mock<IResourceModel>();
 
             mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel,bool>>>())).Returns(mockedExampleWorkflow.Object);
+            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockedExampleWorkflow.Object);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //------------Execute Test---------------------------
@@ -215,7 +217,7 @@ namespace Dev2.Core.Tests.Utils
             var mockedExampleWorkflow = new Mock<IResourceModel>();
 
             mockedExampleWorkflow.Setup(res => res.DisplayName).Returns(expectedResourceName);
-            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(mockedExampleWorkflow.Object);
+            mockedResourceRepo.Setup(repo => repo.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockedExampleWorkflow.Object);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //------------Execute Test---------------------------
