@@ -151,6 +151,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     _required = value;
                     NotifyOfPropertyChange(() => Required);
+                    base.OnPropertyChanged("Required");
                 }
             }
         }
