@@ -232,9 +232,11 @@ namespace Dev2.Core.Tests
             var mock2 = new Mock<IDebugState>();
             mock1.SetupGet(m => m.ID).Returns(_firstResourceID);
             mock1.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock1.SetupGet(m => m.Message).Returns("Some message");
             mock1.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock1.SetupGet(m => m.StateType).Returns(StateType.Message);
             mock2.SetupGet(m => m.ServerID).Returns(_serverID);
+            mock2.SetupGet(m => m.Message).Returns("Some message");
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 

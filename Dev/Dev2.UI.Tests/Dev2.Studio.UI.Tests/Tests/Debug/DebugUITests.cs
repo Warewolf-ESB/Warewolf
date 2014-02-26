@@ -186,8 +186,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         [TestMethod]
         [Owner("Jai Holloway")]
         [TestCategory("DebugOutput_WhenStopped")]
-        [Ignore]
-        // Work removed from dev ;)
         public void DebugOutput_WhenStopped_WaitsForRenderToCompleteBeforeStoppedMessage()
         {
             try
@@ -204,10 +202,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
                 //------------Assert Results-------------------------
 
-                status = OutputUIMap.GetStatusBarStatus();
-                StringAssert.Contains(status, "Stopping");
-
-                Playback.Wait(100000); // we need to wait for a very long time ;)
                 status = OutputUIMap.GetStatusBarStatus();
                 StringAssert.Contains(status, "Ready");
             }

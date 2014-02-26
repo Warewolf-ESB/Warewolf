@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
@@ -18,9 +10,18 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     ///     This is the view-model of the UI.  It provides a data source
@@ -38,6 +39,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly DebugOutputFilterStrategy _debugOutputFilterStrategy;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
+
+        bool _continueDebugDispatch;
 
         readonly object _syncContext = new object();
 
@@ -472,6 +475,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if(content.IsFinalStep())
             {
                 DebugStatus = DebugStatus.Finished;
+                _continueDebugDispatch = true;
             }
 
             if(QueuePending(content))
@@ -721,6 +725,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddItemToTreeImpl(IDebugState content)
         {
+            if((DebugStatus == DebugStatus.Stopping ||
+                DebugStatus == DebugStatus.Finished) &&
+                string.IsNullOrEmpty(content.Message) &&
+                !_continueDebugDispatch)
+            {
+                return;
+            }
+
             if(!string.IsNullOrWhiteSpace(SearchText) && !_debugOutputFilterStrategy.Filter(content, SearchText))
             {
                 return;
@@ -828,7 +840,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         }
 
         #endregion
-
 
         static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
             where T : IDebugTreeViewItemViewModel
