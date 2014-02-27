@@ -391,7 +391,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
             if(listOfValidRows.Count > 0)
             {
-                var startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                FindRecordsTO findRecordsTO = ResultsCollection.Last(c => !c.CanRemove());
+                var startIndex = ResultsCollection.IndexOf(findRecordsTO) + 1;
                 foreach(var s in listToAdd)
                 {
                     mic.Insert(startIndex, new FindRecordsTO(s, ResultsCollection[startIndex - 1].SearchType, startIndex + 1));

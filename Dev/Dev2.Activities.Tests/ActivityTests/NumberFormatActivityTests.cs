@@ -172,33 +172,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Tests
 
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            DsfNumberFormatActivity testAct = new DsfNumberFormatActivity
-            {
-                Expression = "[[SomeVariable]]",
-                RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.None),
-                RoundingDecimalPlaces = "",
-                DecimalPlacesToShow = "",
-                Result = "[[res]]",
-            };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-            var scalars = binaryDL.FetchScalarEntries();
-
-            // remove test datalist ;)
-            DataListRemoval(binaryDL.UID);
-
-            Assert.AreEqual(0, recsets.Count);
-            Assert.AreEqual(5, scalars.Count);
-        }
-
-        #endregion GetWizardData Tests
-        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfNumberFormatActivity_UpdateForEachInputs")]

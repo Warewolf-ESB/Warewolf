@@ -311,7 +311,8 @@ namespace Dev2.Activities
                     List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        int startIndex = SystemInformationCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        GatherSystemInformationTO gatherSystemInformationTO = SystemInformationCollection.Last(c => !c.CanRemove());
+                        int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTO) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));

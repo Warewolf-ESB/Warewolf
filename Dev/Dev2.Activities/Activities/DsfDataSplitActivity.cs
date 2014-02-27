@@ -383,7 +383,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        DataSplitDTO dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
+                        int startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
@@ -593,30 +594,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Private Methods
-
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string RecordsetName = "ResultsCollection";
-            result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
-            result.TryCreateScalarValue(SourceString, "SourceString", out error);
-            result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
-            result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
-            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(DataSplitDTO item in ResultsCollection)
-            {
-                result.TryCreateRecordsetValue(item.SplitType, "SplitType", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.At, "At", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.Include.ToString(), "Include", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.OutputVariable, "", RecordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
 
         #region Get Debug Inputs/Outputs
 

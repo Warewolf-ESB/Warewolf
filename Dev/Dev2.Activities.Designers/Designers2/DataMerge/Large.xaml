@@ -18,6 +18,7 @@
                                MinWidth="353"
                                Width="353"
                                MinHeight="250"
+                               Height="250"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignWidth="280"

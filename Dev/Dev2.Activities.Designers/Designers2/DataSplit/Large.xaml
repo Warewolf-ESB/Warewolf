@@ -19,6 +19,7 @@
                                Width="350"
                                MinWidth="350"
                                MinHeight="350"
+                               Height="350"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"                               
                                Padding="10,7,10,10"

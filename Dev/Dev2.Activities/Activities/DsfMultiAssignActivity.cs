@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
 
                                 var dataList = compiler.FetchBinaryDataList(executionID, out errors);
-                                
+
 
                                 if(DataListUtil.IsEvaluated(t.FieldName))
                                 {
@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         AddDebugItem(new DebugItemStaticDataParams(t.FieldValue, NewFieldLabelText), debugItem);
                                     }
                                 }
-                                
+
                                 _debugInputs.Add(debugItem);
                                 index++;
                             }
@@ -281,24 +281,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string RecordsetName = "FieldsCollection";
-            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
-            foreach(ActivityDTO item in FieldsCollection)
-            {
-                result.TryCreateRecordsetValue(item.FieldName, "FieldName", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.FieldValue, "FieldValue", RecordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
-
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
@@ -332,27 +314,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Methods
-
-        public void RemoveItem()
-        {
-            List<int> blankCount = (from dynamic item in FieldsCollection
-                                    where String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue)
-                                    select item.IndexNumber).Cast<int>().ToList();
-
-            if(blankCount.Count <= 1 || FieldsCollection.Count <= 2)
-            {
-                return;
-            }
-
-            FieldsCollection.Remove(FieldsCollection[blankCount[0] - 1]);
-            for(int i = blankCount[0] - 1; i < FieldsCollection.Count; i++)
-            {
-                // ReSharper disable RedundantCast
-                dynamic tmp = FieldsCollection[i] as dynamic;
-                // ReSharper restore RedundantCast
-                tmp.IndexNumber = i + 1;
-            }
-        }
 
         #endregion
 

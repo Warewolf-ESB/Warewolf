@@ -267,7 +267,8 @@ namespace Dev2.Activities
             var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
             if(listOfValidRows.Count > 0)
             {
-                var startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                XPathDTO xPathDto = ResultsCollection.Last(c => !c.CanRemove());
+                var startIndex = ResultsCollection.IndexOf(xPathDto) + 1;
                 foreach(var s in listToAdd)
                 {
                     mic.Insert(startIndex, new XPathDTO(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
@@ -336,26 +337,6 @@ namespace Dev2.Activities
         }
 
         #endregion Private Methods
-
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error;
-            var result = Dev2BinaryDataListFactory.CreateDataList();
-            const string RecordsetName = "ResultsCollection";
-            result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
-            result.TryCreateScalarValue(SourceString, "SourceString", out error);
-            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("XPath", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(var item in ResultsCollection)
-            {
-                result.TryCreateRecordsetValue(item.XPath, "XPath", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.OutputVariable, "Result", RecordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
 
         #region Get Debug Inputs/Outputs
 

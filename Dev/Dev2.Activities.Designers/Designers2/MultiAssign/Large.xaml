@@ -16,8 +16,7 @@
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                MinWidth="350"
                                Width="350"
-                               MaxWidth="600"
-                               MaxHeight="500"
+                               Height="250"
                                MinHeight="250"
                                Padding="7"
                                mc:Ignorable="d"
@@ -43,18 +42,13 @@
     <Grid x:Name="ContentGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
-                               Grid.Row="0"
-                               MinHeight="60"
-                               MaxHeight="500"
-                               Height="Auto"
-                               ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               HeadersVisibility="Column"
-                               CanUserReorderColumns="False"
-                               Style="{StaticResource SpacedActivityDataGridStyle}"
+                               Grid.Row="0"                                                                                            
+                               ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
+                               Style="{StaticResource ActivityMapppingDataGridStyle}"
                                CanUserResizeRows="True">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->

@@ -33,26 +33,6 @@ namespace Dev2.Studio
                                  select currentVal.IndexNumber).ToList();
                 return blankList;
             }
-        }
-
-        public void RemoveRow()
-        {
-            //do nothing if smaller or equal than 2 (which is minimum size)
-            if(ItemList == null || ItemList.Count() <= MinSize ||
-                //never remove the last blank item
-                BlankIndexes == null || BlankIndexes.Count() <= MinBlanks)
-            {
-                return;
-            }
-
-            //remove all the other blank items
-            var firstIdxToRemove = BlankIndexes.First() - 1;
-            ItemList.RemoveAt(firstIdxToRemove);
-            for(var i = firstIdxToRemove; i < ItemList.Count; i++)
-            {
-                dynamic tmp = ItemList[i];
-                tmp.IndexNumber = i + 1;
-            }
-        }
+        }       
     }
 }

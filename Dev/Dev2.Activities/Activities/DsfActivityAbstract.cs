@@ -4,12 +4,10 @@ using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2;
-using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Interfaces;
 using Dev2.Network.Execution;
 using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -18,7 +16,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>, IActivityTemplateFactory, INotifyPropertyChanged, IWizardEditable
+    public abstract class DsfActivityAbstract<T> : DsfNativeActivity<T>, IActivityTemplateFactory, INotifyPropertyChanged
     {
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         public string SimulationOutput { get; set; }
@@ -232,25 +230,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
-
-        #region Get Wizard Data
-
-
-        /// <summary>
-        /// Gets the data for the wizard.
-        /// </summary>
-        /// <returns></returns>
-        public virtual IBinaryDataList GetWizardData()
-        {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errorResultTO;
-
-            IBinaryDataList inputsAndOutputs = compiler.Merge(ActivityInputOutputUtils.GetSimpleInputs(this), ActivityInputOutputUtils.GetSimpleOutputs(this), enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errorResultTO);
-            return inputsAndOutputs;
-        }
-
-        #endregion Get Wizard Data
 
         #region Get General Settings Data
 

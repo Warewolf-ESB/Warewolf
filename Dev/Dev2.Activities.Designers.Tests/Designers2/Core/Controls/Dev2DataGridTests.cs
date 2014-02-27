@@ -353,6 +353,21 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             Assert.IsNull(result);
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("Dev2DataGrid_Init")]
+        public void Dev2DataGrid_Init_VirtulizationIsOn()
+        {
+            //------------Setup for test--------------------------      
+            var element = new FrameworkElement();
+            var dataGrid = new Dev2DataGrid(r => element) { ItemsSource = CreateModelItemCollection(3, false, false, false) };
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataGrid.EnableRowVirtualization);
+        }
+
 
         static void VerifyItem(dynamic item, int oldIndexNumber, int newIndexNumber, bool isBlank = false)
         {

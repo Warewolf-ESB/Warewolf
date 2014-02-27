@@ -823,40 +823,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             CollectionAssert.AreEqual(expectedRecSet1, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            bool passTest = true;
-            IList<DataSplitDTO> splitCollection = new List<DataSplitDTO> { new DataSplitDTO("[[result]]", "Index", "5", 1), new DataSplitDTO("[[result1]]", "Index", "1", 2) };
-
-            DsfDataSplitActivity testAct = new DsfDataSplitActivity { ResultsCollection = splitCollection, SourceString = "sourceData", ReverseOrder = false };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-            var scalars = binaryDL.FetchScalarEntries();
-
-            // remove test datalist ;)
-            DataListRemoval(binaryDL.UID);
-
-            if(recsets.Count != 1 && scalars.Count != 2)
-            {
-                passTest = false;
-            }
-            else
-            {
-                if(recsets[0].Columns.Count != 4)
-                {
-                    passTest = false;
-                }
-            }
-            Assert.IsTrue(passTest);
-        }
-
-        #endregion GetWizardData Tests
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataSplitActivity_UpdateForEachInputs")]

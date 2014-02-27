@@ -135,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(dataObject.IsDebugMode())
                     {
                         DebugItem debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", row.IndexNumber.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.InputVariable, "Input", inputVariableExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
@@ -149,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         if(DataListUtil.IsEvaluated(row.Alignment))
                         {
-                            AddDebugItem(new DebugItemStaticDataParams("",row.Alignment, "Align"), debugItem);
+                            AddDebugItem(new DebugItemStaticDataParams("", row.Alignment, "Align"), debugItem);
                         }
                         else
                         {
@@ -304,7 +304,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     List<DataMergeDTO> listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        DataMergeDTO dataMergeDto = MergeCollection.Last(c => !c.CanRemove());
+                        int startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
@@ -382,25 +383,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Private Methods
-
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string RecordsetName = "MergeCollection";
-            result.TryCreateScalarValue(Result, "Result", out error);
-            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("MergeType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(DataMergeDTO item in MergeCollection)
-            {
-                result.TryCreateRecordsetValue(item.MergeType, "MergeType", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.At, "At", RecordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
 
         #region Get Debug Inputs/Outputs
 

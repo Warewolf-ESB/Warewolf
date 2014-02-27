@@ -1141,35 +1141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             Assert.AreEqual("some value \"testData\" another", actual);
-        }
-
-        [TestMethod]
-        public void RemoveItem_Expected_BlankItemsRemoved()
-        {
-            _fieldCollection.Clear();
-            _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "testData", _fieldCollection.Count));
-            _fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[testScalar]]", _fieldCollection.Count));
-            _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
-            _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
-
-            SetupArguments(
-                            ActivityStrings.MultiAssignStarDataListWithScalar
-                          , ActivityStrings.MultiAssignStarDataListWithScalar);
-
-            var result = ExecuteProcess();
-
-            DsfMultiAssignActivity act = TestStartNode.Action as DsfMultiAssignActivity;
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            if(act != null)
-            {
-                act.RemoveItem();
-
-                Assert.AreEqual(3, act.FieldsCollection.Count);
-            }
-        }
+        }       
 
         [TestMethod]
         public void ValueToInvalidRecordsetIndexExpectedError()
@@ -1362,40 +1334,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Calculate Mode Tests
-
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            bool passTest = true;
-
-            _fieldCollection.Clear();
-            _fieldCollection.Add(new ActivityDTO("[[testScalar]]", "testData", 1));
-            _fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "[[testScalar]]", 2));
-            _fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "TestRecsetData", 3));
-            _fieldCollection.Add(new ActivityDTO("", "", _fieldCollection.Count));
-
-
-            DsfMultiAssignActivity testAct = new DsfMultiAssignActivity { FieldsCollection = _fieldCollection };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-            if(recsets.Count != 1)
-            {
-                passTest = false;
-            }
-            else
-            {
-                if(recsets[0].Columns.Count != 2)
-                {
-                    passTest = false;
-                }
-            }
-            Assert.IsTrue(passTest);
-        }
-
-        #endregion GetWizardData Tests
 
         #region ForEach Update/Get Inputs/Outputs
 

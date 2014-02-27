@@ -340,38 +340,6 @@ WallisBuchan
 
         #endregion
 
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            bool passTest = true;
-            IList<DataMergeDTO> mergeCollection = new List<DataMergeDTO> { new DataMergeDTO("[[result]]", "Index", "5", 1, "", "Left"), new DataMergeDTO("[[result1]]", "Index", "1", 2, "", "Left") };
-
-            DsfDataMergeActivity testAct = new DsfDataMergeActivity { MergeCollection = mergeCollection, Result = "[[res]]" };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-            var scalars = binaryDL.FetchScalarEntries();
-            // remove test datalist ;)
-            DataListRemoval(binaryDL.UID);
-
-            if(recsets.Count != 1 && scalars.Count != 2)
-            {
-                passTest = false;
-            }
-            else
-            {
-                if(recsets[0].Columns.Count != 3)
-                {
-                    passTest = false;
-                }
-            }
-            Assert.IsTrue(passTest);
-        }
-
-        #endregion GetWizardData Tests
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]

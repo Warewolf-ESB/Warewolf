@@ -332,39 +332,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Error Handling Tests
 
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            bool passTest = true;
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { new CaseConvertTO("[[testStringToConvert]]", "UPPER", "[[result]]", 1), new CaseConvertTO("[[testStringToConvert]]", "lower", "[[result]]", 2) };
-
-            DsfCaseConvertActivity testAct = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-
-            // remove test datalist ;)
-            DataListRemoval(binaryDL.UID);
-
-            if(recsets.Count != 1)
-            {
-                passTest = false;
-            }
-            else
-            {
-                if(recsets[0].Columns.Count != 3)
-                {
-                    passTest = false;
-                }
-            }
-            Assert.IsTrue(passTest);
-        }
-
-        #endregion GetWizardData Tests
-
-
         #region ForEach Update/Get Inputs/Outputs
 
         [TestMethod]

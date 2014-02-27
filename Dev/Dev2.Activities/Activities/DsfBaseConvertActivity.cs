@@ -162,7 +162,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
-                
+
                 if(toUpsert != null && toUpsert.HasLiveFlushing)
                 {
                     try
@@ -241,26 +241,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Private Methods
 
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string RecordsetName = "ConvertCollection";
-            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FromExpression", string.Empty), DataListFactory.CreateDev2Column("FromType", string.Empty), DataListFactory.CreateDev2Column("ToType", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(BaseConvertTO item in ConvertCollection)
-            {
-                result.TryCreateRecordsetValue(item.FromExpression, "FromExpression", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.FromType, "FromType", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.ToType, "ToType", RecordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.ToExpression, "Result", RecordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
-
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
@@ -307,7 +287,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        BaseConvertTO baseConvertTO = ConvertCollection.Last(c => !c.CanRemove());
+                        int startIndex = ConvertCollection.IndexOf(baseConvertTO) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));

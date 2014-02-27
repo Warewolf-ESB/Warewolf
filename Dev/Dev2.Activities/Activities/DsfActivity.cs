@@ -7,7 +7,6 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.Enums;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -503,18 +502,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string errorString = string.Join(",", errors.FetchErrors());
                 throw new Exception(errorString);
             }
-
-            return result;
-        }
-
-        public override IBinaryDataList GetWizardData()
-        {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            ErrorResultTO errors;
-            IBinaryDataList indl = GetInputs();
-            IBinaryDataList outdl = GetOutputs();
-            IBinaryDataList result = compiler.Merge(indl, outdl, enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
 
             return result;
         }

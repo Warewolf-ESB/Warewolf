@@ -233,39 +233,6 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Negative Tests
 
-        #region GetWizardData Tests
-
-        [TestMethod]
-        public void GetWizardData_Expected_Correct_IBinaryDataList()
-        {
-            bool passTest = true;
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[testVar]]", "Text", "Base 64", "[[testVar]]", 1), new BaseConvertTO("[[testVar1]]", "Text", "Base 64", "[[testVar]]", 2) };
-
-            DsfBaseConvertActivity testAct = new DsfBaseConvertActivity { ConvertCollection = convertCollection };
-
-            IBinaryDataList binaryDL = testAct.GetWizardData();
-            var recsets = binaryDL.FetchRecordsetEntries();
-            if(recsets.Count != 1)
-            {
-                passTest = false;
-            }
-            else
-            {
-                if(recsets[0].Columns.Count != 4)
-                {
-                    passTest = false;
-                }
-            }
-
-            // remove test datalist ;)
-            DataListRemoval(binaryDL.UID);
-
-            Assert.IsTrue(passTest);
-        }
-
-        #endregion GetWizardData Tests
-
-
         #region ForEach Update/Get Inputs/Outputs
 
         [TestMethod]

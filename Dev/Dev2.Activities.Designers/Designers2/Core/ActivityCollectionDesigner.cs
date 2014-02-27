@@ -44,10 +44,19 @@ namespace Dev2.Activities.Designers2.Core
         {
             var theGrid = TheGrid;
 
-            if(theGrid != null && e.Action != NotifyCollectionChangedAction.Add)
+            if(theGrid != null)
             {
-                theGrid.Items.Refresh();
+                if(e.Action != NotifyCollectionChangedAction.Add)
+                {
+                    theGrid.Items.Refresh();
+                }
+                else
+                {
+                    theGrid.ScrollIntoView(e.NewItems[0]);
+                }
             }
+
+
         }
 
         void InitializeContextMenu()

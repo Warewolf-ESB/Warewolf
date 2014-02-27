@@ -52,12 +52,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-// ReSharper disable RedundantOverridenMember
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-// ReSharper restore RedundantOverridenMember
+        // ReSharper restore RedundantOverridenMember
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
@@ -66,7 +66,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -204,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string[] closedInputParts = Regex.Split(input, @"\]\]");
                 if(openResultParts.Count() == closedResultParts.Count() && openResultParts.Count() > 2 && closedResultParts.Count() > 2)
                 {
-                    string cleanResult = null;
+                    string cleanResult;
                     if(openResultParts[1].IndexOf("]]") + 2 < openResultParts[1].Length)
                     {
                         cleanResult = "[[" + openResultParts[1].Remove(openResultParts[1].IndexOf("]]") + 2);
@@ -251,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 List<ICaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
                 if(listOfValidRows.Count > 0)
                 {
-                    int startIndex = listOfValidRows.Last().IndexNumber;
+                    int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
                     foreach(string s in listToAdd)
                     {
                         mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
@@ -297,7 +297,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
             string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if(currentName.Contains("(") && currentName.Contains(")"))
+            if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
             {
                 if(currentName.Contains(" ("))
                 {
@@ -313,25 +313,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Private Methods
-
-        #region Overridden ActivityAbstact Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            string error = string.Empty;
-            IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            string recordsetName = "ConvertCollection";
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("StringToConvert", string.Empty), DataListFactory.CreateDev2Column("ConvertType", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach(CaseConvertTO item in ConvertCollection)
-            {
-                result.TryCreateRecordsetValue(item.StringToConvert, "StringToConvert", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.ConvertType, "ConvertType", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.Result, "Result", recordsetName, item.IndexNumber, out error);
-            }
-            return result;
-        }
-
-        #endregion Overridden ActivityAbstact Methods
 
         #region Get Debug Inputs/Outputs
 
@@ -363,7 +344,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert) && c.StringToConvert.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert) && c.StringToConvert.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)
@@ -380,7 +362,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // locate all updates for this tuple
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)

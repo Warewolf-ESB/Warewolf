@@ -248,12 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        #endregion Private Methods
-
-        public override IBinaryDataList GetWizardData()
-        {
-            return null;
-        }
+        #endregion Private Methods       
 
         #region Get Debug Inputs/Outputs
 

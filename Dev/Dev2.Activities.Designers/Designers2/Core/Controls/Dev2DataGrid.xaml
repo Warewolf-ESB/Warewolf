@@ -1,8 +1,7 @@
 ﻿<DataGrid x:Class="Dev2.Activities.Designers2.Core.Controls.Dev2DataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             HorizontalAlignment="Stretch"
-             EnableRowVirtualization="False">
+             HorizontalAlignment="Stretch">
     <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
             <EventSetter Event="Loaded" Handler="OnDataGridRowLoaded"></EventSetter>
