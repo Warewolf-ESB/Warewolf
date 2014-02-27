@@ -171,9 +171,7 @@
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableInterrogatorTest.cs" />
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
     <Compile Include="ConverterTests\GraphTests\InterrogatorFactoryTest.cs" />
-    <Compile Include="ConverterTests\GraphTests\OutputTests\DataSourceShapeTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />
-    <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionTests.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\ShapedXmlOutputFormatterTests.cs" />
     <Compile Include="ConverterTests\GraphTests\PocoTestData.cs" />
     <Compile Include="ConverterTests\GraphTests\PocoTests\PocoInterrogatorTests.cs" />
@@ -205,7 +203,6 @@
     <Compile Include="ExtMethods\DoubleMetaphoneTest.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="Logging\DummyDebugProvider.cs" />
-    <Compile Include="Logging\ServerLoggerTests.cs" />
     <Compile Include="StringExtensionTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestModelItemFactory.cs" />
