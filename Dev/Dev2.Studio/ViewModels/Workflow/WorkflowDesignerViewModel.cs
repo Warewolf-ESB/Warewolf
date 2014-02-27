@@ -1241,25 +1241,25 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-                // we got the correct model and clean it ;)
-                var theText = _workflowHelper.SanitizeXaml(xaml);
+            // we got the correct model and clean it ;)
+            var theText = _workflowHelper.SanitizeXaml(xaml);
 
-                var length = theText.Length;
-                var startIdx = 0;
-                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+            var length = theText.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
-                // now load the designer in chunks ;)
-                for(int i = 0; i < rounds; i++)
+            // now load the designer in chunks ;)
+            for(int i = 0; i < rounds; i++)
+            {
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if(len > (theText.Length - startIdx))
                 {
-                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if(len > (theText.Length - startIdx))
-                    {
-                        len = (theText.Length - startIdx);
-                    }
-
-                    _wd.Text += theText.Substring(startIdx, len);
-                    startIdx += len;
+                    len = (theText.Length - startIdx);
                 }
+
+                _wd.Text += theText.Substring(startIdx, len);
+                startIdx += len;
+            }
         }
 
         void SelectedItemChanged(Selection item)
@@ -1802,7 +1802,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(SaveUnsavedWorkflowMessage message)
         {
-            if(message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || string.IsNullOrEmpty(message.ResourceCategory))
+            if(message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || string.IsNullOrEmpty(message.ResourceCategory) || message.ResourceModel.ID != ResourceModel.ID)
             {
                 return;
             }
@@ -1835,6 +1835,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.DisplayName = message.ResourceName;
             resourceModel.Category = message.ResourceCategory;
             resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
+            resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             resourceModel.IsWorkflowSaved = true;
             resourceModel.IsNewWorkflow = false;

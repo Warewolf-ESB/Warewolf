@@ -1748,19 +1748,11 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup event aggregator
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             #endregion
 
@@ -1779,6 +1771,7 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
 
 
         }
@@ -1793,6 +1786,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var repo = new Mock<IResourceRepository>();
             repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
+            repo.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1844,19 +1838,11 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup event aggregator
 
-            //            var importServiceContext = new ImportServiceContext();
-            //            ImportService.CurrentContext = importServiceContext;
-            //            ImportService.Initialize(new List<ComposablePartCatalog>
-            //            {
-            //                new FullTestAggregateCatalog()
-            //            });
-
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
-            //ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             #endregion
 
@@ -1875,6 +1861,7 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
 
 
         }
