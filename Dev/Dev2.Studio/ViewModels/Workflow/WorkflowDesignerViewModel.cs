@@ -1802,7 +1802,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(SaveUnsavedWorkflowMessage message)
         {
-            if(message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || string.IsNullOrEmpty(message.ResourceCategory) || message.ResourceModel.ID != ResourceModel.ID)
+            if(message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || message.ResourceModel.ID != ResourceModel.ID)
             {
                 return;
             }
