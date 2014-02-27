@@ -13,6 +13,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="230"
                                MaxWidth="230"
                                Padding="7"
@@ -53,13 +54,13 @@
         </i:Interaction.Behaviors>       
 
         <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}"
+            <DataGridTemplateColumn Width="27"                                    
                                     IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding IndexNumber, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center" />
+                        <Label Content="{Binding ModelItem, 
+                                              NotifyOnTargetUpdated=True, 
+                                              Converter={converters:RowToIndexConverter}}"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

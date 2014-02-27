@@ -679,7 +679,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 {
                     Assert.AreSame(items[i++], dto);
                 }
-                Assert.AreEqual(j + 1, dto.IndexNumber);
             }
             // ReSharper restore PossibleNullReferenceException
         }
@@ -833,9 +832,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; i < expectedItemCount; i++, j++)
             {
-                var expectedIndexNumber = i + 1;
                 var dto = (ActivityDTO)mic[i].GetCurrentValue();
-                Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
 
                 if(i == indexNumber - 1)
                 {
@@ -923,9 +920,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; i < expectedItemCount; i++)
             {
-                var expectedIndexNumber = i + 1;
+                //var expectedIndexNumber = i + 1;
                 var dto = (ActivityDTO)mic[i].GetCurrentValue();
-                Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
+                //Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
 
                 if(i != indexNumber - 1)
                 {
@@ -1006,7 +1003,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 }
                 var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 Assert.AreSame(items[i++], dto);
-                Assert.AreEqual(j + 1, dto.IndexNumber);
             }
             // ReSharper restore PossibleNullReferenceException
         }
@@ -1089,7 +1085,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             {
                 var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 var expectedIndexNumber = j + 1;
-                Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
+                
                 if(allRowsBlank)
                 {
                     Assert.IsTrue(dto.CanRemove());

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Dev2.Interfaces;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Studio.Core.Activities.Utils;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Dev2.Interfaces;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.Core
@@ -60,7 +60,8 @@ namespace Dev2.Activities.Designers2.Core
                 if(dto != null && dto.CanRemove())
                 {
                     // old row is blank so remove
-                    RemoveDto(dto);
+                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                    RemoveDto(dto, index);
                 }
             }
         }
@@ -107,6 +108,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return;
             }
+
             if(ModelItemCollection.Count == 2)
             {
                 if(indexNumber == 1)
@@ -118,7 +120,7 @@ namespace Dev2.Activities.Designers2.Core
             else
             {
                 var dto = GetDto(indexNumber);
-                RemoveDto(dto);
+                RemoveDto(dto, indexNumber);
             }
         }
 
@@ -129,7 +131,6 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
             AddDto(indexNumber);
-            Renumber(indexNumber);
             UpdateDisplayName();
         }
 
@@ -176,7 +177,7 @@ namespace Dev2.Activities.Designers2.Core
             else
             {
                 var lastDto = GetLastDto();
-                indexNumber = lastDto.IndexNumber;
+                indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
 
                 if(ModelItemCollection.Count == 2)
                 {
@@ -184,7 +185,7 @@ namespace Dev2.Activities.Designers2.Core
                     var firstDto = GetDto(1);
                     if(firstDto.CanRemove() && lastDto.CanRemove())
                     {
-                        RemoveAt(lastDto.IndexNumber, lastDto);
+                        RemoveAt(indexNumber, lastDto);
                         indexNumber = indexNumber - 1;
                     }
                 }
@@ -211,10 +212,11 @@ namespace Dev2.Activities.Designers2.Core
         void AddBlankRow()
         {
             var lastDto = GetLastDto();
+            var index = ItemCount + 1;
             var isLastRowBlank = lastDto.CanRemove();
             if(!isLastRowBlank)
             {
-                AddDto(lastDto.IndexNumber + 1);
+                AddDto(index + 1);
                 UpdateDisplayName();
             }
         }
@@ -243,12 +245,12 @@ namespace Dev2.Activities.Designers2.Core
             return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
         }
 
-        void RemoveDto(TDev2TOFn dto)
+        void RemoveDto(TDev2TOFn dto, int indexNumber)
         {
-            if(ModelItemCollection.Count > 2 && dto.IndexNumber >= 0 && dto.IndexNumber < ModelItemCollection.Count)
+
+            if(ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count)
             {
-                RemoveAt(dto.IndexNumber, dto);
-                Renumber(dto.IndexNumber - 1);
+                RemoveAt(indexNumber, dto);
                 UpdateDisplayName();
             }
         }
@@ -306,14 +308,6 @@ namespace Dev2.Activities.Designers2.Core
             dto.PropertyChanged += OnDtoPropertyChanged;
         }
 
-        /// <summary>
-        /// Renumbers the ModelItemCollection starting at the specified zero-based index.
-        /// </summary>
-        void Renumber(int startIndex)
-        {
-            var indexNumber = startIndex + 1;
-            ProcessModelItemCollection(startIndex, mi => SetIndexNumber(mi, indexNumber++));
-        }
 
         /// <summary>
         /// Process the ModelItemCollection starting at the specified zero-based index.

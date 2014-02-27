@@ -31,7 +31,7 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>
             {
-                new FullTestAggregateCatalog()
+               // new FullTestAggregateCatalog()
             });
 
 
@@ -140,7 +140,7 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>
             {
-                new FullTestAggregateCatalog()
+                //new FullTestAggregateCatalog()
             });
 
             if(popupController == null)

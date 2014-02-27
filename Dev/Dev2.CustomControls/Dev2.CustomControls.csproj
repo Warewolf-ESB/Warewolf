@@ -120,6 +120,7 @@
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
+    <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
     <Compile Include="Data\DataContextSpy.cs" />
     <Compile Include="Data\ValueConverters\EnumValueToDescriptionConverter.cs" />

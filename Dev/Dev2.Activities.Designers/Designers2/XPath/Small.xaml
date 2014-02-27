@@ -13,6 +13,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="200"
                                MaxWidth="200"
                                Padding="7"
@@ -90,8 +91,9 @@
                                     IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding IndexNumber}"
-                               VerticalAlignment="Center" />
+                        <Label Content="{Binding ModelItem, 
+                                              NotifyOnTargetUpdated=True, 
+                                              Converter={converters:RowToIndexConverter}}"/>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>

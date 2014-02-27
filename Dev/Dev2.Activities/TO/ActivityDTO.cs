@@ -59,9 +59,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
+                if(_fieldName != value)
+                {
                 _fieldName = value;
                 OnPropertyChanged("FieldName");
                 RaiseCanAddRemoveChanged();
+                }
                 //DO NOT call validation here as it will cause issues during serialization
             }
         }
@@ -86,9 +89,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                _fieldValue = value;
-                OnPropertyChanged("FieldValue");
-                RaiseCanAddRemoveChanged();
+                if(_fieldValue != value)
+                {
+                    _fieldValue = value;
+                    OnPropertyChanged("FieldValue");
+                    RaiseCanAddRemoveChanged();
+                }
                 //DO NOT call validation here as it will cause issues during serialization
             }
         }

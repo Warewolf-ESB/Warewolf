@@ -11,6 +11,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="290"
                                MaxWidth="290"
                                Padding="7"
@@ -83,8 +84,9 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding IndexNumber}"
-                                   VerticalAlignment="Center" />
+                            <Label Content="{Binding ModelItem, 
+                                              NotifyOnTargetUpdated=True, 
+                                              Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

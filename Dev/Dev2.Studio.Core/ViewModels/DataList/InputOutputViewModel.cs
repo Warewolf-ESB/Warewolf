@@ -150,6 +150,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if(!value.Equals(_required))
                 {
                     _required = value;
+                    base.OnPropertyChanged("Required");
                     NotifyOfPropertyChange(() => Required);
                     base.OnPropertyChanged("Required");
                 }
@@ -207,16 +208,16 @@ namespace Dev2.Studio.ViewModels.DataList
             if(RecordSetName == string.Empty)
             {
                 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = Name;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             else
             {
                 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 DisplayName = RecordSetName + "(*)." + Name;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
         }
 
@@ -234,9 +235,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
 
             // ReSharper disable once ObjectCreationAsStatement
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new ObjectCloner<IDataListItemModel>();
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
             IInputOutputViewModel result = new InputOutputViewModel(Name, Value, MapsTo, DefaultValue, Required, RecordSetName, EmptyToNull);
 
             return result;

@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Core
 {
     [ActivityDesignerOptions(AllowDrillIn = false, AlwaysCollapseChildren = true)]
     public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable
-        where TViewModel : ActivityDesignerViewModel 
+        where TViewModel : ActivityDesignerViewModel
     {
         bool _isInitialFocusDone;
         readonly AdornerControl _helpAdorner;
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.Core
         IDesignerManagementService _designerManagementService;
         bool _isDisposed;
         DependencyPropertyDescriptor _zIndexProperty;
-        TViewModel _dataContext;
+        protected TViewModel _dataContext;
         bool _isSetFocusActionSet;
 
         public ActivityDesigner()
@@ -52,13 +52,13 @@ namespace Dev2.Activities.Designers2.Core
             }
             base.OnPreviewMouseDoubleClick(e);
         }
-        
+
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (!_isSetFocusActionSet)
+            if(!_isSetFocusActionSet)
             {
                 var vm = DataContext as ActivityDesignerViewModel;
-                if (vm != null)
+                if(vm != null)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
                     _isSetFocusActionSet = true;
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetInitialiFocus()
         {
-            if (!_isInitialFocusDone)
+            if(!_isInitialFocusDone)
             {
                 ContentDesignerTemplate.SetInitialFocus();
                 _isInitialFocusDone = true;
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core
             ActivityHelper.HandleDragEnter(e);
         }
 
-         #region IDisposable Members
+        #region IDisposable Members
 
 
         ~ActivityDesigner()
@@ -189,21 +189,21 @@ namespace Dev2.Activities.Designers2.Core
             // readability and maintainability.
             Dispose(false);
         }
-        
+
         /// <summary>
         /// Child classes can override this method to perform 
         /// clean-up logic, such as removing event handlers.
         /// </summary>
         protected virtual void OnDispose()
         {
-            if (_designerManagementService != null)
+            if(_designerManagementService != null)
             {
                 _designerManagementService.CollapseAllRequested -= OnDesignerManagementServiceCollapseAllRequested;
                 _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
                 _designerManagementService.RestoreAllRequested -= OnDesignerManagementServiceRestoreAllRequested;
             }
 
-            if (Context != null)
+            if(Context != null)
             {
                 Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
                 Context.Services.Unsubscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);

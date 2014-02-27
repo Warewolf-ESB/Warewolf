@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Controls;
-using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -11,7 +11,7 @@ namespace Dev2.Activities.Designers2.Core
         MenuItem _insertRowMenuItem;
         MenuItem _deleteRowMenuItem;
 
-        Dev2DataGrid TheGrid
+        DataGrid TheGrid
         {
             get
             {
@@ -19,11 +19,11 @@ namespace Dev2.Activities.Designers2.Core
                 return activityDesignerTemplate.DataGrid;
             }
         }
-
         protected override void OnLoaded()
         {
             base.OnLoaded();
             InitializeContextMenu();
+            _dataContext.ModelItemCollection.CollectionChanged += ModelItemCollectionCollectionChanged;
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
@@ -38,6 +38,16 @@ namespace Dev2.Activities.Designers2.Core
 
             _deleteRowMenuItem.IsEnabled = ViewModel.CanRemoveAt(theGrid.SelectedIndex + 1);
             _insertRowMenuItem.IsEnabled = ViewModel.CanInsertAt(theGrid.SelectedIndex + 1);
+        }
+
+        void ModelItemCollectionCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var theGrid = TheGrid;
+
+            if(theGrid != null && e.Action != NotifyCollectionChangedAction.Add)
+            {
+                theGrid.Items.Refresh();
+            }
         }
 
         void InitializeContextMenu()
@@ -59,9 +69,11 @@ namespace Dev2.Activities.Designers2.Core
         protected void DeleteDataGridRow(object sender, RoutedEventArgs e)
         {
             var theGrid = TheGrid;
+
             if(theGrid != null)
             {
                 ViewModel.RemoveAt(TheGrid.SelectedIndex + 1);
+                theGrid.Items.Refresh();
             }
         }
 
@@ -71,6 +83,7 @@ namespace Dev2.Activities.Designers2.Core
             if(theGrid != null)
             {
                 ViewModel.InsertAt(TheGrid.SelectedIndex + 1);
+                theGrid.Items.Refresh();
             }
         }
     }

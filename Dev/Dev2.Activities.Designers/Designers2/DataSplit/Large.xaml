@@ -15,6 +15,7 @@
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                Width="350"
                                MinWidth="350"
                                MinHeight="350"
@@ -169,8 +170,9 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                             <Label Content="{Binding IndexNumber}"
-                               VerticalAlignment="Center" />                           
+                             <Label Content="{Binding ModelItem, 
+                                              NotifyOnTargetUpdated=True, 
+                                              Converter={converters:RowToIndexConverter}}"/>                           
                          </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
