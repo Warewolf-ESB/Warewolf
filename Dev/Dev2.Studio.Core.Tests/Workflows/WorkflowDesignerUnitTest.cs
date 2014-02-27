@@ -52,6 +52,7 @@ namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    [Ignore]
     public class WorkflowDesignerUnitTest
     {
 
