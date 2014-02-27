@@ -20,6 +20,7 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
+using Dev2.CustomControls.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
@@ -53,6 +54,23 @@ namespace Dev2.Core.Tests.Workflows
     [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
+
+        private static object TestLock = new object();
+
+        //Use TestInitialize to run code before running each test 
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            Monitor.Enter(TestLock);
+        }
+
+        //Use TestCleanup to run code after each test has run
+        [TestCleanup]
+        public void MyTestCleanup()
+        {
+            Monitor.Exit(TestLock);
+        }
+
 
         #region Remove Unused Tests
 
@@ -1006,36 +1024,35 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNull_ExpectWorkflowXamlFetch()
         {
-            new Thread(() =>
-            {
-                //------------Setup for test--------------------------
-                var repo = new Mock<IResourceRepository>();
-                repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage { Message = null });
-                var env = EnviromentRepositoryTest.CreateMockEnvironment();
-                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-                var crm = new Mock<IContextualResourceModel>();
-                crm.Setup(r => r.Environment).Returns(env.Object);
-                crm.Setup(r => r.ResourceName).Returns("Test");
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage { Message = null });
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-                var wh = new Mock<IWorkflowHelper>();
-                wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
-                wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
-                wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
 
-                //------------Execute Test---------------------------
-                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
+            var wh = new Mock<IWorkflowHelper>();
+            wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
+            wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
+            wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
 
-                var attr = new Dictionary<Type, Type>();
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
 
-                wfd.InitializeDesigner(attr);
+            var attr = new Dictionary<Type, Type>();
 
-                wfd.Dispose();
+            wfd.InitializeDesigner(attr);
 
-                //------------Assert Results-------------------------
-                wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
-                wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
-            });
+            wfd.Dispose();
+
+            //------------Assert Results-------------------------
+            wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
+            wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
+
         }
 
         [TestMethod]
@@ -1043,41 +1060,40 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlValid_ExpectWorkflowXamlFetch()
         {
-            new Thread(() =>
-            {
-                //------------Setup for test--------------------------
-                var repo = new Mock<IResourceRepository>();
-                var env = EnviromentRepositoryTest.CreateMockEnvironment();
-                var con = new Mock<IEnvironmentConnection>();
 
-                repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg("resource def"));
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var con = new Mock<IEnvironmentConnection>();
 
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder("resource def"));
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg("resource def"));
 
-                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-                env.Setup(e => e.Connection).Returns(con.Object);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder("resource def"));
 
-                var crm = new Mock<IContextualResourceModel>();
-                crm.Setup(r => r.Environment).Returns(env.Object);
-                crm.Setup(r => r.ResourceName).Returns("Test");
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            env.Setup(e => e.Connection).Returns(con.Object);
 
-                var wh = new WorkflowHelper();
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
 
-                //------------Execute Test---------------------------
-                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, "resource def");
-                var attr = new Dictionary<Type, Type>();
+            var wh = new WorkflowHelper();
 
-                wfd.InitializeDesigner(attr);
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, "resource def");
+            var attr = new Dictionary<Type, Type>();
 
-                //------------Assert Results-------------------------
-                var result = wfd.Designer.Text;
-                var error = wfd.Designer.IsInErrorState();
-                wfd.Dispose();
+            wfd.InitializeDesigner(attr);
 
-                Assert.AreEqual("resource def", result);
-                // error state due to malformed designer text fetched ;)
-                Assert.IsTrue(error);
-            });
+            //------------Assert Results-------------------------
+            var result = wfd.Designer.Text;
+            var error = wfd.Designer.IsInErrorState();
+            wfd.Dispose();
+
+            Assert.AreEqual("resource def", result);
+            // error state due to malformed designer text fetched ;)
+            Assert.IsTrue(error);
+
         }
 
         [TestMethod]
@@ -1087,50 +1103,49 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             //------------Setup for test--------------------------
-            new Thread(() =>
-                {
-                    #region Large Xaml
 
-                    const string largeXaml = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains. But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection:";
+            #region Large Xaml
 
-                    #endregion
+            const string largeXaml = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains. But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection:";
 
-                    var repo = new Mock<IResourceRepository>();
-                    var env = EnviromentRepositoryTest.CreateMockEnvironment();
-                    var con = new Mock<IEnvironmentConnection>();
+            #endregion
 
-                    repo.Setup(
-                        r =>
-                        r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                        .Returns(MakeMsg(largeXaml));
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var con = new Mock<IEnvironmentConnection>();
 
-                    con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                       .Returns(new StringBuilder(largeXaml));
+            repo.Setup(
+                r =>
+                r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(MakeMsg(largeXaml));
 
-                    env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-                    env.Setup(e => e.Connection).Returns(con.Object);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+               .Returns(new StringBuilder(largeXaml));
 
-                    var crm = new Mock<IContextualResourceModel>();
-                    crm.Setup(r => r.Environment).Returns(env.Object);
-                    crm.Setup(r => r.ResourceName).Returns("Test");
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            env.Setup(e => e.Connection).Returns(con.Object);
 
-                    var wh = new WorkflowHelper();
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
 
-                    //------------Execute Test---------------------------
-                    var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, largeXaml);
-                    var attr = new Dictionary<Type, Type>();
+            var wh = new WorkflowHelper();
 
-                    wfd.InitializeDesigner(attr);
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, largeXaml);
+            var attr = new Dictionary<Type, Type>();
 
-                    //------------Assert Results-------------------------
-                    var result = wfd.Designer.Text;
-                    var error = wfd.Designer.IsInErrorState();
-                    wfd.Dispose();
+            wfd.InitializeDesigner(attr);
 
-                    Assert.AreEqual(largeXaml, result);
-                    // error state due to malformed designer text fetched ;)
-                    Assert.IsTrue(error);
-                });
+            //------------Assert Results-------------------------
+            var result = wfd.Designer.Text;
+            var error = wfd.Designer.IsInErrorState();
+            wfd.Dispose();
+
+            Assert.AreEqual(largeXaml, result);
+            // error state due to malformed designer text fetched ;)
+            Assert.IsTrue(error);
+
         }
 
         [TestMethod]
@@ -1138,40 +1153,39 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
         {
-            new Thread(() =>
-            {
-                //------------Setup for test--------------------------
-                var repo = new Mock<IResourceRepository>();
-                var env = EnviromentRepositoryTest.CreateMockEnvironment();
-                var con = new Mock<IEnvironmentConnection>();
 
-                repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg(string.Empty));
+            //------------Setup for test--------------------------
+            var repo = new Mock<IResourceRepository>();
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            var con = new Mock<IEnvironmentConnection>();
 
-                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg(string.Empty));
 
-                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-                env.Setup(e => e.Connection).Returns(con.Object);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
-                var crm = new Mock<IContextualResourceModel>();
-                crm.Setup(r => r.Environment).Returns(env.Object);
-                crm.Setup(r => r.ResourceName).Returns("Test");
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            env.Setup(e => e.Connection).Returns(con.Object);
 
-                var wh = new WorkflowHelper();
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
 
-                //------------Execute Test---------------------------
-                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
+            var wh = new WorkflowHelper();
+
+            //------------Execute Test---------------------------
+            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
 
 
-                //------------Assert Results-------------------------
-                var result = wfd.Designer.Text;
-                var error = wfd.Designer.IsInErrorState();
+            //------------Assert Results-------------------------
+            var result = wfd.Designer.Text;
+            var error = wfd.Designer.IsInErrorState();
 
-                wfd.Dispose();
+            wfd.Dispose();
 
-                Assert.IsNull(result);
-                // new valid workflow XAML ;)
-                Assert.IsFalse(error);
-            });
+            Assert.IsNull(result);
+            // new valid workflow XAML ;)
+            Assert.IsFalse(error);
+
         }
 
         // - end
@@ -2004,65 +2018,63 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             #region Setup viewModel
-            new Thread(() =>
-            {
-                var workflow = new ActivityBuilder();
-                var resourceRep = new Mock<IResourceRepository>();
-                resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-                var resourceModel = new Mock<IContextualResourceModel>();
-                resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-                resourceModel.Setup(r => r.ResourceName).Returns("Test");
-                StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
-                resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-                var workflowHelper = new Mock<IWorkflowHelper>();
-                workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-                workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-                var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
 
-                #region setup Mock ModelItem
+            #region setup Mock ModelItem
 
-                var properties = new Dictionary<string, Mock<ModelProperty>>();
-                var propertyCollection = new Mock<ModelPropertyCollection>();
-                var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
-                var prop = new Mock<ModelProperty>();
-                prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-                prop.Setup(p => p.ComputedValue).Returns(testAct);
-                properties.Add("Action", prop);
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
 
-                propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-                var source = new Mock<ModelItem>();
-                source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-                source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-                #endregion
+            #endregion
 
-                #region setup mock to change properties
+            #region setup mock to change properties
 
-                //mock item adding - this is obsolote functionality but not refactored due to overhead
-                var args = new Mock<ModelChangedEventArgs>();
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-                args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-                #endregion
+            #endregion
 
-                //Execute
-                viewModel.TestWorkflowDesignerModelChangedWithNullSender();
+            //Execute
+            viewModel.TestWorkflowDesignerModelChangedWithNullSender();
 
-                viewModel.Dispose();
+            viewModel.Dispose();
 
-                //Verify
-                prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
-                Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
-            });
+            //Verify
+            prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
         }
 
         [TestMethod]
@@ -2070,138 +2082,275 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectLoadFromServerDoesNotReflectEdit()
         {
             #region Setup viewModel
-            new Thread(() =>
-            {
-                var workflow = new ActivityBuilder();
-                var resourceRep = new Mock<IResourceRepository>();
-                resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-                var resourceModel = new Mock<IContextualResourceModel>();
-                resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-                resourceModel.Setup(r => r.ResourceName).Returns("Test");
-                StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
-                resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
-                var workflowHelper = new Mock<IWorkflowHelper>();
-                workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-                workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-                workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x/>"));
-                var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-                viewModel.ServiceDefinition = new StringBuilder("<x/>");
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x/>"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.ServiceDefinition = new StringBuilder("<x/>");
 
             #endregion
 
 
-                #region setup Mock ModelItem
+            #region setup Mock ModelItem
 
-                var properties = new Dictionary<string, Mock<ModelProperty>>();
-                var propertyCollection = new Mock<ModelPropertyCollection>();
-                var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
-                var prop = new Mock<ModelProperty>();
-                prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-                prop.Setup(p => p.ComputedValue).Returns(testAct);
-                properties.Add("Action", prop);
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
 
-                propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-                var source = new Mock<ModelItem>();
-                source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-                source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-                #endregion
+            #endregion
 
-                #region setup mock to change properties
+            #region setup mock to change properties
 
-                //mock item adding - this is obsolete functionality but not refactored due to overhead
-                var args = new Mock<ModelChangedEventArgs>();
+            //mock item adding - this is obsolete functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-                args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-                #endregion
+            #endregion
 
-                //Execute
-                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
-                OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
+            //Execute
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
+            OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
 
-                viewModel.TestWorkflowDesignerModelChanged();
+            viewModel.TestWorkflowDesignerModelChanged();
 
-                viewModel.Dispose();
+            viewModel.Dispose();
 
-                OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
+            OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
 
-                //Verify
-                StringAssert.Contains(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
-                Assert.AreEqual(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
-            });
+            //Verify
+            StringAssert.Contains(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
+            Assert.AreEqual(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
         }
+
+        //if(OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectFirstFocusDoesNotReflectEdit()
+        {
+            #region Setup viewModel
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.SetupAllProperties();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Object.WorkflowXaml = new StringBuilder("<a/>");
+            resourceModel.Object.ResourceName = "Test";
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.ServiceDefinition = xamlBuilder;
+
+            #endregion
+
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolete functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+            #endregion
+
+            //Execute
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
+            OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+            resourceModel.Object.IsWorkflowSaved = true;
+            viewModel.TestWorkflowDesignerModelChanged();
+
+            viewModel.Dispose();
+            OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+
+            //Verify
+            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
+            Assert.IsTrue(resourceModel.Object.ResourceName.IndexOf("*", StringComparison.Ordinal) < 0);
+            StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
+            Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectLoadUpdateWaterMarkDoesNotReflectEdit()
+        {
+            #region Setup viewModel
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.SetupAllProperties();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Object.WorkflowXaml = new StringBuilder("<a/>");
+            resourceModel.Object.ResourceName = "Test";
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.ServiceDefinition = xamlBuilder;
+
+            #endregion
+
+
+            #region setup Mock ModelItem
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+            #endregion
+
+            #region setup mock to change properties
+
+            //mock item adding - this is obsolete functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+            #endregion
+
+            //Execute
+            WatermarkSential.IsWatermarkBeingApplied = true;
+            resourceModel.Object.IsWorkflowSaved = true;
+            viewModel.TestWorkflowDesignerModelChanged();
+
+            viewModel.Dispose();
+
+            //Verify
+            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
+            Assert.IsTrue(resourceModel.Object.ResourceName.IndexOf("*", StringComparison.Ordinal) < 0);
+            StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
+            Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
+        }
+
 
         [TestMethod]
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
-            new Thread(() =>
-            {
-                var workflow = new ActivityBuilder();
+            var workflow = new ActivityBuilder();
 
-                #region Setup viewModel
+            #region Setup viewModel
 
-                var resourceRep = new Mock<IResourceRepository>();
-                resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-                var resourceModel = new Mock<IContextualResourceModel>();
-                resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-                resourceModel.Setup(r => r.ResourceName).Returns("Test");
-                resourceModel.SetupProperty(model => model.IsWorkflowSaved);
-                StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
-                resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceModel.SetupProperty(model => model.IsWorkflowSaved);
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
-                var workflowHelper = new Mock<IWorkflowHelper>();
-                workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-                workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
 
-                var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
-                #endregion
+            #endregion
 
 
-                #region setup Mock ModelItem
+            #region setup Mock ModelItem
 
-                var properties = new Dictionary<string, Mock<ModelProperty>>();
-                var propertyCollection = new Mock<ModelPropertyCollection>();
-                var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
-                var prop = new Mock<ModelProperty>();
-                prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-                prop.Setup(p => p.ComputedValue).Returns(testAct);
-                properties.Add("Action", prop);
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
 
-                propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-                var source = new Mock<ModelItem>();
-                source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-                source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-                #endregion
+            #endregion
 
-                #region setup mock to change properties
+            #region setup mock to change properties
 
-                //mock item adding - this is obsolote functionality but not refactored due to overhead
-                var args = new Mock<ModelChangedEventArgs>();
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-                args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-                #endregion
+            #endregion
 
-                viewModel.Dispose();
+            viewModel.Dispose();
 
-                //Verify
-                Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
-            });
+            //Verify
+            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
 
         }
 

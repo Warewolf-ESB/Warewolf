@@ -219,7 +219,6 @@
     <Compile Include="DataListItemViewModelTest.cs" />
     <Compile Include="DataListSingletonTest.cs" />
     <Compile Include="DataListViewModelTests.cs" />
-    <Compile Include="DataMappingViewModelTest.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
     <Compile Include="DeployServiceTest.cs" />

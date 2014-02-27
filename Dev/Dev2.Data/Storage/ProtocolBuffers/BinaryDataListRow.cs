@@ -16,6 +16,9 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         private char[] _rowData;
 
+        [NonSerialized]
+        private readonly object _rowLock = new object();
+
         // TODO : pack two int arrays into single uint array ;)
         // Will impact wide tables the most ;)
         private int[] _startIdx;
@@ -50,127 +53,130 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         public override byte[] ToByteArray()
         {
-
-            // get row data ;)
-            byte[] rowBytes = Encoding.UTF8.GetBytes(_rowData);
-            int rowBytesLen = rowBytes.Length;
-
-            // calc len of object ;)
-            var len = sizeof(int) + sizeof(short) + (sizeof(int) * 2) + (rowBytesLen) + ((sizeof(int) * _colCnt) * 2);
-            byte[] result = new byte[len];
-
-            var offSet = 0;
-
-            // copy over _rowBytesLen for unpacking ;)
-            Buffer.BlockCopy(BitConverter.GetBytes(rowBytesLen), 0, result, offSet, sizeof(int));
-
-            // copy over _colCnt
-            offSet += sizeof(int);
-            Buffer.BlockCopy(BitConverter.GetBytes(_colCnt), 0, result, offSet, sizeof(short));
-
-
-            // copy over _storageCapacity
-            offSet += sizeof(short);
-            Buffer.BlockCopy(BitConverter.GetBytes(_storageCapacity), 0, result, offSet, sizeof(int));
-
-            // copy over _usedStorage
-            offSet += sizeof(int);
-            Buffer.BlockCopy(BitConverter.GetBytes(_usedStorage), 0, result, offSet, sizeof(int));
-
-            // copy over _rowBytes
-            offSet += sizeof(int);
-            Buffer.BlockCopy(rowBytes, 0, result, offSet, rowBytesLen);
-
-            // copy over _startIdx
-            offSet += rowBytes.Length;
-            for(int i = 0; i < _colCnt; i++)
+            lock(_rowLock)
             {
-                Buffer.BlockCopy(BitConverter.GetBytes(_startIdx[i]), 0, result, offSet, sizeof(int));
-                offSet += sizeof(int);
-            }
+                // get row data ;)
+                byte[] rowBytes = Encoding.UTF8.GetBytes(_rowData);
+                int rowBytesLen = rowBytes.Length;
 
-            // copy over _columnLen
-            for(int i = 0; i < _colCnt; i++)
-            {
-                Buffer.BlockCopy(BitConverter.GetBytes(_columnLen[i]), 0, result, offSet, sizeof(int));
-                offSet += sizeof(int);
-            }
+                // calc len of object ;)
+                var len = sizeof(int) + sizeof(short) + (sizeof(int) * 2) + (rowBytesLen) + ((sizeof(int) * _colCnt) * 2);
+                byte[] result = new byte[len];
 
-            return result;
+                var offSet = 0;
+
+                // copy over _rowBytesLen for unpacking ;)
+                Buffer.BlockCopy(BitConverter.GetBytes(rowBytesLen), 0, result, offSet, sizeof(int));
+
+                // copy over _colCnt
+                offSet += sizeof(int);
+                Buffer.BlockCopy(BitConverter.GetBytes(_colCnt), 0, result, offSet, sizeof(short));
+
+
+                // copy over _storageCapacity
+                offSet += sizeof(short);
+                Buffer.BlockCopy(BitConverter.GetBytes(_storageCapacity), 0, result, offSet, sizeof(int));
+
+                // copy over _usedStorage
+                offSet += sizeof(int);
+                Buffer.BlockCopy(BitConverter.GetBytes(_usedStorage), 0, result, offSet, sizeof(int));
+
+                // copy over _rowBytes
+                offSet += sizeof(int);
+                Buffer.BlockCopy(rowBytes, 0, result, offSet, rowBytesLen);
+
+                // copy over _startIdx
+                offSet += rowBytes.Length;
+                for(int i = 0; i < _colCnt; i++)
+                {
+                    Buffer.BlockCopy(BitConverter.GetBytes(_startIdx[i]), 0, result, offSet, sizeof(int));
+                    offSet += sizeof(int);
+                }
+
+                // copy over _columnLen
+                for(int i = 0; i < _colCnt; i++)
+                {
+                    Buffer.BlockCopy(BitConverter.GetBytes(_columnLen[i]), 0, result, offSet, sizeof(int));
+                    offSet += sizeof(int);
+                }
+
+                return result;
+            }
         }
 
         public override void ToObject(byte[] bytes)
         {
-            var offSet = 0;
-
-            // TODO : Look at this code!!!!!
-
-            // unpack _rowBytesLen
-            var intBytes = new byte[sizeof(int)];
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
-            int packedRowBytesLen = BitConverter.ToInt32(intBytes, 0);
-
-            // unpack _colCnt
-            offSet += sizeof(int);
-            var shortBytes = new byte[sizeof(short)];
-            Buffer.BlockCopy(bytes, offSet, shortBytes, 0, sizeof(short));
-            _colCnt = BitConverter.ToInt16(shortBytes, 0);
-
-            // unpack _storageCapacity
-            offSet += sizeof(short);
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
-            _storageCapacity = BitConverter.ToInt32(intBytes, 0);
-
-            // unpack _usedStorage
-            offSet += sizeof(int);
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
-            _usedStorage = BitConverter.ToInt32(intBytes, 0);
-
-            // unpack _rowData
-            var charSize = packedRowBytesLen;
-            try
+            lock(_rowLock)
             {
-                var charBytes = new byte[charSize];
+                var offSet = 0;
+
+                // unpack _rowBytesLen
+                var intBytes = new byte[sizeof(int)];
+                Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
+                int packedRowBytesLen = BitConverter.ToInt32(intBytes, 0);
+
+                // unpack _colCnt
                 offSet += sizeof(int);
-                Buffer.BlockCopy(bytes, offSet, charBytes, 0, charSize);
-                _rowData = Encoding.UTF8.GetString(charBytes).ToCharArray();
-            }
-            catch(Exception ae)
-            {
-                // we may have a flipping huge issue ;)
-                this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ] StorageCapacity [ " + _storageCapacity + " ] Column Count [ " + _colCnt + " ] TOTAL ROW BYTES [ " + packedRowBytesLen + " ]");
-                this.LogError(ae);
-            }
+                var shortBytes = new byte[sizeof(short)];
+                Buffer.BlockCopy(bytes, offSet, shortBytes, 0, sizeof(short));
+                _colCnt = BitConverter.ToInt16(shortBytes, 0);
 
-            // unpack _startIdx
-            var intSize = _colCnt * sizeof(int);
-            var intArrayBytes = new byte[sizeof(int)];
-            offSet += charSize;
-            _startIdx = new int[_colCnt];
+                // unpack _storageCapacity
+                offSet += sizeof(short);
+                Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
+                _storageCapacity = BitConverter.ToInt32(intBytes, 0);
 
-            // process a block at a time ;)
-            int pos = 0;
-            for(int i = 0; i < intSize; i += sizeof(int))
-            {
-                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
-                int val = BitConverter.ToInt32(intArrayBytes, 0);
-                _startIdx[pos] = val;
-                pos++;
+                // unpack _usedStorage
                 offSet += sizeof(int);
-            }
+                Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
+                _usedStorage = BitConverter.ToInt32(intBytes, 0);
 
-            // unpack _columnLen
-            pos = 0;
-            _columnLen = new int[_colCnt];
+                // unpack _rowData
+                var charSize = packedRowBytesLen;
+                try
+                {
+                    var charBytes = new byte[charSize];
+                    offSet += sizeof(int);
+                    Buffer.BlockCopy(bytes, offSet, charBytes, 0, charSize);
+                    _rowData = Encoding.UTF8.GetString(charBytes).ToCharArray();
+                }
+                catch(Exception ae)
+                {
+                    // we may have a flipping huge issue ;)
+                    this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ] StorageCapacity [ " + _storageCapacity + " ] Column Count [ " + _colCnt + " ] TOTAL ROW BYTES [ " + packedRowBytesLen + " ]");
+                    this.LogError(ae);
+                }
 
-            // process a block at a time ;)
-            for(int i = 0; i < intSize; i += sizeof(int))
-            {
-                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
-                var val = BitConverter.ToInt32(intArrayBytes, 0);
-                _columnLen[pos] = val;
-                pos++;
-                offSet += sizeof(int);
+                // unpack _startIdx
+                var intSize = _colCnt * sizeof(int);
+                var intArrayBytes = new byte[sizeof(int)];
+                offSet += charSize;
+                _startIdx = new int[_colCnt];
+
+                // process a block at a time ;)
+                int pos = 0;
+                for(int i = 0; i < intSize; i += sizeof(int))
+                {
+                    Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
+                    int val = BitConverter.ToInt32(intArrayBytes, 0);
+                    _startIdx[pos] = val;
+                    pos++;
+                    offSet += sizeof(int);
+                }
+
+                // unpack _columnLen
+                pos = 0;
+                _columnLen = new int[_colCnt];
+
+                // process a block at a time ;)
+                for(int i = 0; i < intSize; i += sizeof(int))
+                {
+                    Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
+                    var val = BitConverter.ToInt32(intArrayBytes, 0);
+                    _columnLen[pos] = val;
+                    pos++;
+                    offSet += sizeof(int);
+                }
             }
         }
 
@@ -208,132 +214,139 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
                 _colCnt = (short)amt;
             }
+
         }
 
         public string FetchValue(int idx, int masterViewColumnCount)
         {
-            // adjust for master and child view differences ;)
-            AdjustStorage(masterViewColumnCount);
-
-            if(idx < _startIdx.Length)
+            lock(_rowLock)
             {
-                int start = _startIdx[idx];
-                if(start > DataListConstants.EmptyRowStartIdx)
+                // adjust for master and child view differences ;)
+                AdjustStorage(masterViewColumnCount);
+
+                if(idx < _startIdx.Length)
                 {
-                    // we have data cool beans ;)   
-                    int len = _columnLen[idx];
-                    if(len > 0)
+                    int start = _startIdx[idx];
+                    if(start > DataListConstants.EmptyRowStartIdx)
                     {
-                        StringBuilder result = new StringBuilder();
-                        int end = (start + len);
-
-                        for(int i = start; i < end; i++)
+                        // we have data cool beans ;)   
+                        int len = _columnLen[idx];
+                        if(len > 0)
                         {
-                            result.Append(_rowData[i]);
-                        }
+                            StringBuilder result = new StringBuilder();
+                            int end = (start + len);
 
-                        return result.ToString();
+                            for(int i = start; i < end; i++)
+                            {
+                                result.Append(_rowData[i]);
+                            }
+
+                            return result.ToString();
+                        }
                     }
                 }
-            }
 
-            return string.Empty;
+                return string.Empty;
+            }
         }
 
         public void UpdateValue(string val, int idx, int masterViewColumnCount)
         {
             if(val != string.Empty)
             {
-                // adjust for master and child view differences ;)
-                AdjustStorage(masterViewColumnCount);
-
-                int start = _startIdx[idx];
-                if(start > DataListConstants.EmptyRowStartIdx)
+                lock(_rowLock)
                 {
-                    // we have data, cool beans ;)   
-                    int candiateLen = val.Length;
-                    int len = _columnLen[idx];
+                    // adjust for master and child view differences ;)
+                    AdjustStorage(masterViewColumnCount);
 
-                    // if candidate is larger then prev value, we need to append to end of storage ;)   
-                    if(candiateLen > len)
+                    int start = _startIdx[idx];
+                    if(start > DataListConstants.EmptyRowStartIdx)
                     {
+                        // we have data, cool beans ;)   
+                        int candiateLen = val.Length;
+                        int len = _columnLen[idx];
 
-                        // first clear the old storage location ;)
-                        for(int i = start; i < len; i++)
+                        // if candidate is larger then prev value, we need to append to end of storage ;)   
+                        if(candiateLen > len)
                         {
-                            _rowData[i] = '\0';
-                        }
 
-                        // do we have space
-                        int requiredSize = (_usedStorage + candiateLen);
-                        if(requiredSize >= _storageCapacity)
+                            // first clear the old storage location ;)
+                            //for(int i = start; i < len; i++)
+                            //{
+                            //    _rowData[i] = '\0';
+                            //}
+
+                            // do we have space
+                            int requiredSize = (_usedStorage + candiateLen);
+                            if(requiredSize >= _storageCapacity)
+                            {
+                                // Nope, grow array
+                                GrowRow(requiredSize);
+                            }
+
+                            // else yes we have the space, but in either case we need to append to end ;)
+                            start = FetchStorageStartIdx();
+                            int pos = 0;
+                            int iterationLen = (start + candiateLen);
+
+                            for(int i = start; i < iterationLen; i++)
+                            {
+                                _rowData[i] = val[pos];
+                                pos++;
+                            }
+
+                            // finally update the storage location data
+                            _startIdx[idx] = start;
+                            _columnLen[idx] = candiateLen;
+                            _usedStorage += candiateLen;
+                        }
+                        else
                         {
-                            // Nope, grow array
-                            GrowRow(requiredSize);
+                            // same size or small we can fit it into the same location
+
+                            // first update data
+                            int pos = 0;
+                            int overWriteLen = (start + candiateLen);
+                            for(int i = start; i < overWriteLen; i++)
+                            {
+                                _rowData[i] = val[pos];
+                                pos++;
+                            }
+
+                            // finally update length array ;)
+                            _columnLen[idx] = candiateLen;
                         }
-
-                        // else yes we have the space, but in either case we need to append to end ;)
-                        start = FetchStorageStartIdx();
-                        int pos = 0;
-                        int iterationLen = (start + candiateLen);
-
-                        for(int i = start; i < iterationLen; i++)
-                        {
-                            _rowData[i] = val[pos];
-                            pos++;
-                        }
-
-                        // finally update the storage location data
-                        _startIdx[idx] = start;
-                        _columnLen[idx] = candiateLen;
-                        _usedStorage += candiateLen;
                     }
                     else
                     {
-                        // same size or small we can fit it into the same location
+                        // It is a new value that needs to be inserted ;)
 
-                        // first update data
-                        int pos = 0;
-                        int overWriteLen = (start + candiateLen);
-                        for(int i = start; i < overWriteLen; i++)
+                        int canidateLen = val.Length;
+                        int storageReq = _usedStorage + canidateLen;
+
+                        if(storageReq >= _storageCapacity)
                         {
-                            _rowData[i] = val[pos];
-                            pos++;
+                            // sad panda, we need to grow the storage
+                            GrowRow(storageReq);
                         }
 
-                        // finally update length array ;)
-                        _columnLen[idx] = candiateLen;
+                        // now we have space, it is time to save the value ;)
+                        start = FetchStorageStartIdx();
+                        CharEnumerator itr = val.GetEnumerator();
+                        int iterateLen = (start + canidateLen);
+                        for(int i = start; i < iterateLen; i++)
+                        {
+                            itr.MoveNext();
+                            _rowData[i] = itr.Current;
+                        }
+
+                        itr.Dispose();
+
+                        // finally, update the storage data
+                        _startIdx[idx] = start;
+                        _columnLen[idx] = canidateLen;
+                        _usedStorage += canidateLen;
                     }
-                }
-                else
-                {
-                    // It is a new value that needs to be inserted ;)
-
-                    int canidateLen = val.Length;
-                    int storageReq = _usedStorage + canidateLen;
-
-                    if(storageReq >= _storageCapacity)
-                    {
-                        // sad panda, we need to grow the storage
-                        GrowRow(storageReq);
-                    }
-
-                    // now we have space, it is time to save the value ;)
-                    start = FetchStorageStartIdx();
-                    CharEnumerator itr = val.GetEnumerator();
-                    int iterateLen = (start + canidateLen);
-                    for(int i = start; i < iterateLen; i++)
-                    {
-                        itr.MoveNext();
-                        _rowData[i] = itr.Current;
-                    }
-
-                    itr.Dispose();
-
-                    // finally, update the storage data
-                    _startIdx[idx] = start;
-                    _columnLen[idx] = canidateLen;
-                    _usedStorage += canidateLen;
                 }
             }
             else
@@ -370,6 +383,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
         /// <param name="targetSize">Size of the target.</param>
         private void GrowRow(int targetSize)
         {
+
             // grow it by a factor of 1.5 of the target size to avoid growing too often ;)
             int growthSize = (int)(targetSize * DataListConstants.RowGrowthFactor);
             char[] tmp = new char[growthSize];
@@ -384,6 +398,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             _rowData = tmp;
             _storageCapacity = growthSize;
+
         }
 
         private int FetchStorageStartIdx()
@@ -394,7 +409,6 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             }
 
             return (_usedStorage);
-
         }
 
         /// <summary>
@@ -420,6 +434,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             _usedStorage = 0;
 
             Init();
+
         }
 
         #endregion

@@ -155,6 +155,7 @@
     <Compile Include="Trigger\FocusContentTrigger.cs" />
     <Compile Include="Trigger\KeyPressedTrigger.cs" />
     <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
+    <Compile Include="Utils\WatermarkSential.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -35,27 +35,10 @@ namespace Dev2.Core.Tests
         }
 
         #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
-        public void MyTestInitialize()
-        {
-
-        }
 
         private void createFile(string fileName)
         {
-            System.Drawing.Bitmap flag = new System.Drawing.Bitmap(10, 10);
+            Bitmap flag = new Bitmap(10, 10);
             for(int x = 0; x < flag.Height; ++x)
             {
                 for(int y = 0; y < flag.Width; ++y)

@@ -27,6 +27,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Composition;
+using Dev2.CustomControls.Utils;
 using Dev2.Data.Interfaces;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
@@ -1240,25 +1241,25 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-            // we got the correct model and clean it ;)
-            var theText = _workflowHelper.SanitizeXaml(xaml);
+                // we got the correct model and clean it ;)
+                var theText = _workflowHelper.SanitizeXaml(xaml);
 
-            var length = theText.Length;
-            var startIdx = 0;
-            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+                var length = theText.Length;
+                var startIdx = 0;
+                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
-            // now load the designer in chunks ;)
-            for(int i = 0; i < rounds; i++)
-            {
-                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                if(len > (theText.Length - startIdx))
+                // now load the designer in chunks ;)
+                for(int i = 0; i < rounds; i++)
                 {
-                    len = (theText.Length - startIdx);
-                }
+                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                    if(len > (theText.Length - startIdx))
+                    {
+                        len = (theText.Length - startIdx);
+                    }
 
-                _wd.Text += theText.Substring(startIdx, len);
-                startIdx += len;
-            }
+                    _wd.Text += theText.Substring(startIdx, len);
+                    startIdx += len;
+                }
         }
 
         void SelectedItemChanged(Selection item)
@@ -1300,8 +1301,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // If we are opening from server skip this check, it cannot have "real" changes!
                 if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
                 {
+                    // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
+                    if(OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
+                    {
+                        ResourceModel.WorkflowXaml = ServiceDefinition;
+                        OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+                    }
+
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
+
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     NotifyOfPropertyChange(() => DisplayName);
                 }
@@ -1310,9 +1319,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                     // When opening from server, save the hydrated changes for future comparison ;)
                     if(!CheckServiceDefinition())
                     {
+                        // process any latent datalist changes ;)
+                        ProcessDataListOnLoad();
                         ResourceModel.WorkflowXaml = ServiceDefinition;
                     }
                 }
+
+                // THIS MUST NEVER BE DELETED ;)
+                WatermarkSential.IsWatermarkBeingApplied = false;
             }
         }
 
@@ -1335,15 +1349,39 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         /// <summary>
+        /// Processes the data list configuration load.
+        /// </summary>
+        public void ProcessDataListOnLoad()
+        {
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
+        }
+
+        /// <summary>
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+
+            if(!OpeningWorkflowsHelper.IsLoadedInFocusLossCatalog(workSurfaceKey))
+            {
+                OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+            }
+
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+        }
+
+        /// <summary>
+        /// Adds the missing with no pop up and find unused data list items implementation.
+        /// </summary>
+        /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
+        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
         {
             if(DataListSingleton.ActiveDataList != null)
             {
                 // given the flipping messaging, do this here, silly but works ;(
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-                if(OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+                if(OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && !isLoadEvent)
                 {
                     OpeningWorkflowsHelper.RemoveWorkflowWaitingForDesignerLoad(workSurfaceKey);
                 }
@@ -1694,6 +1732,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _uniqueWorkflowParts.Clear();
                 _uniqueWorkflowParts = null;
+            }
+
+            // remove this value from our helper class's cache ;)
+            if(ResourceModel != null)
+            {
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+                OpeningWorkflowsHelper.PruneWorkflowFromCaches(workSurfaceKey);
             }
 
             _wd = null;
