@@ -26,6 +26,7 @@ namespace Dev2.Core.Tests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public partial class DebugOutputViewModelTest
     {
         static Mock<IResourceRepository> _resourceRepo = new Mock<IResourceRepository>();
@@ -39,8 +40,7 @@ namespace Dev2.Core.Tests
         private static ImportServiceContext _importServiceContext;
         private static Guid _serverID = Guid.NewGuid();
         private static Guid _workspaceID = Guid.NewGuid();
-        private static Guid _firstResourceID = Guid.NewGuid();
-        private Guid _secondResourceID = Guid.NewGuid();
+        private static readonly Guid _firstResourceID = Guid.NewGuid();
         public static Mock<IPopupController> _popupController;
         private static Mock<IFeedbackInvoker> _feedbackInvoker;
         private static Mock<IWebController> _webController;
@@ -373,6 +373,53 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(0, vm.PendingItemCount);
             Assert.AreEqual(10, vm.ContentItemCount);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_WhenDebugIsInFinishedState_MessageIsAddedBeforeAndAfterLastItem()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var envRepo = GetEnvironmentRepository();
+
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Finished };
+
+            var state = new Mock<IDebugState>();
+            state.Setup(s => s.StateType).Returns(StateType.After);
+            state.Setup(s => s.SessionID).Returns(vm.SessionID);
+            vm.Append(state.Object);
+
+            state = new Mock<IDebugState>();
+            state.Setup(s => s.StateType).Returns(StateType.Message);
+            state.Setup(s => s.Message).Returns("Some random message");
+            state.Setup(s => s.SessionID).Returns(vm.SessionID);
+            vm.Append(state.Object);
+           
+            Assert.AreEqual(3, vm.RootItems.Count);
+            Assert.IsInstanceOfType(vm.RootItems[0], typeof(DebugStringTreeViewItemViewModel));
+            Assert.IsInstanceOfType(vm.RootItems[1], typeof(DebugStateTreeViewItemViewModel));
+            Assert.IsInstanceOfType(vm.RootItems[2], typeof(DebugStringTreeViewItemViewModel));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_WhenDebugIsInStoppingState_ZeroItemsAddedToTree()
+        {
+            ImportService.CurrentContext = _importServiceContext;
+
+            var envRepo = GetEnvironmentRepository();
+
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Stopping };
+
+            var state = new Mock<IDebugState>();
+            state.Setup(s => s.StateType).Returns(StateType.After);
+            state.Setup(s => s.SessionID).Returns(vm.SessionID);
+            vm.Append(state.Object);
+
+            Assert.AreEqual(0, vm.RootItems.Count);
         }
 
         #endregion

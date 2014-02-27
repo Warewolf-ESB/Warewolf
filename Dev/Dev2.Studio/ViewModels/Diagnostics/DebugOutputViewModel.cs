@@ -1,5 +1,6 @@
 ﻿using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Services;
@@ -40,12 +41,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
 
-        bool _continueDebugDispatch;
-
         readonly object _syncContext = new object();
 
         int _depthMin;
         int _depthMax;
+        bool _continueDebugDispatch;
+        bool _dispatchLastDebugState;
+        IDebugState _lastStep;
         ICommand _expandAllCommand;
         bool _expandAllMode = true;
         bool _highlightError = true;
@@ -444,7 +446,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
 
         #region public methods
-
+        
         /// <summary>
         ///     Appends the specified content.
         /// </summary>
@@ -469,8 +471,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && content.StateType != StateType.Message)
             {
+                if(content.StateType != StateType.End)
+                {
+                    _lastStep = content;
+                }
                 return;
             }
+
+            _continueDebugDispatch = false;
 
             if(content.IsFinalStep())
             {
@@ -712,7 +720,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return;
                 }
             }
-
+            
             if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(content)), DispatcherPriority.Background);
@@ -728,9 +736,22 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if((DebugStatus == DebugStatus.Stopping ||
                 DebugStatus == DebugStatus.Finished) &&
                 string.IsNullOrEmpty(content.Message) &&
-                !_continueDebugDispatch)
+                !_continueDebugDispatch &&
+                !_dispatchLastDebugState)
             {
                 return;
+            }
+
+            if(_lastStep != null &&
+                DebugStatus == DebugStatus.Finished &&
+                content.StateType == StateType.Message)
+            {
+                var lastDebugStateProcessed = _lastStep;
+                _lastStep = null;
+                _dispatchLastDebugState = true;
+                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Resources.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID });
+                AddItemToTreeImpl(lastDebugStateProcessed);
+                _dispatchLastDebugState = false;
             }
 
             if(!string.IsNullOrWhiteSpace(SearchText) && !_debugOutputFilterStrategy.Filter(content, SearchText))
@@ -738,7 +759,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            if(content.StateType == StateType.Message)
+            if(content.StateType == StateType.Message && content.ParentID == Guid.Empty)
             {
                 RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message });
             }
@@ -748,21 +769,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
                 IDebugTreeViewItemViewModel child;
 
-                if(content.StateType == StateType.End || content.StateType == StateType.After)
+                if(content.StateType == StateType.Message)
                 {
-                    // We're ending the original workflow OR ending a sub-workflow 
-                    //
-                    // A tree view item with this content.ID will have been added to the tree previously.
-                    // Consequently, a lookup in the _contentItemMap would yield the previous item and 
-                    // it would be re-added to the tree and the new content would be lost.
-                    // To prevent this we add new one.
-                    //
-                    child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
+                    child = new DebugStringTreeViewItemViewModel { Content = content.Message };
                 }
                 else
                 {
                     child = new DebugStateTreeViewItemViewModel(EnvironmentRepository) { Content = content };
                 }
+
                 if(!_contentItemMap.ContainsKey(content.ID))
                 {
                     _contentItemMap.Add(content.ID, child);
