@@ -117,6 +117,7 @@
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\ToolType.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
+    <Compile Include="Tests\Activities\DsfMultiAssignActivityTests.cs" />
     <Compile Include="Tests\Activities\PluginServiceTests.cs" />
     <Compile Include="Tests\Activities\WebServiceTests.cs" />
     <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />

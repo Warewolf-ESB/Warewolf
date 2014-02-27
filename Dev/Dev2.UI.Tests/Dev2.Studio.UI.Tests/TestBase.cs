@@ -60,43 +60,6 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ToolDesigners_AssignLargeView")]
-        public void ToolDesigners_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
-        {
-            DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap();
-            activityUiMap.ClickOpenLargeView();
-            // Add the data!
-            // moved from 100 to 10 for time
-            for(int j = 0; j < 10; j++)
-            {
-                activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
-            }
-
-            // Click it
-            Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
-        }
-
-        [TestMethod]
-        public void AddLargeAmountsOfDataListItems_Expected_NoHanging()
-        {
-            using(DsfMultiAssignUiMap activityUiMap = new DsfMultiAssignUiMap())
-            {
-                // Add the data!
-                // moved from 100 to 10 for time
-                for(int j = 0; j < 10; j++)
-                {
-                    activityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                    activityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
-                }
-
-                // Click it
-                Assert.AreEqual("[[theVar9]]", activityUiMap.GetTextFromVariable(9));
-            }
-        }
-
         ////PBI 9461
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
