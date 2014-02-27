@@ -332,6 +332,7 @@
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />
     <Compile Include="Messages\FileChooserMessage.cs" />
+    <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\ServerSelectionChangedMessage.cs" />
     <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />

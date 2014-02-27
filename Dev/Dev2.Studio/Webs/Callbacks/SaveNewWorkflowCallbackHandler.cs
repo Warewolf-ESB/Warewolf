@@ -1,13 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
+using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Utils;
 using Dev2.Webs.Callbacks;
-using System;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
@@ -51,33 +49,7 @@ namespace Dev2.Studio.Webs.Callbacks
 
                 if(_resourceModel != null)
                 {
-                    _resourceModel.IsNewWorkflow = false;
-                    this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
-                    EventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
-                    IContextualResourceModel newResourceModel =
-                        ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
-                                                                 resName);
-                    newResourceModel.Category = resCat;
-                    newResourceModel.ResourceName = resName;
-
-                    newResourceModel.WorkflowXaml = _resourceModel.WorkflowXaml.Replace(_resourceModel.DisplayName,
-                                                                                        resName);
-                    newResourceModel.DataList = _resourceModel.DataList;
-                    newResourceModel.IsNewWorkflow = false;
-
-                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
-                    EventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
-                    if(_addToTabManager)
-                    {
-                        this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                        EventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
-                    }
-                    this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
-                    EventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
-                    this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-                    EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
-
-                    NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);
+                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, _addToTabManager));
                 }
 
                 Close();

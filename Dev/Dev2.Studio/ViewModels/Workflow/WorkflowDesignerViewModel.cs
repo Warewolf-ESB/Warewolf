@@ -52,6 +52,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
@@ -70,6 +71,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IHandle<UpdateResourceMessage>,
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
+                                             IHandle<SaveUnsavedWorkflowMessage>,
                                              IHandle<UpdateWorksurfaceFlowNodeDisplayName>, IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
@@ -1006,7 +1008,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 designerConfigService.AnnotationEnabled = false;
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
             }
-
             _wdMeta = new DesignerMetadata();
             _wdMeta.Register();
             var builder = new AttributeTableBuilder();
@@ -1231,30 +1232,33 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             else
             {
-                // we got the correct model and clean it ;)
-                var theText = _workflowHelper.SanitizeXaml(xaml);
-
-                var length = theText.Length;
-                var startIdx = 0;
-                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-
-                // now load the designer in chunks ;)
-                for(int i = 0; i < rounds; i++)
-                {
-                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if(len > (theText.Length - startIdx))
-                    {
-                        len = (theText.Length - startIdx);
-                    }
-
-                    _wd.Text += theText.Substring(startIdx, len);
-                    startIdx += len;
-                }
+                SetDesignerText(xaml);
 
                 _wd.Load();
-
             }
+        }
 
+        void SetDesignerText(StringBuilder xaml)
+        {
+            // we got the correct model and clean it ;)
+            var theText = _workflowHelper.SanitizeXaml(xaml);
+
+            var length = theText.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+
+            // now load the designer in chunks ;)
+            for(int i = 0; i < rounds; i++)
+            {
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if(len > (theText.Length - startIdx))
+                {
+                    len = (theText.Length - startIdx);
+                }
+
+                _wd.Text += theText.Substring(startIdx, len);
+                startIdx += len;
+            }
         }
 
         void SelectedItemChanged(Selection item)
@@ -1748,6 +1752,50 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             WdOnModelChanged(new object(), new EventArgs());
         }
+
+        #region Implementation of IHandle<SaveUnsavedWorkflow>
+
+        public void Handle(SaveUnsavedWorkflowMessage message)
+        {
+            if(message == null || message.ResourceModel == null || String.IsNullOrEmpty(message.ResourceName) || string.IsNullOrEmpty(message.ResourceCategory))
+            {
+                return;
+            }
+            var resourceModel = message.ResourceModel;
+            var unsavedName = resourceModel.ResourceName;
+            BindToModel();
+            UpdateResourceModel(message, resourceModel, unsavedName);
+            PublishMessages(resourceModel);
+            if(message.KeepTabOpen)
+            {
+                this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
+            }
+            NewWorkflowNames.Instance.Remove(unsavedName);
+        }
+
+        void PublishMessages(IContextualResourceModel resourceModel)
+        {
+            this.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
+            EventPublisher.Publish(new UpdateDeployMessage());
+            this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+            EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
+            this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
+            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(resourceModel));
+        }
+
+        static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
+        {
+            resourceModel.ResourceName = message.ResourceName;
+            resourceModel.DisplayName = message.ResourceName;
+            resourceModel.Category = message.ResourceCategory;
+            resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
+            resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
+            resourceModel.IsWorkflowSaved = true;
+            resourceModel.IsNewWorkflow = false;
+        }
+
+        #endregion
     }
 
     internal class WorkflowIsSavedAction : AbstractAction
