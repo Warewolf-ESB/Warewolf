@@ -1,21 +1,21 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.DurableInstancing;
-using System.Threading;
-using Dev2.Common;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Instrumentation;
 using Dev2.Network.Execution;
+using Dev2.Providers.Logs;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.DurableInstancing;
+using System.Threading;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -312,7 +312,7 @@ namespace Dev2.Runtime.ESB.WF
                     _executionToken.IsUserCanceled = true;
 
                     // This was cancel which left the activities resident in the background and caused chaos!
-                    _instance.Terminate(new Exception("User Termination"), new TimeSpan(0, 0, 0, 0, 10));
+                    _instance.Terminate(new Exception("User Termination"), new TimeSpan(0, 0, 0, 60, 0));
 
                 }
                 catch(Exception e)
