@@ -191,9 +191,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     if(pad != null)
                                     {
-                                        if((MergeCollection[pos].MergeType == "Index" || MergeCollection[pos].MergeType == "Chars") && string.IsNullOrEmpty(at.TheValue))
+                                        if(MergeCollection[pos].MergeType == "Index")
                                         {
-                                            allErrors.AddError("The At value cannot be blank.");
+                                            if(string.IsNullOrEmpty(at.TheValue))
+                                            {
+                                                allErrors.AddError("The 'Using' value cannot be blank.");
+                                            }
+
+                                            int atValue;
+                                            if(!Int32.TryParse(at.TheValue, out atValue))
+                                            {
+                                                allErrors.AddError("The 'Using' value must be a whole number.");
+                                            }
+                                            if(pad.TheValue.Length > 1)
+                                            {
+                                                allErrors.AddError("'Padding' must be a single character");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at.TheValue))
+                                            {
+                                                allErrors.AddError("The 'Using' value cannot be blank.");
+                                            }
                                         }
                                         mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, pad.TheValue, MergeCollection[pos].Alignment);
                                         pos++;
@@ -251,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                        AddDebugOutputItem(new DebugOutputParams(string.IsNullOrEmpty(Result) ? "" : Result, "", executionId, 1));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);

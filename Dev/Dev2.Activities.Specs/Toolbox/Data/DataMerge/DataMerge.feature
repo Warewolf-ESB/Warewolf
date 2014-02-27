@@ -112,7 +112,7 @@ Scenario: Merge a variable using index that is a char
 	And an Input "[[a]]" and merge type "Index" and string at as "b" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as  
 	| # | Input      | With  | Using | Pad | Align |
 	| 1 | [[a]] = aA | Index | b     | ""  | Left  |
@@ -221,6 +221,38 @@ Scenario: Merge a long string using small index and padding and alignment at inv
 	| # | Input            | With  | Using | Pad | Align |
 	| 1 | [[a]] = Warewolf | Index | -1    | " " | Left  |
 	| 2 | [[b]] = 12345    | Index | -1    | 0   | Right |	
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
+	
+Scenario: Merge a long string using small index and padding and alignment at invalid quoted index
+	Given a merge variable "[[a]]" equal to "Warewolf" 
+	And a merge variable "[[b]]" equal to "12345"
+	And an Input "[[a]]" and merge type "Index" and string at as ""-1"" and Padding " " and Alignment "Left"	
+	And an Input "[[b]]" and merge type "Index" and string at as ""-1"" and Padding "0" and Alignment "Right"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the execution has "AN" error
+	And the debug inputs as  
+	| # | Input            | With  | Using | Pad | Align |
+	| 1 | [[a]] = Warewolf | Index | "-1"    | " " | Left  |
+	| 2 | [[b]] = 12345    | Index | "-1"    | 0   | Right |	
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
+		
+Scenario: Merge a long string using small index and padding multiple character and alignment at index
+	Given a merge variable "[[a]]" equal to "Warewolf" 
+	And a merge variable "[[b]]" equal to "12345"
+	And an Input "[[a]]" and merge type "Index" and string at as "1" and Padding "eee" and Alignment "Left"	
+	And an Input "[[b]]" and merge type "Index" and string at as "1" and Padding "0" and Alignment "Right"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the execution has "AN" error
+	And the debug inputs as  
+	| # | Input            | With  | Using | Pad | Align |
+	| 1 | [[a]] = Warewolf | Index | 1     | eee | Left  |
+	| 2 | [[b]] = 12345    | Index | 1     | 0   | Right |	
 	And the debug output as 
 	| Result       |
 	| [[result]] = |
