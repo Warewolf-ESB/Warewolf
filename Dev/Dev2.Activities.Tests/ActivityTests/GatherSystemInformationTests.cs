@@ -521,7 +521,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
-        
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

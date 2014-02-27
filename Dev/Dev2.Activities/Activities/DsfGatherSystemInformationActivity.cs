@@ -1,4 +1,5 @@
 ﻿using Dev2.Activities.Debug;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.Data.TO;
@@ -105,7 +106,7 @@ namespace Dev2.Activities
                     var inputToAdd = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
                     AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
-                    AddDebugItem(new DebugItemStaticDataParams(GetCorrectSystemInformation(item.EnTypeOfSystemInformation), ""), inputToAdd);
+                    AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
                     _debugInputs.Add(inputToAdd);
 
                     var hasErrors = allErrors.HasErrors();
