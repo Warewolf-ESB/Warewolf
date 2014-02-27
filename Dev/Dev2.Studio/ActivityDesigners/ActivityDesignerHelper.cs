@@ -45,7 +45,7 @@ namespace Dev2.Studio.ActivityDesigners
 {
     public static class ActivityDesignerHelper
     {
-        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm)
+        public static void AddDesignerAttributes(WorkflowDesignerViewModel workflowVm, bool liteInit = false)
         {
             var designerAttributes = new Dictionary<Type, Type>
             {
@@ -96,7 +96,7 @@ namespace Dev2.Studio.ActivityDesigners
                 // Travis.Frisinger : 25.09.2012 - Removed Http Activity as it is out of sync with the current release 1 plans
             };
 
-            workflowVm.InitializeDesigner(designerAttributes);
+            workflowVm.InitializeDesigner(designerAttributes, liteInit);
         }
     }
 }

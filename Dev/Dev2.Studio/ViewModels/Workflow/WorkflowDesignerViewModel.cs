@@ -93,7 +93,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
-        WorkflowDesigner _wd;
+        protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
         DsfActivityDropViewModel _vm;
         ResourcePickerDialog _resourcePickerDialog;
@@ -125,7 +125,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
@@ -145,7 +145,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if(createDesigner)
             {
-                ActivityDesignerHelper.AddDesignerAttributes(this);
+                ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
             OutlineViewTitle = "Navigation Pane";
         }
@@ -972,10 +972,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Initializes the designer.
         /// </summary>
         /// <param name="designerAttributes">The designer attributes.</param>
-        public void InitializeDesigner(IDictionary<Type, Type> designerAttributes)
+        /// <param name="liteInit">if set to <c>true</c> [lite initialize]. THIS IS FOR TESTING!!!!</param>
+        public void InitializeDesigner(IDictionary<Type, Type> designerAttributes, bool liteInit = false)
         {
             _wd = new WorkflowDesigner();
 
+            if(!liteInit)
+            {
             var hashTable = new Hashtable
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
@@ -1024,9 +1027,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                             ModelService = instance;
                             ModelService.ModelChanged += ModelServiceModelChanged;
                         });
+            }
 
             LoadDesignerXaml();
 
+            if(!liteInit)
+            {
             _wdMeta.Register();
 
             _wd.Context.Services.Subscribe<ViewStateService>(instance =>
@@ -1056,13 +1062,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
             Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
+            }
             // BUG 9304 - 2013.05.08 - TWR
             _workflowHelper.EnsureImplementation(ModelService);
 
+            if(!liteInit)
+            {
             //For Changing the icon of the flowchart.
             WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
             WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
             SubscribeToDebugSelectionChanged();
+        }
         }
 
         void SubscribeToDebugSelectionChanged()
@@ -1190,7 +1200,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void LoadDesignerXaml()
+        protected void LoadDesignerXaml()
         {
             var xaml = _resourceModel.WorkflowXaml;
 
@@ -1241,25 +1251,25 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-            // we got the correct model and clean it ;)
-            var theText = _workflowHelper.SanitizeXaml(xaml);
+                // we got the correct model and clean it ;)
+                var theText = _workflowHelper.SanitizeXaml(xaml);
 
-            var length = theText.Length;
-            var startIdx = 0;
-            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+                var length = theText.Length;
+                var startIdx = 0;
+                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
-            // now load the designer in chunks ;)
-            for(int i = 0; i < rounds; i++)
-            {
-                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                if(len > (theText.Length - startIdx))
+                // now load the designer in chunks ;)
+                for(int i = 0; i < rounds; i++)
                 {
-                    len = (theText.Length - startIdx);
-                }
+                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                    if(len > (theText.Length - startIdx))
+                    {
+                        len = (theText.Length - startIdx);
+                    }
 
-                _wd.Text += theText.Substring(startIdx, len);
-                startIdx += len;
-            }
+                    _wd.Text += theText.Substring(startIdx, len);
+                    startIdx += len;
+                }
         }
 
         void SelectedItemChanged(Selection item)
