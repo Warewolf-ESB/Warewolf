@@ -722,8 +722,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(vm.ShowLarge, "Fix errors failed to show the mapping.");
 
             // Called: 1 x ActivityViewModel constructor and 1 x DataMappingViewModel constructor
-            inputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(2));
-            outputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(2));
+            inputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(4));
+            outputMapping.Verify(p => p.SetValue(It.IsAny<object>()), Times.Exactly(4));
 
             // Always expect at least one error in the activity's error list - the no error
             Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");

@@ -64,6 +64,7 @@ namespace Dev2.Activities.Designers2.Service
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
+            eventPublisher.Subscribe(this);
             ButtonDisplayValue = DoneText;
 
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -78,6 +79,7 @@ namespace Dev2.Activities.Designers2.Service
             InitializeImageSource();
 
             var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
+            _environment = environment;
             InitializeValidationService(environment);
             if(!InitializeResourceModel(environment))
             {
@@ -253,6 +255,7 @@ namespace Dev2.Activities.Designers2.Service
         // Using a DependencyProperty as the backing store for ButtonDisplayValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ButtonDisplayValueProperty =
             DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
+        IEnvironmentModel _environment;
 
         public override void Validate()
         {
@@ -400,23 +403,35 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     else
                     {
-                        if(ResourceModel.ResourceType == ResourceType.Service)
+                        if(!CheckSourceMissing())
                         {
-                            var xe = ResourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
-                            var srcID = xe.AttributeSafe("SourceID");
-                            Guid sourceID;
-                            if(Guid.TryParse(srcID, out sourceID))
-                            {
-                                SourceID = sourceID;
-                                var sourceResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == sourceID);
-                                if(sourceResource == null)
-                                {
-                                    UpdateLastValidationMemoWithSourceNotFoundError();
-                                    return false;
-                                }
+                            return false;
+                        }
+                    }
                 }
-
             }
+            return true;
+        }
+
+        bool CheckSourceMissing()
+        {
+            if(ResourceModel != null && (ResourceModel.ResourceType == ResourceType.Service && _environment != null))
+            {
+                var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
+                if(resourceModel != null)
+                {
+                    var xe = resourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
+                    var srcID = xe.AttributeSafe("SourceID");
+                    Guid sourceID;
+                    if(Guid.TryParse(srcID, out sourceID))
+                    {
+                        SourceID = sourceID;
+                        var sourceResource = _environment.ResourceRepository.FindSingle(c => c.ID == sourceID);
+                        if(sourceResource == null)
+                        {
+                            UpdateLastValidationMemoWithSourceNotFoundError();
+                            return false;
+                        }
                     }
                 }
             }
@@ -531,7 +546,11 @@ namespace Dev2.Activities.Designers2.Service
             CheckIsDeleted(memo);
 
             UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
-
+            if(CheckSourceMissing())
+            {
+                InitializeMappings();
+                UpdateMappings();
+            }
             if(OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, memo);
@@ -571,7 +590,7 @@ namespace Dev2.Activities.Designers2.Service
                 FixType = FixType.None,
                 Message = SourceNotFoundMessage
             });
-            UpdateLastValidationMemo(memo);
+            UpdateDesignValidationErrors(memo.Errors);
         }
 
         void UpdateLastValidationMemoWithOfflineError(ConnectResult result)
@@ -621,16 +640,16 @@ namespace Dev2.Activities.Designers2.Service
                         if(DataMappingViewModel != null)
                         {
                             var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
-                        if(inputOutputViewModel != null)
-                        {
-                            inputOutputViewModel.Required = input.Required;
-                            if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                            if(inputOutputViewModel != null)
                             {
-                                keepError = true;
+                                inputOutputViewModel.Required = input.Required;
+                                if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                                {
+                                    keepError = true;
+                                }
                             }
                         }
                     }
-                }
                 }
 
                 if(!keepError)
@@ -666,7 +685,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 if(DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
                 {
-                    var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.None).ToList();
+                    var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.None && c.ErrorType == ErrorType.None).ToList();
 
                     foreach(var errorInfo in listToRemove)
                     {
