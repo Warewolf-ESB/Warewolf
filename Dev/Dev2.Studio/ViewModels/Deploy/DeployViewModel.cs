@@ -1,8 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Instrumentation;
-using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -19,12 +23,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -86,6 +84,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             _asyncWorker = asyncWorker;
             _initialItemEnvironment = environment;
             _initialItemDisplayName = displayName;
+            DestinationServerHasDropped = false;
             Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
         }
 
@@ -306,7 +305,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             set
             {
                 _selectedSourceServer = value;
-
+                SourceServerHasDropped = false;
                 if(_selectedSourceServer != null)
                 {
                     _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
@@ -324,6 +323,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         void SelectedSourceServerIsConnectedChanged(object sender, ConnectedEventArgs e)
         {
             NotifyOfPropertyChange(() => SelectedSourceServer);
+            SourceServerHasDropped = !e.IsConnected;
         }
 
         public IEnvironmentModel SelectedDestinationServer
@@ -339,7 +339,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // ReSharper restore PossibleUnintendedReferenceComparison
                 {
                     _selectedDestinationServer = value;
-
+                    DestinationServerHasDropped = false;
                     if(_selectedDestinationServer != null)
                     {
                         _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
@@ -358,6 +358,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         void SelectedDestinationServerIsConnectedChanged(object sender, ConnectedEventArgs args)
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
+            DestinationServerHasDropped = !args.IsConnected;
         }
 
         #endregion
@@ -613,10 +614,40 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                     DeploySuccessfull = true;
                 }
+                catch(Exception)
+                {
+                    DeploySuccessfull = false;
+                    IsDeploying = false;
+                }
                 finally
                 {
                     IsDeploying = false;
                 }
+            }
+        }
+
+        public bool DestinationServerHasDropped
+        {
+            get
+            {
+                return _destinationServerHasDropped;
+            }
+            set
+            {
+                _destinationServerHasDropped = value;
+                OnPropertyChanged("DestinationServerHasDropped");
+            }
+        }
+        public bool SourceServerHasDropped
+        {
+            get
+            {
+                return _sourceServerHasDropped;
+            }
+            set
+            {
+                _sourceServerHasDropped = value;
+                OnPropertyChanged("SourceServerHasDropped");
             }
         }
 
@@ -634,6 +665,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             var dialog = new DeployViewDialog { DataContext = deployDialogViewModel };
             dialog.ShowDialog();
         };
+        bool _destinationServerHasDropped;
+        bool _sourceServerHasDropped;
 
         /// <summary>
         /// Loads an environment for the source navigation manager

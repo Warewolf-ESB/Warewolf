@@ -23,6 +23,8 @@ using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -453,6 +455,66 @@ namespace Dev2.Core.Tests
 
             destEnv.Setup(e => e.IsConnected).Returns(false);
             Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
+        }
+
+        [TestMethod]
+        [TestCategory("DeployViewModel_SelectedSourceServerDisconnected")]
+        [Owner("Trevor Williams-Ros")]
+        public void DeployViewModel_SourceServerDisconnected_SourceServerHasDroppedTrue()
+        {
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+            destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
+
+            Assert.IsFalse(deployViewModel.SourceServerHasDropped);
+
+            var connectedEventArgs = new ConnectedEventArgs();
+            connectedEventArgs.IsConnected = false;
+            mockSourceServer.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+
+            Assert.IsTrue(deployViewModel.SourceServerHasDropped);
+
+        }
+
+        [TestMethod]
+        [TestCategory("DeployViewModel_SelectedSourceServerDisconnected")]
+        [Owner("Trevor Williams-Ros")]
+        public void DeployViewModel_DestinationServerDisconnected_SourceServerHasDroppedTrue()
+        {
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+            destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
+
+            Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
+
+            var connectedEventArgs = new ConnectedEventArgs();
+            connectedEventArgs.IsConnected = false;
+            destEnv.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+
+            Assert.IsTrue(deployViewModel.DestinationServerHasDropped);
+
         }
 
         [TestMethod]
