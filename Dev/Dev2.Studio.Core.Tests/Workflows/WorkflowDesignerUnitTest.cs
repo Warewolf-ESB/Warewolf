@@ -1053,7 +1053,8 @@ namespace Dev2.Core.Tests.Workflows
             wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
             wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
 
-        }      
+        }
+
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -1076,7 +1077,9 @@ namespace Dev2.Core.Tests.Workflows
                     resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
                     ExecuteMessage exeMsg = null;
+                    // ReSharper disable ExpressionIsAlwaysNull
                     resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(exeMsg);
+                    // ReSharper restore ExpressionIsAlwaysNull
 
                     var resourceModel = new Mock<IContextualResourceModel>();
                     resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -1889,7 +1892,9 @@ namespace Dev2.Core.Tests.Workflows
             {
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if(dev2Activity != null)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
                 }
@@ -3105,13 +3110,6 @@ namespace Dev2.Core.Tests.Workflows
 
             return viewModel;
 
-        }
-
-        static ExecuteMessage MakeMsg(string msg)
-        {
-            var result = new ExecuteMessage { HasError = false };
-            result.SetMessage(msg);
-            return result;
         }
     }
 }
