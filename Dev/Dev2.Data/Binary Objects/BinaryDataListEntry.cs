@@ -7,7 +7,6 @@ using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
-using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
 
 namespace Dev2.DataList.Contract.Binary_Objects
@@ -685,7 +684,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public IBinaryDataListItem TryFetchRecordsetColumnAtIndex(string field, int idx, out string error)
         {
             IList<IBinaryDataListItem> cols = FetchRecordAt(idx, field, out error);
-            IBinaryDataListItem result = DataListConstants.baseItem.Clone();
+            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBaseItem();
 
             if(cols == null || cols.Count == 0)
             {

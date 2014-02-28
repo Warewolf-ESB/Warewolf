@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Data.Builders;
-using Dev2.Data.SystemTemplates;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -155,7 +154,7 @@ namespace Dev2.DataList.Contract.Builders
                     }
                     else
                     {
-                        IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
+                        IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBaseItem();
 
                         // else scalar and we need to get the entry ;(
                         IBinaryDataListEntry scalarEntry;
@@ -224,7 +223,7 @@ namespace Dev2.DataList.Contract.Builders
             {
                 for(int i = 0; i < cnt; i++)
                 {
-                    IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
+                    IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBaseItem();
                     itm.UpdateRecordset(_lastRs);
                     _rowData.Add(itm);
                 }
