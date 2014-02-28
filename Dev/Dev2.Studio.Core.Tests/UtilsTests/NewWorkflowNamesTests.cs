@@ -7,7 +7,8 @@ namespace Dev2.Core.Tests.UtilsTests
     /// <summary>
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class NewWorkflowNamesTests
     {
         /// <summary>
@@ -46,14 +47,14 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             NewWorkflowNames workflowNames = new NewWorkflowNames();
             int cnt = 1;
-            
-            for (int i = cnt; i < 10; i++)
+
+            for(int i = cnt; i < 10; i++)
             {
                 string name = "Unsaved " + i;
                 workflowNames.Add(name);
             }
 
-            for (int i = 1; i < 10; i += 2 )
+            for(int i = 1; i < 10; i += 2)
             {
                 string name = "Unsaved " + i;
                 workflowNames.Remove(name);
@@ -70,13 +71,13 @@ namespace Dev2.Core.Tests.UtilsTests
             NewWorkflowNames workflowNames = new NewWorkflowNames();
             int cnt = 1;
 
-            for (int i = cnt; i < 10; i++)
+            for(int i = cnt; i < 10; i++)
             {
                 string name = "Unsaved " + i;
                 workflowNames.Add(name);
             }
 
-            for (int i = 2; i < 10; i += 2)
+            for(int i = 2; i < 10; i += 2)
             {
                 string name = "Unsaved " + i;
                 workflowNames.Remove(name);
@@ -120,8 +121,8 @@ namespace Dev2.Core.Tests.UtilsTests
         public void NewWorkflowNamesRemoveNonExistingNameFromHashSetExpectedReturnOfFalse()
         {
             NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";           
-            
+            string name = "Unsaved 1";
+
             Assert.IsFalse(workflowNames.Remove(name));
         }
 
@@ -134,7 +135,7 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             NewWorkflowNames workflowNames = new NewWorkflowNames();
             string name = "Unsaved 1";
-            workflowNames.Add(name);            
+            workflowNames.Add(name);
             Assert.IsTrue(workflowNames.Contains(name));
         }
 
@@ -142,7 +143,7 @@ namespace Dev2.Core.Tests.UtilsTests
         public void NewWorkflowNamesContainsNameWhenNameDoesntExistsInHashSetExpectedReturnOfFalse()
         {
             NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";           
+            string name = "Unsaved 1";
             Assert.IsFalse(workflowNames.Contains(name));
         }
 

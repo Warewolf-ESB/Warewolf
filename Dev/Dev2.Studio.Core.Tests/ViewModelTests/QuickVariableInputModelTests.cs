@@ -13,7 +13,8 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for QuickVariableInputModelTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class QuickVariableInputModelTests
     {
         public QuickVariableInputModelTests()
@@ -134,15 +135,15 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void QuickVariableInputViewModel_MakeDataListReady_WhenItemsHaveSpaces_ShouldRemoveSpaces()
         {
             //------------Setup for test--------------------------
-            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(),null));
-            
+            var quickVariableInputViewModel = new QuickVariableInputViewModel(new QuickVariableInputModel(ModelItemUtils.CreateModelItem(), null));
+
             //------------Execute Test---------------------------
             var makeDataListReady = quickVariableInputViewModel.MakeDataListReady(new List<string> { "Test 1", "Test 4", "T e s t" });
             //------------Assert Results-------------------------
-            Assert.AreEqual(3,makeDataListReady.Count);
-            Assert.AreEqual("[[Test1]]",makeDataListReady[0]);
-            Assert.AreEqual("[[Test4]]",makeDataListReady[1]);
-            Assert.AreEqual("[[Test]]",makeDataListReady[2]);
+            Assert.AreEqual(3, makeDataListReady.Count);
+            Assert.AreEqual("[[Test1]]", makeDataListReady[0]);
+            Assert.AreEqual("[[Test4]]", makeDataListReady[1]);
+            Assert.AreEqual("[[Test]]", makeDataListReady[2]);
         }
     }
 }

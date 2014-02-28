@@ -10,7 +10,8 @@ namespace Dev2.Core.Tests.UtilsTests
     /// <summary>
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FrameWorkElementExtensionsTests
     {
         /// <summary>
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.UtilsTests
             frameworkElement.BringToFront();
             //------------Assert Results-------------------------
             int zIndex = Panel.GetZIndex(frameworkElement);
-            Assert.AreEqual(1,zIndex);
+            Assert.AreEqual(1, zIndex);
         }
 
         [TestMethod]

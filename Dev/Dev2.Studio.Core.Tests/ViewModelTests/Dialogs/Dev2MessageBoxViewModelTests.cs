@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests.Dialogs
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2MessageBoxViewModelTests
     {
 
@@ -40,7 +41,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
             Dev2MessageBoxViewModel.SetDontShowAgainOption("1", MessageBoxResult.Yes);
             Tuple<bool, MessageBoxResult> result = Dev2MessageBoxViewModel.GetDontShowAgainOption("1");
 
-            Assert.AreEqual(MessageBoxResult.Yes, result.Item2 , "Value of option not updated whrn updateing on set.");
+            Assert.AreEqual(MessageBoxResult.Yes, result.Item2, "Value of option not updated whrn updateing on set.");
             Assert.AreEqual(true, result.Item1, "Option removed when updating on set.");
         }
 

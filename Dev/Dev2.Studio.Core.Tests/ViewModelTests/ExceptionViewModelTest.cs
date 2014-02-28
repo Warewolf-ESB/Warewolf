@@ -12,7 +12,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ExceptionViewModelTest
     {
         #region Class Members
@@ -38,34 +39,34 @@ namespace Dev2.Core.Tests.ViewModelTests
             }
         }
         #endregion Properties
-        
+
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
         [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext) 
+        public static void MyClassInitialize(TestContext testContext)
         {
             _tempTestFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             Directory.CreateDirectory(_tempTestFolder);
         }
-        
+
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup]
-        public static void MyClassCleanup() 
+        public static void MyClassCleanup()
         {
             DeleteTempTestFolder();
         }
-        
+
         // Use TestInitialize to run code before running each test 
         [TestInitialize]
-        public void MyTestInitialize() 
+        public void MyTestInitialize()
         {
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
-        
+
         #endregion
 
         [TestMethod]
@@ -77,7 +78,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var vm = new ExceptionViewModel();
 
-            vm.OutputPath = newOutputpath; 
+            vm.OutputPath = newOutputpath;
             vm.OutputText = ExceptionFactory.Create(GetException()).ToString();
 
             var mockEmailAction = new Mock<IFeedbackAction>();
@@ -87,7 +88,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockInvoker.Setup(i => i.InvokeFeedback(It.IsAny<IFeedbackAction>())).Verifiable();
 
             vm.FeedbackAction = mockEmailAction.Object;
-            vm.FeedbackInvoker = mockInvoker.Object; 
+            vm.FeedbackInvoker = mockInvoker.Object;
 
             vm.SendReport();
 
@@ -123,7 +124,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [ExpectedException(typeof(IOException))]
         public void Send_Where_OutputPathAlreadyExists_Expected_FileIOException()
-        {             
+        {
             //Create file which is to conflict with the output path of the recorder
             FileInfo conflictingPath = new FileInfo(GetUniqueOutputPath(".txt"));
             conflictingPath.Create().Close();
@@ -145,7 +146,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             {
                 Directory.Delete(_tempTestFolder, true);
             }
-            catch (Exception)
+            catch(Exception)
             {
                 //Fail silently if folder couldn't be deleted.
             }

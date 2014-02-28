@@ -269,7 +269,7 @@
             </Grid>
         </Border>
     </ControlTemplate>
-
+    
     <Style x:Key="ActivityDesignerStyle"
            TargetType="{x:Type sap:ActivityDesigner}">
         <Setter Property="Control.Template"

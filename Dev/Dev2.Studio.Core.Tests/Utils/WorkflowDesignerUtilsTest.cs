@@ -54,11 +54,11 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldHandleSpecialCharsWithNoException()
         {
-            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+           WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
+           IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
 
-            Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
+           Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }
 
         [TestMethod]
@@ -96,8 +96,8 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.WorkSurfaceMessageCalled);
             Assert.IsFalse(handleMessages.EditResourceMessageCalled);
-        }
-
+        }        
+        
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereService_ExpectShowEditResourceWizardMessageHandled()
         {
@@ -112,7 +112,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }
+        }          
 
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereSource_ExpectShowEditResourceWizardMessageHandled()
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }
+        }       
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]

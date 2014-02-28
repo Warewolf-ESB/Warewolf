@@ -177,6 +177,7 @@
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
     <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />
     <Compile Include="ConverterTests\TestNonResourceTreeViewModel.cs" />
     <Compile Include="Custom Dev2 Controls\ConnectControlTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />

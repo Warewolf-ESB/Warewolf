@@ -24,7 +24,9 @@ namespace Dev2.Activities.Designers2.Core
         IDesignerManagementService _designerManagementService;
         bool _isDisposed;
         DependencyPropertyDescriptor _zIndexProperty;
+        // ReSharper disable InconsistentNaming
         protected TViewModel _dataContext;
+        // ReSharper restore InconsistentNaming
         bool _isSetFocusActionSet;
 
         public ActivityDesigner()
@@ -36,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core
             _errorsAdorner = new ErrorsAdorner(this);
 
             Loaded += (sender, args) => OnLoaded();
-            Unloaded += ActivityDesigner_Unloaded;
+            Unloaded += ActivityDesignerUnloaded;
         }
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }
@@ -214,12 +216,14 @@ namespace Dev2.Activities.Designers2.Core
                 _zIndexProperty.RemoveValueChanged(_dataContext, OnZIndexPositionChanged);
             }
 
+            // ReSharper disable EventUnsubscriptionViaAnonymousDelegate
             Loaded -= (sender, args) => OnLoaded();
-            Unloaded -= ActivityDesigner_Unloaded;
+            // ReSharper restore EventUnsubscriptionViaAnonymousDelegate
+            Unloaded -= ActivityDesignerUnloaded;
         }
 
 
-        void ActivityDesigner_Unloaded(object sender, RoutedEventArgs e)
+        void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
         {
             Dispose();
         }

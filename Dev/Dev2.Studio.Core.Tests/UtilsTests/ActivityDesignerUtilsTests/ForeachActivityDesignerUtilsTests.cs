@@ -11,7 +11,8 @@ namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests
     /// <summary>
     /// Summary description for ForeachActivityDesignerUtilsTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ForeachActivityDesignerUtilsTests
     {
         /// <summary>
@@ -44,18 +45,18 @@ namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests
 
         [TestMethod]
         public void DraggingANormalActivityIntoAForeachExpectedIsDropableTrue()
-        {            
+        {
             ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
 
             ForeachActivityDesignerUtils foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
             bool isDropable = foreachActivityDesignerUtils.ForeachDropPointOnDragEnter(modelItem);
 
-            Assert.IsTrue(isDropable);        
+            Assert.IsTrue(isDropable);
         }
 
         [TestMethod]
         public void DraggingADecisionActivityIntoAForeachExpectedIsDropableFalse()
-        {            
+        {
             ModelItem modelItem = ModelItemUtils.CreateModelItem(new FlowDecision());
 
             ForeachActivityDesignerUtils foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
@@ -73,6 +74,6 @@ namespace Dev2.Core.Tests.UtilsTests.ActivityDesignerUtilsTests
             bool isDropable = foreachActivityDesignerUtils.ForeachDropPointOnDragEnter(modelItem);
 
             Assert.IsFalse(isDropable);
-        }       
+        }
     }
 }

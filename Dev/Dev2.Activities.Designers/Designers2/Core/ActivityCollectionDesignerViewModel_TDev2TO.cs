@@ -232,7 +232,8 @@ namespace Dev2.Activities.Designers2.Core
             var idx = indexNumber - 1;
             if(idx >= ModelItemCollection.Count)
             {
-                ModelItemCollection.Add(dto);
+                ModelItem modelItem = ModelItemUtils.CreateModelItem(dto);
+                ModelItemCollection.Add(modelItem);
             }
             else
             {
