@@ -416,7 +416,9 @@ namespace Dev2.Core.Tests
             var ctx = _mainViewModel.ActiveItem;
             var vm = ctx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
             Assert.IsNotNull(vm);
+            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
+            // ReSharper restore PossibleNullReferenceException
         }
 
         [TestMethod]
@@ -442,7 +444,9 @@ namespace Dev2.Core.Tests
             _mainViewModel.Handle(msg);
             var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(helpctx);
+            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(helpctx.Uri == "testuri");
+            // ReSharper restore PossibleNullReferenceException
         }
 
         #endregion
@@ -583,6 +587,7 @@ namespace Dev2.Core.Tests
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var mockDataListViewModel = new Mock<IDataListViewModel>();
             firstCtx.DataListViewModel = mockDataListViewModel.Object;
+            _mainViewModel.ActiveItem = _mainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             //------------Execute Test---------------------------
             _mainViewModel.ActivateItem(firstCtx);
             //------------Assert Results-------------------------
@@ -767,14 +772,20 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void OnImportsSatisfiedExpectsStartpageActive()
+        public void OnImportsSatisfiedDoesntExpectsStartpageActive()
         {
             CreateFullExportsAndVm();
             var activetx = _mainViewModel.ActiveItem;
-            Assert.AreEqual(activetx.WorkSurfaceViewModel.WorkSurfaceContext, WorkSurfaceContext.Help);
-            var helpvm = activetx.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpvm);
-            Assert.AreEqual(helpvm.Uri, FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage));
+            Assert.AreEqual(activetx.WorkSurfaceViewModel.WorkSurfaceContext, WorkSurfaceContext.Workflow);
+            var helpvm = _mainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel)).WorkSurfaceViewModel as HelpViewModel;
+            if(helpvm != null)
+            {
+                Assert.AreEqual(helpvm.Uri, FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage));
+            }
+            else
+            {
+                Assert.Fail("Couldnt find start page.");
+            }
         }
 
         [TestMethod]
@@ -1036,7 +1047,9 @@ namespace Dev2.Core.Tests
             var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
             var helpctx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(helpctx);
+            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(helpctx.Uri == shortkeyUri);
+            // ReSharper restore PossibleNullReferenceException
         }
 
         [TestMethod]
@@ -1052,7 +1065,9 @@ namespace Dev2.Core.Tests
             var languageHelpUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
             var langHelpCtx = _mainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(langHelpCtx);
+            // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
+            // ReSharper restore PossibleNullReferenceException
         }
 
         [TestMethod]
@@ -1858,6 +1873,7 @@ namespace Dev2.Core.Tests
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
             CreateFullExportsAndVm();
+            _mainViewModel.ActiveItem = _mainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             var actual = _mainViewModel.IsActiveEnvironmentConnected();
             Assert.IsFalse(actual);
             Assert.IsFalse(_mainViewModel.HasActiveConnection);

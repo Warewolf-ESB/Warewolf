@@ -1,5 +1,6 @@
-﻿using Caliburn.Micro;
-using CefSharp.Wpf;
+﻿using System.Activities.Statements;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -17,8 +18,7 @@ namespace Dev2.Studio.ViewModels.Help
     public class HelpViewModel : BaseWorkSurfaceViewModel,
         IHandle<TabClosedMessage>
     {
-        private WebView _browser;
-        private string _uri;
+        private HelpView _helpView;
 
         public HelpViewModel()
             : this(EventPublishers.Aggregator)
@@ -35,31 +35,38 @@ namespace Dev2.Studio.ViewModels.Help
             get { return WorkSurfaceContext.Help; }
         }
 
-        public string Uri
-        {
-            get
-            {
-                return _uri;
-            }
-            set
-            {
-                if(_uri == value) return;
+        public string Uri { get; set; }
 
-                _uri = value;
-                NotifyOfPropertyChange(() => Uri);
-            }
-        }
+        private bool isViewAvailable = true;
 
         protected override void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
             if(!(view is HelpView)) return;
 
-            var helpView = (HelpView)view;
-            _browser = helpView.BDSBrowser;
+            _helpView = (HelpView)view;
+            if(!isViewAvailable)
+            {
+                LoadBrowserUri(Uri);
+            }
 
-            // PBI 9512 - 2013.06.07 - TWR: refactored
-            _browser.LoadSafe(Uri);
+        }
+
+        public void LoadBrowserUri(string uri)
+        {
+            Uri = uri;
+            if(_helpView == null)
+            {
+                isViewAvailable = false;
+            }
+            else
+            {
+                isViewAvailable = true;
+                _helpView.CircularProgressBar.Visibility = Visibility.Collapsed;
+                _helpView.BDSBrowser.Visibility = Visibility.Visible;
+                _helpView.BDSBrowser.LoadSafe(uri);
+                _helpView.BDSBrowser.InvalidateVisual();
+            }
         }
 
         public void Handle(TabClosedMessage message)
@@ -68,7 +75,7 @@ namespace Dev2.Studio.ViewModels.Help
             if(!message.Context.Equals(this)) return;
 
             EventPublisher.Unsubscribe(this);
-            _browser.Dispose();
+            _helpView.BDSBrowser.Dispose();
         }
     }
 }

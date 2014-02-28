@@ -454,16 +454,16 @@ namespace Dev2.Studio.ViewModels
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
 
+            // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            ShowStartPage();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             if(ExplorerViewModel == null)
             {
                 ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, false, enDsfActivityType.All, AddWorkspaceItems);
                 ExplorerViewModel.LoadEnvironments();
             }
-
-            // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            ShowStartPage();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         #endregion ctor
@@ -769,6 +769,7 @@ namespace Dev2.Studio.ViewModels
 
         public virtual void ShowStartPage()
         {
+            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             _asyncWorker.Start(() =>
             {
                 var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
@@ -786,13 +787,14 @@ namespace Dev2.Studio.ViewModels
                 var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
                 var oldPath = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
 
-                // ensure the user sees a home page ;)
+                //ensure the user sees a home page ;)
                 var invokePath = path;
                 if(File.Exists(oldPath) && !File.Exists(path))
                 {
                     invokePath = oldPath;
                 }
-                ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage, new[] { new Tuple<string, object>("Uri", invokePath) });
+                WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(invokePath);
             });
         }
 
