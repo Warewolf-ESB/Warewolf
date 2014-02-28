@@ -8,6 +8,7 @@ using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
@@ -287,9 +288,23 @@ namespace Dev2.Studio.Core
             if(server != null)
             {
                 Guid id = server.ID;
-                environment = Environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Name);
+                environment = Environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Connection.AuthenticationType, server.Connection.UserName, server.Connection.Password, server.Name);
             }
             return environment;
+        }
+
+        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, AuthenticationType authenticationType, string userName, string password, string name)
+        {
+            ServerProxy connectionProxy;
+            if(authenticationType == AuthenticationType.Windows || authenticationType == AuthenticationType.Anonymous)
+            {
+                connectionProxy = new ServerProxy(applicationServerUri);
+            }
+            else
+            {
+                connectionProxy = new ServerProxy(applicationServerUri.ToString(), userName, password);
+            }
+            return new EnvironmentModel(id, connectionProxy) { Name = name };
         }
 
         #endregion
@@ -450,9 +465,22 @@ namespace Dev2.Studio.Core
                             continue;
                         }
 
+                        if(!connectionParams.TryGetValue("AuthenticationType", out tmp))
+                        {
+                            tmp = "";
+                        }
+                        AuthenticationType authenticationType;
+                        if(!Enum.TryParse(tmp, true, out authenticationType))
+                        {
+                            authenticationType = AuthenticationType.Windows;
+                        }
+                        string userName;
+                        connectionParams.TryGetValue("UserName", out userName);
+                        string password;
+                        connectionParams.TryGetValue("Password", out password);
                         #endregion
 
-                        var environment = CreateEnvironmentModel(env.ID, appServerUri, env.DisplayName);
+                        var environment = CreateEnvironmentModel(env.ID, appServerUri, authenticationType, userName, password, env.DisplayName);
                         result.Add(environment);
                     }
                 }
@@ -462,11 +490,27 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if(servers != null)
                 {
-                    result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env.ResourceID, uri, env.ResourceName));
+                    result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env));
                 }
             }
 
             return result;
+        }
+
+        static IEnvironmentModel CreateEnvironmentModel(Connection connection)
+        {
+
+            var resourceID = connection.ResourceID;
+            ServerProxy connectionProxy;
+            if(connection.AuthenticationType == AuthenticationType.Windows || connection.AuthenticationType == AuthenticationType.Anonymous)
+            {
+                connectionProxy = new ServerProxy(new Uri(connection.WebAddress));
+            }
+            else
+            {
+                connectionProxy = new ServerProxy(connection.WebAddress, connection.UserName, connection.Password);
+            }
+            return new EnvironmentModel(resourceID, connectionProxy) { Name = connection.ResourceName };
         }
 
         #endregion

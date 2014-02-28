@@ -12,6 +12,7 @@ using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -322,7 +323,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = new Mock<IEnvironmentModel>();
 
             var repo = new TestEnvironmentRespository(source.Object);
-             
+
             var result = repo.Save(e1.Object);
 
             Assert.AreEqual(result, "Saved");
@@ -685,6 +686,45 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        public void EnvironmentRepositoryLookupEnvironmentsWithAuthenticationTypeExpectedReturnsListOfServers()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var repo = new Mock<IResourceRepository>();
+
+            var id = Guid.NewGuid();
+
+            Connection theCon = new Connection
+            {
+                Address = "http://127.0.0.1:1234",
+                ResourceName = "TheConnection",
+                ResourceID = id,
+                AuthenticationType = AuthenticationType.User,
+                UserName = "Hagashen",
+                Password = "password",
+                WebServerPort = 1234
+            };
+
+            List<Connection> cons = new List<Connection>() { theCon };
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var result = EnvironmentRepository.LookupEnvironments(env.Object);
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
+            Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
+            Assert.AreEqual("Hagashen", result[0].Connection.UserName);
+            Assert.AreEqual("password", result[0].Connection.Password);
+        }
+
+        [TestMethod]
         public void EnvironmentRepositoryLookupEnvironmentsWithInvalidParametersExpectedReturnsEmptyList()
         {
             var env = CreateMockEnvironment();
@@ -706,7 +746,7 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryLookupEnvironmentsWithInvalidEnvironmentAppServerUriExpectedReturnsEmptyList()
         {
-            
+
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}\" ConnectionString=\"AppServerUri=//127.0.0.1:77/dsf;WebServerPort=1234\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
@@ -746,7 +786,7 @@ namespace Dev2.Core.Tests.Environments
 	<DataList />
 </Source>");
 
-            List<IResourceModel> models = new List<IResourceModel> {rm};
+            List<IResourceModel> models = new List<IResourceModel> { rm };
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
@@ -760,6 +800,47 @@ namespace Dev2.Core.Tests.Environments
             var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("http://rsaklfsvrtfsbld:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
+        }
+
+        [TestMethod]
+        public void EnvironmentRepositoryLookupEnvironmentsWithOneValidEnvironmentAuthenticationTypeExpectedReturnsOneEnvironment()
+        {
+
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var repo = new Mock<IResourceRepository>();
+
+            ResourceModel rm = new ResourceModel(env.Object);
+
+            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://rsaklfsvrtfsbld:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+	<TypeOf>Dev2Server</TypeOf>
+	<DisplayName>bld</DisplayName>
+	<Category/>
+	<AuthorRoles />
+	<Comment />
+	<Tags />
+	<UnitTestTargetWorkflowService />
+	<HelpLink />
+	<DataList />
+</Source>");
+
+            List<IResourceModel> models = new List<IResourceModel> { rm };
+
+            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("http://rsaklfsvrtfsbld:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
+            Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
+            Assert.AreEqual("dev2\\hagashen.naidu", result[0].Connection.UserName);
+            Assert.AreEqual("hahaha", result[0].Connection.Password);
         }
 
         [TestMethod]
@@ -791,7 +872,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object,repo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -814,13 +895,13 @@ namespace Dev2.Core.Tests.Environments
 
             Connection theCon = new Connection
                 {
-                Address = "http://127.0.0.1:1234",
-                ResourceName = "TheConnection",
-                ResourceID = id,
-                WebServerPort = 1234
-            };
+                    Address = "http://127.0.0.1:1234",
+                    ResourceName = "TheConnection",
+                    ResourceID = id,
+                    WebServerPort = 1234
+                };
 
-            List<Connection> cons = new List<Connection>() {theCon};
+            List<Connection> cons = new List<Connection>() { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -875,7 +956,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         #endregion
-        
+
         [TestMethod]
         public void ParseConnectionStringIntoAppServerUri()
         {
@@ -899,11 +980,11 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
-                List<IResourceModel> models = new List<IResourceModel> {rm};
+                List<IResourceModel> models = new List<IResourceModel> { rm };
 
                 repo.Setup(
                     r =>
@@ -912,7 +993,7 @@ namespace Dev2.Core.Tests.Environments
 
 
                 con.Setup(c => c.IsConnected).Returns(true);
-                if (overrideExecuteCommand)
+                if(overrideExecuteCommand)
                 {
                     con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                        .Returns(new StringBuilder(sources[0]));
@@ -942,11 +1023,11 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
-                List<IResourceModel> models = new List<IResourceModel> {rm};
+                List<IResourceModel> models = new List<IResourceModel> { rm };
 
                 repo.Setup(
                     r =>
@@ -989,7 +1070,7 @@ namespace Dev2.Core.Tests.Environments
 
             var repo = new Mock<IResourceRepository>();
 
-            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),ResourceType.Source)).Returns(models);
+            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             env.Setup(r => r.ResourceRepository).Returns(repo.Object);
 
@@ -1014,7 +1095,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder(sources[0]));

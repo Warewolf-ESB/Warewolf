@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
@@ -28,6 +29,23 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(serverProxy);
             Assert.IsNotNull(serverProxy.HubConnection);
             Assert.IsNotNull(serverProxy.EsbProxy);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_Constructor")]
+        public void ServerProxy_Constructor_ParameterUserNamePasswordWebserverURI_ShouldHaveEsbProxy()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var serverProxy = new TestServerProxy("http://localhost:8080", "some user", "some password");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serverProxy);
+            Assert.IsNotNull(serverProxy.HubConnection);
+            Assert.IsNotNull(serverProxy.EsbProxy);
+            Assert.AreEqual("some user", serverProxy.UserName);
+            Assert.AreEqual("some password", serverProxy.Password);
+            Assert.AreEqual(AuthenticationType.User, serverProxy.AuthenticationType);
         }
 
         [TestMethod]
@@ -90,7 +108,7 @@ namespace Dev2.Core.Tests.Network
 
             //------------Execute Test---------------------------
             serverProxy.TestWait(task, result);
-            
+
             //------------Assert Results-------------------------
             StringAssert.Contains(result.ToString(), ExMessage);
             Assert.IsTrue(task.IsFaulted);
@@ -109,7 +127,7 @@ namespace Dev2.Core.Tests.Network
             {
                 throw new InvalidOperationException(ExMessage);
             });
-            
+
             var serverProxy = new TestServerProxy
             {
                 IsConnected = true
@@ -156,8 +174,12 @@ namespace Dev2.Core.Tests.Network
     internal class TestServerProxy : ServerProxy
     {
         // TODO: Move this constructor to a test class!!
+        public TestServerProxy(string uri, string userName, string password)
+            : base(uri, userName, password)
+        {
+        }
         public TestServerProxy()
-            : base("http://localhost:8080")
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials)
         {
 
         }
@@ -248,14 +270,6 @@ namespace Dev2.Core.Tests.Network
         #region Overrides of HubConnection
 
         #endregion
-
-        public void SetStateChange(ConnectionState connected)
-        {
-            var classType = GetType();
-            var eventInfos = classType.GetEvent("StateChanged");
-            // eventInfos.AddMethod
-
-        }
     }
 
 }

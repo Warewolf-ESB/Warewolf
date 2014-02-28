@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
 using Dev2.Network;
 using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
@@ -16,6 +18,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -29,7 +32,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {
             //var wizard = new Mock<IWizardEngine>();
-            var env = new EnvironmentModel(Guid.NewGuid(), null);
+            new EnvironmentModel(Guid.NewGuid(), null);
         }
 
         [TestMethod]
@@ -57,7 +60,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Constructor_ConnectionAndNullResourceRepository_ThrowsArgumentNullException()
         {
             var connection = CreateConnection();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
+            new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
         }
 
         [TestMethod]
@@ -223,7 +226,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_ToSourceDefinition_CategoryIsNotServers()
         {
             // BUG: 8786 - TWR - 2013.02.20
-            var eventAggregator = new Mock<IEventAggregator>();
+            new Mock<IEventAggregator>();
             var environmentConnection = CreateConnection();
             environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
             environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
@@ -237,20 +240,50 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        public void EnvironmentModel_ToSourceDefinition_HasAuthenticationType()
+        {
+            var expectedConnectionString = string.Join(";",
+               string.Format("AppServerUri={0}", "http://localhost:77/dsf"),
+               string.Format("WebServerPort={0}", "1234"),
+               string.Format("AuthenticationType={0}", AuthenticationType.User)
+               );
+            expectedConnectionString = string.Join(";",
+                    expectedConnectionString,
+                    string.Format("UserName={0}", "some user"),
+                    string.Format("Password={0}", "some password")
+                    );
+            // BUG: 8786 - TWR - 2013.02.20
+            new Mock<IEventAggregator>();
+            var environmentConnection = CreateConnection();
+            environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
+            environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
+            environmentConnection.Setup(c => c.AppServerUri).Returns(() => new Uri("http://localhost:77/dsf"));
+            environmentConnection.Setup(c => c.AuthenticationType).Returns(() => AuthenticationType.User);
+            environmentConnection.Setup(c => c.UserName).Returns(() => "some user");
+            environmentConnection.Setup(c => c.Password).Returns(() => "some password");
+
+            var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
+            var sourceDef = envModel.ToSourceDefinition().ToString();
+            var sourceXml = XElement.Parse(sourceDef);
+            var connectionString = sourceXml.AttributeSafe("ConnectionString").ToUpper();
+            Assert.AreEqual(expectedConnectionString.ToUpper(), connectionString);
+        }
+
+        [TestMethod]
         [TestCategory("EnvironmentModel_NetworkStateChanged")]
         public void EnvironmentModel_NetworkStateChanged_Offline_DoesPublishEnvironmentDisconnectedMessage()
         {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(NetworkState.Offline);
+            TestConnectionEvents(NetworkState.Offline);
         }
 
         [TestMethod]
         [TestCategory("EnvironmentModel_NetworkStateChanged")]
         public void EnvironmentModel_NetworkStateChanged_Online_DoesPublishEnvironmentConnectedMessage()
         {
-            TestConnectionEvents<EnvironmentConnectedMessage>(NetworkState.Online);
+            TestConnectionEvents(NetworkState.Online);
         }
 
-        static void TestConnectionEvents<TMessage>(NetworkState toState)
+        static void TestConnectionEvents(NetworkState toState)
         {
             var eventAggregator = new Mock<IEventAggregator>();
             if(toState == NetworkState.Online)
@@ -590,7 +623,7 @@ namespace Dev2.Core.Tests.Environments
     public class TestEqualityConnection : ServerProxy
     {
         public TestEqualityConnection(Guid serverID, string serverUri)
-            : base(serverUri)
+            : base(serverUri, CredentialCache.DefaultCredentials)
         {
             ServerID = serverID;
         }

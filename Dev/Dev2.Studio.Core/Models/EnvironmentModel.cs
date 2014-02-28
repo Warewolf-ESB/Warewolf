@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -189,14 +190,25 @@ namespace Dev2.Studio.Core.Models
 
         public StringBuilder ToSourceDefinition()
         {
+            var connectionString = string.Join(";",
+                string.Format("AppServerUri={0}", Connection.AppServerUri),
+                string.Format("WebServerPort={0}", Connection.WebServerUri.Port),
+                string.Format("AuthenticationType={0}", Connection.AuthenticationType)
+                );
+            if(Connection.AuthenticationType == AuthenticationType.User)
+            {
+                connectionString = string.Join(";",
+                    connectionString,
+                    string.Format("UserName={0}", Connection.UserName),
+                    string.Format("Password={0}", Connection.Password)
+                    );
+            }
+
             var xml = new XElement("Source",
                 new XAttribute("ID", ID),
                 new XAttribute("Name", Name ?? ""),
                 new XAttribute("Type", "Dev2Server"),
-                new XAttribute("ConnectionString", string.Join(";",
-                    string.Format("AppServerUri={0}", Connection.AppServerUri),
-                    string.Format("WebServerPort={0}", Connection.WebServerUri.Port)
-                    )),
+                new XAttribute("ConnectionString", connectionString),
                 new XElement("TypeOf", "Dev2Server"),
                 new XElement("DisplayName", Name),
                 new XElement("Category", Category ?? "") // BUG: 8786 - TWR - 2013.02.20 - Changed to use category

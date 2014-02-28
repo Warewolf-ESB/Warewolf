@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Webs
         static readonly string ConnectionJson =
             "{\"ResourceID\":\"" + ConnectionID +
             "\",\"ResourceName\":\"" + ConnectionName +
-            "\",\"ResourcePath\":\"TEST\",\"ResourceType\":\"Dev2Server\",\"Address\":\"" + ConnectionAddress +
+            "\",\"ResourcePath\":\"TEST\",\"ResourceType\":\"Server\",\"Address\":\"" + ConnectionAddress +
             "\",\"AuthenticationType\":\"Windows\",\"UserName\":\"\",\"Password\":\"\",\"WebServerPort\":" + ConnectionWebServerPort + "}";
 
         static ImportServiceContext _importContext;
@@ -78,29 +78,10 @@ namespace Dev2.Core.Tests.Webs
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var handler = new ConnectCallbackHandler();
-            handler.Save(null, null, null, null, 0, null);
+            handler.Save(null, null);
             handler.Save(null, null);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(UriFormatException))]
-        // ReSharper disable InconsistentNaming - Unit Tests
-        public void Save_WithInValidConnectionUri_Expected_ThrowsUriFormatException()
-        // ReSharper restore InconsistentNaming - Unit Tests
-        {
-            var handler = new ConnectCallbackHandler();
-            handler.Save(ConnectionID, "xxx", "xxx", "xxx", 0, null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(FormatException))]
-        // ReSharper disable InconsistentNaming - Unit Tests
-        public void Save_WithInValidConnectionID_Expected_ThrowsFormatException()
-        // ReSharper restore InconsistentNaming - Unit Tests
-        {
-            var handler = new ConnectCallbackHandler();
-            handler.Save("xxx", "xxx", "xxx", "xxx", 0, null);
-        }
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Tests
@@ -130,7 +111,7 @@ namespace Dev2.Core.Tests.Webs
 
             var handler = new ConnectCallbackHandler(repo);
 
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
+            handler.Save(ConnectionJson, targetEnv.Object);
 
             Assert.IsTrue(addCalled);
         }
@@ -153,7 +134,7 @@ namespace Dev2.Core.Tests.Webs
             currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(new Mock<IEnvironmentModel>().Object);
 
             var handler = new ConnectCallbackHandler(currentRepository.Object);
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
             currentRepository.Verify(r => r.Save(It.IsAny<IEnvironmentModel>()));
@@ -194,7 +175,7 @@ namespace Dev2.Core.Tests.Webs
                                 })
                              .Verifiable();
 
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionJson, null);
 
             aggregator.Verify(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()), Times.Once());
         }
@@ -234,7 +215,7 @@ namespace Dev2.Core.Tests.Webs
                                 newEnvironment = msg.EnvironmentModel;
                             });
             //------------Execute Test---------------------------
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionJson, null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(newEnvironment);
             Assert.AreNotEqual(enviro.ResourceRepository, newEnvironment.ResourceRepository);
@@ -275,7 +256,7 @@ namespace Dev2.Core.Tests.Webs
                             })
                              .Verifiable();
 
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionJson, null);
 
             aggregator.Verify(e => e.Publish(It.IsAny<AddServerToDeployMessage>()), Times.Once());
         }
@@ -302,7 +283,7 @@ namespace Dev2.Core.Tests.Webs
             currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(env.Object);
 
             var handler = new ConnectCallbackHandler(new Mock<IEventAggregator>().Object, currentRepository.Object);
-            handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
+            handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
             currentRepository.Verify(r => r.Save(It.IsAny<IEnvironmentModel>()));

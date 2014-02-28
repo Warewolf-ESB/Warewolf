@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ServiceModel
         // default constructor to be used in prod.
         public Connections()
             : this(() => GetComputerNames.ComputerNames)
-        {   
+        {
         }
 
         // here for testing
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ServiceModel
             {
 
                 var contents = ResourceCatalog.Instance.GetResourceContents(workspaceID, Guid.Parse(resourceID));
-                if(contents != null || contents.Length > 0)
+                if(contents != null && contents.Length > 0)
                 {
                     var xml = contents.ToXElement();
                     result = new Connection(xml);
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);               
+                var connection = JsonConvert.DeserializeObject<Connection>(args);
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
@@ -144,24 +144,24 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 // Validate URI, ports, etc...
-                var uri = new Uri(connection.Address);
+                new Uri(connection.Address);
 
                 var connectResult = ConnectToServer(connection);
                 if(!string.IsNullOrEmpty(connectResult))
-                    {
+                {
                     if(connectResult.Contains("FatalError"))
-                        {
+                    {
                         var error = XElement.Parse(connectResult);
-                            result.IsValid = false;
+                        result.IsValid = false;
                         result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
                     }
                 }
-                }
+            }
             catch(WebException wex)
-                {
-                                result.IsValid = false;
+            {
+                result.IsValid = false;
                 result.ErrorMessage = string.Format("{0} - {1}", wex.Status, wex.Message);
-                }
+            }
             catch(Exception ex)
             {
                 result.IsValid = false;
@@ -178,9 +178,9 @@ namespace Dev2.Runtime.ServiceModel
                 if(connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     client.UseDefaultCredentials = true;
-            }
+                }
                 else
-            {
+                {
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                 }

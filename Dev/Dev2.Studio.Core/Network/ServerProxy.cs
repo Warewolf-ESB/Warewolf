@@ -15,6 +15,7 @@ using Dev2.Diagnostics;
 using Dev2.ExtMethods;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -29,11 +30,12 @@ namespace Dev2.Network
         Timer _reconnectHeartbeat;
 
         public ServerProxy(Uri serverUri)
-            : this(serverUri.ToString())
+            : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials)
         {
+            AuthenticationType = AuthenticationType.Windows;
         }
 
-        public ServerProxy(string serverUri)
+        public ServerProxy(string serverUri, ICredentials credentials)
         {
             IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
@@ -49,8 +51,7 @@ namespace Dev2.Network
 
 
             this.LogTrace("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
-
-            HubConnection = new HubConnection(uriString) { Credentials = CredentialCache.DefaultNetworkCredentials };
+            HubConnection = new HubConnection(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -62,6 +63,14 @@ namespace Dev2.Network
             //HubConnection.TraceWriter = Console.Out;
 
             InitializeEsbProxy();
+        }
+
+        public ServerProxy(string webAddress, string userName, string password)
+            : this(webAddress, new NetworkCredential(userName, password))
+        {
+            AuthenticationType = AuthenticationType.User;
+            UserName = userName;
+            Password = password;
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }
@@ -274,6 +283,9 @@ namespace Dev2.Network
         public Guid WorkspaceID { get; private set; }
         public Uri AppServerUri { get; private set; }
         public Uri WebServerUri { get; private set; }
+        public AuthenticationType AuthenticationType { get; private set; }
+        public string UserName { get; private set; }
+        public string Password { get; private set; }
 
         /// <summary>
         /// <code>True</code> unless server returns Unauthorized or Forbidden status.

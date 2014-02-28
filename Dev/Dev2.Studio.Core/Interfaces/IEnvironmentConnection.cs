@@ -3,6 +3,7 @@ using System.Network;
 using System.Text;
 using Dev2.Network;
 using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 
 // ReSharper disable once CheckNamespace
@@ -18,7 +19,9 @@ namespace Dev2.Studio.Core.Interfaces
 
         Uri AppServerUri { get; }
         Uri WebServerUri { get; }
-
+        AuthenticationType AuthenticationType { get; }
+        string UserName { get; }
+        string Password { get; }
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         event EventHandler PermissionsChanged;
         bool IsAuthorized { get; }

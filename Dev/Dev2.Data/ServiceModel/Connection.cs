@@ -11,7 +11,7 @@ namespace Dev2.Data.ServiceModel
 {
     public class Connection : Resource
     {
-        public const int DefaultWebServerPort = 1234;
+        public const int DefaultWebServerPort = 3142;
 
         public string Address { get; set; }
 
@@ -44,7 +44,7 @@ namespace Dev2.Data.ServiceModel
         {
             ResourceType = ResourceType.Server;
 
-            var connectionString = xml.AttributeSafe("ConnectionString");            
+            var connectionString = xml.AttributeSafe("ConnectionString");
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {
