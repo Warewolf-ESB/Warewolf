@@ -558,10 +558,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
 
             _asyncWorker.Start(
+                // ReSharper disable ImplicitlyCapturedClosure
+                // ReSharper disable ConvertClosureToMethodGroup
                 () =>
+                // ReSharper restore ImplicitlyCapturedClosure
                 {
                     server.Connect();
                 },
+                // ReSharper restore ConvertClosureToMethodGroup
                 () =>
                 {
                     Servers.Add(server);

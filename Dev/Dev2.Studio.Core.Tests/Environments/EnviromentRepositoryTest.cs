@@ -79,7 +79,9 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryConstructorWithNullSourceExpectedThrowsArgumentNullException()
         {
+            // ReSharper disable ObjectCreationAsStatement
             new TestEnvironmentRespository(null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -336,7 +338,9 @@ namespace Dev2.Core.Tests.Environments
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object);
             IEnvironmentModel e1 = null;
+            // ReSharper disable ExpressionIsAlwaysNull
             var result = repo.Save(e1);
+            // ReSharper restore ExpressionIsAlwaysNull
             Assert.AreEqual(result, "Not Saved");
         }
 
@@ -588,7 +592,9 @@ namespace Dev2.Core.Tests.Environments
 
             Assert.AreEqual(1, result.Count);
 
+            // ReSharper disable ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
+            // ReSharper restore ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
         }
 
@@ -609,7 +615,9 @@ namespace Dev2.Core.Tests.Environments
             var exists = File.Exists(path);
             Assert.AreEqual(true, exists);
 
+            // ReSharper disable ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
+            // ReSharper restore ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
         }
 
@@ -637,7 +645,9 @@ namespace Dev2.Core.Tests.Environments
             actual = xml.Descendants("Environment").Count();
             Assert.AreEqual(2, actual);
 
+            // ReSharper disable ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => DeleteFile(path), 15, 1000);
+            // ReSharper restore ImplicitlyCapturedClosure
             RetryUtility.RetryAction(() => RestoreFile(path, bakPath), 15, 1000);
         }
 
@@ -649,7 +659,7 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryLookupEnvironmentsWithNullParametersExpectedThrowsArgumentNullException()
         {
-            var result = EnvironmentRepository.LookupEnvironments(null);
+            EnvironmentRepository.LookupEnvironments(null);
         }
 
         [TestMethod]
@@ -669,7 +679,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection>() { theCon };
+            List<Connection> cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -705,7 +715,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection>() { theCon };
+            List<Connection> cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -861,7 +871,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection>() { theCon };
+            List<Connection> cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -901,7 +911,7 @@ namespace Dev2.Core.Tests.Environments
                     WebServerPort = 1234
                 };
 
-            List<Connection> cons = new List<Connection>() { theCon };
+            List<Connection> cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -926,7 +936,9 @@ namespace Dev2.Core.Tests.Environments
 
         static string BackupFile(string path)
         {
+            // ReSharper disable AssignNullToNotNullAttribute
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
+            // ReSharper restore AssignNullToNotNullAttribute
             if(File.Exists(bakPath))
             {
                 File.Delete(bakPath);

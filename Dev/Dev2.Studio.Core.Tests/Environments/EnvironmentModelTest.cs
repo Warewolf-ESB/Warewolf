@@ -32,20 +32,14 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {
             //var wizard = new Mock<IWizardEngine>();
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentModel(Guid.NewGuid(), null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
         public void EnvironmentModel_Constructor_ConnectionAndWizardEngine_InitializesConnectionAndResourceRepository()
         {
-            //// Needed for ResourceRepository!
-            //var wizardEngine = new Mock<IWizardEngine>();
-            //var importServiceContext = new ImportServiceContext();
-            //ImportService.CurrentContext = importServiceContext;
-            //ImportService.Initialize(new List<ComposablePartCatalog>());
-            //ImportService.AddExportedValueToContainer(wizardEngine.Object);
-
-            //var wizard = new Mock<IWizardEngine>();
 
             var connection = CreateConnection();
             //, wizard.Object
@@ -60,7 +54,9 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Constructor_ConnectionAndNullResourceRepository_ThrowsArgumentNullException()
         {
             var connection = CreateConnection();
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -226,7 +222,6 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_ToSourceDefinition_CategoryIsNotServers()
         {
             // BUG: 8786 - TWR - 2013.02.20
-            new Mock<IEventAggregator>();
             var environmentConnection = CreateConnection();
             environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
             environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
@@ -253,7 +248,6 @@ namespace Dev2.Core.Tests.Environments
                     string.Format("Password={0}", "some password")
                     );
             // BUG: 8786 - TWR - 2013.02.20
-            new Mock<IEventAggregator>();
             var environmentConnection = CreateConnection();
             environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
             environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));

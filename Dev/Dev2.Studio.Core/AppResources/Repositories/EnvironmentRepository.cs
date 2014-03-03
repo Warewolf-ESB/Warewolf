@@ -411,8 +411,9 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 //Swallow exception for localhost connection
             }
