@@ -1,4 +1,4 @@
-﻿using System.Activities.Statements;
+﻿using System.ComponentModel.Composition;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
@@ -8,7 +8,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
-using System.ComponentModel.Composition;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
@@ -63,9 +62,13 @@ namespace Dev2.Studio.ViewModels.Help
             {
                 isViewAvailable = true;
                 _helpView.CircularProgressBar.Visibility = Visibility.Collapsed;
-                _helpView.BDSBrowser.Visibility = Visibility.Visible;
-                _helpView.BDSBrowser.LoadSafe(uri);
-                _helpView.BDSBrowser.InvalidateVisual();
+
+                if(_helpView.BDSBrowser != null)
+                {
+                    _helpView.BDSBrowser.Visibility = Visibility.Visible;
+                    _helpView.BDSBrowser.LoadSafe(uri);
+                    _helpView.BDSBrowser.InvalidateVisual();
+                }
             }
         }
 

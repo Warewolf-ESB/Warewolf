@@ -777,7 +777,9 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             var activetx = _mainViewModel.ActiveItem;
             Assert.AreEqual(activetx.WorkSurfaceViewModel.WorkSurfaceContext, WorkSurfaceContext.Workflow);
+            // ReSharper disable PossibleNullReferenceException
             var helpvm = _mainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel)).WorkSurfaceViewModel as HelpViewModel;
+            // ReSharper restore PossibleNullReferenceException
             if(helpvm != null)
             {
                 Assert.AreEqual(helpvm.Uri, FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage));
