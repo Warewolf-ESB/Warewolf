@@ -54,7 +54,7 @@ namespace Dev2.Studio.ViewModels.Help
         public void LoadBrowserUri(string uri)
         {
             Uri = uri;
-            if(_helpView == null)
+            if(_helpView == null || !Equals(_helpView, GetView()))
             {
                 isViewAvailable = false;
             }

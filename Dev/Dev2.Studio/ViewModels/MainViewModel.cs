@@ -849,6 +849,8 @@ namespace Dev2.Studio.ViewModels
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>
                     (WorkSurfaceContext.Help,
                      new[] { new Tuple<string, object>("Uri", uriToDisplay) });
+            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Help");
+            ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
         }
 
         public void AddShortcutKeysWorkSurface()
@@ -856,6 +858,8 @@ namespace Dev2.Studio.ViewModels
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
                                                              , new[] { new Tuple<string, object>("Uri", path) });
+            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Shortcut Keys");
+            ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
         }
 
         public void AddLanguageHelpWorkSurface()
@@ -863,6 +867,8 @@ namespace Dev2.Studio.ViewModels
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.LanguageHelp
                                                              , new[] { new Tuple<string, object>("Uri", path) });
+            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Language Help");
+            ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
         }
 
         public void StartFeedback()
