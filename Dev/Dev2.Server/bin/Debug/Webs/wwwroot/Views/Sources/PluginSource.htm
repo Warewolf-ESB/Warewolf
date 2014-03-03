@@ -1,8 +1,4 @@
 ﻿<div id="pluginSourceContainer" class="plugin-source ui-widget-content" style="height: 488px; width: 700px;">
-    <div id="pluginSourceHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
-        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
-        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
-    </div>
     <div  id="pluginSourceContent" class="source-content">
         <div id="sourcetabs" class="float-left">
             <ul class="plugin-tabs">
@@ -32,7 +28,7 @@
             </div>
         </div>
 
-        <div class="button-bar" style="position: absolute; top: 440px; left: 479px;">
+        <div class="button-bar" style="position: absolute; top: 440px; left: 489px;">
             <button tabindex="13" type="submit" name="save" id="saveButton" data-bind="click: save, jEnable: isFormValid">Save Plugin</button>
             <button tabindex="14" type="button" name="cancel" id="nonButtonBarCancelButton" data-bind="click: cancel">Cancel</button>
         </div>

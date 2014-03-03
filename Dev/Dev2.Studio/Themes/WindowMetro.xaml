@@ -16,7 +16,7 @@
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
         <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
     </Style>

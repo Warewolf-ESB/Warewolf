@@ -1,10 +1,13 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
+// ReSharper restore CheckNamespace
 {
     using System.Drawing;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+    using Mouse = Mouse;
 
     public partial class DatabaseServiceWizardUIMap
     {
@@ -14,18 +17,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void ClickScrollActionListUp()
         {
             // Click image
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(368, 161));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(368, 161));
         }
 
         public void ClickSecondAction()
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(172, 179));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, 179));
         }
 
         public string GetActionName()
         {
             var persistClipboard = System.Windows.Clipboard.GetText();
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
             Mouse.StartDragging(wizard, new Point(418, 81));
             Mouse.StopDragging(wizard, 108, -1);
@@ -37,7 +40,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void EnterDataIntoMappingTextBox(int textboxNumber, string newMappingText)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
             for(int i = 0; i <= textboxNumber; i++)
             {
@@ -49,7 +52,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void ClickSaveButton(int numberOfTabsToSaveButton)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
             for(int i = 0; i <= numberOfTabsToSaveButton; i++)
             {

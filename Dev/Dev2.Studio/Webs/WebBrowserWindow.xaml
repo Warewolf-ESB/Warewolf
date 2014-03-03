@@ -3,12 +3,91 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         AutomationProperties.AutomationId="WebBrowserWindow"
+        xmlns:local="clr-namespace:Dev2.Webs"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:WebBrowserViewModel}"
         Style="{StaticResource WindowBorderlessStyle}"
         ShowInTaskbar="True"
         WindowStartupLocation="CenterOwner">
-     
-    <cs:WebView x:Name="Browser"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Margin="0" />
+
+    <Window.Resources>
+        <Style TargetType="StackPanel"
+               x:Key="StackPanelTopBorder">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Cursor"
+                            Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Grid"
+               x:Key="WizardHeaderGridStyle">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Cursor"
+                            Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Label"
+               BasedOn="{StaticResource LabelStyle}"
+               x:Key="WizardTitleLableStyle">
+            <Setter Property="Foreground"
+                    Value="White"></Setter>
+            <Setter Property="FontSize"
+                    Value="{StaticResource HeaderFontSize}"></Setter>
+            <Setter Property="FontWeight"
+                    Value="Bold"></Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#7F7F7F"
+          AutomationProperties.AutomationId="WindowGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              AutomationProperties.AutomationId="HeaderGrid"
+              Background="Transparent"
+              Style="{StaticResource WizardHeaderGridStyle}"
+              MouseLeftButtonDown="WebBrowserWindow_OnMouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"
+                        AutomationProperties.AutomationId="LeftTitleStackPanel"
+                        Orientation="Horizontal"
+                        Style="{StaticResource StackPanelTopBorder}">
+                <Label Style="{StaticResource WizardTitleLableStyle}"
+                       AutomationProperties.AutomationId="LeftTitle"
+                       Content="{Binding LeftTitle}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Margin="-1,0,0,0"
+                        Orientation="Horizontal"
+                        AutomationProperties.AutomationId="RightTitleStackPanel"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource StackPanelTopBorder}">
+                <Label Style="{StaticResource WizardTitleLableStyle}"
+                       AutomationProperties.AutomationId="RightTitle"
+                       HorizontalAlignment="Right"
+                       Content="{Binding RightTitle}" />
+            </StackPanel>
+        </Grid>
+
+        <cs:WebView x:Name="Browser"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="-1,0,0,0" />
+    </Grid>
+
 </Window>

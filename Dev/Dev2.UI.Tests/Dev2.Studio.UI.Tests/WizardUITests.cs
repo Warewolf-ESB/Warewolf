@@ -12,8 +12,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
-
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.UI.Tests.UIMaps
+// ReSharper restore CheckNamespace
 {
     [CodedUITest]
     public class WizardUITests : UIMapBase
@@ -44,9 +46,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-
-            uiTestControl.WaitForControlEnabled();
-            WizardsUIMap.WaitForWizard();
             KeyboardCommands.SendEsc();
         }
 
@@ -112,6 +111,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Open wizard
             RibbonUIMap.ClickNewWebService();
 
+            Assert.AreEqual("localhost (http://localhost:3142/dsf)", WizardsUIMap.GetRightTitleText());
+
             //Click new web source
             WebServiceWizardUIMap.ClickNewWebSource();
 
@@ -147,6 +148,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Open wizard
             RibbonUIMap.ClickNewDbWebService();
 
+            Assert.AreEqual("localhost (http://localhost:3142/dsf)", WizardsUIMap.GetRightTitleText());
+
             //Click New Db Source button
             DatabaseServiceWizardUIMap.ClickNewDbSource();
 
@@ -178,6 +181,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //Open wizard
             EmailSourceWizardUIMap.OpenWizard();
+
+            Assert.AreEqual("New Email Source", WizardsUIMap.GetLeftTitleText());
+            Assert.AreEqual("localhost (http://localhost:3142/dsf)", WizardsUIMap.GetRightTitleText());
 
             //Create Email Source
             EmailSourceWizardUIMap.CreateEmailSource(name);
@@ -212,6 +218,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, pt);
             WizardsUIMap.WaitForWizard();
+            Assert.AreEqual("Decision Flow", WizardsUIMap.GetLeftTitleText());
             _decisionWizardUiMap.SendTabs(5, 500);
             _decisionWizardUiMap.SelectMenuItem(17, 100); // select between ;)
 
@@ -274,6 +281,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Decision_Intellisense")]
+
         public void Decision_Intellisense_KeyboardSelect_DecisionTitleUpdatesCorrectly()
         {
             RibbonUIMap.CreateNewWorkflow();
@@ -305,7 +313,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             KeyboardCommands.SendEnter(1500);
 
             // Assert Decision Title Updates Correctly
-            const string expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+            const string Expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
 
             var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
@@ -313,7 +321,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 var displayValue = getDecisionText.Text;
 
-                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+                Assert.AreEqual(Expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
             }
             else
             {
@@ -444,7 +452,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
-
+            Assert.AreEqual("New Server", WizardsUIMap.GetLeftTitleText());
+            Assert.AreEqual("localhost (http://localhost:3142/dsf)", WizardsUIMap.GetRightTitleText());
             KeyboardCommands.SendEsc(100);
         }
 

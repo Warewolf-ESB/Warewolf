@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs
@@ -40,5 +41,10 @@ namespace Dev2.Studio.Webs
         }
 
         #endregion
+
+        void WebBrowserWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

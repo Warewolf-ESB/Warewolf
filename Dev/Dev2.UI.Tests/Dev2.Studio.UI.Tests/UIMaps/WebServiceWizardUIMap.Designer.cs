@@ -56,7 +56,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 
         public void ClickSaveButton(int numberOfTabsToSaveButton)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
             for(int i = 0; i <= numberOfTabsToSaveButton; i++)
             {

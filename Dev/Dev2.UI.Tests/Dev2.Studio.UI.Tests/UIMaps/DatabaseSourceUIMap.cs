@@ -1,17 +1,20 @@
 ﻿using System.Windows;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
+// ReSharper restore CheckNamespace
 {
     using System.Drawing;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+    using Mouse = Mouse;
 
+    // ReSharper disable InconsistentNaming
     public partial class DatabaseSourceUIMap : UIMapBase
     {
         public string GetUserName()
         {
             var persistClipboard = Clipboard.GetText();
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             Mouse.DoubleClick(wizard, new Point(306, 168));
             Keyboard.SendKeys(wizard, "{CTRL}c");
             var userName = Clipboard.GetText();

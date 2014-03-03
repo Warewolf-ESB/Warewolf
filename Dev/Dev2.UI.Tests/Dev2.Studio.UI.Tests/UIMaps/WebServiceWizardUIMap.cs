@@ -1,17 +1,21 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
+// ReSharper restore CheckNamespace
 {
     using System.Drawing;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+    using Mouse = Mouse;
 
 
+    // ReSharper disable InconsistentNaming
     public partial class WebServiceWizardUIMap
+    // ReSharper restore InconsistentNaming
     {
         public void ClickNewWebSource()
         {
-            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var control = StudioWindow.GetChildren()[0].GetChildren()[2];
             control.WaitForControlEnabled();
             Mouse.Click(control, new Point(410, 79));
         }

@@ -32,7 +32,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void ClickNewDbSource()
         {
             // Click image
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(343, 82));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(343, 82));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickFirstAction()
         {
-            var control = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var control = StudioWindow.GetChildren()[0].GetChildren()[2];
             control.WaitForControlEnabled();
             Mouse.Click(control, new Point(172, 164));
         }
@@ -120,7 +120,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToInputMappings()
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             TabToMappingsTab();
             wizard.WaitForControlReady();
             Keyboard.SendKeys(wizard, "{TAB}");

@@ -24,10 +24,10 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowSwitchDragDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 752;
-            const int DialogHeight = 121;
+            const int DialogHeight = 146;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "switch/drag", callBackHandler, DialogWidth, DialogHeight);
+            environment.ShowWebPageDialog(SiteName, "switch/drag", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
 
             return callBackHandler;
         }
@@ -39,10 +39,10 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowSwitchDropDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 752;
-            const int DialogHeight = 171;
+            const int DialogHeight = 196;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "switch/drop", callBackHandler, DialogWidth, DialogHeight);
+            environment.ShowWebPageDialog(SiteName, "switch/drop", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
 
             return callBackHandler;
         }
@@ -54,10 +54,10 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowDecisionDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 824;
-            const int DialogHeight = 517;
+            const int DialogHeight = 510;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "decisions/wizard", callBackHandler, DialogWidth, DialogHeight);
+            environment.ShowWebPageDialog(SiteName, "decisions/wizard", callBackHandler, DialogWidth, DialogHeight, "Decision Flow");
 
             return callBackHandler;
         }
@@ -83,7 +83,9 @@ namespace Dev2.Studio.Webs
 
             if(resourceModel.Category == null)
             {
+                // ReSharper disable ImpureMethodCallOnReadonlyValueField
                 resourceID = Guid.Empty.ToString();
+                // ReSharper restore ImpureMethodCallOnReadonlyValueField
                 if(resourceModel.IsDatabaseService)
                 {
                     resourceType = ResourceType.DbService;
@@ -132,7 +134,9 @@ namespace Dev2.Studio.Webs
             }
 
             // we need to take the SourceID out and pass along ;)
+            // ReSharper disable ImpureMethodCallOnReadonlyValueField
             var srcID = Guid.Empty.ToString();
+            // ReSharper restore ImpureMethodCallOnReadonlyValueField
             if(resourceModel.WorkflowXaml != null)
             {
                 var xe = resourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
@@ -148,7 +152,7 @@ namespace Dev2.Studio.Webs
 
         public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, Guid? context = null)
         {
-            const int ServiceDialogHeight = 557;
+            const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
 
             if(environment == null)
@@ -180,14 +184,18 @@ namespace Dev2.Studio.Webs
                 WebsiteCallbackHandler pageHandler;
                 double width;
                 double height;
+                string leftTitle = string.Empty;
+                string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
+                //string rightTitle = string.Concat(environment.Name, " (", environment.Connection.AppServerUri.ToString(), ")");
                 switch(resourceType)
                 {
                     case ResourceType.Server:
                         workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                         pageName = "sources/server";
                         pageHandler = new ConnectCallbackHandler(context);
+                        leftTitle = "New Server";
                         width = 704;
-                        height = 492;
+                        height = 480;
                         break;
 
                     case ResourceType.DbService:
@@ -201,7 +209,8 @@ namespace Dev2.Studio.Webs
                         pageName = "sources/dbsource";
                         pageHandler = new SourceCallbackHandler();
                         width = 704;
-                        height = 492;
+                        height = 517;
+                        leftTitle = "New Database Source";
                         break;
 
                     case ResourceType.PluginService:
@@ -214,22 +223,25 @@ namespace Dev2.Studio.Webs
                     case ResourceType.PluginSource:
                         pageName = "sources/pluginsource";
                         pageHandler = new SourceCallbackHandler();
-                        width = 704;
-                        height = 492;
+                        leftTitle = "New Plugin Source";
+                        width = 700;
+                        height = 517;
                         break;
 
                     case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                         pageName = "sources/emailsource";
                         pageHandler = new SourceCallbackHandler();
-                        width = 706;
-                        height = 494;
+                        leftTitle = "New Email Source";
+                        width = 704;
+                        height = 488;
                         break;
 
                     case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
                         pageName = "sources/websource";
                         pageHandler = new WebSourceCallbackHandler();
+                        leftTitle = "New Web Source";
                         width = 704;
-                        height = 492;
+                        height = 517;
                         break;
 
                     case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
@@ -249,7 +261,7 @@ namespace Dev2.Studio.Webs
                 if(!IsTestMode)
                 {
                     // this must be a property ;)
-                    environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height);
+                    environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height, leftTitle, rightTitle);
                 }
                 else
                 {
@@ -284,11 +296,12 @@ namespace Dev2.Studio.Webs
             }
             const string PageName = "dialogs/savedialog";
             const double Width = 604;
-            const double Height = 460;
+            const double Height = 450;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-
+            const string LeftTitle = "Save";
+            string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, Width, Height);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, Width, Height, LeftTitle, rightTitle);
         }
 
         #endregion
@@ -299,12 +312,14 @@ namespace Dev2.Studio.Webs
 
             const string PageName = "dialogs/filechooser";
             const double Width = 704;
-            const double Height = 492;
+            const double Height = 517;
+            const string LeftTitle = "Choose File(s)";
+            string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
 
             var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
 
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?envir={1}", PageName, envirDisplayName), pageHandler, Width, Height);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?envir={1}", PageName, envirDisplayName), pageHandler, Width, Height, LeftTitle, rightTitle);
         }
 
         #region Encode Environment Name and Address

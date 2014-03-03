@@ -3,7 +3,9 @@ using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses;
 using Clipboard = System.Windows.Clipboard;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
+// ReSharper restore CheckNamespace
 {
     using System;
     using System.Drawing;
@@ -12,7 +14,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 
+    // ReSharper disable InconsistentNaming
     public partial class PluginServiceWizardUIMap : UIMapBase
+    // ReSharper restore InconsistentNaming
     {
         /// <summary>
         /// ClickFirstAction
@@ -26,7 +30,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 
         public void EnterDataIntoMappingTextBox(int textboxNumber, string newMappingText)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
             for(int i = 0; i <= textboxNumber; i++)
             {
@@ -88,13 +92,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             Playback.Wait(7000);
         }
 
+        // ReSharper disable InconsistentNaming
         public void ClickOK()
+        // ReSharper restore InconsistentNaming
         {
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         #region Properties
+        // ReSharper disable InconsistentNaming
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -108,18 +116,20 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         #endregion
 
         #region Fields
+        // ReSharper disable InconsistentNaming
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
+        // ReSharper restore InconsistentNaming
         #endregion
 
         public void ClickActionAtIndex(int i)
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(172, (164 + (30 * i))));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, (164 + (30 * i))));
         }
 
         public string GetActionName()
         {
             var persistClipboard = Clipboard.GetText();
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             Mouse.StartDragging(wizard, new Point(398, 83));
             Mouse.StopDragging(wizard, 55, 0);
             Keyboard.SendKeys(wizard, "{CTRL}c");

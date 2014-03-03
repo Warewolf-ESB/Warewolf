@@ -427,6 +427,7 @@
     <Compile Include="Webs\IWebController.cs" />
     <Compile Include="Webs\Callbacks\ServiceCallbackHandler.cs" />
     <Compile Include="Webs\RootWebSite.cs" />
+    <Compile Include="Webs\WebBrowserViewModel.cs" />
     <Compile Include="Webs\WebBrowserWindow.xaml.cs">
       <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
     </Compile>

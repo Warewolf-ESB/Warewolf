@@ -41,7 +41,7 @@
         /// </summary>
         public void ClickSave()
         {
-            var uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[0];
+            var uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[2];
 
             // Click image
             Mouse.Click(uIItemImage, new Point(523, 450));
