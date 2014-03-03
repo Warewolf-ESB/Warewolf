@@ -432,22 +432,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 Margin="0,0,5,0"
-                                Visibility="{Binding DestinationServerHasDropped, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                Visibility="{Binding ShowServerDisconnectedMessage, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <TextBlock Foreground="{StaticResource ValidationErrorElement}"
-                                   Text="Destination server has disconnected."
+                                   Text="{Binding ServerDisconnectedMessage}"
                                    AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
                                    VerticalAlignment="Center"
                                    Margin="3,0,0,0" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0,0,5,0"
-                                Visibility="{Binding SourceServerHasDropped, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                        <TextBlock Foreground="{StaticResource ValidationErrorElement}"
-                                   Text="Source server has disconnected."
-                                   AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                                   VerticalAlignment="Center"
-                                   Margin="3,0,0,0" />
-                    </StackPanel>
+                   
                     <customControls2:CircularProgressBar Height="15"
                                                          Width="15"
                                                          VerticalAlignment="Center"

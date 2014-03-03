@@ -320,6 +320,26 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        public string ServerDisconnectedMessage
+        {
+            get
+            {
+                if(SourceServerHasDropped && !DestinationServerHasDropped)
+                {
+                    return "Source server has disconnected.";
+                }
+                if(!SourceServerHasDropped && DestinationServerHasDropped)
+                {
+                    return "Destination server has disconnected.";
+                }
+                if(SourceServerHasDropped && DestinationServerHasDropped)
+                {
+                    return "Source and Destination servers have disconnected.";
+                }
+                return "";
+            }
+        }
+
         void SelectedSourceServerIsConnectedChanged(object sender, ConnectedEventArgs e)
         {
             NotifyOfPropertyChange(() => SelectedSourceServer);
@@ -494,7 +514,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             foreach(var dependant in dependancyNames)
             {
-                ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
+                string dependant1 = dependant;
+                ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant1);
                 if(treeNode != null)
                 {
                     treeNode.IsChecked = true;
@@ -636,6 +657,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 _destinationServerHasDropped = value;
                 OnPropertyChanged("DestinationServerHasDropped");
+                OnPropertyChanged("ServerDisconnectedMessage");
+                OnPropertyChanged("ShowServerDisconnectedMessage");
             }
         }
         public bool SourceServerHasDropped
@@ -648,6 +671,16 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 _sourceServerHasDropped = value;
                 OnPropertyChanged("SourceServerHasDropped");
+                OnPropertyChanged("ServerDisconnectedMessage");
+                OnPropertyChanged("ShowServerDisconnectedMessage");
+            }
+        }
+
+        public bool ShowServerDisconnectedMessage
+        {
+            get
+            {
+                return SourceServerHasDropped || DestinationServerHasDropped;
             }
         }
 
@@ -859,7 +892,8 @@ namespace Dev2.Studio.ViewModels.Deploy
                 dependancyNames.Add(resource.ResourceName);
                 foreach(var dependant in dependancyNames)
                 {
-                    ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
+                    string dependant1 = dependant;
+                    ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant1);
                     if(treeNode != null)
                     {
                         treeNode.IsChecked = true;
