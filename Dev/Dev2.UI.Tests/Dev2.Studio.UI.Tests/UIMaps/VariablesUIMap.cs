@@ -153,5 +153,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
             return result;
         }
+
+        public bool IsDeleteAllEnabled()
+        {
+            var button = GetUpdateButton();
+            button.WaitForControlReady();
+            return button.IsEnabled();
+        }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Dev2.Studio.UI.Tests.Enums;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
@@ -17,8 +17,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         {
             if(createNewtab)
             {
-                Playback.Wait(waitAmt);
                 _theTab = RibbonUIMap.CreateNewWorkflow();
+                Playback.Wait(waitAmt);
             }
         }
 

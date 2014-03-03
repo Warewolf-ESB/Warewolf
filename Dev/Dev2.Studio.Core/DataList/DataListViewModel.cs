@@ -21,6 +21,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel
@@ -746,8 +747,13 @@ namespace Dev2.Studio.ViewModels.DataList
             if(RecsetCollection != null)
             {
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
-            }
+                if(hasUnused)
+                {
+                    return true;
+                }
 
+                hasUnused = RecsetCollection.SelectMany(sc => sc.Children).Any(sc => !sc.IsUsed);
+            }
             return hasUnused;
         }
 

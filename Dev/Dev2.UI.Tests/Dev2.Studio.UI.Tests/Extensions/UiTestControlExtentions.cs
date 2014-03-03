@@ -218,14 +218,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static bool IsEnabled(this UITestControl control)
         {
-            var checkBox = control as WpfControl;
-
-            if(checkBox == null)
-            {
-                throw new Exception("Control must be a valid WPF Control");
-            }
-
-            return checkBox.Enabled;
+            return control.Enabled;
         }
 
         public static string GetText(this UITestControl control)
