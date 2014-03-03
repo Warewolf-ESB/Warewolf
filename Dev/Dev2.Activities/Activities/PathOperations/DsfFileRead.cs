@@ -34,7 +34,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
