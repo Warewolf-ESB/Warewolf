@@ -50,7 +50,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             Include = include;
-            _enableAt = true;
+            if(splitType == "Index" || splitType == "Chars")
+            {
+                _enableAt = true;
+            }
+            else
+            {
+                _enableAt = false;
+            }
             _isEscapeCharEnabled = true;
             OutList = new List<string>();
         }

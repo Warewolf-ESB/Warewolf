@@ -15,6 +15,17 @@ namespace Dev2.Tests.Activities.TOTests
     public class DataSplitDTOTests
     {
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataSplitDTO_Ctor")]
+        public void DataSplitDTO_Ctor_CreateWithSplitTypeOfSpace_EnabledAtFalse()
+        {
+            //------------Execute Test---------------------------
+            var dataSplitDTO = new DataSplitDTO("[[var]]", "Space", "", 0);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dataSplitDTO.EnableAt);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_Constructor")]
         public void DataSplitDTO_Constructor_Default_PropertiesInitializedCorrectly()
@@ -51,7 +62,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Assert Results-------------------------
             Assert.AreEqual(DataSplitDTO.SplitTypeIndex, dto.SplitType);
             Assert.AreEqual(string.Empty, dto.At);
-            Assert.AreEqual(true, dto.EnableAt);
+            Assert.AreEqual(false, dto.EnableAt);
             Assert.AreEqual(true, dto.IsEscapeCharEnabled);
             Assert.AreEqual(1, dto.IndexNumber);
             Assert.IsNull(dto.EscapeChar);
