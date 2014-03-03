@@ -343,7 +343,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         void SelectedSourceServerIsConnectedChanged(object sender, ConnectedEventArgs e)
         {
             NotifyOfPropertyChange(() => SelectedSourceServer);
-            SourceServerHasDropped = !e.IsConnected;
+            SourceServerHasDropped = !SelectedSourceServer.IsConnected;
         }
 
         public IEnvironmentModel SelectedDestinationServer
@@ -378,7 +378,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         void SelectedDestinationServerIsConnectedChanged(object sender, ConnectedEventArgs args)
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
-            DestinationServerHasDropped = !args.IsConnected;
+            DestinationServerHasDropped = !SelectedDestinationServer.IsConnected;
         }
 
         #endregion

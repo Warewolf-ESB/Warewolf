@@ -479,6 +479,7 @@ namespace Dev2.Core.Tests
 
             Assert.IsFalse(deployViewModel.SourceServerHasDropped);
 
+            mockSourceServer.Setup(server => server.IsConnected).Returns(false);
             var connectedEventArgs = new ConnectedEventArgs();
             connectedEventArgs.IsConnected = false;
             mockSourceServer.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
@@ -491,7 +492,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DeployViewModel_SelectedSourceServerDisconnected")]
         [Owner("Trevor Williams-Ros")]
-        public void DeployViewModel_DestinationServerDisconnected_SourceServerHasDroppedTrue()
+        public void DeployViewModel_DestinationServerDisconnected_DestinationServerHasDroppedTrue()
         {
             var mockSourceServer = new Mock<IEnvironmentModel>();
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
@@ -509,7 +510,7 @@ namespace Dev2.Core.Tests
             destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
 
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
-
+            destEnv.Setup(server => server.IsConnected).Returns(false);
             var connectedEventArgs = new ConnectedEventArgs();
             connectedEventArgs.IsConnected = false;
             destEnv.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
@@ -523,7 +524,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DeployViewModel_SelectedSourceServerDisconnected")]
         [Owner("Trevor Williams-Ros")]
-        public void DeployViewModel_SourceAndDestinationServerDisconnected_SourceServerHasDroppedTrue()
+        public void DeployViewModel_SourceAndDestinationServerDisconnected_BothPropertiesTrue()
         {
             var mockSourceServer = new Mock<IEnvironmentModel>();
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
@@ -539,13 +540,16 @@ namespace Dev2.Core.Tests
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
             destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
-
+            destEnv.Setup(server => server.IsConnected).Returns(true);
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
 
             var connectedEventArgs = new ConnectedEventArgs();
             connectedEventArgs.IsConnected = false;
+            destEnv.Setup(server => server.IsConnected).Returns(false);
+            mockSourceServer.Setup(server => server.IsConnected).Returns(false);
             destEnv.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
             mockSourceServer.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
+
             Assert.IsTrue(deployViewModel.DestinationServerHasDropped);
             Assert.IsTrue(deployViewModel.SourceServerHasDropped);
             Assert.IsTrue(deployViewModel.ShowServerDisconnectedMessage);
