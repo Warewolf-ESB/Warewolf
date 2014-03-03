@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Dev2.Data.Binary_Objects;
+using System;
 using System.Collections.Generic;
-using Dev2.Common;
-using Dev2.Data.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -49,11 +48,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public static IBinaryDataList CreateDataList(Guid parentID)
         {
             return new BinaryDataList(parentID);
-        }
-
-        public static IBinaryDataListItem CreateBaseItem()
-        {
-            return CreateBinaryItem(string.Empty, string.Empty);
         }
 
         /// <summary>
@@ -138,10 +132,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return new Dev2Column(name, string.Empty);
         }
 
-        public static IBinaryDataListEntry CreateBaseEntry()
-        {
-            return CreateEntry(GlobalConstants.NullEntryNamespace, string.Empty, Guid.NewGuid());
-        }
 
         /// <summary>
         /// Creates the entry.

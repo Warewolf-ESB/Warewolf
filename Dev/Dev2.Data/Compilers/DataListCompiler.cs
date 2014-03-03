@@ -9,6 +9,7 @@ using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
+using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -709,7 +710,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors)
         {
-            IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors) ?? Dev2BinaryDataListFactory.CreateBaseEntry();
+            IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors) ?? DataListConstants.baseEntry;
             return binaryDataListEntry.FetchScalar().TheValue;
         }
 

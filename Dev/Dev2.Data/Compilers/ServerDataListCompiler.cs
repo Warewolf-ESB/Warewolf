@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -14,6 +9,7 @@ using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.Data.Storage;
+using Dev2.Data.SystemTemplates;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -24,6 +20,11 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -1385,8 +1386,8 @@ namespace Dev2.Server.Datalist
 
                         if(sysVal == null)
                         {
-                            //string errorTmp;
-                            sysVal = Dev2BinaryDataListFactory.CreateBaseEntry();
+                            string errorTmp;
+                            sysVal = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
                         }
 
                         UpsertSystemTag(pushToId, t, sysVal, out errors);
@@ -1431,7 +1432,9 @@ namespace Dev2.Server.Datalist
                     allErrors.MergeErrors(errors);
                     if(val == null)
                     {
-                        val = Dev2BinaryDataListFactory.CreateBaseEntry();
+                        string errorTmp;
+                        val = DataListConstants.baseEntry.Clone(enTranslationDepth.Shape, pushToId, out errorTmp);
+                        allErrors.AddError(errorTmp);
                     }
 
                     // now upsert into the pushDL

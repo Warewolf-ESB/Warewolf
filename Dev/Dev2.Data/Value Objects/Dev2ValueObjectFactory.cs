@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.Data.SystemTemplates;
+using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Value_Objects
 {
@@ -12,7 +13,7 @@ namespace Dev2.DataList.Contract.Value_Objects
         /// <returns></returns>
         public static IDev2DataListEvaluateIterator CreateEvaluateIterator(IBinaryDataListEntry entry)
         {
-            return new Dev2DataListEvaluateIterator(entry ?? Dev2BinaryDataListFactory.CreateBaseEntry());
+            return new Dev2DataListEvaluateIterator(entry ?? DataListConstants.baseEntry);
         }
 
         /// <summary>
