@@ -67,13 +67,13 @@ namespace Dev2.Tests
             dataObject.WorkflowInstanceId = "333";
             dataObject.WorkflowResumeable = false;
             dataObject.ParentID = Guid.NewGuid();
-            dataObject.WorkspaceID = Guid.NewGuid();
-            dataObject.ClientID = Guid.NewGuid();
+            dataObject.WorkspaceID = Guid.NewGuid();            
+            dataObject.ClientID = Guid.NewGuid();            
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
             dataObject.ThreadsToDispose = threadsToDispose;
-
+            
             //------------Execute Test---------------------------
             IDSFDataObject clonedObject = dataObject.Clone();
 
