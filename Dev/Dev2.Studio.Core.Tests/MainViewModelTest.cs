@@ -367,6 +367,24 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("MainViewModel_Constructor")]
+        [Owner("Hagashen Naidu")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void MainViewModel_UnitTest_Constructor_CreatesFlowControllerWithPopcontrollerFromMainViewModel()
+        {
+            //-----------------Setup ---------------------------------------------------------
+            var eventPublisher = new Mock<IEventAggregator>();
+            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var versionChecker = new Mock<IVersionChecker>();
+            //-----------------Execute------------------------------------------------
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            //-------------------Assert-----------------------------
+            Assert.IsNull(mvm);
+            Assert.IsNotNull(mvm.FlowController);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_Constructor")]
         [Description("Constructor must initialize navigation view model load complete event")]
         [Owner("Ashley Lewis")]
         public void MainViewModel_UnitTest_ConstructorWithNoNullParams_InitializesNavigationViewModelLoadCompleteEvent()

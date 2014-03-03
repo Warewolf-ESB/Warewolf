@@ -4,7 +4,6 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
@@ -23,7 +22,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Controller
 {
-    [Export]
     public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
                                   IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>
     {

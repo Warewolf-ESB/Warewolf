@@ -61,6 +61,7 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
 using Dev2.Utils;
+using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -979,7 +980,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if(!liteInit)
             {
-            var hashTable = new Hashtable
+                var hashTable = new Hashtable
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
                     {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
@@ -996,71 +997,71 @@ namespace Dev2.Studio.ViewModels.Workflow
                     
                 };
 
-            _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
-            // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade            
-            var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
-            if(designerConfigService != null)
-            {
-                // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
-                designerConfigService.TargetFrameworkName = new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5));
-                designerConfigService.AutoConnectEnabled = true;
-                designerConfigService.AutoSplitEnabled = true;
-                designerConfigService.PanModeEnabled = true;
-                designerConfigService.RubberBandSelectionEnabled = true;
-                designerConfigService.BackgroundValidationEnabled = true; // prevent design-time background validation from blocking UI thread
-                // Disabled for now
-                designerConfigService.AnnotationEnabled = false;
-                designerConfigService.AutoSurroundWithSequenceEnabled = false;
-            }
-            _wdMeta = new DesignerMetadata();
-            _wdMeta.Register();
-            var builder = new AttributeTableBuilder();
-            foreach(var designerAttribute in designerAttributes)
-            {
-                builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
-            }
+                _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
+                // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade            
+                var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
+                if(designerConfigService != null)
+                {
+                    // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
+                    designerConfigService.TargetFrameworkName = new System.Runtime.Versioning.FrameworkName(".NETFramework", new Version(4, 5));
+                    designerConfigService.AutoConnectEnabled = true;
+                    designerConfigService.AutoSplitEnabled = true;
+                    designerConfigService.PanModeEnabled = true;
+                    designerConfigService.RubberBandSelectionEnabled = true;
+                    designerConfigService.BackgroundValidationEnabled = true; // prevent design-time background validation from blocking UI thread
+                    // Disabled for now
+                    designerConfigService.AnnotationEnabled = false;
+                    designerConfigService.AutoSurroundWithSequenceEnabled = false;
+                }
+                _wdMeta = new DesignerMetadata();
+                _wdMeta.Register();
+                var builder = new AttributeTableBuilder();
+                foreach(var designerAttribute in designerAttributes)
+                {
+                    builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
+                }
 
-            MetadataStore.AddAttributeTable(builder.CreateTable());
+                MetadataStore.AddAttributeTable(builder.CreateTable());
 
-            _wd.Context.Services.Subscribe<ModelService>(instance =>
-                        {
-                            ModelService = instance;
-                            ModelService.ModelChanged += ModelServiceModelChanged;
-                        });
+                _wd.Context.Services.Subscribe<ModelService>(instance =>
+                            {
+                                ModelService = instance;
+                                ModelService.ModelChanged += ModelServiceModelChanged;
+                            });
             }
 
             LoadDesignerXaml();
 
             if(!liteInit)
             {
-            _wdMeta.Register();
+                _wdMeta.Register();
 
-            _wd.Context.Services.Subscribe<ViewStateService>(instance =>
-            { });
+                _wd.Context.Services.Subscribe<ViewStateService>(instance =>
+                { });
 
-            _wd.View.PreviewDrop += ViewPreviewDrop;
-            _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-            _wd.View.Measure(new Size(2000, 2000));
-            _wd.View.Focus();
+                _wd.View.PreviewDrop += ViewPreviewDrop;
+                _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
+                _wd.View.Measure(new Size(2000, 2000));
+                _wd.View.Focus();
 
-            _wd.Context.Services.Subscribe<DesignerView>(instance =>
-            {
-                // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
-                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
-                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
-            });
+                _wd.Context.Services.Subscribe<DesignerView>(instance =>
+                {
+                    // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+                });
 
-            _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
-            _wd.Context.Services.Publish(_designerManagementService);
+                _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
+                _wd.Context.Services.Publish(_designerManagementService);
 
-            //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
-            CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
-            _wd.ModelChanged += WdOnModelChanged;
-            //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
-            CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
+                //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
+                CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
+                _wd.ModelChanged += WdOnModelChanged;
+                //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
+                CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
-            //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
-            Selection.Subscribe(_wd.Context, SelectedItemChanged);
+                //2013.07.03: Ashley Lewis for bug 9637 - deselect flowchart after selection change (if more than one item selected)
+                Selection.Subscribe(_wd.Context, SelectedItemChanged);
 
             }
             // BUG 9304 - 2013.05.08 - TWR
@@ -1068,11 +1069,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if(!liteInit)
             {
-            //For Changing the icon of the flowchart.
-            WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
-            WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
-            SubscribeToDebugSelectionChanged();
-        }
+                //For Changing the icon of the flowchart.
+                WorkflowDesignerIcons.Activities.Flowchart = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png")), new Rect(0, 0, 16, 16)));
+                WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
+                SubscribeToDebugSelectionChanged();
+            }
         }
 
         void SubscribeToDebugSelectionChanged()
@@ -1251,25 +1252,25 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetDesignerText(StringBuilder xaml)
         {
-                // we got the correct model and clean it ;)
-                var theText = _workflowHelper.SanitizeXaml(xaml);
+            // we got the correct model and clean it ;)
+            var theText = _workflowHelper.SanitizeXaml(xaml);
 
-                var length = theText.Length;
-                var startIdx = 0;
-                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+            var length = theText.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
-                // now load the designer in chunks ;)
-                for(int i = 0; i < rounds; i++)
+            // now load the designer in chunks ;)
+            for(int i = 0; i < rounds; i++)
+            {
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if(len > (theText.Length - startIdx))
                 {
-                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if(len > (theText.Length - startIdx))
-                    {
-                        len = (theText.Length - startIdx);
-                    }
-
-                    _wd.Text += theText.Substring(startIdx, len);
-                    startIdx += len;
+                    len = (theText.Length - startIdx);
                 }
+
+                _wd.Text += theText.Substring(startIdx, len);
+                startIdx += len;
+            }
         }
 
         void SelectedItemChanged(Selection item)
@@ -1816,6 +1817,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
+            this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
+            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel));
             var resourceModel = message.ResourceModel;
             var unsavedName = resourceModel.ResourceName;
             BindToModel();
@@ -1835,8 +1838,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             EventPublisher.Publish(new UpdateDeployMessage());
             this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
-            this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(resourceModel));
+
         }
 
         static void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)

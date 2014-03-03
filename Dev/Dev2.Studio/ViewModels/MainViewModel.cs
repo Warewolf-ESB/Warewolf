@@ -108,7 +108,6 @@ namespace Dev2.Studio.ViewModels
         #region Properties
 
         #region imports
-        [Import]
         public FlowController FlowController { get; set; }
 
         [Import(typeof(IWebController))]
@@ -453,7 +452,7 @@ namespace Dev2.Studio.ViewModels
             WebController = webController ?? new WebController();
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
-
+            FlowController = new FlowController(PopupProvider);
             // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ShowStartPage();
@@ -566,18 +565,9 @@ namespace Dev2.Studio.ViewModels
             }
 
             var wfscvm = FindWorkSurfaceContextViewModel(message.ResourceToRemove);
-            //DeactivateItem(wfscvm, true);
             base.DeactivateItem(wfscvm, true);
-            GetWorkspaceItemRepository().Remove(message.ResourceToRemove);
             _previousActive = null;
 
-            var res = message.ResourceToRemove.Environment
-                .ResourceRepository.FindSingle(c => c.ResourceName == message.ResourceToRemove.ResourceName);
-
-            if(res != null)
-            {
-                message.ResourceToRemove.Environment.ResourceRepository.Remove(res);
-            }
         }
 
         public void Handle(DeployResourcesMessage message)

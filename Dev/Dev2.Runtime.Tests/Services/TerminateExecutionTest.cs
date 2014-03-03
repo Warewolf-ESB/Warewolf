@@ -20,21 +20,21 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class TerminateExecutionTest
     {
-        private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
-        private static readonly Guid _resourceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
-        private static readonly object _syncRoot = new object();
-        private const string _handleType = "TerminateExecutionService";
+        private static readonly Guid WorkspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
+        private static readonly Guid ResourceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
+        private static readonly object SyncRoot = new object();
+        private const string HandleType = "TerminateExecutionService";
 
         [TestInitialize]
         public void TerminateExecutionInit()
         {
-            Monitor.Enter(_syncRoot);
+            Monitor.Enter(SyncRoot);
         }
 
         [TestCleanup]
         public void TerminateExecutionCleanup()
         {
-            Monitor.Exit(_syncRoot);
+            Monitor.Exit(SyncRoot);
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var terminateExecution = new TerminateExecution();
             var ds = terminateExecution.CreateServiceEntry();
-            Assert.AreEqual(_handleType, terminateExecution.HandlesType());
+            Assert.AreEqual(HandleType, terminateExecution.HandlesType());
             Assert.AreEqual(enActionType.InvokeManagementDynamicService, ds.Actions.First().ActionType);
             Assert.AreEqual("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", ds.DataListSpecification);
         }
@@ -67,10 +67,10 @@ namespace Dev2.Tests.Runtime.Services
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
 
-            const string expected = "Message: Workflow succesfully terminated";
+            const string Expected = "Message: Workflow succesfully terminated";
             var obj = ConvertToMsg(result.ToString());
 
-            Assert.AreEqual(expected, obj.Message.ToString());
+            Assert.AreEqual(Expected, obj.Message.ToString());
 
         }
 
@@ -78,13 +78,13 @@ namespace Dev2.Tests.Runtime.Services
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
             ExecutableServiceRepository.Instance.Clear();
-            const string expected = "Message: Termination of workflow failed";
+            const string Expected = "Message: Termination of workflow failed";
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
 
             var obj = ConvertToMsg(result.ToString());
 
-            Assert.AreEqual(expected, obj.Message.ToString());
+            Assert.AreEqual(Expected, obj.Message.ToString());
         }
 
         [TestMethod]
@@ -93,9 +93,10 @@ namespace Dev2.Tests.Runtime.Services
             ExecutableServiceRepository.Instance.Clear();
             var service1 = GetExecutableService();
             var service2 = GetExecutableService();
+            service2.SetupGet(executableService => executableService.ParentID).Returns(service1.Object.ID);
             ExecutableServiceRepository.Instance.Add(service1.Object);
             ExecutableServiceRepository.Instance.Add(service2.Object);
-            var service = ExecutableServiceRepository.Instance.Get(_workspaceID, _resourceID);
+            var service = ExecutableServiceRepository.Instance.Get(WorkspaceID, ResourceID);
             Assert.IsTrue(service != null && service.AssociatedServices.Count == 1);
         }
 
@@ -114,33 +115,33 @@ namespace Dev2.Tests.Runtime.Services
             ExecutableServiceRepository.Instance.Add(service3.Object);
 
             ExecutableServiceRepository.Instance.Remove(service1.Object);
-            Assert.IsTrue(ExecutableServiceRepository.Instance.Count == 1);
+            Assert.AreEqual(2, ExecutableServiceRepository.Instance.Count);
 
-            var service = ExecutableServiceRepository.Instance.Get(_workspaceID, guid);
-            Assert.IsTrue(service != null && service.AssociatedServices.Count == 0);
+            var service = ExecutableServiceRepository.Instance.Get(WorkspaceID, guid);
+            Assert.AreEqual(0, service.AssociatedServices.Count);
         }
 
         private Dictionary<string, StringBuilder> GetDictionary()
         {
             var dict = new Dictionary<string, StringBuilder>();
-            dict["ResourceID"] = new StringBuilder(_resourceID.ToString());
+            // ReSharper disable ImpureMethodCallOnReadonlyValueField
+            dict["ResourceID"] = new StringBuilder(ResourceID.ToString());
             return dict;
         }
 
         private Mock<IWorkspace> GetWorkspace()
         {
             var mock = new Mock<IWorkspace>();
-            mock.Setup(w => w.ID).Returns(_workspaceID);
+            mock.Setup(w => w.ID).Returns(WorkspaceID);
             return mock;
         }
 
         private static Mock<IExecutableService> GetExecutableService()
         {
             var service = new Mock<IExecutableService>();
-            service.SetupGet(s => s.ID).Returns(_resourceID);
-            service.SetupGet(s => s.WorkspaceID).Returns(_workspaceID);
+            service.SetupGet(s => s.ID).Returns(ResourceID);
+            service.SetupGet(s => s.WorkspaceID).Returns(WorkspaceID);
             service.SetupGet(s => s.AssociatedServices).Returns(new List<IExecutableService>());
-            //service.Setup(s => s.Terminate()).Returns(async () => await TaskEx.FromResult("mock string")).Verifiable();
             return service;
         }
 

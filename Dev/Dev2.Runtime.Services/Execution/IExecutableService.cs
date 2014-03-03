@@ -8,6 +8,7 @@ namespace Dev2.Runtime.Execution
         Guid ID { get; set; }
         Guid WorkspaceID { get; set; }
         IList<IExecutableService> AssociatedServices { get; }
+        Guid ParentID { get; set; }
 
         void Run();
         void Terminate();

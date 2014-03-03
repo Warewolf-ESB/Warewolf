@@ -1,21 +1,21 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.DurableInstancing;
+using System.Threading;
+using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Instrumentation;
 using Dev2.Network.Execution;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.DurableInstancing;
-using System.Threading;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -289,11 +289,14 @@ namespace Dev2.Runtime.ESB.WF
             {
                 get { return _associatedServices ?? (_associatedServices = new List<IExecutableService>()); }
             }
-
+            public Guid ParentID { get; set; }
 
             public void Run()
             {
+                Guid id;
+                Guid.TryParse(DataTransferObject.ParentInstanceID, out id);
                 ID = DataTransferObject.ResourceID;
+                ParentID = DataTransferObject.ParentID;
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
                 var wfappUtils = new WfApplicationUtils();

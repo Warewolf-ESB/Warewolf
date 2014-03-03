@@ -72,5 +72,6 @@ namespace Dev2
         int ParentThreadID { get; set; }
 
         Guid DebugSessionID { get; set; }
+        Guid ParentID { get; set; }
     }
 }

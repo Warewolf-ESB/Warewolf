@@ -264,6 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentServiceName = serviceName;
 
                 _previousInstanceID = dataObject.ParentInstanceID;
+                dataObject.ParentID = oldResourceID;
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 

@@ -159,6 +159,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         public Guid DebugSessionID { get; set; }
+        public Guid ParentID { get; set; }
         public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
@@ -319,7 +320,7 @@ namespace Dev2.DynamicServices
             result.WorkflowResumeable = WorkflowResumeable;
             result.WorkspaceID = WorkspaceID;
             result.ThreadsToDispose = ThreadsToDispose;
-
+            result.ParentID = ParentID;
             return result;
         }
 
