@@ -8,6 +8,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
@@ -108,6 +109,7 @@ namespace Dev2.Activities
                 var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
                 SqlBulkCopy sqlBulkCopy = null;
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+                Database = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
                     sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };

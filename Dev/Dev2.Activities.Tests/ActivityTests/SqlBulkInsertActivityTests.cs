@@ -2,6 +2,7 @@
 using Dev2.Activities;
 using Dev2.Common.Enums;
 using Dev2.Enums;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -127,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfSqlBulkInsertActivity
                 {
                     InputMappings = null,
-                    Database = new DbSource(),
+                    Database = CreateDbSource(),
                     TableName = "TestTable",
                     CheckConstraints = true,
                     FireTriggers = true,
@@ -172,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfSqlBulkInsertActivity
                 {
                     InputMappings = null,
-                    Database = new DbSource(),
+                    Database = CreateDbSource(),
                     TableName = "TestTable",
                     CheckConstraints = true,
                     FireTriggers = false,
@@ -219,7 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     InputMappings = null,
                     BatchSize = "[[batchsize]]",
-                    Database = new DbSource(),
+                    Database = CreateDbSource(),
                     TableName = "TestTable",
                     CheckConstraints = true,
                     FireTriggers = false,
@@ -247,6 +248,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(240, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize);
+        }
+
+        static DbSource CreateDbSource()
+        {
+            var dbSource = new DbSource();
+            dbSource.ResourceName = "Some Test DBSOUrce";
+            dbSource.ResourceID = Guid.NewGuid();
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            return dbSource;
         }
 
         [TestMethod]
@@ -1421,7 +1431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
             if(dbSource == null)
             {
-                dbSource = new DbSource();
+                dbSource = CreateDbSource();
             }
             if(destinationTableName == null)
             {
