@@ -57,12 +57,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             DbSource dbSource;
+            DbSource runtimeDbSource=null;
             try
             {
                 dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+                
                 if(dbSource.ResourceID != Guid.Empty)
                 {
-                    dbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
+                    runtimeDbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
                 }
             }
             catch(Exception e)
@@ -70,8 +72,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
-
-            if(string.IsNullOrEmpty(dbSource.DatabaseName) || string.IsNullOrEmpty(dbSource.Server))
+            if(runtimeDbSource==null)
+            {
+                var res = new DbTableList("Invalid Database source");
+                return serializer.SerializeToBuilder(res);
+            }
+            if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
                 return serializer.SerializeToBuilder(res);

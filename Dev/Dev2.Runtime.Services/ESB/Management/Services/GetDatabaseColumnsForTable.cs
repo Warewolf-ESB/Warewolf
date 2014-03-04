@@ -70,17 +70,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
-                dbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
+                var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
                 DataTable columnInfo;
-                using(var connection = new SqlConnection(dbSource.ConnectionString))
+                using(var connection = new SqlConnection(runtTimedbSource.ConnectionString))
                 {
                     // Connect to the database then retrieve the schema information.
                     connection.Open();
 
                     // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
                     var restrictions = new string[4];
-                    restrictions[0] = dbSource.DatabaseName;
-                    restrictions[2] = tableName.Trim(new[] { '"' });
+                    restrictions[0] = runtTimedbSource.DatabaseName;
+                    if(tableName != null)
+                    {
+                        restrictions[2] = tableName.Trim(new[] { '"' });
+                    }
                     columnInfo = connection.GetSchema("Columns", restrictions);
                 }
 

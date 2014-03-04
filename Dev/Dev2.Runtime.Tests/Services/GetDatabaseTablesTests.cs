@@ -83,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(actual);
             var result = JsonConvert.DeserializeObject<DbTableList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
-            Assert.AreEqual("Invalid database sent {Val:1}.", result.Errors);
+            Assert.AreEqual("Invalid Database source", result.Errors);
         }
 
         [TestMethod]

@@ -1,4 +1,11 @@
-﻿using Dev2.Activities.Debug;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Factories;
@@ -12,13 +19,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -109,16 +109,16 @@ namespace Dev2.Activities
                 var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
                 SqlBulkCopy sqlBulkCopy = null;
                 SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
-                Database = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
+                var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
-                    sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
+                    sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
                 }
                 else
                 {
                     while(parametersIteratorCollection.HasMoreData())
                     {
-                        sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr);
+                        sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase);
                     }
                 }
                 if(sqlBulkCopy != null)
@@ -269,12 +269,12 @@ namespace Dev2.Activities
             return false;
         }
 
-        SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr)
+        SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase)
         {
             var batchSize = -1;
             var timeout = -1;
             GetParameterValuesForBatchSizeAndTimeOut(batchItr, parametersIteratorCollection, timeoutItr, ref batchSize, ref timeout);
-            var sqlBulkCopy = new SqlBulkCopy(Database.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
+            var sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
             if(batchSize != -1)
             {
                 sqlBulkCopy.BatchSize = batchSize;
