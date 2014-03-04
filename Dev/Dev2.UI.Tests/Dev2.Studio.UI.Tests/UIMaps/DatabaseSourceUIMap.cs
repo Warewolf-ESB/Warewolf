@@ -9,7 +9,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
     using Mouse = Mouse;
 
     // ReSharper disable InconsistentNaming
-    public partial class DatabaseSourceUIMap : UIMapBase
+    public partial class DatabaseSourceUIMap : WizardsUIMap
     {
         public string GetUserName()
         {

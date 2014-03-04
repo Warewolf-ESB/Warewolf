@@ -143,14 +143,14 @@ namespace Dev2.Studio.Webs
                 srcID = xe.AttributeSafe("SourceID");
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID);
+            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID, null, resourceModel.ResourceName);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, Guid? context = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, Guid? context = null, string resourceName = null)
         {
             const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
@@ -186,14 +186,21 @@ namespace Dev2.Studio.Webs
                 double height;
                 string leftTitle = string.Empty;
                 string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
-                //string rightTitle = string.Concat(environment.Name, " (", environment.Connection.AppServerUri.ToString(), ")");
                 switch(resourceType)
                 {
                     case ResourceType.Server:
                         workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                         pageName = "sources/server";
                         pageHandler = new ConnectCallbackHandler(context);
-                        leftTitle = "New Server";
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Server";
+                        }
+
                         width = 704;
                         height = 520;
                         break;
@@ -210,7 +217,14 @@ namespace Dev2.Studio.Webs
                         pageHandler = new SourceCallbackHandler();
                         width = 704;
                         height = 517;
-                        leftTitle = "New Database Source";
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Datbase Source";
+                        }
                         break;
 
                     case ResourceType.PluginService:
@@ -223,7 +237,14 @@ namespace Dev2.Studio.Webs
                     case ResourceType.PluginSource:
                         pageName = "sources/pluginsource";
                         pageHandler = new SourceCallbackHandler();
-                        leftTitle = "New Plugin Source";
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Plugin Source";
+                        }
                         width = 700;
                         height = 517;
                         break;
@@ -231,7 +252,14 @@ namespace Dev2.Studio.Webs
                     case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                         pageName = "sources/emailsource";
                         pageHandler = new SourceCallbackHandler();
-                        leftTitle = "New Email Source";
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Email Source";
+                        }
                         width = 704;
                         height = 488;
                         break;
@@ -239,7 +267,14 @@ namespace Dev2.Studio.Webs
                     case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
                         pageName = "sources/websource";
                         pageHandler = new WebSourceCallbackHandler();
-                        leftTitle = "New Web Source";
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Web Source";
+                        }
                         width = 704;
                         height = 517;
                         break;

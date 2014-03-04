@@ -47,7 +47,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
 
             activityUiMap.ClickEdit();
+           
             //Wizard actions
+            
             WebServiceWizardUIMap.ClickMappingTab();
             WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
             WebServiceWizardUIMap.ClickSaveButton(2);

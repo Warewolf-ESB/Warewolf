@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
     // ReSharper disable InconsistentNaming
-    public class WebSourceWizardUIMap : UIMapBase
+    public class WebSourceWizardUIMap : WizardsUIMap
     // ReSharper restore InconsistentNaming
     {
         public void ClickSave()

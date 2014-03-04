@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Clipboard = System.Windows.Clipboard;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
@@ -179,6 +180,12 @@ namespace Dev2.Studio.UI.Tests
                 //Edit remote db source
                 ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
 
+                var actualLeftTitleText = DatabaseSourceUIMap.GetLeftTitleText();
+                var actualRightTitleText = DatabaseSourceUIMap.GetRightTitleText();
+
+                Assert.AreEqual("Edit - DBSource", actualLeftTitleText);
+                Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+
                 DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
                 DatabaseSourceUIMap.EnterUsernameAndPassword();
                 DatabaseSourceUIMap.TestConnection();
@@ -208,6 +215,13 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote web source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
+
+            var actualLeftTitleText = WebSourceWizardUIMap.GetLeftTitleText();
+            var actualRightTitleText = WebSourceWizardUIMap.GetRightTitleText();
+
+            Assert.AreEqual("Edit - Dev2GetCountriesWebService", actualLeftTitleText);
+            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+
             WebSourceWizardUIMap.EnterTextIntoWizardTextBox(3, "?extension=json&prefix=b");
             WebSourceWizardUIMap.PressButtonOnWizard(3);
             SaveDialogUIMap.ClickSave();
@@ -273,6 +287,14 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote email source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+
+            var actualLeftTitleText = EmailSourceWizardUIMap.GetLeftTitleText();
+            var actualRightTitleText = EmailSourceWizardUIMap.GetRightTitleText();
+
+            Assert.AreEqual("Edit - EmailSource", actualLeftTitleText);
+            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+
+
             //Change Timeout
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, machineName);
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(5, "1234");
@@ -318,6 +340,14 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote plugin source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+
+            var actualLeftTitleText = PluginSourceMap.GetLeftTitleText();
+            var actualRightTitleText = PluginSourceMap.GetRightTitleText();
+
+            Assert.AreEqual("Edit - PluginSource", actualLeftTitleText);
+            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+
+
             PluginSourceMap.ClickPluginSourceAssemblyPath();
             PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT} - Copy"), 100);
             PluginServiceWizardUIMap.PressButtonOnWizard(1);

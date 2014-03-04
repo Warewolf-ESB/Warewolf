@@ -1,13 +1,15 @@
 ﻿using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 {
     using System.Drawing;
     using System.Windows.Input;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
+    using Keyboard = Keyboard;
+    using Mouse = Mouse;
+    using MouseButtons = MouseButtons;
 
 
     public partial class EmailSourceWizardUIMap
