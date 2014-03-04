@@ -276,9 +276,15 @@ namespace Dev2.Runtime.ESB.WF
                 _instance.PersistableIdle = OnPersistableIdle;
                 _instance.Unloaded = OnUnloaded;
                 _instance.Completed = OnCompleted;
+                _instance.Aborted = OnAborted;
                 _instance.OnUnhandledException = OnUnhandledException;
 
                 AllErrors = errors;
+            }
+
+            void OnAborted(WorkflowApplicationAbortedEventArgs obj)
+            {
+                
             }
 
             #endregion
@@ -321,6 +327,7 @@ namespace Dev2.Runtime.ESB.WF
                 catch(Exception e)
                 {
                     this.LogError(e);
+                    _instance.Abort();
                 }
 
                 ExecutableServiceRepository.Instance.Remove(this);
@@ -362,20 +369,19 @@ namespace Dev2.Runtime.ESB.WF
                 _instance.ResumeBookmark(bookmarkName, existingDlid);
             }
 
+
+
             #region Completion Handling
 
             private void OnCompleted(WorkflowApplicationCompletedEventArgs args)
             {
                 _result = args.GetInstanceExtensions<IDSFDataObject>().ToList().First();
-
+                IDictionary<string, object> outputs = args.Outputs;
 
                 try
                 {
                     if(!_isDebug)
                     {
-                        IDictionary<string, object> outputs = args.Outputs;
-
-
 
                         // Travis.Frisinger : 19.10.2012 - Duplicated Recordset Data Bug 6038
 
@@ -443,7 +449,10 @@ namespace Dev2.Runtime.ESB.WF
                     {
                         if(_waitHandle != null) _waitHandle.Set();
                         ExecutableServiceRepository.Instance.Remove(this);
-                        if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
+                        if(DataTransferObject != null)
+                        {
+                            DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
+                        }
                     }
                     catch(Exception e)
                     {
@@ -456,7 +465,7 @@ namespace Dev2.Runtime.ESB.WF
                 // force a throw to kill the engine ;)
                 if(args.TerminationException != null)
                 {
-                    _instance.Abort();
+                    _instance.Terminate("Force Terminate", new TimeSpan(0, 0, 1, 0));
                 }
 
                 // Not compatable with run.Dispose() ;)
