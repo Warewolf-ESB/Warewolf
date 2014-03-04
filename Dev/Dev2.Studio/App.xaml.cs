@@ -60,7 +60,12 @@ namespace Dev2.Studio
             Tracker.StartStudio();
             bool createdNew;
 
-            Task.Factory.StartNew(() => DirectoryHelper.CleanUp(Path.Combine(Path.GetTempPath(), "Warewolf", "Debug")));
+            Task.Factory.StartNew(() =>
+                {
+                    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
+                    DirectoryHelper.CleanUp(path);
+                    DirectoryHelper.CleanUp(Path.Combine(Path.GetTempPath(), "Warewolf", "Debug"));
+                });
 
             // ReSharper disable once UnusedVariable
             var localprocessGuard = e.Args.Length > 0

@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 using CommandLine;
 using Dev2.Common;
@@ -56,6 +57,13 @@ namespace Dev2
         /// <param name="arguments">Command line arguments passed to executable.</param>
         static int Main(string[] arguments)
         {
+            Task.Factory.StartNew(() =>
+            {
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "DataListServerTmp");
+                DirectoryHelper.CleanUp(path);
+            });
+
+
             int result = 0;
 
             CommandLineParameters options = new CommandLineParameters();
