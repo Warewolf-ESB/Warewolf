@@ -7,6 +7,7 @@ using System.Text;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -59,6 +60,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+                if(dbSource.ResourceID != Guid.Empty)
+                {
+                    dbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
+                }
             }
             catch(Exception e)
             {

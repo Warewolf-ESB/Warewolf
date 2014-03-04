@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
@@ -107,6 +112,46 @@ namespace Dev2.Tests.Runtime.Services
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No table name set.", result.Errors);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetDatabaseTables_Execute")]
+        public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource();
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var esb = new GetDatabaseColumnsForTable();
+            var mockWorkspace = new Mock<IWorkspace>();
+            mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
+            //------------Execute Test---------------------------
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("SqlBulkInsertSpecFlowTestTable") } }, mockWorkspace.Object);
+            //------------Assert Results-------------------------
+            var value = actual.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            Assert.IsTrue(result.Items.Count > 2);
+        }
+
+        DbSource CreateDev2TestingDbSource()
+        {
+            var dbSource = new DbSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "Dev2TestingDB",
+                ResourcePath = "Test",
+                DatabaseName = "Dev2TestingDB",
+                Server = "RSAKLFSVRGENDEV",
+                AuthenticationType = AuthenticationType.User,
+                ServerType = enSourceType.SqlDatabase,
+                ReloadActions = true,
+                UserID = "testUser",
+                Password = "test123"
+            };
+            return dbSource;
         }
         #endregion
 
