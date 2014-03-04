@@ -195,7 +195,7 @@ namespace Dev2.Studio.Webs
                         pageHandler = new ConnectCallbackHandler(context);
                         leftTitle = "New Server";
                         width = 704;
-                        height = 480;
+                        height = 520;
                         break;
 
                     case ResourceType.DbService:
