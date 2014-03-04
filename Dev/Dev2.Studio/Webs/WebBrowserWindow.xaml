@@ -19,7 +19,7 @@
                 <Trigger Property="IsMouseOver"
                          Value="True">
                     <Setter Property="Cursor"
-                            Value="Hand" />
+                            Value="SizeAll" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -30,7 +30,7 @@
                 <Trigger Property="IsMouseOver"
                          Value="True">
                     <Setter Property="Cursor"
-                            Value="Hand" />
+                            Value="SizeAll" />
                 </Trigger>
             </Style.Triggers>
         </Style>

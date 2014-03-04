@@ -24,7 +24,7 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowSwitchDragDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 752;
-            const int DialogHeight = 146;
+            const int DialogHeight = 85;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
             environment.ShowWebPageDialog(SiteName, "switch/drag", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowSwitchDropDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 752;
-            const int DialogHeight = 196;
+            const int DialogHeight = 161;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
             environment.ShowWebPageDialog(SiteName, "switch/drop", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");

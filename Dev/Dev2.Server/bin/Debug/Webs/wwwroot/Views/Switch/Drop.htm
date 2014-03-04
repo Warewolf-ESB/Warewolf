@@ -1,7 +1,7 @@
 ﻿<div id="container">
     <div class="float-left">
-        <div id="body">
-            <form id="mainForm" 
+        <div id="body" class="ui-widget-content">
+            <form id="mainForm">
                 <div class="mainFormError" style="display: none; text-align: right;">
                     <img src="images/warning.gif" alt="Warning!" width="24" height="24" class="icon" />
                     <span id="Dev2Msg">You missed some fields.The have been highlighted below.</span>
@@ -9,31 +9,29 @@
                 <div class="switch-form">
                     <div>
 
-						<div class="field">
-							<label class="wideLabel"> &nbsp; &nbsp;Checks a variable and then switches the execution if it finds a matching case.</label>
-						</div>
-						
-						<!--  KO Template -->
-						<div style="width:100%;">							
-						    <div>
-						        <label style="float:left; width:200px; margin-left:-45px; margin-top: 5px;">Variable to Switch on : </label>
-						        <input style="margin-left: 12px" type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'blur'" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable"/>	
-						    </div>
-                              <div>
+                        <div class="field">
+                            <label class="wideLabel">&nbsp; &nbsp;Checks a variable and then switches the execution if it finds a matching case.</label>
+                        </div>
+
+                        <!--  KO Template -->
+                        <div style="width: 100%;">
+                            <div>
+                                <label style="float: left; width: 200px; margin-left: -45px; margin-top: 5px;">Variable to Switch on : </label>
+                                <input style="margin-left: 12px" type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'blur'" class="shortField required" placeholder="[[CaseVariable]]" title="Switch on This Variable" />
+                            </div>
+                            <div>
                                 <label style="margin-left: -96px; margin-top: 5px;" for="displayText" id="Label1">Display text : </label>
                                 <input style="margin-left: 63px" type="text" name="displayText" id="displayText" class="veryShortField" data-bind="value: data.DisplayText" />
                             </div>
-						</div>
-
-						<div class="button-bar service-button-bar">
-							<span>
-							    <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
-							    <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
-							</span>
-						</div>
-						
-						
-					</div>
+                        </div>
+                        <div class="button-bar service-button-bar">
+                            <span>
+                                <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
+                                <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -46,16 +44,16 @@
 
 <script type="text/javascript">
 
-	 // Build the model
-	 var vm = new AppViewModel();
+    // Build the model
+    var vm = new AppViewModel();
 
-     // Load the model
-	 vm.Load();
+    // Load the model
+    vm.Load();
 
-     // Apply the model
-	 ko.applyBindings(vm);	
-	 
-	 $("input[type=submit], a, button").button();
-		
+    // Apply the model
+    ko.applyBindings(vm);
+
+    $("input[type=submit], a, button").button();
+
 </script>
 

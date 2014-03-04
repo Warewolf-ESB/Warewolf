@@ -1,31 +1,31 @@
-﻿<div id="container">
+﻿<div id="container" style="height: 111px;">
     <div class="float-left">
-       <div id="body">
-            <form id="mainForm" 
+       <div id="body" class="ui-widget-content">
+           <form id="mainForm">
             <div class="mainFormError" style="display: none; text-align: right;">
                 <img src="images/warning.gif" alt="Warning!" width="24" height="24" class="icon" />
                 <span id="Dev2Msg">You missed some fields.The have been highlighted below.</span>
             </div>
             <div class="switch-form">
                 <div>						
-                    <span style="position:absolute; width:100%; top:30px; left:0px;">
+                    <span style="position:absolute; width:100%; top:3px; left:0px;">
                         <label style="display:block; text-align:left; margin-left:23px; margin-top: 15px"> Switch on <span id="BindingVariable" style="font-weight:bold"></span> when the case is : </label>
                         <input type="text" autofocus="autofocus" name="SwitchVariable" id="SwitchVariable" data-bind="value: data.SwitchVariable, valueUpdate: 'afterkeydown'" class="shortField required" style="float:left; margin-top: 13px" placeholder="i.e. Processed" title="For the case of"/>	
                     </span>
 
-                    <div class="button-bar service-button-bar" style="margin-top: 43px">
+                    <div class="button-bar service-button-bar" style="margin-top: 12px">
                         <span>
                             <button tabindex="7" type="submit" name="save" id="saveButton" data-bind="click: save">Done</button>
                             <button tabindex="8" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
                         </span>
-                    </div>
-						
-						
+                    </div>												
                 </div>
             </div>
         </form>
         </div>
     </div>
+</div>
+<div id="saveDialogContainer">
 </div>
 
 <!-- Import Model  -->
