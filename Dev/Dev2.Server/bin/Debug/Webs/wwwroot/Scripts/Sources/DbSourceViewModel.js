@@ -145,7 +145,6 @@ function DbSourceViewModel(saveContainerID, environment) {
         utils.postTimestamped(self, "testTime", "Service/DbSources/Test", jsonData, function(result) {
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
-            utils.toggleUIReadOnlyState(self.isReadOnly);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
             if (self.testSucceeded()) {
@@ -163,7 +162,6 @@ function DbSourceViewModel(saveContainerID, environment) {
 
     self.cancelTest = function() {
         self.isTestResultsLoading(false);
-        utils.toggleUIReadOnlyState(self.isReadOnly);
         self.testTime = new Date().valueOf();
     };
     

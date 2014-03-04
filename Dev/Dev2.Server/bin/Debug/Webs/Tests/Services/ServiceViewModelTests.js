@@ -1,7 +1,12 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
+/// <reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
 /// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Services/WebServiceViewModel.js" />
 /// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
 /// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/WebSourceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
 
 //module("ServiceViewModelTests", {
 //    setup: function() {
@@ -39,6 +44,26 @@ test("ConstructorExpectedModelResourceTypeIsDbService", function () {
 
     var model = new DbServiceViewModel();
     equal(model.data.resourceType(), "DbService", "Is Resource Type DbService");
+});
+
+module("Service Ok Test");
+
+test("ConstructorExpectedModelResourceDbServiceOkDisabledOnLoad", function () {
+
+    var model = new DbServiceViewModel();
+    ok(!model.isFormValid(), "DbService", "Ok Disabled By Default");
+});
+
+test("ConstructorExpectedModelResourceWebServiceOkDisabledOnLoad", function () {
+
+    var model = new WebServiceViewModel();
+    ok(!model.isFormValid(), "WebService", "Ok Disabled By Default");
+});
+
+test("ConstructorExpectedModelResourcePluginServiceOkDisabledOnLoad", function () {
+
+    var model = new PluginServiceViewModel();
+    ok(!model.isFormValid(), "PluginService", "Ok Disabled By Default");
 });
 
 module("Service Model Form Validation");

@@ -5,6 +5,7 @@
 
 module("PluginSource Model Constructor");
 
+/*
 test("ConstructorWithNoParametersExpectedIsEditingIsFalse", function () {
 
     var model = new PluginSourceViewModel();
@@ -23,6 +24,7 @@ test("ConstructorWithNoParametersExpectedHelpDictionaryIDIsPluginSource", functi
     var model = new PluginSourceViewModel();
     equal(model.helpDictionaryID, "pluginSource", "Did Help Dictionary ID Initialize");
 });
+*/
 
 module("PluginSource Form Passes Validation");
 
@@ -40,6 +42,7 @@ test("IsFormValidWithGacAssemblyAndIsInGacListExpectedFormIsValid", function () 
     ok(model.isFormValid(), "Did Form Pass Validation");
 });
 
+/*
 test("IsFormValidWithAssemblyFileAndVerifiedAssemblyFileExpectedFormIsValid", function () {
 
     var model = new PluginSourceViewModel();
@@ -47,14 +50,17 @@ test("IsFormValidWithAssemblyFileAndVerifiedAssemblyFileExpectedFormIsValid", fu
     model.isAssemblyFileValid(true);
     ok(model.isFormValid(), "Did Form Pass Validation");
 });
+*/
 
 module("PluginSource Form Fails Validation");
+
 
 test("IsFormValidWithNoAssemblyLocationExpectedFormIsNotValid", function() {
 
     var model = new PluginSourceViewModel();
     ok(!model.isFormValid(), "Did Form Fail Validation");
 });
+
 
 test("IsFormValidWithBadAssemblyLocationExpectedFormIsNotValid", function () {
 
@@ -72,11 +78,13 @@ test("IsFormValidWithGacAssemblyAndIsNotInGacListExpectedFormIsNotValid", functi
 
 module("PluginSource to Save Data Model Binding");
 
+/*
 test("SaveDialogConstructorExpectedResourceTypeIsPluginSource", function () {
 
     var model = new PluginSourceViewModel();
     equal(model.saveViewModel.data.resourceType(), 'PluginSource', "Is Resource Type Plugin Source");
 });
+*/
 
 test("ChangeResourceIDExpectedSaveModelResourceIDChanged", function () {
 

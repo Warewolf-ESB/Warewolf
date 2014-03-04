@@ -201,20 +201,8 @@ utils.isReadOnly = function(resourceId, callBack) {
     });
 
     $.post("Service/Services/IsReadOnly" + window.location.search, args, function(result) {
-        utils.toggleUIReadOnlyState(result.IsReadOnly);
         if (callBack) {
             callBack(result.IsReadOnly);
         }
     });
-};
-
-utils.toggleUIReadOnlyState = function(disable) {
-    if (disable) {
-        $('input,select,textarea,button').attr('disabled', true);
-        $('button').button("option", "disabled", true);
-        $('#cancelButton,#dialogCloseBtn,#nonButtonBarCancelButton').button("option", "disabled", false);
-    } else {
-        $('input,select,textarea,button').removeAttr('disabled');
-        $('button').button("option", "disabled", false);
-    }
 };

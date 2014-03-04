@@ -30,50 +30,10 @@ test("DecisionTypeChangedClearsText", function () {
     equal(decision.PopulatedColumnCnt(), 1, "PopulationColumnCnt is wrong");
 });
 
-test("ConstructorWithNoParamsExpectedDecisionStackInitializedWithCorrectOrderOfDecisionFunctions", function () {
-
-    var model = new DecisionViewModel();
-    var decisionTypes = model.data.decisionFunctions();
-    
-    equal(model.data.decisionFunctions()[1].displayValue, "There Is An Error", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[2].displayValue, "There Is No Error", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[3].displayValue, "=", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[4].displayValue, ">", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[5].displayValue, "<", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[6].displayValue, "<> (Not Equal)", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[7].displayValue, ">=", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[8].displayValue, "<=", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[9].displayValue, "Starts With", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[10].displayValue, "Ends With", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[11].displayValue, "Contains", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[12].displayValue, "Is Alphanumeric", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[13].displayValue, "Is Base64", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[14].displayValue, "Is Between", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[15].displayValue, "Is Binary", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[16].displayValue, "Is Date", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[17].displayValue, "Is Email", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[18].displayValue, "Is Hex", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[19].displayValue, "Is Numeric", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[20].displayValue, "Is RegEx", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[21].displayValue, "Is Text", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[22].displayValue, "Is XML", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[23].displayValue, "Not Alphanumeric", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[24].displayValue, "Not Base64", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[25].displayValue, "Not Binary", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[26].displayValue, "Not Date", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[27].displayValue, "Not Email", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[28].displayValue, "Not Hex", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[29].displayValue, "Not Numeric", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[30].displayValue, "Not Text", "DecisionFunctions are in the wrong order");
-    equal(model.data.decisionFunctions()[31].displayValue, "Not XML", "DecisionFunctions are in the wrong order");
-    
-});
-
-
 test("ConstructorWithNoParamsExpectedCorrectNumberofDecisionFunctions", function () {
 
     var model = new DecisionViewModel();
-    equal(model.data.decisionFunctions().length, 32, "Did Correct Number of Decision Functions Initialize");
+    equal(model.data.decisionFunctions().length, 37, "Did Correct Number of Decision Functions Initialize [ " + model.data.decisionFunctions().length + " ]");
 });
 
 test("AddRowExpectedDecisionStackLengthIncreased", function () {

@@ -171,7 +171,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             self.data.method.Name(selectedItem.Name);
             self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
             self.data.method.Parameters(selectedItem.Parameters);
-            utils.toggleUIReadOnlyState(self.isReadOnly);
         }, self.isReadOnly);
     });
     
@@ -261,7 +260,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.loadSources(
             function() {
                 self.loadService();
-                utils.toggleUIReadOnlyState(self.isReadOnly);
             });
     };
     
@@ -301,7 +299,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
                 self.data.method.Parameters(result.Method.Parameters);
-                utils.toggleUIReadOnlyState(self.isReadOnly);
             }
             if (result.Recordset) {
                 self.updateRecordset(result.Recordset.Name, result.Recordset.Fields);

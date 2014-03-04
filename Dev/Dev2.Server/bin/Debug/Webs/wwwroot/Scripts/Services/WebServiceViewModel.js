@@ -145,7 +145,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         self.hasTestResults(hasResults);
 
         recordsets.pushResult(self.data.recordsets, result.Recordsets);
-        utils.toggleUIReadOnlyState(self.isReadOnly);
     };
 
     self.getParameter = function (text, start) {
@@ -852,7 +851,6 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
     $("#tabs").tabs();
 
     var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceID"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
-
     ko.applyBindings(webServiceViewModel, document.getElementById(webServiceContainerID));
 
 

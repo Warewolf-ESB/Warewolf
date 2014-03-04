@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mocha Tests</title>
+    @@TestFrameworkDependencies@@
+    @@CodeCoverageDependencies@@
+    @@ReferencedCSSFiles@@
+    @@TestHtmlTemplateFiles@@
+    @@ReferencedJSFiles@@
+    <script type="text/javascript">
+        mocha.setup('@@MochaUi@@');
+    </script>
+    @@TestJSFile@@
+</head>
+<body>
+    <div id="mocha"></div>
+    <script type="text/javascript">
+        var requireExists = window.require && typeof window.require === "function";
+        var amdTestPath = "@@AMDTestPath@@";
+        if (requireExists && amdTestPath !== "") {
+            if (window.chutzpah) {
+
+                console.log("!!_!! Test file is using module loader.");
+                window.chutzpah.usingModuleLoader = true;
+            }
+
+            requirejs.config({
+                map: {
+                    '*': {
+                        @@AMDModuleMap@@
+                        }
+                }
+            });
+
+            window.require([amdTestPath], function () {
+                mocha.run();
+            });
+
+        } else {
+            if (window._Chutzpah_covobj_name) {
+                blanket.options("existingRequireJS", false);
+            }
+
+            var currentWindowOnload = window.onload;
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+
+                if (!window._Chutzpah_covobj_name || requireExists) {
+                    mocha.run();
+                }
+            };
+        }
+    </script>
+</body>
+</html>

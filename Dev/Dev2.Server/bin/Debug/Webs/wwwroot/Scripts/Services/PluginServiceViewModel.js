@@ -108,7 +108,6 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             self.data.method.Name(selectedItem.Name);
             self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
             self.data.method.Parameters(selectedItem.Parameters);
-            utils.toggleUIReadOnlyState(self.isReadOnly);
             self.hasTestResults(false);
             self.hasTestResultRecords(false);
         }, self.isReadOnly);
@@ -174,7 +173,6 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         self.hasTestResults(hasResults);
 
         recordsets.pushResult(self.data.recordsets, result);
-        utils.toggleUIReadOnlyState(self.isReadOnly);
     };
 
     self.load = function () {
@@ -219,7 +217,6 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
                 self.data.method.Parameters(result.Method.Parameters);
-                utils.toggleUIReadOnlyState(self.isReadOnly);
             }
 
             // BUG 9500 - 2013.05.31 - TWR : added           
@@ -261,7 +258,6 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
 
                         // BUG 9500 - 2013.05.31 - TWR : added
                         self.data.method.Parameters(method.Parameters);
-                        utils.toggleUIReadOnlyState(self.isReadOnly);
                         return false;
                     }
                     return true;

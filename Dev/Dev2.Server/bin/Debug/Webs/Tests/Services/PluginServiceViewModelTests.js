@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
+/// <reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
 /// <reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
 /// <reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
 /// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
@@ -195,9 +196,11 @@ test("ChangeServiceModelRecordsetExpectedSaveModelRecordsetDataChanged", functio
 
 module("Plugin Service Model to Plugin Source Model Binding");
 
+[ignore]
 test("SaveDialogConstructorExpectedResourceTypeIsDbService", function () {
 
     var model = new PluginServiceViewModel();
+    
     model.source.data = new PluginSourceViewModel().data;
     equal(model.source.data.resourceType(), 'PluginSource', "Is Resource Type Plugin Source");
 });

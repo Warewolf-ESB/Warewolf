@@ -91,6 +91,11 @@ function EmailSourceViewModel(saveContainerID, environment) {
     self.testError = ko.observable("");
     
     self.isFormTestable = ko.computed(function () {
+        
+        if (self.isReadOnly) {
+            return false;
+        }
+
         var valid = self.data.host() ? true : false;
         valid = valid && self.data.userName() ? true : false;
         valid = valid && self.data.password() ? true : false;
