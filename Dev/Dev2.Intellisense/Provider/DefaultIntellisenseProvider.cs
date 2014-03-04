@@ -19,7 +19,9 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.UI;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Provides a concrete implementation of IIntellisenseProvider that provides that same functionality

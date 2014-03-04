@@ -19,6 +19,7 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class IntellisenseProviderTest
     {
+        // ReSharper disable InconsistentNaming
         private IResourceModel _resourceModel;
 
         #region Test Initialization
@@ -1795,5 +1796,29 @@ namespace Dev2.Core.Tests
         }
 
         #endregion CalculateIntellisenseProvider Tests
+
+        #region DateTimeIntellisenseProvider Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DateTimeIntellisenseProvider_GetIntellisenseResults")]
+        public void DateTimeIntellisenseProvider_GetIntellisenseResults_PartialMethodMatch_ClosestMatchesReturned()
+        {
+            IntellisenseProviderContext context = new IntellisenseProviderContext
+            {
+                CaretPosition = 1,
+                InputText = "d",
+                IsInCalculateMode = false,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
+            IList<IntellisenseProviderResult> results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
+
+            Assert.AreEqual(5, results.Count);
+        }
+
+
+        #endregion
     }
 }

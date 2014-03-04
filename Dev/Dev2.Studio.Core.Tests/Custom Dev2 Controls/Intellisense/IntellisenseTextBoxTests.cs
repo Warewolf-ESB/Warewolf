@@ -11,25 +11,28 @@ using System;
 using System.Windows;
 using Clipboard = System.Windows.Clipboard;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
+// ReSharper restore CheckNamespace
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class IntellisenseTextBoxTests
     {
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
-        [TestCleanup()]
+        [TestCleanup]
         public void MyTestCleanup()
         {
             SynchronizationContext.SetSynchronizationContext(null);
         }
-        
+
         #region Test Initialization
 
         //BUG 9639
@@ -127,7 +130,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             try
             {
                 bool eventRaised = false;
-                EventManager.RegisterClassHandler(typeof (IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
+                EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                                   new RoutedEventHandler((s, e) =>
                                                       {
                                                           eventRaised = true;
@@ -179,7 +182,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
+            // ReSharper disable UnusedVariable
             var thread = new Thread(() =>
+            // ReSharper restore UnusedVariable
             {
                 var textBox = new IntellisenseTextBox();
                 textBox.FilterType = enIntellisensePartType.RecordsetFields;
@@ -194,7 +199,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
 
+            // ReSharper disable UnusedVariable
             var thread = new Thread(() =>
+            // ReSharper restore UnusedVariable
             {
                 var textBox = new IntellisenseTextBox();
                 textBox.FilterType = enIntellisensePartType.RecordsetFields;
@@ -208,7 +215,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
+            // ReSharper disable UnusedVariable
             var thread = new Thread(() =>
+            // ReSharper restore UnusedVariable
             {
                 var textBox = new IntellisenseTextBox();
                 textBox.FilterType = enIntellisensePartType.ScalarsOnly;
@@ -222,7 +231,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
+            // ReSharper disable UnusedVariable
             var thread = new Thread(() =>
+            // ReSharper restore UnusedVariable
             {
                 var textBox = new IntellisenseTextBox();
                 textBox.FilterType = enIntellisensePartType.ScalarsOnly;
@@ -230,7 +241,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
                 Thread.Sleep(250);
                 Assert.IsTrue(textBox.HasError);
             });
-           
+
         }
 
         [TestMethod]
@@ -281,6 +292,52 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             //------------Assert Results-------------------------
             Thread.Sleep(100);
             Assert.AreEqual(4, mockIntellisenseTextBox.TextChangedCounter);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_InsertItem")]
+        public void IntellisenseTextBox_InsertItem_InsertDateTimeParts_InsertsCorrectly()
+        {
+            //------------Setup for test--------------------------            
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+            //------------Execute Test---------------------------
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.IsOpen = true;
+            textBox.Text = "ddyy";
+            textBox.CaretIndex = 4;
+            textBox.InsertItem(intellisenseProviderResult, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("ddyyyy", textBox.Text);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_InsertItem")]
+        public void IntellisenseTextBox_InsertItem_InsertDateTimePartsWithSpace_InsertsCorrectly()
+        {
+            //------------Setup for test--------------------------            
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+            //------------Execute Test---------------------------
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.IsOpen = true;
+            textBox.Text = "dd yy";
+            textBox.CaretIndex = 5;
+            textBox.InsertItem(intellisenseProviderResult, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("dd yyyy", textBox.Text);
         }
     }
 }
