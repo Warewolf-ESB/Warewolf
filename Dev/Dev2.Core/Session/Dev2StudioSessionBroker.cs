@@ -279,7 +279,8 @@ namespace Dev2.Session
                 else
                 {
                     // fetch from disk
-                    using(Stream s = _debugOptsEndPoint.Get(_debugPath))
+                    List<string> filesToCleanup = new List<string>();
+                    using(Stream s = _debugOptsEndPoint.Get(_debugPath, filesToCleanup))
                     {
                         if(s.Length > 0)
                         {
@@ -316,6 +317,7 @@ namespace Dev2.Session
 
                         s.Close();
                         s.Dispose();
+                        filesToCleanup.ForEach(File.Delete);
                     }
                 }
             }

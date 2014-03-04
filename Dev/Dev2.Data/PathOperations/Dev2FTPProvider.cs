@@ -34,7 +34,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public Stream Get(IActivityIOPath path)
+        public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
         {
 
             Stream result = null;
@@ -46,7 +46,7 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    ReadFromSFTP(path, ref result);
+                    ReadFromSFTP(path, ref result, filesToCleanup);
                 }
             }
             catch(Exception ex)
@@ -99,13 +99,14 @@ namespace Dev2.Data.PathOperations
             }
         }
 
-        void ReadFromSFTP(IActivityIOPath path, ref Stream result)
+        void ReadFromSFTP(IActivityIOPath path, ref Stream result, List<string> filesToCleanup)
         {
             var sftp = BuildSftpClient(path);
             var ftpPath = ExtractFileNameFromPath(path.Path);
             try
             {
                 var tempFileName = BuildTempFileName();
+                filesToCleanup.Add(tempFileName);
                 sftp.Get(ftpPath, tempFileName);
                 result = new FileStream(tempFileName, FileMode.Open);
                 sftp.Close();
@@ -190,7 +191,7 @@ namespace Dev2.Data.PathOperations
             return "";
         }
 
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup)
         {
             var result = -1;
 
@@ -205,7 +206,7 @@ namespace Dev2.Data.PathOperations
                 // try and fetch the file, if not found ok because we not in Overwrite mode
                 try
                 {
-                    using(Get(dst))
+                    using(Get(dst, filesToCleanup))
                     {
                         ok = false;
                     }
@@ -297,6 +298,10 @@ namespace Dev2.Data.PathOperations
                         {
                             sftp.Close();
                             throw new Exception("File was not created");
+                        }
+                        finally
+                        {
+                            File.Delete(tempFileName);
                         }
                     }
                 }

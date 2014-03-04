@@ -1,17 +1,19 @@
-﻿using System;
+﻿using Dev2.Common.Common;
+using Dev2.PathOperations;
+using Dev2.Tests;
+using Ionic.Zip;
+using Microsoft.Win32.SafeHandles;
+using System;
 using System.IO;
 using System.Net;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-using Dev2.Common.Common;
-using Dev2.PathOperations;
-using Dev2.Tests;
-using Ionic.Zip;
-using Microsoft.Win32.SafeHandles;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.UnitTest.Framework.PathOperationTests
+// ReSharper restore CheckNamespace
 {
 
     /// <summary>
@@ -122,7 +124,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         public static string CreateTmpDirectory()
         {
-            string dstDir = System.IO.Path.GetTempPath() + Guid.NewGuid() + "_dir";
+            string dstDir = Path.GetTempPath() + Guid.NewGuid() + "_dir";
 
             Directory.CreateDirectory(dstDir);
 

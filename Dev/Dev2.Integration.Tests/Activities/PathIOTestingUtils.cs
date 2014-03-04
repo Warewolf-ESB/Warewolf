@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Runtime.ConstrainedExecution;
@@ -372,7 +373,7 @@ namespace Dev2.Integration.Tests.Activities
 
                 pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
                 FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
-                FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
+                FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null, new List<string>());
             }
 
             return path;
@@ -382,7 +383,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
-            var stream = FTPPro.Get(pathFromString);
+            var stream = FTPPro.Get(pathFromString, new List<string>());
 
             stream.Position = 0;
             using(var reader = new StreamReader(stream, Encoding.UTF8))
@@ -393,7 +394,7 @@ namespace Dev2.Integration.Tests.Activities
 
         public static string ReadFile(IActivityIOOperationsEndPoint endpoint)
         {
-            var stream = endpoint.Get(endpoint.IOPath);
+            var stream = endpoint.Get(endpoint.IOPath, new List<string>());
             stream.Position = 0;
             using(var reader = new StreamReader(stream, Encoding.UTF8))
             {

@@ -220,7 +220,7 @@ namespace Dev2.Tests.DataList
             // bootstrap
             DebugTO to = new DebugTO();
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
-            string rootFolder = System.IO.Path.GetTempPath() + Guid.NewGuid();
+            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
             to.RememberInputs = false;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";

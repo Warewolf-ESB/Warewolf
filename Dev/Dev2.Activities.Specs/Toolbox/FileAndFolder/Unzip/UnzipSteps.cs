@@ -1,4 +1,5 @@
 ﻿using System.Activities.Statements;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Dev2.Activities.Specs.BaseTypes;
@@ -63,13 +64,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 
             const string ResourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
+            List<string> filesToCleanup = new List<string>();
             using(Stream stream = assembly.GetManifestResourceStream(ResourceName))
             {
                 if(stream != null)
                 {
-                    sourceEndPoint.Put(stream, sourceEndPoint.IOPath, new Dev2CRUDOperationTO(true), null);
+                    sourceEndPoint.Put(stream, sourceEndPoint.IOPath, new Dev2CRUDOperationTO(true), null, filesToCleanup);
                 }
             }
+            filesToCleanup.ForEach(File.Delete);
         }
     }
 }

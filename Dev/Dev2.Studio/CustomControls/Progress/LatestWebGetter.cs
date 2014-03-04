@@ -50,7 +50,6 @@ namespace Dev2.Studio.Core.Helpers
                     var source = client.DownloadString(uri);
                     File.WriteAllText(filePath, source);
 
-
                 }
                 catch(Exception ex)
                 {

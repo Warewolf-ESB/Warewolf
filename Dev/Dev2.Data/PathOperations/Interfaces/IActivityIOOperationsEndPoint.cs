@@ -19,15 +19,16 @@ namespace Dev2.PathOperations {
         /// Return the contents of a file as a stream
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="filesToCleanup"></param>
         /// <returns></returns>
-        Stream Get(IActivityIOPath path);
+        Stream Get(IActivityIOPath path, List<string> filesToCleanup);
 
         /// <summary>
         /// Put a stream into a location as per dst based upon the value of args
         /// </summary>
         /// <param name="src"></param>
         /// <param name="args"></param>
-        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut);
+        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup);
 
         /// <summary>
         /// Delete a file/folder at a location

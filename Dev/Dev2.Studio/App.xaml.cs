@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
+using Dev2.Common.Common;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio
@@ -57,6 +59,9 @@ namespace Dev2.Studio
         {
             Tracker.StartStudio();
             bool createdNew;
+
+            Task.Factory.StartNew(() => DirectoryHelper.CleanUp(Path.Combine(Path.GetTempPath(), "Warewolf", "Debug")));
+
             // ReSharper disable once UnusedVariable
             var localprocessGuard = e.Args.Length > 0
                                         ? new Mutex(true, e.Args[0], out createdNew)

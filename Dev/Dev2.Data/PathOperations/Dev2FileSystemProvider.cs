@@ -60,7 +60,7 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public Stream Get(IActivityIOPath path)
+        public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
         {
             Stream result;
 
@@ -119,9 +119,9 @@ namespace Dev2.PathOperations
 
             return result;
         }
-
+        
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup)
         {
             int result = -1;
             using(src)

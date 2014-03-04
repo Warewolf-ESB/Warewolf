@@ -140,7 +140,8 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsTrue(File.Exists(zipPathName));
             readAllBytes = File.ReadAllBytes(zipPathName);
             Assert.AreNotEqual(0, readAllBytes.Count());
-            
+            File.Delete(tempFile);
+            File.Delete(zipPathName);
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +20,7 @@ namespace Dev2.Data.Tests.PathOperations
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
             {
-                using(testProvider.Get(path))
+                using(testProvider.Get(path, new List<string>()))
                 {
                     // foo ;)
                 }

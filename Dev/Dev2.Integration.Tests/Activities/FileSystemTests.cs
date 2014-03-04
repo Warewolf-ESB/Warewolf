@@ -127,7 +127,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            FileSystemPro.Get(path);
+            FileSystemPro.Get(path, new List<string>());
             Assert.IsTrue(FileSystemPro is Dev2FileSystemProvider);
         }
 
@@ -140,7 +140,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path);
+            Stream result = FileSystemPro.Get(path, new List<string>());
 
             int len = (int)result.Length;
             result.Close();
@@ -155,7 +155,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                FileSystemPro.Get(path);
+                FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
             catch(Exception)
@@ -169,7 +169,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncfile1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path);
+            Stream result = FileSystemPro.Get(path, new List<string>());
 
             int len = (int)result.Length;
             result.Close();
@@ -184,7 +184,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                FileSystemPro.Get(path);
+                FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
             catch(Exception)
@@ -202,7 +202,7 @@ namespace Dev2.Integration.Tests.Activities
 
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path);
+            Stream result = FileSystemPro.Get(path, new List<string>());
 
             int len = (int)result.Length;
             result.Close();
@@ -219,7 +219,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                FileSystemPro.Get(path);
+                FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
             catch(Exception)
@@ -241,7 +241,7 @@ namespace Dev2.Integration.Tests.Activities
 
             try
             {
-                Stream result = FileSystemPro.Get(path);
+                Stream result = FileSystemPro.Get(path, new List<string>());
 
                 result.Close();
 
@@ -269,8 +269,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
             File.Delete(tmp);
 
@@ -285,8 +285,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
             File.Delete(tmp);
 
@@ -302,8 +302,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
 
             File.Delete(tmp);
@@ -321,8 +321,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
 
             File.Delete(tmp);
@@ -338,8 +338,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(uncfile1, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
             File.Delete(uncfile1);
 
@@ -354,8 +354,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             File.Delete(tmp);
 
             Assert.IsTrue(len == -1);
@@ -370,8 +370,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             File.Delete(tmp);
 
             Assert.IsTrue(len > 0);
@@ -387,8 +387,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            Stream stream = FileSystemPro.Get(src);
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            Stream stream = FileSystemPro.Get(src, new List<string>());
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             File.Delete(tmp);
 
             Assert.IsTrue(len > 0);
@@ -403,7 +403,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
-            int len = FileSystemPro.Put(stream, dst, opTO, null);
+            int len = FileSystemPro.Put(stream, dst, opTO, null, new List<string>());
             stream.Close();
 
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp);
@@ -419,7 +419,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
-            int len = FileSystemPro.Put(stream, dst, opTO, null);
+            int len = FileSystemPro.Put(stream, dst, opTO, null, new List<string>());
             stream.Close();
 
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp);
@@ -438,7 +438,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp2, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
-            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory);
+            int len = FileSystemPro.Put(stream, dst, opTO, new FileInfo(src.Path).Directory, new List<string>());
             stream.Close();
 
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp);

@@ -26,6 +26,7 @@ namespace Dev2.Activities
 
         string _commandFileName;
         string _commandResult;
+        static string _fullPath;
         Process _process;
         NativeActivityContext _nativeActivityContext;
         ProcessPriorityClass _commandPriority = ProcessPriorityClass.Normal;
@@ -198,6 +199,8 @@ namespace Dev2.Activities
                     DispatchDebugState(_nativeActivityContext, StateType.Before);
                     DispatchDebugState(_nativeActivityContext, StateType.After);
                 }
+
+                File.Delete(_fullPath);
             }
         }
 
@@ -388,10 +391,10 @@ namespace Dev2.Activities
 
         static ProcessStartInfo ExecuteSystemCommand(string val)
         {
-            var fullPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".bat");
-            File.Create(fullPath).Close();
-            File.WriteAllText(fullPath, val);
-            var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + fullPath);
+            _fullPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".bat");
+            File.Create(_fullPath).Close();
+            File.WriteAllText(_fullPath, val);
+            var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + _fullPath);
             return psi;
         }
 
