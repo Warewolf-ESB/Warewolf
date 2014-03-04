@@ -264,7 +264,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 return null;
             }
-            return (from ManagementObject process in processes select process.Properties["ExecutablePath"].Value.ToString()).FirstOrDefault();
+            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
         }
 
         static void KillProcess(ManagementObjectCollection processes)
