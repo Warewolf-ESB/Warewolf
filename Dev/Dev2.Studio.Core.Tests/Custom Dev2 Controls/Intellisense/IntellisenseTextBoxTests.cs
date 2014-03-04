@@ -339,5 +339,28 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             //------------Assert Results-------------------------
             Assert.AreEqual("dd yyyy", textBox.Text);
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_InsertItem")]
+        public void IntellisenseTextBox_InsertItem_InsertDateTimePartsWithDifferentCase_InsertsCorrectly()
+        {
+            //------------Setup for test--------------------------            
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, "yyyy", "yyyy");
+            //------------Execute Test---------------------------
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.IsOpen = true;
+            textBox.Text = "dd YY";
+            textBox.CaretIndex = 5;
+            textBox.InsertItem(intellisenseProviderResult, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("dd yyyy", textBox.Text);
+        }
     }
 }

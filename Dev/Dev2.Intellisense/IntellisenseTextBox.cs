@@ -1420,6 +1420,7 @@ namespace Dev2.UI
             {
                 string currentText = Text;
 
+                int foundLength = 0;
                 if(isInsert)
                 {
                     if(currentProvider.HandlesResultInsertion)//Bug 8437
@@ -1448,7 +1449,7 @@ namespace Dev2.UI
                     else
                     {
                         int foundMinimum = -1;
-                        int foundLength = 0;
+
 
                         for(int i = index - 1; i >= 0; i--)
                         {
@@ -1465,7 +1466,8 @@ namespace Dev2.UI
 
                         if(foundMinimum != -1)
                         {
-                            appendText = appendText.Remove(0, foundLength);
+                            Text = currentText = currentText.Remove(foundMinimum);
+                            //appendText = appendText.Remove(0, foundLength);
                         }
                     }
                 }
@@ -1474,7 +1476,7 @@ namespace Dev2.UI
                 {
                     _suppressChangeOpen = true;
 
-                    if(currentText.Length == index)
+                    if(currentText.Length == index || foundLength > 0)
                     {
                         AppendText(appendText);
                         Select(Text.Length, 0);
@@ -1505,7 +1507,7 @@ namespace Dev2.UI
 
             if(e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
-                string appendText = null;
+                object appendText = null;
                 bool isInsert = false;
                 bool expand = false;
 
@@ -1525,12 +1527,17 @@ namespace Dev2.UI
                     if(_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
                     {
                         if(selectedItem is IDataListVerifyPart)
+                        {
                             appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
+                        }
+                        else if(_listBox.SelectedItem is IntellisenseProviderResult)
+                        {
+                            appendText = _listBox.SelectedItem as IntellisenseProviderResult;
+                        }
                         else
+                        {
                             appendText = selectedItem.ToString();
-
-                        isInsert = true;
-                        CloseDropDown(false);
+                        }
                         Focus();
                     }
                 }
