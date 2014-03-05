@@ -194,7 +194,8 @@ namespace Dev2.Activities.Debug
                         }
                     }
 
-                    if(complexExpressionAuditItems.Count(i => i.Expression.Equals(item.RawExpression)) < 2)
+                    var count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
+                    if(count < 2)
                     {
                         groupName = "";
                     }
