@@ -1466,7 +1466,8 @@ namespace Dev2.UI
 
                         if(foundMinimum != -1)
                         {
-                            Text = currentText = currentText.Remove(foundMinimum);
+                            index = foundMinimum;
+                            Text = currentText = currentText.Remove(foundMinimum, foundLength);
                             //appendText = appendText.Remove(0, foundLength);
                         }
                     }
@@ -1476,7 +1477,7 @@ namespace Dev2.UI
                 {
                     _suppressChangeOpen = true;
 
-                    if(currentText.Length == index || foundLength > 0)
+                    if(currentText.Length == index)
                     {
                         AppendText(appendText);
                         Select(Text.Length, 0);
@@ -1542,9 +1543,11 @@ namespace Dev2.UI
                     }
                 }
 
+                if(appendText != null && IsOpen)
+                {
+                    e.Handled = true;
+                }
                 InsertItem(appendText, isInsert);
-
-
 
                 if(e.Key != Key.Tab)
                 {

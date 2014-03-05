@@ -320,7 +320,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        public void IntellisenseTextBox_InsertItem_InsertDateTimePartsWithSpace_InsertsCorrectly()
+        public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithSpace_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
             Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
@@ -343,7 +343,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("IntellisenseTextBox_InsertItem")]
-        public void IntellisenseTextBox_InsertItem_InsertDateTimePartsWithDifferentCase_InsertsCorrectly()
+        public void IntellisenseTextBox_InsertItem_AppendDateTimePartsWithDifferentCase_InsertsCorrectly()
         {
             //------------Setup for test--------------------------            
             Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
@@ -361,6 +361,29 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.InsertItem(intellisenseProviderResult, false);
             //------------Assert Results-------------------------
             Assert.AreEqual("dd yyyy", textBox.Text);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("IntellisenseTextBox_InsertItem")]
+        public void IntellisenseTextBox_InsertItem_InsertDateTimePartsIn_InsertsCorrectly()
+        {
+            //------------Setup for test--------------------------            
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, "DW", "DW");
+            //------------Execute Test---------------------------
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.IsOpen = true;
+            textBox.Text = "d YY mm";
+            textBox.CaretIndex = 1;
+            textBox.InsertItem(intellisenseProviderResult, false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("DW YY mm", textBox.Text);
         }
     }
 }
