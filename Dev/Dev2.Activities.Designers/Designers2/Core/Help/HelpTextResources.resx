@@ -1756,4 +1756,21 @@ Leaving the Archive Password blank will result in no password being required to 
   <data name="DataSplitToolTipSkipBlankRows" xml:space="preserve">
     <value>Blank rows will be ignored</value>
   </data>
+  <data name="FindRecordsInFieldsToolTip" xml:space="preserve">
+    <value>[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindRecordsRequireAllFieldsToMatchHelpText" xml:space="preserve">
+    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
+  </data>
+  <data name="FindRecordsRequireAllFieldsToMatchToolTip" xml:space="preserve">
+    <value>Should all the fields match?</value>
+  </data>
+  <data name="FindRecordsRequireAllMatchesTrueHelpText" xml:space="preserve">
+    <value>Will only return rows that match all of the criteria if selected.</value>
+  </data>
+  <data name="FindRecordsRequireAllMatchesTrueToolTip" xml:space="preserve">
+    <value>Should each criteria be met?</value>
+  </data>
 </root>

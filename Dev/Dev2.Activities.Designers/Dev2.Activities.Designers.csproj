@@ -296,6 +296,9 @@
     <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesignerViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\FindRecordsMultipleCriteria\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -776,6 +779,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindRecordsMultipleCriteria\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

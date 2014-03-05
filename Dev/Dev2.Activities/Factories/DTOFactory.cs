@@ -2,8 +2,10 @@
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Helpers;
-
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DTOFactory
     {
@@ -57,7 +59,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, false, inserted)),
                 // ReSharper restore ImplicitlyCapturedClosure
                 // ReSharper disable ImplicitlyCapturedClosure
-            TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, false, inserted)),
+            TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),
                 // ReSharper restore ImplicitlyCapturedClosure
                 // ReSharper disable ImplicitlyCapturedClosure
             TypeSwitch.Default(() => toReturn = null));

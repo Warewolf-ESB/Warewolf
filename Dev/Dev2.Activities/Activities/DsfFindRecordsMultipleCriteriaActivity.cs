@@ -1,4 +1,10 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
@@ -11,12 +17,6 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -97,6 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var executionID = dataObject.DataListID;
 
             InitializeDebug(dataObject);
+            int iterationIndex;
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',');
@@ -107,13 +108,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 allErrors.MergeErrors(errorResultTO);
                 IEnumerable<string> results = new List<string>();
+                IEnumerable<string> resultsDuringSearch;
                 var concatRes = string.Empty;
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = dataObject.IsDebugMode();
-                var iterationIndex = 0;
                 bool isFirstIteration = true;
                 for(var i = 0; i < ResultsCollection.Count; i++)
                 {
+                    resultsDuringSearch = new List<string>();
+                    var currenSearchResults = new List<string>();
                     IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IBinaryDataListEntry binaryDataListEntrySearchCrit = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].SearchCriteria, false, out errorResultTO);
@@ -146,32 +148,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         continue;
                     }
+                    // ReSharper disable PossibleMultipleEnumeration
                     while(itrCollection.HasMoreData())
                     {
                         var currentResults = results as IList<string> ?? results.ToList();
+
                         var splitOn = new[] { "," };
                         var fieldsToSearch = FieldsToSearch.Split(splitOn, StringSplitOptions.RemoveEmptyEntries);
 
                         SearchTO searchTO;
-                        IList<string> iterationResults = new List<string>();
 
                         if(fieldsToSearch.Length > 0)
                         {
-
+                            bool isFirstFieldIteration = true;
                             foreach(var field in fieldsToSearch)
                             {
+
+                                IList<string> iterationResults = new List<string>();
                                 searchTO = DataListFactory.CreateSearchTO(field, searchType,
                                                                           itrCollection.FetchNextRow(searchCritItr)
                                                                                        .TheValue,
                                                                           idx.ToString(CultureInfo.InvariantCulture),
                                                                           Result, MatchCase,
-                                                                          RequireAllFieldsToMatch,
+                                                                          false,
                                                                           itrCollection.FetchNextRow(fromItr).TheValue,
                                                                           itrCollection.FetchNextRow(toItr).TheValue);
                                 ValidateRequiredFields(searchTO, out errorResultTO);
                                 allErrors.MergeErrors(errorResultTO);
-                                (RecordsetInterrogator.FindRecords(toSearchList, searchTO,
-                                                                                     out errorResultTO)).ToList().ForEach(it => iterationResults.Add(it));
+                                (RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errorResultTO)).ToList().ForEach(it => iterationResults.Add(it));
+
+                                if(RequireAllFieldsToMatch)
+                                {
+                                    resultsDuringSearch = isFirstFieldIteration ? iterationResults : currenSearchResults.Intersect(iterationResults);
+                                    currenSearchResults = resultsDuringSearch.ToList();
+                                }
+                                else
+                                {
+                                    resultsDuringSearch = currenSearchResults.Union(iterationResults);
+                                    if(RequireAllTrue)
+                                    {
+                                        currenSearchResults = new List<string>();
+                                    }
+                                    else
+                                    {
+                                        currenSearchResults = resultsDuringSearch.ToList();
+                                    }
+                                }
+                                isFirstFieldIteration = false;
 
                             }
                         }
@@ -184,8 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             ValidateRequiredFields(searchTO, out errorResultTO);
                             allErrors.MergeErrors(errorResultTO);
-                            iterationResults = RecordsetInterrogator.FindRecords(toSearchList, searchTO,
-                                                                                     out errorResultTO);
+                            resultsDuringSearch = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errorResultTO);
 
                         }
 
@@ -193,11 +215,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         if(RequireAllTrue)
                         {
-                            results = isFirstIteration ? iterationResults : currentResults.Intersect(iterationResults);
+                            results = isFirstIteration ? resultsDuringSearch : currentResults.Intersect(resultsDuringSearch);
                         }
                         else
                         {
-                            results = currentResults.Union(iterationResults);
+                            results = currentResults.Union(resultsDuringSearch);
                         }
                         isFirstIteration = false;
                     }
@@ -206,7 +228,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var regions = DataListCleaningUtils.SplitIntoRegions(Result);
                 foreach(var region in regions)
                 {
+
                     var allResults = results as IList<string> ?? results.ToList();
+                    // ReSharper restore PossibleMultipleEnumeration
                     if(allResults.Count == 0)
                     {
                         allResults.Add("-1");
@@ -266,7 +290,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        var iterationIndex = 0;
+                        iterationIndex = 0;
                         var regions = DataListCleaningUtils.SplitIntoRegions(Result);
                         foreach(var region in regions)
                         {

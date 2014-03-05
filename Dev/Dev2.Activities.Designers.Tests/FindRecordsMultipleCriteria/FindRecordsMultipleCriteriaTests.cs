@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
@@ -9,6 +10,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 {
     // OnSearchTypeChanged moved from FindRecordsTO tests
+    // ReSharper disable InconsistentNaming
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaTests
@@ -192,7 +194,118 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.ModelItemCollection);
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
-            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_ValidateThis")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_ValidateThis_FieldsToSearchIsNotEmptyAndResultNotEmpty_DoesNotHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("FieldsToSearch", "[[recset().field]]");
+            mi.SetProperty("Result", "[[res]]");
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(viewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_ValidateThis")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_ValidateThis_FieldsToSearchAndResultIsEmptyOrWhiteSpace_DoesHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("FieldsToSearch", " ");
+            mi.SetProperty("Result", " ");
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.Errors.Count);
+            StringAssert.Contains(viewModel.Errors[0].Message, "'In Field(s)' cannot be empty or only white space");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Result' cannot be empty or only white space");
+        }
+
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfTO()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfFindRecordsMultipleCriteriaActivity());
+            mi.SetProperty("DisplayName", "Find");
+            mi.SetProperty("FieldsToSearch", "a,b");
+            mi.SetProperty("Result", "[[res]]");
+
+            var dto1 = new FindRecordsTO("", "Starts With", 0);
+            var dto2 = new FindRecordsTO("", "Ends With", 1);
+            var dto3 = new FindRecordsTO("", "Doesn't Start With", 2);
+            var dto4 = new FindRecordsTO("", "Doesn't End With", 3);
+            var dto5 = new FindRecordsTO("", "Is Between", 4);
+            var dto6 = new FindRecordsTO("", "Is Not Between", 5);
+
+            // ReSharper disable PossibleNullReferenceException
+            var miCollection = mi.Properties["ResultsCollection"].Collection;
+            var dtoModelItem1 = miCollection.Add(dto1);
+            var dtoModelItem2 = miCollection.Add(dto2);
+            var dtoModelItem3 = miCollection.Add(dto3);
+            var dtoModelItem4 = miCollection.Add(dto4);
+            var dtoModelItem5 = miCollection.Add(dto5);
+            var dtoModelItem6 = miCollection.Add(dto6);
+            // ReSharper restore PossibleNullReferenceException
+
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(8, viewModel.Errors.Count);
+
+            StringAssert.Contains(viewModel.Errors[0].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem1, viewModel.Errors[0].Do, "IsSearchCriteriaFocused");
+
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem2, viewModel.Errors[1].Do, "IsSearchCriteriaFocused");
+
+            StringAssert.Contains(viewModel.Errors[2].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem3, viewModel.Errors[2].Do, "IsSearchCriteriaFocused");
+
+            StringAssert.Contains(viewModel.Errors[3].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem4, viewModel.Errors[3].Do, "IsSearchCriteriaFocused");
+
+            StringAssert.Contains(viewModel.Errors[4].Message, "'From' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[4].Do, "IsFromFocused");
+
+            StringAssert.Contains(viewModel.Errors[5].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[5].Do, "IsToFocused");
+
+            StringAssert.Contains(viewModel.Errors[6].Message, "'From' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[6].Do, "IsFromFocused");
+
+            StringAssert.Contains(viewModel.Errors[7].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsToFocused");
+
+        }
+
+        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        {
+            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            doError.Invoke();
+            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
         }
 
 

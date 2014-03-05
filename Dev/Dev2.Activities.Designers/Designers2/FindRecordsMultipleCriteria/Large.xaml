@@ -1,4 +1,4 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.FindRecordsMultipleCriteria.Small"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.FindRecordsMultipleCriteria.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,93 +6,124 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-                               Width="290"
-                               MaxWidth="290"
+                               xmlns:findRecordsMultipleCriteria="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
+                               Width="350"
+                               MinWidth="350"
+                               MinHeight="350"
+                               Height="350"
+                               MaxWidth="Infinity"
+                               MaxHeight="Infinity"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="230"
-                               d:DataContext="{d:DesignInstance local:FindRecordsMultipleCriteriaDesignerViewModel}">
+                               d:DesignWidth="280"
+                               d:DataContext="{d:DesignInstance findRecordsMultipleCriteria:FindRecordsMultipleCriteriaDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
 
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,9,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}">
+        </core:ActivityDesignerButton>
+    </core:ActivityDesignerTemplate.RightButtons>
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>       
 
-        <Label Grid.Column="0"
-               Grid.Row="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="In Field(s)" />
-        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Grid.Row="0"
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               Content="In Field(s)"
+               Style="{StaticResource ActivityMapppingLabelStyle}" />
+        <ui:IntellisenseTextBox Grid.Row="0"
+                                Grid.Column="1"
+                                x:Name="InitialFocusElement"
                                 AllowMultilinePaste="True"
-                                Width="142"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
                                 MaxHeight="52"
                                 TextWrapping="Wrap"
+                                MinHeight="37"
                                 VerticalAlignment="Top"
+                                VerticalContentAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
                                 DefaultText="[[Recordset().Field]]"
-                                FilterType="RecordsetFields"
                                 Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                IsUndoEnabled="True"
-                                Margin="0,2"
-                                HorizontalAlignment="Right"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
+                                ToolTip="{x:Static help:HelpTextResources.FindRecordsInFieldsToolTip}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsFieldsToSearchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearchtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="FieldsToSearch"
-                                     SourcePropertyValue="{Binding ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.FieldsToSearch"
+                                     SourcePropertyValue="{Binding  ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                               Grid.Row="1"
+        <controls:Dev2DataGrid Grid.Row="1"
                                Grid.Column="0"
                                Grid.ColumnSpan="2"
+                               x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource SpacedActivityDataGridStyle}"
-                               MinHeight="56">
-
-            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Margin="0,3">
+            <i:Interaction.Behaviors>
+                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
+                        <sys:String>[[Recordset().F1]]</sys:String>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                        <sys:Int32>0</sys:Int32>
+                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors2:DataGridWatermarkModifier>
+            </i:Interaction.Behaviors>
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}"
-                                        IsReadOnly="True">
+                                        Header="#"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        IsReadOnly="True"
+                                        d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Label Content="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                                              Converter={converters:RowToIndexConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
+                <DataGridTemplateColumn Width="150"
+                                        Header="MatchType"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -127,6 +158,8 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
+                                        Header="Match"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:FindRecordsTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -143,11 +176,12 @@
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
                                                         TextWrapping="Wrap"
-                                                       AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="52"
+                                                        AllowMultilinePaste="True"
+                                                        AcceptsReturn="True"
+                                                        AllowUserInsertLine="True"
+                                                        MaxHeight="52"
                                                         Padding="3"
+                                                        attachedProperties:FocusSetter.IsFocused="{Binding IsSearchCriteriaFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
@@ -171,15 +205,15 @@
 
                                 <ui:IntellisenseTextBox DefaultText="From"
                                                         FilterType="AllButRecordsets"
-                                                        Grid.Column="0"                                                        
+                                                        Grid.Column="0"
                                                         AllowUserCalculateMode="False"
-                                                        AllowUserInsertLine="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
                                                         TextWrapping="NoWrap"
                                                         AcceptsReturn="False"
                                                         MaxHeight="52"
                                                         Padding="3"
+                                                        attachedProperties:FocusSetter.IsFocused="{Binding IsFromFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
@@ -202,7 +236,7 @@
 
                                 <ui:IntellisenseTextBox DefaultText="To"
                                                         FilterType="AllButRecordsets"
-                                                        Grid.Column="1"                                                        
+                                                        Grid.Column="1"
                                                         AllowUserCalculateMode="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                         VerticalScrollBarVisibility="Hidden"
@@ -211,6 +245,7 @@
                                                         MaxHeight="52"
                                                         Margin="2,0,0,0"
                                                         Padding="3"
+                                                        attachedProperties:FocusSetter.IsFocused="{Binding IsToFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
@@ -239,19 +274,45 @@
 
         </controls:Dev2DataGrid>
 
-        <Label Grid.Row="2"
+        <CheckBox Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Content="Require All Matches To Be True"
+                  IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static help:HelpTextResources.FindRecordsRequireAllMatchesTrueToolTip}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsRequireAllMatchesTrueHelpText}"
+                                 DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+
+        <CheckBox Grid.Row="3"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Content="Requires All Fields To Match"
+                  IsChecked="{Binding ModelItem.RequireAllFieldsToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static help:HelpTextResources.FindRecordsRequireAllFieldsToMatchToolTip}"
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllFieldsToMatch_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsRequireAllFieldsToMatchHelpText}"
+                                 DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+
+        <Label Grid.Row="4"
                Grid.Column="0"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
-        <ui:IntellisenseTextBox Grid.Row="2"
+
+        <ui:IntellisenseTextBox Grid.Row="4"
                                 Grid.Column="1"
-                                Width="115"
                                 Margin="0,2,0,2"
-                                HorizontalAlignment="Right"
                                 DefaultText="[[RowWithResult]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"
@@ -262,5 +323,9 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
+
+        <errors:OnError Grid.Row="5"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

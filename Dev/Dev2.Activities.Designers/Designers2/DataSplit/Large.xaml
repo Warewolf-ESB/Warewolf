@@ -21,7 +21,7 @@
                                MinHeight="350"
                                Height="350"
                                MaxWidth="Infinity"
-                               MaxHeight="Infinity"                               
+                               MaxHeight="Infinity"
                                Padding="10,7,10,10"
                                mc:Ignorable="d"
                                d:DesignWidth="280"
@@ -31,7 +31,7 @@
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
-   
+
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -41,13 +41,13 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}">
         </core:ActivityDesignerButton>
     </core:ActivityDesignerTemplate.RightButtons>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -64,15 +64,14 @@
                Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ui:IntellisenseTextBox Grid.Row="0"
                                 Grid.Column="1"
-                                x:Name="InitialFocusElement"  
+                                x:Name="InitialFocusElement"
                                 AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="80"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
                                 TextWrapping="Wrap"
-                                Height="37"
                                 MinHeight="37"
-                                VerticalAlignment="Top"                                                           
+                                VerticalAlignment="Top"
                                 VerticalContentAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
                                 DefaultText="Data to split"
@@ -88,11 +87,11 @@
                                      SourcePropertyName="ModelItem.SourceString"
                                      SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
-            </i:Interaction.Behaviors>            
-<!--            <ui:IntellisenseTextBox.IntellisenseProvider>-->
-<!--                ~1~Disable variable validation@1@-->
-<!--                <provider:BlankIntellisenseProvider />-->
-<!--            </ui:IntellisenseTextBox.IntellisenseProvider>-->
+            </i:Interaction.Behaviors>
+            <!--            <ui:IntellisenseTextBox.IntellisenseProvider>-->
+            <!--                ~1~Disable variable validation@1@-->
+            <!--                <provider:BlankIntellisenseProvider />-->
+            <!--            </ui:IntellisenseTextBox.IntellisenseProvider>-->
         </ui:IntellisenseTextBox>
 
         <Label Grid.Row="1"
@@ -105,7 +104,7 @@
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
 
-            <RadioButton Content="Forward"    
+            <RadioButton Content="Forward"
                          IsChecked="True"
                          GroupName="{Binding ProcessDirectionGroup, Mode=OneTime}"
                          VerticalAlignment="Center"
@@ -114,7 +113,7 @@
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpProcessDirection}"
                                      DataContext="{Binding}" />
-                </i:Interaction.Behaviors>                
+                </i:Interaction.Behaviors>
             </RadioButton>
 
             <RadioButton Content="Backward"
@@ -129,9 +128,9 @@
                                      DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
-           
+
         </StackPanel>
-        
+
         <CheckBox Grid.Row="2"
                   Grid.Column="1"
                   Content="Skip blank rows"
@@ -141,9 +140,9 @@
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpSkipBlankRows}"
                                  DataContext="{Binding}" />
-             </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>
         </CheckBox>
-        
+
         <controls:Dev2DataGrid Grid.Row="3"
                                Grid.Column="0"
                                Grid.ColumnSpan="2"
@@ -151,7 +150,7 @@
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
                                Margin="0,3">
-             <i:Interaction.Behaviors>
+            <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recordset().F1]]</sys:String>
@@ -171,14 +170,14 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                             <Label Content="{Binding ModelItem, 
+                            <Label Content="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>                           
-                         </DataTemplate>
+                                              Converter={converters:RowToIndexConverter}}" />
+                        </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"                                       
+                <DataGridTemplateColumn Width="*"
                                         Header="Results"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
@@ -210,23 +209,23 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="75"      
+                                        MinWidth="75"
                                         Header="With"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                                <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
-                                          Margin="0"                                          
-                                          ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                          SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SourceUpdated">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.SplitTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                                                   CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <i:Interaction.Behaviors>
+                            <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
+                                      Margin="0"
+                                      ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                      SelectedValue="{Binding Path=SplitType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SourceUpdated">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.SplitTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                                               CommandParameter="{Binding SelectedIndex, RelativeSource={RelativeSource AncestorType=controls:Dev2DataGrid}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpWithType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
@@ -245,9 +244,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-            
+
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="40"      
+                                        MinWidth="40"
                                         Header="Using"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
@@ -278,9 +277,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-             
+
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="45"      
+                                        MinWidth="45"
                                         Header="Include"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
@@ -292,7 +291,7 @@
                                        ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipInclude}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpInclude}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"  />
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Include_Row{1}_AutoID">
@@ -301,19 +300,19 @@
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
-                            </CheckBox>                         
+                            </CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-              
+
                 <DataGridTemplateColumn Width="SizeToCells"
-                                        MinWidth="50"      
+                                        MinWidth="50"
                                         Header="Escape"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox WrapInBrackets="False"                                  
+                            <ui:IntellisenseTextBox WrapInBrackets="False"
                                                     IsEnabled="{Binding IsEscapeCharEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipEscape}"
@@ -341,9 +340,9 @@
 
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
-               
+
         <errors:OnError Grid.Row="4"
                         Grid.Column="0"
-                        Grid.ColumnSpan="2"/>
+                        Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

@@ -20,7 +20,7 @@ namespace Dev2.Studio.UI.Tests.Enums
         [Description("DsfDeleteRecordActivity")]
         [ToolboxName("Delete")]
         Delete,
-        [Description("DsfFindRecordsMultipleActivity")]
+        [Description("DsfFindRecordsMultipleCriteriaActivity")]
         [ToolboxName("Find")]
         Find,
         [Description("DsfSortRecordsActivity")]

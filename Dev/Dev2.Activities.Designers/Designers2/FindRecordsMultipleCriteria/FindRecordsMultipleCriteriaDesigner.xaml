@@ -1,32 +1,43 @@
 ﻿<core:ActivityCollectionDesigner x:TypeArguments="local:FindRecordsMultipleCriteriaDesignerViewModel"
-                       x:Class="Dev2.Activities.Designers2.FindRecordsMultipleCriteria.FindRecordsMultipleCriteriaDesigner"
-                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
-                       xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                       xmlns:local="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
-                       mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance local:FindRecordsMultipleCriteriaDesignerViewModel}"
-                       Style="{DynamicResource ContentViewStyle}">
+                                 x:Class="Dev2.Activities.Designers2.FindRecordsMultipleCriteria.FindRecordsMultipleCriteriaDesigner"
+                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                 xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+                                 xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                                 xmlns:local="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
+                                 mc:Ignorable="d"
+                                 d:DataContext="{d:DesignInstance local:FindRecordsMultipleCriteriaDesignerViewModel}"
+                                 Style="{DynamicResource ContentViewStyle}">
 
     <sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
-                <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolFindRecords-32}"/>
+                <ImageDrawing Rect="0, 0, 16, 16"
+                              ImageSource="{StaticResource ToolFindRecords-32}" />
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
-   
+
     <sap:ActivityDesigner.Resources>
-        <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
-        
+        <local:Small x:Key="Small"
+                     AutomationProperties.AutomationId="SmallViewContent" />
+        <local:Large x:Key="Large"
+                     AutomationProperties.AutomationId="LargeViewContent" />
+
         <Style x:Key="ContentViewStyle"
                BasedOn="{StaticResource ActivityDesignerStyle}"
                TargetType="{x:Type sap:ActivityDesigner}">
             <Setter Property="Content"
                     Value="{DynamicResource Small}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}"
+                             Value="true">
+                    <Setter Property="Content"
+                            Value="{DynamicResource Large}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </sap:ActivityDesigner.Resources>
 

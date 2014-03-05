@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Dev2.Interfaces;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
-    public class FindRecordsTO : IDev2TOFn, IPerformsValidation
+    public class FindRecordsTO : ValidatedObject, IDev2TOFn
     {
         int _indexNum;
         string _searchType;
         bool _isSearchCriteriaEnabled;
-
+        bool _isSearchCriteriaFocused;
         string _searchCriteria;
         string _from;
         string _to;
         bool _isSearchCriteriaVisible;
-        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
-        
+        bool _isFromFocused;
+        bool _isToFocused;
 
         public FindRecordsTO()
             : this("Match On", "Equal", 0)
@@ -29,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
         public IList<string> WhereOptionList { get; set; }
-        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool include = false, bool inserted = false,string from = "",string to = "")
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "")
         {
             Inserted = inserted;
             SearchCriteria = searchCriteria;
@@ -51,10 +51,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _from = value;
-                OnPropertyChanged("From");
+                OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
             }
         }
+
+        public bool IsFromFocused { get { return _isFromFocused; } set { OnPropertyChanged(ref _isFromFocused, value); } }
 
         [FindMissing]
         public string To
@@ -66,10 +68,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _to = value;
-                OnPropertyChanged("To");
+                OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
             }
         }
+
+        public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
 
         [FindMissing]
         public string SearchCriteria
@@ -81,10 +85,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _searchCriteria = value;
-                OnPropertyChanged("SearchCriteria");
+                OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
             }
         }
+
+        public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
 
         public string SearchType
         {
@@ -94,16 +100,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
-                OnPropertyChanged("SearchType");
-                RaiseCanAddRemoveChanged();
+                if(value != null)
+                {
+                    _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
+                    OnPropertyChanged();
+                    RaiseCanAddRemoveChanged();
+                }
             }
         }
 
         void RaiseCanAddRemoveChanged()
         {
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public bool IsSearchCriteriaEnabled
@@ -115,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _isSearchCriteriaEnabled = value;
-                OnPropertyChanged("IsSearchCriteriaEnabled");
+                OnPropertyChanged();
             }
         }
 
@@ -128,11 +139,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _isSearchCriteriaVisible = value;
-                OnPropertyChanged("IsSearchCriteriaVisible");
+                OnPropertyChanged();
             }
         }
-
-        #region Implementation of INotifyPropertyChanged
 
         public int IndexNumber
         {
@@ -143,17 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _indexNum = value;
-                OnPropertyChanged("IndexNumber");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                OnPropertyChanged();
             }
         }
 
@@ -168,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            return !string.IsNullOrEmpty(SearchType);            
+            return !string.IsNullOrEmpty(SearchType);
         }
 
         public void ClearRow()
@@ -179,56 +178,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Inserted { get; set; }
 
-        #endregion
-
-        #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        /// Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        /// The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] { get { return null; } }
-
-        /// <summary>
-        /// Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        /// An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        public string Error { get; private set; }
-
-        #endregion
-
-        #region Implementation of IPerformsValidation
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        public bool IsEmpty()
         {
-            get
+            return string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(SearchCriteria);
+        }
+
+        public override IRuleSet GetRuleSet(string propertyName)
+        {
+            RuleSet ruleSet = new RuleSet();
+            if(IsEmpty())
             {
-                return _errors;
+                return ruleSet;
             }
-            set
+            switch(propertyName)
             {
-                _errors = value;
-                OnPropertyChanged("Errors");
+                case "SearchCriteria":
+                    if(SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
+                    {
+                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    }
+                    break;
+                case "From":
+                    if(SearchType == "Is Between" || SearchType == "Is Not Between")
+                    {
+                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    }
+                    break;
+                case "To":
+                    if(SearchType == "Is Between" || SearchType == "Is Not Between")
+                    {
+                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    }
+                    break;
             }
-        }
 
-        public bool Validate(string propertyName, IRuleSet ruleSet)
-        {
-            // TODO: Implement Validate(string propertyName, RuleSet ruleSet) - see ActivityDTO
-            return true;
+            return ruleSet;
         }
-
-        public bool Validate(string propertyName)
-        {
-            // TODO: Implement Validate(string propertyName) - see ActivityDTO
-            return Validate(propertyName, new RuleSet());
-        }
-
-        #endregion
     }
 }

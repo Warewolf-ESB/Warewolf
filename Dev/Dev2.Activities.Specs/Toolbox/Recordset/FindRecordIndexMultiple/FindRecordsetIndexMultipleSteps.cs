@@ -90,22 +90,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"the fields to search is")]
         public void GivenTheFieldsToSearchIs(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
-            var rs = table.Header.ToArray()[0];
-            var field = table.Header.ToArray()[1];
-
-            if(tableRows.Count == 0)
-            {
-                List<Tuple<string, string>> emptyRecordset;
-
-                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
-                {
-                    emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
-                }
-                emptyRecordset.Add(new Tuple<string, string>(rs, field));
-            }
+            var fieldToSearch = table.Rows.Aggregate("", (current, tableRow) => current + (tableRow["field"] + ","));
+            fieldToSearch = fieldToSearch.TrimEnd(',');
+            ScenarioContext.Current.Add("fieldsToSearch", fieldToSearch);
         }
 
         [Given(@"field to search is ""(.*)""")]
@@ -178,7 +165,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         {
             var row = GetRowCount();
             var searchList = GetSearchList();
-            searchList.Add(new FindRecordsTO(string.Empty, searchType, row, false, false, from, to));
+            searchList.Add(new FindRecordsTO(string.Empty, searchType, row, false, from, to));
         }
 
         private List<FindRecordsTO> GetSearchList()
@@ -197,14 +184,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"when match all search criteria is ""(.*)""")]
         public void GivenWhenMatchAllSearchCriteriaIs(bool requireAllTrue)
         {
-            ScenarioContext.Current.Pending();
             ScenarioContext.Current.Add("requireAllTrue", requireAllTrue);
         }
 
         [Given(@"when requires all fields to match is ""(.*)""")]
         public void GivenWhenRequiresAllFieldsToMatchIs(bool requireAllFieldsToMatch)
         {
-            ScenarioContext.Current.Pending();
             ScenarioContext.Current.Add("requireAllFieldsToMatch", requireAllFieldsToMatch);
         }
 
