@@ -467,6 +467,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.requestMethods = ko.observableArray(["GET", "POST", "PUT", "DELETE", "TRACE"]);
 
     self.sources = ko.observableArray();
+    
     self.upsertSources = function (result) {
         var id = result.ResourceID.toLowerCase();
         var name = result.ResourceName.toLowerCase();
@@ -498,6 +499,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.data.source.subscribe(function (newValue) {
         // our sources is a list of Resource's and NOT WebSource's 
         // so we have to load it
+       
         if (newValue && !newValue.Address) {
             self.loadSource(newValue.ResourceID);
             return;
@@ -508,6 +510,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.onSourceChanged = function (newValue) {
         self.hasSourceSelectionChanged = true;
         try {
+           
             if (!initLoad) {
                 self.data.requestBody("");
                 self.data.requestResponse("");
@@ -519,8 +522,15 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.sourceAddress(newValue ? newValue.Address : "");
             } else {
                 initLoad = false;
+                
                 // DO NOT CALL - Will overwrite exiting value on edit ;)
                 //self.data.requestUrl(newValue.DefaultQuery); // triggers a call updateVariables()
+                
+                // UPDATE : Its fine if we are not in edit mode ;)
+                if(!self.isEditing) {
+                    self.data.requestUrl(newValue.DefaultQuery);
+                }
+                
                 self.sourceAddress(newValue ? newValue.Address : "");
             }
 
@@ -764,9 +774,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.data.source().AuthenticationType = result.AuthenticationType;
             self.data.source().UserName = result.UserName;
             self.data.source().Password = result.Password;
-
+           
             self.upsertSources(result);
             self.onSourceChanged(result);
+            
             if (self.onLoadSourceCompleted != null) {
                 self.onLoadSourceCompleted();
             }
