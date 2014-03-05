@@ -116,6 +116,7 @@
     <Compile Include="AllToolsUITests.cs" />
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\ToolType.cs" />
+    <Compile Include="Tests\Activities\DsfXPathActivityTests.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
     <Compile Include="Tests\Activities\DsfFindRecordsActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfMultiAssignActivityTests.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
     <Compile Include="Enums\Dev2MappingType.cs" />
     <Compile Include="Tests\VariableList\VariableListUITests.cs" />
+    <Compile Include="UIMaps\Activities\DsfXpathUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfFindRecordsUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfMultiAssignUiMap.cs" />
     <Compile Include="Utils\MouseCommands.cs" />

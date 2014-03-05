@@ -2,8 +2,9 @@
 using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Helpers;
-// ReSharper disable InconsistentNaming
+
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
@@ -56,7 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                     initializeWith, index, inserted)),
                 // ReSharper disable ImplicitlyCapturedClosure
-            TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, false, inserted)),
+            TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index,  inserted)),
                 // ReSharper restore ImplicitlyCapturedClosure
                 // ReSharper disable ImplicitlyCapturedClosure
             TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),

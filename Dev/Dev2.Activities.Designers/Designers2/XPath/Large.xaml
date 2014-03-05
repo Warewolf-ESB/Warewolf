@@ -1,60 +1,83 @@
-﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.XPath.Small"
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.XPath.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:system="clr-namespace:System;assembly=mscorlib"
+                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.XPath"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                               xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-                               Width="200"
-                               MaxWidth="200"
-                               Padding="7"
+                               xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:xPath="clr-namespace:Dev2.Activities.Designers2.XPath"
+    xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+    Width="350"
+                               MinWidth="350"
+                               MinHeight="350"
+                               Height="350"
+                               MaxWidth="Infinity"
+                               MaxHeight="Infinity"                               
+                               Padding="10,7,10,10"
                                mc:Ignorable="d"
-                               d:DesignWidth="200"
-                               d:DataContext="{d:DesignInstance local:XPathDesignerViewModel}">
+                               d:DesignHeight="300"
+                               d:DesignWidth="300"
+                               d:DataContext="{d:DesignInstance xPath:XPathDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
 
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}">
+        </core:ActivityDesignerButton>
+    </core:ActivityDesignerTemplate.RightButtons>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Label  Content="XML"
                     Grid.Row="0"
                     Grid.Column="0"
+                    VerticalAlignment="Top"
+                    Margin="0,5,5,0"
                     Style="{StaticResource ActivityLabelStyle}" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                     Grid.Column="1"
                                     Grid.Row="0"
                                     AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                MaxHeight="52"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="True"
+                                    MaxHeight="80"
                                     TextWrapping="Wrap"
-                                    MinWidth="86"
-                                    Width="86"
-                                    HorizontalAlignment="Right"
+                                    Height="37"
+                                    MinHeight="37"
+                                    VerticalAlignment="Top"                                                           
+                                    VerticalContentAlignment="Top"
+                                    VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipXML}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
@@ -68,38 +91,43 @@
             </ui:IntellisenseTextBox>
         </Grid>
         
-        <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                               Grid.Row="1"
-                               Grid.Column="0"
-                               ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource SpacedActivityDataGridStyle}"
-                               MinHeight="56">
-            <i:Interaction.Behaviors>
-                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <sys:String>[[Recset().F1]]</sys:String>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                        <sys:Int32>0</sys:Int32>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors2:DataGridWatermarkModifier>
+
+        <controls:Dev2DataGrid x:Name="LargeDataGrid"
+                               Grid.Row="1"      
+                               ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
+                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               CanUserResizeRows="True">
+
+            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+
+              <i:Interaction.Behaviors>
+                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
+                    <behaviors:DataGridWatermarkModifier.WatermarkText>
+                        <system:String>[[Recset().F1]]</system:String>
+                    </behaviors:DataGridWatermarkModifier.WatermarkText>
+                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                        <system:Int32>0</system:Int32>
+                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
+                </behaviors:DataGridWatermarkModifier>
             </i:Interaction.Behaviors>
             
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}"
-                                    IsReadOnly="True">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding ModelItem, 
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="27"
+                                        d:DataContext="{d:DesignInstance Type=activities:XPathDTO}"
+                                        IsReadOnly="True"
+                                        Header="#">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                                              Converter={local:RowToIndexConverter}}"></Label>
+                            </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
+                <DataGridTemplateColumn Width="*"
+                                        Header="Results"
+                                        d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                             <ui:IntellisenseTextBox AllowUserInsertLine="False"
@@ -109,6 +137,7 @@
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipResult}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpResult}"
@@ -130,7 +159,8 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
+                <DataGridTemplateColumn Width="*"
+                                        Header="Xpath"
                                     d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -138,9 +168,10 @@
                                                     Padding="3"
                                                     Margin="0"
                                                     WrapInBrackets="False"
-                                                    DefaultText="XPath" 
+                                                    DefaultText="Xpath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipXPath}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsXpathVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
@@ -161,8 +192,12 @@
                         </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            
-        </DataGrid.Columns>
+                
+            </DataGrid.Columns>
         </controls:Dev2DataGrid>
+
+         <errors:OnError Grid.Column="0"
+                        Grid.Row="5"
+                        Grid.ColumnSpan="3" />
     </Grid>
 </core:ActivityDesignerTemplate>
