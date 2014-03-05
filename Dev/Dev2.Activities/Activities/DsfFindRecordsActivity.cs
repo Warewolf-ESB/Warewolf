@@ -232,8 +232,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -241,6 +241,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }

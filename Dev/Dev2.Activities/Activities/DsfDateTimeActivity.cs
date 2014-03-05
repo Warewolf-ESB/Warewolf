@@ -245,7 +245,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

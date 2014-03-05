@@ -239,7 +239,7 @@ namespace Dev2.Activities
                     compiler.Upsert(executionId, toUpsert, out errors);
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugOutputParams(Result, "Failure", executionId, indexToUpsertTo));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
                     }
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);

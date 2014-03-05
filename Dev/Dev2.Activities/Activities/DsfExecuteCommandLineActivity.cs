@@ -194,7 +194,7 @@ namespace Dev2.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugOutputParams(CommandResult, "", dlID, 1));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", CommandResult, ""));
                     }
                     DispatchDebugState(_nativeActivityContext, StateType.Before);
                     DispatchDebugState(_nativeActivityContext, StateType.After);

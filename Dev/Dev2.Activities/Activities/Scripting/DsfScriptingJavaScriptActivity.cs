@@ -137,14 +137,20 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
                 }
 
-                if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
+                    }
+
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
