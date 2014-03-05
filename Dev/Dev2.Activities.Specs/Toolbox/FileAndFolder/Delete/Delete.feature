@@ -16,7 +16,7 @@ Scenario Outline: Delete file at location
          | Input Path                  | Username   | Password |
          | <source> = <sourceLocation> | <username> | String   |
 	And the debug output as
-		| Result                 |
+		|                        |
 		| <resultVar> = <result> |
 	Examples: 
 	| Name       | source   | sourceLocation                                                         | username               | password | resultVar  | result  | errorOccured |

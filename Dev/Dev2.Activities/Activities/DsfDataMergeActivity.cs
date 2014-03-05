@@ -136,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         DebugItem debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(row.InputVariable, "Input", inputVariableExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(row.InputVariable, "", inputVariableExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
                         AddDebugItem(new DebugItemVariableParams(row.Padding, "Pad", paddingExpressionEntry, executionId), debugItem);
@@ -226,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         if(string.IsNullOrEmpty(Result))
                         {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
+                            AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
                         }
                         else
                         {

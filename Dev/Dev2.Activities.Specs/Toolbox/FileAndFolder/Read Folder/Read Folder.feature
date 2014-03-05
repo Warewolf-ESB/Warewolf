@@ -17,7 +17,7 @@ Scenario Outline: Read Folder file at location
          | Input Path                   | Read   | Username   | Password |
          | <source> = <sourceLocation> | <read> | <username> | String   |
 	And the debug output as
-		| Result                 |
+		|                        |
 		| <resultVar> = <result> |
     Examples: 
 	| Name        | source   | sourceLocation                                 | read            | username          | password | resultVar  | result | errorOccured |

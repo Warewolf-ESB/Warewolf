@@ -104,7 +104,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table2.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 19

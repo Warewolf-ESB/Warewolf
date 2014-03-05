@@ -13,7 +13,7 @@ Scenario: Enter a URL to download html
 	| URL                                                        | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
 	And the debug output as 
-	| Result                                           |
+	|                                                   |
 	| [[result]] = String |
 
 Scenario: Enter a badly formed URL
@@ -25,7 +25,7 @@ Scenario: Enter a badly formed URL
 	| URL             | Header |
 	| www.google.comx |        |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Enter a URL made up of text and variables with no header
@@ -39,7 +39,7 @@ Scenario: Enter a URL made up of text and variables with no header
 	| URL                                                                                  | Header |
 	| http://[[site]][[file]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html |        |
 	And the debug output as 
-	| Result                           |
+	|                                   |
 	| [[result]] = String |
 
 
@@ -55,7 +55,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	| URL                                                   | Header                                                         |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/json" |
 	And the debug output as 
-	| Result                           |
+	|                                   |
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
@@ -70,7 +70,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 	| URL                                                   | Header                                                        |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx | [[ContentType]]: [[Type]] = Content-Type: application/xml" |
 	And the debug output as 
-	| Result                               |
+	|                                       |
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a URL that returns json
@@ -82,7 +82,7 @@ Scenario: Enter a URL that returns json
 	| URL                                                        | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json |        |
 	And the debug output as 
-	| Result                           |
+	|                                   |
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL that returns xml
@@ -94,7 +94,7 @@ Scenario: Enter a URL that returns xml
 	| URL                                                       | Header |
 	| http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml |        |
 	And the debug output as 
-	| Result                               |
+	|                                       |
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a blank URL
@@ -106,7 +106,7 @@ Scenario: Enter a blank URL
 	| URL | Header |
 	| ""  |        |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Enter a URL that is a negative index recordset
@@ -118,5 +118,5 @@ Scenario: Enter a URL that is a negative index recordset
 	| URL               | Header |
 	| [[rec(-1).set]] = |        |
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |

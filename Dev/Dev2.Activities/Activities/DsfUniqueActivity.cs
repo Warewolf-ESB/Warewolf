@@ -279,7 +279,7 @@ namespace Dev2.Activities
                         foreach(var expression in targetExpressions)
                         {
                             IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
-                            AddDebugOutputItem(new DebugItemVariableParams(expression, "Result", entry, dlID));
+                            AddDebugOutputItem(new DebugItemVariableParams(expression, "", entry, dlID));
                         }
                     }
                     DispatchDebugState(context, StateType.Before);

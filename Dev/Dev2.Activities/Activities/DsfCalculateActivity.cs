@@ -127,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
             var entry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            AddDebugOutputItem(new DebugItemVariableParams(expression , "Result", entry, executionId));
+            AddDebugOutputItem(new DebugItemVariableParams(expression , "", entry, executionId));
         }
 
         #endregion Private Methods

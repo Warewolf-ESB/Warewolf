@@ -23,7 +23,7 @@ Scenario: Delete last record in a recordset
 	| [[rs(2).row]] = 2 |
 	| [[rs(3).row]] = 3 |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Delete an invalid recordset (recordset with no fields declared)
@@ -40,7 +40,7 @@ Scenario: Delete an invalid recordset (recordset with no fields declared)
 	| Records  |
 	| [[GG()]] = |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 		
 Scenario: Delete the first record in a recordset 
@@ -61,7 +61,7 @@ Scenario: Delete the first record in a recordset
 	| Records       |
 	| [[rs(1)]] = 1 |
 	And the debug output as  
-	| Result               |
+	|                      |
 	| [[result]] = Success |	
 	
 Scenario: Delete a record using an index from a variable
@@ -83,7 +83,7 @@ Scenario: Delete a record using an index from a variable
 	| Records               |
 	| [[rs([[index]])]] = 6 |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Delete a record using a star notation
@@ -104,7 +104,7 @@ Scenario: Delete a record using a star notation
 	| [[rs(2).row]] = 2 |
 	| [[rs(3).row]] = 3 |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Delete a record using a negative integer -1
@@ -126,7 +126,7 @@ Scenario: Delete a record using a negative integer -1
 	| Records     |
 	| [[rs(-1)]]  = |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Delete a record that does not exist
@@ -148,7 +148,7 @@ Scenario: Delete a record that does not exist
 	| Records      |
 	| [[rs(5)]]  = |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Delete a record an empty recordset
@@ -164,7 +164,7 @@ Scenario: Delete a record an empty recordset
 	| Records          |
 	| [[rs(1).row]]  = |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Delete a scalar insted of a recordset
@@ -177,6 +177,6 @@ Scenario: Delete a scalar insted of a recordset
 	| Records    |
 	| [[var]]  = |
 	And the debug output as  
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 

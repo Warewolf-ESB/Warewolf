@@ -12,7 +12,7 @@ Scenario: Ensure that a variable evaluates to the value on the datalist
 	| Switch on   |
 	| [[A]] =  30 |
 	And the debug output as
-	| Result |
+	|         |
 	| 30     |
 
 Scenario: Ensure that a blank variable evaluates to blank
@@ -24,7 +24,7 @@ Scenario: Ensure that a blank variable evaluates to blank
 	| Switch on |
 	| [[A]] =   |
 	And the debug output as
-	| Result |
+	|         |
 	| " "    |
 
 Scenario: Ensure that a negative index throws an error	
@@ -35,6 +35,6 @@ Scenario: Ensure that a negative index throws an error
 	| Switch on                              |
 	| [[rec(-1).val]] = Moses Mabida Stadium |
 	And the debug output as
-	| Result               |
+	|                      |
 	| Moses Mabida Stadium |
 

@@ -104,7 +104,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "result",
+                        "",
                         "unique"});
             table2.AddRow(new string[] {
                         "rec().unique",
@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Result"});
+                        ""});
             table4.AddRow(new string[] {
                         "1",
                         "[[rec(1).unique]] = 10"});
@@ -243,7 +243,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Result"});
+                        ""});
             table8.AddRow(new string[] {
                         "1",
                         "[[rec(1).unique]] = 10"});
@@ -298,7 +298,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
-                        "Result"});
+                        ""});
             table12.AddRow(new string[] {
                         "",
                         "[[rec().unique]] ="});
@@ -362,7 +362,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
-                        "Result"});
+                        ""});
             table16.AddRow(new string[] {
                         "",
                         "[[rec().unique]] ="});
@@ -426,7 +426,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
-                        "Result"});
+                        ""});
             table20.AddRow(new string[] {
                         "",
                         "[[rec().unique]] ="});
@@ -495,7 +495,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
-                        "Result"});
+                        ""});
             table24.AddRow(new string[] {
                         "",
                         "[[rec().unique]] ="});
@@ -585,7 +585,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Result"});
+                        ""});
             table28.AddRow(new string[] {
                         "1",
                         "[[rec(1).unique]] = 1"});
@@ -656,7 +656,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
-                        "Result"});
+                        ""});
             table32.AddRow(new string[] {
                         "",
                         "[[rec().unique]] ="});
@@ -730,7 +730,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Result"});
+                        ""});
             table36.AddRow(new string[] {
                         "1",
                         "[[rec(1).unique]] = 1"});

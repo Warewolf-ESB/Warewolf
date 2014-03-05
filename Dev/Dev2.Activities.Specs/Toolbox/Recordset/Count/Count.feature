@@ -19,7 +19,7 @@ Scenario: Count a number of records in a recordset with 3 rows
 	| [[rs(2).row]] = 2 |
 	| [[rs(3).row]] = 3 |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 3 |
 
 
@@ -49,7 +49,7 @@ Scenario: Count a number of records in a recordset with 8 rows
 	| [[rs(7).row]] =  7 |
 	| [[rs(8).row]] =  8 |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 8 |
 
 Scenario: Count a number of records in a recordset with 0 rows
@@ -63,7 +63,7 @@ Scenario: Count a number of records in a recordset with 0 rows
 	| Recordset |
 	|           |
 	And the debug output as 
-	| Result         |
+	|                |
 	| [[result]] = 0 |
 
 	#Scenario: Count a number of records when two recordsets are defined.

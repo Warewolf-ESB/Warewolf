@@ -186,6 +186,7 @@
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
+    <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverter.cs" />
     <Compile Include="AppResources\Converters\StringToResourceConverter.cs" />

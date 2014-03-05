@@ -472,10 +472,10 @@
                         <DataTemplate x:Key="DebugGroupLineItemTemplate">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Variable}" Padding="2,0,0,0"
+                                    <TextBlock Text="{Binding Variable}" Padding="{Binding Variable, Converter={StaticResource PaddingThicknessConverter}}"
                                                Foreground="{StaticResource DebugItemVariableBrush}" />
-                                    <TextBlock Text="{Binding Operator}" Padding="2,0,0,0"/>
-                                    <TextBlock Text="{Binding Value}" Padding="2,0,0,0"
+                                    <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"/>
+                                    <TextBlock Text="{Binding Value}" Padding="{Binding Value, Converter={StaticResource PaddingThicknessConverter}}"
                                                Foreground="{StaticResource DebugItemValueBrush}" />
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
@@ -496,13 +496,13 @@
                         <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Top"
-                                               Text="{Binding Label}" Padding="2,0,0,0" />
+                                               Text="{Binding Label}" Padding="{Binding Label, Converter={StaticResource PaddingThicknessConverter}}" />
                                     <TextBlock VerticalAlignment="Top"
-                                               Text="{Binding Variable}" Padding="2,0,0,0"
+                                               Text="{Binding Variable}" Padding="{Binding Variable, Converter={StaticResource PaddingThicknessConverter}}"
                                                Foreground="{StaticResource DebugItemVariableBrush}" />
-                                    <TextBlock Text="{Binding Operator}" Padding="2,0,0,0"
+                                    <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"
                                                VerticalAlignment="Top" />
-                                    <TextBlock Text="{Binding Value}" Padding="2,0,0,0"
+                                    <TextBlock Text="{Binding Value}" Padding="{Binding Value, Converter={StaticResource PaddingThicknessConverter}}"
                                                VerticalAlignment="Top"
                                                Foreground="{StaticResource DebugItemValueBrush}" />
                                 </StackPanel>

@@ -17,7 +17,7 @@ Scenario: Execute commands
 	| Command         |
 	| String = String |  
 	And the debug output as 
-	| Result              |
+	|                      |
 	| [[result]] = String |
 
 Scenario: Execute a command that requires user interaction like pause
@@ -29,7 +29,7 @@ Scenario: Execute a command that requires user interaction like pause
 	| Command |
 	| pause   |  
 	And the debug output as 
-	| Result                                       |
+	|                                               |
 	| [[result]] = Press any key to continue . . . |
 
 Scenario: Execute a blank cmd
@@ -41,7 +41,7 @@ Scenario: Execute a blank cmd
 	| Command |
 	| ""      |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Execute invalid cmd
@@ -53,7 +53,7 @@ Scenario: Execute invalid cmd
 	| Command |
 	| asdf    |  
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |
 
 Scenario: Execute cmd with negative recordset index
@@ -64,7 +64,7 @@ Scenario: Execute cmd with negative recordset index
 	| Command              |
 	| dir [[my(-1).dir]] = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 

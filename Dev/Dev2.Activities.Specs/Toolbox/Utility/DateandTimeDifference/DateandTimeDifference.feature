@@ -15,7 +15,7 @@ Scenario: Calculate the number of days between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-28 | yyyy-mm-dd   | Weeks     |
 	And the debug output as 
-	| Result          |
+	|                  |
 	| [[result]] = 52 |
 
 Scenario: Calculate the number of years with mulitpart text and variable inputs to both input fields
@@ -32,7 +32,7 @@ Scenario: Calculate the number of years with mulitpart text and variable inputs 
 	| Input 1                        | Input 2                        | Input Format | Output In |
 	| 20[[years]]-11-29 = 2013-11-29 | 20[[years2]]-11-01 = 2014-11-01 | yyyy-mm-dd   | Years     |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 0 |
 
 Scenario: Calculate the number of Months between two given dates
@@ -47,7 +47,7 @@ Scenario: Calculate the number of Months between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Months    |
 	And the debug output as 
-	| Result          |
+	|                  |
 	| [[result]] = 12 |
 
 Scenario: Calculate the number of hours between two given dates
@@ -62,7 +62,7 @@ Scenario: Calculate the number of hours between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Hours     |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = 8088 |
 
 Scenario: Calculate the number of minutes between two given dates
@@ -77,7 +77,7 @@ Scenario: Calculate the number of minutes between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Minutes     |
 	And the debug output as 
-	| Result              |
+	|                     |
 	| [[result]] = 485280 |
 
 Scenario: Calculate the number of seconds between two given dates
@@ -92,7 +92,7 @@ Scenario: Calculate the number of seconds between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Seconds   |
 	And the debug output as 
-	| Result                |
+	|                        |
 	| [[result]] = 29116800 |
 
 Scenario: Calculate the number of split seconds between two given dates
@@ -107,7 +107,7 @@ Scenario: Calculate the number of split seconds between two given dates
 	| Input 1    | Input 2    | Input Format | Output In  |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Split Secs |
 	And the debug output as 
-	| Result                   |
+	|                           |
 	| [[result]] = 29116800000 |
 
 Scenario: Calculate the number of weeks between two given dates
@@ -122,7 +122,7 @@ Scenario: Calculate the number of weeks between two given dates
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Hours     |
 	And the debug output as 
-	| Result            |
+	|                    |
 	| [[result]] = 8088 |
 
 Scenario: Calculate the number of minutes between two blank inputs
@@ -137,7 +137,7 @@ Scenario: Calculate the number of minutes between two blank inputs
 	| Input 1          | Input 2          | Input Format | Output In |
 	| now() = DateTime | now() = DateTime | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate the number of minutes first date is blank
@@ -152,7 +152,7 @@ Scenario: Calculate the number of minutes first date is blank
 	| Input 1          | Input 2    | Input Format | Output In |
 	| now() = DateTime | 2014-11-01 | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate the number of minutes second date is blank
@@ -167,7 +167,7 @@ Scenario: Calculate the number of minutes second date is blank
 	| Input 1    | Input 2          | Input Format | Output In |
 	| 2014-11-01 | now() = DateTime | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate the number of seconds with badly formed input format
@@ -182,7 +182,7 @@ Scenario: Calculate the number of seconds with badly formed input format
 	| Input 1    | Input 2    | Input Format | Output In |
 	| 2013-11-29 | 2014-11-01 | yyy-mm-dd    | Seconds   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Leave input dates blank
@@ -194,7 +194,7 @@ Scenario: Leave input dates blank
 	| Input 1          | Input 2          | Input Format | Output In |
 	| now() = DateTime | now() = DateTime | ""           | Years     |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 0 |
 
 Scenario: Calculate the number of weeks dates do not match date format
@@ -209,7 +209,7 @@ Scenario: Calculate the number of weeks dates do not match date format
 	| Input 1  | Input 2  | Input Format | Output In |
 	| 20131212 | 20141212 | yyyy-mm-dd   | Hours     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Calculate the number of weeks using an invalid date
@@ -224,7 +224,7 @@ Scenario: Calculate the number of weeks using an invalid date
 	| Input 1 | Input 2  | Input Format | Output In |
 	| 2       | 20141212 | yyyy-mm-dd   | Hours     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate with negative recordset index for Input 1
@@ -238,7 +238,7 @@ Scenario: Calculate with negative recordset index for Input 1
 	| Input 1           | Input 2    | Input Format | Output In |
 	| [[my(-1).date]] = | 2014-11-01 | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate with negative recordset index for Input 2
@@ -252,7 +252,7 @@ Scenario: Calculate with negative recordset index for Input 2
 	| Input 1    | Input 2           | Input Format | Output In |
 	| 2014-11-01 | [[my(-1).date]] = | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate with negative recordset index for Format
@@ -266,5 +266,5 @@ Scenario: Calculate with negative recordset index for Format
 	| Input 1    | Input 2    | Input Format        | Output In |
 	| 2014-11-01 | 2014-11-01 | [[my(-1).format]] = | Minutes   |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |

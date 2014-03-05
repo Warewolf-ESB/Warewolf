@@ -248,13 +248,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultString = dds.FalseArmText;
                 }
 
-                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "Result").GetDebugItemResult());
+                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
             catch(Exception)
             {
                 //2013.02.11: Ashley lewis - Bug 8725: Task 8730 - This means it is a swith, not a decision
-                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "Result").GetDebugItemResult());
+                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
 

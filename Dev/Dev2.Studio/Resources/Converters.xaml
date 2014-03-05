@@ -49,6 +49,7 @@
     <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
     <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
     <converters:ConnectControlDisableConverter x:Key="ConnectControlDisableConverter" />

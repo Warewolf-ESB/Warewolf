@@ -15,7 +15,7 @@ Scenario: Add weeks to a given date
 	| Input      | Input Format | Add Time |    | Output Format |
 	| 2013-11-29 | yyyy-mm-dd   | Weeks    | 52 | yyyy-mm-dd    |	
 	And the debug output as 
-	| Result                  |  
+	|                          |  
 	| [[result]] = 2014-11-28 |
 
 
@@ -31,7 +31,7 @@ Scenario: Date and Time with Everything blank
 	| Input            | =        | Input Format            | =                      | Add Time |   | Output Format           | =                      |
 	| System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | None     | 0 | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	And the debug output as 
-	| Result                |
+	|                       |
 	| [[result]] = DateTime |
 
 Scenario: Date and Time with input blank and incorrect format
@@ -46,7 +46,7 @@ Scenario: Date and Time with input blank and incorrect format
 	| Input            | =        | Input Format | Add Time |   | Output Format           | =                      |
 	| System Date Time | DateTime | asdf         | None     | 0 | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Date and Time with no seconds and add 1 second
@@ -61,7 +61,7 @@ Scenario: Date and Time with no seconds and add 1 second
 	| Input | Input Format | Add Time |    | Output Format           | =                      |
 	| 12:30 | 24h:min      | Seconds  | 61 | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |	
 	And the debug output as 
-	| Result             |
+	|                     |
 	| [[result]] = 12:31 |
 
 Scenario: Date and Time with badly formed inputs
@@ -76,7 +76,7 @@ Scenario: Date and Time with badly formed inputs
 	| Input | Input Format | Add Time |   | Output Format           | =                      |
 	| asdf  | asdf         | None     | 0 | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Date and Time with badly formed output format
@@ -91,7 +91,7 @@ Scenario: Date and Time with badly formed output format
 	| Input | Input Format | Add Time |    | Output Format |
 	| 12:30 | 24h:min      | Seconds  | 61 | asdf          |
 	And the debug output as 
-	| Result            |
+	|                    |
 	| [[result]] = as1f |
 
 Scenario: Date and Time with characters for time to add
@@ -106,7 +106,7 @@ Scenario: Date and Time with characters for time to add
 	| Input | Input Format | Add Time |      | Output Format           | =                      |
 	| 12:30 | 24h:min      | Seconds  | asdf | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
@@ -121,7 +121,7 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	| Input                  | Input Format            | =                      | Add Time |   | Output Format                                                               |
 	| 2013/12/05 04:18:51 PM | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | None     | 0 | 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ |
 	And the debug output as 
-	| Result                                                                                                            |
+	|                                                                                                                    |
 	| [[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12 |
 
 Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D.
@@ -136,7 +136,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:y
 	| Input                                                                                                | Input Format                                                                | Add Time |   | Output Format               |
 	| 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12 | 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ | None     | 0 | yyyy/mm/dd 12h:min:ss am/pm |	
 	And the debug output as 
-	| Result                              |
+	|                                      |
 	| [[result]] = 2013/12/05 04:18:51 PM |
 
 Scenario: Date and Time with input format - 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with AD
@@ -151,7 +151,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:y
 	| Input                                                                                                | Input Format                                                                | Add Time |   | Output Format               |
 	| 04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:D | 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ | None     | 0 | yyyy/mm/dd 12h:min:ss am/pm |
 	And the debug output as 
-	| Result                              |
+	|                                      |
 	| [[result]] = 2013/12/05 04:18:51 PM |
 
 
@@ -167,7 +167,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:y
 	| Input                                                                                                | Input Format                                                                | Add Time |   | Output Format               |
 	| 04:05:Thursday:A.D:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12: | 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ | None     | 0 | yyyy/mm/dd 12h:min:ss am/pm |
 	And the debug output as 
-	| Result                              |
+	|                                      |
 	| [[result]] = 2013/12/05 04:18:51 PM |
 
 Scenario: Calculate for a negative recordset index for Date 1
@@ -181,7 +181,7 @@ Scenario: Calculate for a negative recordset index for Date 1
 	| Input             | Input Format | Add Time |    | Output Format |
 	| [[my(-1).date]] = | yyyy-mm-dd   | Weeks    | 52 | yyyy-mm-dd    |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate for a negative recordset index for Format
@@ -195,7 +195,7 @@ Scenario: Calculate for a negative recordset index for Format
 	| Input      | Input Format        | Add Time |    | Output Format |
 	| 2013-11-29 | [[my(-1).format]] = | Weeks    | 52 | yyyy-mm-dd    |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate for a negative recordset index for Time Value
@@ -209,7 +209,7 @@ Scenario: Calculate for a negative recordset index for Time Value
 	| Input      | Input Format | Add Time |                  | Output Format |
 	| 2013-11-29 | yyyy-mm-dd   | Weeks    | [[my(-1).int]] = | yyyy-mm-dd    |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Calculate for a negative recordset index for Output Format
@@ -223,7 +223,7 @@ Scenario: Calculate for a negative recordset index for Output Format
 	| Input      | Input Format | Add Time |    | Output Format       |
 	| 2013-11-29 | yyyy-mm-dd   | Weeks    | 52 | [[my(-1).format]] = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Default outputs for dateparts not present
@@ -238,5 +238,5 @@ Scenario: Default outputs for dateparts not present
 	| Input | Input Format | Add Time |   | Output Format                    |
 	| 0     | sp           | None     | 0 | yyyy-mm-dd 24hr:min:ss am/pm Era |
 	And the debug output as 
-	| Result                                    |
+	|                                            |
 	| [[result]] = 0001-01-01 00r:00:00 AM A.D. |

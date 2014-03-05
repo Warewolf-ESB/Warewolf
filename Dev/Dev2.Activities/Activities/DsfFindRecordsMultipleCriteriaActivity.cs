@@ -109,6 +109,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IEnumerable<string> results = new List<string>();
                 var concatRes = string.Empty;
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                toUpsert.IsDebug = dataObject.IsDebugMode();
                 var iterationIndex = 0;
                 bool isFirstIteration = true;
                 for(var i = 0; i < ResultsCollection.Count; i++)
@@ -241,7 +242,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugOutputParams(region, "", executionID, 1));
+                        foreach(var debugTo in toUpsert.DebugOutputs)
+                        {
+                            AddDebugOutputItem(new DebugItemVariableParams(debugTo));
+                        }
                     }
                 }
             }

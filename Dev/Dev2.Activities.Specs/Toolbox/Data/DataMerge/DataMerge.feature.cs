@@ -96,7 +96,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -119,7 +119,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table2.AddRow(new string[] {
                         "[[result]] = Warewolf Rocks"});
 #line 18
@@ -166,7 +166,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -210,7 +210,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table5.AddRow(new string[] {
                         "[[result]] = 100200300"});
 #line 40
@@ -260,7 +260,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -311,7 +311,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table8.AddRow(new string[] {
                         "[[result]] = 100002000030000"});
 #line 65
@@ -358,7 +358,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -442,7 +442,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -486,7 +486,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table13.AddRow(new string[] {
                         "[[result]] = 1tab->\t<-2tab->\t<-3tab->\t<-"});
 #line 106
@@ -517,7 +517,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -533,7 +533,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table15.AddRow(new string[] {
                         "[[result]] ="});
 #line 119
@@ -566,7 +566,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -582,7 +582,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table17.AddRow(new string[] {
                         "[[result]] ="});
 #line 133
@@ -618,7 +618,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -641,7 +641,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table18, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table19.AddRow(new string[] {
                         "[[result]] = Warewolf /Rocks/"});
 #line 149
@@ -692,7 +692,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -743,7 +743,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table22.AddRow(new string[] {
                         "[[result]] = <record>\t<x id=\"1\">One</x>\t</record><record>\t<x id=\"2\">two</x>\t</rec" +
                             "ord><record>\t<x id=\"3\">three</x>\t</record>"});
@@ -780,7 +780,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -803,7 +803,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table24.AddRow(new string[] {
                         "[[result]] = Warewolf  00123"});
 #line 190
@@ -839,7 +839,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -862,7 +862,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table26.AddRow(new string[] {
                         "[[result]] = War123"});
 #line 207
@@ -898,7 +898,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -921,7 +921,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table28.AddRow(new string[] {
                         "[[result]] ="});
 #line 224
@@ -959,7 +959,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -982,7 +982,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table30.AddRow(new string[] {
                         "[[result]] ="});
 #line 240
@@ -1020,7 +1020,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1043,7 +1043,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table32.AddRow(new string[] {
                         "[[result]] ="});
 #line 256
@@ -1070,7 +1070,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1086,7 +1086,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table34.AddRow(new string[] {
                         "[[result]] ="});
 #line 267
@@ -1113,7 +1113,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1129,7 +1129,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table36.AddRow(new string[] {
                         "[[result]] ="});
 #line 278
@@ -1156,7 +1156,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1172,7 +1172,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table38.AddRow(new string[] {
                         "[[result]] ="});
 #line 289
@@ -1210,7 +1210,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1233,7 +1233,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table40.AddRow(new string[] {
                         "[[result]] = ab"});
 #line 306
@@ -1271,7 +1271,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "Input",
+                        "",
                         "With",
                         "Using",
                         "Pad",
@@ -1294,7 +1294,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table42.AddRow(new string[] {
                         "[[result]] ="});
 #line 323

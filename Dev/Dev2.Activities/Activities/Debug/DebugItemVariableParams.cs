@@ -26,10 +26,10 @@ namespace Dev2.Activities.Debug
             _groupedItem = groupedItem;
         }
 
-        public DebugItemVariableParams(DebugOutputTO debugOutputTO, string labelText = "Result", List<string> regions = null)
+        public DebugItemVariableParams(DebugOutputTO debugOutputTO, List<string> regions = null)
         {
             _debugOutputTO = debugOutputTO;
-            _labelText = labelText;
+            _labelText = "";
             _regions = regions;
         }
 

@@ -12,7 +12,7 @@ Scenario: Calculate using a given formula
 	| fx =             |
 	| mod(sqrt(49), 7) |	
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 0 |
 
 Scenario: Calculate using multiple scalars and recordset inputs
@@ -26,7 +26,7 @@ Scenario: Calculate using multiple scalars and recordset inputs
 	| fx =                                                                 |
 	| ((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]]) = (((1+1)/20)+20*1) |	
 	And the debug output as 
-	| Result            |
+	|                   |
 	| [[result]] = 20.1 |
 
 Scenario: Calculate using Recordset (*) input in an agregate function like SUM
@@ -43,7 +43,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	| fx =                             |
 	| SUM([[var(*).int]]) = SUM(1,2,3) |	
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 6 |
 
 Scenario: Calculate using incorrect formula
@@ -55,7 +55,7 @@ Scenario: Calculate using incorrect formula
 	| fx = |
 	| asdf |	
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Calculate using variable as full calculation
@@ -68,7 +68,7 @@ Scenario: Calculate using variable as full calculation
 	| fx =                    |
 	| [[var]] =  SUM(1,2,3)-5 |	
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 1 |
 
 Scenario: Calculate using a negative index recordset value
@@ -79,5 +79,5 @@ Scenario: Calculate using a negative index recordset value
 	| fx =                                    |
 	| [[my(-1).formula]] = [[my(-1).formula]] |	
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |

@@ -22,7 +22,7 @@ Scenario: Find an index of data in a recordset with Is Between numeric
 	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
 	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 3 |
 
 Scenario: Find an index of data in an empty recordset
@@ -38,7 +38,7 @@ Scenario: Find an index of data in an empty recordset
 	| #           |                   | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
 	| In Field(s) | [[rs(1).value]] = | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |	
 
 Scenario: Find an index of data in a recordset with a blank from
@@ -60,7 +60,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	|           | [[rs(3).field]] = 20 |   |            |  |     |     |                             |                                |
 	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | " " | 33  | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                 |
 	| [[result]] = -1 |
 
 	Scenario: Find an index of data in a recordset with blank to
@@ -82,7 +82,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	|           | [[rs(3).field]] = 20 |   |            |  |    |     |                             |                                |
 	|           | [[rs(4).field]] = 34 | 1 | Is Between |  | 16 | " " | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset with Is Between DateTime
@@ -104,7 +104,7 @@ Scenario: Find an index of data in a recordset with Is Between DateTime
 	|           | [[rs(3).field]] = 7/4/2013   |   |            |  |          |          |                             |                                |
 	|           | [[rs(4).field]] = 11/11/2012 | 1 | Is Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 2 |
 
 
@@ -148,7 +148,7 @@ Scenario: Find an index of data in a recordset with Is Base64
 	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = d2FyZXdvbGY= | 1 | Is Base64 |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Is Binary
@@ -170,7 +170,7 @@ Scenario: Find an index of data in a recordset with Is Binary
 	|           | [[rs(3).field]] = the          |   |           |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = 101011110010 | 1 | Is Binary |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Is Hex
@@ -192,7 +192,7 @@ Scenario: Find an index of data in a recordset with Is Hex
 	|           | [[rs(3).field]] = the              |   |        |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = 77617265776f6c66 | 1 | Is Hex |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Not Base64
@@ -214,7 +214,7 @@ Scenario: Find an index of data in a recordset with Not Base64
 	|           | [[rs(3).field]] = d2FyZXdvbGY= |   |            |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = You          | 1 | Not Base64 |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Not Between DateTime
@@ -236,7 +236,7 @@ Scenario: Find an index of data in a recordset with Not Between DateTime
 	|           | [[rs(3).field]] = 2/3/2013 |   |             |  |          |          |                             |                                |
 	|           | [[rs(4).field]] = 2/3/2013 | 1 | Not Between |  | 1/3/2013 | 3/3/2013 | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 2 |
 
 Scenario: Find an index of data in a recordset with Not Between numeric
@@ -258,7 +258,7 @@ Scenario: Find an index of data in a recordset with Not Between numeric
 	|           | [[rs(3).field]] = 400 |   |             |  |    |     |                             |                                |
 	|           | [[rs(4).field]] = 31  | 1 | Not Between |  | 16 | 33  | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 3 |
 
 Scenario: Find an index of data in a recordset with Not Binary
@@ -280,7 +280,7 @@ Scenario: Find an index of data in a recordset with Not Binary
 	|           | [[rs(3).field]] = 101011110010 |   |            |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = warewolf     | 1 | Not Binary |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Not Hex
@@ -302,7 +302,7 @@ Scenario: Find an index of data in a recordset with Not Hex
 	|           | [[rs(3).field]] = 77617265776f6c66 |   |         |  |  |     |                             |                                |
 	|           | [[rs(4).field]] = warewolf         | 1 | Not Hex |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Not Regex
@@ -324,7 +324,7 @@ Scenario: Find an index of data in a recordset with Not Regex
 	|           | [[rs(3).field]] = 999.999.999.999 |   |           |                                        |  |     |                             |                                |
 	|           | [[rs(4).field]] = warewolf        | 1 | Not Regex | \b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset with Doesn't Start With
@@ -344,7 +344,7 @@ Scenario: Find an index of data in a recordset with Doesn't Start With
 	|           | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
 	|           | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 3 |
 
 Scenario: Find an index of data in a recordset with Doesn't End With
@@ -366,7 +366,7 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	|           | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
 	|           | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find an index of data in a recordset search type is Equal To
@@ -392,7 +392,7 @@ Scenario: Find an index of data in a recordset search type is Equal To
 	|           | [[rs(5).field]] = Warewolf |   |       |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | =     | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Equal To multiple results
@@ -420,7 +420,7 @@ Scenario: Find an index of data in a recordset search type is Equal To multiple 
 	|           | [[rs(6).field]] = Warewolf |   |   |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user     | 1 | = | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Equal To result doesnt exist
@@ -446,7 +446,7 @@ Scenario: Find an index of data in a recordset search type is Equal To result do
 	|           | [[rs(5).field]] = Warewolf |   |       |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | =     | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than
@@ -472,7 +472,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than
 	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | >     | 3 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than multiple results
@@ -500,7 +500,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than multi
 	|           | [[rs(6).field]] = 8    |   |       |   |  |     |                             |                                |
 	|           | [[rs(7).field]] = user | 1 | >     | 3 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than result doesnt exist
@@ -526,7 +526,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than resul
 	|           | [[rs(5).field]] = 8    |   |       |    |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | >     | 50 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset search type is Less Than
@@ -552,7 +552,7 @@ Scenario: Find an index of data in a recordset search type is Less Than
 	|           | [[rs(5).field]] = 8    |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 1 |
 
 Scenario: Find an index of data in a recordset search type is Less Than multiple results
@@ -580,7 +580,7 @@ Scenario: Find an index of data in a recordset search type is Less Than multiple
 	|           | [[rs(6).field]] = 2    |   |       |   |  |     |                             |                                |
 	|           | [[rs(7).field]] = user | 1 | <     | 5 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] = 1,6  |
 
 Scenario: Find an index of data in a recordset search type is Less Than result doesnt exist
@@ -606,7 +606,7 @@ Scenario: Find an index of data in a recordset search type is Less Than result d
 	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | <     | 1 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 	
 Scenario: Find an index of data in a recordset search type is Not Equal To
@@ -632,7 +632,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To
 	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = Warewolf | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] =  1 |
 
 Scenario: Find an index of data in a recordset search type is Not Equal To multiple results
@@ -658,7 +658,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To multi
 	|           | [[rs(5).field]] = Warewolf |   |                |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | <> (Not Equal) | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result                 |
+	|                         |
 	| [[result]] = 1,2,3,4,6 |
 
 Scenario: Find an index of data in a recordset search type is Not Equal To result doesnt exist
@@ -684,7 +684,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To resul
 	|           | [[rs(5).field]] = Mars |   |                |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = Mars | 1 | <> (Not Equal) | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To
@@ -710,7 +710,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	|           | [[rs(5).field]] = 4    |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | >=    | 4 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = 5  |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To multiple results
@@ -736,7 +736,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = 4        | 1 | >=    | 4 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To result doesnt exist
@@ -762,7 +762,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	|           | [[rs(5).field]] = 2 |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = 3 | 1 | >=    | 4 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal
@@ -788,7 +788,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal
 	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | <=    | 5 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal multiple results
@@ -814,7 +814,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal mult
 	|           | [[rs(5).field]] = Warewolf |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = 5        | 1 | <=    | 5 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |  
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal result doesnt exist
@@ -840,7 +840,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal resu
 	|           | [[rs(5).field]] = 5    |   |       |   |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | <=    | 1 |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |  
 
 Scenario: Find an index of data in a recordset search type is Starts With
@@ -866,7 +866,7 @@ Scenario: Find an index of data in a recordset search type is Starts With
 	|           | [[rs(5).field]] = Warewolf |   |             |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Starts With | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |  
 
 Scenario: Find an index of data in a recordset search type is Starts With multiple results
@@ -894,7 +894,7 @@ Scenario: Find an index of data in a recordset search type is Starts With multip
 	|           | [[rs(6).field]] = Warewolf |   |             |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user     | 1 | Starts With | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] = 1,6  |  
 
 Scenario: Find an index of data in a recordset search type is Starts With result doesnt exist
@@ -920,7 +920,7 @@ Scenario: Find an index of data in a recordset search type is Starts With result
 	|           | [[rs(5).field]] = Warewolf |   |             |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Starts With | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Ends With
@@ -946,7 +946,7 @@ Scenario: Find an index of data in a recordset search type is Ends With
 	|           | [[rs(5).field]] = Warewolf |   |           |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Ends With | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Ends With multiple results
@@ -974,7 +974,7 @@ Scenario: Find an index of data in a recordset search type is Ends With multiple
 	|           | [[rs(6).field]] = Warewolf |   |           |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user     | 1 | Ends With | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |  
 
 Scenario: Find an index of data in a recordset search type is Ends With result doesnt exist
@@ -1000,7 +1000,7 @@ Scenario: Find an index of data in a recordset search type is Ends With result d
 	|           | [[rs(5).field]] = Warewolf |   |           |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Ends With | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Contains
@@ -1026,7 +1026,7 @@ Scenario: Find an index of data in a recordset search type is Contains
 	|           | [[rs(5).field]] = Warewolf |   |          |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Contains | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Contains multiple results
@@ -1054,7 +1054,7 @@ Scenario: Find an index of data in a recordset search type is Contains multiple 
 	|           | [[rs(6).field]] = Warewolf |   |          |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user     | 1 | Contains | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |  
 
 Scenario: Find an index of data in a recordset search type is Contains result doesnt exist
@@ -1080,7 +1080,7 @@ Scenario: Find an index of data in a recordset search type is Contains result do
 	|           | [[rs(5).field]] = Warewolf |   |          |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Contains | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 
@@ -1107,7 +1107,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain
 	|           | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |      
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Doesn't Contain multiple results
@@ -1133,7 +1133,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain mu
 	|           | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,5 |
 
 
@@ -1160,7 +1160,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain re
 	|           | [[rs(5).field]] = Mars |   |                 |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = Mars | 1 | Doesn't Contain | Mars |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric
@@ -1186,7 +1186,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric
 	|           | [[rs(5).field]] = Warewolf |   |                 |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = $$       | 1 | Is Alphanumeric |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric multiple results
@@ -1214,7 +1214,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric mu
 	|           | [[rs(6).field]] = Warewolf |   |                 |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = $$       | 1 | Is Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric result doesnt exist
@@ -1240,7 +1240,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric re
 	|           | [[rs(5).field]] = $$ |   |                 |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = $$ | 1 | Is Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Base64
@@ -1266,7 +1266,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64
 	|           | [[rs(5).field]] = d2FyZXdvbGY= |   |           |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = You          | 1 | Is Base64 |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Base64 multiple results
@@ -1294,7 +1294,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 multiple
 	|           | [[rs(6).field]] = d2FyZXdvbGY= |   |           |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = You          | 1 | Is Base64 |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Base64 result doesnt exist
@@ -1320,7 +1320,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 result d
 	|           | [[rs(5).field]] = You |   |           |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = You | 1 | Is Base64 |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 	Scenario: Find an index of data in a recordset search type is Is Date
@@ -1346,7 +1346,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 result d
 	|           | [[rs(5).field]] = 12/10/2013 |   |         |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user       | 1 | Is Date |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Date multiple results
@@ -1374,7 +1374,7 @@ Scenario: Find an index of data in a recordset search type is Is Date multiple r
 	|           | [[rs(6).field]] = 12/10/2013 |   |         |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = user       | 1 | Is Date |  |  |     | NO                          | NO                             |    
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Date result doesnt exist
@@ -1400,7 +1400,7 @@ Scenario: Find an index of data in a recordset search type is Is Date result doe
 	|           | [[rs(5).field]] = Warewolf |   |         |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Is Date | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Email
@@ -1426,7 +1426,7 @@ Scenario: Find an index of data in a recordset search type is Is Email
 	|           | [[rs(5).field]] = test@testEmail.co.za |   |          |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user                 | 1 | Is Email |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Email multiple results
@@ -1454,7 +1454,7 @@ Scenario: Find an index of data in a recordset search type is Is Email multiple 
 	|           | [[rs(6).field]] = test@testEmail.co.za |   |          |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = user                 | 1 | Is Email |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Email result doesnt exist
@@ -1480,7 +1480,7 @@ Scenario: Find an index of data in a recordset search type is Is Email result do
 	|           | [[rs(5).field]] = Warewolf |   |          |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Is Email |  |  |     | NO                          | NO                             |	    
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Numeric
@@ -1506,7 +1506,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric
 	|           | [[rs(5).field]] = 45   |   |            |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | Is Numeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Numeric multiple results
@@ -1534,7 +1534,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric multipl
 	|             | [[rs(6).field]] = 54   |   |            |  |  |     |                             |                                |
 	|             | [[rs(7).field]] = user | 1 | Is Numeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Numeric result doesnt exist
@@ -1560,7 +1560,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric result 
 	|           | [[rs(5).field]] = Warewolf |   |  |            |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 |  | Is Numeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Regex
@@ -1586,7 +1586,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex
 	|           | [[rs(5).field]] = Warewolf |   |          |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Regex multiple results
@@ -1614,7 +1614,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex multiple 
 	|           | [[rs(6).field]] = Warewolf |   |          |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Regex result doesnt exist
@@ -1640,7 +1640,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex result do
 	|           | [[rs(5).field]] = Warewolf |   |          |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Is Regex | Mars |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is Text
@@ -1666,7 +1666,7 @@ Scenario: Find an index of data in a recordset search type is Is Text
 	|           | [[rs(5).field]] = Warewolf |   |         |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = 16       | 1 | Is Text |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Is Text multiple results
@@ -1694,7 +1694,7 @@ Scenario: Find an index of data in a recordset search type is Is Text multiple r
 	|           | [[rs(6).field]] = Warewolf |   |         |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = 8        | 1 | Is Text |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is Text result doesnt exist
@@ -1720,7 +1720,7 @@ Scenario: Find an index of data in a recordset search type is Is Text result doe
 	|           | [[rs(5).field]] = 6 |   |         |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = 5 | 1 | Is Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Is XML
@@ -1746,7 +1746,7 @@ Scenario: Find an index of data in a recordset search type is Is XML
 	|           | [[rs(5).field]] = <test></test> |   |        |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user          | 1 | Is XML |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 	
 Scenario: Find an index of data in a recordset search type is Is XML multiple results
@@ -1774,7 +1774,7 @@ Scenario: Find an index of data in a recordset search type is Is XML multiple re
 	|           | [[rs(6).field]] = <test></test> |   |        |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = user          | 1 | Is XML | Warewolf |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Is XML result doesnt exist
@@ -1800,7 +1800,7 @@ Scenario: Find an index of data in a recordset search type is Is XML result does
 	|           | [[rs(5).field]] = Warewolf |   |        |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Is XML | Mars |  |     | NO                          | NO                             |  
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric
@@ -1826,7 +1826,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric
 	|           | [[rs(5).field]] = $$   |   |                  |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 5 |
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric multiple results
@@ -1854,7 +1854,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric m
 	|           | [[rs(6).field]] = $$   |   |                  |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric result doesnt exist
@@ -1880,7 +1880,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric r
 	|           | [[rs(5).field]] = Warewolf |   |                  |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |   
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Not Date
@@ -1906,7 +1906,7 @@ Scenario: Find an index of data in a recordset search type is Not Date
 	|           | [[rs(5).field]] = Warewolf   |   |          |          |  |     |                             |                                |
 	|           | [[rs(6).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = 5  |
 
 Scenario: Find an index of data in a recordset search type is Not Date multiple results
@@ -1934,7 +1934,7 @@ Scenario: Find an index of data in a recordset search type is Not Date multiple 
 	|           | [[rs(6).field]] = Warewolf   |   |          |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |    
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] = 1,6  |
 
 Scenario: Find an index of data in a recordset search type is Not Date result doesnt exist
@@ -1960,7 +1960,7 @@ Scenario: Find an index of data in a recordset search type is Not Date result do
 	|           | [[rs(5).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = 12/11/2013 | 1 | Not Date |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find an index of data in a recordset search type is Not Email
@@ -1986,7 +1986,7 @@ Scenario: Find an index of data in a recordset search type is Not Email
 	|           | [[rs(5).field]] = Warewolf             |   |           |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] =  5 |
 
 Scenario: Find an index of data in a recordset search type is Not Email multiple results
@@ -2014,7 +2014,7 @@ Scenario: Find an index of data in a recordset search type is Not Email multiple
 	|           | [[rs(6).field]] = Warewolf             |   |           |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] =  1,6 |
 
 Scenario: Find an index of data in a recordset search type is Not Email result doesnt exist
@@ -2040,7 +2040,7 @@ Scenario: Find an index of data in a recordset search type is Not Email result d
 	|           | [[rs(5).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
 	|           | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email | Mars |  |     | NO                          | NO                             |    
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] =  -1 |
 
 Scenario: Find an index of data in a recordset search type is Not Numeric
@@ -2066,7 +2066,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric
 	|           | [[rs(5).field]] = Warewolf |   |             |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] =  5  |
 
 Scenario: Find an index of data in a recordset search type is Not Numeric multiple results
@@ -2094,7 +2094,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric multip
 	|           | [[rs(6).field]] = Warewolf |   |             |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] =  1,6 |
 
 
@@ -2121,7 +2121,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric result
 	|           | [[rs(5).field]] = 3 |   |             |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = 3 | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	 And the debug output as	   
-	| Result           |
+	|                   |
 	| [[result]] =  -1 |
 
 Scenario: Find an index of data in a recordset search type is Not Text
@@ -2147,7 +2147,7 @@ Scenario: Find an index of data in a recordset search type is Not Text
 	|           | [[rs(5).field]] = 52   |   |          |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] =  5  |
 
 
@@ -2176,7 +2176,7 @@ Scenario: Find an index of data in a recordset search type is Not Text multiple 
 	|           | [[rs(6).field]] = 741  |   |          |  |  |     |                             |                                |
 	|           | [[rs(7).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] =  1,6 |
 
 Scenario: Find an index of data in a recordset search type is Not Text result doesnt exist
@@ -2202,7 +2202,7 @@ Scenario: Find an index of data in a recordset search type is Not Text result do
 	|           | [[rs(5).field]] = Warewolf |   |          |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = user     | 1 | Not Text |  |  |     | NO                          | NO                             |   
 	 And the debug output as			  
-	| Result           |
+	|                   |
 	| [[result]] =  -1 |
 
 
@@ -2229,7 +2229,7 @@ Scenario: Find an index of data in a recordset search type is Not XML
 	|           | [[rs(5).field]] = Warewolf      |   |         |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] =  5 |
 
 
@@ -2258,7 +2258,7 @@ Scenario: Find an index of data in a recordset search type is Not XML multiple r
 	|           | [[rs(6).field]] = Warewolf      |   |         |          |  |     |                             |                                |
 	|           | [[rs(7).field]] = <test></test> | 1 | Not XML | Warewolf |  |     | NO                          | NO                             |  
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] =  1,6 |
 
 
@@ -2285,7 +2285,7 @@ Scenario: Find an index of data in a recordset search type is Not XML result doe
 	|           | [[rs(5).field]] = <test></test> |   |         |  |  |     |                             |                                |
 	|           | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result            |
+	|                    |
 	| [[result]] =  -1  |
 
 #Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows true
@@ -2420,5 +2420,5 @@ Scenario: Search using a negative index recordset criteria
 	| In Field(s)| [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
 	|           | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[result]] =  -1 |

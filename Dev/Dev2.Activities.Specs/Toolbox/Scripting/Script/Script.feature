@@ -14,7 +14,7 @@ Scenario: Execute Javascript Variable is 1
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = one |
 
 Scenario: Execute Javascript blank script	
@@ -27,7 +27,7 @@ Scenario: Execute Javascript blank script
 	| Language   | Script |
 	| JavaScript | ""     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Execute Javascript Variable is 2
@@ -41,7 +41,7 @@ Scenario: Execute Javascript Variable is 2
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Javascript Variable is 3
@@ -55,7 +55,7 @@ Scenario: Execute Javascript Variable is 3
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute Javascript Variable is 100
@@ -69,7 +69,7 @@ Scenario: Execute Javascript Variable is 100
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Javascript
@@ -82,7 +82,7 @@ Scenario: Execute badly formed Javascript
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |
 	
 Scenario: Execute Javascript with 2 variables
@@ -97,7 +97,7 @@ Scenario: Execute Javascript with 2 variables
 	| Language   | Script          |
 	| JavaScript | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Python Variable is 1
@@ -111,7 +111,7 @@ Scenario: Execute Python Variable is 1
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = one |
 
 
@@ -125,7 +125,7 @@ Scenario: Execute Python blank script
 	| Language | Script |
 	| Python   | ""     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Execute Python Variable is 2
@@ -139,7 +139,7 @@ Scenario: Execute Python Variable is 2
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Python Variable is 3
@@ -153,7 +153,7 @@ Scenario: Execute Python Variable is 3
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute Python Variable is 100
@@ -167,7 +167,7 @@ Scenario: Execute Python Variable is 100
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Python
@@ -180,7 +180,7 @@ Scenario: Execute badly formed Python
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Execute Python with 2 variables
@@ -195,7 +195,7 @@ Scenario: Execute Python with 2 variables
 	| Language | Script          |
 	| Python   | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Ruby Variable is 1
@@ -209,7 +209,7 @@ Scenario: Execute Ruby Variable is 1
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = one |
 
 Scenario: Execute Ruby blank script	
@@ -222,7 +222,7 @@ Scenario: Execute Ruby blank script
 	| Language | Script |
 	| Ruby     | ""     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Execute Ruby Variable is 2
@@ -236,7 +236,7 @@ Scenario: Execute Ruby Variable is 2
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Ruby Variable is 3
@@ -250,7 +250,7 @@ Scenario: Execute Ruby Variable is 3
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute Ruby Variable is 100
@@ -264,7 +264,7 @@ Scenario: Execute Ruby Variable is 100
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result                      |
+	|                              |
 	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Ruby
@@ -277,7 +277,7 @@ Scenario: Execute badly formed Ruby
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Execute Ruby with 2 variables
@@ -292,7 +292,7 @@ Scenario: Execute Ruby with 2 variables
 	| Language | Script          |
 	| Ruby     | String = String |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = two |
 
 Scenario: Execute Ruby with a negative recordset index
@@ -304,7 +304,7 @@ Scenario: Execute Ruby with a negative recordset index
 	| Language | Script           |
 	| Ruby     | [[my(-1).val]] = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Execute JavaScript with a negative recordset index
@@ -316,7 +316,7 @@ Scenario: Execute JavaScript with a negative recordset index
 	| Language   | Script           |
 	| JavaScript | [[my(-1).val]] = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 Scenario: Execute Python with a negative recordset index
@@ -328,5 +328,5 @@ Scenario: Execute Python with a negative recordset index
 	| Language | Script           |
 	| Python   | [[my(-1).val]] = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |

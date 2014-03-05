@@ -36,7 +36,7 @@ Scenario: Sort a recordset forwards using star notation
 	| [[rs(6).row]] = user     |            |
 	| [[rs(7).row]] = so far   | Forward    |
 	And the debug output as
-	| Result                   |
+	|                           |
 	| [[rs(1).row]] = are      |
 	| [[rs(2).row]] = best     |
 	| [[rs(3).row]] = so far   |
@@ -78,7 +78,7 @@ Scenario: Sort a recordset backwards using star notation
 	| [[rs(6).row]] = user     |            |
 	| [[rs(7).row]] = so far   | Backwards  |
 	And the debug output as
-	| Result                   |
+	|                           |
 	| [[rs(1).row]] = You      |
 	| [[rs(2).row]] = Warewolf |
 	| [[rs(3).row]] = user     |
@@ -120,7 +120,7 @@ Scenario: Sort a recordset forwards
 	| [[rs(6).row]] = user     |            |
 	| [[rs(7).row]] = so far   | Forward    |
 	And the debug output as
-	| Result                   |
+	|                           |
 	| [[rs(1).row]] = are      |
 	| [[rs(2).row]] = best     |
 	| [[rs(3).row]] = so far   |
@@ -162,7 +162,7 @@ Scenario: Sort a recordset backwards
 	| [[rs(6).row]] = user     |            |
 	| [[rs(7).row]] = so far   | Backwards  |
 	And the debug output as
-	| Result                   |
+	|                           |
 	| [[rs(1).row]] = You      |
 	| [[rs(2).row]] = Warewolf |
 	| [[rs(3).row]] = user     |
@@ -184,7 +184,7 @@ Scenario: Sort a recordset forwards empty recordset
 	| Sort Field | Sort Order |
 	|            | Forward    |
 	And the debug output as
-    | Result |
+    |         |
     |        |
 	
 Scenario: Sort a recordset backwards empty recordset
@@ -200,7 +200,7 @@ Scenario: Sort a recordset backwards empty recordset
 	| Sort Field | Sort Order |
 	|            | Backwards  |
 	And the debug output as
-    | Result |
+    |         |
     |        |
 			
 Scenario: Sort a recordset forwards with one row
@@ -218,7 +218,7 @@ Scenario: Sort a recordset forwards with one row
 	| Sort Field               | Sort Order |
 	| [[rs(1).row]] = Warewolf | Forward    |
 	And the debug output as
-    | Result                   |
+    |                          |
     | [[rs(1).row]] = Warewolf |
 	
 Scenario: Sort a recordset backwards recordset  with one row
@@ -236,5 +236,5 @@ Scenario: Sort a recordset backwards recordset  with one row
 	| Sort Field               | Sort Order |
 	| [[rs(1).row]] = Warewolf | Backwards    |
 	And the debug output as
-    | Result                   |
+    |                           |
     | [[rs(1).row]] = Warewolf |	

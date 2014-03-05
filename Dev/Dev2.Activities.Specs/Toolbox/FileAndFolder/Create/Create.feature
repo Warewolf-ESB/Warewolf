@@ -17,7 +17,7 @@ Scenario Outline: Create file at location
          | File or Folder                        | Overwrite  | Username   | Password |
          | <destination> = <destinationLocation> | <selected> | <username> | String   |
 	And the debug output as
-		| Result                 |
+		|                        |
 		| <resultVar> = <result> |
 	Examples: 
 		| Name       | destination | destinationLocation                                            | selected | username               | password | resultVar  | result  | errorOccured |

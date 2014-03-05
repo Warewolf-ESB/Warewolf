@@ -235,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-                AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), debugItem);
+                AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
                 innerCount++;
                 _debugOutputs.Add(debugItem);
             }

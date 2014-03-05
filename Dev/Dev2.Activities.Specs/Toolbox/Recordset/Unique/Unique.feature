@@ -14,7 +14,7 @@ Scenario: Find unique records in a recordset
 	And The result variable is "[[rec().unique]]"
 	When the unique tool is executed	
 	Then the unique result will be
-	| result       | unique |
+	|               | unique |
 	| rec().unique | 10     |
 	| rec().unique | 20     |
 	| rec().unique | 30     |
@@ -23,7 +23,7 @@ Scenario: Find unique records in a recordset
 	| #           |                    | Return Fields  |
 	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
 	And the debug output as 
-	| # | Result                 |
+	| # |                         |
 	| 1 | [[rec(1).unique]] = 10 |
 	|   | [[rec(2).unique]] = 20 |
 	|   | [[rec(3).unique]] = 30 |
@@ -58,7 +58,7 @@ Scenario: Find unique records in a recordset comma separated
 	|             | [[rs(4).row]] = 30,[[rs(4).data]] = 30 |               |
 	|             |                                        | [[rs().row]]  |
 	And the debug output as 
-	| # | Result                 |
+	| # |                         |
 	| 1 | [[rec(1).unique]] = 10 |
 	|   | [[rec(2).unique]] = 20 |
 	|   | [[rec(3).unique]] = 30 |
@@ -75,7 +75,7 @@ Scenario: Find unique records in an empty recordset
 	And the debug inputs as  
 	|             |  | Return Fields |
 	And the debug output as 
-	|  | Result             |
+	|  |                    |
 	|  | [[rec().unique]] = |
 
 Scenario: Find unique records in a recordset and the in field is blank
@@ -95,7 +95,7 @@ Scenario: Find unique records in a recordset and the in field is blank
 	| #           |  | Return Fields  |
 	| In Field(s) |  | [[rs().row]] = |
 	And the debug output as 
-	|  | Result             |
+	|  |                     |
 	|  | [[rec().unique]] = |
 		
 Scenario: Find unique records in a recordset the return field is blank
@@ -115,7 +115,7 @@ Scenario: Find unique records in a recordset the return field is blank
 	| #           |                   | Return Fields |
 	| In Field(s) | [[rs(4).row]] = 3 | ""            |
 	And the debug output as 
-	|  | Result             |
+	|  |                     |
 	|  | [[rec().unique]] = |
 	
 Scenario: Find unique records using a negative recordset index for In Field
@@ -136,7 +136,7 @@ Scenario: Find unique records using a negative recordset index for In Field
 	| In Field(s) | [[rs(-1).row]] = |                 |
 	|             |                  | [[rs().row]]  = |
 	And the debug output as 
-	|  | Result             |
+	|  |                     |
 	|  | [[rec().unique]] = |
 
 Scenario: Find unique records using a * for In Field
@@ -163,7 +163,7 @@ Scenario: Find unique records using a * for In Field
 	|             | [[rs(4).row]] = 3 |                |
 	|             |                   | [[rs().row]] = |
 	And the debug output as 
-	| # | Result                |
+	| # |                        |
 	| 1 | [[rec(1).unique]] = 1 |
 	|   | [[rec(2).unique]] = 2 |
 	|   | [[rec(3).unique]] = 3 |
@@ -185,7 +185,7 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	| #           |                   | Return Fields    |
 	| In Field(s) | [[rs(4).row]] = 3 | [[rs(-1).row]] = |	
 	And the debug output as 
-	|  | Result             |
+	|  |                     |
 	|  | [[rec().unique]] = |
 Scenario: Find unique records using a * for Return Field
 	Given I have the following duplicated recordset
@@ -207,7 +207,7 @@ Scenario: Find unique records using a * for Return Field
 	| #           |                   | Return Fields   |
 	| In Field(s) | [[rs(4).row]] = 3 | [[rs(*).row]] = |	
 	And the debug output as 
-	| # | Result                |
+	| # |                        |
 	| 1 | [[rec(1).unique]] = 1 |
 	|   | [[rec(2).unique]] = 2 |
 	|   | [[rec(3).unique]] = 3 |

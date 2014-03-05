@@ -147,7 +147,7 @@ namespace Dev2.Activities
                 {
                     if(allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, "Result"));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

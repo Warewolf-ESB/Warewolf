@@ -173,7 +173,7 @@ namespace Dev2.Activities
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), itemToAdd);
+                            AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -204,7 +204,7 @@ namespace Dev2.Activities
                             ResultsCollection[i].XPath = "";
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", (i + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugOutputParams(ResultsCollection[i].OutputVariable, "", executionID, i + 1, ""), itemToAdd);
+                            AddDebugItem(new DebugOutputParams(ResultsCollection[i].OutputVariable, "", executionID, i + 1), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                         }
                     }

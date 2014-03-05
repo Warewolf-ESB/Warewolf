@@ -17,8 +17,8 @@ Scenario: Replace placeholders in a sentence with names
 	| In Field(s)                                               | Find | Replace With |
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | XXXX | Warewolf user |
 	And the debug output as 
-	| Result         |                                                                    |
-	| [[result]] = 1 | [[sentence]] = Dear Mr Warewolf user, We welcome you as a customer |	
+	|                                                                    |                |
+	| [[sentence]] = Dear Mr Warewolf user, We welcome you as a customer | [[result]] = 1 |
 
 Scenario: Replace when the in field(s) is blank
 	Given I have a replace variable "[[sentence]]" equal to ""
@@ -33,8 +33,8 @@ Scenario: Replace when the in field(s) is blank
 	| In Field(s)    | Find | Replace With |
 	| [[sentence]] = | XXXX | Warewolf user |
 	And the debug output as 
-	| Result         |                |
-	| [[result]] = 0 | [[sentence]] = |
+	|                |  |
+	| [[result]] = 0 |  |
 
 Scenario: Replace when text to find is blank 
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
@@ -49,8 +49,8 @@ Scenario: Replace when text to find is blank
 	| In Field(s)                                               | Find | Replace With  |
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | ""   | Warewolf user |
 	And the debug output as 
-	| Result         |                                                           |
-	| [[result]] = 0 | [[sentence]] = Dear Mr XXXX, We welcome you as a customer |
+	|                |
+	| [[result]] = 0 |
 
 Scenario: Replace when the replace with is blank
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
@@ -65,8 +65,8 @@ Scenario: Replace when the replace with is blank
 	| In Field(s)                                               | Find | Replace With |
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | XXXX | ""           |
 	And the debug output as 
-	| Result         |                                                       |
-	| [[result]] = 1 | [[sentence]] = Dear Mr , We welcome you as a customer |
+	|                                                       |               | 
+	| [[sentence]] = Dear Mr , We welcome you as a customer |[[result]] = 1 | 
 
 Scenario: Replace using lower case to find uppercase value
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr AAAA, We welcome you as a customer"
@@ -82,8 +82,8 @@ Scenario: Replace using lower case to find uppercase value
 	| In Field(s)                                               | Find | Replace With |
 	| [[sentence]] = Dear Mr AAAA, We welcome you as a customer | [[find]] = AAAA | Case         |
 	And the debug output as 
-	| Result         |                                                           |
-	| [[result]] = 1 | [[sentence]] = Dear Mr Case, We welcome you as a customer |
+	|                                                           |                |
+	| [[sentence]] = Dear Mr Case, We welcome you as a customer | [[result]] = 1 |
 
 Scenario: Replace when text to find is negative recordset index
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
@@ -96,7 +96,7 @@ Scenario: Replace when text to find is negative recordset index
 	| In Field(s)                                               | Find              | Replace With  |
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | [[my(-1).text]] = | Warewolf user |
 	And the debug output as 
-	| Result         |
+	|                |
 	| [[result]] = 0 |
 
 Scenario: Replace when the replace with is negative recordset index
@@ -110,7 +110,7 @@ Scenario: Replace when the replace with is negative recordset index
 	| In Field(s)                                               | Find | Replace With      |
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | XXXX | [[my(-1).text]] = |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 0 |
 
 Scenario: Replace when negative recordset index is input
@@ -123,5 +123,5 @@ Scenario: Replace when negative recordset index is input
 	| In Field(s)           | Find | Replace With |
 	| [[my(-1).sentence]] = | XXXX | YYYY         |
 	And the debug output as 
-	| Result         |
+	|                |
 	| [[result]] = 0 |

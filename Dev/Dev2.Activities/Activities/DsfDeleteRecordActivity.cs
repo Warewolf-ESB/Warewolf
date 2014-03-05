@@ -111,7 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(new DebugItemVariableParams(Result, "Result", entry, executionID));
+                                AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, executionID));
                             }
                             allErrors.MergeErrors(errors);
                         }

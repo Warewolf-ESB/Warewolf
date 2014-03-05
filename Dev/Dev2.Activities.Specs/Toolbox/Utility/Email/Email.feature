@@ -17,7 +17,7 @@ Scenario: Send email to multiple receipients
 	| From Account    | To                                                                   | Subject      | Body                                 |
 	| me@freemail.com | [[firstMail]];[[secondMail]] = test1@freemail.com;test2@freemail.com | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Send email with multiple from accounts
@@ -33,7 +33,7 @@ Scenario: Send email with multiple from accounts
 	| From Account                     | To                 | Subject      | Body                                 |
 	| me@freemail.com;me2@freemail.com | test1@freemail.com | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                      |
 	| [[result]] = Failure |
 
 Scenario: Send email with badly formed multiple To Accounts
@@ -48,7 +48,7 @@ Scenario: Send email with badly formed multiple To Accounts
 	| From Account    | To                                     | Subject      | Body                                 |
 	| me@freemail.com | test1@freemail.com==test2@freemail.com | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = Failure|
 
 Scenario: Send email with no To Accounts
@@ -63,7 +63,7 @@ Scenario: Send email with no To Accounts
 	| From Account    | To | Subject      | Body                                 |
 	| me@freemail.com | "" | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with Subject as both text and variable as xml 
@@ -79,7 +79,7 @@ Scenario: Send email with Subject as both text and variable as xml
 	| From Account    | To                 | Subject                                   | Body                                 |
 	| me@freemail.com | test1@freemail.com | News: [[subject]] = News: <Wow>400%</Wow> | testing email from the cool specflow |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = Success|
 
 Scenario: Send email with no body
@@ -93,7 +93,7 @@ Scenario: Send email with no body
 	| From Account    | To                 | Subject                     | Body |
 	| me@freemail.com | test1@freemail.com | Testing this cool framework | ""   |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Send email with Body as both text and variable 
@@ -109,7 +109,7 @@ Scenario: Send email with Body as both text and variable
 	| From Account    | To                 | Subject | Body                                                                                                                    |
 	| me@freemail.com | test1@freemail.com | News    | testing email from [[body]] the cool specflow = testing email from <body><inner>inside</inner></body> the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Send email with variable as Body that is xml
@@ -125,7 +125,7 @@ Scenario: Send email with variable as Body that is xml
 	| From Account    | To                 | Subject | Body                                           |
 	| me@freemail.com | test1@freemail.com | News    | [[body]] =  <body><inner>inside</inner></body> |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Send email with everything blank
@@ -137,7 +137,7 @@ Scenario: Send email with everything blank
 	| From Account    | To | Subject | Body |
 	| me@freemail.com | "" | ""      | ""   |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with a blank from account
@@ -150,7 +150,7 @@ Scenario: Send email with a blank from account
 	| From Account | To                 | Subject | Body |
 	|              | test1@freemail.com | ""      | ""   |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with a negative index recordset for From Accounts
@@ -165,7 +165,7 @@ Scenario: Send email with a negative index recordset for From Accounts
 	| From Account      | To              | Subject      | Body                                 |
 	| [[me(-1).from]] = | me@freemail.com | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with a negative index recordset for Recipients
@@ -180,7 +180,7 @@ Scenario: Send email with a negative index recordset for Recipients
 	| From Account    | To              | Subject      | Body                                 |
 	| me@freemail.com | [[me(-1).to]] = | Just testing | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with a negative index recordset for Subject
@@ -195,7 +195,7 @@ Scenario: Send email with a negative index recordset for Subject
 	| From Account    | To                 | Subject              | Body                                 |
 	| me@freemail.com | test1@freemail.com | [[my(-1).subject]] = | testing email from the cool specflow |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Send email with a negative index recordset for Body
@@ -209,6 +209,6 @@ Scenario: Send email with a negative index recordset for Body
 	| From Account    | To                 | Subject | Body              |
 	| me@freemail.com | test1@freemail.com |         | [[my(-1).body]] = |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 

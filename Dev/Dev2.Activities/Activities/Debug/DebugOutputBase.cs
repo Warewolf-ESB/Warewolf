@@ -59,7 +59,7 @@ namespace Dev2.Activities.Debug
             if(dlEntry.ComplexExpressionAuditor == null)
             {
 
-                string groupName = null;
+               // string groupName = null;
                 int groupIndex = 0;
                 var rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
@@ -68,6 +68,10 @@ namespace Dev2.Activities.Debug
                     if(!dlEntry.IsEmpty())
                     {
                         var collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1, labelText);
+                        if(collection.Count < 2)
+                        {
+                            collection[0].GroupName = "";
+                        }
                         results.AddRange(collection);
                     }
                 }
@@ -75,7 +79,7 @@ namespace Dev2.Activities.Debug
                 {
                     if(DataListUtil.IsValueRecordset(expression) && (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                     {
-                        groupName = expression;
+                        //groupName = expression;
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                         IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
                         if(indexToUse == -1)
@@ -100,7 +104,7 @@ namespace Dev2.Activities.Debug
                         }
                     }
                     IBinaryDataListItem item = dlEntry.FetchScalar();
-                    CreateScalarDebugItems(expression, item.TheValue, labelText, results, groupName, groupIndex);
+                    CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
                 }
             }
             else
@@ -150,7 +154,9 @@ namespace Dev2.Activities.Debug
             if(auditor != null)
             {
                 var grpIdx = 0;
-                foreach(var item in auditor.FetchAuditItems())
+                var complexExpressionAuditItems = auditor.FetchAuditItems();
+             
+                foreach(var item in complexExpressionAuditItems)
                 {
                     string groupName = null;
                     var displayExpression = item.Expression;
@@ -186,6 +192,11 @@ namespace Dev2.Activities.Debug
                                 }
                             }
                         }
+                    }
+
+                    if(complexExpressionAuditItems.Count(i => i.Expression.Equals(item.RawExpression)) < 2)
+                    {
+                        groupName = "";
                     }
                   
                     results.Add(new DebugItemResult
@@ -227,6 +238,10 @@ namespace Dev2.Activities.Debug
                     if(currentRecset != null)
                     {
                         resultsToPush = CreateRecordsetDebugItems(expression, currentRecset, value, iterationNumber, labelText);
+                        if(resultsToPush.Count < 2)
+                        {
+                            resultsToPush[0].GroupName = "";
+                        }
                     }
                 }
                 else if(recsetIndexType == enRecordsetIndexType.Blank)
@@ -246,7 +261,7 @@ namespace Dev2.Activities.Debug
                         {
                             if(!currentRecset.IsEmpty())
                             {
-                                recsetIndexToUse = currentRecset.FetchAppendRecordsetIndex();
+                                recsetIndexToUse = currentRecset.FetchAppendRecordsetIndex() -1;
                             }
                         }
                     }

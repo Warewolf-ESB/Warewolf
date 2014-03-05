@@ -18,7 +18,7 @@ Scenario Outline: Move file at location
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
          | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |       
 	And the debug output as
-		| Result                 |
+		|                        |
 		| <resultVar> = <result> |
 	Examples: 
 	| Name           | source         | sourceLocation                                              | username          | password | destination  | destinationLocation                                      | destUsername      | destPassword | selected | resultVar  | result  | errorOccured |

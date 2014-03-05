@@ -13,7 +13,7 @@ Scenario: decide if variable [[A]] is alphanumeric (True)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -27,7 +27,7 @@ Scenario: decide if variable [[A]] is alphanumeric (False)
 	|           | Statement | Require All decisions to be True |
 	| [[A]] = @ | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -41,7 +41,7 @@ Scenario: decide if variable [[A]] is Base64 (True)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] is Base64 (False)
@@ -54,7 +54,7 @@ Scenario: decide if variable [[A]] is Base64 (False)
 	|                | Statement | Require All decisions to be True |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] is Binary (True)
@@ -67,7 +67,7 @@ Scenario: decide if variable [[A]] is Binary (True)
 	|                | Statement | Require All decisions to be True |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -81,7 +81,7 @@ Scenario: decide if variable [[A]] is Binary (False)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -95,7 +95,7 @@ Scenario: decide if variable [[A]] is a Date (True)
 	|                    | Statement | Require All decisions to be True |
 	| [[A]] = 2010-01-10 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -109,7 +109,7 @@ Scenario: decide if variable [[A]] is a Date (False)
 	|                     | Statement | Require All decisions to be True |
 	| [[A]] = Hello World | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] is an Email (True)
@@ -122,7 +122,7 @@ Scenario: decide if variable [[A]] is an Email (True)
 	|                               | Statement | Require All decisions to be True |
 	| [[A]] = testmail@freemail.net | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] is an Email (False)
@@ -135,7 +135,7 @@ Scenario: decide if variable [[A]] is an Email (False)
 	|                     | Statement | Require All decisions to be True |
 	| [[A]] = Hello World | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] is Hex (True)
@@ -148,7 +148,7 @@ Scenario: decide if variable [[A]] is Hex (True)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 1E | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] is Hex (False)
@@ -161,7 +161,7 @@ Scenario: decide if variable [[A]] is Hex (False)
 	|             | Statement | Require All decisions to be True |
 	| [[A]] = KLM | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -175,7 +175,7 @@ Scenario: decide if variable [[A]] is Numeric (True)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -189,7 +189,7 @@ Scenario: decide if variable [[A]] is Numeric (False)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 3R | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 #Note that the debug comes out incorrectly beacuse the regex requires to be escaped but it fails the evaluation wehn escaped
@@ -203,7 +203,7 @@ Scenario: decide if variable [[A]] is Regex (True)
 	|                                    | Statement | Require All decisions to be True |
 	| [[A]] = tshepo.ntlhokoa@dev2.co.za | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| String |
 
 #Note that the debug comes out incorrectly beacuse the regex requires to be escaped but it fails the evaluation wehn escaped
@@ -217,7 +217,7 @@ Scenario: decide if variable [[A]] is Regex (False)
 	|                   | Statement | Require All decisions to be True |
 	| [[A]] = 787877787 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| String |
 
 
@@ -232,7 +232,7 @@ Scenario: decide if variable [[A]] is Text (True)
 	|                      | Statement | Require All decisions to be True |
 	| [[A]] = Hello Africa | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] is Text (False)
@@ -245,7 +245,7 @@ Scenario: decide if variable [[A]] is Text (False)
 	|              | Statement | Require All decisions to be True |
 	| [[A]] = 3000 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Is XML (True)
@@ -258,7 +258,7 @@ Scenario: decide if variable [[A]] Is XML (True)
 	|                 | Statement | Require All decisions to be True |
 	| [[A]] = <A></A> | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Is XML (False)
@@ -271,7 +271,7 @@ Scenario: decide if variable [[A]] Is XML (False)
 	|           | Statement | Require All decisions to be True |
 	| [[A]] = @ | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Alphanumeric (True)
@@ -284,7 +284,7 @@ Scenario: decide if variable [[A]] Not Alphanumeric (True)
 	|             | Statement | Require All decisions to be True |
 	| [[A]] = @#$ | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Not Alphanumeric (False)
@@ -297,7 +297,7 @@ Scenario: decide if variable [[A]] Not Alphanumeric (False)
 	|               | Statement | Require All decisions to be True |
 	| [[A]] = Hello | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Base64 (True)
@@ -310,7 +310,7 @@ Scenario: decide if variable [[A]] Not Base64 (True)
 	|                | Statement | Require All decisions to be True |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -324,7 +324,7 @@ Scenario: decide if variable [[A]] Not Base64 (False)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Binary (True)
@@ -337,7 +337,7 @@ Scenario: decide if variable [[A]] Not Binary (True)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Not Binary (False)
@@ -350,7 +350,7 @@ Scenario: decide if variable [[A]] Not Binary (False)
 	|                 | Statement | Require All decisions to be True |
 	| [[A]] = 0111100 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Date (True)
@@ -363,7 +363,7 @@ Scenario: decide if variable [[A]] Not Date (True)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = Gracious | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Not Date (False)
@@ -376,7 +376,7 @@ Scenario: decide if variable [[A]] Not Date (False)
 	|                    | Statement | Require All decisions to be True |
 	| [[A]] = 2010-01-10 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -390,7 +390,7 @@ Scenario: decide if variable [[A]] Not Email (True)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = Graciuos | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -404,7 +404,7 @@ Scenario: decide if variable [[A]] Not Email (False)
 	|                               | Statement | Require All decisions to be True |
 	| [[A]] = testmail@freemail.com | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -418,7 +418,7 @@ Scenario: decide if variable [[A]] Not Hex (True)
 	|                 | Statement | Require All decisions to be True |
 	| [[A]] = 0111000 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -432,7 +432,7 @@ Scenario: decide if variable [[A]] Not Hex (False)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 1E | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -446,7 +446,7 @@ Scenario: decide if variable [[A]] Not Numeric (True)
 	|                 | Statement | Require All decisions to be True |
 	| [[A]] = Red sox | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Not Numeric (False)
@@ -459,7 +459,7 @@ Scenario: decide if variable [[A]] Not Numeric (False)
 	|            | Statement | Require All decisions to be True |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Regex (True)
@@ -472,7 +472,7 @@ Scenario: decide if variable [[A]] Not Regex (True)
 	|           | Statement | Require All decisions to be True |
 	| [[A]] = 6 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| String |
 
 Scenario: decide if variable [[A]] Not Regex (False)
@@ -485,7 +485,7 @@ Scenario: decide if variable [[A]] Not Regex (False)
 	|                                    | Statement | Require All decisions to be True |
 	| [[A]] = tshepo.ntlhokoa@dev2.co.za | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Not Text (True)
@@ -498,7 +498,7 @@ Scenario: decide if variable [[A]] Not Text (True)
 	|           | Statement | Require All decisions to be True |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -512,7 +512,7 @@ Scenario: decide if variable [[A]] Not Text (False)
 	|                  | Statement | Require All decisions to be True |
 	| [[A]] = Gracious | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -526,7 +526,7 @@ Scenario: decide if variable [[A]] Not XML (True)
 	|             | Statement | Require All decisions to be True |
 	| [[A]] = A A | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -540,7 +540,7 @@ Scenario: decide if variable [[A]] Not XML (False)
 	|                 | Statement | Require All decisions to be True |
 	| [[A]] = <A></A> | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
@@ -558,7 +558,7 @@ Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
 	| [[C]] = 40 |           |                                  |
 	|            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True)
@@ -576,7 +576,7 @@ Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True
 	| [[C]] = 40 |           |                                  |
 	|            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (False)
@@ -594,7 +594,7 @@ Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (False)
 	| [[C]] = 40 |           |                                  |
 	|            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (False)
@@ -612,7 +612,7 @@ Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (Fals
 	| [[C]] = 40 |           |                                  |
 	|            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] Mode is AND
@@ -632,7 +632,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] 
 	| [[C]] = 30 |           |                                  |
 	|            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES     |
 
 Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] Mode is OR
@@ -652,7 +652,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] 
 	| [[C]] = 31 |           |                                  |
 	|            | String    | NO                               |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES     |
 
 Scenario: decide if variable [[A]] equals variable [[B]] (True)
@@ -667,7 +667,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] (True)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] equals variable [[B]] (False)
@@ -682,7 +682,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] (False)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -698,7 +698,7 @@ Scenario: decide if variable [[A]] greater than variable [[B]] (True)
 	| [[A]] = 40 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] greater than variable [[B]] (False)
@@ -713,7 +713,7 @@ Scenario: decide if variable [[A]] greater than variable [[B]] (False)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] less than variable [[B]] (True)
@@ -728,7 +728,7 @@ Scenario: decide if variable [[A]] less than variable [[B]] (True)
 	| [[A]] = 20 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -744,7 +744,7 @@ Scenario: decide if variable [[A]] less than variable [[B]] (False)
 	| [[A]] = 70 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 	
 Scenario: decide if variable [[A]] not equals variable [[B]] (True)
@@ -759,7 +759,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (True)
 	| [[A]] = 38 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 	
 
@@ -775,7 +775,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (False)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
  Scenario: decide if variable [[A]] equal or greater than variable [[B]] (True)
@@ -790,7 +790,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (False)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] equal or greater than variable [[B]] (False)
@@ -805,7 +805,7 @@ Scenario: decide if variable [[A]] equal or greater than variable [[B]] (False)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] equal or less than variable [[B]] (True)
@@ -820,7 +820,7 @@ Scenario: decide if variable [[A]] equal or less than variable [[B]] (True)
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] equal or less than variable [[B]] (False)
@@ -835,7 +835,7 @@ Scenario: decide if variable [[A]] equal or less than variable [[B]] (False)
 	| [[A]] = 60 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -851,7 +851,7 @@ Scenario: decide if variable [[A]] Starts With variable [[B]] (True)
 	| [[A]] = Hello World |           |                                  |
 	| [[B]] = Hello       | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -867,7 +867,7 @@ Scenario: decide if variable [[A]] Starts With variable [[B]] (False)
 	| [[A]] = Hello Africa |           |                                  |
 	| [[B]] = World        | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -883,7 +883,7 @@ Scenario: decide if variable [[A]] Ends With variable [[B]] (True)
 	| [[A]] = Hello Africa |           |                                  |
 	| [[B]] = Africa       | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Ends With variable [[B]] (False)
@@ -898,7 +898,7 @@ Scenario: decide if variable [[A]] Ends With variable [[B]] (False)
 	| [[A]] = Hello World |           |                                  |
 	| [[B]] = Africa      | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -914,7 +914,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (True)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = fantastic                           | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -930,7 +930,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = terrible                            | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 
@@ -946,7 +946,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = country                             | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 
@@ -962,7 +962,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = South                               | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
@@ -977,7 +977,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = continent                           | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
@@ -992,7 +992,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = country                             | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
@@ -1007,7 +1007,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = Nile                                | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
@@ -1022,7 +1022,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = Africa                              | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 		
@@ -1035,8 +1035,8 @@ Scenario: decide if There Is An Error (True)
 	|  | Statement | Require All decisions to be True |
 	|  | String    | YES                              |
 	And the debug output as 
-	| Result |
-	| YES    |
+	|     |
+	| YES |
 
 Scenario: decide if There Is An Error (False)
 	Given a decision variable "[[rec().row]]" value "South Africa is a fantastic country"
@@ -1047,7 +1047,7 @@ Scenario: decide if There Is An Error (False)
 	|  | Statement | Require All decisions to be True |
 	|  | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| NO     |
 
 Scenario: decide if There Is No Error (True)
@@ -1059,7 +1059,7 @@ Scenario: decide if There Is No Error (True)
 	|  | Statement | Require All decisions to be True |
 	|  | String    | YES                              |
 	And the debug output as 
-	| Result |
+	|         |
 	| YES    |
 
 Scenario: decide if There Is No Error (False)
@@ -1072,8 +1072,8 @@ Scenario: decide if There Is No Error (False)
 	|  | Statement | Require All decisions to be True |
 	|  | String    | YES                              |
 	And the debug output as 
-	| Result |
-	| NO     |
+	|    |
+	| NO |
 
 
 

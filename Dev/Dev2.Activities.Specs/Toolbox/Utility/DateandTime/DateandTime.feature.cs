@@ -108,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table2.AddRow(new string[] {
                         "[[result]] = 2014-11-28"});
 #line 17
@@ -162,7 +162,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table4.AddRow(new string[] {
                         "[[result]] = DateTime"});
 #line 33
@@ -214,7 +214,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table6.AddRow(new string[] {
                         "[[result]] ="});
 #line 48
@@ -264,7 +264,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table8.AddRow(new string[] {
                         "[[result]] = 12:31"});
 #line 63
@@ -314,7 +314,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table10.AddRow(new string[] {
                         "[[result]] ="});
 #line 78
@@ -362,7 +362,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table12.AddRow(new string[] {
                         "[[result]] = as1f"});
 #line 93
@@ -412,7 +412,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table14.AddRow(new string[] {
                         "[[result]] ="});
 #line 108
@@ -467,7 +467,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table16.AddRow(new string[] {
                         "[[result]] = 04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standar" +
                             "d Time:PM:16:5:4:Thursday:339:12"});
@@ -522,7 +522,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table18.AddRow(new string[] {
                         "[[result]] = 2013/12/05 04:18:51 PM"});
 #line 138
@@ -576,7 +576,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table20.AddRow(new string[] {
                         "[[result]] = 2013/12/05 04:18:51 PM"});
 #line 153
@@ -630,7 +630,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table22.AddRow(new string[] {
                         "[[result]] = 2013/12/05 04:18:51 PM"});
 #line 169
@@ -676,7 +676,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table24.AddRow(new string[] {
                         "[[result]] ="});
 #line 183
@@ -722,7 +722,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table26.AddRow(new string[] {
                         "[[result]] ="});
 #line 197
@@ -768,7 +768,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table28.AddRow(new string[] {
                         "[[result]] ="});
 #line 211
@@ -814,7 +814,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table30.AddRow(new string[] {
                         "[[result]] ="});
 #line 225
@@ -862,7 +862,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table32.AddRow(new string[] {
                         "[[result]] = 0001-01-01 00r:00:00 AM A.D."});
 #line 240

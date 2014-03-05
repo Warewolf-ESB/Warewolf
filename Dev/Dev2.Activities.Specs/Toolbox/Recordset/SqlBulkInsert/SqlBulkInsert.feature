@@ -25,7 +25,7 @@ Scenario: Import data into table with check contraint disabled
 	|   | [[rs(2).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |    
 
 Scenario: Import data into Table with check constraint enabled
@@ -44,7 +44,7 @@ Scenario: Import data into Table with check constraint enabled
 	| 3 | [[rs(1).Col3]] = b89416b9-5b24-4f95-bd11-25d9db8160a2 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | YES               | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Import data into Table with keep identity disabled
@@ -75,7 +75,7 @@ Scenario: Import data into Table with keep identity disabled
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Import data into Table with keep identity enabled
@@ -105,7 +105,7 @@ Scenario: Import data into Table with keep identity enabled
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | YES           | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Import data into Table with skip blank rows disabled
@@ -136,7 +136,7 @@ Given I have this data
 	|   | [[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 
 Scenario: Import data into Table with skip blank rows enabled
@@ -167,7 +167,7 @@ Given I have this data
 	|   | [[rs(4).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | YES             |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Import data into Table with fire triggers disabled
@@ -198,7 +198,7 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | NO            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |	
 
 Scenario: Import data into Table with fire triggers enabled
@@ -229,7 +229,7 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Success |
 
 Scenario: Import data into Table Batch size is 0
@@ -255,7 +255,7 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |             |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        | 0           |         | NO                | NO              | YES           | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                      |
 	| [[result]] = Success |
 
 Scenario: Import data into Table Batch size is 1
@@ -328,7 +328,7 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            |  3      | NO                | NO              | YES            | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                      |
 	| [[result]] = Success |
 
 Scenario: Import data into Table timeout after 1 second
@@ -355,7 +355,7 @@ Given I have this data
 	|   | [[rs(3).Col3]] = 279c690e-3304-47a0-8bde-5d3ca2520a34 | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                                                       |          |        |            | 1       | NO                | NO              | YES           | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |
 	
 Scenario: Import data into table with blank data
@@ -372,7 +372,7 @@ Scenario: Import data into table with blank data
 	| 3 | [[rs(1).Col3]] = | Col3     | bigint |            |         |                   |                 |               |               |                          |                 |
 	|   |                  |          |        |            |         | NO                | NO              | NO           | NO            | NO                       | NO              |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = Failure |    
 
 

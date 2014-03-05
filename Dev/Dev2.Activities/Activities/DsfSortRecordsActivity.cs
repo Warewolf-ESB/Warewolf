@@ -99,7 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     tmpExpression = tmpExpression.Replace("().", "(*).");
                                 }
-                                AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "Result", rsData, executionID));
+                                AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionID));
                             }
                     }
                 }

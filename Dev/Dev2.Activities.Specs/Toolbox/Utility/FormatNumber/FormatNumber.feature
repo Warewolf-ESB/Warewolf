@@ -14,7 +14,7 @@ Scenario: Format number rounding normal with zero rounding and zero decimals to 
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | Normal   | 0              | 0                |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = 789 |
 
 Scenario: Format number rounding down 
@@ -28,7 +28,7 @@ Scenario: Format number rounding down
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | Down     | 3              | 3                |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = 788.894 |
 
 Scenario: Format number rounding up
@@ -42,7 +42,7 @@ Scenario: Format number rounding up
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | Up       | 3              | 3                |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = 788.895 |
 
 Scenario: Format number rounding normal
@@ -56,7 +56,7 @@ Scenario: Format number rounding normal
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | Normal   | 2              | 3                |
 	And the debug output as 
-	| Result               |
+	|                       |
 	| [[result]] = 788.890 |
 
 Scenario: Format number rounding none
@@ -70,7 +70,7 @@ Scenario: Format number rounding none
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | None     | 0              | 4                |
 	And the debug output as 
-	| Result                |
+	|                        |
 	| [[result]] = 788.8945 |
 
 Scenario: Format number rounding down to negative number
@@ -84,7 +84,7 @@ Scenario: Format number rounding down to negative number
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | Down     | -2             | 0                |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = 700 |
 
 Scenario: Format number large number to negative decimals
@@ -98,7 +98,7 @@ Scenario: Format number large number to negative decimals
 	| Number           | Rounding | Rounding Value | Decimals to show |
 	| 788.894564545645 | None     | 0              | -2               |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 7 |
 
 Scenario: Format number single digit to negative decimals
@@ -111,7 +111,7 @@ Scenario: Format number single digit to negative decimals
 	| Number | Rounding | Rounding Value | Decimals to show |
 	| 7      | None     | 0              | -2               |
 	And the debug output as 
-	| Result         |
+	|                 |
 	| [[result]] = 0 |
 	And the execution has "NO" error
 
@@ -126,7 +126,7 @@ Scenario: Format number rounding up to a character
 	| Number | Rounding | Rounding Value | Decimals to show |
 	| 34.2   | Up       | c              | 2                |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 #
 #Scenario: Format number that is blank
@@ -138,7 +138,7 @@ Scenario: Format number rounding up to a character
 #	| Number | Rounding | Rounding Value | Decimals to show |
 #	|        |          |                |                  |
 #	And the debug output as 
-#	| Result       |
+#	|               |
 #	| [[result]] = |
 
 Scenario: Format non numeric
@@ -152,7 +152,7 @@ Scenario: Format non numeric
 	| Number | Rounding | Rounding Value | Decimals to show |
 	| asdf   | None     | 0              | -2               |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Format number to charater decimals
@@ -166,7 +166,7 @@ Scenario: Format number to charater decimals
 	| Number | Rounding | Rounding Value | Decimals to show |
 	| 34.2   | Up       | 1              | asdf             |
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |
 
 Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
@@ -183,7 +183,7 @@ Scenario: Format number with multipart variables and numbers for number rounding
 	| Number                                  | Rounding | Rounding Value     | Decimals to show   |
 	| [[int]].894564545645 = 788.894564545645 | Up       | -[[rounding]] = -2 | [[decimals]]1 = -1 |
 	And the debug output as 
-	| Result          |
+	|                  |
 	| [[result]] = 80 |
 
 #Scenario: Format number with negative recordset index for number
@@ -194,7 +194,7 @@ Scenario: Format number with multipart variables and numbers for number rounding
 #	| Number           | Rounding | Rounding Value | Decimals to show |
 #	| [[my(-1).int]] = |          |                |                  |
 #	And the debug output as 
-#	| Result       |
+#	|               |
 #	| [[result]] = |
 
 Scenario: Format number with negative recordset index for rounding
@@ -207,7 +207,7 @@ Scenario: Format number with negative recordset index for rounding
 	| Number                                  | Rounding | Rounding Value        | Decimals to show |
 	| [[int]].894564545645 = 788.894564545645 | Up       | [[my(-1).rounding]] = | ""               |
 	And the debug output as 
-	| Result           |
+	|                   |
 	| [[result]] = 789 |
 
 #Scenario: Format number with negative recordset index for decimals to show
@@ -220,5 +220,5 @@ Scenario: Format number with negative recordset index for rounding
 #	| Number                                  | Rounding | Rounding Value | Decimals to show      |
 #	| [[int]].894564545645 = 788.894564545645 |          |                | [[my(-1).decimals]] = |
 #	And the debug output as 
-#	| Result       |
+#	|               |
 #	| [[result]] = |

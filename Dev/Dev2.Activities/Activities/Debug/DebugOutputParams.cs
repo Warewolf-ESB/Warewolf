@@ -14,13 +14,13 @@ namespace Dev2.Activities.Debug
         readonly int _indexToUpsertTo;
         readonly string _labelText;
 
-        public DebugOutputParams(string expression, string value, Guid dlId, int indexToUpsertTo, string labelText = "Result")
+        public DebugOutputParams(string expression, string value, Guid dlId, int indexToUpsertTo)
         {
             _expression = expression;
             _value = value;
             _dlId = dlId;
             _indexToUpsertTo = indexToUpsertTo;
-            _labelText = labelText;
+            _labelText = "";
         }
 
         public string Expression

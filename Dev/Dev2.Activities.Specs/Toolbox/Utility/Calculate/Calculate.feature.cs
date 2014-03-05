@@ -94,7 +94,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table2.AddRow(new string[] {
                         "[[result]] = 0"});
 #line 14
@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table4.AddRow(new string[] {
                         "[[result]] = 20.1"});
 #line 28
@@ -177,7 +177,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table6, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table7.AddRow(new string[] {
                         "[[result]] = 6"});
 #line 45
@@ -211,7 +211,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table9.AddRow(new string[] {
                         "[[result]] ="});
 #line 57
@@ -247,7 +247,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table11.AddRow(new string[] {
                         "[[result]] = 1"});
 #line 70
@@ -279,7 +279,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the debug inputs as", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Result"});
+                        ""});
             table13.AddRow(new string[] {
                         "[[result]] ="});
 #line 81

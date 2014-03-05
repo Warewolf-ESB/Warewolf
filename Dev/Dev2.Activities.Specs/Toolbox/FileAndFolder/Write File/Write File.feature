@@ -17,7 +17,7 @@ Scenario Outline: Write file at location
          | Output Path                 | Method   | Username   | Password | File Contents |
          | <source> = <sourceLocation> | <method> | <username> | String   | <content>     |
 	And the debug output as
-		| Result                 |
+		|                        |
 		| <resultVar> = <result> |
 		Examples: 
 		| Name                     | source   | sourceLocation                                                 | method        | content        | username          | password | resultVar  | result  | errorOccured |

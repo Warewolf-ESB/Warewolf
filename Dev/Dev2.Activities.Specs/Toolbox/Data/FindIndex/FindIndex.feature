@@ -16,7 +16,7 @@ Scenario: Find the first Occurrence of a character in a sentence
 	| In Field                                                                               | Index            | Characters | Direction     |
 	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | First Occurrence | since      | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = 49 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to scalar going left to right
@@ -32,7 +32,7 @@ Scenario: Find all Occurrences of a word in a sentence and output to scalar goin
 	| In Field                                                                               | Index           | Characters | Direction     |
 	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | All Occurrences | a          | Left to Right |
 	And the debug output as
-	| Result                          |
+	|                                  |
 	| [[result]] = 4,9,11,35,43,59,72 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to recordset going right to left 
@@ -43,7 +43,7 @@ Scenario: Find all Occurrences of a word in a sentence and output to recordset g
 	And I selected direction as "Right to Left"
 	When the data find index tool is executed
 	Then the find index result is 
-	| result |
+	|         |
 	| 7      |
 	| 20     |
 	| 36     |
@@ -56,7 +56,7 @@ Scenario: Find all Occurrences of a word in a sentence and output to recordset g
 	| In Field                                                                               | Index           | Characters | Direction     |
 	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | All Occurrences | a          | Right to Left |
 	And the debug output as
-	| Result                           |
+	|                                   |
 	| [[result]] = 7,20,36,44,68,70,75 |
 
 Scenario: Find last Occurrence of a bracket in a sentence
@@ -72,7 +72,7 @@ Scenario: Find last Occurrence of a bracket in a sentence
 	| In Field            | Index           | Characters | Direction     |
 	| [[a]] = !@#$%)@#$%) | Last Occurrence | )          | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = 11 |
 
 Scenario: Find first Occurrence of a character in a blank string
@@ -88,7 +88,7 @@ Scenario: Find first Occurrence of a character in a blank string
 	| In Field | Index            | Characters | Direction     |
 	| [[a]] =  | First Occurrence | a          | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find first Occurrence of a character in a string where it doesnt exist
@@ -104,7 +104,7 @@ Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	| In Field    | Index            | Characters | Direction     |
 	| [[a]] = fff | First Occurrence | a          | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find all Occurrences of a character in a string where it doesnt exist
@@ -120,7 +120,7 @@ Scenario: Find all Occurrences of a character in a string where it doesnt exist
 	| In Field | Index          | Characters | Direction     |
 	| [[a]] =  | All Occurrence | a          | Left to Right |
 	And the debug output as
-	| Result          |
+	|                 |
 	| [[result]] = -1 |
 
 Scenario: Find an xml fragment in a bigger xml document
@@ -137,7 +137,7 @@ Scenario: Find an xml fragment in a bigger xml document
 	| In Field                         | Index            | Characters                   | Direction     |
 	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | <b id="[[id]]"> = <b id="1"> | Left to Right |
 	And the debug output as
-	| Result         |
+	|                 |
 	| [[result]] = 4 |
 
 Scenario: Find a negative recordset index in a string
@@ -152,7 +152,7 @@ Scenario: Find a negative recordset index in a string
 	| In Field                         | Index            | Characters        | Direction     |
 	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | [[my(-1).data]] = | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Find something with a negative recordset index as Input
@@ -166,7 +166,7 @@ Scenario: Find something with a negative recordset index as Input
 	| In Field      | Index            | Characters | Direction     |
 	| [[a(-1).b]] = | First Occurrence | 12         | Left to Right |
 	And the debug output as
-	| Result          |
+	|                  |
 	| [[result]] = -1 |
 
 Scenario: Output values in recordset with star notation
@@ -181,7 +181,7 @@ Scenario: Output values in recordset with star notation
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[rs(1).a]] = 4  |
 	| [[rs(2).a]] = 8  |
 	| [[rs(3).a]] = 12 | 
@@ -198,7 +198,7 @@ Scenario: Output values in recordset with numeric notation
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	| Result               |
+	|                       |
 	| [[rs(1).a]] = 4,8,12 |
 
 Scenario: Output values in multiple result variables
@@ -213,7 +213,7 @@ Scenario: Output values in multiple result variables
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	| Result           |
+	|                   |
 	| [[res]] = 4,8,12 |
 	| [[rs(1).a]] = 4  |
 	| [[rs(2).a]] = 8  |

@@ -175,6 +175,7 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="ConverterTests\PaddingThicknessConverterTests.cs" />
     <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
     <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />

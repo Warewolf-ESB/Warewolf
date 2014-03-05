@@ -14,7 +14,7 @@ Scenario: Generate Letters
 	| Random  | Length |
 	| Letters | 10     |
 	And the debug output as 
-	| Result              |
+	|                      |
 	| [[result]] = String |
 
 Scenario: Generate Letters and Numbers
@@ -27,7 +27,7 @@ Scenario: Generate Letters and Numbers
 	| Random            | Length |
 	| Letters & Numbers | 10     |
 	And the debug output as 
-	| Result              |
+	|                      |
 	| [[result]] = String |
 	
 Scenario: Generate Numbers one digit
@@ -40,7 +40,7 @@ Scenario: Generate Numbers one digit
 	| Random  | From | To |
 	| Numbers | 0    | 9  |
 	And the debug output as 
-	| Result             |
+	|                     |
 	| [[result]] = Int32 |	
 
 Scenario: Generate Numbers two digits
@@ -53,7 +53,7 @@ Scenario: Generate Numbers two digits
 	| Random  | From | To |
 	| Numbers | 10   | 99 |
 	And the debug output as 
-	| Result             |
+	|                     |
 	| [[result]] = Int32 | 
 
 Scenario: Generate Guid
@@ -65,7 +65,7 @@ Scenario: Generate Guid
 	| Random |
 	| GUID   |
 	And the debug output as 
-	| Result            |
+	|                    |
 	| [[result]] = Guid |
 	
 
@@ -79,7 +79,7 @@ Scenario: Generate Numbers with blank range
 	| Random  | From | To |
 	| Numbers | ""   | "" |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Numbers with one blank range
@@ -92,7 +92,7 @@ Scenario: Generate Numbers with one blank range
 	| Random  | From | To |
 	| Numbers | 1    | "" |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Numbers with a negative range
@@ -105,7 +105,7 @@ Scenario: Generate Numbers with a negative range
 	| Random  | From | To |
 	| Numbers | -1   | -9 |
 	And the debug output as 
-	| Result             |
+	|                     |
 	| [[result]] = Int32 |
 
 Scenario: Generate Letters with blank length
@@ -117,7 +117,7 @@ Scenario: Generate Letters with blank length
 	| Random  | From | To |
 	| Numbers | ""   | "" |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Letters with a negative length
@@ -130,7 +130,7 @@ Scenario: Generate Letters with a negative length
 	| Random  | Length |
 	| Letters | -1     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Letters and Numbers with blank length
@@ -143,7 +143,7 @@ Scenario: Generate Letters and Numbers with blank length
 	| Random            | Length |
 	| Letters & Numbers | ""     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Letters and Numbers with a negative length
@@ -156,7 +156,7 @@ Scenario: Generate Letters and Numbers with a negative length
 	| Random            | Length |
 	| Letters & Numbers | ""     |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 	
 
@@ -171,7 +171,7 @@ Scenario: Generate a Number between 5 and 5
 	| Random  | From | To |
 	| Numbers | 5    | 5  |
 	And the debug output as 
-	| Result             |
+	|                     |
 	| [[result]] = Int32 |
 
 Scenario: Generate a Number between a negative index in a recordset and 5
@@ -183,7 +183,7 @@ Scenario: Generate a Number between a negative index in a recordset and 5
 	| Random  | From              | To |
 	| Numbers | [[rec(-1).set]] = | 5  |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate a Number between 5 and a negative index in a recordset
@@ -195,7 +195,7 @@ Scenario: Generate a Number between 5 and a negative index in a recordset
 	| Random  | From | To                 |
 	| Numbers | 5    | [[rec(-1).set]]  = |
 	And the debug output as 
-	| Result       |
+	|               |
 	| [[result]] = |
 
 Scenario: Generate Letters with a negative recordset index for length
@@ -207,7 +207,7 @@ Scenario: Generate Letters with a negative recordset index for length
 	| Random  | Length             |
 	| Letters | [[rec(-1).set]]  = | 
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |
 
 Scenario: Generate Letters and Numbers with a negative recordset index for length
@@ -219,6 +219,6 @@ Scenario: Generate Letters and Numbers with a negative recordset index for lengt
 	| Random            | Length            |
 	| Letters & Numbers | [[rec(-1).set]] = |
 	And the debug output as 
-	| Result       |
+	|              |
 	| [[result]] = |
 
