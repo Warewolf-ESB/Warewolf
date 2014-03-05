@@ -297,8 +297,6 @@
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindNetworkComputerServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\GetDatabaseTablesServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\GetGetDatabaseColumnsForTableServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\SaveResourceServiceTest.cs" />
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
     <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
