@@ -222,7 +222,7 @@ Scenario: Merge a long string using small index and padding and alignment at inv
 	| 1 | [[a]] = Warewolf | Index | -1    | " " | Left  |
 	| 2 | [[b]] = 12345    | Index | -1    | 0   | Right |	
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 	
 Scenario: Merge a long string using small index and padding and alignment at invalid quoted index

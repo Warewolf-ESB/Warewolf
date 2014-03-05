@@ -271,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams(string.IsNullOrEmpty(Result) ? "" : Result, Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("",Result, ""));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);

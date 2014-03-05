@@ -200,7 +200,10 @@ namespace Dev2.Activities
                     DispatchDebugState(_nativeActivityContext, StateType.After);
                 }
 
-                File.Delete(_fullPath);
+                if(!string.IsNullOrEmpty(_fullPath))
+                {
+                    File.Delete(_fullPath);
+                }
             }
         }
 

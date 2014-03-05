@@ -5,7 +5,6 @@ using Dev2.Common;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -115,7 +114,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                toUpsert.IsDebug = dataObject.IsDebugMode();
+                toUpsert.IsDebug = (dataObject.IsDebugMode());
+                toUpsert.ResourceID = dataObject.ResourceID;
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                 IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? GlobalConstants.CalcExpressionNow : DateTime, executionId, compiler, colItr, allErrors);
@@ -173,8 +173,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-
-                int indexToUpsertTO = 1;
                 string expression;
 
                 if(!allErrors.HasErrors())
@@ -193,15 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         string result;
                         if(format.TryFormat(transObj, out result, out error))
                         {
-                            if(DataListUtil.IsValueRecordset(Result) &&
-                                DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                            {
-                                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTO.ToString(CultureInfo.InvariantCulture));
-                            }
-                            else
-                            {
-                                expression = Result;
-                            }
+                            expression = Result;
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                             {
@@ -213,7 +203,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             allErrors.AddError(error);
                         }
-                        indexToUpsertTO++;
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);

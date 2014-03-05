@@ -640,7 +640,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table26.AddRow(new string[] {
-                        "[[result]] = 789"});
+                        "[[result]] ="});
 #line 209
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden

@@ -207,8 +207,8 @@ Scenario: Format number with negative recordset index for rounding
 	| Number                                  | Rounding | Rounding Value        | Decimals to show |
 	| [[int]].894564545645 = 788.894564545645 | Up       | [[my(-1).rounding]] = | ""               |
 	And the debug output as 
-	|                   |
-	| [[result]] = 789 |
+	|              |
+	| [[result]] = |
 
 #Scenario: Format number with negative recordset index for decimals to show
 #	Given I have a formatnumber variable "[[int]]" equal to 788
