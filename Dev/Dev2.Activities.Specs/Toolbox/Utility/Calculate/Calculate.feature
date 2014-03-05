@@ -81,3 +81,9 @@ Scenario: Calculate using a negative index recordset value
 	And the debug output as 
 	|               |
 	| [[result]] = |
+
+Scenario: Calculate using isnumber and blank
+    Given I have the formula "if(isnumber(""),"Is number","Not number")"
+	When the calculate tool is executed
+	Then the calculate result should be "Not number"
+	And the execution has "NO" error
