@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Security.Policy;
+using Dev2.Common;
 using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -65,6 +66,16 @@ namespace Dev2.Data.Util
             return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
         }
 
+        /// <summary>
+        /// Replaces the index of a recordset with a blank index.
+        /// </summary>
+        /// <param name="expression">The expession.</param>
+        /// <returns></returns>
+        public static string ReplaceRecordsetIndexWithBlank(string expression)
+        {
+            string extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
+            return expression.Replace(extractIndexRegionFromRecordset, "()");
+        }
 
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].

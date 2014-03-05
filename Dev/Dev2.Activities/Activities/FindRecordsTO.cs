@@ -201,13 +201,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "From":
                     if(SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
-                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                        ruleSet.Add(new IsStringEmptyRule(() => From));
                     }
                     break;
                 case "To":
                     if(SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
-                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                        ruleSet.Add(new IsStringEmptyRule(() => To));
                     }
                     break;
             }

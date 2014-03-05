@@ -124,6 +124,11 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             {
                 case "FieldsToSearch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
+                    if(!string.IsNullOrEmpty(FieldsToSearch))
+                    {
+                        ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
+                        ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
+                    }
                     break;
 
                 case "Result":
