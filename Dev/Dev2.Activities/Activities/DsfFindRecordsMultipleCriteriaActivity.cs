@@ -111,6 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IEnumerable<string> resultsDuringSearch;
                 var concatRes = string.Empty;
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                toUpsert.IsDebug = dataObject.IsDebugMode();
                 bool isFirstIteration = true;
                 for(var i = 0; i < ResultsCollection.Count; i++)
                 {
