@@ -575,6 +575,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
             var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
 
 

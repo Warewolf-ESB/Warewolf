@@ -217,6 +217,7 @@
     <Compile Include="ResourceModelFactoryTests.cs" />
     <Compile Include="Settings\SettingsItemViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
+    <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
     <Compile Include="DataListSingletonTest.cs" />

@@ -150,6 +150,8 @@ namespace Dev2.Activities.Debug
         public List<DebugItemResult> CreateDebugItemFromDebugOutputTO(DebugOutputTO debugOutputTO, string labelText, List<string> regions)
         {
             List<DebugItemResult> results = new List<DebugItemResult>();
+            if(debugOutputTO.TargetEntry != null)
+            {
             var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
             if(auditor != null)
             {
@@ -185,10 +187,10 @@ namespace Dev2.Activities.Debug
                                 var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                                 var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
 
-                                if(regions.Contains(group))
+                                    if(regions.Contains(@group))
                                 {
                                     grpIdx++;
-                                    groupName = group;
+                                        groupName = @group;
                                 }
                             }
                         }
@@ -211,6 +213,7 @@ namespace Dev2.Activities.Debug
                         GroupIndex = grpIdx
                     });
                 }
+            }
             }
             return results;
         }

@@ -2418,5 +2418,5 @@ Scenario: Search using a negative index recordset criteria
 	| In Field(s)| [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
 	|           | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
 	And the debug output as
-	|                   |
+	|                  |
 	| [[result]] =  -1 |

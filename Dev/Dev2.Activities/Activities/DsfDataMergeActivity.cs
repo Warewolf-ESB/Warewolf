@@ -237,7 +237,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 compiler.Upsert(executionId, toUpsert, out errorResultTO);
                                 allErrors.MergeErrors(errorResultTO);
                             }
-
                             if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
                                 foreach(var debugOutputTo in toUpsert.DebugOutputs)

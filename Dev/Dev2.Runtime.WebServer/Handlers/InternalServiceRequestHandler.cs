@@ -51,7 +51,13 @@ namespace Dev2.Runtime.WebServer.Handlers
         public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceID, Guid dataListID, string connectionId)
         {
             var channel = new EsbServicesEndpoint();
-            IDSFDataObject dataObject = new DsfDataObject(string.Empty, dataListID);
+            var xmlData = string.Empty;
+            if(request.Args != null && request.Args.ContainsKey("DebugPayload"))
+            {
+                xmlData = request.Args["DebugPayload"].ToString();
+                xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
+            }
+            IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             dataObject.ServiceName = request.ServiceName;
             dataObject.ClientID = Guid.Parse(connectionId);
             dataObject.ExecutingUser = ExecutingUser;
@@ -71,13 +77,17 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-
                 if(request.ExecuteResult.Length > 0)
                 {
                     return request.ExecuteResult;
                 }
 
                 // return the datalist ;)
+                if(dataObject.IsDebugMode())
+                {
+                    compiler.ForceDeleteDataListByID(dlID);
+                    return new StringBuilder("Completed Debug");
+                }
                 var result = new StringBuilder(compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors));
                 compiler.ForceDeleteDataListByID(dlID);
                 return result;

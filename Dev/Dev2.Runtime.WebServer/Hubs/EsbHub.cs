@@ -163,7 +163,6 @@ namespace Dev2.Runtime.WebServer.Hubs
                     return null;
                 });
                 task.Start();
-
                 return await task;
             }
             catch(Exception e)

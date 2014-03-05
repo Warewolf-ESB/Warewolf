@@ -248,6 +248,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
 
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+
             }
 
             var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMB();

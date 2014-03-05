@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
@@ -279,6 +278,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(clientContext != null)
             {
                 var dataList = XElement.Parse(DebugTO.XmlData);
+                //
                 dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", DebugTO.SessionID));
                 dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
@@ -289,7 +289,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
-            WebServer.SendAsync(WebServerMethod.POST, _resourceModel, payload.ToString(), ExecutionCallback);
+            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString());
         }
 
         public void ViewInBrowser()
@@ -316,11 +316,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected virtual void SendViewInBrowserRequest(string payload, bool isXml)
         {
             WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload, isXml);
-        }
-
-        private void ExecutionCallback(UploadStringCompletedEventArgs args)
-        {
-            //dont do anything 
         }
 
         private void SendFinishedMessage()
@@ -434,7 +429,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                             if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
                             {
-                                indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item.Recordset));
+                                IDataListItem item1 = item;
+                                indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
                             }
                             else
                             {
@@ -457,7 +453,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                         if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
                         {
-                            indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item.Recordset));
+                            IDataListItem item1 = item;
+                            indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
                         }
                         else
                         {

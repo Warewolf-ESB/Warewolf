@@ -1,4 +1,9 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -20,11 +25,6 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -2169,7 +2169,9 @@ namespace Dev2.Server.Datalist
 
                                 if(payload.IsDebug && (!payload.IsIterativePayload() || debugOutputTO.TargetEntry == null))
                                 {
-                                    debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                    //debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                    debugOutputTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
+                                    debugOutputTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
                                 }
 
                                 allErrors.AddError(error);
