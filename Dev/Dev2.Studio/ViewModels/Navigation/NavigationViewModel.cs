@@ -80,6 +80,14 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public enDsfActivityType DsfActivityType { get { return _activityType; } set { _activityType = value; } }
 
+        public IEventAggregator EventAggregator {
+            get { return _eventPublisher; }
+        }
+
+        public IAsyncWorker AsyncWorker {
+            get { return _asyncWorker; }
+        }
+
         public bool IsFromActivityDrop
         {
             get { return _fromActivityDrop; }
@@ -813,6 +821,45 @@ namespace Dev2.Studio.ViewModels.Navigation
                 treeNodes[0].IsSelected = true;
                 this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
+            }
+        }
+
+        public virtual void ClearConflictingNodesNodes()
+        {
+            Iterate((node =>
+            {
+                node.IsOverwrite = false;
+                
+              
+            }));
+
+
+        }
+
+        /// <summary>
+        /// perform some kind of action on all children of a node
+        /// </summary>
+        /// <param name="action"></param>
+    
+        private void Iterate(Action<ITreeNode> action)
+        {
+            Iterate(action, _root);
+        }
+        /// <summary>
+        /// perform some kind of action on all children of a node. this can be moved onto the tree node interface if it is found to be needed elsewhere
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="node"></param>
+        private void Iterate(Action<ITreeNode> action, ITreeNode node)
+        {
+            if (node != null)
+            {
+                action(node);
+                if (node.Children != null)
+                    foreach (var child in node.Children)
+                    {
+                        Iterate(action, child);
+                    }
             }
         }
     }

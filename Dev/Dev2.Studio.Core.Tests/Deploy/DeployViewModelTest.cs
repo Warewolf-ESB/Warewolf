@@ -16,9 +16,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
+using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -490,6 +492,43 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [TestCategory("DeployViewModel_SelectedSourceServerDisconnectedMustClearConflicts")]
+        [Owner("Leon Rajindrapersadh")]
+        public void DeployViewModel_SourceServerDisconnected_ClearsConflictingNodes()
+        {
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+           
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            
+
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+
+            deployViewModel.SelectedDestinationServer = destServer.Object;
+             
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            var target = new PartialNaviationViewModel(deployViewModel.Target);
+            deployViewModel.Target = target;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+            destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
+            
+            Assert.IsFalse(deployViewModel.SourceServerHasDropped);
+
+            mockSourceServer.Setup(server => server.IsConnected).Returns(false);
+            var connectedEventArgs = new ConnectedEventArgs();
+            connectedEventArgs.IsConnected = false;
+            deployViewModel.SourceEnvironmentConnectedChanged(this,connectedEventArgs);
+
+            Assert.IsTrue(target.ClearCalled);
+           
+
+        }
+
+        [TestMethod]
         [TestCategory("DeployViewModel_SelectedSourceServerDisconnected")]
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_DestinationServerDisconnected_DestinationServerHasDroppedTrue()
@@ -766,5 +805,21 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(serversAreNotTheSame);
         }
 
+    }
+
+    public class PartialNaviationViewModel :NavigationViewModel
+    {
+        public bool ClearCalled { get; set; }
+
+        public PartialNaviationViewModel(NavigationViewModel model)
+            : base(model.EventAggregator, model.AsyncWorker, model.Context, model.EnvironmentRepository, model.IsFromActivityDrop, model.DsfActivityType)
+        {
+           
+        }
+
+        public override void ClearConflictingNodesNodes()
+        {
+            ClearCalled = true;
+        }
     }
 }

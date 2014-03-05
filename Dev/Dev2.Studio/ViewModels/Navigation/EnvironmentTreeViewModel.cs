@@ -157,7 +157,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     IsRefreshing = false;
                 }
+            
             }
+     
         }
 
         /// <summary>
@@ -485,5 +487,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             throw new NotImplementedException();
         }
+
+
+
     }
 }

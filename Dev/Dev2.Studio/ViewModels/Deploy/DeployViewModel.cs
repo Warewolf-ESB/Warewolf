@@ -193,7 +193,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             private set
             {
                 _sourceEnvironment = value;
+
+                if (null != _sourceEnvironment)
+                _sourceEnvironment.IsConnectedChanged += SourceEnvironmentConnectedChanged;
                 NotifyOfPropertyChange(() => SourceEnvironment);
+            }
+        }
+
+        public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
+        {
+            if (null != _targetEnvironment && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
+            {
+                
+                _target.ClearConflictingNodesNodes();
             }
         }
 
@@ -278,6 +290,11 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(value == _source) return;
 
                 _source = value;
+                if (null != _targetEnvironment && null != _target && _sourceStatPredicates != null &&
+                    _targetStatPredicates != null)
+                {
+                    CalculateStats();
+                }
                 NotifyOfPropertyChange(() => Source);
             }
         }

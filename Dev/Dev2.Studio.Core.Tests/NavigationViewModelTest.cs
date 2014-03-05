@@ -1463,5 +1463,30 @@ namespace Dev2.Core.Tests
             var resourceNode = (ResourceTreeViewModel)categoryNode.Children[0];
             Assert.IsNotNull(resourceNode.ActivityFullName);
         }
+
+
+        [TestMethod]
+        public void ClearConflicts_Expects_AllItemsHaveNoConflicts()
+        {
+            // base case
+            Init(false, true);    
+            _vm.Root.IsOverwrite = true;
+            _vm.Root.Children[0].IsOverwrite = true;
+            _vm.Root.IsOverwrite = true;
+            _vm.Root.Children[0].Children[0].IsOverwrite = true;
+            _vm.ClearConflictingNodesNodes();
+            Assert.AreEqual(false,_vm.Root.IsOverwrite);
+            Assert.AreEqual(false, _vm.Root.Children[0].IsOverwrite);
+            Assert.AreEqual(false, _vm.Root.Children[0].Children[0].IsOverwrite);
+           
+            // make sure no side effects 
+            // base case
+            Init(false, true);
+            _vm.ClearConflictingNodesNodes();
+            Assert.AreEqual(false, _vm.Root.IsOverwrite);
+            Assert.AreEqual(true,  _vm.Root.Children.All(a=> a.IsOverwrite==false));
+            Assert.AreEqual(true, _vm.Root.Children[0].Children.All(a => !a.IsOverwrite));
+
+        }
     }
 }
