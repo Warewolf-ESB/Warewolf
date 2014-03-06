@@ -95,8 +95,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             _resourceModel = input.ResourceModel;
-            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DisplayName = "Debug input data";
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             _dataListConversionUtils = new DataListConversionUtils();
         }
         #endregion Ctor
@@ -290,7 +291,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
-            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString(),new AsyncWorker());
+            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString(), new AsyncWorker());
         }
 
         public void ViewInBrowser()

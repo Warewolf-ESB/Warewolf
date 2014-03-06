@@ -59,7 +59,7 @@ namespace Dev2.Activities.Debug
             if(dlEntry.ComplexExpressionAuditor == null)
             {
 
-               // string groupName = null;
+                // string groupName = null;
                 int groupIndex = 0;
                 var rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
@@ -152,68 +152,68 @@ namespace Dev2.Activities.Debug
             List<DebugItemResult> results = new List<DebugItemResult>();
             if(debugOutputTO.TargetEntry != null)
             {
-            var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
-            if(auditor != null)
-            {
-                var grpIdx = 0;
-                var complexExpressionAuditItems = auditor.FetchAuditItems();
-             
-                foreach(var item in complexExpressionAuditItems)
+                var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
+                if(auditor != null)
                 {
-                    string groupName = null;
-                    var displayExpression = item.Expression;
-                    var rawExpression = item.RawExpression;
-                    if(regions != null && regions.Count > 0)
-                    {
-                    //    
-                    }
+                    var grpIdx = 0;
+                    var complexExpressionAuditItems = auditor.FetchAuditItems();
 
-                    if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                    foreach(var item in complexExpressionAuditItems)
                     {
-                        grpIdx++;
-                        groupName = displayExpression;
-                        displayExpression = rawExpression;
-                    }
-                    else 
-                    {
+                        string groupName = null;
+                        var displayExpression = item.Expression;
+                        var rawExpression = item.RawExpression;
                         if(regions != null && regions.Count > 0)
                         {
-                            var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                            int indexForRecset;
-                            int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                            //    
+                        }
 
-                            if(indexForRecset > 0)
+                        if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                        {
+                            grpIdx++;
+                            groupName = displayExpression;
+                            displayExpression = rawExpression;
+                        }
+                        else
+                        {
+                            if(regions != null && regions.Count > 0)
                             {
-                                var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                                var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                                var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                                int indexForRecset;
+                                int.TryParse(indexRegionFromRecordset, out indexForRecset);
+
+                                if(indexForRecset > 0)
+                                {
+                                    var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                    var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
 
                                     if(regions.Contains(@group))
-                                {
-                                    grpIdx++;
+                                    {
+                                        grpIdx++;
                                         groupName = @group;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    var count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
-                    if(count < 2)
-                    {
-                        groupName = "";
+                        var count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
+                        if(count < 2)
+                        {
+                            groupName = "";
+                        }
+
+                        results.Add(new DebugItemResult
+                        {
+                            Type = DebugItemResultType.Variable,
+                            Label = labelText,
+                            Variable = displayExpression,
+                            Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
+                            GroupName = groupName,
+                            Value = item.BoundValue,
+                            GroupIndex = grpIdx
+                        });
                     }
-                  
-                    results.Add(new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Variable,
-                        Label = labelText,
-                        Variable = displayExpression,
-                        Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
-                        GroupName = groupName,
-                        Value = item.BoundValue,
-                        GroupIndex = grpIdx
-                    });
                 }
-            }
             }
             return results;
         }
@@ -265,7 +265,7 @@ namespace Dev2.Activities.Debug
                         {
                             if(!currentRecset.IsEmpty())
                             {
-                                recsetIndexToUse = currentRecset.FetchAppendRecordsetIndex() -1;
+                                recsetIndexToUse = currentRecset.FetchAppendRecordsetIndex() - 1;
                             }
                         }
                     }

@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.UtilsTests
             //------------Assert Results-------------------------
             mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Webserver_Send")]
@@ -60,7 +60,6 @@ namespace Dev2.Core.Tests.UtilsTests
         public void Webserver_Send_NullEnvironment_ShouldNotMakeCallToExecuteCommand()
         {
             //------------Setup for test--------------------------
-            new Mock<IContextualResourceModel>();
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
