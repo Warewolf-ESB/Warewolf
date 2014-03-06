@@ -69,6 +69,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         DebugStatus _debugStatus;
         bool _showDebugStatus = true;
         ICommand _selectAllCommand;
+        bool _allDebugReceived;
 
         #endregion
 
@@ -109,6 +110,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
                 if(value == DebugStatus.Executing)
                 {
+                    _allDebugReceived = false;
                     ClearSelection();
                 }
 
@@ -482,7 +484,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if(content.IsFinalStep())
             {
-                //DebugStatus = DebugStatus.Finished;
+                _allDebugReceived = true;
                 _continueDebugDispatch = true;
             }
 
@@ -733,7 +735,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddItemToTreeImpl(IDebugState content)
         {
-            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
+            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished||_allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
             }

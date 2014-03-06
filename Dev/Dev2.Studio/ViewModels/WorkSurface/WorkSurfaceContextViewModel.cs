@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.View;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -494,6 +495,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();
+                Thread.Sleep(500);
             }
             var successfuleSave = Save(ContextualResourceModel, true);
             if(!successfuleSave)
@@ -624,11 +626,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void DispatchServerDebugMessage(ExecuteMessage message, IContextualResourceModel resource)
         {
-            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-            if(_debugOutputViewModel != null)
+            if(message != null)
             {
-                debugstate.SessionID = _debugOutputViewModel.SessionID;
-                _debugOutputViewModel.Append(debugstate);
+                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+                if(_debugOutputViewModel != null)
+                {
+                    debugstate.SessionID = _debugOutputViewModel.SessionID;
+                    _debugOutputViewModel.Append(debugstate);
+                }
             }
         }
 
