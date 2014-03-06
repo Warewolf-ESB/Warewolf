@@ -1,0 +1,32 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igTiles="clr-namespace:Infragistics.Windows.Tiles"
+	xmlns:igThemes="http://infragistics.com/Themes">
+
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="TilesGeneric.xaml"/>
+		<ResourceDictionary Source="../TilesBrushes/TilesOffice2k7Blue_Brushes.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+	
+	<!--
+	Difference between Office splitter and others:
+	In office themes, the Background of Splitter is a gradient brush, thus needs
+	to change to a different brush (one with a vertical gradient) based on orientation.
+	-->
+	<Style TargetType="{x:Type igTiles:TileAreaSplitter}"  BasedOn="{x:Static igThemes:TilesGeneric.TileAreaSplitter}">
+		<Style.Triggers>
+			<Trigger Property="Orientation" Value="Vertical">
+				<Setter Property="MinWidth" Value="6"/>
+				<Setter Property="Cursor" Value="{x:Static igTiles:TileAreaSplitter.VerticalSplitterCursor}"/>
+			</Trigger>
+			<Trigger Property="Orientation" Value="Horizontal">
+				<Setter Property="MinHeight" Value="6"/>
+				<Setter Property="Cursor" Value="{x:Static igTiles:TileAreaSplitter.HorizontalSplitterCursor}"/>
+				<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterHorizontalBackgroundFillKey}}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+</ResourceDictionary>

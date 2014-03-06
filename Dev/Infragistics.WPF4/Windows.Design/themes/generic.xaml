@@ -1,0 +1,13 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:themes="clr-namespace:Infragistics.Windows.Design.Themes"
+    xmlns:design="clr-namespace:Infragistics.Windows.Design"             
+    >
+	<ResourceDictionary.MergedDictionaries>
+		<themes:PrimitivesGenericDesign/>
+
+		<!-- JM 04-06-10 Use the ResourceDictionaryLoader to conditionally load the SmartTagFramework resource dictionaries 
+			 since this generic.xaml file is shared between all the Windows.Design assmeblies (new and old)-->
+		<design:ResourceDictionaryLoader/>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

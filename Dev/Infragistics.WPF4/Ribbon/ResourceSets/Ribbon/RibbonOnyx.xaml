@@ -1,0 +1,43 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	  xmlns:igWindows="http://infragistics.com/Windows"
+	  xmlns:igEditors="http://infragistics.com/Editors"	
+	  xmlns:igThemes="http://infragistics.com/Themes"	
+	  xmlns:igRibbon="clr-namespace:Infragistics.Windows.Ribbon"
+	  xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	 >
+	<ResourceDictionary.MergedDictionaries>
+
+		<!-- Note:
+      1. AutoWash MUST be set to false so the resources are not cloned until the they are being used.
+      2. The WashMode property default to "SoftLightBlend" but can be set to "HueSaturationReplacement"
+      3. In WashCiolor is not set or is left to its default value of "Transparent" then the resources are not washed, 
+         they are simply copied over. 
+      -->
+		<!--<themes:RibbonOffice2k7Black />-->
+        <ResourceDictionary Source="RibbonOffice2k7Black.xaml" />
+        <igThemes:ResourceWasher AutoWash="False"  WashColor="Transparent" WashMode="HueSaturationReplacement">
+			<igThemes:ResourceWasher.SourceDictionary>
+				<themes:RibbonOffice2k7BlackBrushes/>
+			</igThemes:ResourceWasher.SourceDictionary>
+
+			<igThemes:ResourceWasher.WashGroups>
+				<igThemes:WashGroupCollection>
+					<igThemes:WashGroup Name="Hover"  WashColor="#FFFECB6D"/>
+					<!--FFA620-->
+					<igThemes:WashGroup Name="Pressed"  WashColor="#FFFFAE36"/>
+					<!--FFA620-->
+					<igThemes:WashGroup Name="IsChecked"  WashColor="#FFFFAE36"/>
+					<!--FFA620-->
+					<igThemes:WashGroup Name="BaseColor"  WashColor="#FF4B4B4B"/>
+					<!--555555-->
+				</igThemes:WashGroupCollection>
+			</igThemes:ResourceWasher.WashGroups>
+
+		</igThemes:ResourceWasher>
+	</ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

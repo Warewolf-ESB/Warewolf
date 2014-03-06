@@ -1,0 +1,1540 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:igEditors="clr-namespace:Infragistics.Windows.Editors"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="EditorsGeneric.xaml" />
+        <ResourceDictionary Source="../EditorsBrushes/EditorsMetro_Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <igPrim:ScaledDoubleConverter x:Key="ScaleUpConverter" ScaleFactor="1.18"/>
+    <igPrim:ScaledDoubleConverter x:Key="ScaleDownConverter" ScaleFactor="0.91"/>
+
+    <!-- ******************************************************** WPF SPECIFIC INLINE-CONTROLS RESOURCES ***********************************************************
+********************************************************************************************************************************************************************    -->
+
+    <!-- *********************************  Horizontal Scrollbar Button Style  ********************************* -->
+    <Style x:Key="ScrollBarButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid x:Name="grid1">
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5"/>
+                        <Path x:Name="Arrow" Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z " Height="6" Stretch="Uniform" Width="10" Fill="{StaticResource ArrowNormalFill}" Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ArrowHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ArrowPressedFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ArrowDisabledFill}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  Vertical Scrollbar Page Button Style  ********************************* -->
+    <Style x:Key="VScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  Horizontal Scrollbar Gray THumb Style  ********************************* -->
+    <Style x:Key="HScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid Margin="0">
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5"/>
+                        <Rectangle x:Name="Thumb" Margin="1" Fill="{StaticResource ScrollbarNormalFill}" Height="8"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="Thumb" Value="{StaticResource ScrollbarHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter Property="Fill" TargetName="Thumb" Value="{StaticResource ScrollbarPressedFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Thumb" Property="Fill" Value="{StaticResource ScrollbarDisabledFill}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  Vertical Scrollbar THumb Style  ********************************* -->
+    <Style x:Key="VScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="grid" Height="Auto" Width="Auto">
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-5"/>
+                        <Rectangle x:Name="Thumb" Fill="{StaticResource ScrollbarNormalFill}" Width="8"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="Thumb" Value="{StaticResource ScrollbarHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter Property="Fill" TargetName="Thumb" Value="{StaticResource ScrollbarPressedFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Thumb" Property="Fill" Value="{StaticResource ScrollbarDisabledFill}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  Horizontal Scrollbar Page Button Style  ********************************* -->
+    <Style x:Key="HScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  Scrollbar Style  ********************************* -->
+    <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="Bg" SnapsToDevicePixels="true">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="0.00001*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.RowSpan="3" StrokeThickness="1" Fill="{StaticResource TransparentBrush}" Stroke="{StaticResource TransparentBrush}" Margin="0"/>
+                        <RepeatButton x:Name="repeatButton" Command="{x:Static ScrollBar.LineUpCommand}" IsEnabled="True" Style="{StaticResource ScrollBarButton}" HorizontalAlignment="Center"/>
+                        <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="True" Grid.Row="1">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource VScrollBarPageButton}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource VScrollBarPageButton}"/>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb x:Name="thumb" Style="{StaticResource VScrollBarThumb}" HorizontalAlignment="Center" Width="30"/>
+                            </Track.Thumb>
+                        </Track>
+                        <RepeatButton x:Name="repeatButton1" Command="{x:Static ScrollBar.LineDownCommand}" IsEnabled="True" Grid.Row="2" Style="{StaticResource ScrollBarButton}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
+                            <RepeatButton.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="180"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </RepeatButton.RenderTransform>
+                        </RepeatButton>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bg" Value="{StaticResource ScrollbarDisabledFill}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid x:Name="Bg" SnapsToDevicePixels="true">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="0.00001*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.ColumnSpan="5" StrokeThickness="1" Fill="{StaticResource TransparentBrush}" Stroke="{StaticResource TransparentBrush}"/>
+                                <RepeatButton x:Name="repeatButton" Command="{x:Static ScrollBar.LineLeftCommand}" IsEnabled="True" Style="{StaticResource ScrollBarButton}" Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center">
+                                    <RepeatButton.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="-90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </RepeatButton.RenderTransform>
+                                </RepeatButton>
+                                <Track x:Name="PART_Track" Grid.Column="1" IsEnabled="True">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource HScrollBarPageButton}"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource HScrollBarPageButton}"/>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource HScrollBarThumb}" VerticalAlignment="Center" Height="30"/>
+                                    </Track.Thumb>
+                                </Track>
+                                <RepeatButton x:Name="repeatButton1" Grid.Column="2" Command="{x:Static ScrollBar.LineRightCommand}" IsEnabled="True" Style="{StaticResource ScrollBarButton}" Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center">
+                                    <RepeatButton.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </RepeatButton.RenderTransform>
+                                </RepeatButton>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="Bg" Value="{StaticResource ScrollbarDisabledFill}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- *********************************  ScrollViewer Style ********************************* -->
+    <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid x:Name="Grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Fill="{StaticResource TransparentBrush}"/>
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="0" Margin="{TemplateBinding Padding}" Grid.Row="0"/>
+                        <ScrollBar x:Name="PART_VerticalScrollBar" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Grid.Row="0" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" Style="{StaticResource ScrollBarStyle}"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Style="{StaticResource ScrollBarStyle}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  BorderlessButtonStyle  ********************************* -->
+    <Style x:Key="BorderlessButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
+        <Setter Property="FontSize" Value="17.333"/>
+        <!--Setter Property="FontFamily" Value="Segoe UI"/-->
+        <Setter Property="Padding" Value="10,0,10,2"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border>
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* Spin Button Style  ********************************* -->
+    <Style x:Key="spinButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="3,1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource {x:Static igEditors:EditorsBrushKeys.SpinButtonCornerRadiusKey}}">
+                        <Grid>
+                            <Rectangle Fill="{StaticResource TransparentBrush}"/>
+                            <Path x:Name="Arrow" Data="M4.9585595,6.4799328 L9.9993324,1.9604321 L15.061378,6.4794879 L13.686531,7.979373 L9.9993334,4.5627856 L6.3744011,7.9793801 z" Height="6" Stretch="Uniform" Width="10" Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}" Margin="{TemplateBinding Padding}"/>
+                            <!--<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>-->
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="Arrow" Value="{StaticResource DropdownBtnGlyphHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Fill" TargetName="Arrow" Value="{StaticResource DropdownBtnGlyphPressedFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Arrow" Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* SimpleTextBoxStyle ********************************* -->
+    <Style x:Key="SimpleTextBoxStyle" TargetType="{x:Type igWindows:SimpleTextBlock}" />
+
+    <!-- *********************************  InputTextBox Style  ********************************* -->
+    <Style x:Key="InputTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <!-- *********************************  ComboEditor_DropDownButtonStyle  ********************************* -->
+    <Style x:Key="ComboEditor_DropDownButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5,0,5,0"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <!-- JJD 08/07/12 - TFS118043 dropdown button should align to the right -->
+        <!--<Setter Property="HorizontalAlignment" Value="Center"/>-->
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="ClickMode" Value="Press"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30" SharedSizeGroup="ComboBoxButton"/>
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Grid.ColumnSpan="2"/>
+                        <Path x:Name="glyph" HorizontalAlignment="Center" VerticalAlignment="Center" Width="10" Height="6" SnapsToDevicePixels="True" Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}" Stretch="Fill" Data="M 0,0 C0,0 7,0 7,0 7,0 3.5,3.5 3.5,3.5 3.5,3.5 0,0 0,0 z" Grid.Column="1"/>
+                        <Rectangle Width="1" Fill="{StaticResource DropDownSeparatorFill}" HorizontalAlignment="Left" Margin="-1,5,0,5"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="MouseOverControlTrue">
+                            <Setter Property="Fill" TargetName="glyph" Value="{StaticResource DropdownBtnGlyphHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Fill" TargetName="glyph" Value="{StaticResource DropdownBtnGlyphPressedFill}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Fill" TargetName="glyph" Value="{StaticResource DropdownBtnGlyphHoverFill}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="glyph" Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* SectionsList Style ********************************* -->
+    <Style x:Key="SectionsListStyle" TargetType="{x:Type igEditors:SectionsList}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:SectionsList}">
+                    <ScrollViewer Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                        <StackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* XamMaskedEditor ********************************* -->
+    <Style TargetType="{x:Type igEditors:XamMaskedEditor}" x:Key="XamMaskedEditorBaseStyle">
+        <Setter Property="Background" Value="{StaticResource EditorsBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="6,4"/>
+        <Setter Property="FontSize" Value="14.667"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="SpinButtonStyle" Value="{StaticResource spinButtonStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamMaskedEditor}">
+                    <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <DockPanel>
+                            <Grid x:Name="PART_SpinButtons" DockPanel.Dock="Right" Visibility="{TemplateBinding SpinButtonVisibilityResolved}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false" IsHitTestVisible="false"/>
+                                <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false" IsHitTestVisible="false" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                                    <RepeatButton.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="180"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </RepeatButton.RenderTransform>
+                                </RepeatButton>
+                            </Grid>
+                            <igWindows:SimpleTextBlock x:Name="TextBlock"
+														FontFamily="{TemplateBinding FontFamily}"
+														FontSize="{TemplateBinding FontSize}"
+														Foreground="{TemplateBinding Foreground}"
+														Style="{StaticResource SimpleTextBoxStyle}"
+														Margin="{TemplateBinding Padding}"
+														Text="{TemplateBinding DisplayText}"
+														HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+														VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEmbedded" Value="False">
+                            <Setter Property="igWindows:SimpleTextBlock.OptimizeWidthMeasurement" Value="False"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="EditTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamMaskedEditor}">
+                    <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <DockPanel>
+                            <Grid x:Name="PART_SpinButtons" DockPanel.Dock="Right" Visibility="{TemplateBinding SpinButtonVisibilityResolved}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <RepeatButton x:Name="spinUp" Style="{StaticResource spinButtonStyle}" Focusable="false"/>
+                                <RepeatButton x:Name="spinDown" Style="{StaticResource spinButtonStyle}" Focusable="false" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                                    <RepeatButton.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="180"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </RepeatButton.RenderTransform>
+                                </RepeatButton>
+                            </Grid>
+                            <igWindows:CardPanel x:Name="PART_FocusSite">
+                                <igEditors:SectionsList x:Name="SectionsList" Margin="{TemplateBinding Padding}"
+														ItemsSource="{Binding Sections, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+														HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+														VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+														FlowDirection="LeftToRight" InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"
+														InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}"
+														FontFamily="{TemplateBinding FontFamily}"
+														FontSize="{TemplateBinding FontSize}"
+														Foreground="{TemplateBinding Foreground}"
+														Style="{StaticResource SectionsListStyle}"/>
+                                <TextBox x:Name="PART_InputTextBox"
+										HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+										VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+										TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource horizToTextAlignmentConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+										InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"
+										Style="{StaticResource InputTextBoxStyle}"
+										FontFamily="{TemplateBinding FontFamily}"
+										FontSize="{TemplateBinding FontSize}"
+										Foreground="{TemplateBinding Foreground}"
+										Visibility="Collapsed"
+										Margin="{TemplateBinding Padding}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </igWindows:CardPanel>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SpinButtonVisibilityResolved" Value="Visible">
+                            <Setter TargetName="spinUp" Property="Command" Value="{x:Static igEditors:MaskedEditorCommands.SpinUp}"/>
+                            <Setter TargetName="spinDown" Property="Command" Value="{x:Static igEditors:MaskedEditorCommands.SpinDown}"/>
+                        </Trigger>
+                        <Trigger Property="IsEmbedded" Value="False"/>
+                        <Trigger Property="IsInEditMode" Value="True">
+                            <Setter Property="IsTabStop" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsTextBoxEntryEnabled" Value="True">
+                            <Setter TargetName="SectionsList" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_InputTextBox" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEmbedded" Value="True">
+                <Setter Property="BorderThickness" Value="0"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEmbedded" Value="True"/>
+                    <Condition Property="IsInEditMode" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderThickness" Value="0"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEmbedded" Value="True"/>
+                    <Condition Property="IsInEditMode" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{x:Null}"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+            </MultiTrigger>
+            <Trigger Property="IsInEditMode" Value="True">
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsEmbedded" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsHoverBackgroundBrush}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsFocused" Value="True"/>
+                    <Condition Property="IsEmbedded" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsFocusBorderBrush}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type igEditors:XamMaskedEditor}" BasedOn="{StaticResource XamMaskedEditorBaseStyle}"/>
+
+    <!-- ********************************* XamNumericEditor ********************************* -->
+    <Style TargetType="{x:Type igEditors:XamNumericEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}"/>
+
+    <!-- ********************************* XamCurrencyEditor ********************************* -->
+    <Style TargetType="{x:Type igEditors:XamCurrencyEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}"/>
+
+    <Style x:Key="ComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Rectangle x:Name="Bd" Stroke="{StaticResource TransparentBrush}" StrokeThickness="1" Fill="{StaticResource TransparentBrush}"/>
+                        <Grid HorizontalAlignment="Right" Width="30">
+                            <Rectangle Width="1" Fill="{StaticResource DropDownSeparatorFill}" HorizontalAlignment="Left" Margin="-1 5 0 5"/>
+                            <Path x:Name="Arrow" Width="10" Height="6" Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z " Stretch="Fill"/>
+                        </Grid>
+                        <Rectangle x:Name="DisabledVisualElement" Fill="{StaticResource DisabledVisualElement}" Visibility="Collapsed"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource DropdownBtnGlyphHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource DropdownBtnGlyphHoverFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource DropdownBtnGlyphPressedFill}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  ComboBoxItemStyle  ********************************* -->
+    <Style x:Key="ComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="6,4"/>
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListboxItemHoverBrush}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListboxItemHoverBorderBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="true">
+                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListboxItemPressedBrush}"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListboxItemPressedBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  ComboEditor_EditableComboBoxTemplate  ********************************* -->
+    <ControlTemplate x:Key="ComboEditor_EditableComboBoxTemplate" TargetType="{x:Type ComboBox}">
+        <Grid Background="Transparent" SnapsToDevicePixels="True">
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ComboBoxButton"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="{TemplateBinding Padding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="PART_EditableTextBox" Grid.Column="1" Padding="-1,0,0,0" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent"  BorderBrush="Transparent" BorderThickness="0,0,0,0" Style="{StaticResource InputTextBoxStyle}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" MaxLength="{Binding Path=(igEditors:XamComboEditor.ComboEditor).ValueConstraint.MaxLength, RelativeSource={RelativeSource TemplatedParent}}" InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"  InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}" />
+                    <igWindows:GrowOnlyDecorator x:Name="imageDecorator">
+                        <igWindows:CardPanel x:Name="imagePanel" Visibility="Collapsed" VerticalAlignment="Center" Margin="1,0,-1,0">
+                            <TextBlock x:Name="textBlock" Visibility="Hidden" VerticalAlignment="Center"/>
+                            <Image x:Name="image" Stretch="Uniform" StretchDirection="Both" VerticalAlignment="Center" Height="{Binding ActualHeight, ElementName=textBlock, Mode=OneWay}"/>
+                        </igWindows:CardPanel>
+                    </igWindows:GrowOnlyDecorator>
+                </Grid>
+                <ToggleButton x:Name="PART_DropDownButton" Grid.Column="1" Margin="-1" Focusable="False" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Background="{x:Null}" Style="{DynamicResource ComboEditor_DropDownButtonStyle}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{Binding IsReadOnly, Converter={StaticResource complementConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Grid>
+            <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" VerticalOffset="1" HorizontalOffset="-1" IsOpen="{TemplateBinding IsDropDownOpen}" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding (igEditors:XamComboEditor.ComboEditor).MinDropDownWidthResolved, RelativeSource={RelativeSource TemplatedParent}}" MaxWidth="{Binding (igEditors:XamComboEditor.ComboEditor).MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                <Border BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="1" Background="{StaticResource PopupBackgroundBrush}">
+                    <igWindows:PopupResizerDecorator ResizeMode="{Binding (igEditors:XamComboEditor.ComboEditor).DropDownResizeMode, RelativeSource={RelativeSource TemplatedParent}}">
+                        <DockPanel>
+                            <ContentPresenter DockPanel.Dock="Top" ContentTemplate="{Binding PreDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                            <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{Binding PostDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                            <ScrollViewer x:Name="ScrollViewer" Style="{StaticResource ScrollViewerStyle}">
+                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </igWindows:PopupResizerDecorator>
+                </Border>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="HasItems" Value="False">
+                <Setter TargetName="PART_Popup" Property="Height" Value="95"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter TargetName="ScrollViewer" Property="CanContentScroll" Value="False"/>
+            </Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Value="True" Binding="{Binding SelectedItem, ConverterParameter={x:Type igEditors:ComboBoxDataItem}, Converter={StaticResource typeCheckConverter}, Mode=OneWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                    <Condition Value="False" Binding="{Binding DisplayMemberPath, Converter={StaticResource nullToFalseConverter}, Mode=OneWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="image" Property="Source" Value="{Binding SelectedItem.Image, Mode=OneWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                <Setter TargetName="imagePanel" Property="Visibility" Value="Visible"/>
+            </MultiDataTrigger>
+            <DataTrigger Value="False" Binding="{Binding (igEditors:XamComboEditor.ComboEditor).IsInEditMode, RelativeSource={RelativeSource TemplatedParent}}">
+                <Setter TargetName="imageDecorator" Property="ResetSize" Value="True"/>
+            </DataTrigger>
+            <DataTrigger Value="True" Binding="{Binding ContextMenu, Converter={StaticResource nullToFalseConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}">
+                <Setter TargetName="PART_EditableTextBox" Property="ContextMenu" Value="{Binding ContextMenu, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- *********************************  ComboEditor_NonEditableComboBoxTemplate  ********************************* -->
+    <ControlTemplate x:Key="ComboEditor_NonEditableComboBoxTemplate" TargetType="{x:Type ComboBox}">
+        <Grid SnapsToDevicePixels="True" Background="Transparent">
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ComboBoxButton"/>
+                </Grid.ColumnDefinitions>
+										<!-- JJD 08/07/12 - TFS118043 
+													bind the style to the DropDownButtonStyle property of the ComboEditor -->
+										<!--Style="{DynamicResource ComboBoxToggleButtonStyle}"-->
+                <ToggleButton Margin="-1"
+		                    x:Name="PART_DropDownButton" Grid.ColumnSpan="3"
+												Style="{Binding Path=(igEditors:XamComboEditor.ComboEditor).DropDownButtonStyle, RelativeSource={RelativeSource TemplatedParent}}"
+		                    IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+		                    IsEnabled="{Binding Path=IsReadOnly, Converter={StaticResource complementConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+		                    />
+                <Border x:Name="SelectedItemBorder" Grid.ColumnSpan="3" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" >
+                    <ContentPresenter Margin="3 0 35 0" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+            </Grid>
+            <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" VerticalOffset="1" HorizontalOffset="-1" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+	                MaxHeight="{TemplateBinding MaxDropDownHeight}"
+	                MinWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MinDropDownWidthResolved, RelativeSource={RelativeSource TemplatedParent}}"
+	                MaxWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                <Border BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="1" Background="{StaticResource PopupBackgroundBrush}">
+                    <igWindows:PopupResizerDecorator ResizeMode="{Binding (igEditors:XamComboEditor.ComboEditor).DropDownResizeMode, RelativeSource={RelativeSource TemplatedParent}}">
+                        <DockPanel>
+                            <ContentPresenter DockPanel.Dock="Top" ContentTemplate="{Binding PreDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                            <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{Binding PostDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                            <ScrollViewer x:Name="ScrollViewer" Style="{StaticResource ScrollViewerStyle}">
+                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </igWindows:PopupResizerDecorator>
+                </Border>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSelectionBoxHighlighted" Value="True">
+                <Setter TargetName="SelectedItemBorder" Value="{StaticResource EditorsFocusBorderBrush}" Property="BorderBrush"/>
+            </Trigger>
+            <Trigger Property="HasItems" Value="False">
+                <Setter TargetName="PART_Popup" Property="Height" Value="95"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter TargetName="ScrollViewer" Property="CanContentScroll" Value="False"/>
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter TargetName="ScrollViewer" Property="CanContentScroll" Value="False"/>
+            </Trigger>
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="IsTextSearchEnabled" Value="False"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+	
+	<!-- JJD 08/07/12 - TFS118043 
+			key this style with the ComboEditorComboBoxStyleKey which gets picked up dynamically -->
+	<!--<Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">-->
+    <Style x:Key="{x:Static igEditors:XamComboEditor.ComboEditorComboBoxStyleKey}" TargetType="{x:Type ComboBox}">
+        <Style.Triggers>
+            <Trigger Property="IsEditable" Value="True">
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="Template" Value="{StaticResource ComboEditor_EditableComboBoxTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource ComboEditor_NonEditableComboBoxTemplate}" />
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="False" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <igEditors:VirtualizingStackPanelEx/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* XamComboEditor Style  ********************************* -->
+    <Style TargetType="{x:Type igEditors:XamComboEditor}">
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="Background" Value="{StaticResource EditorsBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="6 4"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="DropDownButtonStyle" Value="{StaticResource ComboEditor_DropDownButtonStyle}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamComboEditor}">
+                    <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="{TemplateBinding Padding}">
+                                <ContentPresenter Margin="3 0 0 0" x:Name="PART_Content" Content="{Binding DisplayValue, ConverterParameter={x:Static sys:String.Empty}, Converter={StaticResource nullToParameterConverter}, Mode=OneWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ToggleButton x:Name="PART_DropDownButton" Margin="-1" Grid.Column="1" Focusable="False" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" ClickMode="Press" Style="{TemplateBinding DropDownButtonStyle}" Visibility="{TemplateBinding DropDownButtonVisibility}" IsEnabled="{Binding IsReadOnly, Converter={StaticResource complementConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="DisplayValueSource" Value="Value">
+                            <Setter TargetName="PART_Content" Property="ContentTemplate" Value="{DynamicResource {x:Static igEditors:XamComboEditor.DisplayValueTemplateKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEmbedded" Value="False">
+                            <Setter Property="DropDownButtonDisplayMode" Value="Always"/>
+                            <Setter Property="Padding" Value="2,2,2,2"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource EditorsHoverBackgroundBrush}"/>
+                            <Setter TargetName="PART_DropDownButton" Property="Tag" Value="MouseOverControlTrue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="EditTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamComboEditor}">
+                    <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+																	<!-- JJD 08/07/12 - TFS118043 
+																	Don't explicitly set the ComboBox's style here. Instead bind it
+																	to the ComboBoxStyle property so that, dy default, it will
+																	pick up the style keyed by the ComboEditorComboBoxStyleKey dynamically
+																	unless set explicitly by the user -->
+																	<!--Style="{StaticResource ComboBoxStyle}"--> 
+                        <ComboBox x:Name="PART_FocusSite" Padding="{TemplateBinding Padding}" 
+																	Style="{TemplateBinding ComboBoxStyle}"
+																	HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+																	VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+																	IsReadOnly="{TemplateBinding ReadOnly}" 
+																	Background="Transparent" BorderBrush="Transparent" 
+																	BorderThickness="0,0,0,0" 
+																	ContextMenu="{TemplateBinding ContextMenu}" 
+																	IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
+																	IsEditable="{TemplateBinding IsEditable}" 
+																	SelectedValuePath="{Binding ItemsProvider.ValuePath, RelativeSource={RelativeSource TemplatedParent}}" 
+																	DisplayMemberPath="{Binding ItemsProvider.DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" 
+																	MaxDropDownHeight="{TemplateBinding MaxDropDownHeight}" 
+																	igEditors:XamComboEditor.ComboEditor="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+																	InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}" 
+																	InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}" 
+																	Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsInEditMode" Value="True">
+                            <Setter Property="IsTabStop" Value="False"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEmbedded" Value="True"/>
+                    <Condition Property="IsInEditMode" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{x:Null}"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEmbedded" Value="False">
+                <Setter Property="Padding" Value="2,2,2,2"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsEmbedded" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- *********************************  MaskedEditorWithDropDownRenderTemplate  ********************************* -->
+    <ControlTemplate x:Key="MaskedEditorWithDropDownRenderTemplate" TargetType="{x:Type igEditors:XamDateTimeEditor}">
+        <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel>
+                <ToggleButton x:Name="PART_DropDownButton" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={x:Static RelativeSource.TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" ClickMode="Press" Style="{DynamicResource ComboEditor_DropDownButtonStyle}" Visibility="{TemplateBinding DropDownButtonVisibility}" DockPanel.Dock="Right" IsEnabled="{Binding IsReadOnly, Converter={StaticResource complementConverter}, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False"/>
+                <Grid x:Name="PART_SpinButtons" DockPanel.Dock="Right" Visibility="{TemplateBinding SpinButtonVisibilityResolved}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false"/>
+                    <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                        <RepeatButton.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </RepeatButton.RenderTransform>
+                    </RepeatButton>
+                </Grid>
+                <igWindows:SimpleTextBlock x:Name="TextBlock"
+											Margin="{TemplateBinding Padding}"
+											Text="{TemplateBinding DisplayText}"
+											Style="{DynamicResource SimpleTextBoxStyle}"
+											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+											VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </DockPanel>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEmbedded" Value="False">
+                <Setter Property="Padding" Value="4,2,4,2"/>
+                <Setter Property="igWindows:SimpleTextBlock.OptimizeWidthMeasurement" Value="False"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- *********************************  MaskedEditorWithDropDownEditTemplate  ********************************* -->
+    <ControlTemplate x:Key="MaskedEditorWithDropDownEditTemplate" TargetType="{x:Type igEditors:XamDateTimeEditor}">
+        <Border x:Name="MainBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel>
+															<!-- JJD 08/07/12 - TFS118043 don't use a dynamic resource for the style-->
+ 															<!--Style="{StaticResource ComboEditor_DropDownButtonStyle}"--> 
+              <ToggleButton x:Name="PART_DropDownButton" 
+															Style="{StaticResource ComboEditor_DropDownButtonStyle}" 
+															Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" 
+															ClickMode="Press" 
+															IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
+															Visibility="{TemplateBinding DropDownButtonVisibility}" 
+															DockPanel.Dock="Right" 
+															IsEnabled="{Binding IsReadOnly, Converter={StaticResource complementConverter}, RelativeSource={RelativeSource TemplatedParent}}" 
+															Focusable="False"/>
+                <Popup x:Name="PART_Popup" AllowsTransparency="True" StaysOpen="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}" igWindows:PopupHelper.DropDownButton="{Binding ElementName=PART_DropDownButton}">
+                    <Border BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="1" Background="{StaticResource PopupBackgroundBrush}">
+                        <igEditors:XamMonthCalendar x:Name="PART_Calendar" MinDate="{TemplateBinding ComputedMinDate}" MaxDate="{TemplateBinding ComputedMaxDate}" MinCalendarMode="{TemplateBinding ComputedMinCalendarMode}" SelectedDate="{Binding DateValue, Mode=TwoWay, RelativeSource={x:Static RelativeSource.TemplatedParent}}" SelectionType="Single"/>
+                    </Border>
+                </Popup>
+                <Grid x:Name="PART_SpinButtons" DockPanel.Dock="Right" Visibility="{TemplateBinding SpinButtonVisibilityResolved}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false" Command="{x:Static igEditors:MaskedEditorCommands.SpinUp}"/>
+                    <RepeatButton Style="{StaticResource spinButtonStyle}" Focusable="false" Command="{x:Static igEditors:MaskedEditorCommands.SpinDown}" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                        <RepeatButton.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="180"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </RepeatButton.RenderTransform>
+                    </RepeatButton>
+                </Grid>
+                <igWindows:CardPanel x:Name="PART_FocusSite">
+                    <igEditors:SectionsList x:Name="SectionsList" ItemsSource="{Binding Sections, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="6,4" Style="{StaticResource SectionsListStyle}" FlowDirection="LeftToRight" InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}" InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}" Foreground="{TemplateBinding Foreground}"/>
+                    <TextBox x:Name="PART_InputTextBox" Visibility="Collapsed" Margin="6,4" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="Center" TextAlignment="{Binding HorizontalContentAlignment, Converter={StaticResource horizToTextAlignmentConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Style="{StaticResource InputTextBoxStyle}"  InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"  Foreground="{TemplateBinding Foreground}" />
+                </igWindows:CardPanel>
+            </DockPanel>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEmbedded" Value="False"/>
+            <Trigger Property="IsInEditMode" Value="True">
+                <Setter Property="IsTabStop" Value="False"/>
+            </Trigger>
+            <Trigger Property="IsTextBoxEntryEnabled" Value="True">
+                <Setter TargetName="SectionsList" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_InputTextBox" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{StaticResource EditorsDisabledBrush}"/>
+                <Setter Property="Background" Value="{StaticResource EditorsDisabledBackground}"/>
+                <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- *********************************  XamDateTimeEditorBaseStyle  ********************************* -->
+    <Style x:Key="XamDateTimeEditorBaseStyle" TargetType="{x:Type igEditors:XamDateTimeEditor}" BasedOn="{StaticResource XamMaskedEditorBaseStyle}">
+        <Setter Property="DropDownButtonStyle" Value="{StaticResource ComboEditor_DropDownButtonStyle}"/>
+        <Setter Property="Template" Value="{StaticResource MaskedEditorWithDropDownRenderTemplate}"/>
+        <Setter Property="EditTemplate" Value="{StaticResource MaskedEditorWithDropDownEditTemplate}"/>
+        <Setter Property="Background" Value="{StaticResource EditorsBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="6,4"/>
+    </Style>
+    <Style TargetType="{x:Type igEditors:XamDateTimeEditor}" BasedOn="{StaticResource XamDateTimeEditorBaseStyle}"/>
+
+    <!-- ********************************* XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey ********************************* -->
+    <Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="MinWidth" Value="36"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid>
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-6,0"/>
+                        <Path x:Name="Arrow" Height="14" Stretch="Fill" Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey}}" Data="F1 M 822.29,14.5148C 825.705,10.8083 831.53,9.26154 836.05,11.8881C 842.837,14.9016 844.424,24.9282 839.17,30.0482C 832.504,36.9682 825.542,43.6215 818.837,50.5014C 838.744,50.7682 858.662,50.4349 878.569,50.6614C 883.478,50.5549 888.517,53.1149 890.372,57.8481C 893.676,64.9549 887.717,73.8615 879.93,73.7415C 859.542,73.8881 839.157,73.6483 818.769,73.8615C 825.65,80.9816 832.93,87.7282 839.662,94.9948C 844.61,100.515 842.277,110.328 835.329,112.955C 830.091,115.541 824.252,112.622 820.744,108.581C 808.744,96.5682 796.769,84.5281 784.705,72.5815C 782.064,69.9016 779.236,66.7415 779.252,62.7548C 778.824,58.6614 781.436,55.1815 784.209,52.5148C 796.944,39.8881 809.556,27.1415 822.29,14.5148 Z " VerticalAlignment="Center" Width="14" Opacity="0.6"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" TargetName="Arrow" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="Arrow" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* XamMonthCalendar.ScrollNextRepeatButtonStyleKey ********************************* -->
+    <Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollNextRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource {x:Static igEditors:XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey}}">
+        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="MinWidth" Value="36"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid>
+                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-6,0"/>
+                        <Path x:Name="Arrow" Opacity="0.6" Width="14" Height="14" Stretch="Fill" Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey}}" Data="F1 M 249.077,9.34161C 253.49,6.07501 260.05,6.9549 263.77,10.8749C 276.077,23.0082 288.197,35.3283 300.477,47.4882C 303.597,50.5417 307.237,54.0217 307.103,58.7684C 307.383,62.4749 305.183,65.7551 302.623,68.2083C 289.69,81.075 276.837,94.0082 263.904,106.875C 259.97,111.315 252.517,111.782 248.063,107.902C 243.17,104.008 242.583,95.8083 247.037,91.3817C 253.717,84.2883 260.957,77.7551 267.517,70.555C 247.597,70.2883 227.664,70.5283 207.73,70.435C 204.303,70.595 200.743,69.6083 198.41,66.9682C 193.677,62.5417 194.117,54.155 199.197,50.155C 201.89,47.6883 205.65,47.3016 209.143,47.435C 228.65,47.435 248.17,47.5016 267.677,47.4084C 260.797,40.3416 253.543,33.6349 246.863,26.395C 242.277,21.5817 243.41,12.8616 249.077,9.34161 Z " VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" TargetName="Arrow" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="Arrow" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <CornerRadius x:Key="{x:Static igEditors:CalendarItem.CornerRadiusKey}">0
+    </CornerRadius>
+
+    <!-- ********************************* TodayButtonStyleKey ********************************* -->
+    <Style TargetType="{x:Type Button}" x:Key="{x:Static igEditors:XamMonthCalendar.TodayButtonStyleKey}">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Command" Value="{x:Static igEditors:MonthCalendarCommands.Today}"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource StrFormatConv}" Mode="OneWay">
+                    <Binding Path="Value" Source="{x:Static igEditors:Resources.TodayButtonCaption}"/>
+                    <Binding Path="(igEditors:XamMonthCalendar.MonthCalendar).Today" RelativeSource="{RelativeSource Self}"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{StaticResource ListboxItemHoverBrush}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter x:Name="TodayButtonContent" ContentSource="Content" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Opacity="0.7" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="TodayButtonContent"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="TodayButtonContent" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* CalendarItem ********************************* -->
+    <ControlTemplate x:Key="CalendarItemInner" TargetType="{x:Type igEditors:CalendarItem}">
+        <Border x:Name="OuterBorder" SnapsToDevicePixels="True" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{DynamicResource {x:Static igEditors:CalendarItem.CornerRadiusKey}}" Background="{TemplateBinding Background}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" TextBlock.Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Padding}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsToday" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemHoverFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemHoverOuterBorderFillKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedOuterBorderFillKey}}"/>
+                <!--Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}}"/-->
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="IsSelectionActive" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource SelectedInactiveItemBackgroundBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource SelectedInactiveItemBackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource CalendarITemForegroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsToday" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayTodayOuterBorderFillKey}}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- ********************************* CalendarItemNoInner ********************************* -->
+    <ControlTemplate x:Key="CalendarItemNoInner" TargetType="{x:Type igEditors:CalendarItem}">
+        <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{DynamicResource {x:Static igEditors:CalendarItem.CornerRadiusKey}}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" TextBlock.Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Padding}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsToday" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemHoverFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemHoverOuterBorderFillKey}}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemHoverForegroundKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedOuterBorderFillKey}}"/>
+                <!--Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}}"/-->
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="IsSelectionActive" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource SelectedInactiveItemBackgroundBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource SelectedInactiveItemBackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource CalendarITemForegroundBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- ********************************* CalendarItemBase ********************************* -->
+    <Style x:Key="CalendarItemBase" TargetType="{x:Type igEditors:CalendarItem}">
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="MinWidth" Value="36"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource CalendarITemForegroundBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Content" Value="{Binding StartDate, ConverterParameter=MMM, Converter={StaticResource FormattableToStr}, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Setter Property="Padding" Value="4,1,4,1"/>
+        <Setter Property="Template" Value="{StaticResource CalendarItemInner}"/>
+        <Style.Triggers>
+            <Trigger Property="igEditors:CalendarItemGroup.CurrentCalendarMode" Value="Years">
+                <Setter Property="Content" Value="{Binding StartDate, ConverterParameter=yyyy, Converter={StaticResource FormattableToStr}, RelativeSource={x:Static RelativeSource.Self}}"/>
+            </Trigger>
+            <Trigger Property="igEditors:CalendarItemGroup.CurrentCalendarMode" Value="Decades">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource StrFormatConv}" ConverterParameter="{}{0:yyyy}-
+{1:yyyy}">
+                            <Binding Path="StartDate" RelativeSource="{x:Static RelativeSource.Self}"/>
+                            <Binding Path="EndDate" RelativeSource="{x:Static RelativeSource.Self}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="igEditors:CalendarItemGroup.CurrentCalendarMode" Value="Centuries">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource StrFormatConv}" ConverterParameter="{}{0:yyyy}-
+{1:yyyy}">
+                            <Binding Path="StartDate" RelativeSource="{x:Static RelativeSource.Self}"/>
+                            <Binding Path="EndDate" RelativeSource="{x:Static RelativeSource.Self}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsToday" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayTodayOuterBorderFillKey}}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsToday" Value="True"/>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsEnabled" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayTodayForegroundKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsLeadingOrTrailingItem" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarOtherDayForegroundKey}}"/>
+            </Trigger>
+            <Trigger Property="IsActive" Value="True">
+                <Setter Property="KeyboardNavigation.IsTabStop" Value="True"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarItem}" BasedOn="{StaticResource CalendarItemBase}"/>
+
+    <!-- ********************************* CalendarDay ********************************* -->
+    <Style x:Key="CalendarDayBase" TargetType="{x:Type igEditors:CalendarDay}" BasedOn="{StaticResource CalendarItemBase}">
+        <Setter Property="Content" Value="{Binding StartDate, ConverterParameter=%d, Converter={StaticResource FormattableToStr}, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Style.Triggers>
+            <Trigger Property="IsWorkday" Value="True">
+                <Setter Property="FontWeight" Value="Normal"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarDay}" BasedOn="{StaticResource CalendarDayBase}"/>
+
+    <!-- ********************************* CalendarDayOfWeek ********************************* -->
+    <Style x:Key="CalendarDayOfWeekBase" TargetType="{x:Type igEditors:CalendarDayOfWeek}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekForegroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Border.CornerRadius" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:CalendarDayOfWeek}">
+                    <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding Border.CornerRadius}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                        <TextBlock Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=FontSize, Converter={StaticResource ScaleDownConverter}}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource DayOfWeekToStr}" Mode="OneWay">
+                                    <Binding/>
+                                    <Binding Path="(igEditors:XamMonthCalendar.MonthCalendar).DayOfWeekHeaderFormat" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarDayOfWeek}" BasedOn="{StaticResource CalendarDayOfWeekBase}"/>
+
+    <!-- ********************************* CalendarWeekNumber ********************************* -->
+    <Style x:Key="CalendarWeekNumberBase" TargetType="{x:Type igEditors:CalendarWeekNumber}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekForegroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Border.CornerRadius" Value="0"/>
+        <Setter Property="Padding" Value="1,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:CalendarWeekNumber}">
+                    <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding Border.CornerRadius}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                        <TextBlock Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Text="{Binding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarWeekNumber}" BasedOn="{StaticResource CalendarWeekNumberBase}"/>
+
+    <!-- ********************************* CalendarItemGroupTitle _________________________________ -->
+    <Style x:Key="CalendarItemGroupTitleBase" TargetType="{x:Type igEditors:CalendarItemGroupTitle}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleBackgroundKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleForegroundKey}}"/>
+        <Setter Property="Padding" Value="10,0,10,2"/>
+        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=FontSize, Converter={StaticResource ScaleUpConverter}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" CornerRadius="{TemplateBinding Border.CornerRadius}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Padding="{TemplateBinding Padding}">
+                        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" LastChildFill="True">
+                            <RepeatButton DockPanel.Dock="Left" x:Name="previousMonth" Focusable="False" Visibility="{Binding ScrollPreviousButtonVisibility, RelativeSource={RelativeSource AncestorType={x:Type igEditors:CalendarItemGroup}}}" Command="{x:Static igEditors:MonthCalendarCommands.ScrollPreviousGroup}" Style="{DynamicResource {x:Static igEditors:XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey}}"/>
+                            <RepeatButton DockPanel.Dock="Right" x:Name="nextMonth" Focusable="False" Visibility="{Binding ScrollNextButtonVisibility, RelativeSource={RelativeSource AncestorType={x:Type igEditors:CalendarItemGroup}}}" Command="{x:Static igEditors:MonthCalendarCommands.ScrollNextGroup}" Style="{DynamicResource {x:Static igEditors:XamMonthCalendar.ScrollNextRepeatButtonStyleKey}}"/>
+                            <Button x:Name="headerContent" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Focusable="False" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource BorderlessButtonStyle}" Command="{x:Static igEditors:MonthCalendarCommands.ZoomOutCalendarMode}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type igEditors:CalendarItemGroup}}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" Content="{TemplateBinding ContentControl.Content}"
+							FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"/>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True" SourceName="headerContent">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarItemGroupTitle}" BasedOn="{StaticResource CalendarItemGroupTitleBase}"/>
+
+    <!-- ********************************* CalendarItemGroup ********************************* -->
+    <Style TargetType="{x:Type igEditors:CalendarItemGroup}">
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="ScrollNextButtonVisibility" Value="{Binding (igEditors:XamMonthCalendar.MonthCalendar).ScrollButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Setter Property="ScrollPreviousButtonVisibility" Value="{Binding (igEditors:XamMonthCalendar.MonthCalendar).ScrollButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:CalendarItemGroup}">
+                    <Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="{TemplateBinding Border.BorderThickness}" Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True" Padding="{TemplateBinding Padding}">
+                        <DockPanel LastChildFill="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <!-- Title -->
+                            <igEditors:CalendarItemGroupTitle x:Name="groupTitle" DockPanel.Dock="Top" MinHeight="30"/>
+                            <igEditors:CalendarItemAreaPanel/>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="CurrentCalendarMode" Value="Days">
+                            <Setter Property="Content" TargetName="groupTitle" Value="{Binding FirstDateOfGroup, ConverterParameter=y, Converter={StaticResource FormattableToStr}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="CurrentCalendarMode" Value="Months">
+                            <Setter Property="Content" TargetName="groupTitle" Value="{Binding FirstDateOfGroup, ConverterParameter=yyyy, Converter={StaticResource FormattableToStr}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="CurrentCalendarMode" Value="Years">
+                            <Setter Property="Content" TargetName="groupTitle">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource StrFormatConv}" ConverterParameter="{}{0:yyyy}-{1:yyyy}">
+                                        <Binding Path="FirstDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                        <Binding Path="LastDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="CurrentCalendarMode" Value="Decades">
+                            <Setter Property="Content" TargetName="groupTitle">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource StrFormatConv}" ConverterParameter="{}{0:yyyy}-{1:yyyy}">
+                                        <Binding Path="FirstDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                        <Binding Path="LastDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="CurrentCalendarMode" Value="Centuries">
+                            <Setter Property="Content" TargetName="groupTitle">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource StrFormatConv}" ConverterParameter="{}{0:yyyy}-{1:yyyy}">
+                                        <Binding Path="FirstDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                        <Binding Path="LastDateOfGroup" RelativeSource="{x:Static RelativeSource.TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <!-- When a group contains no items we want an empty title -->
+                        <Trigger Property="FirstDateOfGroup" Value="{x:Null}">
+                            <Setter Property="Content" TargetName="groupTitle" Value="{x:Null}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ********************************* CalendarItemArea ********************************* -->
+    <Style x:Key="CalendarItemAreaBase" TargetType="{x:Type igEditors:CalendarItemArea}">
+        <Setter Property="DayOfWeekHeaderVisibility" Value="{Binding Path=(igEditors:XamMonthCalendar.MonthCalendar).DayOfWeekHeaderVisibility, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Setter Property="WeekNumberVisibility" Value="{Binding Path=(igEditors:XamMonthCalendar.MonthCalendar).WeekNumberVisibility, RelativeSource={x:Static RelativeSource.Self}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:CalendarItemArea}">
+                    <!-- AS 10/3/08 TFS8616 - Added AdornerDecorator -->
+                    <AdornerDecorator>
+                        <Border BorderBrush="{TemplateBinding Border.BorderBrush}"
+			BorderThickness="{TemplateBinding Border.BorderThickness}"
+			Background="{TemplateBinding Panel.Background}"
+			SnapsToDevicePixels="True"
+			Padding="{TemplateBinding Control.Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- week numbers -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Calendar -->
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Days of Week -->
+                                    <RowDefinition/>
+                                    <!-- Calendar -->
+                                </Grid.RowDefinitions>
+                                <!-- Day Of Week Header -->
+                                <ItemsControl x:Name="daysOfWeek"
+				Grid.Column="1"
+				Visibility="{TemplateBinding Property=DayOfWeekHeaderVisibility}"
+				Focusable="False"
+				ItemsSource="{Binding Path=(igEditors:XamMonthCalendar.MonthCalendar).DaysOfWeek, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+				Background="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekFillKey}}" Height="30" Margin="6,4">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <igWindows:UniformGridEx Rows="1" Columns="{Binding Path=(igEditors:XamMonthCalendar.MonthCalendar).DaysOfWeek.Count, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <igEditors:CalendarDayOfWeek DataContext="{Binding}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!-- Week Numbers -->
+                                <igWindows:CardPanel Grid.Column="0"
+				Margin="0,6"
+				Grid.Row="1"
+				x:Name="weekNumbers"
+				Visibility="{TemplateBinding WeekNumberVisibility}"
+				>
+                                    <Border Background="{StaticResource CalendarWeekNumberBaseBackground}" BorderBrush="{StaticResource CalendarWeekNumberBaseStroke}" BorderThickness="0,0,1,0"/>
+                                    <igEditors:CalendarWeekNumber DataContext="52" Visibility="Hidden" IsHitTestVisible="False"/>
+                                    <ItemsControl x:Name="weekNumberItems"
+				    Focusable="False"
+				    ItemsSource="{Binding Path=WeekNumbers, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+				    Background="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekFillKey}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <igWindows:UniformGridEx Rows="6" Columns="1" FirstRow="{Binding Path=(igEditors:CalendarItemArea.ItemArea).FirstItemRowOffset, RelativeSource={x:Static RelativeSource.Self}}"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <igEditors:CalendarWeekNumber DataContext="{Binding}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </igWindows:CardPanel>
+                                <ItemsControl
+				Margin="6"
+				x:Name="itemsList"
+				Grid.Column="1"
+				Grid.Row="1"
+				KeyboardNavigation.DirectionalNavigation="None"
+				Focusable="False"
+				BorderBrush="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarSeparatorStrokeKey}}"
+				BorderThickness="0"
+				ItemsSource="{Binding Path=Items, RelativeSource={x:Static RelativeSource.TemplatedParent}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <igWindows:UniformGridEx
+					    FirstColumn="{Binding Path=(igEditors:CalendarItemArea.ItemArea).FirstItemColumnOffset, RelativeSource={x:Static RelativeSource.Self}}"
+					    FirstRow="{Binding Path=(igEditors:CalendarItemArea.ItemArea).FirstItemRowOffset, RelativeSource={x:Static RelativeSource.Self}}"
+					    Rows="{Binding Path=(igEditors:CalendarItemArea.ItemArea).ItemRows, RelativeSource={x:Static RelativeSource.Self}}"
+					    Columns="{Binding Path=(igEditors:CalendarItemArea.ItemArea).ItemColumns, RelativeSource={x:Static RelativeSource.Self}}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </AdornerDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="DayOfWeekHeaderVisibility" Value="Visible">
+                            <Setter Property="BorderThickness" TargetName="itemsList" Value="0,1,0,0"/>
+                        </Trigger>
+                        <Trigger Property="WeekNumberVisibility" Value="Visible">
+                            <Setter Property="BorderThickness" TargetName="itemsList" Value="1,0,0,0"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="DayOfWeekHeaderVisibility" Value="Visible"/>
+                                <Condition Property="WeekNumberVisibility" Value="Visible"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="BorderThickness" TargetName="itemsList" Value="1,1,0,0"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type igEditors:CalendarItemArea}" BasedOn="{StaticResource CalendarItemAreaBase}">
+        <Setter Property="Margin" Value="0,5,0,0"/>
+    </Style>
+
+    <!-- ********************************* XamMonthCalendar ********************************* -->
+    <Style TargetType="{x:Type igEditors:XamMonthCalendar}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamMonthCalendar}">
+                    <Border BorderBrush="{StaticResource CalendarBorderBrush}" BorderThickness="1" Background="{StaticResource CalendarBackgroundBrush}" SnapsToDevicePixels="True" Padding="{TemplateBinding Padding}">
+                        <DockPanel SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <!-- Today button -->
+                            <Button DockPanel.Dock="Bottom" Style="{DynamicResource {x:Static igEditors:XamMonthCalendar.TodayButtonStyleKey}}" Visibility="{TemplateBinding TodayButtonVisibility}"/>
+                            <!-- Months -->
+                            <igEditors:CalendarItemGroupPanel HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

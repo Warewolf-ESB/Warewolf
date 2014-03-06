@@ -1,0 +1,1225 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:editors="http://infragistics.com/Editors"
+	xmlns:igDP="clr-namespace:Infragistics.Windows.DataPresenter"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:System="clr-namespace:System;assembly=mscorlib"
+	>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="DataPresenterGeneric_Express.xaml"/>
+        <ResourceDictionary Source="DataPresenterGeneric.xaml"/>
+        <ResourceDictionary Source="../DataPresenterBrushes/DataPresenterWashBaseLight_Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--SSP 10/16/09 TFS19525 - Added StringFormatConverter-->
+    <igWindows:StringFormatConverter x:Key="stringFormatConverter" />
+
+    <!-- _________________________ DarkGrayForegroundStyle ______________________________________ -->
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, DarkGrayForegroundStyle}">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CellForegroundActiveKey}}"/>
+    </Style>
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, CellForegroundActiveStyle}">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CellForegroundActiveKey}}"/>
+    </Style>
+    <!-- _________________________ LabelContent Style______________________________________ -->
+    <Style x:Key="LabelContentStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Padding" Value="0,3,0,3"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <ContentPresenter Margin="{TemplateBinding Padding}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- RecordSeparatorStyle-->
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, RecordSeparatorStyle}" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.LabelBackgroundKey}}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="BorderThickness" Value="0,1,0,1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=LabelOuterBorder}}"/>
+    </Style>
+    <!-- _________________________ CellValuePresenter __________________________________________ -->
+    <Style TargetType="{x:Type igDP:CellValuePresenter}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBorderKey}}"/>
+        <Setter Property="BackgroundHover" Value="Transparent"/>
+        <Setter Property="BorderHoverBrush" Value="Transparent"/>
+        <Setter Property="BackgroundActive" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBackgroundActiveKey}}"/>
+        <Setter Property="BorderActiveBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBorderActiveKey}}"/>
+        <Setter Property="BackgroundSelected" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBackgroundSelectedKey}}"/>
+        <Setter Property="BorderSelectedBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBorderSelectedKey}}"/>
+        <Setter Property="BackgroundFieldSelected" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.cvpBackgroundFieldSelectedKey}}"/>
+        <Setter Property="BorderFieldSelectedBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBorderFieldSelectedKey}}"/>
+        <Setter Property="BackgroundPrimary" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBackgroundPrimaryKey}}"/>
+        <Setter Property="BorderPrimaryBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CVPBorderPrimaryKey}}"/>
+        <Setter Property="ForegroundStyle">
+            <Setter.Value>
+                <Style/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ForegroundHoverStyle">
+            <Setter.Value>
+                <Style>
+                    <Setter Property="TextBlock.Foreground" Value="#FF151C55"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <!-- AS 5/23/07 BR23120 -->
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                    <igWindows:CardPanel>
+                        <!-- [JM 06-06-07] This element is not being used so I am commenting it out.  Its Visibility property is initialized to Collapsed and the IsSelected
+                               trigger below has commented out the line that sets the Visibility to Visible. Checked with Grant on this and he feels it is left over
+                               from early styling efforts and can be removed. -->
+                        <!--<Rectangle x:Name="LeftBorder"
+							Fill="#FFBBBBBB"
+							Width="1"
+							Margin="0,1,0,0"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Stretch"
+							Visibility="Collapsed" />-->
+                        <Border x:Name="MainBorder" Margin="0,0,0,0" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"/>
+                        <Rectangle x:Name="Active" Fill="{TemplateBinding BackgroundActive}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" SnapsToDevicePixels="True" Opacity="1" Visibility="Collapsed" StrokeThickness="1" Stroke="{TemplateBinding BorderActiveBrush}"/>
+                        <ContentPresenter x:Name="PART_EditorSite" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Style="{TemplateBinding ForegroundStyle}"/>
+                    </igWindows:CardPanel>
+                    <ControlTemplate.Triggers>
+                        <!-- HighlightAsPrimary -->
+                        <Trigger Property="HighlightAsPrimary" Value="true">
+                            <Setter Property="Background" Value="{Binding Path=BackgroundPrimary, RelativeSource={RelativeSource Self}}"/>
+                            <Setter Property="BorderBrush" Value="{Binding Path=BorderPrimaryBrush, RelativeSource={RelativeSource Self}}"/>
+                            <Setter TargetName="PART_EditorSite" Property="Style" Value="{Binding Path=ForegroundPrimaryStyle, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <!-- IsFieldSelected -->
+                        <Trigger Property="IsFieldSelected" Value="true">
+                            <Setter Property="Background" Value="{Binding Path=BackgroundFieldSelected, RelativeSource={RelativeSource Self}}"/>
+                            <Setter Property="BorderBrush" Value="{Binding Path=BorderFieldSelectedBrush, RelativeSource={RelativeSource Self}}"/>
+                            <Setter TargetName="PART_EditorSite" Property="Style" Value="{Binding Path=ForegroundFieldSelectedStyle, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <!-- IsSelected -->
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="BorderThickness" Value="1,0,1,1"/>
+                            <Setter Property="Margin" Value="0,0,-1,0"/>
+                            <Setter Property="Background" Value="{Binding Path=BackgroundSelected, RelativeSource={RelativeSource Self}}"/>
+                            <Setter Property="BorderBrush" Value="{Binding Path=BorderSelectedBrush, RelativeSource={RelativeSource Self}}"/>
+                            <Setter TargetName="PART_EditorSite" Property="Style" Value="{Binding Path=ForegroundSelectedStyle, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <!--<Setter Property="Visibility" Value="Visible" TargetName="LeftBorder" />-->
+                        </Trigger>
+                        <!-- IsActive -->
+                        <Trigger Property="IsActive" Value="true">
+                            <Setter TargetName="PART_EditorSite" Property="Style" Value="{Binding Path=ForegroundActiveStyle, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter Property="Visibility" TargetName="Active" Value="Visible"/>
+                            <Setter Property="StrokeThickness" TargetName="Active" Value="2"/>
+                        </Trigger>
+                        <!-- IsMouseOver -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="IsFieldSelected" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{Binding Path=BackgroundHover, RelativeSource={RelativeSource Self}}"/>
+                            <Setter Property="BorderBrush" Value="{Binding Path=BorderHoverBrush, RelativeSource={RelativeSource Self}}"/>
+                            <Setter TargetName="PART_EditorSite" Property="Style" Value="{Binding Path=ForegroundHoverStyle, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </MultiTrigger>
+                        <!-- Field.IsFixedStateChanging    JM 01-22-09 NA 9.1 FixedFields   -->
+                        <DataTrigger Binding="{Binding Path=Field.IsFixedStateChanging, RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter Property="Background" Value="#AA8DBAEB"/>
+                            <Setter Property="BorderBrush" Value="#AA8DBAEB"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="4,0,4,0"/>
+    </Style>
+    <!-- _________________________ DataRecordPresenter __________________________________________ -->
+    <Style TargetType="{x:Type igDP:DataRecordPresenter}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HeaderAreaBackground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=LabelBackground}}"/>
+        <Setter Property="NestedContentBackground" Value="Transparent"/>
+        <Setter Property="Background" Value="#00FFFFFF"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:DataRecordPresenter}">
+                    <igWindows:CardPanel x:Name="baseGrid" RenderTransform="{TemplateBinding FixedNearElementTransform}" Background="{TemplateBinding Background}">
+                        <Border
+                            Visibility="Collapsed" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.AddRowBackgroundKey}}" BorderBrush="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.GroupByLabelHighlightBorderKey}}" HorizontalAlignment="Stretch" x:Name="addRowFooter" VerticalAlignment="Stretch" Width="Auto" Height="Auto" BorderThickness="0,0,0,1"/>
+                        <Grid Margin="0" RenderTransform="{TemplateBinding ScrollableElementTransform}">
+                            <Grid.ColumnDefinitions>
+                                <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - added 1 column definition-->
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- SSP 5/6/08 - Record Separators - Added two col defs-->
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - added 1 row definition-->
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <!-- SSP 5/6/08 - Record Separators - Added two row defs-->
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Border x:Name="OrientationHorizontalSep" BorderThickness="0,0,1,0" Grid.ColumnSpan="6" Background="#FFFAFAFA" BorderBrush="#FFE7E7E7"  Visibility="Collapsed"/>
+                            <!-- Expansion Checkbox -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.row to 2 from 1-->
+                            <!-- AS 1/27/09 NA 2009 Vol 1 - Set ZIndex and RenderTransform for fixed fields -->
+                            <!-- AS 6/3/09 NA 2009 Vol 2 - Added Command(Parameter) & ToggleMode to support undo/redo -->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <igWindows:ExpansionIndicator
+                                x:Name="ExpansionIndicator"
+                                Panel.ZIndex="1"
+                                RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Visibility="{Binding Path=ExpansionIndicatorVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                Command="{x:Static igDP:DataPresenterCommands.ToggleRecordIsExpanded}"
+                                CommandParameter="{TemplateBinding Record}"
+                                ToggleMode="Manual"
+                                IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <!-- Header Background -->
+                            <!-- Added 8/2/2006 GH -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.colspan to 5 from 3-->
+                            <!-- AS 2/10/09 TFS13798 - Set RenderTransform for fixed fields -->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <igWindows:CardPanel
+                                RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                x:Name="SpacerFill" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6" Visibility="Visible">
+                                <Border x:Name="fill" Margin="0,0,0,0" Background="{TemplateBinding HeaderAreaBackground}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=LabelOuterBorder}}"/>
+                            </igWindows:CardPanel>
+                            <!-- End Added 8/2/2006 GH -->
+                            <!-- Header Content -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.col to 2 from 1-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <ContentPresenter x:Name="PART_HeaderContentSite" Grid.Row="1" Grid.Column="3" Content="{TemplateBinding HeaderContent}" Visibility="Visible" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" d:IsHidden="True"/>
+                            <!-- SSP 5/6/08 - Record Separators - Added separator rectangle -->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Border
+                                x:Name="RecordSeparator"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="6"
+                                Visibility="Collapsed"
+                                RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=RecordSeparatorStyle}}"/>
+                            <!-- Record Content -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.row to 2 from 1 and grid.col to 2 from 1-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <ContentPresenter x:Name="PART_RecordContentSite" Grid.Row="3" Grid.Column="3" Content="{TemplateBinding DataContext}" ContentTemplate="{TemplateBinding RecordContentAreaTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <!-- Nested Content -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.row to 4 from 2 and grid.col to 2 from 1-->
+                            <!-- AS 3/25/09 TFS15801 - Set RenderTransform for fixed fields -->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Border x:Name="PART_NestedContentSite" Grid.Row="5" Grid.Column="3"
+                                    RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                    Visibility="Visible" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{TemplateBinding NestedContentBackground}">
+                                <!-- AS 11/14/07 BR26035
+								The namescope was broken because the recordlistcontrol was not in the logical tree. We
+								need to use a ContentControl instead so the content	is made a logical child. -->
+                                <ContentControl
+                                    RenderTransform="{TemplateBinding ScrollableElementTransform}"
+                                    Content="{TemplateBinding NestedContent}"
+                                    Margin="2,2,0,0"/>
+                                <!--Margin="10,10,0,0" />-->
+                            </Border>
+                        </Grid>
+                    </igWindows:CardPanel>
+                    <ControlTemplate.Triggers>
+                        <!-- AS 11/8/11 TFS88111 -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.AutoFitToWidth, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Vertical" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter TargetName="PART_RecordContentSite" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <!-- START SSP 5/6/08 - Record Separators
+							   <Setter TargetName="PART_HeaderContentSite" Property="Grid.Row" Value="1" />
+							   <Setter TargetName="PART_HeaderContentSite" Property="Grid.Column" Value="0" />
+							   <Setter TargetName="PART_NestedContentSite" Property="Grid.Row" Value="1" />
+							   <Setter TargetName="PART_NestedContentSite" Property="Grid.Column" Value="2" />
+							   <Setter TargetName="PART_RecordContentSite" Property="VerticalAlignment" Value="Top" />
+							   <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="0" />
+							   <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="1" />
+							   <Setter TargetName="SpacerFill" Property="Grid.ColumnSpan" Value="1" />
+							   <Setter TargetName="SpacerFill" Property="Grid.RowSpan" Value="3" />
+							-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.Row" Value="3"/>
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Row" Value="3"/>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Column" Value="5"/>
+                            <Setter TargetName="PART_RecordContentSite" Property="VerticalAlignment" Value="Top"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Margin" Value="0,2"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="3"/>
+                            <Setter TargetName="SpacerFill" Property="Grid.ColumnSpan" Value="1"/>
+                            <Setter TargetName="SpacerFill" Property="Grid.RowSpan" Value="6"/>
+                            <!--<Setter TargetName="RecordSeparator" Property="Grid.Row" Value="2"/>
+							<Setter TargetName="RecordSeparator" Property="Grid.Column" Value="1"/>-->
+                            <Setter TargetName="RecordSeparator" Property="Width" Value="10"/>
+                            <Setter TargetName="RecordSeparator" Property="Height" Value="Auto"/>
+                            <Setter TargetName="RecordSeparator" Property="BorderThickness" Value="1,0"/>
+                            <Setter TargetName="OrientationHorizontalSep" Property="Visibility" Value="Visible"/>
+                            <!-- END SSP 5/6/08 - Record Separators -->
+                        </Trigger>
+                        <Trigger Property="ShouldDisplayRecordContent" Value="False">
+                            <Setter TargetName="PART_RecordContentSite" Property="Visibility" Value="Collapsed"/>
+                            <!--JJD 9/4/07 - BR26153 -->
+                            <!--Only set ExpansionIndicator Visibility to Hidden if is was Visible (see new MultiTrigger below) -->
+                            <!--<Setter TargetName="ExpansionIndicator" Property="Visibility" Value="Hidden" />-->
+                        </Trigger>
+                        <!--JJD 9/4/07 - BR26153 -->
+                        <!--Only set ExpansionIndicator Visibility to Hidden if is was Visible -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShouldDisplayRecordContent" Value="False"/>
+                                <Condition Property="IsHeaderRecord" Value="False"/>
+                                <Condition Property="ExpansionIndicatorVisibility" Value="Visible"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ExpansionIndicator" Property="Visibility" Value="Hidden"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="ShouldDisplayRecordContent" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <!-- START SSP 5/6/08 - Record Separators - Changed Value to 3 from 2-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <!-- JJD 1/24/11 TFS63831 the value should be 5 to match up with the nested content-->
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="5"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="ShouldDisplayRecordContent" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <!-- START SSP 5/6/08 - Record Separators - Changed Value to 3 from 2-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <!-- JJD 1/24/11 TFS63831 the value should be 5 to match up with the nested content-->
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="5"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsHeaderRecord" Value="True">
+                            <!--JJD 9/4/07 - BR26153 -->
+                            <!--Only set ExpansionIndicator Visibility to Hidden if is was Visible (see new MultiTrigger below) -->
+                            <!--<Setter TargetName="ExpansionIndicator" Property="Visibility" Value="Hidden" />-->
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="1"/>
+                        </Trigger>
+                        <!--JJD 9/4/07 - BR26153 -->
+                        <!--Only set ExpansionIndicator Visibility to Hidden if is was Visible -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsHeaderRecord" Value="True"/>
+                                <Condition Property="ExpansionIndicatorVisibility" Value="Visible"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ExpansionIndicator" Property="Visibility" Value="Hidden"/>
+                        </MultiTrigger>
+                        <Trigger Property="HasHeaderContent" Value="False">
+                            <Setter Property="Visibility" TargetName="SpacerFill" Value="Collapsed"/>
+                            <Setter Property="Visibility" TargetName="PART_HeaderContentSite" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="HasNestedContent" Value="true">
+                            <Setter TargetName="PART_NestedContentSite" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="baseGrid" Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="HasNestedContent" Value="False">
+                            <Setter Property="Visibility" TargetName="PART_NestedContentSite" Value="Collapsed"/>
+                        </Trigger>
+                        <!--SSP 8/5/09 - NAS9.2 Enhanced grid view
+							Changed the IsFixedOnTop trigger to MultiDataTrigger since we needed to add IsSpecialRecord
+							condition. This was done because previously we were showing separator after each fixed record
+							however we should not display the separator between each fixed data record if there are multiple
+							fixed data records. The same change was applied to IsFixedOnBottom.
+						-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsSpecialRecord}" Value="true" />
+                                <Condition Binding="{Binding Path=IsFixedOnTop, RelativeSource={RelativeSource Self}}" Value="true" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="addRowFooter" Value="Visible"/>
+                            <Setter Property="Margin" TargetName="PART_RecordContentSite" Value="0,2,0,2"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=IsSpecialRecord}" Value="true" />
+                                <Condition Binding="{Binding Path=IsFixedOnBottom, RelativeSource={RelativeSource Self}}" Value="true" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Margin" Value="0,2,0,0"/>
+                            <Setter Property="Margin" TargetName="PART_RecordContentSite" Value="0,2,0,2"/>
+                            <Setter Property="Visibility" TargetName="addRowFooter" Value="Visible"/>
+                            <Setter Property="BorderThickness" TargetName="addRowFooter" Value="0,1,0,0"/>
+                        </MultiDataTrigger>
+                        <!-- START SSP 5/6/08 - Record Separators -->
+                        <!-- For HasSeparatorBefore, default grid.row and grid.column settings are fine as setup
+												when declaring the record separator (and for horizontal orientation as setup in the
+												orientation=horizontal trigger above).
+											-->
+                        <Trigger Property="HasSeparatorBefore" Value="true">
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!-- For HasSeparatorAfter, we have to set grid.row and grid.col based on the orientation-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasSeparatorAfter" Value="true"/>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Setter TargetName="RecordSeparator" Property="Grid.Row" Value="4"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasSeparatorAfter" Value="true"/>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Setter TargetName="RecordSeparator" Property="Grid.Column" Value="4"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.ColumnSpan" Value="1"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.RowSpan" Value="6"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasSeparatorBefore" Value="true"/>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                            </MultiTrigger.Conditions>
+                            <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature - Shifted all columns and rows down and over by 1 and increased spans by 1-->
+                            <Setter TargetName="RecordSeparator" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.ColumnSpan" Value="1"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.RowSpan" Value="6"/>
+                        </MultiTrigger>
+                        <!-- END SSP 5/6/08 - Record Separators -->
+
+                        <!-- MD 6/10/10 - ChildRecordsDisplayOrder feature -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.ChildRecordsDisplayOrderResolved}" Value="BeforeParent"/>
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Vertical"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Row" Value="0"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.ChildRecordsDisplayOrderResolved}" Value="BeforeParent"/>
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Horizontal"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Column" Value="0"/>
+                        </MultiDataTrigger>
+
+                        <!-- MD 8/3/10 - TFS35609 -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.ChildRecordsDisplayOrderResolved}" Value="BeforeParentHeadersAttached"/>
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Vertical"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Row" Value="0"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.ChildRecordsDisplayOrderResolved}" Value="BeforeParentHeadersAttached"/>
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Horizontal"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_NestedContentSite" Property="Grid.Column" Value="0"/>
+                        </MultiDataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TemplateCardView">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:DataRecordPresenter}">
+                    <igWindows:CardPanel x:Name="baseGrid" Background="{TemplateBinding Background}">
+                        <!-- Record Content -->
+                        <Rectangle Fill="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CardBackgroundKey}}"/>
+                        <ContentPresenter x:Name="PART_RecordContentSite" Content="{TemplateBinding DataContext}" ContentTemplate="{TemplateBinding RecordContentAreaTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </igWindows:CardPanel>
+                    <ControlTemplate.Triggers>
+                        <!-- JM NA 10.1 CardView -->
+                        <Trigger Property="IsInCard" Value="True">
+                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ DataRecordCellArea __________________________________________ -->
+    <Style TargetType="{x:Type igDP:DataRecordCellArea}" BasedOn="{x:Static themes:DataPresenterGeneric.DataRecordCellArea}">
+        <Setter Property="BackgroundHover" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABackgroundHoverKey}}"/>
+        <Setter Property="BorderHoverBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABorderHoverKey}}"/>
+        <Setter Property="BackgroundActive" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABackgroundActiveKey}}"/>
+        <Setter Property="BorderActiveBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABorderActiveKey}}"/>
+        <Setter Property="BackgroundAlternate" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABackgroundAlternateKey}}"/>
+        <Setter Property="BackgroundSelected" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABackgroundSelectedKey}}"/>
+        <Setter Property="ForegroundActiveStyle" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=DarkGrayForegroundStyle}}"/>
+        <Setter Property="ForegroundSelectedStyle" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=DarkGrayForegroundStyle}}"/>
+        <Setter Property="ForegroundHoverStyle" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=DarkGrayForegroundStyle}}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.DRCABorderKey}}"/>
+        <Setter Property="CornerRadius" Value="0,0,0,0"/>
+    </Style>
+    <!-- _________________________ GroupByArea __________________________________________ -->
+    <Style TargetType="{x:Type igDP:GroupByArea}" BasedOn="{x:Static themes:DataPresenterGeneric.GroupByArea}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.GroupyByForegroundKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.GroupByBackgroundKey}}"/>
+    </Style>
+    <!-- _________________________ GroupByAreaFieldLabel __________________________________________ -->
+    <Style TargetType="{x:Type igDP:GroupByAreaFieldLabel}">
+        <Setter Property="MinHeight" Value="22"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="#FF151C55"/>
+        <Setter Property="BorderBrush" Value="#FF4A565D"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0.000000" Color="#FFFCFDFD"/>
+                    <GradientStop Offset="0.5" Color="#FFDCDFE0"/>
+                    <GradientStop Offset="0.5" Color="#FFB8C2CB"/>
+                    <GradientStop Offset="1.000000" Color="#FFDAEBEB"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="6,3,6,3.5"/>
+        <Setter Property="Margin" Value="0,0,1,0"/>
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:GroupByAreaFieldLabel}">
+                    <Grid HorizontalAlignment="Stretch" x:Name="ButtonGroupLeftMost" VerticalAlignment="Stretch">
+                        <Border SnapsToDevicePixels="True" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.ButtonGroupNormalBorderFillKey}}" CornerRadius="3,3,3,3"/>
+                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.ButtonGroupNormalInnerBorderFillKey}}" x:Name="ButtonGroupLeftMostBorder" CornerRadius="2,2,2,2" Margin="1,1,1,1" SnapsToDevicePixels="True"/>
+                        <Border SnapsToDevicePixels="True" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch" Width="Auto" Height="Auto" x:Name="ButtonGroupLeftMostMiddleFill" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.ButtonGroupNormalCenterFillKey}}"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}" Content="{Binding Path=(igDP:GroupByAreaFieldLabel.Field).Label, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="ButtonGroupLeftMostBorder" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.ButtonGroupHoverBorderFillKey}}"/>
+                            <Setter Property="Background" TargetName="ButtonGroupLeftMostMiddleFill" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.ButtonGroupHoverCenterFillKey}}"/>
+                            <Setter Property="Width" TargetName="ButtonGroupLeftMostMiddleFill" Value="Auto"/>
+                            <Setter Property="Margin" TargetName="ButtonGroupLeftMostMiddleFill" Value="2,2,2,2"/>
+                        </Trigger>
+                        <EventTrigger RoutedEvent="igDP:GroupByAreaFieldLabel.RemovedFromAvailableList">
+                            <BeginStoryboard x:Name="CollapseLabel_BeginStoryboard" Storyboard="{StaticResource CollapseLabel}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="igDP:GroupByAreaFieldLabel.AddedToAvailableList">
+                            <BeginStoryboard x:Name="AddLabelToList_BeginStoryboard" Storyboard="{StaticResource ExpandLabel}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="igDP:GroupByAreaFieldLabel.AddedToGroupedList">
+                            <BeginStoryboard x:Name="AddLabelToGroup_BeginStoryboard" Storyboard="{StaticResource ExpandLabel}"/>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ LabelPresenter __________________________________________ -->
+    <Style TargetType="{x:Type igDP:LabelPresenter}">
+        <Setter Property="Padding" Value="0,0,0,0"/>
+        <Setter Property="Margin" Value="0,0,-1,0"/>
+        <Setter Property="Panel.ZIndex" Value="100"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:LabelPresenter}">
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="sbHighlightOn"/>
+                        <Storyboard x:Key="sbHighlightOff"/>
+                        <Storyboard x:Key="SigmaFadeIn">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SummaryButton" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FixedButton" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="SigmaFadeOut">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="SummaryButton" Storyboard.TargetProperty="(UIElement.Opacity)" FillBehavior="Stop">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.2"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FixedButton" Storyboard.TargetProperty="(UIElement.Opacity)" FillBehavior="Stop">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.2"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="SigmaFadeInFilterButton">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FilterButton" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="SigmaFadeOutFilterButton">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FilterButton" Storyboard.TargetProperty="(UIElement.Opacity)" FillBehavior="Stop">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.2"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    <igWindows:CardPanel Margin="{TemplateBinding Padding}" Background="#00000000">
+                        <!-- End Background Bar -->
+                        <Grid RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True" HorizontalAlignment="Stretch" x:Name="background" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{TemplateBinding Background}" Margin="0,0,0,0">
+                            <Border Margin="0,0,0,0" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" x:Name="Labelbase"/>
+                        </Grid>
+                        <Grid x:Name="sortIndicatorAndLabel" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="4,1,4,1" MinHeight="20">
+                            <!-- HorizontalAlignment="{Binding Path=Field.LabelTextAlignmentResolved, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource textAlignmentToHorizontalAlignmentConverter}}"  -->
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- Label Text -->
+                            <ContentControl x:Name="LabelContent" Style="{StaticResource LabelContentStyle}" Content="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" Height="Auto" d:LayoutOverrides="Width" Grid.ColumnSpan="1"/>
+                            <!-- End Label Text -->
+                            <igWindows:SortIndicator x:Name="SortIndicator" SortStatus="{TemplateBinding SortStatus}" Visibility="Collapsed" Width="10" Height="Auto" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,0,0"/>
+
+                            <!-- SSP 3/31/08 - Summaries Functionality -->
+                            <igDP:SummaryButton x:Name="SummaryButton" Field="{TemplateBinding Field}" Visibility="{Binding Path=Field.AllowSummariesResolved, Converter={StaticResource BoolToVisConverter}, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Grid.Column="2" Margin="5,0,0,0" Grid.Row="0" Opacity="0.2"/>
+
+                            <!-- JJD 1/06/09 - Filtering Functionality -->
+                            <igDP:FilterButton
+									x:Name="FilterButton"
+									Field="{TemplateBinding Field}"
+									Visibility="{TemplateBinding FilterButtonVisibility}"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Center"
+									Width="Auto"
+									Grid.Column="3"
+									Margin="5,0,0,0"
+                                    Opacity="0.2"
+								/>
+
+                            <!-- JM 1/14/09 - Fixed Fields Functionality -->
+                            <igDP:FixedFieldButton
+								x:Name="FixedButton"
+								Field="{TemplateBinding Field}"
+								Visibility="{TemplateBinding FixedButtonVisibility}"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Width="Auto"
+								Grid.Column="4"
+								Opacity="0.2"
+								Margin="2,0,2,0"/>
+                        </Grid>
+                        <!-- End Highlight -->
+                    </igWindows:CardPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HorizontalAlignment" Value="Right" SourceName="sortIndicatorAndLabel">
+                            <Setter Property="Margin" TargetName="sortIndicatorAndLabel" Value="4,0,6,0"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Margin" Value="1,0,0,0"/>
+                            <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+                            <Setter Property="Margin" TargetName="LabelContent" Value="-1,0,0,0"/>
+                            <Setter Property="Margin" TargetName="SortIndicator" Value="5,0,-1,0"/>
+                            <Setter Property="Margin" TargetName="SummaryButton" Value="5,0,-1,-1"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource SigmaFadeOut}" x:Name="SigmaFadeOut"/>
+                            </Trigger.ExitActions>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource SigmaFadeIn}" x:Name="SigmaFadeIn"/>
+                            </Trigger.EnterActions>
+                            <Setter Property="Panel.ZIndex" Value="200"/>
+                            <Setter Property="Background" TargetName="Labelbase" Value="{Binding Path=LabelHighlight, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition SourceName="FilterButton" Property="HasActiveFilters" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <!-- JM 04-09-09 Comment these animations out for now to address TFS 16564.  This bug was discovered as we were getting ready to release
+											 the April 2009 9.1 Hotfix and is caused by a bug in the WPF framework that we will need to work around by
+											 replacing this MultiTrigger with a MultiDataTrigger. -->
+                            <!--<MultiTrigger.EnterActions>
+                                <BeginStoryboard x:Name="SigmaFadeIn_FB_BeginStoryboard" Storyboard="{StaticResource SigmaFadeInFilterButton}"/>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource SigmaFadeOutFilterButton}" x:Name="SigmaFadeOut_FB_BeginStoryboard"/>
+                                <RemoveStoryboard BeginStoryboardName="SigmaFadeIn_FB_BeginStoryboard"/>
+                            </MultiTrigger.ExitActions>-->
+                            <Setter TargetName="FilterButton" Property="Opacity" Value="1"/>
+                        </MultiTrigger>
+                        <Trigger SourceName="FilterButton" Property="HasActiveFilters" Value="True">
+                            <Setter TargetName="FilterButton" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <!-- HighlightPrimary -->
+                        <Trigger Property="HighlightAsPrimary" Value="true">
+                            <Setter Property="Background" TargetName="background" Value="{Binding Path=LabelHighlight, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="SortStatus" Value="Ascending">
+                            <Setter TargetName="SortIndicator" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="SortStatus" Value="Descending">
+                            <Setter TargetName="SortIndicator" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+
+                        <!--SSP 6/23/09 - NAS9.2 Field Chooser-->
+                        <Trigger Property="IsInGroupByArea" Value="true">
+                            <Setter TargetName="FixedButton" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="SummaryButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                        <!--SSP 6/23/09 - NAS9.2 Field Chooser
+							If the label is in a field chooser then hide the sort indicator, filter button and
+							summary button. Note that the fixed button is collapsed in code in label presenter
+							by coercing the FixedButtonVisibility property to be Collapsed.-->
+                        <Trigger Property="IsInFieldChooser" Value="true">
+                            <Setter TargetName="SortIndicator" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="FilterButton" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="FixedButton" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="SummaryButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.LabelBackgroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=LabelOuterBorder}}"/>
+        <Setter Property="BorderThickness" Value="1,0,1,1"/>
+        <Setter Property="LabelHighlight" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.LabelHighlightKey}}"/>
+        <!--SSP 7/6/09 - Field Chooser - Added ToolTip property on the field.-->
+        <Setter Property="ToolTip" Value="{Binding Path=Field.ToolTip, RelativeSource={x:Static RelativeSource.Self}}" />
+    </Style>
+    <!-- SSP 3/27/09 - Summaries Functionality
+				Added style for summaries related elements
+	-->
+    <!-- _________________________ SummaryRecordPresenter ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryRecordPresenter}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HeaderAreaBackground" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.LabelBackgroundKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryRecordPresenterBackgroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryRecordPresenterBorderKey}}"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryRecordPresenter}">
+                    <igWindows:CardPanel x:Name="baseGrid">
+                        <Border
+                            RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,1,0,1" Background="{TemplateBinding Background}" x:Name="Background"/>
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- SSP 5/6/08 - Record Separators - Added two col defs-->
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <!-- SSP 5/6/08 - Record Separators - Added two row defs-->
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Expansion Checkbox -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.row to 2 from 1-->
+                            <!-- AS 6/3/09 NA 2009 Vol 2 - Added Command(Parameter) & ToggleMode to support undo/redo -->
+                            <igWindows:ExpansionIndicator
+                                x:Name="ExpansionIndicator"
+                                Grid.Row="2" Grid.Column="0"
+                                Visibility="{Binding Path=ExpansionIndicatorVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                Command="{x:Static igDP:DataPresenterCommands.ToggleRecordIsExpanded}"
+                                CommandParameter="{TemplateBinding Record}"
+                                ToggleMode="Manual"
+                                IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <!-- Header Background -->
+                            <!-- Added 8/2/2006 GH -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.colspan to 5 from 3-->
+                            <!-- AS 2/10/09 TFS13798 - Set RenderTransform for fixed fields -->
+                            <igWindows:CardPanel
+                                RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                x:Name="SpacerFill" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Visibility="Visible">
+                                <Rectangle x:Name="fill" Margin="0,0,0,0" Fill="{TemplateBinding HeaderAreaBackground}"/>
+                            </igWindows:CardPanel>
+                            <!-- End Added 8/2/2006 GH -->
+                            <!-- Header Content -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.col to 2 from 1-->
+                            <ContentPresenter x:Name="PART_HeaderContentSite" Grid.Row="0" Grid.Column="2" Content="{TemplateBinding HeaderContent}" Visibility="Visible" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" d:IsHidden="True"/>
+                            <!-- SSP 5/6/08 - Record Separators - Added separator rectangle -->
+                            <Border
+                                x:Name="RecordSeparator"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="5"
+                                Visibility="Collapsed"
+                                RenderTransform="{TemplateBinding FixedNearElementTransform}"
+                                Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=RecordSeparatorStyle}}"/>
+                            <!-- Record Content -->
+                            <!-- SSP 5/6/08 - Record Separators - changed grid.row to 2 from 1 and grid.col to 2 from 1-->
+                            <ContentPresenter x:Name="PART_RecordContentSite" Grid.Row="2" Grid.Column="2" Content="{TemplateBinding DataContext}" ContentTemplate="{TemplateBinding RecordContentAreaTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding ContentAreaMargins}"/>
+                        </Grid>
+                    </igWindows:CardPanel>
+                    <ControlTemplate.Triggers>
+                        <!-- AS 11/8/11 TFS88111 -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=FieldLayout.AutoFitToWidth, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=Orientation, RelativeSource={RelativeSource Self}}" Value="Vertical" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter TargetName="PART_RecordContentSite" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </MultiDataTrigger>
+
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <!-- START SSP 5/6/08 - Record Separators
+							    <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="0" />
+							    <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="1" />
+							    <Setter TargetName="SpacerFill" Property="Grid.ColumnSpan" Value="1" />
+							    <Setter TargetName="SpacerFill" Property="Grid.RowSpan" Value="3" />
+							-->
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.Row" Value="2"/>
+                            <Setter TargetName="PART_HeaderContentSite" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_RecordContentSite" Property="VerticalAlignment" Value="Top"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="SpacerFill" Property="Grid.ColumnSpan" Value="1"/>
+                            <Setter TargetName="SpacerFill" Property="Grid.RowSpan" Value="5"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Row" Value="2"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="RecordSeparator" Property="Width" Value="10"/>
+                            <Setter TargetName="RecordSeparator" Property="Height" Value="Auto"/>
+                            <!-- END SSP 5/6/08 - Record Separators -->
+                        </Trigger>
+                        <Trigger Property="ShouldDisplayRecordContent" Value="False">
+                            <Setter TargetName="PART_RecordContentSite" Property="Visibility" Value="Collapsed"/>
+                            <!--JJD 9/4/07 - BR26153 -->
+                            <!--Only set ExpansionIndicator Visibility to Hidden if is was Visible (see new MultiTrigger below) -->
+                            <!--<Setter TargetName="ExpansionIndicator" Property="Visibility" Value="Hidden" />-->
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="ShouldDisplayRecordContent" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <!-- START SSP 5/6/08 - Record Separators - Changed Value to 3 from 2-->
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="3"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="ShouldDisplayRecordContent" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <!-- START SSP 5/6/08 - Record Separators - Changed Value to 3 from 2-->
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="3"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsHeaderRecord" Value="True">
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="ExpansionIndicator" Property="Grid.Column" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="HasHeaderContent" Value="False">
+                            <Setter Property="Visibility" TargetName="SpacerFill" Value="Collapsed"/>
+                            <Setter Property="Visibility" TargetName="PART_HeaderContentSite" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsFixedOnBottom" Value="true">
+                            <Setter Property="Margin" Value="0,2,0,0"/>
+                            <!-- JJD 2/3/09 - shouldn't step on Margin property of PART_RecordContentSite since
+                                 it is bound to the ContentAreaMargins property -->
+                            <!--<Setter Property="Margin" TargetName="PART_RecordContentSite" Value="0,2,0,2"/>-->
+                            <Setter Property="BorderThickness" TargetName="Background" Value="0,1,0,0"/>
+                        </Trigger>
+                        <!-- START SSP 5/6/08 - Record Separators -->
+                        <!-- For HasSeparatorBefore, default grid.row and grid.column settings are fine as setup
+							when declaring the record separator (and for horizontal orientation as setup in the
+							orientation=horizontal trigger above).
+						-->
+                        <Trigger Property="HasSeparatorBefore" Value="true">
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!-- For HasSeparatorAfter, we have to set grid.row and grid.col based on the orientation-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasSeparatorAfter" Value="true"/>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Row" Value="3"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasSeparatorAfter" Value="true"/>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="RecordSeparator" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="RecordSeparator" Property="Grid.Column" Value="3"/>
+                        </MultiTrigger>
+                        <!-- END SSP 5/6/08 - Record Separators -->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TemplateCardView">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryRecordPresenter}">
+                    <igWindows:CardPanel x:Name="baseGrid" Background="{TemplateBinding Background}">
+                        <!-- Record Content -->
+                        <Rectangle Fill="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CardBackgroundKey}}"/>
+                        <ContentPresenter x:Name="PART_RecordContentSite" Content="{TemplateBinding DataContext}" ContentTemplate="{TemplateBinding RecordContentAreaTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </igWindows:CardPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ SummaryRecordPrefixArea __________________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryRecordPrefixArea}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryRecordPrefixArea}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ SummaryRecordCellArea __________________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryRecordCellArea}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryRecordCellArea}">
+                    <igWindows:CardPanel>
+                        <Border BorderThickness="0,1,0,1">
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                    </igWindows:CardPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="0,0,0,0"/>
+    </Style>
+    <!-- _________________________ SummaryResultsPresenter ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryResultsPresenter}">
+        <Style.Resources>
+            <!-- SSP 4/10/12 - Optimizations - Note that this is no longer being used as a result of the change below. -->
+            <DataTemplate DataType="{x:Type igDP:SummaryResult}">
+                <igDP:SummaryResultPresenter SummaryResult="{Binding}"/>
+            </DataTemplate>
+            <!-- SSP 4/10/12 - Optimizations - Added SummaryResultEntry template. -->
+            <DataTemplate DataType="{x:Type igDP:SummaryResultEntry}">
+                <igDP:SummaryResultPresenter SummaryResult="{Binding Path=SummaryResult}"/>
+            </DataTemplate>
+        </Style.Resources>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryResultsPresenter}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <!-- SSP 4/10/12 - Optimizations - Changed ItemsSource="{TemplateBinding SummaryResults}" to ItemsSource="{TemplateBinding SummaryResultEntries}". -->
+                        <ItemsControl ItemsSource="{TemplateBinding SummaryResultEntries}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel CanHorizontallyScroll="false" CanVerticallyScroll="false"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ SummaryResultPresenter ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryResultPresenter}">
+        <Setter Property="Padding" Value="1,1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryResultPresenter}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="{TemplateBinding Padding}" ToolTip="{Binding Path=SummaryResult.ToolTipResolved, RelativeSource={RelativeSource TemplatedParent}}">
+                        <!-- SSP 3/19/10 - Optimizations
+                            Changed the binding to bind to the new DisplayTextAsync instead of the DisplayText so we
+                            don't force synchronous calculation of the summary if it's dirty.
+                        -->
+                        <TextBlock Text="{Binding Path=SummaryResult.DisplayTextAsync, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="0,0,0,2"/>
+    </Style>
+    <!-- _________________________ SummaryCellPresenter ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryCellPresenter}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryCellPresenter}">
+                    <igDP:SummaryCellPresenterLayoutElement/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ SummaryButton ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryButton}">
+                    <Grid Visibility="Visible" x:Name="grid">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Stretch" Orientation="Horizontal" Margin="0,0,3,0" Background="#00FFFFFF" x:Name="stackPanel" Visibility="Visible">
+                            <Border Width="1" Margin="0,1,5,2" BorderThickness="1,0,0,0" Height="Auto" x:Name="border1" BorderBrush="#FF909192"/>
+                            <Path Stretch="Fill" Data="M 0,0 C0,0 5,0 5,0 5,0 5,1 5,1 5,1 2,1 2,1 2,1 4,3.5 4,3.5 4,3.5 2,6 2,6 2,6 5,6 5,6 5,6 5,7 5,7 5,7 0,7 0,7 0,7 0,6 0,6 0,6 2,3.5625 2,3.5625 2,3.5625 0,1 0,1 0,1 0,0 0,0 z" Fill="{TemplateBinding Foreground}" Width="5" Height="7" d:LayoutOverrides="Width, Height" x:Name="path" Stroke="{x:Null}" HorizontalAlignment="Stretch" StrokeThickness="0"/>
+                        </StackPanel>
+                        <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" VerticalOffset="2" HorizontalOffset="0" IsOpen="{Binding Path=IsChecked, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" StaysOpen="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" SnapsToDevicePixels="True">
+                            <!-- JJD 3/5/09 - TFS5971/BR32606 - set focus scope to true and navigation settings-->
+                            <Border
+                                BorderBrush="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryButtonPopupBorderKey}}"
+                                x:Name="border"
+                                Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryButtonPopupBackgroundKey}}"
+                                KeyboardNavigation.DirectionalNavigation="Contained"
+                                KeyboardNavigation.TabNavigation="Contained"
+                                FocusManager.IsFocusScope="True"
+                                BorderThickness="1,1,1,1"
+                                CornerRadius="3,3,3,3">
+                                <Grid Width="Auto" Height="Auto">
+                                    <Border Width="28" HorizontalAlignment="Left" BorderThickness="0,0,1,0" Background="#FFE9EEEE" BorderBrush="#FFC5C5C5" CornerRadius="3,0,0,0"/>
+                                    <StackPanel Margin="5,5,5,5">
+                                        <igDP:SummaryCalculatorSelectionControl x:Name="CalculatorSelectionControl" Field="{TemplateBinding Field}"/>
+                                        <Grid Width="Auto" Height="Auto">
+                                            <Border Margin="-5,0,-5,-5" Background="#FFFFFFFF" CornerRadius="0,0,3,3"/>
+                                            <Rectangle Fill="#FFE0E0E0" Stroke="{x:Null}" Width="Auto" Height="1" x:Name="rectangle1" Margin="-5,1,-5,0" VerticalAlignment="Top"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0" d:LayoutOverrides="Width">
+                                                <Button x:Name="RowSummaryOkButton" Content="Ok" IsDefault="True" Height="12" Margin="0,0,5,0" Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=RowSummaryOkButton}}" Width="13"/>
+                                                <!-- JJD 3/5/09 - TFS5971/BR32606 - set IsCancel to True-->
+                                                <Button x:Name="RowSummaryCancelButton" Content="Cancel" IsCancel="True" Height="12" Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=RowSummaryCancelButton}}" Width="13"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.LabelForegroundKey}}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+    <!-- _________________________ SummaryCalculatorSelectionControl ______________________________________ -->
+    <Style TargetType="{x:Type igDP:SummaryCalculatorSelectionControl}">
+        <Style.Resources>
+            <!-- SSP 9/21/09 TFS15959 - Instead of setting ItemTemplate on the ItemsControl, add the
+							data template to the style resources.-->
+            <DataTemplate DataType="{x:Type igDP:SummaryCalculatorHolder}">
+                <igWindows:CardPanel x:Name="mainPanel">
+                    <Grid Margin="0,0,0,5">
+                        <!-- JJD 3/5/09 - TFS5971/BR32606 - set FocusVisualStyle to null-->
+                        <!-- SSP 10/16/09 TFS19525 - Added line that sets AutomationProperties.AutomationId -->
+                        <CheckBox x:Name="checkBox" Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=OfficeCheckBox}}" Visibility="Visible" Grid.Column="0" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"
+											AutomationProperties.AutomationId="{Binding Path=Calculator.Name, Converter={StaticResource stringFormatConverter}, ConverterParameter=\{0\}_CheckBox}"
+																		FocusVisualStyle="{x:Null}">
+                            <StackPanel Margin="5,0,0,0">
+                                <Image Source="{Binding Path=Calculator.Image}" Margin="5,0,0,0"/>
+                                <TextBlock Text="{Binding Path=Calculator.DisplayName}" Foreground="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCSCItemForegroundKey}}" Margin="5,0"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Grid>
+                    <Grid Margin="0,0,0,5">
+                        <!-- JJD 3/5/09 - TFS5971/BR32606 - set FocusVisualStyle to null-->
+                        <!-- SSP 10/16/09 TFS19525 - Added line that sets AutomationProperties.AutomationId -->
+                        <RadioButton x:Name="radioButton" Visibility="Collapsed" Grid.Column="0" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"
+												 AutomationProperties.AutomationId="{Binding Path=Calculator.Name, Converter={StaticResource stringFormatConverter}, ConverterParameter=\{0\}_RadioButton}"
+																		FocusVisualStyle="{x:Null}">
+                            <StackPanel Margin="5,0,0,0">
+                                <Image Source="{Binding Path=Calculator.Image}" Margin="5,0,0,0"/>
+                                <TextBlock Text="{Binding Path=Calculator.DisplayName}" Foreground="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCSCItemForegroundKey}}" Margin="5,0"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </Grid>
+                    <!-- JJD 3/5/09 - TFS5971/BR32606 - added focus rect-->
+                    <Rectangle Visibility="{Binding Path=IsKeyboardFocusWithin, ElementName=mainPanel, Converter={StaticResource BoolToVisConverter}}" Margin="17,0,0,3" Stroke="#D0000000" StrokeThickness="1" StrokeDashArray="1 2"/>
+                </igWindows:CardPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding Path=SelectionControl.AllowMultipleSummaries}" Value="False">
+                        <Setter TargetName="checkBox" Property="Visibility" Value="Collapsed"/>
+                        <Setter TargetName="radioButton" Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </Style.Resources>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:SummaryCalculatorSelectionControl}">
+                    <!-- JJD 3/5/09 - TFS5971/BR32606 - set focusable to false-->
+                    <ItemsControl
+                        ItemsSource="{TemplateBinding SummaryCalculatorHolders}"
+                        KeyboardNavigation.DirectionalNavigation="Contained"
+                        Focusable="False"
+                        Margin="{TemplateBinding Padding}"
+                        Foreground="{TemplateBinding Foreground}"
+					/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        <Setter Property="Padding" Value="3,3,3,5"/>
+    </Style>
+    <!-- _________________________ GroupBySummariesPresenter ______________________________________ -->
+    <Style TargetType="{x:Type igDP:GroupBySummariesPresenter}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igDP:GroupBySummariesPresenter}">
+                    <Border Margin="{TemplateBinding ContentAreaMargins}" Background="{TemplateBinding Background}">
+                        <igDP:SummaryRecordContentArea/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, RowSummaryOkButton}" BasedOn="{x:Null}" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Path Opacity="1" Stretch="Fill" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="0.5" Data="M 11.44970703125,-0.32843017578125 C11.44970703125,-0.32843017578125 5.0858154296875,6.0355224609375 5.0858154296875,6.0355224609375 5.0858154296875,6.0355224609375 2.55023193359375,3.5 2.55023193359375,3.5 2.55023193359375,3.5 0.13604736328125,5.914215087890625 0.13604736328125,5.914215087890625 0.13604736328125,5.914215087890625 5.0858154296875,10.86395263671875 5.0858154296875,10.86395263671875 5.0858154296875,10.86395263671875 13.86395263671875,2.085784912109375 13.86395263671875,2.085784912109375 13.86395263671875,2.085784912109375 11.44970703125,-0.32843017578125 11.44970703125,-0.32843017578125 z" x:Name="path" Fill="{TemplateBinding Background}"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True"/>
+                        <Trigger Property="IsDefaulted" Value="True"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="path">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF99FF00" Offset="0"/>
+                                        <GradientStop Color="#FF0A9F00" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Stroke" TargetName="path" Value="#FF336C03"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True"/>
+                        <Trigger Property="IsEnabled" Value="False"/>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCommandButtonsBorderKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCommandButtonsBackgroundKey}}"/>
+    </Style>
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, RowSummaryCancelButton}" BasedOn="{x:Null}" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCommandButtonsBackgroundKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.SummaryCommandButtonsBorderKey}}"/>
+        <Setter Property="Foreground" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Path HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto" Stretch="Fill" Opacity="1" Data="M 561.3890991210938,474.9895935058594 C561.3890991210938,474.9895935058594 557.5,478.8799743652344 557.5,478.8799743652344 557.5,478.8799743652344 553.6109008789062,474.9895935058594 553.6109008789062,474.9895935058594 553.6109008789062,474.9895935058594 551.4895629882812,477.11090087890625 551.4895629882812,477.11090087890625 551.4895629882812,477.11090087890625 555.3800048828125,481 555.3800048828125,481 555.3800048828125,481 551.4895629882812,484.88909912109375 551.4895629882812,484.88909912109375 551.4895629882812,484.88909912109375 553.6109008789062,487.0104064941406 553.6109008789062,487.0104064941406 553.6109008789062,487.0104064941406 557.5,483.1199951171875 557.5,483.1199951171875 557.5,483.1199951171875 561.3890991210938,487.0104064941406 561.3890991210938,487.0104064941406 561.3890991210938,487.0104064941406 563.5104370117188,484.88909912109375 563.5104370117188,484.88909912109375 563.5104370117188,484.88909912109375 559.6199951171875,481 559.6199951171875,481 559.6199951171875,481 563.5104370117188,477.11090087890625 563.5104370117188,477.11090087890625 563.5104370117188,477.11090087890625 561.3890991210938,474.9895935058594 561.3890991210938,474.9895935058594 z" Stroke="{TemplateBinding BorderBrush}" StrokeThickness=".5" Fill="{TemplateBinding Background}" x:Name="path"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True"/>
+                        <Trigger Property="IsDefaulted" Value="True"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Stroke" TargetName="path" Value="#FFA41818"/>
+                            <Setter Property="Fill" TargetName="path" Value="#FFF83737"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True"/>
+                        <Trigger Property="IsEnabled" Value="False"/>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="{ComponentResourceKey {x:Type igDP:XamDataGrid}, OfficeCheckBox}" TargetType="{x:Type CheckBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxNormalInnerBoxBorderFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxNormalOuterBoxBorderFillKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <!-- BulletDecorator is used to provide baseline alignment between the checkmark and the Content -->
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <StackPanel Width="Auto" Height="Auto" Orientation="Horizontal">
+                                <Grid Width="13" Height="13">
+                                    <Border x:Name="OuterBox" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxNormalOuterBoxCenterFillKey}}"/>
+                                    <Border Margin="2,2,2,2" BorderThickness="1,1,1,1" BorderBrush="{TemplateBinding Background}" Background="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxNormalInnerBoxCenterFillKey}}" x:Name="InnerBox"/>
+                                    <Grid Visibility="Collapsed" Margin="0,0,0,0" x:Name="CheckMark">
+                                        <Path Height="9.661" Width="10.137" Stretch="Fill" Opacity="0.8" Data="M2.6673452,7.8617508 C2.6673452,7.8617508 5.817048,10.192734 5.817048,10.192734 5.817048,10.192734 9.5967099,4.4942121 9.5967099,4.4942121" Stroke="#FFFFFFFF" StrokeThickness="3" SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="1.138,0.965,0,0" x:Name="Background" VerticalAlignment="Top"/>
+                                        <Path Height="8.915" Width="8.66" Stretch="Fill" Opacity="1" Data="M1.6839831,7.7438574 C1.6839831,7.7438574 5.8697866,10.85053 5.8697866,10.85053 5.8697866,10.85053 10.540217,1.6301305 10.540217,1.6301305" Stroke="#FF4C6D97" StrokeThickness="2" SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="1.855,1.465,0,0" x:Name="Foreground" VerticalAlignment="Top"/>
+                                    </Grid>
+                                </Grid>
+                                <ContentPresenter RecognizesAccessKey="True" Margin="4,0,0,0" Width="Auto" Height="Auto"/>
+                            </StackPanel>
+                        </BulletDecorator.Bullet>
+                    </BulletDecorator>
+                    <!-- This uses Visibility to hide and show the CheckMark on IsChecked -->
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsThreeState" Value="True"/>
+                                <Condition Property="IsChecked" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="CheckMark" Value="Collapsed"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Visibility" TargetName="CheckMark" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxHoverInnerBoxBorderFillKey}}"/>
+                            <Setter Property="Background" TargetName="InnerBox" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxHoverInnerBoxCenterFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxPressedInnerBoxCenterFillKey}}" TargetName="InnerBox"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDP:DataPresenterBrushKeys.CheckBoxPressedInnerBoxBorderFillKey}}" TargetName="InnerBox"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=DisabledBackgroundBrush}}" TargetName="OuterBox"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDP:XamDataGrid}, ResourceId=DisabledBorderBrush}}" TargetName="OuterBox"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+    </Style>
+</ResourceDictionary>

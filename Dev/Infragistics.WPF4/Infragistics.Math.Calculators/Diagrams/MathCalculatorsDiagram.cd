@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Math.Calculators.MeanCalculator">
+    <Position X="0.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MeanCalculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.ValueCalculator">
+    <Position X="3" Y="4.25" Width="2" />
+    <Members>
+      <Field Name="_Value" Hidden="true" />
+      <Method Name="FastItemsSource_Event" Hidden="true" />
+      <Method Name="UpdateCalculation" Hidden="true" />
+      <Field Name="ValuePropertyName" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAABAAAABAAAAAACAAAAAAABAgAAAAAAA=</HashCode>
+      <FileName>ValueCalculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.ItemsSourceCalculator">
+    <Position X="4.5" Y="0.75" Width="2" />
+    <Members>
+      <Method Name="ClearInputNan" Hidden="true" />
+      <Method Name="CreateInputVector" Hidden="true" />
+      <Property Name="FastItemsSource" Hidden="true" />
+      <Method Name="FastItemsSource_Event" Hidden="true" />
+      <Property Name="FastItemsSourceEventHandler" Hidden="true" />
+      <Field Name="FastItemsSourceProperty" Hidden="true" />
+      <Field Name="FastItemsSourceUpdatedAction" Hidden="true" />
+      <Method Name="InputContainsNan" Hidden="true" />
+      <Field Name="ItemsSourceProperty" Hidden="true" />
+      <Method Name="OnFastItemsSourceChanged" Hidden="true" />
+      <Method Name="OnItemsSourceChanged" Hidden="true" />
+      <Method Name="OnValueMemberPathChanged" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Property Name="ValueColumn" Hidden="true" />
+      <Field Name="ValueMemberPathProperty" Hidden="true" />
+      <Field Name="ValueMemberPathUpdatedAction" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAAIAgACBgAAAAAAAFACggAChAAAAAABABAgAIAAAAI=</HashCode>
+      <FileName>ItemsSourceCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.DataCalculator">
+    <Position X="10.25" Y="6.25" Width="2" />
+    <Members>
+      <Method Name="RaiseChangedEvent" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAEEAAAQAAoABAAAAAAAAAAQAA=</HashCode>
+      <FileName>DataCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.CorrelationCalculator" BaseTypeListCollapsed="true">
+    <Position X="18" Y="5.25" Width="1.75" />
+    <Members>
+      <Field Name="_value" Hidden="true" />
+      <Property Name="FastItemsSourceEventHandlerX" Hidden="true" />
+      <Property Name="FastItemsSourceEventHandlerY" Hidden="true" />
+      <Property Name="FastItemsSourceX" Hidden="true" />
+      <Method Name="FastItemsSourceX_Event" Hidden="true" />
+      <Field Name="FastItemsSourceXProperty" Hidden="true" />
+      <Property Name="FastItemsSourceY" Hidden="true" />
+      <Method Name="FastItemsSourceY_Event" Hidden="true" />
+      <Field Name="FastItemsSourceYProperty" Hidden="true" />
+      <Field Name="ItemsSourceProperty" Hidden="true" />
+      <Method Name="OnFastItemsSourceXChanged" Hidden="true" />
+      <Method Name="OnFastItemsSourceYChanged" Hidden="true" />
+      <Method Name="OnItemsSourceChanged" Hidden="true" />
+      <Method Name="OnXMemberPathChanged" Hidden="true" />
+      <Method Name="OnYMemberPathChanged" Hidden="true" />
+      <Method Name="UpdateCalculation" Hidden="true" />
+      <Property Name="ValueColumnX" Hidden="true" />
+      <Property Name="ValueColumnY" Hidden="true" />
+      <Field Name="ValuePropertyName" Hidden="true" />
+      <Field Name="XMemberPathProperty" Hidden="true" />
+      <Field Name="YMemberPathProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABFJAAAAAAAAgMAwAABAgABChADAAAAMAAAgAICAAAE=</HashCode>
+      <FileName>CorrelationCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.FixedValueCalculator" BaseTypeListCollapsed="true">
+    <Position X="15.25" Y="6.25" Width="2" />
+    <Members>
+      <Method Name="OnValueChanged" Hidden="true" />
+      <Field Name="ValueProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAUAAAAQAAgABEAAAAgAAAAQAA=</HashCode>
+      <FileName>FixedValueCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.MedianCalculator">
+    <Position X="2.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MedianCalculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.PercentageCalculator" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="6.25" Width="2" />
+    <Members>
+      <Method Name="OnValueChanged" Hidden="true" />
+      <Field Name="ValueProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAUAAAAQAAgABEAAAAgAAAAQAA=</HashCode>
+      <FileName>PercentageCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.StandardDeviationCalculator">
+    <Position X="5" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAEAAAAQCAgABAAAAAAAAAAQAA=</HashCode>
+      <FileName>StandardDeviationCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Calculators.StandardErrorCalculator">
+    <Position X="7.75" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAABAAEAAAAQCAgABAAAAAAAAAAQAA=</HashCode>
+      <FileName>StandardErrorCalculator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

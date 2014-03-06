@@ -1,0 +1,968 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Charts.CategorySeries">
+    <Position X="11.75" Y="2" Width="1.75" />
+    <Members>
+      <Property Name="CachedXAxis" Hidden="true" />
+      <Property Name="CachedYAxis" Hidden="true" />
+      <Method Name="CacheXAxis" Hidden="true" />
+      <Method Name="CacheYAxis" Hidden="true" />
+      <Method Name="CategorySeries" Hidden="true" />
+      <Property Name="CategoryView" Hidden="true" />
+      <Method Name="ClearMarkers" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetItemIndexSorted" Hidden="true" />
+      <Method Name="GetMode2Index" Hidden="true" />
+      <Method Name="GetSeriesComponentsForView" Hidden="true" />
+      <Property Name="IHasCategoryAxis.CategoryAxis" Hidden="true" />
+      <Method Name="IHasCategoryModePreference.PreferredCategoryMode" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="ISupportsErrorBars.ErrorBarSettings" Hidden="true" />
+      <Method Name="ISupportsErrorBars.GetViewInfo" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldDisplayErrorBars" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldSyncErrorBarsWithMarkers" Hidden="true" />
+      <Property Name="ISupportsErrorBars.XAxis" Hidden="true" />
+      <Property Name="ISupportsErrorBars.YAxis" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gACQgAABEGDQBEBSKGMIIIBACABABwBAADAAowBCAMA=</HashCode>
+      <FileName>CategorySeries\CategorySeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="XAxis" />
+      <Property Name="YAxis" />
+      <Property Name="ErrorBarSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.AnchoredCategorySeries">
+    <Position X="6" Y="5.75" Width="1.75" />
+    <Members>
+      <Method Name="AnchoredCategorySeries" Hidden="true" />
+      <Property Name="AnchoredView" Hidden="true" />
+      <Property Name="CachedValueMemberPath" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Property Name="FramePreparer" Hidden="true" />
+      <Method Name="GetLineClipper" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetWorldZeroValue" Hidden="true" />
+      <Property Name="IHasCategoryTrendline.TrendlinePreparer" Hidden="true" />
+      <Property Name="IHasSingleValueCategory.ValueColumn" Hidden="true" />
+      <Property Name="IIsCategoryBased.Bucketizer" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentMode2Index" Hidden="true" />
+      <Method Name="IIsCategoryBased.ProvideCollisionDetector" Hidden="true" />
+      <Property Name="IIsCategoryBased.Scaler" Hidden="true" />
+      <Property Name="IIsCategoryBased.YScaler" Hidden="true" />
+      <Method Name="Item" Hidden="true" />
+      <Property Name="LineRasterizer" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderErrorBars" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Method Name="RenderThumbnailFrame" Hidden="true" />
+      <Method Name="TerminatePolygon" Hidden="true" />
+      <Property Name="TrendLineManager" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Property Name="ValueColumn" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIUYAgAEKaQAgBQQKEMAAgROCJAAAkIAIBgACQhMSGI=</HashCode>
+      <FileName>CategorySeries\AnchoredCategorySeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TrendLineType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.RangeCategorySeries">
+    <Position X="18.75" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Property Name="FramePreparer" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Property Name="HighColumn" Hidden="true" />
+      <Property Name="IHasHighLowValueCategory.HighColumn" Hidden="true" />
+      <Property Name="IHasHighLowValueCategory.LowColumn" Hidden="true" />
+      <Property Name="IIsCategoryBased.Bucketizer" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentMode2Index" Hidden="true" />
+      <Method Name="IIsCategoryBased.ProvideCollisionDetector" Hidden="true" />
+      <Property Name="IIsCategoryBased.Scaler" Hidden="true" />
+      <Property Name="IIsCategoryBased.YScaler" Hidden="true" />
+      <Property Name="LowColumn" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RangeCategorySeries" Hidden="true" />
+      <Property Name="RangeView" Hidden="true" />
+      <Method Name="RasterizePolygon" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Property Name="ThumbnailFrame" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BCkQAAAKACQEAgACCEEEAAgACAAAAnAQAAgAgABEKEI=</HashCode>
+      <FileName>CategorySeries\RangeCategorySeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedSeriesBase">
+    <Position X="22.5" Y="6" Width="1.75" />
+    <Members>
+      <Property Name="ActualSeries" Hidden="true" />
+      <Property Name="AutoGeneratedSeries" Hidden="true" />
+      <Method Name="AutoGeneratedSeries_CollectionResetting" Hidden="true" />
+      <Method Name="CalculateStackedValues" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Property Name="FramePreparer" Hidden="true" />
+      <Method Name="GenerateSeries" Hidden="true" />
+      <Method Name="GetFragmentItemIndex" Hidden="true" />
+      <Method Name="GetFragmentSeriesIndex" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetScaledWorldZeroValue" Hidden="true" />
+      <Method Name="GetSeriesView" Hidden="true" />
+      <Method Name="GetUnscaledWorldZeroValue" Hidden="true" />
+      <Property Name="Highs" Hidden="true" />
+      <Property Name="IIsCategoryBased.Bucketizer" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentMode2Index" Hidden="true" />
+      <Method Name="IIsCategoryBased.ProvideCollisionDetector" Hidden="true" />
+      <Property Name="IIsCategoryBased.Scaler" Hidden="true" />
+      <Property Name="IIsCategoryBased.YScaler" Hidden="true" />
+      <Property Name="Lows" Hidden="true" />
+      <Property Name="Maximum" Hidden="true" />
+      <Property Name="Minimum" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="PlotArea" Hidden="true" />
+      <Method Name="PrepareData" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFragment" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="Series_CollectionChanged" Hidden="true" />
+      <Method Name="Series_CollectionResetting" Hidden="true" />
+      <Property Name="SeriesCursor" Hidden="true" />
+      <Property Name="SeriesEffect" Hidden="true" />
+      <Property Name="SeriesPanel" Hidden="true" />
+      <Property Name="SeriesVisibility" Hidden="true" />
+      <Method Name="ShouldDisplayMarkers" Hidden="true" />
+      <Method Name="StackedSeriesBase" Hidden="true" />
+      <Property Name="StackedSeriesManager" Hidden="true" />
+      <Property Name="StackedView" Hidden="true" />
+      <Method Name="UpdateAxisRanges" Hidden="true" />
+      <Method Name="ValidateFragmentSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>oAESgwCQECTDAAIISkMIFAAkCIIAEGYACAkBKMDlDEE=</HashCode>
+      <FileName>StackedCategorySeries\StackedSeriesBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Series" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.RangeAreaSeries">
+    <Position X="17.75" Y="20.5" Width="1.5" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Property Name="RangeAreaView" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEMAEAAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\RangeAreaSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.RangeColumnSeries">
+    <Position X="20.25" Y="20.5" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Property Name="RangeColumnView" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQABCAAAAAAEMAGAAACAAABAAIAAAAAAAgAAA=</HashCode>
+      <FileName>CategorySeries\RangeColumnSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.AreaSeries">
+    <Position X="5.5" Y="17.75" Width="1.75" />
+    <Members>
+      <Property Name="AreaView" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACEMAAAAADgAABAQAAAAAACAAAAA=</HashCode>
+      <FileName>CategorySeries\AreaSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UnknownValuePlotting" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.ColumnSeries">
+    <Position X="8" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Property Name="ColumnView" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Property Name="RadiusX" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQABAAAAAAAEMAGAAACAAABAAIAAAAAAAgAAA=</HashCode>
+      <FileName>CategorySeries\ColumnSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.LineSeries">
+    <Position X="3" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="LineView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="UnknownValuePlotting" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACEMAAAAADgAABEAAAAAAACAAAAA=</HashCode>
+      <FileName>CategorySeries\LineSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.SplineSeriesBase">
+    <Position X="1.75" Y="10.25" Width="1.75" />
+    <Members>
+      <Method Name="ConvertToSingle" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="GetOffset" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareDateTimeFrame" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PrepareMarker" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderThumbnailFrame" Hidden="true" />
+      <Property Name="SplineBaseView" Hidden="true" />
+      <Method Name="SplineFitMustBeRecalculated" Hidden="true" />
+      <Property Name="UColumn" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAIQAAgCgACAEAgAAACABQAAAAAACAAABIAAA=</HashCode>
+      <FileName>CategorySeries\SplineSeriesBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SplineType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StepAreaSeries">
+    <Position X="15.5" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DefineXAccessor" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="StepAreaView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACEMAAgBACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\StepAreaSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StepLineSeries">
+    <Position X="13.25" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DefineXAccessor" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="StepView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAACGMAAgAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\StepLineSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.WaterfallSeries">
+    <Position X="0.5" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="WaterfallView" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQABAAAAAACEMAGAAICABABAAIAABACAAgAAA=</HashCode>
+      <FileName>CategorySeries\WaterfallSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.BarSeries">
+    <Position X="8.5" Y="5.75" Width="1.75" />
+    <Members>
+      <Property Name="BarView" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetMode2Index" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetWorldZeroValue" Hidden="true" />
+      <Method Name="IBarSeries.GetPreferredCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.Scaler" Hidden="true" />
+      <Property Name="IIsCategoryBased.YScaler" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAQAAARARBQAEAAKENAGoAACABABAAIADgAAABkCEA=</HashCode>
+      <FileName>CategorySeries\BarSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="XAxis" />
+      <Property Name="YAxis" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedBarSeries">
+    <Position X="22.5" Y="10" Width="1.75" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="GetFragmentItemIndex" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetMode2Index" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetScaledWorldZeroValue" Hidden="true" />
+      <Method Name="GetSeriesView" Hidden="true" />
+      <Method Name="GetUnscaledWorldZeroValue" Hidden="true" />
+      <Method Name="IBarSeries.GetPreferredCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.CurrentCategoryMode" Hidden="true" />
+      <Property Name="IIsCategoryBased.Scaler" Hidden="true" />
+      <Property Name="IIsCategoryBased.YScaler" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFragment" Hidden="true" />
+      <Property Name="StackedBarView" Hidden="true" />
+      <Method Name="UpdateAxisRanges" Hidden="true" />
+      <Method Name="ValidateFragmentSeries" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAQAAARABBQAEAAKAFIHIAACABAFCAIADgAAMAkCGA=</HashCode>
+      <FileName>StackedCategorySeries\StackedBarSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="XAxis" />
+      <Property Name="YAxis" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedColumnSeries">
+    <Position X="24.75" Y="10" Width="1.75" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetSeriesView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFragment" Hidden="true" />
+      <Property Name="StackedColumnView" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQABBAAIAACAEAGAAACAAABAAIAAgAAEAgAEA=</HashCode>
+      <FileName>StackedCategorySeries\StackedColumnSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.MarkerSeries">
+    <Position X="9.5" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="ActualMarkerBrushPropertyName" Hidden="true" />
+      <Field Name="ActualMarkerOutlinePropertyName" Hidden="true" />
+      <Field Name="ActualMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="MarkerBrushPropertyName" Hidden="true" />
+      <Field Name="MarkerOutlinePropertyName" Hidden="true" />
+      <Field Name="MarkerStylePropertyName" Hidden="true" />
+      <Field Name="MarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="MarkerTypePropertyName" Hidden="true" />
+      <Property Name="MarkerView" Hidden="true" />
+      <Field Name="NullMarkerTemplate" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ShouldDisplayMarkers" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Field Name="UseLightweightMarkersPropertyName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CBQAAAgIAAiAEMYACEAgIAAgCAICAAMICAAAoFAEEAA=</HashCode>
+      <FileName>Core\MarkerSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MarkerTemplate" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.SplineAreaSeries">
+    <Position X="3" Y="11.75" Width="1.5" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="SplineAreaView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAEMAAAAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\SplineAreaSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.SplineSeries">
+    <Position X="1" Y="11.75" Width="1.5" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Property Name="SplineView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEMAAAAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\SplineSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.PointSeries">
+    <Position X="10.5" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="PointView" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACEMAAAAACAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>CategorySeries\PointSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100AreaSeries">
+    <Position X="28.5" Y="17.75" Width="2" />
+    <Members>
+      <Method Name="PrepareData" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100AreaSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedAreaSeries">
+    <Position X="27.75" Y="10" Width="1.75" />
+    <Members>
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedAreaSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100BarSeries">
+    <Position X="22.75" Y="18" Width="1.75" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetSeriesView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareData" Hidden="true" />
+      <Method Name="Stacked100BarSeries" Hidden="true" />
+      <Property Name="Stacked100BarView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAABAEAAAAACAAAAAAAAAAAAEAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100BarSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100ColumnSeries">
+    <Position X="25.5" Y="18" Width="2" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetSeriesView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareData" Hidden="true" />
+      <Method Name="Stacked100ColumnSeries" Hidden="true" />
+      <Property Name="Stacked100ColumnView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAEAAAAACAAAQAAAAAAAAEAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100ColumnSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100LineSeries">
+    <Position X="33.25" Y="17.75" Width="1.75" />
+    <Members>
+      <Method Name="PrepareData" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100LineSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100SplineSeries">
+    <Position X="30.75" Y="17.75" Width="2" />
+    <Members>
+      <Method Name="PrepareData" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100SplineSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedLineSeries">
+    <Position X="32.5" Y="10" Width="1.75" />
+    <Members>
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedLineSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedSplineAreaSeries">
+    <Position X="34.75" Y="10" Width="2" />
+    <Members>
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAABAACAACAAAgAAAAAAABAAAAAgAAAAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedSplineAreaSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SplineType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedSplineSeries">
+    <Position X="30" Y="10" Width="1.75" />
+    <Members>
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAABAACAACAAAgAAAAAAABAAAAAgAAAAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedSplineSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SplineType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Stacked100SplineAreaSeries">
+    <Position X="35.5" Y="17.75" Width="2.25" />
+    <Members>
+      <Method Name="PrepareData" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>StackedCategorySeries\Stacked100SplineAreaSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryAxisBase">
+    <Position X="20.25" Y="2" Width="2.5" />
+    <Members>
+      <Method Name="CacheFastItemsSource" Hidden="true" />
+      <Method Name="CategoryAxisBase" Hidden="true" />
+      <Property Name="CategoryMode" Hidden="true" />
+      <Property Name="CategoryView" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="FastItemsSource" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="HandleFastItemsSourceEvent" Hidden="true" />
+      <Property Name="ICategoryScaler.CategoryMode" Hidden="true" />
+      <Method Name="ICategoryScaler.GetCategorySize" Hidden="true" />
+      <Method Name="ICategoryScaler.GetGroupCenter" Hidden="true" />
+      <Property Name="ICategoryScaler.IsInverted" Hidden="true" />
+      <Method Name="IScaler.GetScaledValue" Hidden="true" />
+      <Method Name="IScaler.GetUnscaledValue" Hidden="true" />
+      <Property Name="Mode2GroupCount" Hidden="true" />
+      <Method Name="OnAttached" Hidden="true" />
+      <Method Name="OnDetached" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RelatedAxes" Hidden="true" />
+      <Method Name="RelatedSeries" Hidden="true" />
+      <Method Name="RenderCrossingAxis" Hidden="true" />
+      <Method Name="RenderLabels" Hidden="true" />
+      <Method Name="ShouldShareMode" Hidden="true" />
+      <Method Name="Spread" Hidden="true" />
+      <Method Name="UpdateCategoryMode" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>MAAABQgAWgEEgAgoCiESAgAIjQIAAOJAWRAAAJkAEAA=</HashCode>
+      <FileName>Axes\CategoryAxisBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericYAxis">
+    <Position X="10.5" Y="6.25" Width="2.5" />
+    <Members>
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateLinearScaler" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAASEAAgAAAEEggAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\NumericYAxis.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Orientation" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryXAxis">
+    <Position X="23.25" Y="2.25" Width="2.5" />
+    <Members>
+      <Property Name="ActualMaximum" Hidden="true" />
+      <Property Name="ActualMinimum" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ShouldShareMode" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+      <Property Name="XView" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAhEAAASEAgAQAAIEEAgAACAAAgCACAAAQAACACAA=</HashCode>
+      <FileName>Axes\CategoryXAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryDateTimeXAxis">
+    <Position X="18" Y="6" Width="2.5" />
+    <Members>
+      <Property Name="ActualInterval" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Property Name="DateTimeColumn" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetDate" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="GetLabel" Hidden="true" />
+      <Method Name="GetLengthOfOnePixel" Hidden="true" />
+      <Property Name="HasUserInterval" Hidden="true" />
+      <Method Name="InitializeActualMinimumAndMaximum" Hidden="true" />
+      <Method Name="ISortingAxis.GetFirstVisibleIndex" Hidden="true" />
+      <Method Name="ISortingAxis.GetIndexClosestToUnscaledValue" Hidden="true" />
+      <Method Name="ISortingAxis.GetLastVisibleIndex" Hidden="true" />
+      <Method Name="ISortingAxis.GetUnscaledValueAt" Hidden="true" />
+      <Property Name="ISortingAxis.SortedIndices" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderAxisAndSeries" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Property Name="SortedDateTimeIndices" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEChEAAGeVAgBRFCMGkEAR0QEAAAAgAoIDQAQIAAAA=</HashCode>
+      <FileName>Axes\CategoryDateTimeXAxis.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DisplayType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.DataTemplate" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryErrorBarSettings">
+    <Position X="14.75" Y="2" Width="2" />
+    <Members>
+      <Method Name="Calculator_Changed" Hidden="true" />
+      <Method Name="CategoryErrorBarSettings_PropertyUpdated" Hidden="true" />
+      <Property Name="Series" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAIAAAIACAAAAMAAIIKAAAAARgwAAQAAQBBAAAEACE=</HashCode>
+      <FileName>ErrorBars\CategoryErrorBarsSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EnableErrorBars" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StackedSeriesCollection">
+    <Position X="25" Y="6" Width="2.75" />
+    <Members>
+      <Method Name="ClearItems" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedSeriesCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericXAxis">
+    <Position X="20.5" Y="13.5" Width="2.5" />
+    <Members>
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+      <Property Name="XView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAASEAAgAAAAEggAAADAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Axes\NumericXAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryYAxis">
+    <Position X="18.5" Y="10.5" Width="2.5" />
+    <Members>
+      <Property Name="ActualMaximum" Hidden="true" />
+      <Property Name="ActualMinimum" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="GetScaledValue" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ShouldShareMode" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+      <Property Name="YView" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAhEAAASEAgAQAAIEEAgAACAAAgCgCAAAAAACACAA=</HashCode>
+      <FileName>Axes\CategoryYAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Infragistics.Controls.Charts.IHasCategoryTrendline">
+    <Position X="6.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\TrendLineManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infragistics.Controls.Charts.IBarSeries">
+    <Position X="26.25" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAABAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\IBarSeries.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infragistics.Controls.Charts.IStacked100Series" Collapsed="true">
+    <Position X="28.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StackedCategorySeries\StackedSeriesBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infragistics.Controls.Charts.IIsCategoryBased">
+    <Position X="1.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAIAAAAAAAAAAACAIAACQAAAAAA=</HashCode>
+      <FileName>CategorySeries\CategoryInterfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infragistics.Controls.Charts.IHasSingleValueCategory">
+    <Position X="4" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CategorySeries\CategoryInterfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Infragistics.Controls.Charts.ISupportsErrorBars">
+    <Position X="6.75" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>kAAAAAABAAAAAAABAAAAAABAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>CategorySeries\FramePreparer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Infragistics.Controls.Charts.EnableErrorBars">
+    <Position X="15" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAGAAAA=</HashCode>
+      <FileName>ErrorBars\EnableErrorBars.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.AxisOrientation">
+    <Position X="15" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAIAAAAAAAAIAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Enumerations\AxisOrientation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.TimeAxisDisplayType">
+    <Position X="15" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASA=</HashCode>
+      <FileName>Enumerations\TimeAxisDisplayType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.SplineType">
+    <Position X="32.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Enumerations\SplineType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.TrendLineType">
+    <Position X="3" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAYACICABAAAAAAAAAAAAAAgAgEgAAAAAAAABEAAKA=</HashCode>
+      <FileName>Enumerations\TrendLineType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.UnknownValuePlotting">
+    <Position X="5.5" Y="19.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enumerations\UnknownValuePlotting.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

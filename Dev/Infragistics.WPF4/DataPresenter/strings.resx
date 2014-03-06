@@ -1,0 +1,1014 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LE_ArgumentException_1" xml:space="preserve">
+    <value>Unable to change cell value.</value>
+  </data>
+  <data name="LE_ArgumentException_10" xml:space="preserve">
+    <value>ActiveRecord must be from this DataPresenterBase</value>
+  </data>
+  <data name="LE_ArgumentException_11" xml:space="preserve">
+    <value>Passed in objects must be cells or records.</value>
+  </data>
+  <data name="LE_ArgumentException_13" xml:space="preserve">
+    <value>Can't use a record associated with another DataPresenterBase</value>
+  </data>
+  <data name="LE_ArgumentException_14" xml:space="preserve">
+    <value>key not found</value>
+  </data>
+  <data name="LE_ArgumentException_15" xml:space="preserve">
+    <value>The Field cannot be made the 'PrimaryField' unless it is contained in the Fields collection of the Owner.</value>
+  </data>
+  <data name="LE_ArgumentException_16" xml:space="preserve">
+    <value>The Field cannot be made the 'ScrollTipField' unless it is contained in the Fields collection of the Owner.</value>
+  </data>
+  <data name="LE_ArgumentException_2" xml:space="preserve">
+    <value>record.FieldLayout can not be null</value>
+  </data>
+  <data name="LE_ArgumentException_20" xml:space="preserve">
+    <value>FieldSettings.EditorType's must be set to a type that derives from ValueEditor</value>
+  </data>
+  <data name="LE_ArgumentException_22" xml:space="preserve">
+    <value>Once a FieldSortDescription has been added to a collection it can not be modified</value>
+  </data>
+  <data name="LE_ArgumentException_23" xml:space="preserve">
+    <value>field not found</value>
+  </data>
+  <data name="LE_ArgumentException_24" xml:space="preserve">
+    <value>field name not found</value>
+  </data>
+  <data name="LE_ArgumentException_25" xml:space="preserve">
+    <value>Field must be from the same FieldLayout</value>
+  </data>
+  <data name="LE_ArgumentException_26" xml:space="preserve">
+    <value>A FieldSortDescription for this field is already in the collection.</value>
+  </data>
+  <data name="LE_ArgumentException_27" xml:space="preserve">
+    <value>Specified FieldLayout is not compatible with list object</value>
+  </data>
+  <data name="LE_ArgumentException_28" xml:space="preserve">
+    <value>Field must be from the same FieldLayout as the record</value>
+  </data>
+  <data name="LE_ArgumentException_29" xml:space="preserve">
+    <value>Objects of different types cannot be compared</value>
+  </data>
+  <data name="LE_ArgumentException_3" xml:space="preserve">
+    <value>DefaultFieldLayout can only be set to a FieldLayout contained in the FieldLayouts collection.</value>
+  </data>
+  <data name="LE_ArgumentException_30" xml:space="preserve">
+    <value>Records must be from the same fieldLayout.</value>
+  </data>
+  <data name="LE_ArgumentException_31" xml:space="preserve">
+    <value>Records must be valid records from display layout of the same dataPresenter.</value>
+  </data>
+  <data name="LE_ArgumentException_32" xml:space="preserve">
+    <value>Cells must be from the same fieldLayout.</value>
+  </data>
+  <data name="LE_ArgumentException_33" xml:space="preserve">
+    <value>Cells must be valid cells from field layout of the same dataPresenter.</value>
+  </data>
+  <data name="LE_ArgumentException_34" xml:space="preserve">
+    <value>Fields must be from the same fieldLayout.</value>
+  </data>
+  <data name="LE_ArgumentException_35" xml:space="preserve">
+    <value>Fields must be valid fields from display layout of the same dataPresenter.</value>
+  </data>
+  <data name="LE_ArgumentException_36" xml:space="preserve">
+    <value>Field selection not allowed. Invalid SelectionType settings.</value>
+  </data>
+  <data name="LE_ArgumentException_37" xml:space="preserve">
+    <value>RecordFilter cannot be null.</value>
+  </data>
+  <data name="LE_ArgumentException_38" xml:space="preserve">
+    <value>RecordManager cannot be null.</value>
+  </data>
+  <data name="LE_ArgumentException_4" xml:space="preserve">
+    <value>The cell is not properly initialized</value>
+  </data>
+  <data name="LE_ArgumentException_5" xml:space="preserve">
+    <value>The cell is not associated with this control.</value>
+  </data>
+  <data name="LE_ArgumentException_6" xml:space="preserve">
+    <value>The record is not associated with this control</value>
+  </data>
+  <data name="LE_ArgumentException_7" xml:space="preserve">
+    <value>DataRecord must be from the same DataPresenterBase</value>
+  </data>
+  <data name="LE_ArgumentException_8" xml:space="preserve">
+    <value>The ItemsPanelType supplied by the View is not derived from Panel.</value>
+  </data>
+  <data name="LE_ArgumentException_9" xml:space="preserve">
+    <value>ActiveCell must be from this DataPresenterBase</value>
+  </data>
+  <data name="LE_ArgumentNullException_1" xml:space="preserve">
+    <value>CarouselBreadcrumb is null.</value>
+  </data>
+  <data name="LE_ArgumentNullException_2" xml:space="preserve">
+    <value>Constructor of RangeSelectionEvaluator</value>
+  </data>
+  <data name="LE_ArgumentNullException_3" xml:space="preserve">
+    <value>{0} can not be null</value>
+  </data>
+  <data name="LE_ArgumentNullException_4" xml:space="preserve">
+    <value>field in ExpandableFieldRecord ctor</value>
+  </data>
+  <data name="LE_ArgumentNullException_5" xml:space="preserve">
+    <value>dataPresenter in RecordListControl constructor</value>
+  </data>
+  <data name="LE_ArgumentNullException_6" xml:space="preserve">
+    <value>command in CustomFilterSelectionControl ExecuteCommandImpl method</value>
+  </data>
+  <data name="LE_InvalidOperationException_1" xml:space="preserve">
+    <value>Cell could not be activated.</value>
+  </data>
+  <data name="LE_InvalidOperationException_10" xml:space="preserve">
+    <value>FieldLayout can not be moved to another DataPresenterBase.</value>
+  </data>
+  <data name="LE_InvalidOperationException_11" xml:space="preserve">
+    <value>GridViewPanel's RecordListControl not found.</value>
+  </data>
+  <data name="LE_InvalidOperationException_12" xml:space="preserve">
+    <value>Invalid target in GroupByArea.StyleVersionNumber PropertyInvalidatedCallback.</value>
+  </data>
+  <data name="LE_InvalidOperationException_13" xml:space="preserve">
+    <value>Invalid target in OnToggleExpandedState.</value>
+  </data>
+  <data name="LE_InvalidOperationException_14" xml:space="preserve">
+    <value>Can't change the fixed status of record: {0}</value>
+  </data>
+  <data name="LE_InvalidOperationException_15" xml:space="preserve">
+    <value>The View's GetContainerForRecordPresenter method returned an invalid container.  Containers must either derive from ContentControl or implement IRecordPresenterContainer.</value>
+  </data>
+  <data name="LE_InvalidOperationException_16" xml:space="preserve">
+    <value>The RecordPresenter container's implementation of IRecordPresenterContainer.RecordPresenter did not return a RecordPresenter.  If you are implementing a custom View, ensure that the container returned by your View's GetContainerForRecordPresenter is derived from</value>
+  </data>
+  <data name="LE_InvalidOperationException_17" xml:space="preserve">
+    <value>Record selection not allowed. Invalid SelectionType settings.</value>
+  </data>
+  <data name="LE_InvalidOperationException_18" xml:space="preserve">
+    <value>Can't select more than 1 record when SelectionType is Single or SingleAutoDrag</value>
+  </data>
+  <data name="LE_InvalidOperationException_19" xml:space="preserve">
+    <value>Can't select records. SelectionType is None.</value>
+  </data>
+  <data name="LE_InvalidOperationException_2" xml:space="preserve">
+    <value>Cell could not enter edit mode.</value>
+  </data>
+  <data name="LE_InvalidOperationException_20" xml:space="preserve">
+    <value>Cell selection not allowed. Invalid SelectionType settings.</value>
+  </data>
+  <data name="LE_InvalidOperationException_21" xml:space="preserve">
+    <value>Can't select more than 1 cell when SelectionType is Single or SingleAutoDrag</value>
+  </data>
+  <data name="LE_InvalidOperationException_22" xml:space="preserve">
+    <value>Can't select cells. SelectionType is None.</value>
+  </data>
+  <data name="LE_InvalidOperationException_23" xml:space="preserve">
+    <value>Can't select more than 1 field when SelectionType is Single or SingleAutoDrag</value>
+  </data>
+  <data name="LE_InvalidOperationException_24" xml:space="preserve">
+    <value>Can't select fields. SelectionType is None.</value>
+  </data>
+  <data name="LE_InvalidOperationException_25" xml:space="preserve">
+    <value>Enum has not been started</value>
+  </data>
+  <data name="LE_InvalidOperationException_26" xml:space="preserve">
+    <value>Enum has finished</value>
+  </data>
+  <data name="LE_InvalidOperationException_26B" xml:space="preserve">
+    <value>The UnboundField's Binding and {0} properties are mutually exclusive. You can't specify both settings.</value>
+  </data>
+  <data name="LE_InvalidOperationException_3" xml:space="preserve">
+    <value>The '{0}' could not be scrolled into view.</value>
+  </data>
+  <data name="LE_InvalidOperationException_4" xml:space="preserve">
+    <value>SelectionStrategy is null.</value>
+  </data>
+  <data name="LE_InvalidOperationException_5" xml:space="preserve">
+    <value>DataPresenterBase not initialized</value>
+  </data>
+  <data name="LE_InvalidOperationException_6" xml:space="preserve">
+    <value>An exception occurred while attempting to bind the Value property of a CellValuePresenter for UnboundField: {0}</value>
+  </data>
+  <data name="LE_InvalidOperationException_7" xml:space="preserve">
+    <value>Can't set the DataSource on a DataPresenter that has items added explicitly through the DataItems collection.</value>
+  </data>
+  <data name="LE_InvalidOperationException_8" xml:space="preserve">
+    <value>Can't add items to a DataPresenter that is bound to a DataSource</value>
+  </data>
+  <data name="LE_InvalidOperationException_9" xml:space="preserve">
+    <value>Field can not be moved to another collection.</value>
+  </data>
+  <data name="LE_NotSupportedException_1" xml:space="preserve">
+    <value>Method not supported. The collection is read-only.</value>
+  </data>
+  <data name="LE_NotSupportedException_10" xml:space="preserve">
+    <value>The method or operation is not supported.</value>
+  </data>
+  <data name="LE_NotSupportedException_11" xml:space="preserve">
+    <value>AllocateNewRecord not supported</value>
+  </data>
+  <data name="LE_NotSupportedException_12" xml:space="preserve">
+    <value>GroupByRecords are not supported in this collection</value>
+  </data>
+  <data name="LE_NotSupportedException_13" xml:space="preserve">
+    <value>Clear operation is not supported.</value>
+  </data>
+  <data name="LE_NotSupportedException_14" xml:space="preserve">
+    <value>XamDataGrid does not support changes (other than INotifyPropertyChanged.PropertyChanged or ListChangedType.ItemChanged) to its DataSource from a thread different from its Dispatcher thread.</value>
+  </data>
+  <data name="LE_NotSupportedException_2" xml:space="preserve">
+    <value>Can't set CellPresenter.IsFieldSelected</value>
+  </data>
+  <data name="LE_NotSupportedException_3" xml:space="preserve">
+    <value>Can't set CellValuePresenter.IsFieldSelected</value>
+  </data>
+  <data name="LE_NotSupportedException_4" xml:space="preserve">
+    <value>Can only name a {0} '{1}' for a {2}, not a {3}</value>
+  </data>
+  <data name="LE_NotSupportedException_5" xml:space="preserve">
+    <value>Can't cancel ending edit mode if it is forced</value>
+  </data>
+  <data name="LE_NotSupportedException_6" xml:space="preserve">
+    <value>Can't call ISparseArrayItem.GetOwnerData.</value>
+  </data>
+  <data name="LE_NotSupportedException_7" xml:space="preserve">
+    <value>Can't call ISparseArrayItem.SetOwnerData.</value>
+  </data>
+  <data name="LE_NotSupportedException_8" xml:space="preserve">
+    <value>Field named {0} was not found in data source: {1}</value>
+  </data>
+  <data name="LE_NotSupportedException_9" xml:space="preserve">
+    <value>DataRecordCellAreaGridTemplate must have a Grid as its visual tree.</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_BeyondNextMonth" xml:space="preserve">
+    <value>Beyond Next Month</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextMonth" xml:space="preserve">
+    <value>Next Month</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LaterThisMonth" xml:space="preserve">
+    <value>Later this Month</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAway" xml:space="preserve">
+    <value>Three Weeks Away</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAway" xml:space="preserve">
+    <value>Two Weeks Away</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextWeek" xml:space="preserve">
+    <value>Next Week</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_DayOfWeekFormatString" xml:space="preserve">
+    <value>{0:dddd}</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastWeek" xml:space="preserve">
+    <value>Last Week</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAgo" xml:space="preserve">
+    <value>Two Weeks Ago</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAgo" xml:space="preserve">
+    <value>Three Weeks Ago</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_EarlierThisMonth" xml:space="preserve">
+    <value>Earlier this Month</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastMonth" xml:space="preserve">
+    <value>Last Month</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Older" xml:space="preserve">
+    <value>Older</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="GroupByDescription_NullValue_Literal" xml:space="preserve">
+    <value>[null]</value>
+  </data>
+  <data name="GroupByDescription_Format_OneChild" xml:space="preserve">
+    <value>{0} ({1} item)</value>
+  </data>
+  <data name="GroupByDescription_Format_NotOneChild" xml:space="preserve">
+    <value>{0} ({1:n0} items)</value>
+  </data>
+  <data name="GroupByArea_Prompt1" xml:space="preserve">
+    <value>group by area</value>
+  </data>
+  <data name="GroupByArea_Prompt2" xml:space="preserve">
+    <value>Drag a field here to group by that field</value>
+  </data>
+  <data name="DataErrorMessageTitle" xml:space="preserve">
+    <value>Data Error</value>
+  </data>
+  <data name="DeleteSingleRecordMessageTitle" xml:space="preserve">
+    <value>Delete Record</value>
+  </data>
+  <data name="DeleteRecordsMessageTitle" xml:space="preserve">
+    <value>Delete Records</value>
+  </data>
+  <data name="DeleteMultipleRecordsPrompt" xml:space="preserve">
+    <value>You have selected {0} records for deletion.
+Choose Yes to delete the records or No to exit.</value>
+  </data>
+  <data name="DeleteSingleRecordPrompt" xml:space="preserve">
+    <value>You have selected 1 record for deletion.
+Choose Yes to delete the record or No to exit.</value>
+  </data>
+  <data name="DataErrorDeleteRecordUnableToDelete" xml:space="preserve">
+    <value>Unable to delete the record:
+{0}</value>
+  </data>
+  <data name="DataErrorUnableToCreateInstance" xml:space="preserve">
+    <value>Unable to create an instance of type '{0}': 
+{1}</value>
+  </data>
+  <data name="DataError_GetCellValue" xml:space="preserve">
+    <value>Unable to retrieve cell value.</value>
+  </data>
+  <data name="DataError_UpdateCellValue" xml:space="preserve">
+    <value>Unable to set cell value.</value>
+  </data>
+  <data name="DataError_UpdateRecord" xml:space="preserve">
+    <value>Unable to update record.</value>
+  </data>
+  <data name="SummaryCalculator_Average_Description" xml:space="preserve">
+    <value>Calculates the average</value>
+  </data>
+  <data name="SummaryCalculator_Average_Name" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="SummaryCalculator_Count_Description" xml:space="preserve">
+    <value>Calculates the number of non-empty values</value>
+  </data>
+  <data name="SummaryCalculator_Count_Name" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Description" xml:space="preserve">
+    <value>Calculates the maximum value</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Name" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Description" xml:space="preserve">
+    <value>Calculates the minimum value</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Name" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Description" xml:space="preserve">
+    <value>Calculates the total</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Name" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="SR_FilterDropDownItem_Custom" xml:space="preserve">
+    <value>(Custom)</value>
+  </data>
+  <data name="SR_FilterDropDownItem_All" xml:space="preserve">
+    <value>(All)</value>
+  </data>
+  <data name="LE_NotSupportedInExpress" xml:space="preserve">
+    <value>{0} is not supported in the Express version.</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperatorFieldLabel" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperandFieldLabel" xml:space="preserve">
+    <value>Operand</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AddConditionLabelProperty" xml:space="preserve">
+    <value>Add Condition</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedLabelProperty" xml:space="preserve">
+    <value>Group Selected:</value>
+  </data>
+  <data name="CustomFilterSelectionControl_RemoveSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Remove Condition(s)</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsAndGroupLabelProperty" xml:space="preserve">
+    <value>'And' Group</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsOrGroupLabelProperty" xml:space="preserve">
+    <value>'Or' Group</value>
+  </data>
+  <data name="CustomFilterSelectionControl_UngroupSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Ungroup</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ToggleOperatorOfSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AndGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>'And' Group</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OrGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>'Or' Group</value>
+  </data>
+  <data name="CustomFilterSelectionControl_TitleDescriptionProperty" xml:space="preserve">
+    <value>Custom Filter Selection</value>
+  </data>
+  <data name="CustomFilterSelectionControl_FieldDescriptionProperty" xml:space="preserve">
+    <value>For Field '{0}'</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OkButtonLabelProperty" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelButtonLabelProperty" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTextProperty" xml:space="preserve">
+    <value>Changes have been made to one or more filters.  Are you sure you want to discard the changes and exit?</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTitleProperty" xml:space="preserve">
+    <value>Cancel Custom Filter Changes</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTextProperty" xml:space="preserve">
+    <value>One or more conditions contain validation errors.  Please correct the errors before continuing.</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTitleProperty" xml:space="preserve">
+    <value>Condition Error(s)</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionError_Empty" xml:space="preserve">
+    <value>Condition is empty.</value>
+  </data>
+	<data name="CustomFilterSelectionControl_ConditionError_IncompatibleOperator" xml:space="preserve">
+    <value>Incompatible Operator.</value>
+  </data>
+	<data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_Or" xml:space="preserve">
+    <value>Click to change the LogicalOperator for this group to 'Or'</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_And" xml:space="preserve">
+    <value>Click to change the LogicalOperator for this group to 'And'</value>
+  </data>
+  <data name="FixedFieldButton_FixToFarEdgePromptProperty" xml:space="preserve">
+    <value>Fix To Far Edge</value>
+  </data>
+  <data name="FixedFieldButton_FixToNearEdgePromptProperty" xml:space="preserve">
+    <value>Fix To Near Edge</value>
+  </data>
+  <data name="FixedFieldButton_UnfixPromptProperty" xml:space="preserve">
+    <value>Unfix</value>
+  </data>
+	<data name="FilterDropDownLoadingIndicator" xml:space="preserve">
+    <value>Loading...  </value>
+  </data>
+  <data name="LE_CannotPerformAutomationOperation" xml:space="preserve">
+    <value>Operation cannot be performed.</value>
+  </data>
+  <data name="FixedRecordButton_FixToBottomPromptProperty" xml:space="preserve">
+    <value>Fix To Bottom</value>
+  </data>
+  <data name="FixedRecordButton_FixToTopPromptProperty" xml:space="preserve">
+    <value>Fix To Top</value>
+  </data>
+  <data name="FixedRecordButton_UnfixPromptProperty" xml:space="preserve">
+    <value>Unfix</value>
+  </data>
+  <data name="LE_InvalidOperationException_27" xml:space="preserve">
+    <value>A RecordFilter object cannot be added to multiple RecordFilterCollections.</value>
+  </data>
+  <data name="LE_InvalidOperationException_28" xml:space="preserve">
+    <value>Root record manager's RecordFilters are obsolete. Instead please use the FieldLayout's RecordFilters.</value>
+  </data>
+  <data name="LE_LoadCustomizationInProgress" xml:space="preserve">
+    <value>Load customizations is already in progress.</value>
+  </data>
+  <data name="LE_InvalidCustomizationRootElement" xml:space="preserve">
+    <value>Invalid root element in LoadCustomizations.</value>
+  </data>
+  <data name="LE_MismatchedFieldInRecordFilter" xml:space="preserve">
+    <value>The RecordFilter passed to the ShowCustomFilterSelectionControl method references a Field ({0}) from a different FieldLayout.</value>
+  </data>
+  <data name="LE_MissingField" xml:space="preserve">
+    <value>Field '{0}' doesn't exist in the fields collection.</value>
+  </data>
+  <data name="LE_ValueCannotBeNegative" xml:space="preserve">
+    <value>Value must be 0 or greater. Actual={0}</value>
+  </data>
+  <data name="LE_ValueMustBePositive" xml:space="preserve">
+    <value>Value must greater than 0. Actual={0}</value>
+  </data>
+  <data name="LE_InvalidMoveToPagePosition" xml:space="preserve">
+    <value>Invalid PagePosition '{0}' in MoveToPosition of TabularReportViewPanel.</value>
+  </data>
+  <data name="LE_SummaryDefinitionAlreadyInCollection" xml:space="preserve">
+    <value>SummaryDefinition '{0}' already belongs to a SummaryDefinitionCollections. SummaryDefinitions cannot be added to multiple SummaryDefinitionCollections.</value>
+  </data>
+  <data name="LE_DuplicateSummaryDefinitionKey" xml:space="preserve">
+    <value>Summary with the specified key '{0}' already exists in the collection.</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Tooltip" xml:space="preserve">
+    <value>Removes existing calculation</value>
+  </data>
+  <data name="FilterDropDown_AsynchLoadingIndicator" xml:space="preserve">
+    <value>Loading values...</value>
+  </data>
+  <data name="ClipboardError_CopyTitle" xml:space="preserve">
+    <value>Copy Error</value>
+  </data>
+  <data name="ClipboardError_PasteTitle" xml:space="preserve">
+    <value>Paste Error</value>
+  </data>
+  <data name="ClipboardError_CutTitle" xml:space="preserve">
+    <value>Cut Error</value>
+  </data>
+  <data name="ClipboardError_ClearContentsTitle" xml:space="preserve">
+    <value>Clear Contents Error</value>
+  </data>
+  <data name="ClipboardError_MixedSelectionMessage" xml:space="preserve">
+    <value>The command cannot be performed on multiple selections.</value>
+  </data>
+  <data name="ClipboardError_NonRectangularSelectionMessage" xml:space="preserve">
+    <value>The selection must be rectangular. Please select a single range of cells or ensure that the same fields are selected in all records containing selection.</value>
+  </data>
+  <data name="ClipboardError_NotEnoughColumnsMessage" xml:space="preserve">
+    <value>The area that you are trying to paste the clipboard information does not have enough columns. Continuing will copy as much information as can fit in the cells available but will result in some loss of data.
+Continue with operation?</value>
+  </data>
+  <data name="ClipboardError_NotEnoughRowsMessage" xml:space="preserve">
+    <value>The area that you are trying to paste the clipboard information does not have enough rows. Continuing will copy as much information as can fit in the cells available but will result in some loss of data.
+Continue with operation?</value>
+  </data>
+  <data name="ClipboardError_ReadOnlyCellMessage" xml:space="preserve">
+    <value>The '{0}' cell is read-only.
+Continue with the remaining cells?</value>
+  </data>
+  <data name="ClipboardError_ConversionErrorMessage" xml:space="preserve">
+    <value>Unable to convert the value to the destination type for the '{0}' field. Additional information
+{1}
+
+Continue with the remaining cells?</value>
+  </data>
+  <data name="ClipboardError_SetCellValueErrorMessage" xml:space="preserve">
+    <value>An error occurred while modifying a cell. Additional information:
+{0}
+
+Continue with the remaining cells?</value>
+  </data>
+  <data name="ClipboardError_UpdateRecordErrorMessage" xml:space="preserve">
+    <value>An error occurred while committing the changes to the record.
+Continue with the remaining cells?</value>
+  </data>
+  <data name="ClipboardError_InsertRecordErrorMessage" xml:space="preserve">
+    <value>An error occurred while attempting to insert a new record.</value>
+  </data>
+  <data name="ClipboardError_ValidationErrorMessage" xml:space="preserve">
+    <value>An error occurred while validating the value for the cell. Additional information:
+{0}
+
+Continue with the remaining cells?</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCanContinue" xml:space="preserve">
+    <value>Unable to perform the operation. Additional Information:
+{0}
+Continue with remaining cells?</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCannotContinue" xml:space="preserve">
+    <value>Unable to perform the operation. Additional Information:
+{0}</value>
+  </data>
+  <data name="FieldChooser_Title" xml:space="preserve">
+    <value>Field Chooser</value>
+  </data>
+  <data name="LE_SetDataSourceDuringExport" xml:space="preserve">
+    <value>The DataSource property cannot be assigned to on the cloned DataPresenter being used for exporting.</value>
+  </data>
+  <data name="LE_NotInFieldLayoutFields" xml:space="preserve">
+    <value>The Field must be add to the Fields collection of a FieldLayout.</value>
+  </data>
+  <data name="LE_ValueProperty_ListIsReadOnly" xml:space="preserve">
+    <value>Unable to update cell value. The containing list is readonly.</value>
+  </data>
+  <data name="LE_ValueProperty_InvalidIndex" xml:space="preserve">
+    <value>Unable to update cell value. The item is does not exist within the containing list.</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseCardToolTip" xml:space="preserve">
+    <value>Collapse Card</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>Collapse Empty Cells</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseCardToolTip" xml:space="preserve">
+    <value>Restore Card</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>Restore Empty Cells</value>
+  </data>
+  <data name="Card_AddNewRecordTitle" xml:space="preserve">
+    <value>Add New Record</value>
+  </data>
+  <data name="Card_FilterRecordTitle" xml:space="preserve">
+    <value>Filter Criteria</value>
+  </data>
+	<data name="LE_EditorStyleTargetTypeMissingOrInvalid" xml:space="preserve">
+    <value>Missing or Invalid TargetType for Style set on property FieldSettings.EditorStyle.</value>
+  </data>
+	<data name="Export_CannotExportMultipleTimes" xml:space="preserve">
+    <value>Cannot initiate an export operation while another export operation is pending or in progress.</value>
+  </data>
+	<data name="RecordExportStatus_Message_Pending" xml:space="preserve">
+    <value>Exporting to '{0}' - Pending</value>
+  </data>
+	<data name="RecordExportStatus_Message_Initializing" xml:space="preserve">
+    <value>Exporting to '{0}' - Initializing</value>
+  </data>
+	<data name="RecordExportStatus_Message_Exporting" xml:space="preserve">
+    <value>Exporting to '{0}' - {1} records processed</value>
+  </data>
+	<data name="RecordExportStatus_CancelExportToolTip" xml:space="preserve">
+    <value>Cancel Export</value>
+  </data>
+	<data name="ExportOperationDisabled_Title" xml:space="preserve">
+    <value>Operation Cancelled</value>
+  </data>
+	<data name="ExportOperationDisabled_Message" xml:space="preserve">
+    <value>'{0}' is not allowed during an export operation.</value>
+  </data>
+	<data name="UIOperation_ClearCellContents" xml:space="preserve">
+    <value>Deleting cell contents</value>
+  </data>
+	<data name="UIOperation_Edit" xml:space="preserve">
+    <value>Editing</value>
+  </data>
+	<data name="UIOperation_FieldMoving" xml:space="preserve">
+    <value>Moving fields</value>
+  </data>
+	<data name="UIOperation_FieldFixing" xml:space="preserve">
+    <value>Fixing/unfixing fields</value>
+  </data>
+	<data name="UIOperation_FieldGrouping" xml:space="preserve">
+    <value>Grouping/Ungrouping</value>
+  </data>
+	<data name="UIOperation_FieldVisibility" xml:space="preserve">
+    <value>Hiding/showing fields</value>
+  </data>
+	<data name="UIOperation_FieldResizing" xml:space="preserve">
+    <value>Resizing</value>
+  </data>
+	<data name="UIOperation_FieldAutoSizing" xml:space="preserve">
+    <value>Resizing</value>
+  </data>
+	<data name="UIOperation_FieldSorting" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+	<data name="UIOperation_Paste" xml:space="preserve">
+    <value>Pasting</value>
+  </data>
+	<data name="UIOperation_FieldSummaries" xml:space="preserve">
+    <value>Changing summaries</value>
+  </data>
+	<data name="UIOperation_RecordResizing" xml:space="preserve">
+    <value>Resizing</value>
+  </data>
+	<data name="UIOperation_RecordFixing" xml:space="preserve">
+    <value>Fixing/unfixing records</value>
+  </data>
+	<data name="UIOperation_RecordFiltering" xml:space="preserve">
+    <value>Changing filters</value>
+  </data>
+	<data name="UIOperation_RecordExpandCollapse" xml:space="preserve">
+    <value>Expand/Collapse</value>
+  </data>
+	<data name="UIOperation_DeleteRecord" xml:space="preserve">
+    <value>Deleting records</value>
+  </data>
+	<data name="UIOperation_Undo" xml:space="preserve">
+    <value>Undo/redo</value>
+  </data>
+	<data name="RecordFilterTreeSearchTextPrompt" xml:space="preserve">
+    <value>Search</value>
+  </data>
+	<data name="RecordFilterTreeSearchTextPromptScoped" xml:space="preserve">
+    <value>Search {0}</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_All" xml:space="preserve">
+    <value>(All)</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Day" xml:space="preserve">
+    <value>Date</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+	<data name="RecordFilterTreeSearchScope_Second" xml:space="preserve">
+    <value>Second</value>
+  </data>
+	<data name="RecordFilterTreeNoSearchMatches" xml:space="preserve">
+    <value>No items match your search.</value>
+  </data>
+	<data name="RecordFilterTreeItem_SelectAll" xml:space="preserve">
+    <value>(Select All)</value>
+  </data>
+	<data name="RecordFilterTreeItem_SelectAllSearch" xml:space="preserve">
+    <value>(Select All Search Results)</value>
+  </data>
+	<data name="RecordFilterTreeItem_AddToFilter" xml:space="preserve">
+    <value>Add current selection to filter</value>
+  </data>
+	<data name="FilterMenuCaption_Tomorrow_Operand" xml:space="preserve">
+    <value>_Tomorrow</value>
+  </data>
+	<data name="FilterMenuCaption_Today_Operand" xml:space="preserve">
+    <value>T_oday</value>
+  </data>
+	<data name="FilterMenuCaption_Yesterday_Operand" xml:space="preserve">
+    <value>Yester_day</value>
+  </data>
+	<data name="FilterMenuCaption_NextWeek_Operand" xml:space="preserve">
+    <value>Next Wee_k</value>
+  </data>
+	<data name="FilterMenuCaption_ThisWeek_Operand" xml:space="preserve">
+    <value>T_his Week</value>
+  </data>
+	<data name="FilterMenuCaption_LastWeek_Operand" xml:space="preserve">
+    <value>_Last Week</value>
+  </data>
+	<data name="FilterMenuCaption_NextMonth_Operand" xml:space="preserve">
+    <value>Next _Month</value>
+  </data>
+	<data name="FilterMenuCaption_ThisMonth_Operand" xml:space="preserve">
+    <value>Thi_s Month</value>
+  </data>
+	<data name="FilterMenuCaption_LastMonth_Operand" xml:space="preserve">
+    <value>Last Mo_nth</value>
+  </data>
+	<data name="FilterMenuCaption_NextQuarter_Operand" xml:space="preserve">
+    <value>Next _Quarter</value>
+  </data>
+	<data name="FilterMenuCaption_ThisQuarter_Operand" xml:space="preserve">
+    <value>This Q_uarter</value>
+  </data>
+	<data name="FilterMenuCaption_LastQuarter_Operand" xml:space="preserve">
+    <value>Last Qua_rter</value>
+  </data>
+	<data name="FilterMenuCaption_NextYear_Operand" xml:space="preserve">
+    <value>Ne_xt Year</value>
+  </data>
+	<data name="FilterMenuCaption_ThisYear_Operand" xml:space="preserve">
+    <value>Th_is Year</value>
+  </data>
+	<data name="FilterMenuCaption_LastYear_Operand" xml:space="preserve">
+    <value>Last _Year</value>
+  </data>
+	<data name="FilterMenuCaption_YearToDate_Operand" xml:space="preserve">
+    <value>Year to D_ate</value>
+  </data>
+	<data name="FilterMenuCaption_Quarter1_Operand" xml:space="preserve">
+    <value>Quarter _1</value>
+  </data>
+	<data name="FilterMenuCaption_Quarter2_Operand" xml:space="preserve">
+    <value>Quarter _2</value>
+  </data>
+	<data name="FilterMenuCaption_Quarter3_Operand" xml:space="preserve">
+    <value>Quarter _3</value>
+  </data>
+	<data name="FilterMenuCaption_Quarter4_Operand" xml:space="preserve">
+    <value>Quarter _4</value>
+  </data>
+	<data name="FilterMenuCaption_January_Operand" xml:space="preserve">
+    <value>_January</value>
+  </data>
+	<data name="FilterMenuCaption_February_Operand" xml:space="preserve">
+    <value>_February</value>
+  </data>
+	<data name="FilterMenuCaption_March_Operand" xml:space="preserve">
+    <value>_March</value>
+  </data>
+	<data name="FilterMenuCaption_April_Operand" xml:space="preserve">
+    <value>_April</value>
+  </data>
+	<data name="FilterMenuCaption_May_Operand" xml:space="preserve">
+    <value>Ma_y</value>
+  </data>
+	<data name="FilterMenuCaption_June_Operand" xml:space="preserve">
+    <value>J_une</value>
+  </data>
+	<data name="FilterMenuCaption_July_Operand" xml:space="preserve">
+    <value>Ju_ly</value>
+  </data>
+	<data name="FilterMenuCaption_August_Operand" xml:space="preserve">
+    <value>Augus_t</value>
+  </data>
+	<data name="FilterMenuCaption_September_Operand" xml:space="preserve">
+    <value>_September</value>
+  </data>
+	<data name="FilterMenuCaption_October_Operand" xml:space="preserve">
+    <value>_October</value>
+  </data>
+	<data name="FilterMenuCaption_November_Operand" xml:space="preserve">
+    <value>_November</value>
+  </data>
+	<data name="FilterMenuCaption_December_Operand" xml:space="preserve">
+    <value>_December</value>
+  </data>
+	<data name="FilterMenuCaption_AboveAverage_Operand" xml:space="preserve">
+    <value>_Above Average</value>
+  </data>
+	<data name="FilterMenuCaption_BelowAverage_Operand" xml:space="preserve">
+    <value>Bel_ow Average</value>
+  </data>
+	<data name="FilterMenuCaption_DateFilters" xml:space="preserve">
+    <value>Date _Filters</value>
+  </data>
+	<data name="FilterMenuCaption_NumberFilters" xml:space="preserve">
+    <value>Number _Filters</value>
+  </data>
+	<data name="FilterMenuCaption_TextFilters" xml:space="preserve">
+    <value>Text _Filters</value>
+  </data>
+	<data name="FilterMenuCaption_AllDates" xml:space="preserve">
+    <value>All Dates in the _Period</value>
+  </data>
+	<data name="FilterMenuCaption_Before" xml:space="preserve">
+    <value>_Before...</value>
+  </data>
+	<data name="FilterMenuCaption_After" xml:space="preserve">
+    <value>_After...</value>
+  </data>
+	<data name="FilterMenuCaption_Between" xml:space="preserve">
+    <value>Bet_ween...</value>
+  </data>
+	<data name="FilterMenuCaption_Equals" xml:space="preserve">
+    <value>_Equals...</value>
+  </data>
+	<data name="FilterMenuCaption_NotEquals" xml:space="preserve">
+    <value>Does _Not Equal...</value>
+  </data>
+	<data name="FilterMenuCaption_CustomFilter" xml:space="preserve">
+    <value>Custom _Filter...</value>
+  </data>
+	<data name="FilterMenuCaption_BeginsWith" xml:space="preserve">
+    <value>Begins W_ith...</value>
+  </data>
+	<data name="FilterMenuCaption_EndsWith" xml:space="preserve">
+    <value>Ends Wi_th...</value>
+  </data>
+	<data name="FilterMenuCaption_Contains" xml:space="preserve">
+    <value>Cont_ains...</value>
+  </data>
+	<data name="FilterMenuCaption_NotContains" xml:space="preserve">
+    <value>_Does Not Contain...</value>
+  </data>
+	<data name="FilterMenuCaption_Top10" xml:space="preserve">
+    <value>_Top 10...</value>
+  </data>
+	<data name="FilterMenuCaption_GreaterThan" xml:space="preserve">
+    <value>_Greater Than...</value>
+  </data>
+	<data name="FilterMenuCaption_GreaterThanOrEqual" xml:space="preserve">
+    <value>Greater Than _Or Equal To...</value>
+  </data>
+	<data name="FilterMenuCaption_LessThan" xml:space="preserve">
+    <value>_Less Than...</value>
+  </data>
+	<data name="FilterMenuCaption_LessThanOrEqual" xml:space="preserve">
+    <value>Less Than Or E_qual To...</value>
+  </data>
+	<data name="FilterMenuCaption_ClearFieldFilter" xml:space="preserve">
+    <value>_Clear Filter from "{0}"</value>
+  </data>
+	<data name="CalculationAdapter_InvalidValue" xml:space="preserve">
+    <value>CalculationAdapter can only be set to an instance of DataPresenterCalculationAdapter"</value>
+  </data>
+	<data name="CalculationAdapter_NotMultiUse" xml:space="preserve">
+    <value>CalculationAdapter is already set on another instance of DataPresenterBase</value>
+  </data>
+	<data name="UnknownTypeName" xml:space="preserve">
+    <value>Could not resolve TreatAsTypeName '{0}' on {1}</value>
+  </data>
+
+</root>

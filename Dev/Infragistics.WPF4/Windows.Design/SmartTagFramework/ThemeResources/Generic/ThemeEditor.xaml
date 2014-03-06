@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="Infragistics.Windows.Design.SmartTagFramework.ThemeEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+    <Grid>
+		<ComboBox x:Name="cmbThemeNames" MinWidth="150" IsEditable="True">
+			
+		</ComboBox>            
+    </Grid>
+</UserControl>

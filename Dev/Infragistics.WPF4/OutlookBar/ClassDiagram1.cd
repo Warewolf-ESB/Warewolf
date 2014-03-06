@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.Automation.Peers.OutlookBar.XamOutlookBarAutomationPeer">
+    <Position X="9.25" Y="1.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAYIAAAABCAAIIQAEAAAAAAAAEQAAAAAAAhAAACAABA=</HashCode>
+      <FileName>Automation\Peers\OutlookBar\XamOutlookBarAutomationPeer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Windows.Automation.Peers.OutlookBar.OutlookBarGroupAutomationPeer">
+    <Position X="5" Y="1.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAIAAEAAAACAAAAQACAIAAgAAAACQAAA=</HashCode>
+      <FileName>Automation\Peers\OutlookBar\OutlookBarGroupAutomationPeer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Windows.Automation.Peers.OutlookBar.GroupAreaSplitterAutomationPeer">
+    <Position X="1" Y="1.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABCAEIIQAEAAAAAAAAAQAAAAAAAgAAACAABA=</HashCode>
+      <FileName>Automation\Peers\OutlookBar\GroupAreaSplitterAutomationPeer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

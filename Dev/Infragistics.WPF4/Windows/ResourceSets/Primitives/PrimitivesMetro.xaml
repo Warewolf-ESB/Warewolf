@@ -1,0 +1,1103 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+                    xmlns:controls="clr-namespace:Infragistics.Windows.Controls"
+					xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+					>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="PrimitivesGeneric.xaml" />
+        <ResourceDictionary Source="PrimitivesMetro_Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- _________________________ CarouselPanelNavigator ______________________________________ -->
+    <!-- ************************************************** -->
+    <!-- CarouselPanelNavigator Resources -->
+    <!-- ************************************************** -->
+    <Style x:Key="btnArrowRight" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" x:Name="arrowButton">
+                        <Border Opacity="1" Background="{StaticResource TransparentBrush}" Width="30" Height="30" >
+                            <Path Opacity="0.7" Width="14" Height="14" Fill="{StaticResource LightForegroundBrush}"  Stretch="Fill" Data="F1 M 249.077,9.34161C 253.49,6.07501 260.05,6.9549 263.77,10.8749C 276.077,23.0082 288.197,35.3283 300.477,47.4882C 303.597,50.5417 307.237,54.0217 307.103,58.7684C 307.383,62.4749 305.183,65.7551 302.623,68.2083C 289.69,81.075 276.837,94.0082 263.904,106.875C 259.97,111.315 252.517,111.782 248.063,107.902C 243.17,104.008 242.583,95.8083 247.037,91.3817C 253.717,84.2883 260.957,77.7551 267.517,70.555C 247.597,70.2883 227.664,70.5283 207.73,70.435C 204.303,70.595 200.743,69.6083 198.41,66.9682C 193.677,62.5417 194.117,54.155 199.197,50.155C 201.89,47.6883 205.65,47.3016 209.143,47.435C 228.65,47.435 248.17,47.5016 267.677,47.4084C 260.797,40.3416 253.543,33.6349 246.863,26.395C 242.277,21.5817 243.41,12.8616 249.077,9.34161 Z " x:Name="Path"/>
+                        </Border>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="Path"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.7" TargetName="Path"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="btnArrowLeft" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Canvas d:LayoutOverrides="Width, Height" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" x:Name="arrowButton">
+                        <Border Opacity="1" Background="{StaticResource TransparentBrush}" Width="30" Height="30" >
+                            <Path Opacity="0.7" Width="14" Height="14" Fill="{StaticResource LightForegroundBrush}"  Stretch="Fill" Data="F1 M 822.29,14.5148C 825.705,10.8083 831.53,9.26154 836.05,11.8881C 842.837,14.9016 844.424,24.9282 839.17,30.0482C 832.504,36.9682 825.542,43.6215 818.837,50.5014C 838.744,50.7682 858.662,50.4349 878.569,50.6614C 883.478,50.5549 888.517,53.1149 890.372,57.8481C 893.676,64.9549 887.717,73.8615 879.93,73.7415C 859.542,73.8881 839.157,73.6483 818.769,73.8615C 825.65,80.9816 832.93,87.7282 839.662,94.9948C 844.61,100.515 842.277,110.328 835.329,112.955C 830.091,115.541 824.252,112.622 820.744,108.581C 808.744,96.5682 796.769,84.5281 784.705,72.5815C 782.064,69.9016 779.236,66.7415 779.252,62.7548C 778.824,58.6614 781.436,55.1815 784.209,52.5148C 796.944,39.8881 809.556,27.1415 822.29,14.5148 Z " RenderTransformOrigin="0.5,0.5" x:Name="Path"/>
+                        </Border>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="Path"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.7" TargetName="Path"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="btnDoubleArrowRight" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Canvas x:Name="arrowEnd">
+                        <Border Opacity="1" Background="{StaticResource TransparentBrush}" Width="30" Height="30" >
+                            <Path Opacity="0.7" Fill="{StaticResource LightForegroundBrush}" Width="18" Height="14" Stretch="Fill" Data="M7.5081458,0.00017708488 C7.9039941,-0.0062807598 8.3051739,0.16407906 8.5812244,0.47983846 C10.119355,2.1258976 11.634113,3.7972994 13.168868,5.4469676 C13.558805,5.8612194 14.013735,6.3333325 13.996987,6.9772911 C14.031981,7.4801321 13.757028,7.925139 13.437076,8.2579517 C11.82071,10.003508 10.214341,11.758085 8.5979719,13.503654 C8.1063013,14.106006 7.1748242,14.16936 6.6181641,13.642982 C6.0066357,13.114705 5.9332714,12.002295 6.489934,11.401762 C7.3248,10.439439 8.2296562,9.5531139 9.0495262,8.5763159 C6.5599222,8.5401344 4.0686951,8.5726938 1.5773411,8.5600357 C1.1490335,8.5817423 0.70410442,8.4478817 0.41252708,8.0897141 C-0.17900372,7.4891944 -0.12401199,6.3514161 0.51088715,5.8087578 C0.84745789,5.4741139 1.3173819,5.4216528 1.7539387,5.4397502 C4.1919241,5.4397502 6.6315355,5.4487853 9.0695229,5.4361415 C8.2096596,4.4774265 7.3030543,3.5675647 6.4681883,2.5853667 C5.8950272,1.9323722 6.0366316,0.74936336 6.7448931,0.27182534 C6.968955,0.091790676 7.2373023,0.0045958515 7.5081458,0.00017708488 z M16.500002,5.9057903E-08 C17.328428,1.1535111E-07 18.000002,0.56209737 18.000002,1.6666667 L18.000002,12.249999 C18.000002,13.354568 17.328428,14 16.500002,14 C15.671575,14 15.000002,13.354568 15.000002,12.249999 L15.000002,1.6666667 C15.000002,0.56209737 15.671575,1.1535111E-07 16.500002,5.9057903E-08 z" x:Name="Path" />
+                        </Border>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="Path"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.7" TargetName="Path"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="btnDoubleArrowLeft" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Canvas x:Name="arrowEnd">
+                        <Border Opacity="1" Background="{StaticResource TransparentBrush}" Width="30" Height="30">
+
+                            <ItemsControl d:IsGroup="True" Width="18" Height="14" Canvas.Left="10" Canvas.Top="10" x:Name="Group" RenderTransformOrigin="0.5,0.5">
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                        <Viewbox>
+                                            <Viewbox.Child>
+                                                <Canvas Width="18" Height="14" IsItemsHost="True"/>
+                                            </Viewbox.Child>
+                                        </Viewbox>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                                <Path Opacity="0.7" Fill="{StaticResource LightForegroundBrush}"  Width="18" Height="14" Stretch="Fill" Data="M10.478267,6.3418935E-07 C10.691987,-0.00021643956 10.905294,0.055285174 11.099342,0.17758435 C11.946978,0.58577669 12.145185,1.9439251 11.489002,2.6374526 C10.656484,3.5747981 9.7869864,4.4760175 8.9495897,5.4079313 C11.435803,5.4440708 13.923382,5.3989234 16.409588,5.4296041 C17.022686,5.4151783 17.652012,5.7619419 17.883684,6.4030752 C18.296326,7.3657241 17.552094,8.5721636 16.579567,8.5559092 C14.033286,8.5757666 11.487379,8.5432844 8.9410973,8.5721636 C9.8004789,9.5366125 10.709682,10.450471 11.550449,11.434765 C12.16841,12.182501 11.877039,13.511717 11.009295,13.867556 C10.355118,14.217841 9.6258802,13.82245 9.1877623,13.275078 C7.6890683,11.647889 6.1934919,10.017003 4.6868091,8.3987808 C4.3569727,8.0357771 4.0037804,7.6077271 4.0057774,7.0677099 C3.9523189,6.5132403 4.2785344,6.041872 4.6248593,5.680656 C6.2153463,3.9703119 7.7904811,2.243727 9.3808393,0.53338289 C9.6607351,0.20390449 10.070254,0.00041543698 10.478267,6.3418935E-07 z M1.5000001,9.7747474E-08 C2.3284271,1.750435E-07 3,0.56209743 2.9999998,1.6666667 L2.9999998,12.249999 C3,13.354568 2.3284271,14 1.5000001,14 C0.67157286,14 0,13.354568 0,12.249999 L0,1.6666667 C0,0.56209743 0.67157286,1.750435E-07 1.5000001,9.7747474E-08 z" x:Name="Path"/>
+                            </ItemsControl>
+                        </Border>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="Path"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.7" TargetName="Path"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- ************************************************** -->
+    <!-- End CarouselPanelNavigator Resources -->
+    <!-- ************************************************** -->
+    <Style TargetType="{x:Type igWindows:CarouselPanelNavigator}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igWindows:CarouselPanelNavigator}">
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,4,4" x:Name="navGrid" RenderTransformOrigin="0.5,0.5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform X="0" Y="0"/>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                <SkewTransform AngleX="0" AngleY="0"/>
+                                <RotateTransform Angle="0"/>
+                                <TranslateTransform X="0" Y="0"/>
+                                <TranslateTransform X="0" Y="0"/>
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Rectangle Fill="{StaticResource ExpanderBarBackground}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Width="Auto" Height="Auto" x:Name="Rectangle1"/>
+
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" Height="Auto" x:Name="gridButtons">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Button
+								x:Name="navigateLineRight"
+								Style="{StaticResource btnArrowRight}"
+								HorizontalAlignment="Right"
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToNextItem}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}"
+								Margin="0,0,31,0"
+								Width="30"
+								d:LayoutOverrides="Height"
+								VerticalAlignment="Center"  Height="30"
+								Canvas.Left="51.5027555076267" Canvas.Top="0">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                            </Button>
+                            <Button
+								x:Name="navigatePageRight"
+								d:LayoutOverrides="Width"
+								Style="{StaticResource btnDoubleArrowRight}"
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToNextPage}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}"
+								HorizontalAlignment="Right" VerticalAlignment="Center"
+								Margin="0,0,0,0"
+								Width="30" Height="30"
+								Canvas.Left="76.0445939324419" Canvas.Top="0"
+								RenderTransformOrigin="0.5,0.5">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                            </Button>
+                            <Button
+								x:Name="navigateLineLeft"
+								d:LayoutOverrides="HorizontalAlignment"
+								Style="{StaticResource btnArrowLeft}"
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToPreviousItem}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Center"
+								Margin="31,0,0,0"
+								Width="30" Height="30"
+								Canvas.Left="18.7709176140105" Canvas.Top="0">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                            </Button>
+                            <Button
+								x:Name="navigatePageLeft"
+								d:LayoutOverrides="Width"
+								Style="{StaticResource btnDoubleArrowLeft}"
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToPreviousPage}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}"
+								HorizontalAlignment="Left"
+								Margin="0,0,0,0"
+								Width="30" Height="30"
+								VerticalAlignment="Center"
+								Canvas.Left="-4.95" Canvas.Top="0"
+								RenderTransformOrigin="0.5,0.5">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  PagerScrollBtnBase Style  ********************************* -->
+    <Style TargetType="{x:Type RepeatButton}" x:Key="PagerScrollBtnBase">
+        <!--<Setter Property="ClickMode" Value="Hover"/>-->
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="0">
+                            <ContentPresenter x:Name="Arrow" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Opacity="{TemplateBinding Opacity}"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Opacity" Value="0.7"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Opacity" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- *********************************  ScrollLeftButtonStyleKey  ********************************* -->
+    <Style x:Key="{x:Static controls:XamTabControl.ScrollLeftButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Width="8" Height="12">
+                        <Path Width="8" Height="12" Data="M0,3.9666667 C0,3.9666667 4,8 4,8 4,8 4,0 4,0 4,0 0,3.9666667 0,3.9666667 z" Fill="{DynamicResource {x:Static controls:PrimitivesBrushKeys.XamPagerButtonGlyphFillKey}}" Stretch="Fill"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  ScrollRightButtonStyleKey  ********************************* -->
+    <Style x:Key="{x:Static controls:XamTabControl.ScrollRightButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Width="8" Height="12">
+                        <Path Data="M0,0 L6,4.9166667 0,10 z" Fill="{DynamicResource {x:Static controls:PrimitivesBrushKeys.XamPagerButtonGlyphFillKey}}" Stretch="Fill"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  ScrollUpButtonStyleKey  ********************************* -->
+    <Style x:Key="{x:Static controls:XamTabControl.ScrollUpButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Width="12" Height="8">
+                        <Path Width="Auto" Height="Auto" Data="M4,0 C4,0 8,4 8,4 8,4 0,4 0,4 0,4 4,0 4,0 z" Fill="{DynamicResource {x:Static controls:PrimitivesBrushKeys.XamPagerButtonGlyphFillKey}}" Stretch="Fill"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- *********************************  ScrollDownButtonStyleKey  ********************************* -->
+    <Style x:Key="{x:Static controls:XamTabControl.ScrollDownButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Width="12" Height="8">
+                        <Path Data="M0,0 L10,0 4.8333333,6 z" Fill="{DynamicResource {x:Static controls:PrimitivesBrushKeys.XamPagerButtonGlyphFillKey}}" Stretch="Fill"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- XamTabControl.CloseButtonStyle -->
+    <Style x:Key="{x:Static igWindows:XamTabControl.CloseButtonStyleKey}" TargetType="{x:Type Button}">
+        <Setter Property="ToolTip" Value="{StaticResource closeToolTip}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}"/>
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="0"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalCenterFillKey}}"
+							CornerRadius="0"/>
+                        <!--<Border
+							x:Name="closeButtonInnerBorder"
+							BorderThickness="0"
+							Margin="1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalInnerBorderFillKey}}"
+							CornerRadius="0"/>
+							-->
+                        <Border
+							x:Name="closeButtonCenter"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalCenterFillKey}}"
+							CornerRadius="0"
+							>
+                            <Path
+								x:Name="closeGlyph"
+								Data="M8.4446707,-0.6250003 L10.625006,1.5604857 L7.1956725,4.9880161 L10.625,8.4285631 L8.5070467,10.625005 L5.0209293,7.1613607 L1.5554626,10.625 L-0.62499386,8.4862156 L2.8442898,5.0018182 L-0.625,1.5548685 L1.602536,-0.62499505 L5.0254283,2.8090899 z"
+								Margin="1"
+								SnapsToDevicePixels="True"
+								Width="12"
+								Height="12"
+								Stretch="Fill"
+								Fill="{TemplateBinding Foreground}"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Opacity="0.7"
+								/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <!--<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackInnerBorderFillKey}}"/>-->
+                            <Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackCenterFillKey}}"/>
+                            <Setter TargetName="closeGlyph" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <!--<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedInnerBorderFillKey}}"/>-->
+                            <Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedCenterFillKey}}"/>
+                            <Setter TargetName="closeGlyph" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- ======================== END BUTTON STYLES ======================== -->
+    <!-- _________________________ XamTabControl - SingleRowTabItemPagerStyleKey ______________________________________ -->
+    <Style x:Key="{x:Static controls:XamTabControl.SingleRowTabItemPagerStyleKey}" TargetType="{x:Type controls:XamPager}">
+        <Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollDownButtonStyleKey}}"/>
+        <Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+        <Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollRightButtonStyleKey}}"/>
+        <Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollUpButtonStyleKey}}"/>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:XamPager}">
+                    <Grid d:IsHidden="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="row1" Height="Auto"/>
+                            <RowDefinition x:Name="row2" Height="Auto"/>
+                            <RowDefinition x:Name="row3" Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="col1" Width="Auto"/>
+                            <ColumnDefinition x:Name="col2" Width="Auto"/>
+                            <ColumnDefinition x:Name="col3" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- I would have template bound the cancontent scroll but when we try to change
+					this property from the tab control template trigger its being ignored because the
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+                        <controls:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+                        <RepeatButton
+							x:Name="PART_ScrollLeft"
+							Style="{TemplateBinding ScrollLeftButtonStyle}"
+							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+							Command="{x:Static ScrollBar.LineLeftCommand}"/>
+                        <RepeatButton
+							x:Name="PART_ScrollUp"
+							Style="{TemplateBinding ScrollUpButtonStyle}"
+							Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+							Command="{x:Static ScrollBar.LineUpCommand}"/>
+                        <RepeatButton
+							x:Name="PART_ScrollRight"
+							Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+							Style="{TemplateBinding ScrollRightButtonStyle}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+							Command="{x:Static ScrollBar.LineRightCommand}"/>
+                        <RepeatButton
+							x:Name="PART_ScrollDown"
+							Style="{TemplateBinding ScrollDownButtonStyle}"
+							Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+							Command="{x:Static ScrollBar.LineDownCommand}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,0,1,2"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,1,2"/>
+                            <Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="Height" TargetName="row1" Value="*"/>
+                            <Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,2,1,0"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,2,1,0"/>
+                            <Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="Height" TargetName="row3" Value="*"/>
+                            <Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollUp" Value="0,3,2,1"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollDown" Value="0,1,2,1"/>
+                            <Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+                            <Setter Property="Height" TargetName="row1" Value="*"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="Width" TargetName="col3" Value="0"/>
+                            <Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="0"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollUp" Value="2,3,0,1"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="0"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollDown" Value="2,1,0,1"/>
+                            <Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+                            <Setter Property="Height" TargetName="row1" Value="*"/>
+                            <Setter Property="Width" TargetName="col2" Value="*"/>
+                            <Setter Property="Width" TargetName="col3" Value="0"/>
+                            <Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- _________________________ XamTabControl - MultiRowTabItemPagerStyleKey ______________________________________ -->
+    <Style x:Key="{x:Static controls:XamTabControl.MultiRowTabItemPagerStyleKey}" TargetType="{x:Type controls:XamPager}">
+        <Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollDownButtonStyleKey}}"/>
+        <Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+        <Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollRightButtonStyleKey}}"/>
+        <Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static controls:XamTabControl.ScrollUpButtonStyleKey}}"/>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:XamPager}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="row1" Height="Auto"/>
+                            <RowDefinition x:Name="row2" Height="Auto"/>
+                            <RowDefinition x:Name="row3" Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="col1" Width="Auto"/>
+                            <ColumnDefinition x:Name="col2" Width="Auto"/>
+                            <ColumnDefinition x:Name="col3" Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- I would have template bound the cancontent scroll but when we try to change
+					this property from the tab control template trigger its being ignored because the
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+                        <controls:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+                        <RepeatButton
+								x:Name="PART_ScrollLeft"
+								Style="{TemplateBinding ScrollLeftButtonStyle}"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineLeftCommand}">
+                        </RepeatButton>
+                        <RepeatButton
+								x:Name="PART_ScrollUp"
+								Style="{TemplateBinding ScrollUpButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineUpCommand}"/>
+                        <RepeatButton
+								x:Name="PART_ScrollRight"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								Style="{TemplateBinding ScrollRightButtonStyle}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineRightCommand}">
+                        </RepeatButton>
+                        <RepeatButton
+								x:Name="PART_ScrollDown"
+								Style="{TemplateBinding ScrollDownButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineDownCommand}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,0,0,1"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,3"/>
+                            <Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Width" TargetName="col3" Value="0"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="Height" TargetName="row1" Value="*"/>
+                            <Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="0"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,3,0,1"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,0"/>
+                            <Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Width" TargetName="col3" Value="0"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="Height" TargetName="row3" Value="*"/>
+                            <Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollLeft" Value="0,0,1,3"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,3,3"/>
+                            <Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1"/>
+                            <Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Height" TargetName="row3" Value="0"/>
+                            <Setter Property="Height" TargetName="row2" Value="*"/>
+                            <Setter Property="Width" TargetName="col1" Value="*"/>
+                            <Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type controls:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="0"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,3,1,0"/>
+                            <Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="1"/>
+                            <Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,3,0,0"/>
+                            <Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="0"/>
+                            <Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+                            <Setter Property="Height" TargetName="row3" Value="0"/>
+                            <Setter Property="Height" TargetName="row1" Value="*"/>
+                            <Setter Property="Width" TargetName="col3" Value="*"/>
+                            <Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- ************************************************** -->
+    <!-- End XamTabControl Resources -->
+    <!-- ************************************************** -->
+    <!-- _________________________ XamTabControl ______________________________________ -->
+    <Style TargetType="{x:Type controls:XamTabControl}">
+        <Setter Property="FontSize" Value="14.667"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabContentBackgroundFillKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:XamTabControl}">
+                    <Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="gridCol0"/>
+                            <ColumnDefinition Width="0" x:Name="gridCol1"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" x:Name="gridRow0"/>
+                            <RowDefinition Height="*" x:Name="gridRow1"/>
+                        </Grid.RowDefinitions>
+                        <Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							x:Name="ContentPanel"
+							KeyboardNavigation.TabIndex="2"
+							KeyboardNavigation.TabNavigation="Local"
+							KeyboardNavigation.DirectionalNavigation="Contained"
+							Grid.Row="1"
+							Visibility="Visible"
+							Margin="0,-1,0,0"
+							Background="{TemplateBinding Background}">
+                            <!--Background="#FF515151"-->
+                            <Border
+								BorderThickness="{TemplateBinding Border.BorderThickness}"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								Margin="0,1,0,0">
+                                <!--<Border Background="{DynamicResource Container_Fill}" BorderBrush="{DynamicResource Container_BorderFill}" CornerRadius="5,5,5,5">-->
+                                <Border CornerRadius="0">
+                                    <ContentPresenter
+										ContentSource="SelectedContent"
+										Margin="{TemplateBinding Control.Padding}"
+										Height="{TemplateBinding TabItemContentHeight}"
+										Name="PART_SelectedContentHost"
+										SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                </Border>
+                            </Border>
+                        </Border>
+                        <!--<DockPanel x:Name="PART_HeaderArea" Panel.ZIndex="1" Background="#FF535353">-->
+                        <!-- AS 5/4/10 TFS30695
+              Added Tab(Index|Navigation) settings so this gets focus first. -->
+                        <DockPanel
+							x:Name="PART_HeaderArea"
+							Panel.ZIndex="1"
+							KeyboardNavigation.TabIndex="1"
+							KeyboardNavigation.TabNavigation="Local"
+                            Background="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabControlTabStripCenterFillKey}}"
+							>
+                            <ContentPresenter
+								x:Name="PreTabItemContent"
+								DockPanel.Dock="Left"
+								ContentSource="PreTabItemContent"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								/>
+                            <Button
+								x:Name="CloseButton"
+								DockPanel.Dock="Right"
+								Command="igWindows:TabControlCommands.CloseSelected"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Visibility="Collapsed"
+								Style="{DynamicResource {x:Static igWindows:XamTabControl.CloseButtonStyleKey}}"/>
+                            <ContentPresenter
+								x:Name="PostTabItemContent"
+								DockPanel.Dock="Right"
+								ContentSource="PostTabItemContent"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <igWindows:XamPager x:Name="PART_TabItemScrollViewer"
+								Style="{DynamicResource {x:Static igWindows:XamTabControl.SingleRowTabItemPagerStyleKey}}"
+								CanContentScroll="True"
+								ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding TabItemVerticalScrollBarVisibility}"
+								ScrollViewer.HorizontalScrollBarVisibility="{TemplateBinding TabItemHorizontalScrollBarVisibility}"
+								Margin="0 5 0 0">
+                                <ItemsPresenter x:Name="PART_TabHeaderPanel" Margin="2,2,1,0" />
+                            </igWindows:XamPager>
+                        </DockPanel>
+                        <Popup
+							x:Name="PART_Popup"
+							StaysOpen="False"
+							Width="{TemplateBinding PreferredDropDownExtent}"
+							IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+							CustomPopupPlacementCallback="{TemplateBinding PreferredDropDownPlacementCallback}"
+							Placement="Custom"
+							AllowsTransparency="True"
+							PopupAnimation="{Binding Path=DropDownAnimation, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Border
+								BorderBrush="#FFD0CEBF"
+								BorderThickness="0,0,1,1"
+								KeyboardNavigation.TabIndex="2"
+								KeyboardNavigation.TabNavigation="Local"
+								KeyboardNavigation.DirectionalNavigation="Contained">
+                                <Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="{TemplateBinding Border.BorderThickness}">
+                                    <Border Background="{TemplateBinding Panel.Background}">
+                                        <ContentPresenter
+											ContentSource="SelectedContent"
+											Margin="{TemplateBinding Control.Padding}"
+											Height="{TemplateBinding TabItemContentHeight}"
+											Name="PART_SelectedContentHostMinimized"
+											HorizontalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=HorizontalAlignment}"
+											VerticalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=VerticalAlignment}"
+											SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+											ContentTemplateSelector="{TemplateBinding TabControl.SelectedContentTemplateSelector}"
+											ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}"
+											Content="{x:Null}"/>
+                                    </Border>
+                                </Border>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowTabHeaderCloseButton" Value="True">
+                            <Setter Property="Visibility" TargetName="CloseButton" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="DropDownAnimation" Value="None">
+                            <!--<Setter Property="AllowsTransparency" TargetName="PART_Popup" Value="False"/>-->
+                        </Trigger>
+                        <Trigger Property="TabControl.TabStripPlacement" Value="Top">
+                            <Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                            <Setter TargetName="CloseButton" Property="Margin" Value="3,1,3,0"/>
+                            <Setter TargetName="PreTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+                            <Setter TargetName="PostTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+                            <Setter TargetName="PostTabItemContent" Property="Margin" Value="3,0,3,7"/>
+                            <Setter TargetName="PreTabItemContent" Property="Margin" Value="3,0,3,7"/>
+                        </Trigger>
+                        <Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="CloseButton" Property="Margin" Value="3,0,3,1"/>
+                            <Setter TargetName="PreTabItemContent" Property="Margin" Value="3,2,3,0"/>
+                            <Setter TargetName="PostTabItemContent" Property="Margin" Value="3,2,3,0"/>
+                            <Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+                            <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+                            <Setter Property="Height" TargetName="gridRow0" Value="*"/>
+                            <Setter Property="Height" TargetName="gridRow1" Value="Auto"/>
+                            <Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                            <Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,0,2,2"/>
+                        </Trigger>
+                        <Trigger Property="TabControl.TabStripPlacement" Value="Left">
+                            <Setter TargetName="PostTabItemContent" Property="Margin" Value="5,3,0,3"/>
+                            <Setter TargetName="PreTabItemContent" Property="Margin" Value="5,3,0,3"/>
+                            <Setter Property="Margin" TargetName="CloseButton" Value="0,0,4,3"/>
+                            <Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+                            <Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Right"/>
+                            <Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+                            <Setter Property="Height" TargetName="gridRow0" Value="0"/>
+                            <Setter Property="Width" TargetName="gridCol0" Value="Auto"/>
+                            <Setter Property="Width" TargetName="gridCol1" Value="*"/>
+                            <Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+                            <Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+                            <Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                            <Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,2,0,2"/>
+                        </Trigger>
+                        <Trigger Property="TabControl.TabStripPlacement" Value="Right">
+                            <Setter TargetName="PostTabItemContent" Property="Margin" Value="4,3,0,3"/>
+                            <Setter TargetName="PreTabItemContent" Property="Margin" Value="4,3,0,3"/>
+                            <Setter Property="Margin" TargetName="CloseButton" Value="4,0,0,3"/>
+                            <Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+                            <Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Left"/>
+                            <Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+                            <Setter Property="Grid.Column" TargetName="PART_HeaderArea" Value="1"/>
+                            <Setter Property="Height" TargetName="gridRow0" Value="0"/>
+                            <Setter Property="Width" TargetName="gridCol0" Value="*"/>
+                            <Setter Property="Width" TargetName="gridCol1" Value="Auto"/>
+                            <Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+                            <Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+                            <Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+                            <Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="0,2,2,2"/>
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.GrayTextBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMinimized" Value="True">
+                            <Setter Property="Visibility" TargetName="ContentPanel" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsMultiRow" Value="True">
+                            <Setter TargetName="PART_TabItemScrollViewer" Property="Style" Value="{DynamicResource {x:Static controls:XamTabControl.MultiRowTabItemPagerStyleKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Setter Property="Background" Value="{DynamicResource Container_Fill}"/>-->
+        <Style.Triggers>
+            <Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+                <Setter Property="Panel.Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+            </Trigger>
+            <Trigger Property="TabControl.TabStripPlacement" Value="Left">
+                <Setter Property="Panel.Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+            </Trigger>
+            <Trigger Property="TabControl.TabStripPlacement" Value="Right">
+                <Setter Property="Panel.Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!-- _________________________ TabItemEx ______________________________________ -->
+    <Style x:Key="{x:Type controls:TabItemEx}" TargetType="{x:Type controls:TabItemEx}">
+        <!-- <Setter Property="FocusVisualStyle" Value="{StaticResource Foo}" /> -->
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalTopCenterFillKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Padding" Value="15 3"/>
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TabItemEx}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Border
+							x:Name="Bd"
+							Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							Background="{TemplateBinding Background}"
+							BorderThickness="1,1,1,0"
+							CornerRadius="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter
+                                    TextElement.Foreground="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalTextFillKey}}"
+									x:Name="Content"
+									ContentSource="Header"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									RecognizesAccessKey="true"
+									HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+									VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                                <Button
+									x:Name="CloseButton"
+									Grid.Column="1"
+									Command="controls:TabItemExCommands.Close"
+									CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+									Visibility="{TemplateBinding ComputedCloseButtonVisibility}"
+									Style="{DynamicResource {x:Static controls:XamTabControl.CloseButtonStyleKey}}"
+									Margin="10,0,-7,0"/>
+                            </Grid>
+                        </Border>
+                        <Border
+							x:Name="Highlight"
+							Height="3"
+							CornerRadius="0"
+							Background="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							BorderThickness="1,1,1,0"
+							Visibility="Collapsed"
+							VerticalAlignment="Top"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackTextFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Panel.ZIndex" Value="1"/>
+                            <Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Highlight" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedHighlightLightFillKey}}"/>
+                            <Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedHighlightDarkFillKey}}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedTopCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedTextFillKey}}"/>
+                            <Setter TargetName="CloseButton" Property="Foreground" Value="{DynamicResource CloseButtonTabActiveForegroundBrush}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+                        </MultiTrigger>
+                        <Trigger Property="TabStripPlacement" Value="Top">
+                            <Setter Property="Padding" Value="5,2,4,2"/>
+                            <Setter Property="Margin" Value="0,0,1,0"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter Property="Padding" Value="5,2,4,2"/>
+                            <Setter Property="Margin" Value="0,0,1,0"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalBottomCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="1,0,1,1"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="1,0,1,1"/>
+                            <Setter TargetName="Highlight" Property="VerticalAlignment" Value="Bottom"/>
+                            <Setter TargetName="Highlight" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Highlight" Property="BorderThickness" Value="1,0,1,1"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Left">
+                            <Setter Property="Padding" Value="4,3,4,3"/>
+                            <Setter Property="Margin" Value="0,0,0,1"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalLeftCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="1,1,0,1"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Highlight" Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Highlight" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="Highlight" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Highlight" Property="Width" Value="3"/>
+                            <Setter TargetName="Highlight" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Highlight" Property="BorderThickness" Value="1,1,0,1"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Right">
+                            <Setter Property="Padding" Value="4,3,4,3"/>
+                            <Setter Property="Margin" Value="0,0,0,1"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemNormalRightCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="0,1,1,1"/>
+                            <Setter TargetName="Bd" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Highlight" Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter TargetName="Highlight" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Highlight" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Highlight" Property="Width" Value="3"/>
+                            <Setter TargetName="Highlight" Property="CornerRadius" Value="0"/>
+                            <Setter TargetName="Highlight" Property="BorderThickness" Value="0,1,1,1"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Top"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Margin" Value="-2,-2,-3,-1"/>
+                            <Setter TargetName="Content" Property="Margin" Value="0,0,0,1"/>
+                            <Setter Property="Padding" Value="7,1,8,3"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Bottom"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+                            <Setter Property="Margin" Value="-2,-1,-3,-2"/>
+                            <Setter TargetName="Content" Property="Margin" Value="0,1,0,0"/>
+                            <Setter Property="Padding" Value="7,3,8,1"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Left"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+                            <Setter Property="Margin" Value="-2,-2,-1,-3"/>
+                            <Setter TargetName="Content" Property="Margin" Value="0,0,1,0"/>
+                            <Setter Property="Padding" Value="4,5,4,7"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Right"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+                            <Setter Property="Margin" Value="-1,-2,-2,-3"/>
+                            <Setter TargetName="Content" Property="Margin" Value="1,0,0,0"/>
+                            <Setter Property="Padding" Value="4,5,4,7"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Top"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackTopCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Bottom"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackBottomCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Left"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackLeftCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="TabStripPlacement" Value="Right"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackRightCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemDisabledCenterFillKey}}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static controls:PrimitivesBrushKeys.TabItemDisabledOuterBorderFillKey}}" />
+                            <Setter Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Property="Foreground"/>
+                            <Setter TargetName="Highlight" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- *********************************  PopupResizerBar Style  ********************************* -->
+    <Style TargetType="{x:Type controls:PopupResizerBar}">
+        <Setter Property="Background" Value="{DynamicResource TransparentBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PopupBackgroundBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PopupBorderBrush}"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:PopupResizerBar}">
+                    <Border SnapsToDevicePixels="True" Background="{TemplateBinding Foreground}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0 1 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Margin="0">
+                        <controls:CardPanel Margin="{TemplateBinding Padding}">
+                            <controls:CardPanel x:Name="GlyphArea" >
+                                <!-- the glyph that is used when the resizemode is Both and the location is Bottom-->
+                                <!-- TODO: replace with actual Glyph-->
+                                <!--<Rectangle
+                    x:Name="BottomRightGlyph"
+                    Fill="{TemplateBinding Foreground}"
+                    Visibility="Collapsed"
+                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Mode=OneWay}"
+                     />-->
+                                <!-- the thumb is transparent and needs to be placed after the glyphs so that it is on top with respect to z-order -->
+                                <Thumb x:Name="PART_Thumb" Background="Transparent" Foreground="Transparent" Opacity="0"/>
+                                <Grid x:Name="BottomRightGlyph" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="3" Background="{x:Null}" IsHitTestVisible="False" Visibility="Collapsed">
+                                    <Path Margin="2,2,1,1" VerticalAlignment="Bottom" Height="6" Stretch="Fill" Opacity="1" Data="M4,4 L6,4 6,6 4,6 z M0,4 L2,4 2,6 0,6 z M4,0 L6,0 6,2 4,2 z" Fill="{StaticResource LightForegroundBrush}" SnapsToDevicePixels="True" HorizontalAlignment="Right" Width="6"/>
+                                    <Path Data="M4,4 L6,4 6,6 4,6 z M0,4 L2,4 2,6 0,6 z M4,0 L6,0 6,2 4,2 z" Fill="{TemplateBinding BorderBrush}" HorizontalAlignment="Right" Height="6" Opacity="1" Stretch="Fill" SnapsToDevicePixels="True" VerticalAlignment="Bottom" Width="6"/>
+                                </Grid>
+                                <!-- the glyph that is used when the resizemode is Both and the location is Top-->
+                                <Grid x:Name="TopRightGlyph" Background="{x:Null}" Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}" IsHitTestVisible="False" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Collapsed">
+                                    <Path SnapsToDevicePixels="True" HorizontalAlignment="Right" Margin="0,2,2,0" VerticalAlignment="Top" Width="6" Height="6" Fill="{StaticResource LightForegroundBrush}" Stretch="Fill" Data="M4,4 L6,4 6,6 4,6 z M4,0 L6,0 6,2 4,2 z M0,0 L2,0 2,2 0,2 z"/>
+                                    <Path Data="M4,4 L6,4 6,6 4,6 z M4,0 L6,0 6,2 4,2 z M0,0 L2,0 2,2 0,2 z" Fill="{TemplateBinding BorderBrush}" HorizontalAlignment="Right" Height="6" Margin="0,3,3,0" Opacity="1" Stretch="Fill" SnapsToDevicePixels="True" VerticalAlignment="Top" Width="6"/>
+                                </Grid>
+                                <!-- the glyph that is used when the resizemode is VerticalOnly-->
+                                <Grid x:Name="VerticalOnlyGlyph" IsHitTestVisible="False" Margin="6,0" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Center" Height="Auto" Visibility="Collapsed">
+                                    <Path SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="1,1,0,0" x:Name="WhiteShadows" VerticalAlignment="Top" Width="17" Height="2" Fill="{StaticResource LightForegroundBrush}" Stretch="None" Data="M16,0 L18,0 18,1.9999999 16,1.9999999 z M12,0 L14,0 14,1.9999999 12,1.9999999 z M8,0 L10,0 10,1.9999999 8,1.9999999 z M4,0 L6,0 6,1.9999999 4,1.9999999 z M0,0 L1.9999999,0 1.9999999,1.9999999 0,1.9999999 z"/>
+                                    <Path x:Name="_1" Data="M16,0 L18,0 18,1.9999999 16,1.9999999 z M12,0 L14,0 14,1.9999999 12,1.9999999 z M8,0 L10,0 10,1.9999999 8,1.9999999 z M4,0 L6,0 6,1.9999999 4,1.9999999 z M0,0 L1.9999999,0 1.9999999,1.9999999 0,1.9999999 z" Fill="{TemplateBinding BorderBrush}" HorizontalAlignment="Stretch" Height="2" Margin="0" Opacity="1" Stretch="Fill" SnapsToDevicePixels="True" VerticalAlignment="Stretch" Width="18"/>
+                                </Grid>
+                            </controls:CardPanel>
+                        </controls:CardPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Both"/>
+                                <Condition Property="Location" Value="Bottom"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="BottomRightGlyph" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+                            <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Both"/>
+                                <Condition Property="Location" Value="Bottom"/>
+                                <Condition Property="FlowDirection" Value="RightToLeft"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Both"/>
+                                <Condition Property="Location" Value="Top"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="TopRightGlyph" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+                            <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Both"/>
+                                <Condition Property="Location" Value="Top"/>
+                                <Condition Property="FlowDirection" Value="RightToLeft"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+                        </MultiTrigger>
+                        <Trigger Property="ResizeMode" Value="VerticalOnly">
+                            <Setter TargetName="VerticalOnlyGlyph" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNS"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

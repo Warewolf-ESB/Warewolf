@@ -1,0 +1,1505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Charts.FinancialSeries">
+    <Position X="3.75" Y="20" Width="1.75" />
+    <Members>
+      <Field Name="_ignoreColumnChanges" Hidden="true" />
+      <Property Name="BucketSize" Hidden="true" />
+      <Method Name="CalculateBuckets" Hidden="true" />
+      <Field Name="closeColumn" Hidden="true" />
+      <Property Name="CloseColumn" Hidden="true" />
+      <Field Name="CloseColumnPropertyName" Hidden="true" />
+      <Field Name="CloseMemberPathPropertyName" Hidden="true" />
+      <Field Name="columnToMapping" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CurrentFrame" Hidden="true" />
+      <Method Name="DeRegisterColumn" Hidden="true" />
+      <Method Name="FinancialSeries" Hidden="true" />
+      <Property Name="FinancialView" Hidden="true" />
+      <Property Name="FirstBucket" Hidden="true" />
+      <Method Name="GetBucket" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetItemIndexSorted" Hidden="true" />
+      <Method Name="GetTypicalBasedOn" Hidden="true" />
+      <Method Name="GetViewInfo" Hidden="true" />
+      <Field Name="highColumn" Hidden="true" />
+      <Property Name="HighColumn" Hidden="true" />
+      <Field Name="HighColumnPropertyName" Hidden="true" />
+      <Field Name="HighMemberPathPropertyName" Hidden="true" />
+      <Property Name="IHasCategoryAxis.CategoryAxis" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="LastBucket" Hidden="true" />
+      <Field Name="lowColumn" Hidden="true" />
+      <Property Name="LowColumn" Hidden="true" />
+      <Field Name="LowColumnPropertyName" Hidden="true" />
+      <Field Name="LowMemberPathPropertyName" Hidden="true" />
+      <Method Name="MakeReadOnlyAndEnsureSorted" Hidden="true" />
+      <Method Name="MakeSafe" Hidden="true" />
+      <Field Name="mappingToColumnName" Hidden="true" />
+      <Field Name="NegativeBrushPropertyName" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="openColumn" Hidden="true" />
+      <Property Name="OpenColumn" Hidden="true" />
+      <Field Name="OpenColumnPropertyName" Hidden="true" />
+      <Field Name="OpenMemberPathPropertyName" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Field Name="PreviousFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ProvideDataSource" Hidden="true" />
+      <Method Name="ProvideSupportingCalculations" Hidden="true" />
+      <Method Name="RegisterColumn" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Property Name="TL" Hidden="true" />
+      <Property Name="TR" Hidden="true" />
+      <Field Name="TransitionFrame" Hidden="true" />
+      <Property Name="TypicalColumn" Hidden="true" />
+      <Method Name="ValidateBasedOn" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Field Name="volumeColumn" Hidden="true" />
+      <Property Name="VolumeColumn" Hidden="true" />
+      <Field Name="VolumeColumnPropertyName" Hidden="true" />
+      <Field Name="VolumeMemberPathPropertyName" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+      <Field Name="XAxisPropertyName" Hidden="true" />
+      <Property Name="XAxisSortRequired" Hidden="true" />
+      <Field Name="YAxisPropertyName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>tEiCCgRrAECUEkASKMsMIAgJbRRFAABwADOBrEBAIFY=</HashCode>
+      <FileName>FinancialSeries\FinancialSeries.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VolumeColumn" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.FinancialPriceSeries">
+    <Position X="6.75" Y="20" Width="1.75" />
+    <Members>
+      <Property Name="ActualTrendLineBrush" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="ConvertToSingle" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Field Name="DisplayTypePropertyName" Hidden="true" />
+      <Property Name="FinancialPriceView" Hidden="true" />
+      <Method Name="GetBucket" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="Item" Hidden="true" />
+      <Field Name="MIN_WIDTH" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Field Name="TrendLineBrushProperty" Hidden="true" />
+      <Property Name="TrendLineManager" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAQAAAAEKOAAgBAAaEMEAAROCABAAAIAIBgACQBASEA=</HashCode>
+      <FileName>FinancialSeries\FinancialPriceSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StrategyBasedIndicator">
+    <Position X="0.5" Y="18.5" Width="2" />
+    <Members>
+      <Property Name="ActualCalculationStrategy" Hidden="true" />
+      <Method Name="BasedOn" Hidden="true" />
+      <Property Name="CalculationStrategy" Hidden="true" />
+      <Method Name="CreateLongPeriodProperty" Hidden="true" />
+      <Method Name="CreateMultiplierProperty" Hidden="true" />
+      <Method Name="CreatePeriodProperty" Hidden="true" />
+      <Method Name="CreatePeriodPropertyHelper" Hidden="true" />
+      <Method Name="CreateShortPeriodProperty" Hidden="true" />
+      <Method Name="IndicatorOverride" Hidden="true" />
+      <Field Name="invalidatesSeries" Hidden="true" />
+      <Method Name="LongPeriodOverride" Hidden="true" />
+      <Field Name="LongPeriodPropertyName" Hidden="true" />
+      <Field Name="MultiplerPropertyName" Hidden="true" />
+      <Method Name="MultiplierOverride" Hidden="true" />
+      <Method Name="PeriodOverride" Hidden="true" />
+      <Field Name="PeriodPropertyName" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ProvideDataSource" Hidden="true" />
+      <Method Name="RangesDiffer" Hidden="true" />
+      <Method Name="SanitizePeriod" Hidden="true" />
+      <Method Name="ShortPeriodOverride" Hidden="true" />
+      <Field Name="ShortPeriodPropertyName" Hidden="true" />
+      <Property Name="StyleKeyType" Hidden="true" />
+      <Method Name="UpdateRange" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAQgAQEBwAAABALCCBAAEgIAJABAAgAAAQAEAAIAA=</HashCode>
+      <FileName>FinancialSeries\StrategyBasedIndicator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.FinancialOverlay">
+    <Position X="0.75" Y="21.25" Width="1.75" />
+    <Members>
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="FinancialOverlay" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Field Name="IgnoreFirstPropertyName" Hidden="true" />
+      <Property Name="OverlayValid" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ValidateOverlay" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACAAQAAAABAAAAACAEIEAAAAAIAAAAAAAgAAAAACAA=</HashCode>
+      <FileName>FinancialSeries\FinancialOverlay.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.XamDataChart">
+    <Position X="8.25" Y="3.75" Width="2.25" />
+    <Members>
+      <Field Name="axes" Hidden="true" />
+      <Method Name="Axes_CollectionChanged" Hidden="true" />
+      <Method Name="Axes_CollectionResetting" Hidden="true" />
+      <Method Name="Axis_RangeChanged" Hidden="true" />
+      <Field Name="BrushesPropertyName" Hidden="true" />
+      <Property Name="ChartView" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="DecimalMaximumValueAsDouble" Hidden="true" />
+      <Field Name="DecimalMinimumValueAsDouble" Hidden="true" />
+      <Method Name="EffectiveIsSquare" Hidden="true" />
+      <Method Name="FindSeriesIndex" Hidden="true" />
+      <Method Name="GetBrushByIndex" Hidden="true" />
+      <Method Name="GetMarkerBrushByIndex" Hidden="true" />
+      <Method Name="GetMarkerOutlineByIndex" Hidden="true" />
+      <Method Name="GetOutlineByIndex" Hidden="true" />
+      <Field Name="GridModePropertyName" Hidden="true" />
+      <Method Name="HasPolarOrRadial" Hidden="true" />
+      <Field Name="IsSquarePropertyName" Hidden="true" />
+      <Field Name="MarkerBrushesPropertyName" Hidden="true" />
+      <Field Name="MarkerOutlinesPropertyName" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnValueOverlayRangeChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="OutlinesPropertyName" Hidden="true" />
+      <Field Name="PlotAreaBackgroundContentPropertyName" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="UpdateSyncLink" Hidden="true" />
+      <Method Name="XamDataChart" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Events" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>FQBBMAAADgBEASBQCAWgCACBCAQBBABAAAEDIIAUBiI=</HashCode>
+      <FileName>Controls\XamDataChart.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="GridMode" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Axes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.FinancialIndicator">
+    <Position X="3.75" Y="15.75" Width="1.75" />
+    <Members>
+      <Method Name="BasedOn" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="ConvertToSingle" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Field Name="DisplayTypePropertyName" Hidden="true" />
+      <Method Name="EnsureYRangeThenRender" Hidden="true" />
+      <Method Name="FinancialIndicator" Hidden="true" />
+      <Method Name="FullIndicatorRefresh" Hidden="true" />
+      <Method Name="GetBucket" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetWorldZeroValue" Hidden="true" />
+      <Field Name="IgnoreFirstPropertyName" Hidden="true" />
+      <Property Name="IndicatorColumn" Hidden="true" />
+      <Method Name="IndicatorOverride" Hidden="true" />
+      <Property Name="IndicatorRange" Hidden="true" />
+      <Property Name="IndicatorView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="ShouldUpdateIndicator" Hidden="true" />
+      <Property Name="TrendLineManager" Hidden="true" />
+      <Method Name="TrendPeriodOverride" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Method Name="UpdateIndicator" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IASAAQQUKeAAgFAAKEMEEAVKCABAAgIAIBgICUBQSEA=</HashCode>
+      <FileName>FinancialSeries\FinancialIndicator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategorySeries">
+    <Position X="10.5" Y="18" Width="1.75" />
+    <Members>
+      <Property Name="CachedXAxis" Hidden="true" />
+      <Property Name="CachedYAxis" Hidden="true" />
+      <Method Name="CacheXAxis" Hidden="true" />
+      <Method Name="CacheYAxis" Hidden="true" />
+      <Method Name="CategorySeries" Hidden="true" />
+      <Property Name="CategoryView" Hidden="true" />
+      <Method Name="ClearMarkers" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CurrentFrame" Hidden="true" />
+      <Field Name="ErrorBarSettingsPropertyName" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetItemIndexSorted" Hidden="true" />
+      <Method Name="GetMode2Index" Hidden="true" />
+      <Method Name="GetSeriesComponentsForView" Hidden="true" />
+      <Property Name="IHasCategoryAxis.CategoryAxis" Hidden="true" />
+      <Method Name="IHasCategoryModePreference.PreferredCategoryMode" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="ISupportsErrorBars.ErrorBarSettings" Hidden="true" />
+      <Method Name="ISupportsErrorBars.GetViewInfo" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldDisplayErrorBars" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldSyncErrorBarsWithMarkers" Hidden="true" />
+      <Property Name="ISupportsErrorBars.XAxis" Hidden="true" />
+      <Property Name="ISupportsErrorBars.YAxis" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Field Name="PreviousFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Field Name="TransitionFrame" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+      <Field Name="XAxisPropertyName" Hidden="true" />
+      <Field Name="YAxisPropertyName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gACQgAABEGDQBEBSKGMIIIBACABABwBAADAAowBCAMA=</HashCode>
+      <FileName>CategorySeries\CategorySeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.MarkerSeries">
+    <Position X="7" Y="15.75" Width="2" />
+    <Members>
+      <Field Name="ActualMarkerBrushPropertyName" Hidden="true" />
+      <Field Name="ActualMarkerOutlinePropertyName" Hidden="true" />
+      <Field Name="ActualMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="MarkerBrushPropertyName" Hidden="true" />
+      <Field Name="MarkerOutlinePropertyName" Hidden="true" />
+      <Field Name="MarkerStylePropertyName" Hidden="true" />
+      <Field Name="MarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="MarkerTypePropertyName" Hidden="true" />
+      <Property Name="MarkerView" Hidden="true" />
+      <Field Name="NullMarkerTemplate" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ShouldDisplayMarkers" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Field Name="UseLightweightMarkersPropertyName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CBQAAAgIAAiAEMYACEAgIAAgCAICAAMICAAAoFAEEAA=</HashCode>
+      <FileName>Core\MarkerSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Series">
+    <Position X="0.75" Y="1.5" Width="2.25" />
+    <Members>
+      <Field Name="_animationInitialized" Hidden="true" />
+      <Field Name="_animationStarted" Hidden="true" />
+      <Field Name="_animationTimer" Hidden="true" />
+      <Field Name="_seriesComponentsForView" Hidden="true" />
+      <Field Name="_seriesViewer" Hidden="true" />
+      <Field Name="ActualBrushPropertyName" Hidden="true" />
+      <Field Name="actualLegend" Hidden="true" />
+      <Field Name="ActualLegendPropertyName" Hidden="true" />
+      <Field Name="ActualOutlinePropertyName" Hidden="true" />
+      <Method Name="AnimationActive" Hidden="true" />
+      <Field Name="AnimationTickMilliseconds" Hidden="true" />
+      <Method Name="AnimationTimer_Tick" Hidden="true" />
+      <Method Name="AssertLegendItems" Hidden="true" />
+      <Field Name="BrushPropertyName" Hidden="true" />
+      <Method Name="ClearAndAbortIfInvalid" Hidden="true" />
+      <Method Name="ClearLegendItems" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Property Name="ContentInfo" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="DashArrayPropertyName" Hidden="true" />
+      <Field Name="DashCapPropertyName" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="DeregisterForAxis" Hidden="true" />
+      <Field Name="DiscreteLegendItemTemplatePropertyName" Hidden="true" />
+      <Method Name="DoRenderSeries" Hidden="true" />
+      <Method Name="DoUpdateIndexedProperties" Hidden="true" />
+      <Field Name="EndCapPropertyName" Hidden="true" />
+      <Property Name="FastItemsSource" Hidden="true" />
+      <Field Name="FastItemsSource_Event" Hidden="true" />
+      <Field Name="FastItemsSourceProperty" Hidden="true" />
+      <Field Name="FastItemsSourcePropertyName" Hidden="true" />
+      <Method Name="FindActualLegend" Hidden="true" />
+      <Property Name="FunctionOrDurationUpdated" Hidden="true" />
+      <Method Name="GetClockState" Hidden="true" />
+      <Method Name="GetDataContextFromSender" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetLegendItem" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetSeriesComponentsForView" Hidden="true" />
+      <Method Name="GetSeriesComponentsFromView" Hidden="true" />
+      <Method Name="GetTotalMilliseconds" Hidden="true" />
+      <Method Name="GetViewInfo" Hidden="true" />
+      <Field Name="IndexPropertyName" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Method Name="IProvidesViewport.GetViewInfo" Hidden="true" />
+      <Method Name="Item" Hidden="true" />
+      <Field Name="ItemsSourcePropertyName" Hidden="true" />
+      <Property Name="ItemsSourceReady" Hidden="true" />
+      <Property Name="LastHoverItem" Hidden="true" />
+      <Field Name="legendItem" Hidden="true" />
+      <Field Name="LegendItemBadgeTemplatePropertyName" Hidden="true" />
+      <Field Name="LegendItemPropertyName" Hidden="true" />
+      <Field Name="LegendItemTemplatePropertyName" Hidden="true" />
+      <Field Name="LegendItemVisibilityPropertyName" Hidden="true" />
+      <Field Name="LineJoinPropertyName" Hidden="true" />
+      <Property Name="MarkerCanvas" Hidden="true" />
+      <Field Name="MiterLimitPropertyName" Hidden="true" />
+      <Property Name="MouseIsOver" Hidden="true" />
+      <Field Name="MouseOverVisualStateName" Hidden="true" />
+      <Field Name="NormalVisualStateName" Hidden="true" />
+      <Method Name="NotifyThumbnailAppearanceChanged" Hidden="true" />
+      <Method Name="NotifyThumbnailDataChanged" Hidden="true" />
+      <Method Name="OnLeftButtonDown" Hidden="true" />
+      <Method Name="OnLostMouseCapture" Hidden="true" />
+      <Method Name="OnMouseEnter" Hidden="true" />
+      <Method Name="OnMouseLeave" Hidden="true" />
+      <Method Name="OnMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="OnRightButtonDown" Hidden="true" />
+      <Method Name="OnRightButtonUp" Hidden="true" />
+      <Method Name="OnSeriesAttached" Hidden="true" />
+      <Method Name="OnSeriesDetached" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="OnViewportChanged" Hidden="true" />
+      <Field Name="OutlinePropertyName" Hidden="true" />
+      <Property Name="Pressed" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="ProvideLegendItem" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Method Name="RegisterForAxis" Hidden="true" />
+      <Method Name="RegisterItemsSource" Hidden="true" />
+      <Method Name="ReleaseItemsSource" Hidden="true" />
+      <Method Name="RenderSeries" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Field Name="ResolutionPropertyName" Hidden="true" />
+      <Field Name="RootCanvasName" Hidden="true" />
+      <Method Name="Series" Hidden="true" />
+      <Field Name="SeriesViewer_PropertyUpdated" Hidden="true" />
+      <Field Name="SeriesViewer_SeriesCollectionChanged" Hidden="true" />
+      <Field Name="SeriesViewer_WindowRectChanged" Hidden="true" />
+      <Field Name="SeriesViewerPropertyName" Hidden="true" />
+      <Method Name="SetMarkerCanvas" Hidden="true" />
+      <Method Name="ShouldAnimate" Hidden="true" />
+      <Method Name="StartAnimation" Hidden="true" />
+      <Property Name="StartCap" Hidden="true" />
+      <Field Name="StartCapPropertyName" Hidden="true" />
+      <Method Name="StartupStoryBoard" Hidden="true" />
+      <Field Name="syncLink" Hidden="true" />
+      <Property Name="SyncLink" Hidden="true" />
+      <Field Name="SyncLinkPropertyName" Hidden="true" />
+      <Field Name="ThicknessPropertyName" Hidden="true" />
+      <Property Name="ThumbnailView" Hidden="true" />
+      <Field Name="TitlePropertyName" Hidden="true" />
+      <Field Name="ToolTipPropertyName" Hidden="true" />
+      <Field Name="TransitionDurationPropertyName" Hidden="true" />
+      <Field Name="TransitionEasingFunctionPropertyName" Hidden="true" />
+      <Property Name="TransitionProgress" Hidden="true" />
+      <Field Name="TransitionProgressProperty" Hidden="true" />
+      <Field Name="TransitionProgressPropertyName" Hidden="true" />
+      <Field Name="transitionStoryboard" Hidden="true" />
+      <Property Name="TransitionStoryboard" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Method Name="UpdateMarkerCanvas" Hidden="true" />
+      <Method Name="UpdateSeriesIndexedPropertiesInternal" Hidden="true" />
+      <Field Name="UseDispatcherTimer" Hidden="true" />
+      <Method Name="UseParentMarkerCanvas" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Property Name="Viewport" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>TXBLQoAaZjzNkOvRnUfvTy6czLnxQ+MSZruhCZteeMI=</HashCode>
+      <FileName>Core\Series.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="View" />
+      <Property Name="Chart" />
+      <Property Name="Legend" />
+      <Property Name="ActualLegend" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.ScatterBase">
+    <Position X="14" Y="16" Width="1.75" />
+    <Members>
+      <Field Name="_cachedViewportRect" Hidden="true" />
+      <Field Name="_cachedWindowRect" Hidden="true" />
+      <Property Name="ActualTrendLineBrush" Hidden="true" />
+      <Field Name="ActualTrendLineBrushPropertyName" Hidden="true" />
+      <Property Name="AxisInfoCache" Hidden="true" />
+      <Method Name="CacheViewInfo" Hidden="true" />
+      <Method Name="CalculateCachedPoints" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CurrentFrame" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Field Name="ErrorBarSettingsPropertyName" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetViewInfo" Hidden="true" />
+      <Property Name="Indexes" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="ISupportsErrorBars.ErrorBarSettings" Hidden="true" />
+      <Method Name="ISupportsErrorBars.GetViewInfo" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldDisplayErrorBars" Hidden="true" />
+      <Method Name="ISupportsErrorBars.ShouldSyncErrorBarsWithMarkers" Hidden="true" />
+      <Property Name="ISupportsErrorBars.XAxis" Hidden="true" />
+      <Property Name="ISupportsErrorBars.YAxis" Hidden="true" />
+      <Property Name="Locations" Hidden="true" />
+      <Field Name="markerManager" Hidden="true" />
+      <Field Name="MaximumMarkersPropertyName" Hidden="true" />
+      <Method Name="MustReact" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="operatingFrame" Hidden="true" />
+      <Field Name="operatingViewportRect" Hidden="true" />
+      <Field Name="operatingWindowRect" Hidden="true" />
+      <Method Name="PrepareErrorBars" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Method Name="PrepLinePoints" Hidden="true" />
+      <Field Name="PreviousFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderErrorBars" Hidden="true" />
+      <Method Name="RenderErrorBarsHorizontal" Hidden="true" />
+      <Method Name="RenderErrorBarsVertical" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Method Name="RenderThumbnail" Hidden="true" />
+      <Method Name="ScatterBase" Hidden="true" />
+      <Property Name="ScatterView" Hidden="true" />
+      <Field Name="TransitionFrame" Hidden="true" />
+      <Field Name="TrendLineBrushPropertyName" Hidden="true" />
+      <Field Name="TrendLineDashArrayPropertyName" Hidden="true" />
+      <Field Name="TrendLineDashCapPropertyName" Hidden="true" />
+      <Property Name="TrendLineManager" Hidden="true" />
+      <Field Name="TrendLinePeriodPropertyName" Hidden="true" />
+      <Field Name="TrendLineThicknessPropertyName" Hidden="true" />
+      <Field Name="TrendLineTypePropertyName" Hidden="true" />
+      <Field Name="TrendLineZIndexPropertyName" Hidden="true" />
+      <Method Name="UnCacheViewInfo" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+      <Field Name="XAxisPropertyName" Hidden="true" />
+      <Field Name="xColumn" Hidden="true" />
+      <Property Name="XColumn" Hidden="true" />
+      <Field Name="XColumnPropertyName" Hidden="true" />
+      <Field Name="XMemberPathPropertyName" Hidden="true" />
+      <Field Name="YAxisPropertyName" Hidden="true" />
+      <Field Name="yColumn" Hidden="true" />
+      <Property Name="YColumn" Hidden="true" />
+      <Field Name="YColumnPropertyName" Hidden="true" />
+      <Field Name="YMemberPathPropertyName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>hEyZgoAnMOCdgVBwPGOMIARaCAZAA8YAIjkBq4DJysg=</HashCode>
+      <FileName>ScatterSeries\ScatterBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="XMemberPathProperty" />
+      <Property Name="TrendLineType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Axis">
+    <Position X="12.25" Y="6.5" Width="2" />
+    <Members>
+      <Field Name="_axisComponentsForView" Hidden="true" />
+      <Field Name="_currentLabelSettings" Hidden="true" />
+      <Field Name="_mustInvalidateLabels" Hidden="true" />
+      <Field Name="_seriesViewer" Hidden="true" />
+      <Field Name="_viewport" Hidden="true" />
+      <Method Name="Axis" Hidden="true" />
+      <Property Name="AxisLines" Hidden="true" />
+      <Method Name="ClearAllMarks" Hidden="true" />
+      <Method Name="ClearMarks" Hidden="true" />
+      <Property Name="ContentInfo" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CrossingAxisPropertyName" Hidden="true" />
+      <Field Name="CrossingValuePropertyName" Hidden="true" />
+      <Property Name="CurrentLabelSettings" Hidden="true" />
+      <Method Name="DoRaiseRangeChanged" Hidden="true" />
+      <Method Name="DoRenderAxis" Hidden="true" />
+      <Method Name="EnsureExtentUpdated" Hidden="true" />
+      <Field Name="fastItemsSourceProvider" Hidden="true" />
+      <Property Name="FastItemsSourceProvider" Hidden="true" />
+      <Field Name="FastItemsSourceProviderPropertyName" Hidden="true" />
+      <Method Name="GetAxisComponentsForView" Hidden="true" />
+      <Method Name="GetAxisComponentsFromView" Hidden="true" />
+      <Method Name="GetLabel" Hidden="true" />
+      <Method Name="GetSyncSettings" Hidden="true" />
+      <Method Name="HandleRectChanged" Hidden="true" />
+      <Method Name="HasCrossingValue" Hidden="true" />
+      <Method Name="HasUserExtent" Hidden="true" />
+      <Method Name="HorizontalLine" Hidden="true" />
+      <Method Name="HorizontalStrip" Hidden="true" />
+      <Property Name="IsInvertedCached" Hidden="true" />
+      <Field Name="IsInvertedPropertyName" Hidden="true" />
+      <Property Name="LabelDataContext" Hidden="true" />
+      <Property Name="LabelPanel" Hidden="true" />
+      <Field Name="LabelPanelStylePropertyName" Hidden="true" />
+      <Property Name="LabelPositions" Hidden="true" />
+      <Field Name="LabelPropertyName" Hidden="true" />
+      <Field Name="LabelSettingsPropertyName" Hidden="true" />
+      <Property Name="MajorLines" Hidden="true" />
+      <Field Name="MajorStrokeDashArrayPropertyName" Hidden="true" />
+      <Field Name="MajorStrokePropertyName" Hidden="true" />
+      <Field Name="MajorStrokeThicknessPropertyName" Hidden="true" />
+      <Property Name="MeasuredSize" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Property Name="MinorLines" Hidden="true" />
+      <Field Name="MinorStrokeDashArrayPropertyName" Hidden="true" />
+      <Field Name="MinorStrokePropertyName" Hidden="true" />
+      <Field Name="MinorStrokeThicknessPropertyName" Hidden="true" />
+      <Property Name="MustInvalidateLabels" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="OverrideViewport" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Method Name="RaiseRangeChanged" Hidden="true" />
+      <Property Name="RangeDirty" Hidden="true" />
+      <Method Name="Refresh" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ResetLabelPanel" Hidden="true" />
+      <Field Name="RootCanvasName" Hidden="true" />
+      <Property Name="Series" Hidden="true" />
+      <Field Name="SeriesViewer_WindowRectChanged" Hidden="true" />
+      <Field Name="SeriesViewerPropertyName" Hidden="true" />
+      <Property Name="ShouldRenderMinorLines" Hidden="true" />
+      <Field Name="StripPropertyName" Hidden="true" />
+      <Property Name="Strips" Hidden="true" />
+      <Field Name="StrokeDashArrayPropertyName" Hidden="true" />
+      <Field Name="StrokePropertyName" Hidden="true" />
+      <Field Name="StrokeThicknessPropertyName" Hidden="true" />
+      <Property Name="TextBlocks" Hidden="true" />
+      <Method Name="UpdateLineVisibility" Hidden="true" />
+      <Method Name="UpdateRangeInternal" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+      <Property Name="UsingTemplate" Hidden="true" />
+      <Method Name="VerticalLine" Hidden="true" />
+      <Method Name="VerticalStrip" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+      <Property Name="ViewportOverride" Hidden="true" />
+      <Property Name="ViewportRect" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CBEsohBLs7jkm4T4DK8KnAgcrogFagAmgIbAoAUJBkk=</HashCode>
+      <FileName>Axes\Axis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryAxisBase">
+    <Position X="24" Y="1" Width="2.5" />
+    <Members>
+      <Field Name="_categoryMode" Hidden="true" />
+      <Field Name="_fastItemsSource" Hidden="true" />
+      <Field Name="_spreading" Hidden="true" />
+      <Method Name="CacheFastItemsSource" Hidden="true" />
+      <Method Name="CategoryAxisBase" Hidden="true" />
+      <Property Name="CategoryMode" Hidden="true" />
+      <Field Name="CategoryModePropertyName" Hidden="true" />
+      <Property Name="CategoryView" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="FastItemsSource" Hidden="true" />
+      <Field Name="FastItemsSourcePropertyName" Hidden="true" />
+      <Field Name="GapPropertyName" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Field Name="GroupCountPropertyName" Hidden="true" />
+      <Method Name="HandleFastItemsSourceEvent" Hidden="true" />
+      <Property Name="ICategoryScaler.CategoryMode" Hidden="true" />
+      <Method Name="ICategoryScaler.GetCategorySize" Hidden="true" />
+      <Method Name="ICategoryScaler.GetGroupCenter" Hidden="true" />
+      <Property Name="ICategoryScaler.IsInverted" Hidden="true" />
+      <Method Name="IScaler.GetScaledValue" Hidden="true" />
+      <Method Name="IScaler.GetUnscaledValue" Hidden="true" />
+      <Field Name="itemsChangedEvent" Hidden="true" />
+      <Field Name="itemsCount" Hidden="true" />
+      <Field Name="ItemsCountPropertyName" Hidden="true" />
+      <Field Name="ItemsSourcePropertyName" Hidden="true" />
+      <Field Name="mode2GroupCount" Hidden="true" />
+      <Property Name="Mode2GroupCount" Hidden="true" />
+      <Method Name="OnAttached" Hidden="true" />
+      <Method Name="OnDetached" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="OverlapPropertyName" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RelatedAxes" Hidden="true" />
+      <Method Name="RelatedSeries" Hidden="true" />
+      <Method Name="RenderCrossingAxis" Hidden="true" />
+      <Method Name="RenderLabels" Hidden="true" />
+      <Method Name="ShouldShareMode" Hidden="true" />
+      <Method Name="Spread" Hidden="true" />
+      <Method Name="UpdateCategoryMode" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>MAAABQgAWgEEgAgoCiESAgAIjQIAAOJAWRAAAJkAEAA=</HashCode>
+      <FileName>Axes\CategoryAxisBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryDateTimeXAxis">
+    <Position X="16.5" Y="8.25" Width="2.5" />
+    <Members>
+      <Field Name="_actualInterval" Hidden="true" />
+      <Field Name="_actualMaximumValue" Hidden="true" />
+      <Field Name="_actualMinimumValue" Hidden="true" />
+      <Field Name="_sorderDateTimeIndices" Hidden="true" />
+      <Property Name="ActualInterval" Hidden="true" />
+      <Property Name="ActualMaximumValue" Hidden="true" />
+      <Field Name="ActualMaximumValuePropertyName" Hidden="true" />
+      <Property Name="ActualMinimumValue" Hidden="true" />
+      <Field Name="ActualMinimumValuePropertyName" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Field Name="dateTimeColumn" Hidden="true" />
+      <Property Name="DateTimeColumn" Hidden="true" />
+      <Field Name="DateTimeColumnPropertyName" Hidden="true" />
+      <Field Name="DateTimeMemberPathPropertyName" Hidden="true" />
+      <Field Name="DisplayTypePropertyName" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetDate" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="GetLabel" Hidden="true" />
+      <Method Name="GetLengthOfOnePixel" Hidden="true" />
+      <Property Name="HasUserInterval" Hidden="true" />
+      <Method Name="InitializeActualMinimumAndMaximum" Hidden="true" />
+      <Field Name="IntervalPropertyName" Hidden="true" />
+      <Method Name="ISortingAxis.GetFirstVisibleIndex" Hidden="true" />
+      <Method Name="ISortingAxis.GetIndexClosestToUnscaledValue" Hidden="true" />
+      <Method Name="ISortingAxis.GetLastVisibleIndex" Hidden="true" />
+      <Method Name="ISortingAxis.GetUnscaledValueAt" Hidden="true" />
+      <Property Name="ISortingAxis.SortedIndices" Hidden="true" />
+      <Field Name="MaximumValuePropertyName" Hidden="true" />
+      <Field Name="MinimumValuePropertyName" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RenderAxisAndSeries" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Property Name="SortedDateTimeIndices" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEChEAAGeVAgBRFCMGkEAR0QEAAAAgAoIDQAQIAAAA=</HashCode>
+      <FileName>Axes\CategoryDateTimeXAxis.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DisplayType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryXAxis">
+    <Position X="27" Y="1" Width="2.5" />
+    <Members>
+      <Field Name="_actualMaximum" Hidden="true" />
+      <Field Name="_actualMinimum" Hidden="true" />
+      <Property Name="ActualMaximum" Hidden="true" />
+      <Property Name="ActualMinimum" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Field Name="IntervalPropertyName" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ShouldShareMode" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+      <Property Name="XView" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAhEAAASEAgAQAAIEEAgAACAAAgCACAAAQAACACAA=</HashCode>
+      <FileName>Axes\CategoryXAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericAxisBase">
+    <Position X="15.25" Y="1" Width="1.75" />
+    <Members>
+      <Field Name="_actualIsLogarithmic" Hidden="true" />
+      <Field Name="_actualTickmarkValues" Hidden="true" />
+      <Field Name="ActualIsLogarithmicPropertyName" Hidden="true" />
+      <Field Name="actualMaximumValue" Hidden="true" />
+      <Field Name="ActualMaximumValuePropertyName" Hidden="true" />
+      <Field Name="actualMinimumValue" Hidden="true" />
+      <Field Name="ActualMinimumValuePropertyName" Hidden="true" />
+      <Field Name="ActualTickmarkValuesPropertyName" Hidden="true" />
+      <Method Name="CalculateRange" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateRenderingParamsInstance" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="FloatLabelPanel" Hidden="true" />
+      <Method Name="GetAxisRange" Hidden="true" />
+      <Method Name="HasUserInterval" Hidden="true" />
+      <Field Name="IntervalPropertyName" Hidden="true" />
+      <Method Name="InvalidateSeries" Hidden="true" />
+      <Field Name="IsLogarithmicPropertyName" Hidden="true" />
+      <Property Name="IsReallyLogarithmic" Hidden="true" />
+      <Property Name="logActualMaximumValue" Hidden="true" />
+      <Property Name="logActualMinimumValue" Hidden="true" />
+      <Property Name="LogarithmBaseCached" Hidden="true" />
+      <Field Name="LogarithmBasePropertyName" Hidden="true" />
+      <Field Name="MaximumValuePropertyName" Hidden="true" />
+      <Field Name="MinimumValuePropertyName" Hidden="true" />
+      <Method Name="NumericAxisBase" Hidden="true" />
+      <Property Name="NumericView" Hidden="true" />
+      <Method Name="OnRangeChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Field Name="ReferenceValuePropertyName" Hidden="true" />
+      <Property Name="Renderer" Hidden="true" />
+      <Field Name="TickmarkValuesPropertyName" Hidden="true" />
+      <Method Name="UpdateActualTickmarkValues" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEgIFAAIwFAEjQNDME1MIcFXAMgAACAAgSkAqQgAAA=</HashCode>
+      <FileName>Axes\NumericAxisBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericXAxis">
+    <Position X="20.75" Y="1" Width="2.5" />
+    <Members>
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+      <Property Name="XView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAASEAAgAAAAEggAAADAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Axes\NumericXAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericYAxis">
+    <Position X="17.75" Y="4.75" Width="2.5" />
+    <Members>
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateLinearScaler" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAASEAAgAAAEEggAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\NumericYAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.PolarBase">
+    <Position X="23.5" Y="7" Width="2" />
+    <Members>
+      <Field Name="_angleColumn" Hidden="true" />
+      <Field Name="_operatingFrame" Hidden="true" />
+      <Field Name="_operatingViewportRect" Hidden="true" />
+      <Field Name="_operatingWindowRect" Hidden="true" />
+      <Field Name="_radiusColumn" Hidden="true" />
+      <Field Name="ActualTrendLineBrushPropertyName" Hidden="true" />
+      <Field Name="AngleAxisPropertyName" Hidden="true" />
+      <Property Name="AngleColumn" Hidden="true" />
+      <Field Name="AngleColumnPropertyName" Hidden="true" />
+      <Field Name="AngleMemberPathPropertyName" Hidden="true" />
+      <Method Name="ApplyClipping" Hidden="true" />
+      <Property Name="AxisInfoCache" Hidden="true" />
+      <Method Name="CalculateCachedPoints" Hidden="true" />
+      <Method Name="ClearRendering" Hidden="true" />
+      <Field Name="ClipSeriesToBoundsPropertyName" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CurrentFrame" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="DoGetScaledPoints" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetRange" Hidden="true" />
+      <Method Name="GetTrendlineClipper" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="Locations" Hidden="true" />
+      <Property Name="MarkerManager" Hidden="true" />
+      <Field Name="MaximumMarkersPropertyName" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="PolarAxes" Hidden="true" />
+      <Property Name="PolarView" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Field Name="PreviousFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Field Name="RadiusAxisPropertyName" Hidden="true" />
+      <Property Name="RadiusColumn" Hidden="true" />
+      <Field Name="RadiusColumnPropertyName" Hidden="true" />
+      <Field Name="RadiusMemberPathPropertyName" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Method Name="RetransformPoint" Hidden="true" />
+      <Property Name="SeriesRenderer" Hidden="true" />
+      <Field Name="TransitionFrame" Hidden="true" />
+      <Field Name="TrendLineBrushPropertyName" Hidden="true" />
+      <Field Name="TrendLineDashArrayPropertyName" Hidden="true" />
+      <Field Name="TrendLineDashCapPropertyName" Hidden="true" />
+      <Property Name="TrendLineManager" Hidden="true" />
+      <Field Name="TrendLinePeriodPropertyName" Hidden="true" />
+      <Field Name="TrendLineThicknessPropertyName" Hidden="true" />
+      <Field Name="TrendLineTypePropertyName" Hidden="true" />
+      <Field Name="TrendLineZIndexPropertyName" Hidden="true" />
+      <Method Name="UpdateIndexedProperties" Hidden="true" />
+      <Field Name="UseCartesianInterpolationPropertyName" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="RadiusAxis" Type="Infragistics.Controls.Charts.NumericRadiusAxis">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.131" Y="0.293" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BMyIBABEIOCBgVBWKGPOJAxqGCbRAAIAOhkAS4BCysA=</HashCode>
+      <FileName>PolarSeries\PolarBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AngleAxis" />
+      <Property Name="RadiusAxis" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericAngleAxis">
+    <Position X="21.25" Y="3.5" Width="1.75" />
+    <Members>
+      <Field Name="_lastCrossing" Hidden="true" />
+      <Field Name="_preventReentry" Hidden="true" />
+      <Field Name="_radiusAxis" Hidden="true" />
+      <Field Name="_startAngleOffsetRadians" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateRenderingParamsInstance" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="ForcePanelRefloat" Hidden="true" />
+      <Method Name="GetCrossingValue" Hidden="true" />
+      <Method Name="GetLabelLocationPoint" Hidden="true" />
+      <Method Name="GetMinMaxAngle" Hidden="true" />
+      <Method Name="GetScaledAngle" Hidden="true" />
+      <Method Name="IAngleScaler.GetMinMaxAngle" Hidden="true" />
+      <Property Name="NumericAngleView" Hidden="true" />
+      <Method Name="OnRadiusAxisChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Property Name="RadiusAxis" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Property Name="RenderingManager" Hidden="true" />
+      <Method Name="Round10" Hidden="true" />
+      <Field Name="StartAngleOffsetPropertyName" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AYAAgAMgASAAokAADIFAgAAADAoAAAAABBCEAQAAAAA=</HashCode>
+      <FileName>Axes\NumericAngleAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.NumericRadiusAxis">
+    <Position X="27" Y="8.75" Width="2.5" />
+    <Members>
+      <Field Name="_angleAxis" Hidden="true" />
+      <Field Name="_lastCrossing" Hidden="true" />
+      <Property Name="ActualInnerRadiusExtentScale" Hidden="true" />
+      <Property Name="ActualRadiusExtentScale" Hidden="true" />
+      <Property Name="AngleAxis" Hidden="true" />
+      <Method Name="ConvertToDouble" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateRenderingParamsInstance" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="CrossingValueRadians" Hidden="true" />
+      <Method Name="DefineClipRegion" Hidden="true" />
+      <Method Name="GetEffectiveMaximumLength" Hidden="true" />
+      <Method Name="GetMinTicks" Hidden="true" />
+      <Field Name="InnerRadiusExtentScalePropertyName" Hidden="true" />
+      <Property Name="NumericRadiusView" Hidden="true" />
+      <Method Name="OnAngleAxisChanged" Hidden="true" />
+      <Method Name="OnRangeChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Field Name="RadiusExtentScalePropertyName" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Field Name="renderingManager" Hidden="true" />
+      <Property Name="Suppress" Hidden="true" />
+      <Method Name="ViewportChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAIgAAEASVAggAgCAPCmAAALAEAAQAIAAAEhQACAAQ=</HashCode>
+      <FileName>Axes\NumericRadiusAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.RadialBase">
+    <Position X="21" Y="10.75" Width="1.75" />
+    <Members>
+      <Field Name="_axes" Hidden="true" />
+      <Field Name="AngleAxisPropertyName" Hidden="true" />
+      <Property Name="BucketSize" Hidden="true" />
+      <Method Name="CalculateBuckets" Hidden="true" />
+      <Field Name="ClipSeriesToBoundsPropertyName" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CurrentFrame" Hidden="true" />
+      <Property Name="FirstBucket" Hidden="true" />
+      <Method Name="GetBucket" Hidden="true" />
+      <Method Name="GetItem" Hidden="true" />
+      <Method Name="GetItemIndex" Hidden="true" />
+      <Method Name="GetMode2Index" Hidden="true" />
+      <Property Name="IHasCategoryAxis.CategoryAxis" Hidden="true" />
+      <Method Name="IHasCategoryModePreference.PreferredCategoryMode" Hidden="true" />
+      <Method Name="InvalidateAxes" Hidden="true" />
+      <Property Name="LastBucket" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PreferredCategoryMode" Hidden="true" />
+      <Method Name="PrepareFrame" Hidden="true" />
+      <Field Name="PreviousFrame" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RadialBase" Hidden="true" />
+      <Property Name="RadialView" Hidden="true" />
+      <Method Name="RenderFrame" Hidden="true" />
+      <Method Name="RenderSeriesOverride" Hidden="true" />
+      <Property Name="SeriesRenderer" Hidden="true" />
+      <Field Name="TransitionFrame" Hidden="true" />
+      <Method Name="ValidateSeries" Hidden="true" />
+      <Field Name="ValueAxisPropertyName" Hidden="true" />
+      <Method Name="ViewportRectChangedOverride" Hidden="true" />
+      <Method Name="WindowRectChangedOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="ValueAxis" Type="Infragistics.Controls.Charts.NumericRadiusAxis">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.011" Y="0.131" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>oACYAAAIAEiAAEASCEGKYIAJCAZABABAAAAAAkBACMA=</HashCode>
+      <FileName>RadialSeries\RadialBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AngleAxis" />
+      <Property Name="ValueAxis" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.CategoryAngleAxis">
+    <Position X="27.25" Y="4.5" Width="1.75" />
+    <Members>
+      <Field Name="_actualMaximum" Hidden="true" />
+      <Field Name="_lastCrossing" Hidden="true" />
+      <Field Name="_preventReentry" Hidden="true" />
+      <Field Name="_radiusAxis" Hidden="true" />
+      <Field Name="_startAngleOffsetRadians" Hidden="true" />
+      <Property Name="ActualMaximum" Hidden="true" />
+      <Property Name="CategoryAngleView" Hidden="true" />
+      <Method Name="CreateLabelPanel" Hidden="true" />
+      <Method Name="CreateRenderer" Hidden="true" />
+      <Method Name="CreateRenderingParams" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="ForcePanelRefloat" Hidden="true" />
+      <Method Name="GetCategorySize" Hidden="true" />
+      <Method Name="GetCrossingValue" Hidden="true" />
+      <Method Name="GetGroupCenter" Hidden="true" />
+      <Method Name="GetGroupSize" Hidden="true" />
+      <Method Name="GetLabelLocationPoint" Hidden="true" />
+      <Method Name="GetMaximumViewable" Hidden="true" />
+      <Method Name="GetMinimumViewable" Hidden="true" />
+      <Method Name="GetMinMaxAngle" Hidden="true" />
+      <Method Name="GetUnscaledGroupCenter" Hidden="true" />
+      <Method Name="HasUserInterval" Hidden="true" />
+      <Method Name="IAngleScaler.GetMinMaxAngle" Hidden="true" />
+      <Field Name="IntervalPropertyName" Hidden="true" />
+      <Method Name="OnRadiusAxisChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Orientation" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Property Name="RadiusAxis" Hidden="true" />
+      <Method Name="RenderAxisOverride" Hidden="true" />
+      <Property Name="Renderer" Hidden="true" />
+      <Field Name="renderingManager" Hidden="true" />
+      <Method Name="Round10" Hidden="true" />
+      <Field Name="StartAngleOffsetPropertyName" Hidden="true" />
+      <Method Name="UpdateRangeOverride" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AYAAhEMgASHAokQADIFEAAAEDgIAiAAKBBCAAQAABAA=</HashCode>
+      <FileName>Axes\CategoryAngleAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.LegendBase">
+    <Position X="12" Y="1.5" Width="2.5" />
+    <Members>
+      <Method Name="AddChildInOrder" Hidden="true" />
+      <Property Name="ChartOwner" Hidden="true" />
+      <Field Name="contentPresenter" Hidden="true" />
+      <Field Name="ContentPresenterName" Hidden="true" />
+      <Method Name="CreateLegendItems" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnLegendItemMouseEnter" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeave" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnLegendItemMouseMove" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Owner" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Property Name="SeriesOwner" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EBCAEACCIADQBAAAIAuEAAAAigABAAAAAAQAAIAIAAI=</HashCode>
+      <FileName>Legend\LegendBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.StraightNumericAxisBase">
+    <Position X="18.25" Y="1" Width="1.75" />
+    <Members>
+      <Field Name="_actualScaler" Hidden="true" />
+      <Field Name="_scaler" Hidden="true" />
+      <Property Name="ActualScaler" Hidden="true" />
+      <Field Name="ActualScalerPropertyName" Hidden="true" />
+      <Method Name="BindScalerProperties" Hidden="true" />
+      <Method Name="CalculateRange" Hidden="true" />
+      <Method Name="CreateLinearScaler" Hidden="true" />
+      <Method Name="CreateScalerOverride" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnActualMaximumValueChanged" Hidden="true" />
+      <Method Name="OnActualMinimumValueChanged" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Field Name="ScaleModeProperty" Hidden="true" />
+      <Field Name="ScaleModePropertyName" Hidden="true" />
+      <Field Name="ScalerPropertyName" Hidden="true" />
+      <Method Name="StraightNumericAxisBase" Hidden="true" />
+      <Property Name="StraightView" Hidden="true" />
+      <Property Name="SuspendPropertyUpdated" Hidden="true" />
+      <Method Name="SuspendPropertyUpdatedAndExecute" Hidden="true" />
+      <Method Name="UpdateActualScaler" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAEAAQQABAAAAAAACEugAAAgSiAgAAAAAAAQAQAAAAA=</HashCode>
+      <FileName>Axes\NumericAxisBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ScaleMode" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.SeriesViewer">
+    <Position X="3.75" Y="1" Width="3.25" />
+    <Members>
+      <Field Name="_actualSyncLink" Hidden="true" />
+      <Field Name="_actualWindowPositionHorizontal" Hidden="true" />
+      <Field Name="_actualWindowPositionVertical" Hidden="true" />
+      <Field Name="_actualWindowRect" Hidden="true" />
+      <Field Name="_actualWindowScaleHorizontal" Hidden="true" />
+      <Field Name="_actualWindowScaleVertical" Hidden="true" />
+      <Field Name="_componentsForView" Hidden="true" />
+      <Field Name="_useOPD" Hidden="true" />
+      <Field Name="_viewport" Hidden="true" />
+      <Field Name="ActualSyncLinkPropertyName" Hidden="true" />
+      <Field Name="ActualWindowPositionHorizontalPropertyName" Hidden="true" />
+      <Field Name="ActualWindowPositionVerticalPropertyName" Hidden="true" />
+      <Event Name="ActualWindowRectChanged" Hidden="true" />
+      <Field Name="ActualWindowRectPropertyName" Hidden="true" />
+      <Method Name="ActualWindowRectUpdated" Hidden="true" />
+      <Field Name="ActualWindowScaleHorizontalPropertyName" Hidden="true" />
+      <Field Name="ActualWindowScaleVerticalPropertyName" Hidden="true" />
+      <Property Name="Anchor" Hidden="true" />
+      <Method Name="CalculateActualWindowRect" Hidden="true" />
+      <Property Name="CentralArea" Hidden="true" />
+      <Property Name="ChartContentManager" Hidden="true" />
+      <Field Name="CircleMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="contentPresenter" Hidden="true" />
+      <Field Name="ContentPresenterName" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Field Name="CrosshairLineStylePropertyName" Hidden="true" />
+      <Method Name="CrosshairNotify" Hidden="true" />
+      <Field Name="crosshairPoint" Hidden="true" />
+      <Field Name="CrosshairPointPropertyName" Hidden="true" />
+      <Field Name="CrosshairVisibilityPropertyName" Hidden="true" />
+      <Field Name="DefaultInteractionPropertyName" Hidden="true" />
+      <Field Name="DiamondMarkerTemplatePropertyName" Hidden="true" />
+      <Property Name="DontNotify" Hidden="true" />
+      <Field Name="DraggingVisualStateName" Hidden="true" />
+      <Field Name="DragModifierPropertyName" Hidden="true" />
+      <Method Name="EffectiveIsSquare" Hidden="true" />
+      <Field Name="ErasingVisualStateName" Hidden="true" />
+      <Method Name="GetBrushByIndex" Hidden="true" />
+      <Method Name="GetComponentsForView" Hidden="true" />
+      <Method Name="GetMarkerBrushByIndex" Hidden="true" />
+      <Method Name="GetMarkerOutlineByIndex" Hidden="true" />
+      <Method Name="GetOutlineByIndex" Hidden="true" />
+      <Event Name="GridAreaRectChanged" Hidden="true" />
+      <Field Name="HexagonMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="HexagramMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="HorizontalZoomablePropertyName" Hidden="true" />
+      <Field Name="HorizontalZoombarVisibilityPropertyName" Hidden="true" />
+      <Field Name="IdleVisualStateName" Hidden="true" />
+      <Field Name="InkingVisualStateName" Hidden="true" />
+      <Method Name="InvalidateActualWindowRect" Hidden="true" />
+      <Method Name="InvalidatePanels" Hidden="true" />
+      <Property Name="IsInDragOperation" Hidden="true" />
+      <Property Name="IsSyncReady" Hidden="true" />
+      <Field Name="LegendPropertyName" Hidden="true" />
+      <Method Name="MatchRatio" Hidden="true" />
+      <Method Name="NotifyThumbnailAppearanceChanged" Hidden="true" />
+      <Method Name="NotifyThumbnailDataChanged" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnAttachedToUI" Hidden="true" />
+      <Method Name="OnContactCompleted" Hidden="true" />
+      <Method Name="OnContactMoved" Hidden="true" />
+      <Method Name="OnContactStarted" Hidden="true" />
+      <Method Name="OnDetachedFromUI" Hidden="true" />
+      <Method Name="OnKeyDown" Hidden="true" />
+      <Method Name="OnLegendSortChanged" Hidden="true" />
+      <Method Name="OnMouseEnter" Hidden="true" />
+      <Method Name="OnMouseLeave" Hidden="true" />
+      <Method Name="OnMouseWheel" Hidden="true" />
+      <Method Name="OnPlotAreaSizeChanged" Hidden="true" />
+      <Method Name="OnSeriesMouseEnter" Hidden="true" />
+      <Method Name="OnSeriesMouseLeave" Hidden="true" />
+      <Method Name="OnSeriesMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnSeriesMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnSeriesMouseMove" Hidden="true" />
+      <Method Name="OnSeriesMouseRightButtonDown" Hidden="true" />
+      <Method Name="OnSeriesMouseRightButtonUp" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="OnWindowRectChanged" Hidden="true" />
+      <Method Name="OnZoomChanged" Hidden="true" />
+      <Method Name="OnZoomChanging" Hidden="true" />
+      <Property Name="OverviewPlusDetailPane" Hidden="true" />
+      <Field Name="OverviewPlusDetailPaneHorizontalAlignmentPropertyName" Hidden="true" />
+      <Field Name="OverviewPlusDetailPaneStylePropertyName" Hidden="true" />
+      <Field Name="OverviewPlusDetailPaneVerticalAlignmentPropertyName" Hidden="true" />
+      <Field Name="OverviewPlusDetailPaneVisibilityPropertyName" Hidden="true" />
+      <Field Name="PanModifierPropertyName" Hidden="true" />
+      <Field Name="PanningVisualStateName" Hidden="true" />
+      <Field Name="PentagonMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="PentagramMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="PlotAreaBackgroundPropertyName" Hidden="true" />
+      <Property Name="PlotAreaBorder" Hidden="true" />
+      <Field Name="PlotAreaBorderBrushPropertyName" Hidden="true" />
+      <Field Name="PlotAreaBorderThicknessPropertyName" Hidden="true" />
+      <Field Name="PlotAreaMinHeightPropertyName" Hidden="true" />
+      <Field Name="PlotAreaMinWidthPropertyName" Hidden="true" />
+      <Method Name="PreviewNotify" Hidden="true" />
+      <Field Name="PreviewPathStylePropertyName" Hidden="true" />
+      <Field Name="previewRect" Hidden="true" />
+      <Method Name="ProcessPlotAreaSizeChanged" Hidden="true" />
+      <Event Name="PropertyChanged" Hidden="true" />
+      <Event Name="PropertyUpdated" Hidden="true" />
+      <Field Name="propertyUpdatedOverride" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Field Name="PyramidMarkerTemplatePropertyName" Hidden="true" />
+      <Method Name="RaiseActualWindowRectChanged" Hidden="true" />
+      <Method Name="RaiseGridAreaRectChanged" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Method Name="RaiseRefreshCompleted" Hidden="true" />
+      <Method Name="RaiseSeriesCursorMouseMove" Hidden="true" />
+      <Method Name="RaiseSeriesMouseEnter" Hidden="true" />
+      <Method Name="RaiseSeriesMouseLeave" Hidden="true" />
+      <Method Name="RaiseSeriesMouseLeftButtonDown" Hidden="true" />
+      <Method Name="RaiseSeriesMouseLeftButtonUp" Hidden="true" />
+      <Method Name="RaiseSeriesMouseMove" Hidden="true" />
+      <Method Name="RaiseSeriesMouseRightButtonDown" Hidden="true" />
+      <Method Name="RaiseSeriesMouseRightButtonUp" Hidden="true" />
+      <Method Name="RaiseWindowRectChanged" Hidden="true" />
+      <Event Name="RefreshCompleted" Hidden="true" />
+      <Method Name="RenderCrosshairs" Hidden="true" />
+      <Method Name="ResetZoom" Hidden="true" />
+      <Field Name="series" Hidden="true" />
+      <Method Name="Series_CollectionChanged" Hidden="true" />
+      <Method Name="Series_CollectionResetting" Hidden="true" />
+      <Event Name="SeriesCursorMouseMove" Hidden="true" />
+      <Event Name="SeriesMouseEnter" Hidden="true" />
+      <Event Name="SeriesMouseLeave" Hidden="true" />
+      <Event Name="SeriesMouseLeftButtonDown" Hidden="true" />
+      <Event Name="SeriesMouseLeftButtonUp" Hidden="true" />
+      <Event Name="SeriesMouseMove" Hidden="true" />
+      <Event Name="SeriesMouseRightButtonDown" Hidden="true" />
+      <Event Name="SeriesMouseRightButtonUp" Hidden="true" />
+      <Method Name="SeriesViewer" Hidden="true" />
+      <Field Name="SquareMarkerTemplatePropertyName" Hidden="true" />
+      <Field Name="StandardRect" Hidden="true" />
+      <Field Name="state" Hidden="true" />
+      <Property Name="State" Hidden="true" />
+      <Property Name="SuspendWindowRect" Hidden="true" />
+      <Method Name="SynchronizedCharts" Hidden="true" />
+      <Field Name="TetragramMarkerTemplatePropertyName" Hidden="true" />
+      <Method Name="ToGridArea" Hidden="true" />
+      <Property Name="ToolTipPopup" Hidden="true" />
+      <Field Name="ToolTipStylePropertyName" Hidden="true" />
+      <Method Name="ToWorld" Hidden="true" />
+      <Field Name="TriangleMarkerTemplatePropertyName" Hidden="true" />
+      <Method Name="UpdateSyncLink" Hidden="true" />
+      <Method Name="UpdateSyncSettings" Hidden="true" />
+      <Field Name="VerticalZoomablePropertyName" Hidden="true" />
+      <Field Name="VerticalZoombarVisibilityPropertyName" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+      <Property Name="ViewportRect" Hidden="true" />
+      <Method Name="WindowNotify" Hidden="true" />
+      <Property Name="WindowRectAtStartOfWindowOperation" Hidden="true" />
+      <Event Name="WindowRectChanged" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Legend" Type="Infragistics.Controls.Charts.LegendBase" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="5.236" />
+        <Point X="8" Y="5.236" />
+        <Point X="8" Y="3.5" />
+        <Point X="9.417" Y="3.5" Type="JumpStart" />
+        <Point X="9.583" Y="3.5" Type="JumpEnd" />
+        <Point X="11.625" Y="3.5" />
+        <Point X="11.625" Y="3.159" />
+        <Point X="12" Y="3.159" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>mG5nu2+euVzawC7XX53me+7c/z7pL9fV+fxOdC7ihi0=</HashCode>
+      <FileName>SeriesViewer\SeriesViewer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Legend" />
+      <Property Name="WindowResponse" />
+      <Property Name="ActualSyncLink" />
+      <Property Name="DefaultInteraction" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.SyncLink">
+    <Position X="8.75" Y="8.25" Width="1.75" />
+    <Members>
+      <Method Name="Charts_CollectionChanged" Hidden="true" />
+      <Property Name="ChartsInternal" Hidden="true" />
+      <Method Name="CrosshairNotify" Hidden="true" />
+      <Property Name="DefaultWindowRect" Hidden="true" />
+      <Field Name="fastItemsSources" Hidden="true" />
+      <Method Name="IFastItemsSourceProvider.GetFastItemsSource" Hidden="true" />
+      <Method Name="IFastItemsSourceProvider.ReleaseFastItemsSource" Hidden="true" />
+      <Method Name="PreviewNotify" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Method Name="SynchroniseRect" Hidden="true" />
+      <Method Name="WindowNotify" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAgADBASAgAAACAAAAgQAgBAAAEAAAAAQYAAAAAA=</HashCode>
+      <FileName>Core\SyncLink.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.DependencyProperty">
+    <Position X="18.25" Y="16.25" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.SeriesView">
+    <Position X="0.5" Y="11.5" Width="1.5" />
+    <Members>
+      <Method Name="AttachToChart" Hidden="true" />
+      <Method Name="BindActualToUserBrush" Hidden="true" />
+      <Method Name="BindActualToUserOutline" Hidden="true" />
+      <Property Name="CapturedMouse" Hidden="true" />
+      <Property Name="ChartToolTipManager" Hidden="true" />
+      <Method Name="ClearInheritanceParent" Hidden="true" />
+      <Method Name="DetachFromChart" Hidden="true" />
+      <Method Name="GetDataContextFromSender" Hidden="true" />
+      <Method Name="GetSeriesComponentsFromView" Hidden="true" />
+      <Method Name="GoToMouseOverState" Hidden="true" />
+      <Method Name="GoToNormalState" Hidden="true" />
+      <Method Name="HideTooltip" Hidden="true" />
+      <Property Name="IsThumbnailView" Hidden="true" />
+      <Property Name="MarkerCanvas" Hidden="true" />
+      <Property Name="Model" Hidden="true" />
+      <Method Name="OnLostMouseCapture" Hidden="true" />
+      <Method Name="OnMouseEnter" Hidden="true" />
+      <Method Name="OnMouseLeave" Hidden="true" />
+      <Method Name="OnMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="OnMouseRightButtonDown" Hidden="true" />
+      <Method Name="OnMouseRightButtonUp" Hidden="true" />
+      <Method Name="OnSeriesDetached" Hidden="true" />
+      <Method Name="OnTemplateProvided" Hidden="true" />
+      <Method Name="OnViewportChanged" Hidden="true" />
+      <Method Name="PrepSurface" Hidden="true" />
+      <Method Name="Ready" Hidden="true" />
+      <Method Name="ResetActualBrush" Hidden="true" />
+      <Method Name="ResetActualOutlineBrush" Hidden="true" />
+      <Property Name="RootCanvas" Hidden="true" />
+      <Method Name="RootCanvas_SizeChanged" Hidden="true" />
+      <Method Name="Series_Loaded" Hidden="true" />
+      <Method Name="Series_Unloaded" Hidden="true" />
+      <Method Name="SetMarkerCanvas" Hidden="true" />
+      <Property Name="ToolTipPopup" Hidden="true" />
+      <Method Name="UpdateToolTip" Hidden="true" />
+      <Method Name="UpdateToolTipValue" Hidden="true" />
+      <Property Name="Viewport" Hidden="true" />
+      <Property Name="ViewportCalculator" Hidden="true" />
+      <Property Name="VisualStateTarget" Hidden="true" />
+      <Property Name="WindowRect" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Infragistics.Controls.Charts.SeriesView.Dummy" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Core\SeriesView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>sACAAARIQKCEhAEAgABkTAgERRMAAAQDgAggBgoCIAI=</HashCode>
+      <FileName>Core\SeriesView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Infragistics.Controls.Charts.InteractionState">
+    <Position X="6.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Enumerations\InteractionState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.GridMode">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Enumerations\GridMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.TrendLineType">
+    <Position X="14" Y="21" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAYACICABAAAAAAAAAAAAAAgAgEgAAAAAAAABEAAKA=</HashCode>
+      <FileName>Enumerations\TrendLineType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.TimeAxisDisplayType">
+    <Position X="17" Y="12.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASA=</HashCode>
+      <FileName>Enumerations\TimeAxisDisplayType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.WindowResponse">
+    <Position X="4" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enumerations\WindowResponse.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.NumericScaleMode">
+    <Position X="18.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Axes\Scalers\NumericScaleMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,1787 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <Members>
+      <Field Name="_activeCell" Hidden="true" />
+      <Field Name="_activeRecord" Hidden="true" />
+      <Field Name="_activeRecordWithPendingDirtyFilterState" Hidden="true" />
+      <Field Name="_allRecordsAutoSizeMaxDepth" Hidden="true" />
+      <Field Name="_asyncChangePending" Hidden="true" />
+      <Field Name="_bypassScrollIntoView" Hidden="true" />
+      <Field Name="_cachedAutoFit" Hidden="true" />
+      <Field Name="_cachedCellContainerGenerationMode" Hidden="true" />
+      <Field Name="_cachedIsNestedDataDisplayEnabled" Hidden="true" />
+      <Field Name="_cachedLastActiveCell" Hidden="true" />
+      <Field Name="_cachedOverallScrollCount" Hidden="true" />
+      <Field Name="_cachedOverallScrollCountDirty" Hidden="true" />
+      <Field Name="_cachedScrollCountRecalcVersion" Hidden="true" />
+      <Field Name="_clearingActiveCell" Hidden="true" />
+      <Field Name="_clipboardOperationInfo" Hidden="true" />
+      <Field Name="_contentSiteDataAreaContent" Hidden="true" />
+      <Field Name="_contentSiteGrid" Hidden="true" />
+      <Field Name="_currentRecordListControl" Hidden="true" />
+      <Field Name="_currentViewInternal" Hidden="true" />
+      <Field Name="_customizationsManager" Hidden="true" />
+      <Field Name="_dataAreaGrid" Hidden="true" />
+      <Field Name="_dataItems" Hidden="true" />
+      <Field Name="_dataSourceHasBeenCleared" Hidden="true" />
+      <Field Name="_dataSourceRootChildListWrappers" Hidden="true" />
+      <Field Name="_dataSourceRootList" Hidden="true" />
+      <Field Name="_dataSourceRootListChangeListener" Hidden="true" />
+      <Field Name="_defaultConverterCulture" Hidden="true" />
+      <Field Name="_defaultLayout" Hidden="true" />
+      <Field Name="_editHelper" Hidden="true" />
+      <Field Name="_endEditOnScrollSuspendCount" Hidden="true" />
+      <Field Name="_fieldDragManager" Hidden="true" />
+      <Field Name="_fieldLayoutAutoSizeAllRecordsCount" Hidden="true" />
+      <Field Name="_fieldLayoutAutoSizeViewableCount" Hidden="true" />
+      <Field Name="_fieldLayouts" Hidden="true" />
+      <Field Name="_fieldLayoutsAutoSizePending" Hidden="true" />
+      <Field Name="_forceClearActiveRecord" Hidden="true" />
+      <Field Name="_groupByArea" Hidden="true" />
+      <Field Name="_groupByAreaMulti" Hidden="true" />
+      <Field Name="_groupbyVersion" Hidden="true" />
+      <Field Name="_haveAnyTemplatesBeenGenerated" Hidden="true" />
+      <Field Name="_history" Hidden="true" />
+      <Field Name="_initializeRecordSuspendedFor" Hidden="true" />
+      <Field Name="_initializeRecordSuspendedFor_List" Hidden="true" />
+      <Field Name="_initialResizeIsPending" Hidden="true" />
+      <Field Name="_internalCellPresenterStyleSelector" Hidden="true" />
+      <Field Name="_internalCellValuePresenterStyleSelector" Hidden="true" />
+      <Field Name="_internalEditorStyleSelector" Hidden="true" />
+      <Field Name="_internalExpandedCellStyleSelector" Hidden="true" />
+      <Field Name="_internalHeaderLabelAreaStyleSelector" Hidden="true" />
+      <Field Name="_internalHeaderPrefixAreaStyleSelector" Hidden="true" />
+      <Field Name="_internalHeaderPresenterStyleSelector" Hidden="true" />
+      <Field Name="_internalLabelPresenterStyleSelector" Hidden="true" />
+      <Field Name="_internalRecordCellAreaStyleSelector" Hidden="true" />
+      <Field Name="_internalRecordSelectorStyleSelector" Hidden="true" />
+      <Field Name="_internalRecordStyleSelector" Hidden="true" />
+      <Field Name="_invalidateGeneratedStylesPending" Hidden="true" />
+      <Field Name="_isExporting" Hidden="true" />
+      <Field Name="_isLoadingCustomizations" Hidden="true" />
+      <Field Name="_isRecordManagerDataSourceInitialized" Hidden="true" />
+      <Field Name="_itemPendingScrollItemIntoView" Hidden="true" />
+      <Field Name="_itemsPanel" Hidden="true" />
+      <Field Name="_logicalChildren" Hidden="true" />
+      <Field Name="_nonRootCurrencyTrackingManagers" Hidden="true" />
+      <Field Name="_overallScrollPosition" Hidden="true" />
+      <Field Name="_pendingActiveRecordPresenter" Hidden="true" />
+      <Field Name="_pendingFieldAutoSize" Hidden="true" />
+      <Field Name="_pivotCell" Hidden="true" />
+      <Field Name="_pivotField" Hidden="true" />
+      <Field Name="_pivotRecord" Hidden="true" />
+      <Field Name="_postRecordsInViewChangedOperation" Hidden="true" />
+      <Field Name="_processingFieldAutoSize" Hidden="true" />
+      <Field Name="_recordManager" Hidden="true" />
+      <Field Name="_recordsPendingNestedContentInitialization" Hidden="true" />
+      <Field Name="_registeredFieldChoosers" Hidden="true" />
+      <Field Name="_renderVersion" Hidden="true" />
+      <Field Name="_resizeController" Hidden="true" />
+      <Field Name="_retainedFieldChooserWindow" Hidden="true" />
+      <Field Name="_rootRecordListControl" Hidden="true" />
+      <Field Name="_selectedItems" Hidden="true" />
+      <Field Name="_selectionPoint" Hidden="true" />
+      <Field Name="_selectionSnapshot" Hidden="true" />
+      <Field Name="_selectionStrategyFilter" Hidden="true" />
+      <Field Name="_snaking" Hidden="true" />
+      <Field Name="_suppressExportingDataSourceException" Hidden="true" />
+      <Field Name="_themeRegistered_DP_ResourceSet" Hidden="true" />
+      <Field Name="_x_FieldLayoutSettings" Hidden="true" />
+      <Field Name="_x_FieldSettings" Hidden="true" />
+      <Field Name="ActiveCellProperty" Hidden="true" />
+      <Field Name="ActiveDataItemProperty" Hidden="true" />
+      <Property Name="ActiveRecordInternal" Hidden="true" />
+      <Field Name="ActiveRecordProperty" Hidden="true" />
+      <Method Name="AddToSelectedCollection" Hidden="true" />
+      <Property Name="AllRecordsAutoSizeMaxDepth" Hidden="true" />
+      <Field Name="AssigningFieldLayoutToItemEvent" Hidden="true" />
+      <Field Name="AutoFitProperty" Hidden="true" />
+      <Field Name="BindToSampleDataProperty" Hidden="true" />
+      <Method Name="BringCellIntoViewImpl" Hidden="true" />
+      <Method Name="BringFieldIntoView" Hidden="true" />
+      <Method Name="BumpGroupByAreaStyleVersion" Hidden="true" />
+      <Method Name="BumpOverallSortVersion" Hidden="true" />
+      <Method Name="BumpRecordsInViewVersion" Hidden="true" />
+      <Method Name="BumpScrollableRecordCountVersion" Hidden="true" />
+      <Method Name="BumpScrollCountRecalcVersion" Hidden="true" />
+      <Method Name="BumpSortVersion" Hidden="true" />
+      <Method Name="CachePanelSettings" Hidden="true" />
+      <Method Name="CalculateNewSelection" Hidden="true" />
+      <Method Name="CalculateNewSelectionRange" Hidden="true" />
+      <Method Name="CalculateScrollOffsetFactorInPixels" Hidden="true" />
+      <Method Name="CalculateScrollOffsetFactorInRecords" Hidden="true" />
+      <Method Name="CalculateSelectionRange" Hidden="true" />
+      <Method Name="CanAutoSizeField" Hidden="true" />
+      <Method Name="CanToggleCardCollapsedState" Hidden="true" />
+      <Method Name="CanToggleEmptyCardCellsCollapsedState" Hidden="true" />
+      <Method Name="CanToggleIsExpanded" Hidden="true" />
+      <Field Name="CellActivatedEvent" Hidden="true" />
+      <Field Name="CellActivatingEvent" Hidden="true" />
+      <Field Name="CellChangedEvent" Hidden="true" />
+      <Field Name="CellContainerGenerationModeProperty" Hidden="true" />
+      <Field Name="CellDeactivatingEvent" Hidden="true" />
+      <Field Name="CellUpdatedEvent" Hidden="true" />
+      <Field Name="CellUpdatingEvent" Hidden="true" />
+      <Method Name="ClearActiveCell" Hidden="true" />
+      <Method Name="ClearActiveRecord" Hidden="true" />
+      <Method Name="ClearAllSelected" Hidden="true" />
+      <Method Name="ClearGroupBy" Hidden="true" />
+      <Method Name="ClearItemsHost" Hidden="true" />
+      <Method Name="ClearPendingActiveRecordPresenter" Hidden="true" />
+      <Method Name="ClearSelectedCells" Hidden="true" />
+      <Method Name="ClearSelectedFields" Hidden="true" />
+      <Method Name="ClearSelectedItemsOfType" Hidden="true" />
+      <Method Name="ClearSelectedRecords" Hidden="true" />
+      <Method Name="ClearStyleCache" Hidden="true" />
+      <Field Name="ClipboardCellDelimiterProperty" Hidden="true" />
+      <Field Name="ClipboardCellSeparatorProperty" Hidden="true" />
+      <Field Name="ClipboardCopyingEvent" Hidden="true" />
+      <Field Name="ClipboardOperationErrorEvent" Hidden="true" />
+      <Property Name="ClipboardOperationInfo" Hidden="true" />
+      <Field Name="ClipboardPastingEvent" Hidden="true" />
+      <Field Name="ClipboardRecordSeparatorProperty" Hidden="true" />
+      <Method Name="CoerceActiveDataItem" Hidden="true" />
+      <Method Name="CoerceDataSourceInternal" Hidden="true" />
+      <Method Name="CoerceFieldLayoutSettings" Hidden="true" />
+      <Method Name="CoerceFieldSettings" Hidden="true" />
+      <Field Name="CollapseRecordAnimationDuration" Hidden="true" />
+      <Property Name="Commands" Hidden="true" />
+      <Property Name="CommandsInternal" Hidden="true" />
+      <Method Name="CommitChangesToRecord" Hidden="true" />
+      <Property Name="CurrentPanel" Hidden="true" />
+      <Property Name="CurrentRecordListControl" Hidden="true" />
+      <Property Name="CurrentViewInternal" Hidden="true" />
+      <Field Name="CurrentViewProperty" Hidden="true" />
+      <Field Name="CustomFilterSelectionControlOpeningEvent" Hidden="true" />
+      <Property Name="CustomizationsManager" Hidden="true" />
+      <Field Name="DataErrorContentTemplateKey" Hidden="true" />
+      <Field Name="DataErrorEvent" Hidden="true" />
+      <Field Name="DataErrorIconStyleKey" Hidden="true" />
+      <Method Name="DataPresenterBase" Hidden="true" />
+      <Field Name="DataPresenterProperty" Hidden="true" />
+      <Property Name="DataSourceInternal" Hidden="true" />
+      <Field Name="DataSourceInternalProperty" Hidden="true" />
+      <Field Name="DataSourceInternalPropertyKey" Hidden="true" />
+      <Field Name="DataSourceProperty" Hidden="true" />
+      <Field Name="DataValueChangedEvent" Hidden="true" />
+      <Property Name="DefaultConverterCulture" Hidden="true" />
+      <Method Name="DeleteRecords" Hidden="true" />
+      <Method Name="DeleteSelectedRecords" Hidden="true" />
+      <Method Name="DirtyFieldChooserFields" Hidden="true" />
+      <Method Name="DisplayDataError" Hidden="true" />
+      <Property Name="EditHelper" Hidden="true" />
+      <Field Name="EditModeEndedEvent" Hidden="true" />
+      <Field Name="EditModeEndingEvent" Hidden="true" />
+      <Field Name="EditModeStartedEvent" Hidden="true" />
+      <Field Name="EditModeStartingEvent" Hidden="true" />
+      <Field Name="EditModeValidationErrorEvent" Hidden="true" />
+      <Method Name="EndEditMode" Hidden="true" />
+      <Method Name="EnsureItemsWithinMaxSelectedItemsBounds" Hidden="true" />
+      <Method Name="ExecuteCommandImpl" Hidden="true" />
+      <Field Name="ExecutedCommandEvent" Hidden="true" />
+      <Field Name="ExecutingCommandEvent" Hidden="true" />
+      <Field Name="ExpandRecordAnimationDuration" Hidden="true" />
+      <Field Name="FieldChooserButtonStyleKey" Hidden="true" />
+      <Field Name="FieldChooserOpeningEvent" Hidden="true" />
+      <Property Name="FieldLayoutAutoSizeViewableCount" Hidden="true" />
+      <Field Name="FieldLayoutInitializedEvent" Hidden="true" />
+      <Field Name="FieldLayoutInitializingEvent" Hidden="true" />
+      <Property Name="FieldLayoutSettingsIfAllocated" Hidden="true" />
+      <Field Name="FieldLayoutSettingsProperty" Hidden="true" />
+      <Property Name="FieldLayoutsIfAllocated" Hidden="true" />
+      <Field Name="FieldPositionChangedEvent" Hidden="true" />
+      <Field Name="FieldPositionChangingEvent" Hidden="true" />
+      <Property Name="FieldSettingsIfAllocated" Hidden="true" />
+      <Field Name="FieldSettingsProperty" Hidden="true" />
+      <Field Name="FilterCellClearButtonStyleKey" Hidden="true" />
+      <Field Name="FilterRecordClearButtonStyleKey" Hidden="true" />
+      <Method Name="FindResourceForStylingPoint" Hidden="true" />
+      <Property Name="FirstOverallDataRecord" Hidden="true" />
+      <Method Name="GetAllResizableFieldItems" Hidden="true" />
+      <Method Name="GetCompatibleRecordPresenter" Hidden="true" />
+      <Method Name="GetCompatibleSelectableElement" Hidden="true" />
+      <Method Name="GetDataPresenter" Hidden="true" />
+      <Method Name="GetDefaultResource" Hidden="true" />
+      <Method Name="GetDefaultStyle" Hidden="true" />
+      <Method Name="GetFieldLayoutForSelectableItem" Hidden="true" />
+      <Method Name="GetFieldsForSelection" Hidden="true" />
+      <Method Name="GetFixedFieldInfo" Hidden="true" />
+      <Method Name="GetGenericResource" Hidden="true" />
+      <Method Name="GetGroupByAndDataAreaRows" Hidden="true" />
+      <Method Name="GetGroupByAreaResolved" Hidden="true" />
+      <Method Name="GetHighlightPrimaryFieldResolved" Hidden="true" />
+      <Method Name="GetNavigationTargetCell" Hidden="true" />
+      <Method Name="GetNearestCompatibleCell" Hidden="true" />
+      <Method Name="GetNearestCompatibleRecordPresenter" Hidden="true" />
+      <Method Name="GetPanelSettings" Hidden="true" />
+      <Method Name="GetRecord" Hidden="true" />
+      <Method Name="GetRecordListControlStyle" Hidden="true" />
+      <Method Name="GetRecordPresentersInViewHelper" Hidden="true" />
+      <Method Name="GetRecordsForSelection" Hidden="true" />
+      <Field Name="GroupByAreaFieldLabelStyleProperty" Hidden="true" />
+      <Field Name="GroupByAreaFieldLabelStyleSelectorProperty" Hidden="true" />
+      <Field Name="GroupByAreaLocationProperty" Hidden="true" />
+      <Field Name="GroupByAreaModeProperty" Hidden="true" />
+      <Field Name="GroupByAreaMultiProperty" Hidden="true" />
+      <Field Name="GroupByAreaProperty" Hidden="true" />
+      <Field Name="GroupByAreaStyleProperty" Hidden="true" />
+      <Field Name="GroupedEvent" Hidden="true" />
+      <Field Name="GroupingEvent" Hidden="true" />
+      <Property Name="HasAutoSizeAllRecordFields" Hidden="true" />
+      <Property Name="HasFieldLayouts" Hidden="true" />
+      <Property Name="HasFieldLayoutSettings" Hidden="true" />
+      <Property Name="HasFieldSettings" Hidden="true" />
+      <Method Name="HasRegisteredFieldChoosers" Hidden="true" />
+      <Property Name="History" Hidden="true" />
+      <Property Name="HorizontalScrollBarVisibility" Hidden="true" />
+      <Field Name="HorizontalScrollBarVisibilityProperty" Hidden="true" />
+      <Field Name="HorizontalScrollBarVisibilityPropertyKey" Hidden="true" />
+      <Method Name="IAutoResizeHost.PerformAutoSize" Hidden="true" />
+      <Method Name="ICommandHost.CanExecute" Hidden="true" />
+      <Property Name="ICommandHost.CurrentState" Hidden="true" />
+      <Method Name="ICommandHost.Execute" Hidden="true" />
+      <Property Name="IDeferredScrollHost.ScrollPanel" Hidden="true" />
+      <Method Name="IEmbeddedVisualPaginatorFactory.Create" Hidden="true" />
+      <Field Name="InitializeCellValuePresenterEvent" Hidden="true" />
+      <Method Name="InitializeItemsPanel" Hidden="true" />
+      <Field Name="InitializeRecordEvent" Hidden="true" />
+      <Method Name="InitializeRecordListControlPanel" Hidden="true" />
+      <Method Name="InitializeRecordManagerDataSource" Hidden="true" />
+      <Field Name="InitializeTemplateAddRecordEvent" Hidden="true" />
+      <Method Name="InternalAddLogicalChild" Hidden="true" />
+      <Property Name="InternalCellPresenterStyleSelector" Hidden="true" />
+      <Property Name="InternalCellValuePresenterStyleSelector" Hidden="true" />
+      <Property Name="InternalEditorStyleSelector" Hidden="true" />
+      <Property Name="InternalExpandedCellStyleSelector" Hidden="true" />
+      <Property Name="InternalHeaderLabelAreaStyleSelector" Hidden="true" />
+      <Property Name="InternalHeaderPrefixAreaStyleSelector" Hidden="true" />
+      <Property Name="InternalHeaderPresenterStyleSelector" Hidden="true" />
+      <Property Name="InternalLabelPresenterStyleSelector" Hidden="true" />
+      <Property Name="InternalRecordCellAreaStyleSelector" Hidden="true" />
+      <Property Name="InternalRecords" Hidden="true" />
+      <Property Name="InternalRecordSelectorStyleSelector" Hidden="true" />
+      <Field Name="InternalRecordsProperty" Hidden="true" />
+      <Property Name="InternalRecordStyleSelector" Hidden="true" />
+      <Method Name="InternalRemoveLogicalChild" Hidden="true" />
+      <Method Name="InternalSelectItem" Hidden="true" />
+      <Method Name="InternalSelectRange" Hidden="true" />
+      <Method Name="InvalidateFormatSettings" Hidden="true" />
+      <Method Name="InvalidateGeneratedStyles" Hidden="true" />
+      <Method Name="InvalidateGeneratedStylesAsync" Hidden="true" />
+      <Method Name="InvalidateItemsHost" Hidden="true" />
+      <Method Name="IResizeHost.AddResizerBar" Hidden="true" />
+      <Method Name="IResizeHost.CanResize" Hidden="true" />
+      <Property Name="IResizeHost.Controller" Hidden="true" />
+      <Method Name="IResizeHost.GetResizeAreaForItem" Hidden="true" />
+      <Method Name="IResizeHost.GetResizeCursor" Hidden="true" />
+      <Method Name="IResizeHost.InitializeResizeConstraints" Hidden="true" />
+      <Method Name="IResizeHost.RemoveResizerBar" Hidden="true" />
+      <Method Name="IResizeHost.Resize" Hidden="true" />
+      <Property Name="IResizeHost.RootElement" Hidden="true" />
+      <Property Name="IsApplyingCustomizations" Hidden="true" />
+      <Property Name="IsDraggingField" Hidden="true" />
+      <Method Name="ISelectionHost.ActivateItem" Hidden="true" />
+      <Method Name="ISelectionHost.ClearSnapshot" Hidden="true" />
+      <Method Name="ISelectionHost.DeselectItem" Hidden="true" />
+      <Method Name="ISelectionHost.DeselectRange" Hidden="true" />
+      <Method Name="ISelectionHost.DoAutoScrollHorizontal" Hidden="true" />
+      <Method Name="ISelectionHost.DoAutoScrollVertical" Hidden="true" />
+      <Method Name="ISelectionHost.EnterSnakingMode" Hidden="true" />
+      <Method Name="ISelectionHost.GetAutoScrollInfo" Hidden="true" />
+      <Method Name="ISelectionHost.GetNearestCompatibleItem" Hidden="true" />
+      <Method Name="ISelectionHost.GetPivotItem" Hidden="true" />
+      <Method Name="ISelectionHost.GetSelectionStrategyForItem" Hidden="true" />
+      <Method Name="ISelectionHost.IsItemSelectableWithCurrentSelection" Hidden="true" />
+      <Method Name="ISelectionHost.IsMaxSelectedItemsReached" Hidden="true" />
+      <Method Name="ISelectionHost.OnDragEnd" Hidden="true" />
+      <Method Name="ISelectionHost.OnDragMove" Hidden="true" />
+      <Method Name="ISelectionHost.OnDragStart" Hidden="true" />
+      <Method Name="ISelectionHost.OnMouseUp" Hidden="true" />
+      <Property Name="ISelectionHost.RootElement" Hidden="true" />
+      <Method Name="ISelectionHost.SelectItem" Hidden="true" />
+      <Method Name="ISelectionHost.SelectRange" Hidden="true" />
+      <Method Name="ISelectionHost.SetPivotItem" Hidden="true" />
+      <Method Name="ISelectionHost.SnapshotSelection" Hidden="true" />
+      <Method Name="ISelectionHost.TranslateItem" Hidden="true" />
+      <Property Name="IsExportControl" Hidden="true" />
+      <Property Name="IsFixedFieldsSupportedResolved" Hidden="true" />
+      <Property Name="IsFixedRecordsSupportedResolved" Hidden="true" />
+      <Property Name="IsFlatView" Hidden="true" />
+      <Field Name="IsGroupByAreaExpandedProperty" Hidden="true" />
+      <Method Name="IsInitializeRecordSuspendedFor" Hidden="true" />
+      <Method Name="IsItemSelectableWithCurrentSelection" Hidden="true" />
+      <Field Name="IsNestedDataDisplayEnabledProperty" Hidden="true" />
+      <Property Name="IsReportControl" Hidden="true" />
+      <Field Name="IsSynchronizedWithCurrentItemProperty" Hidden="true" />
+      <Property Name="IsSynchronousControl" Hidden="true" />
+      <Field Name="IsUndoEnabledProperty" Hidden="true" />
+      <Property Name="ItemsPanel" Hidden="true" />
+      <Field Name="ItemsPanelProperty" Hidden="true" />
+      <Field Name="ItemsPanelPropertyKey" Hidden="true" />
+      <Method Name="IViewPanelInfo.GetOverallScrollPositionForRecord" Hidden="true" />
+      <Method Name="IViewPanelInfo.GetRecordAtOverallScrollPosition" Hidden="true" />
+      <Method Name="IViewPanelInfo.IsOkToScroll" Hidden="true" />
+      <Method Name="IViewPanelInfo.OnRecordsInViewChanged" Hidden="true" />
+      <Property Name="IViewPanelInfo.OverallScrollCount" Hidden="true" />
+      <Property Name="IViewPanelInfo.OverallScrollPosition" Hidden="true" />
+      <Property Name="LastOverallDataRecord" Hidden="true" />
+      <Property Name="LogicalChildren" Hidden="true" />
+      <Method Name="OnActiveCellChangedCallback" Hidden="true" />
+      <Method Name="OnActiveDataItemChanged" Hidden="true" />
+      <Method Name="OnActiveRecordChange" Hidden="true" />
+      <Method Name="OnActiveRecordChangedCallback" Hidden="true" />
+      <Method Name="OnActiveRecordCleared" Hidden="true" />
+      <Method Name="OnAfterApplyCustomizations" Hidden="true" />
+      <Method Name="OnAssigningFieldLayoutToItem" Hidden="true" />
+      <Method Name="OnAutoFitChanged" Hidden="true" />
+      <Method Name="OnAutoSizeAllRecordsChanged" Hidden="true" />
+      <Method Name="OnAutoSizePending" Hidden="true" />
+      <Method Name="OnBeforeApplyCustomizations" Hidden="true" />
+      <Method Name="OnBindToSampleDataChanged" Hidden="true" />
+      <Method Name="OnCellActivated" Hidden="true" />
+      <Method Name="OnCellActivating" Hidden="true" />
+      <Method Name="OnCellChanged" Hidden="true" />
+      <Method Name="OnCellContainerGenerationModeChanged" Hidden="true" />
+      <Method Name="OnCellDeactivating" Hidden="true" />
+      <Method Name="OnCellUpdated" Hidden="true" />
+      <Method Name="OnCellUpdating" Hidden="true" />
+      <Method Name="OnClipboardCopying" Hidden="true" />
+      <Method Name="OnClipboardOperationError" Hidden="true" />
+      <Method Name="OnClipboardPasting" Hidden="true" />
+      <Method Name="OnCoerceActiveCell" Hidden="true" />
+      <Method Name="OnCoerceActiveRecord" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnCurrentRecordListControlSelectionChanged" Hidden="true" />
+      <Method Name="OnCurrentViewStateChanged" Hidden="true" />
+      <Method Name="OnCustomFilterSelectionControlOpening" Hidden="true" />
+      <Method Name="OnDataError" Hidden="true" />
+      <Method Name="OnDataPresenterChanged" Hidden="true" />
+      <Method Name="OnDataValueChanged" Hidden="true" />
+      <Method Name="OnEditModeEnded" Hidden="true" />
+      <Method Name="OnEditModeEnding" Hidden="true" />
+      <Method Name="OnEditModeStarted" Hidden="true" />
+      <Method Name="OnEditModeStarting" Hidden="true" />
+      <Method Name="OnEditModeValidationError" Hidden="true" />
+      <Method Name="OnExecutedCommand" Hidden="true" />
+      <Method Name="OnExecutingCommand" Hidden="true" />
+      <Method Name="OnFieldChooserOpening" Hidden="true" />
+      <Method Name="OnFieldLayoutInitialized" Hidden="true" />
+      <Method Name="OnFieldLayoutInitializing" Hidden="true" />
+      <Method Name="OnFieldLayoutSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnFieldLayoutTemplateGeneration" Hidden="true" />
+      <Method Name="OnFieldPositionChanged" Hidden="true" />
+      <Method Name="OnFieldPositionChanging" Hidden="true" />
+      <Method Name="OnFieldSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnFormatSettingsInvalidated" Hidden="true" />
+      <Method Name="OnGroupByAreaChanged" Hidden="true" />
+      <Method Name="OnGroupByAreaModeChanged" Hidden="true" />
+      <Method Name="OnGroupByAreaMultiChanged" Hidden="true" />
+      <Method Name="OnGrouped" Hidden="true" />
+      <Method Name="OnGrouping" Hidden="true" />
+      <Method Name="OnInitializeCellValuePresenter" Hidden="true" />
+      <Method Name="OnInitialized" Hidden="true" />
+      <Method Name="OnInitializeRecord" Hidden="true" />
+      <Method Name="OnInitializeTemplateAddRecord" Hidden="true" />
+      <Method Name="OnInvalidateGeneratedStyles" Hidden="true" />
+      <Method Name="OnIsFocusWithinChanged" Hidden="true" />
+      <Method Name="OnIsNestedDataDisplayEnabledChanged" Hidden="true" />
+      <Method Name="OnIsSynchronizedWithCurrentItemChanged" Hidden="true" />
+      <Method Name="OnIsUndoEnabledChanged" Hidden="true" />
+      <Method Name="OnLayoutUpdated" Hidden="true" />
+      <Method Name="OnLoaded" Hidden="true" />
+      <Method Name="OnLostMouseCapture" Hidden="true" />
+      <Method Name="OnMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="OnPerformFieldAutoSize" Hidden="true" />
+      <Method Name="OnProcessSortCriteria" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnRecordActivated" Hidden="true" />
+      <Method Name="OnRecordActivating" Hidden="true" />
+      <Method Name="OnRecordAdded" Hidden="true" />
+      <Method Name="OnRecordAdding" Hidden="true" />
+      <Method Name="OnRecordCollapsed" Hidden="true" />
+      <Method Name="OnRecordCollapsing" Hidden="true" />
+      <Method Name="OnRecordDeactivating" Hidden="true" />
+      <Method Name="OnRecordExpanded" Hidden="true" />
+      <Method Name="OnRecordExpanding" Hidden="true" />
+      <Method Name="OnRecordExpandStateChanged" Hidden="true" />
+      <Method Name="OnRecordFilterChanged" Hidden="true" />
+      <Method Name="OnRecordFilterChanging" Hidden="true" />
+      <Method Name="OnRecordFilterDropDownOpening" Hidden="true" />
+      <Method Name="OnRecordFilterDropDownPopulating" Hidden="true" />
+      <Method Name="OnRecordFixedLocationChanged" Hidden="true" />
+      <Method Name="OnRecordFixedLocationChanging" Hidden="true" />
+      <Method Name="OnRecordManagerPropertyChanged" Hidden="true" />
+      <Method Name="OnRecordsDeleted" Hidden="true" />
+      <Method Name="OnRecordsDeleting" Hidden="true" />
+      <Method Name="OnRecordsInViewChanged" Hidden="true" />
+      <Method Name="OnRecordUpdateCanceled" Hidden="true" />
+      <Method Name="OnRecordUpdateCanceling" Hidden="true" />
+      <Method Name="OnRecordUpdated" Hidden="true" />
+      <Method Name="OnRecordUpdating" Hidden="true" />
+      <Method Name="OnRenderSizeChanged" Hidden="true" />
+      <Method Name="OnRootCollectionChanged" Hidden="true" />
+      <Method Name="OnScrollCountRecalcVersionChanged" Hidden="true" />
+      <Method Name="OnScrollViewerScrollChanged" Hidden="true" />
+      <Method Name="OnSelectedItemsChanged" Hidden="true" />
+      <Method Name="OnSelectedItemsChanging" Hidden="true" />
+      <Method Name="OnSortCriteriaChanged" Hidden="true" />
+      <Method Name="OnSorted" Hidden="true" />
+      <Method Name="OnSorting" Hidden="true" />
+      <Method Name="OnSummaryResultChanged" Hidden="true" />
+      <Method Name="OnSummarySelectionControlClosed" Hidden="true" />
+      <Method Name="OnSummarySelectionControlOpening" Hidden="true" />
+      <Method Name="OnThemeChanged" Hidden="true" />
+      <Method Name="OnUndoLimitChanged" Hidden="true" />
+      <Method Name="OnUnloaded" Hidden="true" />
+      <Method Name="OnValidateScrollingMode" Hidden="true" />
+      <Method Name="OnViewableRecordsChanged" Hidden="true" />
+      <Method Name="OnViewableRecordsPropertyChanged" Hidden="true" />
+      <Property Name="OverallSortVersion" Hidden="true" />
+      <Field Name="OverallSortVersionProperty" Hidden="true" />
+      <Field Name="PanelSettingsProperty" Hidden="true" />
+      <Property Name="PendingActiveRecordPresenter" Hidden="true" />
+      <Method Name="ProcessPendingAutoSizeOperations" Hidden="true" />
+      <Method Name="ProcessPostedRecordsInViewChanged" Hidden="true" />
+      <Method Name="ProcessRecordWithPendingFilterHelper" Hidden="true" />
+      <Method Name="QueueNestedContentInitializationRequest" Hidden="true" />
+      <Method Name="RaiseAssigningFieldLayoutToItem" Hidden="true" />
+      <Method Name="RaiseCellActivated" Hidden="true" />
+      <Method Name="RaiseCellActivating" Hidden="true" />
+      <Method Name="RaiseCellChanged" Hidden="true" />
+      <Method Name="RaiseCellDeactivating" Hidden="true" />
+      <Method Name="RaiseCellUpdated" Hidden="true" />
+      <Method Name="RaiseCellUpdating" Hidden="true" />
+      <Method Name="RaiseClipboardCopying" Hidden="true" />
+      <Method Name="RaiseClipboardOperationError" Hidden="true" />
+      <Method Name="RaiseClipboardPasting" Hidden="true" />
+      <Method Name="RaiseCustomFilterSelectionControlOpening" Hidden="true" />
+      <Method Name="RaiseDataError" Hidden="true" />
+      <Method Name="RaiseDataValueChanged" Hidden="true" />
+      <Method Name="RaiseEditModeEnded" Hidden="true" />
+      <Method Name="RaiseEditModeEnding" Hidden="true" />
+      <Method Name="RaiseEditModeStarted" Hidden="true" />
+      <Method Name="RaiseEditModeStarting" Hidden="true" />
+      <Method Name="RaiseEditModeValidationError" Hidden="true" />
+      <Method Name="RaiseExecutedCommand" Hidden="true" />
+      <Method Name="RaiseExecutingCommand" Hidden="true" />
+      <Method Name="RaiseFieldChooserOpening" Hidden="true" />
+      <Method Name="RaiseFieldLayoutInitializedEvent" Hidden="true" />
+      <Method Name="RaiseFieldLayoutInitializingEvent" Hidden="true" />
+      <Method Name="RaiseFieldPositionChanged" Hidden="true" />
+      <Method Name="RaiseFieldPositionChanging" Hidden="true" />
+      <Method Name="RaiseGrouped" Hidden="true" />
+      <Method Name="RaiseGrouping" Hidden="true" />
+      <Method Name="RaiseInitializeCellValuePresenter" Hidden="true" />
+      <Method Name="RaiseInitializeRecord" Hidden="true" />
+      <Method Name="RaiseInitializeTemplateAddRecord" Hidden="true" />
+      <Method Name="RaiseRecordActivated" Hidden="true" />
+      <Method Name="RaiseRecordActivating" Hidden="true" />
+      <Method Name="RaiseRecordAdded" Hidden="true" />
+      <Method Name="RaiseRecordAdding" Hidden="true" />
+      <Method Name="RaiseRecordCollapsed" Hidden="true" />
+      <Method Name="RaiseRecordCollapsing" Hidden="true" />
+      <Method Name="RaiseRecordDeactivating" Hidden="true" />
+      <Method Name="RaiseRecordExpanded" Hidden="true" />
+      <Method Name="RaiseRecordExpanding" Hidden="true" />
+      <Method Name="RaiseRecordFilterChanged" Hidden="true" />
+      <Method Name="RaiseRecordFilterChanging" Hidden="true" />
+      <Method Name="RaiseRecordFilterDropDownOpening" Hidden="true" />
+      <Method Name="RaiseRecordFilterDropDownPopulating" Hidden="true" />
+      <Method Name="RaiseRecordFixedLocationChanged" Hidden="true" />
+      <Method Name="RaiseRecordFixedLocationChanging" Hidden="true" />
+      <Method Name="RaiseRecordsDeleted" Hidden="true" />
+      <Method Name="RaiseRecordsDeleting" Hidden="true" />
+      <Method Name="RaiseRecordsInViewChanged" Hidden="true" />
+      <Method Name="RaiseRecordUpdateCanceled" Hidden="true" />
+      <Method Name="RaiseRecordUpdateCanceling" Hidden="true" />
+      <Method Name="RaiseRecordUpdated" Hidden="true" />
+      <Method Name="RaiseRecordUpdating" Hidden="true" />
+      <Method Name="RaiseSelectedItemsChanged" Hidden="true" />
+      <Method Name="RaiseSelectedItemsChanging" Hidden="true" />
+      <Method Name="RaiseSorted" Hidden="true" />
+      <Method Name="RaiseSorting" Hidden="true" />
+      <Method Name="RaiseSummaryResultChanged" Hidden="true" />
+      <Method Name="RaiseSummarySelectionControlClosed" Hidden="true" />
+      <Method Name="RaiseSummarySelectionControlOpening" Hidden="true" />
+      <Field Name="RecordActivatedEvent" Hidden="true" />
+      <Field Name="RecordActivatingEvent" Hidden="true" />
+      <Field Name="RecordAddedEvent" Hidden="true" />
+      <Field Name="RecordAddingEvent" Hidden="true" />
+      <Field Name="RecordCollapsedEvent" Hidden="true" />
+      <Field Name="RecordCollapsingEvent" Hidden="true" />
+      <Field Name="RecordContainerGenerationModeProperty" Hidden="true" />
+      <Field Name="RecordDeactivatingEvent" Hidden="true" />
+      <Field Name="RecordExpandedEvent" Hidden="true" />
+      <Field Name="RecordExpandingEvent" Hidden="true" />
+      <Field Name="RecordFilterChangedEvent" Hidden="true" />
+      <Field Name="RecordFilterChangingEvent" Hidden="true" />
+      <Field Name="RecordFilterDropDownOpeningEvent" Hidden="true" />
+      <Field Name="RecordFilterDropDownPopulatingEvent" Hidden="true" />
+      <Field Name="RecordFixedLocationChangedEvent" Hidden="true" />
+      <Field Name="RecordFixedLocationChangingEvent" Hidden="true" />
+      <Field Name="RecordLoadModeProperty" Hidden="true" />
+      <Property Name="RecordManagerIfAllocated" Hidden="true" />
+      <Field Name="RecordsDeletedEvent" Hidden="true" />
+      <Field Name="RecordsDeletingEvent" Hidden="true" />
+      <Field Name="RecordsInViewChangedEvent" Hidden="true" />
+      <Property Name="RecordsInViewVersion" Hidden="true" />
+      <Field Name="RecordsInViewVersionProperty" Hidden="true" />
+      <Field Name="RecordsInViewVersionPropertyKey" Hidden="true" />
+      <Field Name="RecordsProperty" Hidden="true" />
+      <Field Name="RecordsPropertyKey" Hidden="true" />
+      <Field Name="RecordUpdateCanceledEvent" Hidden="true" />
+      <Field Name="RecordUpdateCancelingEvent" Hidden="true" />
+      <Field Name="RecordUpdatedEvent" Hidden="true" />
+      <Field Name="RecordUpdatingEvent" Hidden="true" />
+      <Method Name="RefreshFieldLayout" Hidden="true" />
+      <Method Name="RegisterFieldChooser" Hidden="true" />
+      <Method Name="RemoveFromSelectedCollection" Hidden="true" />
+      <Property Name="RenderVersion" Hidden="true" />
+      <Field Name="RenderVersionProperty" Hidden="true" />
+      <Field Name="RenderVersionPropertyKey" Hidden="true" />
+      <Method Name="ReplaceDataAreaContent" Hidden="true" />
+      <Field Name="ReportViewProperty" Hidden="true" />
+      <Method Name="ResetAllRecordsAutoSizeMaxDepth" Hidden="true" />
+      <Method Name="ResetGroupBySettings" Hidden="true" />
+      <Method Name="ResetItemsPanel" Hidden="true" />
+      <Method Name="ResumeEndEditOnScroll" Hidden="true" />
+      <Method Name="ResumeInitializeRecordFor" Hidden="true" />
+      <Property Name="RootRecordListControl" Hidden="true" />
+      <Property Name="ScrollableRecordCountVersion" Hidden="true" />
+      <Field Name="ScrollableRecordCountVersionProperty" Hidden="true" />
+      <Property Name="ScrollCountRecalcVersion" Hidden="true" />
+      <Field Name="ScrollCountRecalcVersionProperty" Hidden="true" />
+      <Field Name="ScrollingModeProperty" Hidden="true" />
+      <Property Name="ScrollVersion" Hidden="true" />
+      <Field Name="ScrollVersionProperty" Hidden="true" />
+      <Field Name="SelectedItemsChangedEvent" Hidden="true" />
+      <Field Name="SelectedItemsChangingEvent" Hidden="true" />
+      <Property Name="SelectionSnapshot" Hidden="true" />
+      <Property Name="SelectionStrategyFilter" Hidden="true" />
+      <Method Name="SelectNewSelection" Hidden="true" />
+      <Method Name="SetActiveCell" Hidden="true" />
+      <Method Name="SetActiveRecord" Hidden="true" />
+      <Method Name="SetDataPresenter" Hidden="true" />
+      <Method Name="SetDefaultValue" Hidden="true" />
+      <Method Name="SetFieldDragManagerHelper" Hidden="true" />
+      <Method Name="SetGroupByAreaStyle" Hidden="true" />
+      <Method Name="SetPanelSettings" Hidden="true" />
+      <Method Name="SetupAsyncAutoSize" Hidden="true" />
+      <Method Name="ShouldResizeSiblingField" Hidden="true" />
+      <Method Name="ShowFieldChooserHelper" Hidden="true" />
+      <Field Name="SortedEvent" Hidden="true" />
+      <Field Name="SortingEvent" Hidden="true" />
+      <Field Name="SortRecordsByDataTypeProperty" Hidden="true" />
+      <Method Name="StartFieldDragHelper" Hidden="true" />
+      <Field Name="SummaryResultChangedEvent" Hidden="true" />
+      <Field Name="SummarySelectionControlClosedEvent" Hidden="true" />
+      <Field Name="SummarySelectionControlOpeningEvent" Hidden="true" />
+      <Property Name="SuppressExportingDataSourceException" Hidden="true" />
+      <Method Name="SuspendEndEditOnScroll" Hidden="true" />
+      <Method Name="SuspendInitializeRecordFor" Hidden="true" />
+      <Method Name="SynchDataItemValue" Hidden="true" />
+      <Field Name="ThemeChangedEvent" Hidden="true" />
+      <Field Name="ThemeProperty" Hidden="true" />
+      <Field Name="UndoLimitProperty" Hidden="true" />
+      <Method Name="UnregisterFieldChooser" Hidden="true" />
+      <Method Name="UnwireDataSourceRootList" Hidden="true" />
+      <Field Name="UpdateModeProperty" Hidden="true" />
+      <Method Name="UpdateScrollBarVisibility" Hidden="true" />
+      <Method Name="UpdateSelectedItems" Hidden="true" />
+      <Method Name="VerifyActiveRecordNotDeleted" Hidden="true" />
+      <Method Name="VerifyContentSiteGrid" Hidden="true" />
+      <Method Name="VerifyCurrentPanel" Hidden="true" />
+      <Method Name="VerifyGroupByAreaLocation" Hidden="true" />
+      <Method Name="VerifyInternalRecords" Hidden="true" />
+      <Method Name="VerifyRecordManagerDataSource" Hidden="true" />
+      <Property Name="VerticalScrollBarVisibility" Hidden="true" />
+      <Field Name="VerticalScrollBarVisibilityProperty" Hidden="true" />
+      <Field Name="VerticalScrollBarVisibilityPropertyKey" Hidden="true" />
+      <Field Name="ViewableRecordsProperty" Hidden="true" />
+      <Field Name="ViewableRecordsPropertyKey" Hidden="true" />
+      <Method Name="WireDataSourceRootList" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPHeaderLabelAreaStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPCellValuePresenterStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Infragistics.Windows.DataPresenter.DataPresenterBase.ProcessSortCriteria" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.RangeSelectionEvaluator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPCellPresenterStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPExpandedCellStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.SelectedItemHolder" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DataItemsCollection" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPLabelPresenterStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPRecordCellAreaStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.ListBoxPanelSettings" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DataSourceRootListChangeListener" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Delegate Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DataErrorMessageDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPHeaderPresenterStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPRecordPresenterStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.FieldLayoutSettingsStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.FieldSettingsStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DrillActionItem" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DrillDownStackItem" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPHeaderPrefixAreaStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPEditorStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.DataPresenterBase.DPRecordSelectorStyleSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataPresenterBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="GroupByAreaLocation" Type="Infragistics.Windows.DataPresenter.GroupByAreaLocation" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="20.562" />
+        <Point X="5" Y="20.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>/9////f+////7//////7///3/5////v//+///fv///s=</HashCode>
+      <FileName>DataPresenterBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FieldLayoutSettings" />
+      <Property Name="FieldSettings" />
+      <Property Name="GroupByAreaLocation" />
+      <Property Name="GroupByAreaMode" />
+      <Property Name="GroupByAreaMulti" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="FieldLayouts" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.FieldLayout">
+    <Position X="13" Y="0.5" Width="3.25" />
+    <Members>
+      <Field Name="_areFieldsAutoGenerated" Hidden="true" />
+      <Field Name="_areFieldsInitialized" Hidden="true" />
+      <Field Name="_autoFitState" Hidden="true" />
+      <Field Name="_autoGeneratedPositions" Hidden="true" />
+      <Field Name="_autoSizeInfo" Hidden="true" />
+      <Field Name="_bumpLayoutItemOp" Hidden="true" />
+      <Field Name="_bumpRecordIndentVersionPending" Hidden="true" />
+      <Field Name="_cachedCellPresentation" Hidden="true" />
+      <Field Name="_cachedDescription" Hidden="true" />
+      <Field Name="_cachedFieldSettings" Hidden="true" />
+      <Field Name="_cachedHasSeparateHeader" Hidden="true" />
+      <Field Name="_cachedIsEmptyCellCollapsingSupportedByView" Hidden="true" />
+      <Field Name="_cachedKey" Hidden="true" />
+      <Field Name="_cachedRecordFilterActionResolved" Hidden="true" />
+      <Field Name="_cachedRecordFilterScopeResolvedDefault" Hidden="true" />
+      <Field Name="_cachedRecordFiltersLogicalOperatorResolved" Hidden="true" />
+      <Field Name="_cachedSpecialRecordsVersion" Hidden="true" />
+      <Field Name="_cellLayoutManager" Hidden="true" />
+      <Field Name="_createDragFieldLayout" Hidden="true" />
+      <Field Name="_dataColumnMap" Hidden="true" />
+      <Field Name="_expansionIndicatorSize" Hidden="true" />
+      <Field Name="_fieldLayoutInfo" Hidden="true" />
+      <Field Name="_fieldLayoutInitializedEventRaised" Hidden="true" />
+      <Field Name="_fields" Hidden="true" />
+      <Field Name="_fixedFieldInfo" Hidden="true" />
+      <Field Name="_fixedFieldVersion" Hidden="true" />
+      <Field Name="_groupByVersion" Hidden="true" />
+      <Field Name="_hasBeenInitializedAfterDataSourceChange" Hidden="true" />
+      <Field Name="_hasStarFieldsX" Hidden="true" />
+      <Field Name="_hasStarFieldsY" Hidden="true" />
+      <Field Name="_headerPresenterCache" Hidden="true" />
+      <Field Name="_indentOffsetVersion" Hidden="true" />
+      <Field Name="_index" Hidden="true" />
+      <Field Name="_initialRecordLoaded" Hidden="true" />
+      <Field Name="_isdefault" Hidden="true" />
+      <Field Name="_isInFieldInitialization" Hidden="true" />
+      <Field Name="_isInitialized" Hidden="true" />
+      <Field Name="_keyExplicitlySet" Hidden="true" />
+      <Field Name="_keyMatchingEnforced" Hidden="true" />
+      <Field Name="_labelLayoutManager" Hidden="true" />
+      <Field Name="_layoutItemVersion" Hidden="true" />
+      <Field Name="_layoutManagerVersion" Hidden="true" />
+      <Field Name="_maxRecordManagerDepth" Hidden="true" />
+      <Field Name="_parentField" Hidden="true" />
+      <Field Name="_parentFieldLayout" Hidden="true" />
+      <Field Name="_pendingInvalidateGeneratedStyles" Hidden="true" />
+      <Field Name="_presenter" Hidden="true" />
+      <Field Name="_primaryField" Hidden="true" />
+      <Field Name="_primaryFieldVersion" Hidden="true" />
+      <Field Name="_propertyDescriptorProviders" Hidden="true" />
+      <Field Name="_recordFilters" Hidden="true" />
+      <Field Name="_scrollTipField" Hidden="true" />
+      <Field Name="_scrollTipFieldVersion" Hidden="true" />
+      <Field Name="_selectionStrategyCell" Hidden="true" />
+      <Field Name="_selectionStrategyField" Hidden="true" />
+      <Field Name="_selectionStrategyRecord" Hidden="true" />
+      <Field Name="_settings" Hidden="true" />
+      <Field Name="_sortedFields" Hidden="true" />
+      <Field Name="_sortVersion" Hidden="true" />
+      <Field Name="_styleGenerator" Hidden="true" />
+      <Field Name="_summaryDefinitions" Hidden="true" />
+      <Field Name="_templateDataRecord" Hidden="true" />
+      <Field Name="_templateDataRecordCache" Hidden="true" />
+      <Field Name="_templateGroupByRecord" Hidden="true" />
+      <Field Name="_templateVersion" Hidden="true" />
+      <Field Name="_totalColumnsGenerated" Hidden="true" />
+      <Field Name="_totalRowsGenerated" Hidden="true" />
+      <Field Name="_verifiedLayoutManagerVersion" Hidden="true" />
+      <Field Name="_wrapsEnumerableObject" Hidden="true" />
+      <Property Name="AllowClipboardOperationsResolved" Hidden="true" />
+      <Property Name="AllowRecordFilteringResolvedDefault" Hidden="true" />
+      <Property Name="AreFieldsInitialized" Hidden="true" />
+      <Property Name="AutoArrangeCellsResolved" Hidden="true" />
+      <Property Name="AutoFitModeResolved" Hidden="true" />
+      <Property Name="AutoSizeInfo" Hidden="true" />
+      <Method Name="BumpGridColumnWidthVersion" Hidden="true" />
+      <Method Name="BumpGroupByVersion" Hidden="true" />
+      <Method Name="BumpLayoutItemVersion" Hidden="true" />
+      <Method Name="BumpLayoutItemVersionAsync" Hidden="true" />
+      <Method Name="BumpLayoutManagerVersion" Hidden="true" />
+      <Method Name="BumpRecordFilterVersion" Hidden="true" />
+      <Method Name="BumpRecordIndentVersion" Hidden="true" />
+      <Method Name="BumpRecordIndentVersionAsync" Hidden="true" />
+      <Method Name="BumpSortOperationVersion" Hidden="true" />
+      <Method Name="BumpSortVersion" Hidden="true" />
+      <Method Name="BumpSpecialRecordsVersion" Hidden="true" />
+      <Method Name="BumpTemplateVersion" Hidden="true" />
+      <Property Name="CalculationScopeResolved" Hidden="true" />
+      <Property Name="CellLayoutManager" Hidden="true" />
+      <Field Name="CellPresentationProperty" Hidden="true" />
+      <Field Name="CellPresentationPropertyKey" Hidden="true" />
+      <Method Name="ClearCustomizations" Hidden="true" />
+      <Method Name="CloneDragFieldLayoutInfo" Hidden="true" />
+      <Method Name="CoerceDescription" Hidden="true" />
+      <Property Name="CopyFieldLabelsToClipboardResolved" Hidden="true" />
+      <Property Name="DataRecordCellAreaTemplateGridResolved" Hidden="true" />
+      <Property Name="DefaultColumnDefinitionResolved" Hidden="true" />
+      <Field Name="DefaultRecordSelectorBaseExtent" Hidden="true" />
+      <Field Name="DefaultRecordSelectorErrorIconExtent" Hidden="true" />
+      <Field Name="DefaultRecordSelectorFixButtonExtent" Hidden="true" />
+      <Property Name="DefaultRowDefinitionResolved" Hidden="true" />
+      <Field Name="DescriptionProperty" Hidden="true" />
+      <Method Name="DirtyFixedState" Hidden="true" />
+      <Method Name="DoesParentFieldLayoutMatch" Hidden="true" />
+      <Method Name="DoesParentFieldMatch" Hidden="true" />
+      <Method Name="DoesProviderMatchKeyByName" Hidden="true" />
+      <Method Name="DoesProviderMatchKeyExactly" Hidden="true" />
+      <Method Name="EnsureStyleGeneratorInitialized" Hidden="true" />
+      <Property Name="ExpansionIndicatorDisplayModeResolved" Hidden="true" />
+      <Property Name="ExpansionIndicatorSize" Hidden="true" />
+      <Property Name="FallbackColumnDefinition" Hidden="true" />
+      <Property Name="FallbackColumnDefinitionAutoFit" Hidden="true" />
+      <Property Name="FallbackRowDefinition" Hidden="true" />
+      <Property Name="FallbackRowDefinitionAutoFit" Hidden="true" />
+      <Property Name="FieldLayoutInitializedEventRaised" Hidden="true" />
+      <Property Name="FieldSettingsIfAllocated" Hidden="true" />
+      <Field Name="FieldSettingsProperty" Hidden="true" />
+      <Property Name="FieldsIfAllocated" Hidden="true" />
+      <Property Name="FixedFieldVersion" Hidden="true" />
+      <Field Name="g_fallbackColumnDefinition" Hidden="true" />
+      <Field Name="g_fallbackColumnDefinitionAutoFit" Hidden="true" />
+      <Field Name="g_fallbackRowDefinition" Hidden="true" />
+      <Field Name="g_fallbackRowDefinitionAutoFit" Hidden="true" />
+      <Method Name="GetCellAreaColumnDefinitions" Hidden="true" />
+      <Method Name="GetCellAreaRowDefinitions" Hidden="true" />
+      <Method Name="GetDefaultAllowFieldFixing" Hidden="true" />
+      <Method Name="GetDefaultAllowGroupBy" Hidden="true" />
+      <Method Name="GetDefaultAllowResize" Hidden="true" />
+      <Method Name="GetDefaultAllowSummaries" Hidden="true" />
+      <Method Name="GetDefaultCellClickAction" Hidden="true" />
+      <Method Name="GetDefaultCellContentAlignment" Hidden="true" />
+      <Method Name="GetDefaultExpandableFieldRecordExpansionMode" Hidden="true" />
+      <Method Name="GetDefaultExpandableFieldRecordHeaderDisplayMode" Hidden="true" />
+      <Method Name="GetDefaultLabelClickAction" Hidden="true" />
+      <Method Name="GetDefaultLabelTextAlignment" Hidden="true" />
+      <Method Name="GetDefaultLabelTextTrimming" Hidden="true" />
+      <Method Name="GetDefaultLabelTextWrapping" Hidden="true" />
+      <Method Name="GetDefaultSummaryUIType" Hidden="true" />
+      <Method Name="GetFieldLayoutInfo" Hidden="true" />
+      <Method Name="GetFixedFieldInfo" Hidden="true" />
+      <Method Name="GetFixedFieldUITypeResolved" Hidden="true" />
+      <Method Name="GetHeaderPresenterFromCache" Hidden="true" />
+      <Method Name="GetLabelFromPropertyDescriptor" Hidden="true" />
+      <Method Name="GetProvider" Hidden="true" />
+      <Method Name="GetResolvedValue" Hidden="true" />
+      <Method Name="GetSelectionStrategyForItem" Hidden="true" />
+      <Method Name="GetSelectionStrategyHelper" Hidden="true" />
+      <Property Name="GridColumnWidthVersion" Hidden="true" />
+      <Field Name="GridColumnWidthVersionProperty" Hidden="true" />
+      <Property Name="HasBeenInitializedAfterDataSourceChange" Hidden="true" />
+      <Property Name="HasRecordFilters" Hidden="true" />
+      <Field Name="HasSeparateHeaderProperty" Hidden="true" />
+      <Field Name="HasSeparateHeaderPropertyKey" Hidden="true" />
+      <Method Name="HasStarFields" Hidden="true" />
+      <Property Name="HasStarFieldsX" Hidden="true" />
+      <Property Name="HasStarFieldsY" Hidden="true" />
+      <Property Name="HeaderPlacementExplicitResolved" Hidden="true" />
+      <Property Name="HeaderPresenterCache" Hidden="true" />
+      <Property Name="Index" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="InitializeFieldHelper" Hidden="true" />
+      <Method Name="InitializeFields" Hidden="true" />
+      <Method Name="InitializeHeaderPresenter" Hidden="true" />
+      <Method Name="InitializeKey" Hidden="true" />
+      <Method Name="InitializeOwner" Hidden="true" />
+      <Method Name="InitializeParentInfo" Hidden="true" />
+      <Property Name="InternalFilterActionResolved" Hidden="true" />
+      <Property Name="InternalRecordFilterScopeResolvedDefault" Hidden="true" />
+      <Property Name="InternalRecordFiltersLogicalOperatorResolved" Hidden="true" />
+      <Property Name="InternalVersion" Hidden="true" />
+      <Field Name="InternalVersionProperty" Hidden="true" />
+      <Method Name="InvalidateGeneratedStyles" Hidden="true" />
+      <Method Name="InvalidateGeneratedStylesAsnyc" Hidden="true" />
+      <Method Name="InvalidateGeneratedStylesAsnycHandler" Hidden="true" />
+      <Property Name="IsAutoFit" Hidden="true" />
+      <Property Name="IsAutoFitHeight" Hidden="true" />
+      <Property Name="IsAutoFitWidth" Hidden="true" />
+      <Property Name="IsDataRecordSizedToContent" Hidden="true" />
+      <Property Name="IsDefault" Hidden="true" />
+      <Property Name="IsEmptyCellCollapsingSupportedByView" Hidden="true" />
+      <Property Name="IsFieldChooserUIEnabled" Hidden="true" />
+      <Property Name="IsFixedFieldsEnabled" Hidden="true" />
+      <Property Name="IsHorizontal" Hidden="true" />
+      <Property Name="IsInFieldInitialization" Hidden="true" />
+      <Property Name="IsInitialRecordLoaded" Hidden="true" />
+      <Method Name="IsListObjectCompatible" Hidden="true" />
+      <Property Name="IsOverFarSplitter" Hidden="true" />
+      <Field Name="IsOverFarSplitterProperty" Hidden="true" />
+      <Property Name="IsOverNearSplitter" Hidden="true" />
+      <Field Name="IsOverNearSplitterProperty" Hidden="true" />
+      <Method Name="IsProviderCached" Hidden="true" />
+      <Field Name="KeyMatchingEnforcedProperty" Hidden="true" />
+      <Field Name="KeyProperty" Hidden="true" />
+      <Property Name="LabelLayoutManager" Hidden="true" />
+      <Property Name="LayoutItemVersion" Hidden="true" />
+      <Property Name="LayoutManagerVersion" Hidden="true" />
+      <Property Name="MaxRecordManagerDepth" Hidden="true" />
+      <Property Name="NestingDepth" Hidden="true" />
+      <Method Name="OnAddedToCollection" Hidden="true" />
+      <Method Name="OnCurrentViewChanged" Hidden="true" />
+      <Method Name="OnCustomFilterDialogClosed" Hidden="true" />
+      <Method Name="OnDataRecordLoaded" Hidden="true" />
+      <Method Name="OnDataSourceChanged" Hidden="true" />
+      <Method Name="OnFieldAddedRemovedFromCollection" Hidden="true" />
+      <Method Name="OnFieldCollectionChanged" Hidden="true" />
+      <Method Name="OnFieldSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnFieldVisibilityChanged" Hidden="true" />
+      <Method Name="OnFieldWidthHeightChanged" Hidden="true" />
+      <Method Name="OnKeyMatchingEnforcedChanged" Hidden="true" />
+      <Method Name="OnParentFieldLayoutKeyChanged" Hidden="true" />
+      <Method Name="OnParentFieldNameChanged" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnPropertyDescriptorAdded" Hidden="true" />
+      <Method Name="OnPropertyDescriptorChanged" Hidden="true" />
+      <Method Name="OnPropertyDescriptorDeleted" Hidden="true" />
+      <Method Name="OnProviderPropertyDescriptorsChanged" Hidden="true" />
+      <Method Name="OnRemovedFromCollection" Hidden="true" />
+      <Method Name="OnSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnSortedFieldsCollectionChanged" Hidden="true" />
+      <Method Name="OnSortedFieldsPropertyChanged" Hidden="true" />
+      <Method Name="OnSpecialRecordsVersionChanged" Hidden="true" />
+      <Method Name="OnTemplatesGenerated" Hidden="true" />
+      <Method Name="OnTemplateVersion" Hidden="true" />
+      <Field Name="ParentFieldLayoutKeyProperty" Hidden="true" />
+      <Field Name="ParentFieldNameProperty" Hidden="true" />
+      <Method Name="PostDelayedInvalidation" Hidden="true" />
+      <Method Name="ProcessFieldLayoutSettingsPropertyChanged" Hidden="true" />
+      <Method Name="PropertyDescriptorAddedHelper" Hidden="true" />
+      <Method Name="PropertyDescriptorChangedHelper" Hidden="true" />
+      <Property Name="RecordFilterScopeResolvedDefault" Hidden="true" />
+      <Property Name="RecordFiltersIfAllocated" Hidden="true" />
+      <Property Name="RecordSeparatorLocationResolved" Hidden="true" />
+      <Method Name="Reset" Hidden="true" />
+      <Method Name="ResolveAutoFit" Hidden="true" />
+      <Method Name="ReturnHeaderPresenterToCache" Hidden="true" />
+      <Property Name="RootFieldLayout" Hidden="true" />
+      <Method Name="SetFieldLayoutInfo" Hidden="true" />
+      <Method Name="SetGridCounts" Hidden="true" />
+      <Method Name="SetHasSeparateHeader" Hidden="true" />
+      <Property Name="SettingsIfAllocated" Hidden="true" />
+      <Property Name="ShouldCreateDragFieldLayout" Hidden="true" />
+      <Property Name="SortOperationVersion" Hidden="true" />
+      <Field Name="SortOperationVersionProperty" Hidden="true" />
+      <Property Name="SpecialRecordsVersion" Hidden="true" />
+      <Field Name="SpecialRecordsVersionProperty" Hidden="true" />
+      <Property Name="StyleGenerator" Hidden="true" />
+      <Property Name="SummaryDefinitionsIfAllocated" Hidden="true" />
+      <Field Name="SummaryDescriptionMaskInGroupByProperty" Hidden="true" />
+      <Field Name="SummaryDescriptionMaskProperty" Hidden="true" />
+      <Property Name="SummaryDescriptionVisibilityResolved" Hidden="true" />
+      <Property Name="SupportDataErrorInfoResolved" Hidden="true" />
+      <Property Name="SupportDataErrorInfoResolvedDefault" Hidden="true" />
+      <Field Name="TagProperty" Hidden="true" />
+      <Property Name="TemplateDataRecord" Hidden="true" />
+      <Property Name="TemplateDataRecordCache" Hidden="true" />
+      <Property Name="TemplateGroupByRecord" Hidden="true" />
+      <Property Name="TemplateVersion" Hidden="true" />
+      <Field Name="TemplateVersionProperty" Hidden="true" />
+      <Field Name="ToolTipProperty" Hidden="true" />
+      <Property Name="UseCellPresenters" Hidden="true" />
+      <Method Name="VerifyAllPropertyDescriptorProviders" Hidden="true" />
+      <Method Name="VerifyAutoFitSettings" Hidden="true" />
+      <Method Name="VerifyLayoutManagers" Hidden="true" />
+      <Method Name="VerifyStyleGeneratorTemplates" Hidden="true" />
+      <Property Name="WrapsEnumerableObject" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DataPresenter.FieldLayout.LayoutPropertyDescriptorProvider" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FieldLayout.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.FieldLayout.FieldDescriptor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FieldLayout.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="Fields" Type="Infragistics.Windows.DataPresenter.Field" FixedFromPoint="true">
+      <Path>
+        <Point X="16.25" Y="1.401" />
+        <Point X="22" Y="1.401" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>vf/18fP2v25+X/ftv+Tvv733/x9Udd+Vn+//vJvfzf8=</HashCode>
+      <FileName>FieldLayout.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FieldSettings" />
+      <Property Name="Settings" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Fields" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.Field">
+    <Position X="22" Y="0.75" Width="3.25" />
+    <Members>
+      <Field Name="_actualFixedLocation" Hidden="true" />
+      <Field Name="_autoGenerated" Hidden="true" />
+      <Field Name="_autoSizeVersion" Hidden="true" />
+      <Field Name="_cachedCellTextConverterInfo" Hidden="true" />
+      <Field Name="_cachedCellValuePresenters" Hidden="true" />
+      <Field Name="_cachedCPLayoutManager" Hidden="true" />
+      <Field Name="_cachedDataType" Hidden="true" />
+      <Field Name="_cachedDataTypeUnderlying" Hidden="true" />
+      <Field Name="_cachedDefaultFilterOperandUIType" Hidden="true" />
+      <Field Name="_cachedDefaultFilterOperatorDefaultValue" Hidden="true" />
+      <Field Name="_cachedDefaultFilterOperatorDropDownItems" Hidden="true" />
+      <Field Name="_cachedDefaultFilterOperatorVisibility" Hidden="true" />
+      <Field Name="_cachedEditAsTypeResolved" Hidden="true" />
+      <Field Name="_cachedEditAsTypeResolvedUnderlying" Hidden="true" />
+      <Field Name="_cachedFixedLocation" Hidden="true" />
+      <Field Name="_cachedGroupByEvaluator" Hidden="true" />
+      <Field Name="_cachedHeight" Hidden="true" />
+      <Field Name="_cachedIsExpandable" Hidden="true" />
+      <Field Name="_cachedLabel" Hidden="true" />
+      <Field Name="_cachedLabelPresenters" Hidden="true" />
+      <Field Name="_cachedName" Hidden="true" />
+      <Field Name="_cachedVisibility" Hidden="true" />
+      <Field Name="_cachedWidth" Hidden="true" />
+      <Field Name="_cellElementKey" Hidden="true" />
+      <Field Name="_cellLayoutItem" Hidden="true" />
+      <Field Name="_cellPosition" Hidden="true" />
+      <Field Name="_converter" Hidden="true" />
+      <Field Name="_converterCulture" Hidden="true" />
+      <Field Name="_dataTypeExplicitySet" Hidden="true" />
+      <Field Name="_defaultLabel" Hidden="true" />
+      <Field Name="_explicitResizeInfo" Hidden="true" />
+      <Field Name="_fieldFlags" Hidden="true" />
+      <Field Name="_filterCellElementKey" Hidden="true" />
+      <Field Name="_hasPendingInitialAutoSize" Hidden="true" />
+      <Field Name="_ignoreFieldVisibilityOverrides" Hidden="true" />
+      <Field Name="_index" Hidden="true" />
+      <Field Name="_isExpandableByDefault" Hidden="true" />
+      <Field Name="_isFilterRecordCacheDirty" Hidden="true" />
+      <Field Name="_isGroupBy" Hidden="true" />
+      <Field Name="_isPrimary" Hidden="true" />
+      <Field Name="_isPropertyDescriptorInitialized" Hidden="true" />
+      <Field Name="_isScrollTip" Hidden="true" />
+      <Field Name="_labelElementKey" Hidden="true" />
+      <Field Name="_labelLayoutItem" Hidden="true" />
+      <Field Name="_labelLineCount" Hidden="true" />
+      <Field Name="_lastFieldLabel" Hidden="true" />
+      <Field Name="_layoutConstraint" Hidden="true" />
+      <Field Name="_layoutVersion" Hidden="true" />
+      <Field Name="_nameExplicitySet" Hidden="true" />
+      <Field Name="_navigationIndex" Hidden="true" />
+      <Field Name="_owner" Hidden="true" />
+      <Field Name="_selected" Hidden="true" />
+      <Field Name="_settings" Hidden="true" />
+      <Field Name="_sortStatus" Hidden="true" />
+      <Field Name="_templateCellIndex" Hidden="true" />
+      <Field Name="AbsoluteMinimumExtent" Hidden="true" />
+      <Property Name="AllowUnGrouping" Hidden="true" />
+      <Property Name="AutoSizeOptionsResolved" Hidden="true" />
+      <Property Name="AutoSizeScopeResolved" Hidden="true" />
+      <Property Name="AutoSizeVersion" Hidden="true" />
+      <Method Name="BumpLayoutItemVersion" Hidden="true" />
+      <Method Name="BumpVersion" Hidden="true" />
+      <Method Name="CacheDataType" Hidden="true" />
+      <Property Name="CellElementKey" Hidden="true" />
+      <Property Name="CellHeightResolvedInternal" Hidden="true" />
+      <Property Name="CellLayoutConstraint" Hidden="true" />
+      <Property Name="CellLayoutItem" Hidden="true" />
+      <Property Name="CellPresenterStyleResolved" Hidden="true" />
+      <Property Name="CellValuePresenterStyleResolved" Hidden="true" />
+      <Property Name="CellWidthResolvedInternal" Hidden="true" />
+      <Method Name="ClearUserResize" Hidden="true" />
+      <Method Name="Clone" Hidden="true" />
+      <Method Name="CoerceFixedLocation" Hidden="true" />
+      <Method Name="CoerceLabel" Hidden="true" />
+      <Field Name="ColumnProperty" Hidden="true" />
+      <Field Name="ColumnSpanProperty" Hidden="true" />
+      <Field Name="ConverterCultureProperty" Hidden="true" />
+      <Property Name="ConverterCultureResolved" Hidden="true" />
+      <Field Name="ConverterParameterProperty" Hidden="true" />
+      <Field Name="ConverterProperty" Hidden="true" />
+      <Method Name="ConvertValue" Hidden="true" />
+      <Method Name="CreateDefaultDataTable" Hidden="true" />
+      <Property Name="DataPresenter" Hidden="true" />
+      <Field Name="DataTypeProperty" Hidden="true" />
+      <Property Name="DataTypeUnderlying" Hidden="true" />
+      <Field Name="DEFAULT_DATA_TYPE" Hidden="true" />
+      <Field Name="DefaultCellClickAction" Hidden="true" />
+      <Property Name="DefaultCellHeight" Hidden="true" />
+      <Property Name="DefaultCellWidth" Hidden="true" />
+      <Field Name="DefaultLabelClickAction" Hidden="true" />
+      <Method Name="DirtyRecordFilterRelatedCache" Hidden="true" />
+      <Field Name="DisallowModificationViaClipboardProperty" Hidden="true" />
+      <Method Name="DoesPropertyMatch" Hidden="true" />
+      <Property Name="EditAsTypeResolvedUnderlying" Hidden="true" />
+      <Property Name="EditorStyleResolved" Hidden="true" />
+      <Property Name="ExplicitResizeInfo" Hidden="true" />
+      <Property Name="ExplicitResizeInfoIfAllocated" Hidden="true" />
+      <Field Name="FallbackDefaultHeight" Hidden="true" />
+      <Field Name="FallbackDefaultWidth" Hidden="true" />
+      <Property Name="FilterCellElementKey" Hidden="true" />
+      <Property Name="FilterEditAsTypeResolved" Hidden="true" />
+      <Property Name="FilterEditorTypeResolved" Hidden="true" />
+      <Field Name="FixedButtonVisibilityProperty" Hidden="true" />
+      <Field Name="FixedButtonVisibilityPropertyKey" Hidden="true" />
+      <Field Name="FixedFieldLocationScrollable" Hidden="true" />
+      <Field Name="FixedLocationProperty" Hidden="true" />
+      <Method Name="GetAllowCellVirtualizationResolved" Hidden="true" />
+      <Method Name="GetAutoFitWeight" Hidden="true" />
+      <Method Name="GetCellHeightResolvedHelper" Hidden="true" />
+      <Method Name="GetCellValuePresenter" Hidden="true" />
+      <Method Name="GetCellWidthResolvedHelper" Hidden="true" />
+      <Method Name="GetCPLayoutManager" Hidden="true" />
+      <Method Name="GetCurrentAutoSizeOptions" Hidden="true" />
+      <Method Name="GetDefaultDataForType" Hidden="true" />
+      <Method Name="GetDefaultHeight" Hidden="true" />
+      <Method Name="GetDefaultWidth" Hidden="true" />
+      <Method Name="GetEditAsTypeResolvedInternal" Hidden="true" />
+      <Method Name="GetFieldSettingsStyleResolved" Hidden="true" />
+      <Method Name="GetFlag" Hidden="true" />
+      <Method Name="GetIsEditingAllowed" Hidden="true" />
+      <Method Name="GetLabelHeightResolvedHelper" Hidden="true" />
+      <Method Name="GetLabelPresenter" Hidden="true" />
+      <Method Name="GetLabelWidthResolvedHelper" Hidden="true" />
+      <Method Name="GetResizeSize" Hidden="true" />
+      <Method Name="GetResolvedValue" Hidden="true" />
+      <Method Name="GetSummaryStringFormat" Hidden="true" />
+      <Method Name="GetWidthOrHeight" Hidden="true" />
+      <Property Name="GridPosition" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Property Name="IgnoreFieldVisibilityOverrides" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="InitializeDefaultLabel" Hidden="true" />
+      <Method Name="InitializeFilterCellEditor" Hidden="true" />
+      <Method Name="InitializeFrom" Hidden="true" />
+      <Method Name="InitializePropertyDescriptor" Hidden="true" />
+      <Property Name="InternalGroupByEvaluatorResolved" Hidden="true" />
+      <Method Name="InternalSelect" Hidden="true" />
+      <Property Name="InternalVersion" Hidden="true" />
+      <Field Name="InternalVersionProperty" Hidden="true" />
+      <Property Name="IsCellVirtualized" Hidden="true" />
+      <Property Name="IsEditAsTypeNumeric" Hidden="true" />
+      <Property Name="ISelectableItem.IsDraggable" Hidden="true" />
+      <Property Name="ISelectableItem.IsSelectable" Hidden="true" />
+      <Property Name="ISelectableItem.IsSelected" Hidden="true" />
+      <Property Name="ISelectableItem.IsTabStop" Hidden="true" />
+      <Property Name="IsExpandableByDefault" Hidden="true" />
+      <Field Name="IsExpandableProperty" Hidden="true" />
+      <Method Name="IsFilterCellEntryValid" Hidden="true" />
+      <Property Name="IsFilterCellVirtualized" Hidden="true" />
+      <Method Name="IsFixedLocationAllowed" Hidden="true" />
+      <Field Name="IsFixedProperty" Hidden="true" />
+      <Field Name="IsFixedPropertyKey" Hidden="true" />
+      <Field Name="IsFixedStateChangingProperty" Hidden="true" />
+      <Field Name="IsFixedStateChangingPropertyKey" Hidden="true" />
+      <Property Name="IsInLayout" Hidden="true" />
+      <Property Name="IsLabelVirtualized" Hidden="true" />
+      <Property Name="IsPropertyDescriptorInitialized" Hidden="true" />
+      <Field Name="IsSelectedProperty" Hidden="true" />
+      <Field Name="IsUnboundProperty" Hidden="true" />
+      <Field Name="IsUnboundPropertyKey" Hidden="true" />
+      <Property Name="IsVisibleInCellArea" Hidden="true" />
+      <Property Name="LabelElementKey" Hidden="true" />
+      <Property Name="LabelHeightResolvedInternal" Hidden="true" />
+      <Property Name="LabelLayoutConstraint" Hidden="true" />
+      <Property Name="LabelLayoutItem" Hidden="true" />
+      <Property Name="LabelLineCount" Hidden="true" />
+      <Field Name="LabelProperty" Hidden="true" />
+      <Property Name="LabelWidthResolvedInternal" Hidden="true" />
+      <Property Name="LastFieldLabelAccessed" Hidden="true" />
+      <Property Name="LayoutConstraint" Hidden="true" />
+      <Property Name="LayoutItemVersion" Hidden="true" />
+      <Field Name="NameProperty" Hidden="true" />
+      <Property Name="NavigationIndex" Hidden="true" />
+      <Method Name="OnCoerceIsSelected" Hidden="true" />
+      <Method Name="OnConverterChanged" Hidden="true" />
+      <Method Name="OnConverterCultureChanged" Hidden="true" />
+      <Method Name="OnCurrentViewChanged" Hidden="true" />
+      <Method Name="OnFieldLayoutTemplatesGenerated" Hidden="true" />
+      <Method Name="OnFixedLocationChanged" Hidden="true" />
+      <Method Name="OnLabelChanged" Hidden="true" />
+      <Method Name="OnNameChanged" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnPropertyDescriptorChanged" Hidden="true" />
+      <Method Name="OnRowOrColumnChange" Hidden="true" />
+      <Method Name="OnSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnValidateDataType" Hidden="true" />
+      <Method Name="OnValidateRowColumnSetting" Hidden="true" />
+      <Method Name="OnVisibilityChanged" Hidden="true" />
+      <Method Name="OnWidthHeightChanged" Hidden="true" />
+      <Method Name="PerformLabelClickAction" Hidden="true" />
+      <Method Name="PostDelayedInvalidation" Hidden="true" />
+      <Method Name="ProcessFieldSettingsPropertyChanged" Hidden="true" />
+      <Method Name="ProcessIsExpandableChanged" Hidden="true" />
+      <Method Name="ProcessSizeChange" Hidden="true" />
+      <Method Name="RaisePropertyChangedEventHelper" Hidden="true" />
+      <Method Name="ReleaseCellValuePresenter" Hidden="true" />
+      <Method Name="ReleaseCPLayoutManager" Hidden="true" />
+      <Method Name="ReleaseLabelPresenter" Hidden="true" />
+      <Field Name="RowProperty" Hidden="true" />
+      <Field Name="RowSpanProperty" Hidden="true" />
+      <Field Name="sampleData" Hidden="true" />
+      <Method Name="SetActualPosition" Hidden="true" />
+      <Method Name="SetFixedLocation" Hidden="true" />
+      <Method Name="SetFlag" Hidden="true" />
+      <Method Name="SetGridPositions" Hidden="true" />
+      <Method Name="SetSortingStatus" Hidden="true" />
+      <Property Name="SettingsIfAllocated" Hidden="true" />
+      <Field Name="SortStatusProperty" Hidden="true" />
+      <Field Name="SortStatusPropertyKey" Hidden="true" />
+      <Field Name="SummaryStringFormatsProperty" Hidden="true" />
+      <Property Name="SupportDataErrorInfoResolved" Hidden="true" />
+      <Property Name="SyncCellLabelHeight" Hidden="true" />
+      <Property Name="SyncCellLabelWidth" Hidden="true" />
+      <Field Name="TagProperty" Hidden="true" />
+      <Property Name="TemplateCellIndex" Hidden="true" />
+      <Field Name="ToolTipProperty" Hidden="true" />
+      <Method Name="ValidateRowColumnSpanSetting" Hidden="true" />
+      <Method Name="ValidateSummaryStringFormats" Hidden="true" />
+      <Method Name="VerifyFixedState" Hidden="true" />
+      <Method Name="VerifyLayoutVersion" Hidden="true" />
+      <Method Name="VerifyRecordFilterRelatedCache" Hidden="true" />
+      <Property Name="VisibilityInCellArea" Hidden="true" />
+      <Field Name="VisibilityProperty" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DataPresenter.Field.ResizeValues" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.Field.FieldResizeInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.Field.FieldGridPosition" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DataPresenter.Field.DefaultValueMarker" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="Infragistics.Windows.DataPresenter.Field.FieldFlags" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Infragistics.Windows.DataPresenter.Field.SizeChangeType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Field.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ud+6//2+/S7/+z2u/Y/vjf62dW/6l3+7ttW+f7L+0fk=</HashCode>
+      <FileName>Field.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Height" />
+      <Property Name="Settings" />
+      <Property Name="Width" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.FieldLayoutSettings">
+    <Position X="5" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="_cachedDataRecordSizingMode" Hidden="true" />
+      <Field Name="_cachedExpansionIndicatorDisplayMode" Hidden="true" />
+      <Field Name="_cachedHeaderPlacement" Hidden="true" />
+      <Field Name="_cachedHeaderPlacementInGroupBy" Hidden="true" />
+      <Field Name="_cachedLabelLocation" Hidden="true" />
+      <Field Name="_dataRecordCellAreaTemplateGrid" Hidden="true" />
+      <Field Name="AddNewRecordLocationProperty" Hidden="true" />
+      <Field Name="AllowAddNewProperty" Hidden="true" />
+      <Field Name="AllowClipboardOperationsProperty" Hidden="true" />
+      <Field Name="AllowDeleteProperty" Hidden="true" />
+      <Field Name="AllowFieldMovingProperty" Hidden="true" />
+      <Field Name="AllowRecordFixingProperty" Hidden="true" />
+      <Field Name="AutoArrangeCellsProperty" Hidden="true" />
+      <Field Name="AutoArrangeMaxColumnsProperty" Hidden="true" />
+      <Field Name="AutoArrangeMaxRowsProperty" Hidden="true" />
+      <Field Name="AutoArrangePrimaryFieldReservationProperty" Hidden="true" />
+      <Field Name="AutoFitModeProperty" Hidden="true" />
+      <Field Name="AutoGenerateFieldsProperty" Hidden="true" />
+      <Field Name="CalculationScopeProperty" Hidden="true" />
+      <Field Name="CopyFieldLabelsToClipboardProperty" Hidden="true" />
+      <Field Name="DataErrorDisplayModeProperty" Hidden="true" />
+      <Field Name="DataRecordCellAreaGridTemplateProperty" Hidden="true" />
+      <Field Name="DataRecordCellAreaStyleProperty" Hidden="true" />
+      <Field Name="DataRecordCellAreaStyleSelectorProperty" Hidden="true" />
+      <Property Name="DataRecordCellAreaTemplateGrid" Hidden="true" />
+      <Field Name="DataRecordPresenterStyleProperty" Hidden="true" />
+      <Field Name="DataRecordPresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="DataRecordSizingModeProperty" Hidden="true" />
+      <Field Name="DefaultColumnDefinitionProperty" Hidden="true" />
+      <Field Name="DefaultRowDefinitionProperty" Hidden="true" />
+      <Field Name="ExpansionIndicatorDisplayModeProperty" Hidden="true" />
+      <Field Name="FieldMovingMaxColumnsProperty" Hidden="true" />
+      <Field Name="FieldMovingMaxRowsProperty" Hidden="true" />
+      <Field Name="FilterActionProperty" Hidden="true" />
+      <Field Name="FilterClearButtonLocationProperty" Hidden="true" />
+      <Field Name="FilterRecordLocationProperty" Hidden="true" />
+      <Field Name="FilterUITypeProperty" Hidden="true" />
+      <Field Name="FixedFieldUITypeProperty" Hidden="true" />
+      <Field Name="FixedRecordLimitProperty" Hidden="true" />
+      <Field Name="FixedRecordSortOrderProperty" Hidden="true" />
+      <Field Name="FixedRecordUITypeProperty" Hidden="true" />
+      <Field Name="GroupBySummaryDisplayModeProperty" Hidden="true" />
+      <Field Name="HeaderLabelAreaStyleProperty" Hidden="true" />
+      <Field Name="HeaderPlacementInGroupByProperty" Hidden="true" />
+      <Field Name="HeaderPlacementProperty" Hidden="true" />
+      <Field Name="HeaderPrefixAreaDisplayModeProperty" Hidden="true" />
+      <Field Name="HeaderPrefixAreaStyleProperty" Hidden="true" />
+      <Field Name="HeaderPresenterStyleProperty" Hidden="true" />
+      <Field Name="HighlightAlternateRecordsProperty" Hidden="true" />
+      <Field Name="HighlightPrimaryFieldProperty" Hidden="true" />
+      <Method Name="IsAddNewRecordLocationValid" Hidden="true" />
+      <Method Name="IsAutoArrangeCellsValid" Hidden="true" />
+      <Method Name="IsAutoArrangePrimaryFieldReservationValid" Hidden="true" />
+      <Method Name="IsDataRecordSizingModeValid" Hidden="true" />
+      <Method Name="IsExpansionIndicatorDisplayModeValid" Hidden="true" />
+      <Method Name="IsHeaderPlacementInGroupByValid" Hidden="true" />
+      <Method Name="IsHeaderPlacementValid" Hidden="true" />
+      <Method Name="IsHighlightPrimaryFieldValid" Hidden="true" />
+      <Method Name="IsLabelLocationValid" Hidden="true" />
+      <Method Name="IsRecordSelectorExtentValid" Hidden="true" />
+      <Method Name="IsRecordSelectorLocationValid" Hidden="true" />
+      <Method Name="IsResizingModeValid" Hidden="true" />
+      <Method Name="IsSelectionTypeValid" Hidden="true" />
+      <Field Name="LabelLocationProperty" Hidden="true" />
+      <Field Name="MaxFieldsToAutoGenerateProperty" Hidden="true" />
+      <Field Name="MaxSelectedCellsProperty" Hidden="true" />
+      <Field Name="MaxSelectedRecordsProperty" Hidden="true" />
+      <Method Name="OnDataRecordSizingModeChanged" Hidden="true" />
+      <Method Name="OnExpansionIndicatorDisplayModeChanged" Hidden="true" />
+      <Method Name="OnFilterUITypeChanged" Hidden="true" />
+      <Method Name="OnFixedFieldUITypeChanged" Hidden="true" />
+      <Method Name="OnHeaderPlacementChanged" Hidden="true" />
+      <Method Name="OnHeaderPlacementInGroupByChanged" Hidden="true" />
+      <Method Name="OnLabelLocationChanged" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnSpecialRecordOrderChanged" Hidden="true" />
+      <Method Name="OnValidateMaxSelected" Hidden="true" />
+      <Field Name="RecordFilterScopeProperty" Hidden="true" />
+      <Field Name="RecordFiltersLogicalOperatorProperty" Hidden="true" />
+      <Field Name="RecordListControlStyleProperty" Hidden="true" />
+      <Field Name="RecordSelectorExtentProperty" Hidden="true" />
+      <Field Name="RecordSelectorLocationProperty" Hidden="true" />
+      <Field Name="RecordSelectorStyleProperty" Hidden="true" />
+      <Field Name="RecordSelectorStyleSelectorProperty" Hidden="true" />
+      <Field Name="RecordSeparatorLocationProperty" Hidden="true" />
+      <Field Name="ReevaluateFiltersOnDataChangeProperty" Hidden="true" />
+      <Method Name="ResetExcludedSettings" Hidden="true" />
+      <Field Name="ResizingModeProperty" Hidden="true" />
+      <Field Name="SelectionTypeCellProperty" Hidden="true" />
+      <Field Name="SelectionTypeFieldProperty" Hidden="true" />
+      <Field Name="SelectionTypeRecordProperty" Hidden="true" />
+      <Method Name="SpecialRecordOrder_PropertyChanged" Hidden="true" />
+      <Field Name="SpecialRecordOrderProperty" Hidden="true" />
+      <Field Name="SummaryDescriptionVisibilityProperty" Hidden="true" />
+      <Field Name="SupportDataErrorInfoProperty" Hidden="true" />
+      <Method Name="ValidateFieldMovingMaxRowColumns" Hidden="true" />
+      <Method Name="ValidateFixedRecordLimit" Hidden="true" />
+    </Members>
+    <AssociationLine Name="SupportDataErrorInfo" Type="Infragistics.Windows.DataPresenter.SupportDataErrorInfo" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.5" Y="6.625" />
+        <Point X="9.073" Y="6.625" />
+        <Point X="9.073" Y="6.625" />
+        <Point X="9.5" Y="6.625" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ZcsCHmAdNNZDMbVhOVgPmfADKYMLkALEJL7tZJ336b4=</HashCode>
+      <FileName>FieldLayoutSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AllowClipboardOperations" />
+      <Property Name="AutoFitMode" />
+      <Property Name="DataErrorDisplayMode" />
+      <Property Name="SupportDataErrorInfo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.FieldSettings">
+    <Position X="17.25" Y="17.75" Width="3.25" />
+    <Members>
+      <Field Name="_cachedAllowCellVirtualization" Hidden="true" />
+      <Field Name="_cachedAllowLabelVirtualization" Hidden="true" />
+      <Field Name="_cachedCellContentAlignment" Hidden="true" />
+      <Field Name="_cachedCellHeight" Hidden="true" />
+      <Field Name="_cachedCellMaxHeight" Hidden="true" />
+      <Field Name="_cachedCellMaxWidth" Hidden="true" />
+      <Field Name="_cachedCellMinHeight" Hidden="true" />
+      <Field Name="_cachedCellMinWidth" Hidden="true" />
+      <Field Name="_cachedCellVisibilityWhenGrouped" Hidden="true" />
+      <Field Name="_cachedCellWidth" Hidden="true" />
+      <Field Name="_cachedCollapseWhenEmpty" Hidden="true" />
+      <Field Name="_cachedEditAsType" Hidden="true" />
+      <Field Name="_cachedEditorStyle" Hidden="true" />
+      <Field Name="_cachedEditorStyleSelector" Hidden="true" />
+      <Field Name="_cachedEditorType" Hidden="true" />
+      <Field Name="_cachedFilterCellEditorStyle" Hidden="true" />
+      <Field Name="_cachedInvalidValueBehavior" Hidden="true" />
+      <Field Name="_cachedLabelHeight" Hidden="true" />
+      <Field Name="_cachedLabelMaxHeight" Hidden="true" />
+      <Field Name="_cachedLabelMaxWidth" Hidden="true" />
+      <Field Name="_cachedLabelMinHeight" Hidden="true" />
+      <Field Name="_cachedLabelMinWidth" Hidden="true" />
+      <Field Name="_cachedLabelTextAlignment" Hidden="true" />
+      <Field Name="_cachedLabelTextTrimming" Hidden="true" />
+      <Field Name="_cachedLabelTextWrapping" Hidden="true" />
+      <Field Name="_cachedLabelWidth" Hidden="true" />
+      <Field Name="AllowCellVirtualizationProperty" Hidden="true" />
+      <Field Name="AllowEditProperty" Hidden="true" />
+      <Field Name="AllowFixingProperty" Hidden="true" />
+      <Field Name="AllowGroupByProperty" Hidden="true" />
+      <Field Name="AllowHidingProperty" Hidden="true" />
+      <Field Name="AllowLabelVirtualizationProperty" Hidden="true" />
+      <Field Name="AllowRecordFilteringProperty" Hidden="true" />
+      <Field Name="AllowResizeProperty" Hidden="true" />
+      <Field Name="AllowSummariesProperty" Hidden="true" />
+      <Field Name="AutoSizeOptionsProperty" Hidden="true" />
+      <Field Name="AutoSizeScopeProperty" Hidden="true" />
+      <Field Name="CellClickActionProperty" Hidden="true" />
+      <Field Name="CellContentAlignmentProperty" Hidden="true" />
+      <Field Name="CellHeightProperty" Hidden="true" />
+      <Field Name="CellMaxHeightProperty" Hidden="true" />
+      <Field Name="CellMaxWidthProperty" Hidden="true" />
+      <Field Name="CellMinHeightProperty" Hidden="true" />
+      <Field Name="CellMinWidthProperty" Hidden="true" />
+      <Field Name="CellPresenterStyleProperty" Hidden="true" />
+      <Field Name="CellPresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="CellValuePresenterStyleProperty" Hidden="true" />
+      <Field Name="CellValuePresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="CellVisibilityWhenGroupedProperty" Hidden="true" />
+      <Field Name="CellWidthProperty" Hidden="true" />
+      <Method Name="CoerceDataValueChangedHistoryLimit" Hidden="true" />
+      <Field Name="CollapseWhenEmptyProperty" Hidden="true" />
+      <Field Name="DataValueChangedHistoryLimitProperty" Hidden="true" />
+      <Field Name="DataValueChangedNotificationsActiveProperty" Hidden="true" />
+      <Field Name="DataValueChangedScopeProperty" Hidden="true" />
+      <Field Name="EditAsTypeProperty" Hidden="true" />
+      <Field Name="EditorStyleProperty" Hidden="true" />
+      <Field Name="EditorStyleSelectorProperty" Hidden="true" />
+      <Field Name="EditorTypeProperty" Hidden="true" />
+      <Field Name="ExpandableFieldRecordExpansionModeProperty" Hidden="true" />
+      <Field Name="ExpandableFieldRecordHeaderDisplayModeProperty" Hidden="true" />
+      <Field Name="ExpandableFieldRecordPresenterStyleProperty" Hidden="true" />
+      <Field Name="ExpandableFieldRecordPresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="ExpandedCellStyleProperty" Hidden="true" />
+      <Field Name="ExpandedCellStyleSelectorProperty" Hidden="true" />
+      <Field Name="FilterCellEditorStyleProperty" Hidden="true" />
+      <Field Name="FilterCellValuePresenterStyleProperty" Hidden="true" />
+      <Field Name="FilterClearButtonVisibilityProperty" Hidden="true" />
+      <Field Name="FilterEvaluationTriggerProperty" Hidden="true" />
+      <Field Name="FilterOperandUITypeProperty" Hidden="true" />
+      <Field Name="FilterOperatorDefaultValueProperty" Hidden="true" />
+      <Field Name="FilterOperatorDropDownItemsProperty" Hidden="true" />
+      <Field Name="FilterStringComparisonTypeProperty" Hidden="true" />
+      <Field Name="GroupByComparerProperty" Hidden="true" />
+      <Field Name="GroupByEvaluatorProperty" Hidden="true" />
+      <Field Name="GroupByModeProperty" Hidden="true" />
+      <Field Name="GroupByRecordPresenterStyleProperty" Hidden="true" />
+      <Field Name="GroupByRecordPresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="InvalidValueBehaviorProperty" Hidden="true" />
+      <Method Name="IsCellClickActionValid" Hidden="true" />
+      <Method Name="IsCellContentAlignmentValid" Hidden="true" />
+      <Method Name="IsExpandableFieldRecordExpansionModeValid" Hidden="true" />
+      <Method Name="IsExpandableFieldRecordHeaderDisplayModeValid" Hidden="true" />
+      <Method Name="IsGroupByModeValid" Hidden="true" />
+      <Method Name="IsLabelClickActionValid" Hidden="true" />
+      <Method Name="IsSortComparisonTypeValid" Hidden="true" />
+      <Field Name="LabelClickActionProperty" Hidden="true" />
+      <Field Name="LabelHeightProperty" Hidden="true" />
+      <Field Name="LabelMaxHeightProperty" Hidden="true" />
+      <Field Name="LabelMaxWidthProperty" Hidden="true" />
+      <Field Name="LabelMinHeightProperty" Hidden="true" />
+      <Field Name="LabelMinWidthProperty" Hidden="true" />
+      <Field Name="LabelPresenterStyleProperty" Hidden="true" />
+      <Field Name="LabelPresenterStyleSelectorProperty" Hidden="true" />
+      <Field Name="LabelTextAlignmentProperty" Hidden="true" />
+      <Field Name="LabelTextTrimmingProperty" Hidden="true" />
+      <Field Name="LabelTextWrappingProperty" Hidden="true" />
+      <Field Name="LabelWidthProperty" Hidden="true" />
+      <Method Name="OnAllowCellVirtualizationChanged" Hidden="true" />
+      <Method Name="OnAllowFixingChanged" Hidden="true" />
+      <Method Name="OnAllowLabelVirtualizationChanged" Hidden="true" />
+      <Method Name="OnCellContentAlignmentChanged" Hidden="true" />
+      <Method Name="OnCellHeightChanged" Hidden="true" />
+      <Method Name="OnCellMaxHeightChanged" Hidden="true" />
+      <Method Name="OnCellMaxWidthChanged" Hidden="true" />
+      <Method Name="OnCellMinHeightChanged" Hidden="true" />
+      <Method Name="OnCellMinWidthChanged" Hidden="true" />
+      <Method Name="OnCellVisibilityWhenGroupedChanged" Hidden="true" />
+      <Method Name="OnCellWidthChanged" Hidden="true" />
+      <Method Name="OnCollapseWhenEmptyChanged" Hidden="true" />
+      <Method Name="OnDataValueChangedNotificationsActiveChanged" Hidden="true" />
+      <Method Name="OnDataValueChangedScopeChanged" Hidden="true" />
+      <Method Name="OnEditAsTypeChanged" Hidden="true" />
+      <Method Name="OnEditorStyleChanged" Hidden="true" />
+      <Method Name="OnEditorStyleSelectorChanged" Hidden="true" />
+      <Method Name="OnEditorTypeChanged" Hidden="true" />
+      <Method Name="OnFilterCellEditorStyleChanged" Hidden="true" />
+      <Method Name="OnInvalidValueBehaviorChanged" Hidden="true" />
+      <Method Name="OnLabelHeightChanged" Hidden="true" />
+      <Method Name="OnLabelMaxHeightChanged" Hidden="true" />
+      <Method Name="OnLabelMaxWidthChanged" Hidden="true" />
+      <Method Name="OnLabelMinHeightChanged" Hidden="true" />
+      <Method Name="OnLabelMinWidthChanged" Hidden="true" />
+      <Method Name="OnLabelTextAlignmentChanged" Hidden="true" />
+      <Method Name="OnLabelTextTrimmingChanged" Hidden="true" />
+      <Method Name="OnLabelTextWrappingChanged" Hidden="true" />
+      <Method Name="OnLabelWidthChanged" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="ResetExcludedSettings" Hidden="true" />
+      <Field Name="SortComparerProperty" Hidden="true" />
+      <Field Name="SortComparisonTypeProperty" Hidden="true" />
+      <Field Name="SummaryDisplayAreaProperty" Hidden="true" />
+      <Field Name="SummaryUITypeProperty" Hidden="true" />
+      <Field Name="SupportDataErrorInfoProperty" Hidden="true" />
+      <Method Name="ValidateCellPresenterStyle" Hidden="true" />
+      <Method Name="ValidateCellValuePresenterStyle" Hidden="true" />
+      <Method Name="ValidateEditorStyle" Hidden="true" />
+      <Method Name="ValidateEditorType" Hidden="true" />
+      <Method Name="ValidateFilterCellEditorStyle" Hidden="true" />
+      <Method Name="ValidateFilterCellValuePresenterStyle" Hidden="true" />
+      <Method Name="ValidateLabelPresenterStyle" Hidden="true" />
+      <Method Name="ValidatePixelValue" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <AssociationLine Name="AllowHiding" Type="Infragistics.Windows.DataPresenter.AllowFieldHiding" FixedToPoint="true">
+      <Path>
+        <Point X="17.25" Y="22.875" />
+        <Point X="15.5" Y="22.875" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="AutoSizeOptions" Type="Infragistics.Windows.DataPresenter.FieldAutoSizeOptions" FixedToPoint="true">
+      <Path>
+        <Point X="17.25" Y="24.5" />
+        <Point X="15.5" Y="24.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="AutoSizeScope" Type="Infragistics.Windows.DataPresenter.FieldAutoSizeScope" FixedFromPoint="true">
+      <Path>
+        <Point X="17.25" Y="26.002" />
+        <Point X="15.5" Y="26.002" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Height" Type="Infragistics.Windows.DataPresenter.FieldLength" FixedToPoint="true">
+      <Path>
+        <Point X="19.188" Y="17.75" />
+        <Point X="19.188" Y="6.057" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.791" Y="0.186" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Width" Type="Infragistics.Windows.DataPresenter.FieldLength">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.796" Y="0.183" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>nhzWrtRS1+0/2Rx5u8S2Y3TOPT0IA9RGd0Knpx65KMo=</HashCode>
+      <FileName>FieldSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AllowFixing" />
+      <Property Name="AllowHiding" />
+      <Property Name="AutoSizeOptions" />
+      <Property Name="AutoSizeScope" />
+      <Property Name="DataValueChangedScope" />
+      <Property Name="Height" />
+      <Property Name="Width" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.GroupByAreaMulti">
+    <Position X="0.75" Y="22" Width="2.25" />
+    <Members>
+      <Field Name="_fieldLayoutInfos" Hidden="true" />
+      <Field Name="_readOnlyFieldLayoutInfos" Hidden="true" />
+      <Method Name="CalculateOffsets" Hidden="true" />
+      <Method Name="ClearFieldLayoutInfo" Hidden="true" />
+      <Method Name="CoerceFieldLayoutOffsetX" Hidden="true" />
+      <Method Name="CoerceFieldLayoutOffsetY" Hidden="true" />
+      <Method Name="CoerceFieldOffsetX" Hidden="true" />
+      <Method Name="CoerceFieldOffsetY" Hidden="true" />
+      <Method Name="CompareFieldLayouts" Hidden="true" />
+      <Field Name="ConnectorLinePenProperty" Hidden="true" />
+      <Field Name="DefaultFieldLayoutOffsetXCompact" Hidden="true" />
+      <Field Name="DefaultFieldLayoutOffsetXFull" Hidden="true" />
+      <Field Name="DefaultFieldLayoutOffsetYCompact" Hidden="true" />
+      <Field Name="DefaultFieldLayoutOffsetYFull" Hidden="true" />
+      <Field Name="DefaultFieldOffsetX" Hidden="true" />
+      <Field Name="DefaultFieldOffsetY" Hidden="true" />
+      <Field Name="FieldLayoutDescriptionTemplateProperty" Hidden="true" />
+      <Field Name="FieldLayoutOffsetXProperty" Hidden="true" />
+      <Field Name="FieldLayoutOffsetYProperty" Hidden="true" />
+      <Field Name="FieldLayoutOrientationProperty" Hidden="true" />
+      <Field Name="FieldLayoutOrientationPropertyKey" Hidden="true" />
+      <Field Name="FieldOffsetXProperty" Hidden="true" />
+      <Field Name="FieldOffsetYProperty" Hidden="true" />
+      <Method Name="GetHasOffset" Hidden="true" />
+      <Method Name="GroupByAreaMulti" Hidden="true" />
+      <Field Name="HasOffsetXProperty" Hidden="true" />
+      <Field Name="HasOffsetXPropertyKey" Hidden="true" />
+      <Field Name="HasOffsetYProperty" Hidden="true" />
+      <Field Name="HasOffsetYPropertyKey" Hidden="true" />
+      <Method Name="InitializeDataPresenter" Hidden="true" />
+      <Field Name="IsConnectorLineTargetProperty" Hidden="true" />
+      <Field Name="IsFirstInListProperty" Hidden="true" />
+      <Field Name="IsFirstInListPropertyKey" Hidden="true" />
+      <Field Name="IsLastInListProperty" Hidden="true" />
+      <Field Name="IsLastInListPropertyKey" Hidden="true" />
+      <Field Name="OffsetProperty" Hidden="true" />
+      <Field Name="OffsetPropertyKey" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnFieldLayoutOffsetChanged" Hidden="true" />
+      <Method Name="OnFieldOffsetChanged" Hidden="true" />
+      <Method Name="OnOverallSortVersionChanged" Hidden="true" />
+      <Method Name="OnStyleVersionNumberChanged" Hidden="true" />
+      <Method Name="OnVisualParentChanged" Hidden="true" />
+      <Field Name="OverallSortVersionProperty" Hidden="true" />
+      <Method Name="SynchronizeFieldLayouts" Hidden="true" />
+      <Method Name="ValidateOffset" Hidden="true" />
+      <Method Name="ValidateOffsetAllowNegative" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEEFEwNkBDJAIQgBhVsJIQACEgAAASAwAABACQEICHo=</HashCode>
+      <FileName>GroupByAreaMulti.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Infragistics.Windows.DataPresenter.FieldLength">
+    <Position X="19" Y="2.75" Width="1.5" />
+    <Members>
+      <Field Name="_auto" Hidden="true" />
+      <Field Name="_empty" Hidden="true" />
+      <Field Name="_initialAuto" Hidden="true" />
+      <Field Name="_unit" Hidden="true" />
+      <Field Name="_value" Hidden="true" />
+      <Property Name="Empty" Hidden="true" />
+      <Field Name="EmptyValue" Hidden="true" />
+      <Method Name="FieldLength" Hidden="true" />
+      <Property Name="IsAnyAuto" Hidden="true" />
+      <Property Name="IsEmpty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABBAAAAAAAAwAAAEgAIAAhAIAAAABIQgAAIgACAAAuI=</HashCode>
+      <FileName>FieldLength.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Enum Name="Infragistics.Windows.DataPresenter.AllowClipboardOperations">
+    <Position X="9.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQABAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAACAEAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.AutoFitMode">
+    <Position X="9.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAhEAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.DataErrorDisplayMode">
+    <Position X="9.5" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAIAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAEAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.SupportDataErrorInfo">
+    <Position X="9.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAKAIAAAAAAAAAAAAAAAGAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.AllowFieldFixing">
+    <Position X="14" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAgAAAAAAIAAAAIAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.AllowFieldHiding">
+    <Position X="14" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAIAAgAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.FieldAutoSizeOptions">
+    <Position X="14" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAEAAAAAAAAAAAAAAAAgAAIAAAAkAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.FieldAutoSizeScope">
+    <Position X="14" Y="25.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAQAIAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.DataValueChangedScope">
+    <Position X="14" Y="27.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.GroupByAreaMode">
+    <Position X="5" Y="19" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAIA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.GroupByAreaLocation">
+    <Position X="5" Y="20.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

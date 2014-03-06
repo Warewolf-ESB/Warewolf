@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Exception_ValueMustBePositive" xml:space="preserve">
+    <value>値 '{0}' は {1} プロパティの有効な範囲外です。割り当てられる値は正の数である必要があります。</value>
+  </data>
+  <data name="Exception_DocumentNotOpen" xml:space="preserve">
+    <value>ドキュメントは開かれていません。StartDocument メソッドを使用すると、文書を開始します。</value>
+  </data>
+  <data name="Exception_InvalidCulture" xml:space="preserve">
+    <value>値 '{0}' はローカル コンピューターに有効なカルチャー名ではありません。</value>
+  </data>
+  <data name="Exception_ParagraphNotClosed" xml:space="preserve">
+    <value>開いている段落を閉じる必要があります。各 StartParagraph メソッドの呼び出しは EndParagraph メソッドの呼び出しと均等に保つ必要があります。</value>
+  </data>
+  <data name="Exception_ParagraphNotClosedSectionStarted" xml:space="preserve">
+    <value>セクションは定義されませんでした。開いている段落を閉じる必要があります。ドキュメントが開かれていますが、開かれている段落がない場合のみにセクションを定義することができます。</value>
+  </data>
+  <data name="Exception_ParagraphNotClosedTableStarted" xml:space="preserve">
+    <value>テーブルを開始できませんでした。開いている段落を閉じる必要があります。テーブルは他のテーブルのセルの入れ子にすることはできますが、段落を入り子にすることができません。</value>
+  </data>
+  <data name="Exception_ParagraphNotClosedTableRowStarted" xml:space="preserve">
+    <value>テーブル行を開始できませんでした。開いている段落を閉じる必要があります。段落を閉じるために、EndParagraph メソッドを使用します。</value>
+  </data>
+  <data name="Exception_ParagraphNotClosedTableCellStarted" xml:space="preserve">
+    <value>テーブル セルを開始できませんでした。開いている段落を閉じる必要があります。段落を閉じるために、EndParagraph メソッドを使用します。</value>
+  </data>
+  <data name="Exception_ParagraphNotOpen" xml:space="preserve">
+    <value>開いている段落がないため、操作を実行できません。段落を開くために、StartParagraph メソッドを使用します。</value>
+  </data>
+  <data name="Exception_PropertyValueOutOfRange" xml:space="preserve">
+    <value>値 {0} は範囲外です。'{1}' プロパティに設定可能な値は、{2} から {3} ({4}) までです。</value>
+  </data>
+  <data name="Exception_WriterError" xml:space="preserve">
+    <value>XmlWriter で例外が発生しました。</value>
+  </data>
+  <data name="Exception_TableNotOpen" xml:space="preserve">
+    <value>開いているテーブルがないため、操作を実行できません。テーブルを開くために、StartTable メソッドを使用します。</value>
+  </data>
+  <data name="Exception_TableNotClosed" xml:space="preserve">
+    <value>開いているテーブルを閉じる必要があります。各 StartTable メソッドの呼び出しは EndTable メソッドの呼び出しと均等を保つ必要があります。</value>
+  </data>
+  <data name="Exception_RowNotClosed" xml:space="preserve">
+    <value>開いているテーブル行を閉じる必要があります。各 StartTableRow メソッドの呼び出しは EndTableRow メソッドの呼び出しと一致する必要があります。</value>
+  </data>
+  <data name="Exception_NestedRow" xml:space="preserve">
+    <value>テーブル行を追加できませんでした。閉じられていないテーブル行があり、入れ子になったテーブル行はサポートされません。開いているテーブル行を閉じるために EndTableRow メソッドを使用します。</value>
+  </data>
+  <data name="Exception_RowNotOpen" xml:space="preserve">
+    <value>開いているテーブル行がないため、操作を実行できません。テーブル行を開くために、StartTableRow メソッドを使用します。</value>
+  </data>
+  <data name="Exception_NestedParagraph" xml:space="preserve">
+    <value>段落を開けません。開いている段落を閉じる必要があります。入れ子になった段落はサポートされません。</value>
+  </data>
+  <data name="Exception_NestedTable" xml:space="preserve">
+    <value>テーブルを開けません。開いているテーブルを閉じる必要があります。入れ子になったテーブルはサポートされますが、親テーブルのテーブル セルの中に挿入する必要があります。</value>
+  </data>
+  <data name="Exception_CellNotClosed" xml:space="preserve">
+    <value>開いているテーブル セルを閉じる必要があります。各 StartTableCell メソッドの呼び出しは EndTableCell メソッドの呼び出しと一致する必要があります。</value>
+  </data>
+  <data name="Exception_NestedCell" xml:space="preserve">
+    <value>閉じられていないテーブル セルがあり、入れ子になったテーブル セルはサポートされないため、テーブル セルを追加できませんでした。開いているテーブル セルを閉じるために、EndTableCell メソッドを使用します。</value>
+  </data>
+  <data name="Exception_CellNotOpen" xml:space="preserve">
+    <value>開いているテーブル セルがないため、操作を実行できません。テーブル セルを開くために StartTableCell メソッドを使用します。</value>
+  </data>
+  <data name="Exception_PackageFactoryNullOnCLR2" xml:space="preserve">
+    <value>.NET Framework 2.0 で実行するときに、データのパッケージを処理するために IPackageFactory 実装を提供する必要があります。.NET Framework 3.0 以上のフレームワークを使用する場合は、Infragistics3.Documents.IO アセンブリを使用してください。パッケージ化は WindowsBase クラスで処理されます。</value>
+  </data>
+  <data name="Exception_AssociatedWithDifferentWriter" xml:space="preserve">
+    <value>割り当てられているインスタンスが別のライターで作成されているため、このオブジェクトに割り当てられません。</value>
+  </data>
+  <data name="Exception_HeaderWriterError" xml:space="preserve">
+    <value>セクション ヘッダーにコンテンツを書き込むときに例外が発生しました。詳細については、InnerException を参照してください。</value>
+  </data>
+  <data name="Exception_FooterWriterError" xml:space="preserve">
+    <value>セクションのフッターにコンテンツを書き込むときに、例外が発生されました。詳細については、InnerException を参照してください。</value>
+  </data>
+  <data name="Exception_DocumentClosureError" xml:space="preserve">
+    <value>ドキュメントを閉じるときに例外が発生しました。詳細については、InnerException を参照してください。</value>
+  </data>
+  <data name="Exception_HeaderFooterWriterClosureError" xml:space="preserve">
+    <value>ヘッダーまたはフッターを閉じるときに例外が発生しました。詳細については、InnerException を参照してください。</value>
+  </data>
+  <data name="Exception_HeaderFooterWriterNotClosed" xml:space="preserve">
+    <value>ドキュメント ライターは閉じられました。ヘッダーまたはフッター ライターも閉じる必要があります。ドキュメント ライターを閉じるか破棄する前に、ヘッダーまたはフッター ライターを閉じる必要があります。</value>
+  </data>
+  <data name="Exception_MissingHyperlinkAddress" xml:space="preserve">
+    <value>ハイパーリンクに有効なアドレスを設定する必要があります。</value>
+  </data>
+  <data name="Exception_AddHyperlink_BadUri" xml:space="preserve">
+    <value>値 '{0}' を有効な URI として指定できませんでした。</value>
+  </data>
+  <data name="Exception_RotatableShape_Rotation" xml:space="preserve">
+    <value>値は -180 から 180 までの範囲に設定する必要があります。</value>
+  </data>
+  <data name="Exception_RowClosedNoCell" xml:space="preserve">
+    <value>テーブル セルを含まないため、テーブル行は閉じられませんでした。テーブル行は 1 つ以上のテーブル セルを含む必要があります。</value>
+  </data>
+  <data name="Exception_CellNotClosedTableClosed" xml:space="preserve">
+    <value>テーブルを閉じることができません。開いているテーブル セルを閉じてください。テーブル セルを閉じるために、EndTableCell メソッドを使用します。</value>
+  </data>
+  <data name="Exception_RowNotClosedTableClosed" xml:space="preserve">
+    <value>テーブルを閉じることができません。開いているテーブル行を閉じる必要があります。テーブル行を閉じるために、EndTableRow メソッドを使用します。</value>
+  </data>
+  <data name="WordDocumentWriter_TooManyColumns" xml:space="preserve">
+    <value>テーブルは {0} 列を含むことはできません。テーブルに 1 ~ {1} 列を含む必要があります。</value>
+  </data>
+  <data name="Exception_HeaderFooterWriterNotOpened" xml:space="preserve">
+    <value>ドキュメント ライターは閉じられましたが、作成したヘッダーまたはフッター ライターが開かれていません。作成したヘッダーまたはフッター ライターを開いてから適切に閉じる必要があります。</value>
+  </data>
+  <data name="Exception_PaddingTextParseFailedFormat" xml:space="preserve">
+    <value>指定した文字列 '{0}' を Padding オブジェクトに変換することはできません。パディングを「left, top, right, bottom」書式に指定する必要があります。</value>
+  </data>
+  <data name="Exception_CellOpenSectionStarted" xml:space="preserve">
+    <value>テーブル セルが開いているため、セクションは定義されませんでした。セクションは、ルート レベルのコンテンツ ブロックのみに定義できます。</value>
+  </data>
+  <data name="Exception_RowOpenSectionStarted" xml:space="preserve">
+    <value>テーブル行が開いているため、セクションは定義されませんでした。セクションは、ルート レベルのコンテンツ ブロックのみに定義できます。</value>
+  </data>
+  <data name="Exception_TableOpenSectionStarted" xml:space="preserve">
+    <value>テーブルが開いているため、セクションを定義できませんでした。セクションは、ルート レベルのコンテンツ ブロックのみに定義できます。</value>
+  </data>
+  <data name="Exception_SectionProperties_MaxPageSize" xml:space="preserve">
+    <value>指定した値 {0} は範囲外です。文書セクションの最大ページ サイズは (22" x 22") です。</value>
+  </data>
+  <data name="Exception_NoImageEncoder" xml:space="preserve">
+    <value>Infragistics.Imaging.IImageEncoder 実装が ImageEncoder プロパティに割り当てられていないため、画像を文書に追加することができません。Silverlight ランタイムは画像情報のエンコード サポートを提供しないため、画像情報をシリアル化するために、WordDocumentWriter は IImageEncoder 実装への参照が必要です。</value>
+  </data>
+</root>

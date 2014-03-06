@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <Unrecognized>
+    </Unrecognized>
+    <Recognized>
+      <Word>Infragistics</Word>
+      <Word>Draggable</Word>
+      <Word>Virtualizing</Word>
+			<Word>Xam</Word>
+			<Word>Defaultable</Word>
+      <Word>Sortable</Word>
+			<Word>Unsort</Word>
+    </Recognized>
+    <Deprecated>
+    </Deprecated>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>v</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>

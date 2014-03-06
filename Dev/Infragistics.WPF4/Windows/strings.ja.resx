@@ -1,0 +1,1076 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutDialogLink2Header" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody2" xml:space="preserve">
+    <value>コンポーネントのレンダリングを全てをカスタマイズできます。</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody3" xml:space="preserve">
+    <value>キーストロークを完全に制御できます。</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody1" xml:space="preserve">
+    <value>コンポーネントのルック アンド フィールを制御できます。</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionBeta" xml:space="preserve">
+    <value>ベータ版</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionUnknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="LE_NotSupportedException_1" xml:space="preserve">
+    <value>バージョン情報ダイアログは製品版 インフラジスティックス コントロールでのみ使用できます。</value>
+  </data>
+  <data name="LE_NotSupportedException_0" xml:space="preserve">
+    <value>バージョン情報ダイアログは、インフラジスティックス コントロールでのみ使用できます。</value>
+  </data>
+  <data name="AboutDialogVisitUsAtHeader" xml:space="preserve">
+    <value>開発元:</value>
+  </data>
+  <data name="UltraPropertyPageDialogButtonCancel" xml:space="preserve">
+    <value>キャンセル(&amp;C)</value>
+  </data>
+  <data name="UltraPropertyPageDialogButtonOk" xml:space="preserve">
+    <value>OK(&amp;O)</value>
+  </data>
+  <data name="LicenseExceptionUnlicensed" xml:space="preserve">
+    <value>製品版ではありません。</value>
+  </data>
+  <data name="LE_ArgumentException_18" xml:space="preserve">
+    <value>codePrefix</value>
+  </data>
+  <data name="LE_ArgumentException_19" xml:space="preserve">
+    <value>CD キーは無効です。</value>
+  </data>
+  <data name="LicenseExceptionBetaExpired" xml:space="preserve">
+    <value>{0} ベータ版の試用期限は {1} です。</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsSummary" xml:space="preserve">
+    <value>インフラジスティックス WebForms コンポーネントは選りすぐりの機能とコンポーネントを提供し、最先端の魅力的な Web サイトの作成を可能にします。</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle" xml:space="preserve">
+    <value>全てのインフラジスティックス NetAdvantage for Windows Forms コンポーネントは以下を含みます:</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle2" xml:space="preserve">
+    <value>描画フィルター</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle3" xml:space="preserve">
+    <value>キーの割り当て</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle1" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="UltraComponentDesignerVerbAbout" xml:space="preserve">
+    <value>バージョン情報</value>
+  </data>
+  <data name="AboutDialogLink2URL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LicenseExceptionGracePeriodExpired" xml:space="preserve">
+    <value>{0} {1} この製品は製品アクティベーション ウィザードを使ってアクティベートする必要があります。</value>
+  </data>
+  <data name="AboutDialogProductInformationHeader" xml:space="preserve">
+    <value>製品情報</value>
+  </data>
+  <data name="LicensedProductTrialPeriodPrompt" xml:space="preserve">
+    <value>この {2} トライアル版は {0} 日間の使用後、または {1} 週間が経過した時点で期限が切れます。</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle2" xml:space="preserve">
+    <value>Cascading Style Sheets</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle3" xml:space="preserve">
+    <value>強力なオブジェクトモデル</value>
+  </data>
+  <data name="LDR_About_InGrace" xml:space="preserve">
+    <value>ライセンス - アクティベーションの猶予期間中です。</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle1" xml:space="preserve">
+    <value>DHTML</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration1" xml:space="preserve">
+    <value>アクティベーション猶予有効期限切れ</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration6" xml:space="preserve">
+    <value>無効なライセンス情報</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration7" xml:space="preserve">
+    <value>ライセンス情報不足</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration4" xml:space="preserve">
+    <value>{0} 日間または {1} 週間使用可能</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration5" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration8" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration9" xml:space="preserve">
+    <value>製品のインストールが不完全</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody3" xml:space="preserve">
+    <value>迅速で簡単なプログラミング</value>
+  </data>
+  <data name="LDR_About_GraceExpired" xml:space="preserve">
+    <value>ライセンス - アクティベーション猶予期間が過ぎました。</value>
+  </data>
+  <data name="AboutDialogStatusHeader" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsSummary" xml:space="preserve">
+    <value>インフラジスティックスの各種 Windowsフォームのコンポーネントは、堅牢性と整合性を備えたオブジェクトモデルを提供するプレゼンテーション層フレームワークを使用しています。</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration3" xml:space="preserve">
+    <value>ベータ有効期限切れ</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionTrialExpired" xml:space="preserve">
+    <value>トライアル有効期限切れ</value>
+  </data>
+  <data name="LicenseExceptionIncomplete" xml:space="preserve">
+    <value>ライセンス情報が不十分です</value>
+  </data>
+  <data name="LicenseExceptionTrialExpired" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="AboutDialogProductKeyHeader" xml:space="preserve">
+    <value>製品キー</value>
+  </data>
+  <data name="AboutDialogDialogTitle" xml:space="preserve">
+    <value>バージョン情報 {0}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration10" xml:space="preserve">
+    <value>セキュリティ権限不足</value>
+  </data>
+  <data name="LicenseExceptionInformationNotFound" xml:space="preserve">
+    <value>ライセンス情報が見つかりません</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionTrial" xml:space="preserve">
+    <value>トライアル版</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle" xml:space="preserve">
+    <value>全てのインフラジスティックス WebForms コンポーネントは以下をサポートします:</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionLicensed" xml:space="preserve">
+    <value>製品版</value>
+  </data>
+  <data name="LE_NotSupportedException_17" xml:space="preserve">
+    <value>UltraLicenseAttributeBase は、インフラジスティックス コンポーネントでのみ使用できます。</value>
+  </data>
+  <data name="LicenseExceptionInvalidCDKey" xml:space="preserve">
+    <value>ライセンス情報が無効です。</value>
+  </data>
+  <data name="AboutDialogExpirationHeader" xml:space="preserve">
+    <value>有効期限</value>
+  </data>
+  <data name="LicensedProductActivationGracePrompt" xml:space="preserve">
+    <value>{2} の非アクティベート版の試用期間は {0} 日間の使用後、または {1} 週間が経過した時点で切れます。この製品は製品アクティベーションウィザードを使ってアクティベートする必要があります。</value>
+  </data>
+  <data name="AboutDialogOkCaption" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="AboutDialogVersionHeader" xml:space="preserve">
+    <value>バージョン</value>
+  </data>
+  <data name="AboutDialogRegisteredToHeader" xml:space="preserve">
+    <value>登録者</value>
+  </data>
+  <data name="LicensedProductPromptDialogTitle" xml:space="preserve">
+    <value>Infragistics {0}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration2" xml:space="preserve">
+    <value>トライアル有効期限切れ</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionBetaExpired" xml:space="preserve">
+    <value>ベータ有効期限切れ</value>
+  </data>
+  <data name="LicenseExceptionSecurityPermission" xml:space="preserve">
+    <value>ライセンスのステータスを調べるのに必要なセキュリティ権限がありません。</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody2" xml:space="preserve">
+    <value>完全で拡張性にすぐれた多彩なルック アンド フィールを作成可能</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody1" xml:space="preserve">
+    <value>クライアント サイドの拡張された機能及び動作</value>
+  </data>
+  <data name="AboutDialogLink2URLDisplayText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LicenseExceptionUnlicensedProgram" xml:space="preserve">
+    <value>このプログラムはライセンスのない {0} のトライアル版で作成されています。アプリケーションの開発者またはベンダにお問い合わせください。</value>
+  </data>
+  <data name="DesignTime_SampleData_String" xml:space="preserve">
+    <value>テキスト</value>
+  </data>
+  <data name="LE_ArgumentException_5" xml:space="preserve">
+    <value>無効な AssemblyResourceSetLoaderType。</value>
+  </data>
+  <data name="LE_ArgumentException_1" xml:space="preserve">
+    <value>コンポーネントは、DataRow でなければなりません。</value>
+  </data>
+  <data name="LE_ArgumentException_2" xml:space="preserve">
+    <value>コンポーネントは、XMLNode でなければなりません。</value>
+  </data>
+  <data name="LE_ArgumentException_3" xml:space="preserve">
+    <value>指定した配列は、全ての要素をコピーできる十分な大きさがありません。</value>
+  </data>
+  <data name="LE_ArgumentException_4" xml:space="preserve">
+    <value>文字列を ValueBase 派生クラスに変換できません。文字列の値: {0}</value>
+  </data>
+  <data name="LE_ArgumentNullException_1" xml:space="preserve">
+    <value>XamCarouselPanel = null 付き CarouselPanelItem を作成できません。</value>
+  </data>
+  <data name="LE_ArgumentNullException_2" xml:space="preserve">
+    <value>SelectionStrategyBase コンストラクタの SelectionHost。</value>
+  </data>
+  <data name="LE_ArgumentNullException_3" xml:space="preserve">
+    <value>AutoScrollManager コンストラクタの SelectionStrategy。</value>
+  </data>
+  <data name="LE_ArgumentNullException_4" xml:space="preserve">
+    <value>AutoScrollManager コンストラクタの MouseEventArgs。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_1" xml:space="preserve">
+    <value>要因は、2 以下にできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_2" xml:space="preserve">
+    <value>増加要因は、0.0f と 1.0f の間に限定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_3" xml:space="preserve">
+    <value>新しいカウントは、現在のカウントより少なくできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_4" xml:space="preserve">
+    <value>カウントは、正の数である必要があります。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_5" xml:space="preserve">
+    <value>ResizerBarWidth は、 &gt;= 1.0 である必要があります。</value>
+  </data>
+  <data name="LE_ValueCannotBeNegative" xml:space="preserve">
+    <value>値は、正の数である必要があります。</value>
+  </data>
+  <data name="LE_Exception_1" xml:space="preserve">
+    <value>{0} タイプのオブジェクトだけが、このローテーターに追加できます。</value>
+  </data>
+  <data name="LE_InvalidOperationException_1" xml:space="preserve">
+    <value>列挙体は、使い果たされました。</value>
+  </data>
+  <data name="LE_InvalidOperationException_2" xml:space="preserve">
+    <value>カウントは正の値である必要があります。</value>
+  </data>
+  <data name="LE_InvalidOperationException_3" xml:space="preserve">
+    <value>列挙体は、スタートしていません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_4" xml:space="preserve">
+    <value>列挙体は、終了しました。</value>
+  </data>
+  <data name="LE_InvalidOperationException_5" xml:space="preserve">
+    <value>この制約要因は、PopupResizerDecorator の子孫でなければなりません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_6" xml:space="preserve">
+    <value>リサイズの制約は、FrameworkElement でのみ設定できます。</value>
+  </data>
+  <data name="LE_LicenseException_1" xml:space="preserve">
+    <value>パブリック キーは、Infragistics ではありません。</value>
+  </data>
+  <data name="LE_LicenseException_2" xml:space="preserve">
+    <value>ライセンスの属性が見つかりませんでした。</value>
+  </data>
+  <data name="LE_LicenseException_3" xml:space="preserve">
+    <value>ライセンス アセンブリを見つけることができません。</value>
+  </data>
+  <data name="LE_LicenseException_4" xml:space="preserve">
+    <value>ライセンスキーが無効です。</value>
+  </data>
+  <data name="LE_NotSupportedException_2" xml:space="preserve">
+    <value>ローテーターへのテキストの追加は、サポートされていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_3" xml:space="preserve">
+    <value>StyleSelectorHelperBase ターゲットは、FrameworkContentElement または FrameworkElement である必要があります。</value>
+  </data>
+  <data name="LE_NotSupportedException_4" xml:space="preserve">
+    <value>{0} に異なるストップ タイプを追加できません。</value>
+  </data>
+  <data name="LE_NotSupportedException_5" xml:space="preserve">
+    <value>このコンバータは、バック変換をサポートしていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_6" xml:space="preserve">
+    <value>このコンバーターは、ブラシへの変換のみをサポートしています。{0} タイプは、サポートしていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_7" xml:space="preserve">
+    <value>{0} に異なるストップ タイプを追加できません。</value>
+  </data>
+  <data name="LE_NotSupportedException_8" xml:space="preserve">
+    <value>StartValue および EndValue は、{0} で同じタイプである必要があります。</value>
+  </data>
+  <data name="LE_NotSupportedException_9" xml:space="preserve">
+    <value>このコンバーターは、ブラシへの変換のみをサポートしています。{0} タイプは、サポートしていません。</value>
+  </data>
+  <data name="LE_ArgumentException_10" xml:space="preserve">
+    <value>itemIndex は、項目配列の境界の外側です。</value>
+  </data>
+  <data name="LE_ArgumentException_6" xml:space="preserve">
+    <value>テーマは、'{0}' は登録されていません。ThemeLoader が、XAMLからインスタンス化している場合は、'TypeInThemeAssembly' プロパティを参照されるテーマを含むテーマ アセンブリからタイプに設定するする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_7" xml:space="preserve">
+    <value>'grouping' パラメタの名前は、長さがゼロの文字列にすることはできません。</value>
+  </data>
+  <data name="LE_ArgumentException_8" xml:space="preserve">
+    <value>この特別な予約値でテーマを登録できません。</value>
+  </data>
+  <data name="LE_ArgumentException_9" xml:space="preserve">
+    <value>この特別な 'all groupings' 値でグルーピングを登録できません。</value>
+  </data>
+  <data name="LE_ArgumentException_20" xml:space="preserve">
+    <value>この配列の要素は、null に設定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_21" xml:space="preserve">
+    <value>配列は、少なくとも 1 要素ある必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_22" xml:space="preserve">
+    <value>IEnumerable パラメータは、文字列にできません。</value>
+  </data>
+  <data name="LE_NotSupportedException_10" xml:space="preserve">
+    <value>ソースとターゲットのプロパティ タイプに互換性がありません。</value>
+  </data>
+  <data name="LE_NotSupportedException_11" xml:space="preserve">
+    <value>メソッドはサポートされていません。このコレクションは、読み取り専用です。</value>
+  </data>
+  <data name="LE_NotSupportedException_12" xml:space="preserve">
+    <value>XamCarouselPanel は、CarouselPanelItem でない子要因を見つけました。XamCarouselPanel は、独立型のパネルや XamCarouselListBox の ItemsPanel としてのみ使用できます。他の使用は、サポートされていません。</value>
+  </data>
+  <data name="CloseButtonToolTip" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="LE_ArgumentException_23" xml:space="preserve">
+    <value>「from」値は 1 未満に設定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_24" xml:space="preserve">
+    <value>「to」値は 0 未満に設定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_25" xml:space="preserve">
+    <value>「to」値が指定される場合、「from」値未満に設定できません。</value>
+  </data>
+  <data name="LE_CannotChangeThemeWhileApplyingTheme" xml:space="preserve">
+    <value>'{1}' テーマを適用中に Theme は '{0}' に変更します。Theme プロパティがローカル スタイルから設定されるときに通常発生します。Style 内から Theme プロパティを設定しないでください。</value>
+  </data>
+  <data name="LE_CannotPerformAutomationOperation" xml:space="preserve">
+    <value>この操作は実行できません。</value>
+  </data>
+  <data name="LE_CannotSetClippedTextToolTipService" xml:space="preserve">
+    <value>'TextBlock' と 'ContentPresenter' の要素だけで 'ClippedTextToolTipService' プロパティを設定できます。</value>
+  </data>
+  <data name="LE_NonNeutralCultureRequiresCulture" xml:space="preserve">
+    <value>Utilities.GetNonNeutralCulture にカルチャーを提供する必要があります。</value>
+  </data>
+  <data name="LE_NonNeutralCultureRequiresElement" xml:space="preserve">
+    <value>Utilities.GetNonNeutralCulture に FrameworkElement または FrameworkContentElement を提供する必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_1" xml:space="preserve">
+    <value>RecyclingItemsControl から派生したクラスのインスタンスである必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_10" xml:space="preserve">
+    <value>RecyclingItemsPanel の AddInternalChild または InsertInternalChild メソッドを呼び出しましたが、前に新しく実現された生成済み要素はビジュアル ツリーに追加されませんでした。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_11" xml:space="preserve">
+    <value>コンテナーはすでにビジュアル ツリーにあります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_12" xml:space="preserve">
+    <value>コンテナーは新しく生成された項目と一致しません。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_2" xml:space="preserve">
+    <value>もう一度 BeginGeneration を呼び出す前に EndGeneration を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_3" xml:space="preserve">
+    <value>リサイクル コンテナーは、StartAt/GenerateNext ループの間だけビジュアル ツリーに追加できます。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_4" xml:space="preserve">
+    <value>コンテナーは正しく生成されませんでした。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_5" xml:space="preserve">
+    <value>生成は実行されていません。GenerateNext を呼び出す前に StartAt を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_6" xml:space="preserve">
+    <value>Remove のために Offset をゼロ (0) に設定する必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_7" xml:space="preserve">
+    <value>Remove のためにカウントを 0 以上に設定する必要があります。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_8" xml:space="preserve">
+    <value>すでに実行中なので生成を開始できません。</value>
+  </data>
+  <data name="LE_RecyclingGenerator_9" xml:space="preserve">
+    <value>StartAt を呼び出す前に BeginGeneration を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_ResourceDictionaryReadOnly" xml:space="preserve">
+    <value>ResourceDictionary は読み取り専用なので変更できません。</value>
+  </data>
+  <data name="LE_ThemeManagerGroupingsAlreadyRegistered" xml:space="preserve">
+    <value>'{0}' 型のグループはもう登録されています。</value>
+  </data>
+  <data name="LE_ThemeManagerGroupingsCannotBeNull" xml:space="preserve">
+    <value>グループは Null または空に設定することはできません。</value>
+  </data>
+  <data name="LE_ThemeManagerLocatorAssembly" xml:space="preserve">
+    <value>Locator は有効な Assembly を指定する必要があります。</value>
+  </data>
+  <data name="LE_ThemeManagerRegisterGroupings" xml:space="preserve">
+    <value>型 '{0}' またはその基本クラスの要素の 'Theme' プロパティを設定するときに適用するテーマ グループを示すために、グループを登録するには 'ThemeManager.RegisterGroupings' メソッドを呼び出す必要があります。</value>
+  </data>
+  <data name="LE_ValueCannotBeNan" xml:space="preserve">
+    <value>値は、double.NaN にできません。</value>
+  </data>
+  <data name="ComparisonOperator_Bottom" xml:space="preserve">
+    <value>ボトム</value>
+  </data>
+  <data name="ComparisonOperator_BottomPercentile" xml:space="preserve">
+    <value>ボトム パーセント位数</value>
+  </data>
+  <data name="ComparisonOperator_Contains" xml:space="preserve">
+    <value>～を含む</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotContain" xml:space="preserve">
+    <value>～を含まない</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotEndWith" xml:space="preserve">
+    <value>～で終わらない</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotMatch" xml:space="preserve">
+    <value>一致しない</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotStartWith" xml:space="preserve">
+    <value>～で始まらない</value>
+  </data>
+  <data name="ComparisonOperator_EndsWith" xml:space="preserve">
+    <value>～で終わる</value>
+  </data>
+  <data name="ComparisonOperator_Equals" xml:space="preserve">
+    <value>等しい</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThan" xml:space="preserve">
+    <value>～より大きい</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>～以上で</value>
+  </data>
+  <data name="ComparisonOperator_LessThan" xml:space="preserve">
+    <value>～より小さい</value>
+  </data>
+  <data name="ComparisonOperator_LessThanOrEqualTo" xml:space="preserve">
+    <value>～以下で</value>
+  </data>
+  <data name="ComparisonOperator_Like" xml:space="preserve">
+    <value>パターンと一致 (LIKE)</value>
+  </data>
+  <data name="ComparisonOperator_Match" xml:space="preserve">
+    <value>一致</value>
+  </data>
+  <data name="ComparisonOperator_NotEquals" xml:space="preserve">
+    <value>等しくない</value>
+  </data>
+  <data name="ComparisonOperator_NotLike" xml:space="preserve">
+    <value>パターンと一致しない (NOT LIKE)</value>
+  </data>
+  <data name="ComparisonOperator_StartsWith" xml:space="preserve">
+    <value>～で始まる</value>
+  </data>
+  <data name="ComparisonOperator_Top" xml:space="preserve">
+    <value>トップ</value>
+  </data>
+  <data name="ComparisonOperator_TopPercentile" xml:space="preserve">
+    <value>トップ パーセント位数</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_Description" xml:space="preserve">
+    <value>平均以上のデータを検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_DisplayContent" xml:space="preserve">
+    <value>平均以上</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_Description" xml:space="preserve">
+    <value>平均以下のデータを検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_DisplayContent" xml:space="preserve">
+    <value>平均以下</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_Description" xml:space="preserve">
+    <value>空白データを検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_DisplayContent" xml:space="preserve">
+    <value>(空白)</value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_Description" xml:space="preserve">
+    <value>先月の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_DisplayContent" xml:space="preserve">
+    <value>先月</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_Description" xml:space="preserve">
+    <value>前四半期の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_DisplayContent" xml:space="preserve">
+    <value>前四半期</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_Description" xml:space="preserve">
+    <value>先週の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_DisplayContent" xml:space="preserve">
+    <value>先週</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_Description" xml:space="preserve">
+    <value>昨年の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_DisplayContent" xml:space="preserve">
+    <value>昨年</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_Description" xml:space="preserve">
+    <value>翌月の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_DisplayContent" xml:space="preserve">
+    <value>翌月</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_Description" xml:space="preserve">
+    <value>次四半期の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_DisplayContent" xml:space="preserve">
+    <value>次四半期</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_Description" xml:space="preserve">
+    <value>翌週の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_DisplayContent" xml:space="preserve">
+    <value>翌週</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_Description" xml:space="preserve">
+    <value>来年の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_DisplayContent" xml:space="preserve">
+    <value>来年</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_Description" xml:space="preserve">
+    <value>非空白データを検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_DisplayContent" xml:space="preserve">
+    <value>(空白以外)</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_Description" xml:space="preserve">
+    <value>今月の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_DisplayContent" xml:space="preserve">
+    <value>今月</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_Description" xml:space="preserve">
+    <value>今四半期の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_DisplayContent" xml:space="preserve">
+    <value>今四半期</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_Description" xml:space="preserve">
+    <value>今週の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_DisplayContent" xml:space="preserve">
+    <value>今週</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_Description" xml:space="preserve">
+    <value>今年の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_DisplayContent" xml:space="preserve">
+    <value>今年</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_Description" xml:space="preserve">
+    <value>今日の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_DisplayContent" xml:space="preserve">
+    <value>今日</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_Description" xml:space="preserve">
+    <value>明日の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_DisplayContent" xml:space="preserve">
+    <value>明日</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_Description" xml:space="preserve">
+    <value>年度累計の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_DisplayContent" xml:space="preserve">
+    <value>年度累計</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_Description" xml:space="preserve">
+    <value>昨日の日付を検索する</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_DisplayContent" xml:space="preserve">
+    <value>昨日</value>
+  </data>
+  <data name="ComparisonCondition_Bottom" xml:space="preserve">
+    <value>ボトム {0}</value>
+  </data>
+  <data name="ComparisonCondition_BottomPercentile" xml:space="preserve">
+    <value>ボトム {0} %</value>
+  </data>
+  <data name="ComparisonCondition_Contains" xml:space="preserve">
+    <value>'{0}' を含む</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotContain" xml:space="preserve">
+    <value>'{0}' を含まない</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotEndWith" xml:space="preserve">
+    <value>'{0}' で終わらない</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotMatch" xml:space="preserve">
+    <value>'{0}' と一致しない</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotStartWith" xml:space="preserve">
+    <value>'{0}' で始まらない</value>
+  </data>
+  <data name="ComparisonCondition_EndsWith" xml:space="preserve">
+    <value>'{0}' で終わる</value>
+  </data>
+  <data name="ComparisonCondition_Equals" xml:space="preserve">
+    <value>= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThan" xml:space="preserve">
+    <value>&gt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>&gt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThan" xml:space="preserve">
+    <value>&lt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThanOrEqualTo" xml:space="preserve">
+    <value>&lt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Like" xml:space="preserve">
+    <value>'{0}' パターンと一致 (LIKE '{0}')</value>
+  </data>
+  <data name="ComparisonCondition_Match" xml:space="preserve">
+    <value>'{0}' と一致</value>
+  </data>
+  <data name="ComparisonCondition_NotEquals" xml:space="preserve">
+    <value>!= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_NotLike" xml:space="preserve">
+    <value>'{0}' パターンと一致しない (NOT LIKE '{0}')</value>
+  </data>
+  <data name="ComparisonCondition_StartsWith" xml:space="preserve">
+    <value>'{0}' で始まる</value>
+  </data>
+  <data name="ComparisonCondition_Top" xml:space="preserve">
+    <value>トップ {0}</value>
+  </data>
+  <data name="ComparisonCondition_TopPercentile" xml:space="preserve">
+    <value>トップ {0} %</value>
+  </data>
+  <data name="ComplementCondition" xml:space="preserve">
+    <value>{0} ではない</value>
+  </data>
+  <data name="ConditionGroup_Description" xml:space="preserve">
+    <value>(カスタム)</value>
+  </data>
+  <data name="ConditionGroup_Group" xml:space="preserve">
+    <value>({0})</value>
+  </data>
+  <data name="ConditionGroup_Logical_AND" xml:space="preserve">
+    <value>{0} AND {1}</value>
+  </data>
+  <data name="ConditionGroup_Logical_OR" xml:space="preserve">
+    <value>{0} OR {1}</value>
+  </data>
+  <data name="LE_MarkupExtensionServiceRequired" xml:space="preserve">
+    <value>'{0}' MarkupExtension は ProvideValue で IServiceProvider から '{1}' サービスを提供する必要があります。</value>
+  </data>
+  <data name="LE_MissingCursorExtensionPath" xml:space="preserve">
+    <value>CursorExtension の Path は、有効なカーソル リソース パスに設定する必要があります。</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_Description" xml:space="preserve">
+    <value>値に基づいてボトム {0}% の項目。</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_DisplayContent" xml:space="preserve">
+    <value>ボトムの {0}%</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_Description" xml:space="preserve">
+    <value>値に基づいてボトム {0} の項目。</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_DisplayContent" xml:space="preserve">
+    <value>ボトム {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_Description" xml:space="preserve">
+    <value>任意の年の {0} である日付</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_DisplayContent" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_Description" xml:space="preserve">
+    <value>任意の年の第 {0} 四半期である日付</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_DisplayContent" xml:space="preserve">
+    <value>第 {0} 四半期</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_Description" xml:space="preserve">
+    <value>値に基づくトップ {0}% の項目。.</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_DisplayContent" xml:space="preserve">
+    <value>トップ {0}%</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_Description" xml:space="preserve">
+    <value>値に基づくトップ {0} の項目。</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_DisplayContent" xml:space="preserve">
+    <value>トップ {0}</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_NaN" xml:space="preserve">
+    <value>値を NaN に設定できません。</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_LessThanZero" xml:space="preserve">
+    <value>値は 0 未満に設定できません。</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_GreaterThan100Percent" xml:space="preserve">
+    <value>値は 100% 以上にできません。</value>
+  </data>
+  <data name="Filter_WildCard_Empty" xml:space="preserve">
+    <value>無効なワイルドカード パターン。ワイルドカード パターンを空に設定できません。</value>
+  </data>
+  <data name="Filter_WildCard_InvalidCharClass" xml:space="preserve">
+    <value>無効なワイルドカード パターン。無効な文字クラスを含まれます。</value>
+  </data>
+  <data name="Filter_Regex_InvalidPattern" xml:space="preserve">
+    <value>無効な正規表現のパターン。</value>
+  </data>
+  <data name="Filter_IncompatibleOperand" xml:space="preserve">
+    <value>指定されたオペランドは比較演算子と互換性がありません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_7" xml:space="preserve">
+    <value>InitialCapacity は 1 以上である必要があります。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_8" xml:space="preserve">
+    <value>ロード率は、0 より大きくて 1 以下である必要があります。</value>
+  </data>
+  <data name="LE_InvalidOperationException_7" xml:space="preserve">
+    <value>キーがすでに存在しています。</value>
+  </data>
+  <data name="LE_ArgumentException_26" xml:space="preserve">
+    <value>無効なオペランド値。有効な数に設定する必要があります。</value>
+  </data>
+  <data name="LE_BeginGenerationNotCalled" xml:space="preserve">
+    <value>'StartAt' を呼び出す前に 'BeginGeneration' を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_CanMinimizeNotSupport" xml:space="preserve">
+    <value>CanMinimize はサポートされません。</value>
+  </data>
+  <data name="LE_CannotSetDialogResult" xml:space="preserve">
+    <value>DialogResult は ShowDialog が呼び出された前に設定できません。</value>
+  </data>
+  <data name="LE_CannotShowOnDialog" xml:space="preserve">
+    <value>ShowDialog が表示された ToolWindow で Show を呼び出されません。</value>
+  </data>
+  <data name="LE_DialogOwnerNotLoaded" xml:space="preserve">
+    <value>そのオーナーがロードされる前にダイアログを表示できません。</value>
+  </data>
+  <data name="LE_ElementHasVisualParent" xml:space="preserve">
+    <value>指定された要素 '{0}' は既に他の要素の親です。</value>
+  </data>
+  <data name="LE_GridBag_InvalidConstraint" xml:space="preserve">
+    <value>制約は IGridBagConstraint または GridBagConstraint のインスタンスである必要があります。</value>
+  </data>
+  <data name="LE_GridBag_InvalidRowColumn" xml:space="preserve">
+    <value>Column/Row は正の数または Relative の事前に定義された定数に設定する必要があります。</value>
+  </data>
+  <data name="LE_GridBag_InvalidSpan" xml:space="preserve">
+    <value>Span は正の数または Remainder の事前に定義された定数に設定する必要があります。</value>
+  </data>
+  <data name="LE_GridBag_InvalidWeight" xml:space="preserve">
+    <value>Weight は正の数である必要があります。</value>
+  </data>
+  <data name="LE_GridBag_ItemNotInLayoutItems" xml:space="preserve">
+    <value>指定されたレイアウト項目 {0} はレイアウト マネージャーに含まれません。</value>
+  </data>
+  <data name="LE_GridBag_ItemNotVisible" xml:space="preserve">
+    <value>指定されたレイアウト項目 {0} はレイアウトで表示できません。</value>
+  </data>
+  <data name="LE_ShowDialogNotSupported" xml:space="preserve">
+    <value>このクラスをモーダルで表示するサポートがありません。</value>
+  </data>
+  <data name="LE_ToolWindowHasOwner" xml:space="preserve">
+    <value>ToolWindow はすでに別の要素に所有されています。</value>
+  </data>
+  <data name="LE_ToolWindowLeftMouseButtonNotDown" xml:space="preserve">
+    <value>ドラッグ操作を実行するために、マウスの左ボタンを押す必要があります。</value>
+  </data>
+  <data name="LE_TargetTypeInvalid" xml:space="preserve">
+    <value>{0} の TargetType 設定は null のみ、{1} から派生するタイプ、または {1} の基本クラスで {2} は無効です。</value>
+  </data>
+  <data name="TrialKey_AboutDialogLabel" xml:space="preserve">
+    <value>{Trial}</value>
+  </data>
+  <data name="LE_ValueCannotBeInfinity" xml:space="preserve">
+    <value>値は無限大に設定できません。</value>
+  </data>
+  <data name="LE_CannotChangeModalToolWindowTransparency" xml:space="preserve">
+    <value>モーダルで表示される ToolWindow の AllowsTransparency 状態を変更できません。</value>
+  </data>
+  <data name="LE_ToolWindowIsReshowing" xml:space="preserve">
+    <value>既に ToolWindow の再表示中です。</value>
+  </data>
+  <data name="SampleData_XML" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;SampleData&gt;
+	&lt;users&gt;
+		&lt;user&gt;
+			&lt;name&gt;佐藤 陽一&lt;/name&gt;
+			&lt;department&gt;人事&lt;/department&gt;
+			&lt;salary&gt;5,250,000&lt;/salary&gt;
+			&lt;email&gt;yoichiS@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt;
+		&lt;user&gt;
+			&lt;name&gt;田島 洋子&lt;/name&gt;
+			&lt;department&gt;セールス&lt;/department&gt;
+			&lt;salary&gt;6,500,000&lt;/salary&gt;
+			&lt;email&gt;yokoT@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;竹内 久美&lt;/name&gt;
+			&lt;department&gt;事務&lt;/department&gt;
+			&lt;salary&gt;3,500,000&lt;/salary&gt;
+			&lt;email&gt;hisamiT@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;サラ ジョーンズ&lt;/name&gt;
+			&lt;department&gt;事務&lt;/department&gt;
+			&lt;salary&gt;3,700,000&lt;/salary&gt;
+			&lt;email&gt;&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;佐々木 達也&lt;/name&gt;
+			&lt;department&gt;経理&lt;/department&gt;
+			&lt;salary&gt;5,300,000&lt;/salary&gt;
+			&lt;email&gt;tatsuS@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;豊田 幸一&lt;/name&gt;
+			&lt;department&gt;役員&lt;/department&gt;
+			&lt;salary&gt;&lt;/salary&gt;
+			&lt;email&gt;koichiT@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;柳原 真理子&lt;/name&gt;
+			&lt;department&gt;&lt;/department&gt;
+			&lt;salary&gt;9,500,000&lt;/salary&gt;
+			&lt;email&gt;MariYanagi@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+		&lt;user&gt;
+			&lt;name&gt;山崎 玲子&lt;/name&gt;
+			&lt;department&gt;セールス&lt;/department&gt;
+			&lt;salary&gt;6,900,000&lt;/salary&gt;
+			&lt;email&gt;reikoY@hotmail.co.jp&lt;/email&gt;
+		&lt;/user&gt; 	
+	&lt;/users&gt;
+&lt;/SampleData&gt;
+</value>
+  </data>
+  <data name="LE_StringFormatException_1" xml:space="preserve">
+    <value>文字列 '{0}' は 'TypeName.StaticPropertyName' の書式に設定されていません。</value>
+  </data>
+  <data name="LE_StringFormatException_2" xml:space="preserve">
+    <value>タイプ '{0}' は '{1}' の静的なプロパティまたはフィールドを含みません。</value>
+  </data>
+  <data name="LE_StringFormatException_3" xml:space="preserve">
+    <value>'{0}' のタイプで作成した StaticPropertyResourceKeys はありません。</value>
+  </data>
+  <data name="Provider_InvalidResource" xml:space="preserve">
+    <value>{1} の ResourceDictionary を確認する場合に {0} のリソース キーは無効です。{2} である必要があります。</value>
+  </data>
+  <data name="Provider_MissingResource" xml:space="preserve">
+    <value>キー {0} のリソースが見つかりません。</value>
+  </data>
+  <data name="Provider_TypeNotEnum" xml:space="preserve">
+    <value>T は列挙型である必要があります。クラスは {0} 型をサポートしません。</value>
+  </data>
+  <data name="Provider_EnumEmpty" xml:space="preserve">
+    <value>型: {0} は少なくとも値を 1 つ持つ必要があります。</value>
+  </data>
+  <data name="Provider_SparseEnumValues" xml:space="preserve">
+    <value>型: {0} 列挙型は 0 で始まり、連続する値である必要があります。</value>
+  </data>
+  <data name="Provider_KeyNotFound" xml:space="preserve">
+    <value>型: {0} は {1} 値を含みません。</value>
+  </data>
+  <data name="MaximizeButtonToolTip" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="MinimizeButtonToolTip" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="RestoreDownButtonToolTip" xml:space="preserve">
+    <value>縮小化</value>
+  </data>
+  <data name="RestoreUpButtonToolTip" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="LE_InvalidEnumValue" xml:space="preserve">
+    <value>'{0}' は列挙型 {1} に定義されていません。</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_DisplayContent" xml:space="preserve">
+    <value>{0:yyyy} のすべて</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_Description" xml:space="preserve">
+    <value>{0:yyyy} のすべての日</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Month_DisplayContent" xml:space="preserve">
+    <value>{0:Y}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Month_Description" xml:space="preserve">
+    <value>{0:Y} のすべての日</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Day_DisplayContent" xml:space="preserve">
+    <value>{0:d}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Day_Description" xml:space="preserve">
+    <value>{0:d} の期間いつでも</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Hour_DisplayContent" xml:space="preserve">
+    <value>{0:d} {0:hh tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Hour_Description" xml:space="preserve">
+    <value>{0:d} {0:hh tt} の期間いつでも</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Minute_DisplayContent" xml:space="preserve">
+    <value>{0:d} {0:hh:mm tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Minute_Description" xml:space="preserve">
+    <value>{0:d} {0:hh:mm tt} の期間いつでも</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Second_DisplayContent" xml:space="preserve">
+    <value>{0:G}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Second_Description" xml:space="preserve">
+    <value>{0:G}</value>
+  </data>
+  <data name="ConditionGroup_Equals" xml:space="preserve">
+    <value>"{0}" に等しい</value>
+  </data>
+  <data name="LE_DoesNotImplementInterface" xml:space="preserve">
+    <value>{0} を実装しません。</value>
+  </data>
+  <data name="LE_InvalidStyleTargetType" xml:space="preserve">
+    <value>指定したスタイルの TargetType '{0}' はコンテナー タイプ '{1}' と互換性がありません。</value>
+  </data>
+  <data name="LE_InvalidMemberExpression" xml:space="preserve">
+    <value>式をプロパティまたはフィールド用にしてください。</value>
+  </data>
+  <data name="LE_InvalidMemberForTarget" xml:space="preserve">
+    <value>指定したメンバー '{0}' は、指定したターゲット '{1}' に有効なプロパティまたはフィールドではありません。</value>
+  </data>
+</root>

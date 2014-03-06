@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.RE.Matcher" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.RE.RegExp" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.RE.RegExpException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Analyzer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Node" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ParseException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Parser" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ParserCreationException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ParserLogException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Production" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ProductionPattern" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ProductionPatternAlternative" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.ProductionPatternElement" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.RecursiveDescentParser" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Token" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.Tokenizer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="PerCederberg.Grammatica.Parser.TokenPattern" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.Engine.OneBasedArgumentNumberingAttribute" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ArgumentIndex" DisplayName="ArgumentIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationFunction" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsAlwaysDirty" DisplayName="IsAlwaysDirty" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinArgs" DisplayName="MinArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxArgs" DisplayName="MaxArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Description" DisplayName="Description" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Category" DisplayName="Category" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ArgList" DisplayName="ArgList" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ArgDescriptors" DisplayName="ArgDescriptors" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationNumberStack" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.Engine.UltraCalcReferenceCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsSynchronized" DisplayName="IsSynchronized" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SyncRoot" DisplayName="SyncRoot" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationValueException" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationErrorValue" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Code" DisplayName="Code" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorValue" DisplayName="ErrorValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationReferenceError" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Message" DisplayName="Message" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.CalculationValue" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsReference" DisplayName="IsReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsError" DisplayName="IsError" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsNull" DisplayName="IsNull" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDBNull" DisplayName="IsDBNull" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsString" DisplayName="IsString" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsBoolean" DisplayName="IsBoolean" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDateTime" DisplayName="IsDateTime" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.RefBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Context" DisplayName="Context" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="BaseParent" DisplayName="BaseParent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsAnchored" DisplayName="IsAnchored" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsRange" DisplayName="IsRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WrappedReference" DisplayName="WrappedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ParsedReference" DisplayName="ParsedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RelativeReference" DisplayName="RelativeReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AbsoluteName" DisplayName="AbsoluteName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedAbsoluteName" DisplayName="NormalizedAbsoluteName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ElementName" DisplayName="ElementName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RecalcDeferred" DisplayName="RecalcDeferred" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RecalcVisible" DisplayName="RecalcVisible" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasRelativeIndex" DisplayName="HasRelativeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasAbsoluteIndex" DisplayName="HasAbsoluteIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasScopeAll" DisplayName="HasScopeAll" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="References" DisplayName="References" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnumerable" DisplayName="IsEnumerable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Parent" DisplayName="Parent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDataReference" DisplayName="IsDataReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDisposedReference" DisplayName="IsDisposedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShouldFormulaEditorIncludeIndex" DisplayName="ShouldFormulaEditorIncludeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.RefRange" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="FromBase" DisplayName="FromBase" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedFromBase" DisplayName="NormalizedFromBase" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FromRef" DisplayName="FromRef" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedFromRef" DisplayName="NormalizedFromRef" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ToBase" DisplayName="ToBase" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedToBase" DisplayName="NormalizedToBase" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ToRef" DisplayName="ToRef" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedToRef" DisplayName="NormalizedToRef" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsRange" DisplayName="IsRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ElementName" DisplayName="ElementName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="BaseParent" DisplayName="BaseParent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDataReference" DisplayName="IsDataReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AbsoluteName" DisplayName="AbsoluteName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NormalizedAbsoluteName" DisplayName="NormalizedAbsoluteName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasRelativeIndex" DisplayName="HasRelativeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="References" DisplayName="References" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnumerable" DisplayName="IsEnumerable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.RefTuple" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Type" DisplayName="Type" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Scope" DisplayName="Scope" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Marked" DisplayName="Marked" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Last" DisplayName="Last" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NextToLast" DisplayName="NextToLast" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScopeID" DisplayName="ScopeID" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScopeIndex" DisplayName="ScopeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsAbsolute" DisplayName="IsAbsolute" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.RefParser" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="TupleCount" DisplayName="TupleCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LastTuple" DisplayName="LastTuple" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NextToLastTuple" DisplayName="NextToLastTuple" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsFullyQualified" DisplayName="IsFullyQualified" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsRoot" DisplayName="IsRoot" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsRelative" DisplayName="IsRelative" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasRelativeIndex" DisplayName="HasRelativeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasScopeAll" DisplayName="HasScopeAll" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasAbsoluteIndex" DisplayName="HasAbsoluteIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasSummaryScope" DisplayName="HasSummaryScope" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Engine.RefUnAnchored" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsUnQualifiedReference" DisplayName="IsUnQualifiedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ElementName" DisplayName="ElementName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="BaseParent" DisplayName="BaseParent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsRange" DisplayName="IsRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsAnchored" DisplayName="IsAnchored" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDataReference" DisplayName="IsDataReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WrappedReference" DisplayName="WrappedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ParsedReference" DisplayName="ParsedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AbsoluteName" DisplayName="AbsoluteName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RelativeReference" DisplayName="RelativeReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Context" DisplayName="Context" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RecalcVisible" DisplayName="RecalcVisible" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RecalcDeferred" DisplayName="RecalcDeferred" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasRelativeIndex" DisplayName="HasRelativeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasScopeAll" DisplayName="HasScopeAll" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasAbsoluteIndex" DisplayName="HasAbsoluteIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="References" DisplayName="References" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnumerable" DisplayName="IsEnumerable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDisposedReference" DisplayName="IsDisposedReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShouldFormulaEditorIncludeIndex" DisplayName="ShouldFormulaEditorIncludeIndex" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.CalculationResult" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CalculationValue" DisplayName="CalculationValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorText" DisplayName="ErrorText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsError" DisplayName="IsError" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.FormulaErrorEventArgsBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Context" DisplayName="Context" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorDisplayText" DisplayName="ErrorDisplayText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.FormulaCalculationErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ErrorValue" DisplayName="ErrorValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorInfo" DisplayName="ErrorInfo" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.FormulaReferenceErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.ValueDirtiedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Context" DisplayName="Context" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Action" DisplayName="Action" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.FormulaSyntaxErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.FormulaCircularityErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DisplayErrorMessage" DisplayName="DisplayErrorMessage" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.XamCalculationManager" HideFromToolbox="false" ToolBoxCategoryKey="XamCalculationManagerAssetLibrary" ImageResource="">
+    <PropertyInformation Name="AsynchronousCalculationDuration" CategoryKey="XamCalculationManager_Properties" DisplayName="AsynchronousCalculationDuration" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AsynchronousCalculationInterval" CategoryKey="XamCalculationManager_Properties" DisplayName="AsynchronousCalculationInterval" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CalculationFrequency" CategoryKey="XamCalculationManager_Properties" DisplayName="CalculationFrequency" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DeferredCalculationsEnabled" CategoryKey="XamCalculationManager_Properties" DisplayName="DeferredCalculationsEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NamedReferences" CategoryKey="XamCalculationManager_Properties" DisplayName="NamedReferences" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AreCalculationsSuspended" CategoryKey="XamCalculationManager_Properties" DisplayName="AreCalculationsSuspended" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculation" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="TargetProperty" CategoryKey="XamCalculationManager_Properties" DisplayName="TargetProperty" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceId" CategoryKey="XamCalculationManager_Properties" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" CategoryKey="XamCalculationManager_Properties" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsType" CategoryKey="XamCalculationManager_Properties" DisplayName="TreatAsType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsTypeName" CategoryKey="XamCalculationManager_Properties" DisplayName="TreatAsTypeName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsTypeResolved" DisplayName="TreatAsTypeResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculator" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Item" CategoryKey="XamCalculationManager_Properties" DisplayName="Item" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Calculations" CategoryKey="XamCalculationManager_Properties" DisplayName="Calculations" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CalculationManager" CategoryKey="XamCalculationManager_Properties" DisplayName="CalculationManager" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Results" CategoryKey="XamCalculationManager_Properties" DisplayName="Results" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculatorElement" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Item" CategoryKey="XamCalculationManager_Properties" DisplayName="Item" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Calculator" CategoryKey="XamCalculationManager_Properties" DisplayName="Calculator" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ListCalculation" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ReferenceId" CategoryKey="XamCalculationManager_Properties" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" CategoryKey="XamCalculationManager_Properties" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ListCalculator" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CalculationManager" CategoryKey="XamCalculationManager_Properties" DisplayName="CalculationManager" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemCalculations" CategoryKey="XamCalculationManager_Properties" DisplayName="ItemCalculations" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ListCalculations" CategoryKey="XamCalculationManager_Properties" DisplayName="ListCalculations" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ListResults" CategoryKey="XamCalculationManager_Properties" DisplayName="ListResults" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Items" CategoryKey="XamCalculationManager_Properties" DisplayName="Items" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemsSource" CategoryKey="XamCalculationManager_Properties" DisplayName="ItemsSource" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ListCalculatorElement" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Calculator" CategoryKey="XamCalculationManager_Properties" DisplayName="Calculator" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemsSource" CategoryKey="XamCalculationManager_Properties" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.CalculationReferenceNode" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Reference" DisplayName="Reference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ChildReferences" DisplayName="ChildReferences" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDataReference" DisplayName="IsDataReference" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayName" DisplayName="DisplayName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayNameResolved" DisplayName="DisplayNameResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeType" DisplayName="NodeType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsExpanded" DisplayName="IsExpanded" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SortPriority" DisplayName="SortPriority" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.NamedReference" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Category" CategoryKey="XamCalculationManager_Properties" DisplayName="Category" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" CategoryKey="XamCalculationManager_Properties" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Result" CategoryKey="XamCalculationManager_Properties" DisplayName="Result" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" CategoryKey="XamCalculationManager_Properties" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="ReferenceId" CategoryKey="XamCalculationManager_Properties" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.NamedReferenceCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.CustomCalculationFunction" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ArgDescriptors" DisplayName="ArgDescriptors" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ArgList" DisplayName="ArgList" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Category" DisplayName="Category" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Description" DisplayName="Description" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxArgs" DisplayName="MaxArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinArgs" DisplayName="MinArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ControlCalculationSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Binding" CategoryKey="XamCalculationManager_Properties" DisplayName="Binding" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Formula" CategoryKey="XamCalculationManager_Properties" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Property" CategoryKey="XamCalculationManager_Properties" DisplayName="Property" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceId" CategoryKey="XamCalculationManager_Properties" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueConverter" CategoryKey="XamCalculationManager_Properties" DisplayName="ValueConverter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsTypeName" CategoryKey="XamCalculationManager_Properties" DisplayName="TreatAsTypeName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsTypeResolved" CategoryKey="XamCalculationManager_Properties" DisplayName="TreatAsTypeResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TreatAsType" CategoryKey="XamCalculationManager_Properties" DisplayName="TreatAsType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculationCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.ListCalculationCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculatorBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CalculationManager" DisplayName="CalculationManager" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PropertiesToExclude" DisplayName="PropertiesToExclude" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PropertiesToInclude" DisplayName="PropertiesToInclude" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceId" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueConverter" DisplayName="ValueConverter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.Primitives.ItemCalculatorElementBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CalculationManager" CategoryKey="XamCalculationManager_Properties" DisplayName="CalculationManager" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculationBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Formula" CategoryKey="XamCalculationManager_Properties" DisplayName="Formula" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceId" CategoryKey="XamCalculationManager_Properties" DisplayName="ReferenceId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.DataAccessErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Exception" DisplayName="Exception" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorMessage" DisplayName="ErrorMessage" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Item" DisplayName="Item" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Property" DisplayName="Property" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ThrownDuringSet" DisplayName="ThrownDuringSet" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.CalculationResultsDictionary" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Calculations.CustomCalculationFunctionBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ArgDescriptors" DisplayName="ArgDescriptors" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ArgList" DisplayName="ArgList" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Category" DisplayName="Category" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Description" DisplayName="Description" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Calculations.ItemCalculationBaseCollection`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+</root>

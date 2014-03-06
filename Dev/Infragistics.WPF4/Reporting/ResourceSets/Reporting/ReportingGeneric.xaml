@@ -1,0 +1,204 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:igReporting="clr-namespace:Infragistics.Windows.Reporting"  
+    xmlns:MappingPIGen1="clr-namespace:System;assembly=Mscorlib" 
+	xmlns:MappingPIGen3="clr-namespace:System.Windows.Input;assembly=PresentationCore"  
+    >
+	<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="DocumentViewer.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!-- ======================================================================================== -->      
+    <!-- _________________________ ReportPagePresenter __________________________________________ -->
+    <!-- ======================================================================================== -->
+    <Style TargetType="{x:Type igReporting:ReportPagePresenter}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igReporting:ReportPagePresenter}">
+                    <Border BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                              BorderThickness="{TemplateBinding Border.BorderThickness}" 
+                              Background="{TemplateBinding Panel.Background}" 
+                              SnapsToDevicePixels="True"
+                              Padding="{TemplateBinding Padding}">
+                        <DockPanel SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter x:Name="PART_Header" ContentSource="Header" DockPanel.Dock="Top"/>
+                            <ContentPresenter x:Name="PART_Footer" ContentSource="Footer" DockPanel.Dock="Bottom"/>
+                            <!-- AS 4/23/09 TFS17031 Added content alignment bindings -->
+                            <ContentPresenter 
+                                x:Name="PART_Content" 
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                ContentSource="Content" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- ======================================================================================== -->      
+    <!-- _________________________ ProgressWindow _______________________________________________ -->
+    <!-- ======================================================================================== -->
+    <Style TargetType="{x:Type igReporting:ReportProgressControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igReporting:ReportProgressControl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <DockPanel>
+                            <Button Margin="0,0,0,15" 
+                                    DockPanel.Dock="Bottom"
+                                    HorizontalAlignment="Center"
+                                    Command="{x:Static igReporting:ReportProgressControl.CancelCommand}" 
+                                    Content="{x:Static igReporting:Resources.ProgressCancelButton}" />
+                            <ProgressBar x:Name="PART_ProgressBar" 
+                                         DockPanel.Dock="Bottom"
+                                         Margin="10,43,10,57" 
+                                         Height="22" />
+                            <Label x:Name="PART_Description" 
+                                   Margin="10,13,10,0" 
+                                   VerticalAlignment="Top" 
+                                   Content="{x:Static igReporting:Resources.ProgressInitialDescription}"/>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    
+	<!-- ======================================================================================== -->
+	<!-- _________________________ DocumentViewer _______________________________________________ -->
+	<!-- ======================================================================================== -->
+	<!--<Style x:Key="{x:Static igReporting:XamReportPreview.DocumentViewerStyleKey}" TargetType="DocumentViewer">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="DocumentViewer">
+					<Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Focusable="False">
+						<Grid KeyboardNavigation.TabNavigation="Local">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<ToolBar ToolBarTray.IsLocked="True" KeyboardNavigation.TabNavigation="Continue">
+								<Button Command="ApplicationCommands.Print" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Content="Print"/>
+								<Button Command="ApplicationCommands.Copy" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Content="Copy"/>
+								<Separator />
+								<Button Command="NavigationCommands.IncreaseZoom" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Content="Zoom In"/>
+								<Button Command="NavigationCommands.DecreaseZoom" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Content="Zoom Out"/>
+								<Separator />
+								<Button Command="NavigationCommands.Zoom" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="100.0" Content="Actual" />
+								<Button Command="DocumentViewer.FitToWidthCommand" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Content="Fit Width" />
+								<Button Command="DocumentViewer.FitToMaxPagesAcrossCommand" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="1" Content="Whole Page"/>
+								<Button Command="DocumentViewer.FitToMaxPagesAcrossCommand" CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="2" Content="Two Page"/>
+							</ToolBar>
+							<ScrollViewer Grid.Row="1" CanContentScroll="true" HorizontalScrollBarVisibility="Auto" x:Name="PART_ContentHost" IsTabStop="true"/>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>-->
+
+    <!-- AS 3/12/09 - Added custom context menu instead of manipulating provided one -->
+    <ContextMenu x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type igReporting:XamReportPreview}, ResourceId=DocumentViewerContextMenu}" x:Shared="false">
+        <MenuItem Header="{x:Static igReporting:Resources.XamReportPreviewContextMenuZoomIn}" Command="NavigationCommands.IncreaseZoom" />
+        <MenuItem Header="{x:Static igReporting:Resources.XamReportPreviewContextMenuZoomOut}" Command="NavigationCommands.DecreaseZoom" />
+    </ContextMenu>
+
+        <!-- ======================================================================================== -->
+    <!-- _________________________ DocumentViewerStyle (used by XamReportPreview) _______________ -->
+    <!-- ======================================================================================== -->
+    <Style x:Key="{x:Static igReporting:XamReportPreview.DocumentViewerStyleKey}" TargetType="{x:Type DocumentViewer}" BasedOn="{x:Null}">
+
+        <!-- JJD 1/6/12 - TFS24467 
+              Moved foreground and Background setters to containing XamReportPreview style below and
+              replaced them with a Background setter of 'Transparent' so that by default the 
+              background of the XamReportPreview will show thru. The foreground of the XamReportPreview
+              will be picked up since it ia an inheritable property -->
+        <!--<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />-->
+        <!--<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />-->
+        <Setter Property="Background" Value="Transparent" />
+      
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <!-- AS 3/12/09 - We were manipulating the provided menu when really we should have provided a custom context menu.
+        <Setter Property="ContextMenu" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type ui:PresentationUIStyleResources}, ResourceId=PUIDocumentViewerContextMenu}}" />-->
+        <Setter Property="ContextMenu" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igReporting:XamReportPreview}, ResourceId=DocumentViewerContextMenu}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DocumentViewer}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Focusable="false">
+                        <Grid Background="{TemplateBinding Background}" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <!-- Toolbar is set by the DocumentViewerToolBarStyle applied to this ContentControl -->
+                             <ContentControl Grid.Row="0" Grid.Column="0" Focusable="{TemplateBinding Focusable}" TabIndex="0" Style="{DynamicResource {ComponentResourceKey {x:Type igReporting:XamReportPreview}, DocumentViewerToolBarStyle}}" />
+                            <ScrollViewer Name="PART_ContentHost" Grid.Row="1" Grid.Column="0" CanContentScroll="true" HorizontalScrollBarVisibility="Auto" Focusable="{TemplateBinding Focusable}" IsTabStop="true" TabIndex="1" />
+                            <DockPanel Grid.Row="1">
+                                <FrameworkElement DockPanel.Dock="Right" Width="{x:Static SystemParameters.VerticalScrollBarWidth}" />
+                                <Rectangle Visibility="Visible" VerticalAlignment="top" Height="10">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="#66000000" Offset="0" />
+                                                    <GradientStop Color="Transparent" Offset="1" />
+                                                </GradientStopCollection>
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </DockPanel>
+                            <ContentControl Name="PART_FindToolBarHost" Grid.Row="2" Grid.Column="0" TabIndex="2" Focusable="{TemplateBinding Focusable}" Visibility="Collapsed" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+	
+	<!-- ======================================================================================== -->
+    <!-- _________________________ XamReportPreview  ____________________________________________ -->
+    <!-- ======================================================================================== -->
+    <Style TargetType="{x:Type igReporting:XamReportPreview}">
+      <!-- JJD 1/6/12 - TFS24467 
+              Moved foreground and Background setters from the default DocumentViewer style and
+              replaced them in the DocumentViewer style with a Background setter of 'Transparent' so 
+              that by default the background of the XamReportPreview will show thru to the DocumentViewer. 
+              The foreground of the XamReportPreview will be picked up in the DocumentViewer 
+              since it ia an inheritable property -->
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igReporting:XamReportPreview}">
+                    <Border BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                      BorderThickness="{TemplateBinding Border.BorderThickness}" 
+                      Background="{TemplateBinding Panel.Background}" 
+                      SnapsToDevicePixels="True" 
+                      Padding="{TemplateBinding Padding}">
+                        <DocumentViewer x:Name="Part_Viewer" 
+                            Style="{DynamicResource {x:Static igReporting:XamReportPreview.DocumentViewerStyleKey}}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+ 
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="LC_TilesControl Properties" xml:space="preserve">
+    <value>TilesControl Properties</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_AllowTileDragging" xml:space="preserve">
+    <value>Gets/sets whether the user is allowed to drag tiles to reposition them.</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_HorizontalTileAreaAlignment" xml:space="preserve">
+    <value>Determines the horizontal alignment of the complete block of visible tiles within the control.</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_RepositionAnimation" xml:space="preserve">
+    <value>Determines how a Tile animates from one location to another</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_ResizeAnimation" xml:space="preserve">
+    <value>Determines how a Tile animates from one size to another</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_ShouldAnimate" xml:space="preserve">
+    <value>Gets/sets whether tiles will animate to their new position and size</value>
+  </data>
+	<data name="LD_ModeSettingsBase_P_VerticalTileAreaAlignment" xml:space="preserve">
+    <value>Determines the vertical alignment of the complete block of visible tiles within the control.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_InterTileAreaSpacing" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between the maximized tile area and the miminized tile area when in maximized mode</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_InterTileSpacingXMaximized" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between maximized tiles horizontally.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_InterTileSpacingXMinimized" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between minimized tiles horizonatlly.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_InterTileSpacingYMaximized" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between maximized tiles vertically.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_InterTileSpacingYMinimized" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between minimized tiles horizonatlly.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MaximizedTileLocation" xml:space="preserve">
+    <value>Gets/sets where the maximized tiles will be arranged</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MaximizedTileLayoutOrder" xml:space="preserve">
+    <value>Gets/sets how multiple maximized tiles are laid out relative to one another</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MaximizedTileConstraints" xml:space="preserve">
+    <value>Gets/sets the constraints use for sizing a tile when it's Stae is 'Maximized'</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MinimizedTileConstraints" xml:space="preserve">
+    <value>Gets/sets the constraints use for sizing a tile when it's Stae is 'Minimized'</value>
+  </data>
+	<data name="LC_Behavior" xml:space="preserve">
+    <value>Behavior</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MinimizedTileExpandButtonVisibility" xml:space="preserve">
+    <value>Gets/sets the default visibility of the expand button in a tile's header.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MinimizedExpandedTileConstraints" xml:space="preserve">
+    <value>Gets/sets the constraints use for sizing a tile when it's Stae is 'MinimizedExpanded'</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_MinimizedTileExpansionMode" xml:space="preserve">
+    <value>Gets/sets how many minimized tiles may be expanded.</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_ShowAllMinimizedTiles" xml:space="preserve">
+    <value>Gets/sets whether all minimized tiles are arranged in view</value>
+  </data>
+	<data name="LD_MaximizedModeSettings_P_ShowTileAreaSplitter" xml:space="preserve">
+    <value>Gets/sets whether a splitter will be shown between the maximized and minimized tile areas which can be used to control the relative size of the these areas.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_AllowTileSizing" xml:space="preserve">
+    <value>Gets/sets whether the user will be allowed to re-size tiles.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_ExplicitLayoutTileSizeBehavior" xml:space="preserve">
+    <value>Gets/sets whether tile heights are synchronized across columns and whether tile widths are synchronized across rows when TileLayoutOrder is set to 'UseExplicitRowColumnOnTile'.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_MaxColumns" xml:space="preserve">
+    <value>Gets/sets the maximum number of columns to use when arranging tiles in 'Normal' mode.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_MaxRows" xml:space="preserve">
+    <value>Gets/sets the maximum number of rows to use when arranging tiles in 'Normal' mode.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_MinColumns" xml:space="preserve">
+    <value>Gets/sets the minimum number of columns to use when arranging tiles in 'Normal' mode.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_MinRows" xml:space="preserve">
+    <value>Gets/sets the minimum number of rows to use when arranging tiles in 'Normal' mode.</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_ShowAllTiles" xml:space="preserve">
+    <value>Gets/sets whether all tiles are arranged in view</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_TileConstraints" xml:space="preserve">
+    <value>Gets/sets the constraints use for sizing a tile when it's Stae is 'Normal'</value>
+  </data>
+	<data name="LD_NormalModeSettings_P_TileLayoutOrder" xml:space="preserve">
+    <value>Gets/sets how the panel will layout the tiles.</value>
+  </data>
+	<data name="LD_Tile" xml:space="preserve">
+    <value>A ContentControl derived element that represents a tile inside a XamTilesControl.</value>
+  </data>
+	<data name="LD_Tile_P_AllowMaximize" xml:space="preserve">
+    <value>Gets/sets whether this tile can be maximized by the user.</value>
+  </data>
+	<data name="LD_Tile_P_Column" xml:space="preserve">
+    <value>Gets/sets the value of the Column, -1 indicates that the tile will be positioned relative to the previous tile in the panel.</value>
+  </data>
+	<data name="LD_Tile_P_ColumnSpan" xml:space="preserve">
+    <value>Gets/sets the value of the ColumnSpan, 0 indicates that the tile will occupy the remainder of the space in its logical column.</value>
+  </data>
+	<data name="LD_Tile_P_ColumnWeight" xml:space="preserve">
+    <value>Gets/sets how any extra width will be distributed among tiles. The default value is 1.</value>
+  </data>
+	<data name="LD_Tile_P_Constraints" xml:space="preserve">
+    <value>Gets/sets the size constraints for this tile when its State is 'Normal'.</value>
+  </data>
+	<data name="LD_Tile_P_ConstraintsMaximized" xml:space="preserve">
+    <value>Gets/sets the size constraints for this tile when its State is 'Maximized'.</value>
+  </data>
+	<data name="LD_Tile_P_ConstraintsMinimized" xml:space="preserve">
+    <value>Gets/sets the size constraints for this tile when its State is 'Minimized'.</value>
+  </data>
+	<data name="LD_Tile_P_ConstraintsMinimizedExpanded" xml:space="preserve">
+    <value>Gets/sets the size constraints for this tile when its State is 'MinimizedExpanded'.</value>
+  </data>
+	<data name="LD_Tile_P_ContentTemplateMaximized" xml:space="preserve">
+    <value>Gets/sets the ContentTemplate that will be used when the Tile's State is 'Maximized'.</value>
+  </data>
+	<data name="LD_Tile_P_ContentTemplateMinimized" xml:space="preserve">
+    <value>Gets/sets the ContentTemplate that will be used when the Tile's State is 'Minimized'.</value>
+  </data>
+	<data name="LD_Tile_P_ContentTemplateMinimizedExpanded" xml:space="preserve">
+    <value>Gets/sets the ContentTemplate that will be used when the Tile's State is 'MinimizedExpanded'.</value>
+  </data>
+	<data name="LD_Tile_P_CloseAction" xml:space="preserve">
+    <value>Gets/sets what happens when this tile is closed.</value>
+  </data>
+	<data name="LD_Tile_P_CloseButtonVisibility" xml:space="preserve">
+    <value>Gets/sets the visibility of the close button in the header area</value>
+  </data>
+	<data name="LD_Tile_P_ExpandButtonVisibility" xml:space="preserve">
+    <value>Gets/sets the visibility of the expand toggle button in the header area</value>
+  </data>
+	<data name="LD_Tile_P_HasImage" xml:space="preserve">
+    <value>Returns a boolean indicating if the Image property has been set.</value>
+  </data>
+	<data name="LD_Tile_P_HasHeader" xml:space="preserve">
+    <value>Returns a boolean indicating if the Header property has been set.</value>
+  </data>
+	<data name="LC_Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+	<data name="LD_Tile_P_Header" xml:space="preserve">
+    <value>Gets/sets an object that will appear in the header of this tile.</value>
+  </data>
+	<data name="LC_Control" xml:space="preserve">
+    <value>Control</value>
+  </data>
+	<data name="LD_Tile_P_HeaderStringFormat" xml:space="preserve">
+    <value>Gets/sets the format of the tile header</value>
+  </data>
+	<data name="LD_Tile_P_HeaderTemplate" xml:space="preserve">
+    <value>Gets/sets the template used to display the content of the tile's header.</value>
+  </data>
+	<data name="LD_Tile_P_HeaderTemplateSelector" xml:space="preserve">
+    <value>Gets/sets a selector to allow th application writer to assign different header templates for each tile.</value>
+  </data>
+	<data name="LD_Tile_P_Image" xml:space="preserve">
+    <value>The image used to in the tile's header.</value>
+  </data>
+	<data name="LD_Tile_P_IsClosed" xml:space="preserve">
+    <value>Gets/sets whether this tile is closed.</value>
+  </data>
+	<data name="LD_Tile_P_IsExpandedWhenMinimized" xml:space="preserve">
+    <value>Gets/sets whether this tile is expanded when it is minimized</value>
+  </data>
+	<data name="LD_Tile_P_MaximizeButtonVisibility" xml:space="preserve">
+    <value>Gets/sets the visibility of the maximize toggle button in the header area</value>
+  </data>
+	<data name="LD_Tile_P_Row" xml:space="preserve">
+    <value>Gets/sets the value of the Row, -1 indicates that the tile will be positioned relative to the previous tile in the panel.</value>
+  </data>
+	<data name="LD_Tile_P_RowSpan" xml:space="preserve">
+    <value>Gets/sets the value of the RowSpan, 0 indicates that the tile will occupy the remainder of the space in its logical row.</value>
+  </data>
+	<data name="LD_Tile_P_RowWeight" xml:space="preserve">
+    <value>Gets/sets how any extra height will be distributed among tiles. The default value is 1.</value>
+  </data>
+	<data name="LD_Tile_P_SaveInLayout" xml:space="preserve">
+    <value>Indicates if the tile should be included in a saved layout.</value>
+  </data>
+	<data name="LD_Tile_P_SerializationId" xml:space="preserve">
+    <value>A string that is stored with the tile when the layout is saved.</value>
+  </data>
+	<data name="LD_Tile_P_State" xml:space="preserve">
+    <value>Gets/sets the state of the Tile</value>
+  </data>
+	<data name="LD_TileConstraints_P_HorizontalAlignment" xml:space="preserve">
+    <value>Gets/sets the horizontal alignment of the tile within its allocated slot.</value>
+  </data>
+	<data name="LD_TileConstraints_P_Margin" xml:space="preserve">
+    <value>Gets/sets the margin used around a tile</value>
+  </data>
+	<data name="LD_TileConstraints_P_MaxHeight" xml:space="preserve">
+    <value>Gets/sets the maximum height of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_MaxWidth" xml:space="preserve">
+    <value>Gets/sets the maximum width of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_MinHeight" xml:space="preserve">
+    <value>Gets/sets the minimum height of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_MinWidth" xml:space="preserve">
+    <value>Gets/sets the minimum width of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_PreferredHeight" xml:space="preserve">
+    <value>Gets/sets the preferred height of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_PreferredWidth" xml:space="preserve">
+    <value>Gets/sets the preferred width of a tile.</value>
+  </data>
+	<data name="LD_TileConstraints_P_VerticalAlignment" xml:space="preserve">
+    <value>Gets/sets the vertical alignment of the tile within its allocated slot.</value>
+  </data>
+	<data name="LD_TileHeaderPresenter" xml:space="preserve">
+    <value>An element used to represent the caption/header area of a Tile.</value>
+  </data>
+	<data name="LD_XamTilesControl" xml:space="preserve">
+    <value>An ItemControl control derived element that arranges and displays its child elements arranged as tiles, with native support for scrolling and virtualizing those items.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_HeaderPath" xml:space="preserve">
+    <value>Gets/sets a path to a value on the source object that will be used to initialize the Header of each Tile.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_InterTileSpacingX" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between tiles horizontally.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_InterTileSpacingY" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between tiles vertically.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_ItemHeaderTemplate" xml:space="preserve">
+    <value>Gets/sets the HeaderTemplate that will be set on an item's Tile.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_ItemHeaderTemplateSelector" xml:space="preserve">
+    <value>Gets/sets the HeaderTemplateSelector that will be set on an item's Tile.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_ItemTemplateMaximized" xml:space="preserve">
+    <value>Gets/sets the ItemTemplate that will be used when a Tile's State is 'Maximized'.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_ItemTemplateMinimized" xml:space="preserve">
+    <value>Gets/sets the ItemTemplate that will be used when a Tile's State is 'Minimized'.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_ItemTemplateMinimizedExpanded" xml:space="preserve">
+    <value>Gets/sets the ItemTemplate that will be used when a Tile's State is 'MinimizedExpanded'.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_MaximizedModeSettings" xml:space="preserve">
+    <value>Gets/sets the settings that are used to layout Tiles when in maximized mode</value>
+  </data>
+	<data name="LD_XamTilesControl_P_MaximizedTileLimit" xml:space="preserve">
+    <value>Gets/sets the limit on the number of 'Maximized' tiles that will be allowed.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_NormalModeSettings" xml:space="preserve">
+    <value>Gets/sets the settings that are used to layout Tiles when not in maximized mode</value>
+  </data>
+	<data name="LD_XamTilesControl_P_SerializationIdPath" xml:space="preserve">
+    <value>Gets/sets a path to a value on the source object that will be used to initialize the SerializationId of each Tile.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_Theme" xml:space="preserve">
+    <value>Gets/sets the default look for the control.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_TileAreaPadding" xml:space="preserve">
+    <value>Get/sets that amount of space between the TilesPanel and the area where the tiles are arranged.</value>
+  </data>
+	<data name="LD_XamTilesControl_P_TileCloseAction" xml:space="preserve">
+    <value>Gets/sets what happens when Tiles are closed.</value>
+  </data>
+	<data name="LC_TilesControl Events" xml:space="preserve">
+    <value>TilesControl Events</value>
+  </data>
+	<data name="LD_XamTilesControl_E_AnimationEnded" xml:space="preserve">
+    <value>Occurs when tile animations end.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_AnimationStarted" xml:space="preserve">
+    <value>Occurs when tile animations start.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_LoadingItemMapping" xml:space="preserve">
+    <value>Occurs during a call to 'LoadLayout'.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_SavingItemMapping" xml:space="preserve">
+    <value>Occurs during a call to 'SaveLayout'.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileClosed" xml:space="preserve">
+    <value>Occurs after the Tile has been closed.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileClosing" xml:space="preserve">
+    <value>Occurs when a Tile is about to close.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileDragging" xml:space="preserve">
+    <value>Occurs when a Tile is about to be dragged.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileStateChanged" xml:space="preserve">
+    <value>Occurs after the state of a Tile has changed.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileStateChanging" xml:space="preserve">
+    <value>Occurs when the state of a Tile is about to change.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileSwapping" xml:space="preserve">
+    <value>Occurs when a Tile is dragged over another tile that is a potential swap target.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_TileSwapped" xml:space="preserve">
+    <value>Occurs when a Tile is dropped over another tile and swaps places with it.</value>
+  </data>
+	<data name="LD_XamTilesControl_E_ThemeChanged" xml:space="preserve">
+    <value>Invoked when the 'Theme' property has been changed.</value>
+  </data>
+	<data name="LD_TilesPanel" xml:space="preserve">
+    <value>A Panel derived element that arranges and displays its child elements arranged as tiles, with native support for scrolling and virtualizing those items.</value>
+  </data>
+	<data name="LD_TilesPanel_P_InterTileSpacingX" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between tiles horizontally.</value>
+  </data>
+	<data name="LD_TilesPanel_P_InterTileSpacingY" xml:space="preserve">
+    <value>Gets/sets the amount of spacing between tiles horizontally.</value>
+  </data>
+	<data name="LD_TilesPanel_P_MaximizedModeSettings" xml:space="preserve">
+    <value>Gets/sets the settings that are used to layout Tiles when in maximized mode</value>
+  </data>
+	<data name="LD_TilesPanel_P_MaximizedTileLimit" xml:space="preserve">
+    <value>Gets/sets the limit on the number of 'Maximized' tiles that will be allowed.</value>
+  </data>
+	<data name="LD_TilesPanel_P_NormalModeSettings" xml:space="preserve">
+    <value>Gets/sets the settings that are used to layout Tiles when not in maximized mode</value>
+  </data>
+	<data name="LD_TilesPanel_P_TileAreaPadding" xml:space="preserve">
+    <value>Get/sets that amount of space between the TilesPanel and the area where the tiles are arranged.</value>
+  </data>
+	<data name="LD_TilesPanel_P_TileCloseAction" xml:space="preserve">
+    <value>Gets/sets what happens when Tiles are closed.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileClosed" xml:space="preserve">
+    <value>Occurs after the Tile has been closed.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileClosing" xml:space="preserve">
+    <value>Occurs when a Tile is about to close.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileDragging" xml:space="preserve">
+    <value>Occurs when a Tile is about to be dragged.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileStateChanged" xml:space="preserve">
+    <value>Occurs after the state of a Tile has changed.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileStateChanging" xml:space="preserve">
+    <value>Occurs when the state of a Tile is about to change.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileSwapping" xml:space="preserve">
+    <value>Occurs when a Tile is dragged over another tile that is a potential swap target.</value>
+  </data>
+	<data name="LD_TilesPanel_E_TileSwapped" xml:space="preserve">
+    <value>Occurs when a Tile  is dropped over another tile and swaps places with it.</value>
+  </data>
+	<data name="SmartTag_T_XamTilesControl" xml:space="preserve">
+    <value>XamTilesControl</value>
+  </data>
+	<data name="SmartTag_T_TileOptionsDialog" xml:space="preserve">
+    <value>Tile Options</value>
+  </data>
+	<data name="SmartTag_T_NormalModeSettings" xml:space="preserve">
+    <value>NormalModeSettings</value>
+  </data>
+	<data name="SmartTag_T_MaximizedModeSettings" xml:space="preserve">
+    <value>MaximizedModeSettings</value>
+  </data>
+	<data name="SmartTag_T_TileConstraints" xml:space="preserve">
+    <value>TileConstraints</value>
+  </data>
+	<data name="SmartTag_T_Tile" xml:space="preserve">
+    <value>Tile</value>
+  </data>
+	<data name="SmartTag_T_InvalidValue" xml:space="preserve">
+    <value>Invalid Value</value>
+  </data>
+	<data name="SmartTag_G_Tasks" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+	<data name="SmartTag_G_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+	<data name="SmartTag_G_Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+	<data name="SmartTag_G_Arrangement" xml:space="preserve">
+    <value>Arrangement</value>
+  </data>
+	<data name="SmartTag_G_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+	<data name="SmartTag_G_TileConstraints" xml:space="preserve">
+    <value>TileConstraints</value>
+  </data>
+	<data name="SmartTag_G_MarginAndAlignments" xml:space="preserve">
+    <value>Margins And Alignments</value>
+  </data>
+	<data name="SmartTag_G_Serialization" xml:space="preserve">
+    <value>Serialization</value>
+  </data>
+	<data name="SmartTag_G_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+	<data name="SmartTag_D_AddTiles" xml:space="preserve">
+    <value>Add Tiles...</value>
+  </data>
+	<data name="SmartTag_N_AddTiles" xml:space="preserve">
+    <value>Adds 1 or more Tiles to the XamTilesControl</value>
+  </data>
+	<data name="SmartTag_DialogItem_NumberTiles" xml:space="preserve">
+    <value>Number of Tiles to add</value>
+  </data>
+	<data name="SmartTag_DialogItem_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+	<data name="SmartTag_Default_TileHeader" xml:space="preserve">
+    <value>Tile</value>
+  </data>
+	<data name="SmartTag_M_NumberOfTiles" xml:space="preserve">
+    <value>Please enter a valid value for the number of Tiles to add.</value>
+  </data>
+	<data name="XamTilesControlAssetLibrary">
+		<value>Infragistics</value>
+	</data>
+</root>

@@ -1,0 +1,13 @@
+﻿ <ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igwindows="http://infragistics.com/Windows"
+	xmlns:igOutlookBar="clr-namespace:Infragistics.Windows.OutlookBar"
+	>
+	<ResourceDictionary.MergedDictionaries>		
+		<ResourceDictionary Source="OutlookBarOffice2k7Blue.xaml" />
+		<ResourceDictionary Source="OutlookBarLunaNormal.xaml" />
+		<ResourceDictionary Source="../OutlookBarBrushes/OutlookBarLunaSilver_Brushes.xaml" />		
+	</ResourceDictionary.MergedDictionaries>
+        
+</ResourceDictionary>

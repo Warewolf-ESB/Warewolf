@@ -1,0 +1,2343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="LD_HeaderPrefixArea" xml:space="preserve">
+    <value>A control that is placed in the header area and sized to match the dimensions of the RecordSelectors so that the LabelPresenters in the HeaderLabelArea line up with the cells in each record.</value>
+  </data>
+	<data name="LC_Behavior" xml:space="preserve">
+    <value>Behavior</value>
+  </data>
+	<data name="LD_HeaderPrefixArea_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LC_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+	<data name="LD_HeaderPrefixArea_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the HeaderPrefixAreas in the containing Panel.</value>
+  </data>
+	<data name="LC_Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+	<data name="LD_HeaderPrefixArea_P_Record" xml:space="preserve">
+    <value>Returns the associated record inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowCellVirtualization" xml:space="preserve">
+    <value>Determines if the cell uielement creation can be deferred until the cell is brought into view.</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowLabelVirtualization" xml:space="preserve">
+    <value>Determines if the label uielement creation can be deferred until the label is brought into view.</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowEdit" xml:space="preserve">
+    <value>Determines if the user can edit a cell.</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowGroupBy" xml:space="preserve">
+    <value>Determines if the user can initiate a group by operation thru the UI for this field</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowResize" xml:space="preserve">
+    <value>Determines if the user can resize a cell or label in a  field</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellClickAction" xml:space="preserve">
+    <value>Determines what happens when the user clicks on a field cell</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellContentAlignment" xml:space="preserve">
+    <value>Gets/sets the relative position of the label to its field</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellHeight" xml:space="preserve">
+    <value>The height of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellMaxHeight" xml:space="preserve">
+    <value>The maximum height of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellMaxWidth" xml:space="preserve">
+    <value>The maximum width of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellMinHeight" xml:space="preserve">
+    <value>The minimum height of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellMinWidth" xml:space="preserve">
+    <value>The minimum width of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellPresenterStyle" xml:space="preserve">
+    <value>The style for the cell</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellPresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for cells</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellValuePresenterStyle" xml:space="preserve">
+    <value>The style for the cell</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellValuePresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for cells</value>
+  </data>
+	<data name="LD_FieldSettings_P_CellWidth" xml:space="preserve">
+    <value>The width of the cell in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_EditorStyle" xml:space="preserve">
+    <value>The style for the ValueEditor used within a cell</value>
+  </data>
+	<data name="LD_FieldSettings_P_EditorType" xml:space="preserve">
+    <value>The type of the ValueEditor used within a cell</value>
+  </data>
+	<data name="LD_FieldSettings_P_ExpandedCellStyle" xml:space="preserve">
+    <value>The style for the cell when it is expanded</value>
+  </data>
+	<data name="LD_FieldSettings_P_ExpandableFieldRecordExpansionMode" xml:space="preserve">
+    <value>Determines how an ExpandableFieldRecordPresenter will be expanded</value>
+  </data>
+	<data name="LD_FieldSettings_P_ExpandableFieldRecordHeaderDisplayMode" xml:space="preserve">
+    <value>Determines how an ExpandableFieldRecordPresenter will display a header.</value>
+  </data>
+	<data name="LD_FieldSettings_P_ExpandableFieldRecordPresenterStyle" xml:space="preserve">
+    <value>The style for ExpandableFieldRecords</value>
+  </data>
+	<data name="LD_FieldSettings_P_ExpandableFieldRecordPresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for ExpandableFieldRecords</value>
+  </data>
+	<data name="LD_FieldSettings_P_GroupByMode" xml:space="preserve">
+    <value>Determines how DataRecord are grouped</value>
+  </data>
+	<data name="LD_FieldSettings_P_GroupByRecordPresenterStyle" xml:space="preserve">
+    <value>The style for the groupBy</value>
+  </data>
+	<data name="LD_FieldSettings_P_GroupByRecordPresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for groupBys</value>
+  </data>
+	<data name="LD_FieldSettings_P_InvalidValueBehavior" xml:space="preserve">
+    <value>Determines what action to take when attempting to end edit mode with an invalid value.</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelClickAction" xml:space="preserve">
+    <value>Determines what happens when the user clicks on a field label</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelHeight" xml:space="preserve">
+    <value>The height of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelMaxHeight" xml:space="preserve">
+    <value>The maximum height of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelMaxWidth" xml:space="preserve">
+    <value>The maximum width of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelMinHeight" xml:space="preserve">
+    <value>The minimum height of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelMinWidth" xml:space="preserve">
+    <value>The minimum width of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelPresenterStyle" xml:space="preserve">
+    <value>The style for the label</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelPresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for labels</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelTextAlignment" xml:space="preserve">
+    <value>Determines how text is aligned within the LabelPresenter.</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelTextTrimming" xml:space="preserve">
+    <value>Determines how text is trimmed within the LabelPresenter if there isn't enough space to display it entirely.</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelTextWrapping" xml:space="preserve">
+    <value>Determines whether text is wrapped within the LabelPresenter if there isn't enough width to display it on a single line.</value>
+  </data>
+	<data name="LD_FieldSettings_P_LabelWidth" xml:space="preserve">
+    <value>The width of the label in device-independent units (1/96th inch per unit)</value>
+  </data>
+	<data name="LD_FieldSettings_P_SortComparer" xml:space="preserve">
+    <value>Property used for specifying a custom comparer used to sort DataRecords</value>
+  </data>
+	<data name="LD_FieldSettings_P_SortComparisonType" xml:space="preserve">
+    <value>Determines how DataRecords are sorted</value>
+  </data>
+	<data name="LD_CellPresenter" xml:space="preserve">
+    <value>A control used to display a cell value and/or label.  This control is automatically generated by the DataPresenterBase to display the value and/or label for a particular field in a particular record.</value>
+  </data>
+	<data name="LD_CellPresenter_P_ContentLocation" xml:space="preserve">
+    <value>Returns the location of the label (read-only)</value>
+  </data>
+	<data name="LD_CellPresenter_P_IsFieldSelected" xml:space="preserve">
+    <value>Returns true if the field is selected (read-only)</value>
+  </data>
+	<data name="LD_CellPresenter_P_IsUnbound" xml:space="preserve">
+    <value>Returns true if the Field is unbound (read-only)</value>
+  </data>
+	<data name="LD_CellPresenter_P_SortStatus" xml:space="preserve">
+    <value>Returns the sort status of the Field (read-only)</value>
+  </data>
+	<data name="LD_ViewBase_E_ViewStateChanged" xml:space="preserve">
+    <value>Occurs when the state of the View has changed, and an update to the UI is required.</value>
+  </data>
+	<data name="LD_CarouselView_P_ViewSettings" xml:space="preserve">
+    <value>Returns/sets the CarouselViewSettings object for this CarouselView.</value>
+  </data>
+	<data name="LD_CellPresenterLayoutElement" xml:space="preserve">
+    <value>An element used in the visual tree of the CellPresenter control to arrange a CellValuePresenter element and/or a LabelPresenter element based on the LabelLocation in effect for the cell.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_ActiveCell" xml:space="preserve">
+    <value>Gets/sets the current active cell</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_ActiveRecord" xml:space="preserve">
+    <value>Gets/sets the current active record</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_AutoFit" xml:space="preserve">
+    <value>Gets/sets whether the grid generated to display the cells and labels will be sized to exactly fit within the DataPresenterBase</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_BindToSampleData" xml:space="preserve">
+    <value>Sets the DataSource property to some sample data</value>
+  </data>
+	<data name="LC_Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_DataSource" xml:space="preserve">
+    <value>Gets/sets the source for the data</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_FieldLayoutSettings" xml:space="preserve">
+    <value>Holds the default settings for FieldLayouts</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_FieldSettings" xml:space="preserve">
+    <value>Holds the default settings for Fields</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_GroupByAreaFieldLabelStyle" xml:space="preserve">
+    <value>Gets/sets the style to be used for the GroupByAreaFieldLabels.  By default, this property returns null which indicates that an internally generated default style should be used.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_GroupByAreaFieldLabelStyleSelector" xml:space="preserve">
+    <value>Gets/sets the style to be used for the GroupByAreaFieldLabels.  By default, this property returns null which indicates that an internally generated default style should be used.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_GroupByAreaLocation" xml:space="preserve">
+    <value>Determines where the GroupByArea is displayed.  If set to None, the GroupByArea is not displayed.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_GroupByAreaStyle" xml:space="preserve">
+    <value>Gets/sets the style to be used for the GroupByArea.  By default, this property returns null which indicates that an internally generated default style should be used.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_IsGroupByAreaExpanded" xml:space="preserve">
+    <value>Determines if the GroupByArea is expanded or collapsed</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_IsNestedDataDisplayEnabled" xml:space="preserve">
+    <value>Gets/sets whether nested/hierarchical data can be displayed</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordLoadMode" xml:space="preserve">
+    <value>Gets/sets how records are loaded</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordManager" xml:space="preserve">
+    <value>The record collection manager (read-only)</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_Records" xml:space="preserve">
+    <value>The current root collection of records</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_ScrollingMode" xml:space="preserve">
+    <value>Determines whether the records being displayed are updated while the scroll thumb is being dragged.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_SortRecordsByDataType" xml:space="preserve">
+    <value>Gets/sets whether data sources containing non-homogenous data will force a sort of records by data type.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_Theme" xml:space="preserve">
+    <value>Gets/sets the general look of the FieldLayout</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_UpdateMode" xml:space="preserve">
+    <value>Determines how updates are committed to the DataSource</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_ViewableRecords" xml:space="preserve">
+    <value>A read-only collection that contains all the records that can be viewed at this level.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_AssigningFieldLayoutToItem" xml:space="preserve">
+    <value>Occurs when an item from the 'DataSource' is being associated with the 'FieldLayout' that will define the layout of the item within the 'DataPresenterBase'.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_AutoFitChanged" xml:space="preserve">
+    <value>Occurs when the 'AutoFit' property changes</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellActivated" xml:space="preserve">
+    <value>Occurs after a cell is activated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellActivating" xml:space="preserve">
+    <value>Occurs before a cell is activated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellChanged" xml:space="preserve">
+    <value>Occurs after a cell has been modified while in edit mode</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellDeactivating" xml:space="preserve">
+    <value>Occurs before a Cell is deactivated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellUpdating" xml:space="preserve">
+    <value>Occurs when a cell is about to be updated.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_CellUpdated" xml:space="preserve">
+    <value>Occurs after a cell has been updated.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_DataError" xml:space="preserve">
+    <value>Occurs when an exception is thrown when reading or writing cell data</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_EditModeEnded" xml:space="preserve">
+    <value>Occurs when the control has just exited edit mode</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_EditModeEnding" xml:space="preserve">
+    <value>Occurs when the control is about to exit edit mode</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_EditModeStarted" xml:space="preserve">
+    <value>Occurs when the control has just entered edit mode</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_EditModeStarting" xml:space="preserve">
+    <value>Occurs when the control is about to enter edit mode</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_EditModeValidationError" xml:space="preserve">
+    <value>Occurs when there is a cell input validation error</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_ExecutingCommand" xml:space="preserve">
+    <value>Occurs before a command is performed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_ExecutedCommand" xml:space="preserve">
+    <value>Occurs after a command is performed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_FieldLayoutInitializing" xml:space="preserve">
+    <value>Occurs when a FieldLayout object is being initialized</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_FieldLayoutInitialized" xml:space="preserve">
+    <value>Occurs after a FieldLayout object has been initialized</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_Grouping" xml:space="preserve">
+    <value>Occurs when records are about to be grouped as the result of a user action.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_Grouped" xml:space="preserve">
+    <value>Occurs after records have been grouped as the result of a user action.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_InitializeRecord" xml:space="preserve">
+    <value>Occurs when a record is initialized</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_InitializeTemplateAddRecord" xml:space="preserve">
+    <value>Occurs when a template add DataRecord is initialized</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordActivated" xml:space="preserve">
+    <value>Occurs beford a Record is activated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordActivating" xml:space="preserve">
+    <value>Occurs beford a Record is activated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordAdding" xml:space="preserve">
+    <value>Occurs when a record is about to be added.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordAdded" xml:space="preserve">
+    <value>Occurs after a record has been added.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordCollapsed" xml:space="preserve">
+    <value>Occurs beford a Record is collapsed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordCollapsing" xml:space="preserve">
+    <value>Occurs beford a Record is collapsed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordDeactivating" xml:space="preserve">
+    <value>Occurs beford a Record is activated</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordExpanded" xml:space="preserve">
+    <value>Occurs beford a Record is expanded</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordExpanding" xml:space="preserve">
+    <value>Occurs beford a Record is expanded</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordsDeleted" xml:space="preserve">
+    <value>Occurs after one or more records has been deleted.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordsDeleting" xml:space="preserve">
+    <value>Occurs when one or more records is about to be deleted.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordsInViewChanged" xml:space="preserve">
+    <value>Occurs after the set of records in view has changed.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordUpdateCanceling" xml:space="preserve">
+    <value>Occurs when a record's update is about to be canceled.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordUpdateCanceled" xml:space="preserve">
+    <value>Occurs after a record's update has been canceled.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordUpdating" xml:space="preserve">
+    <value>Occurs when a record is about to be updated.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_RecordUpdated" xml:space="preserve">
+    <value>Occurs after a record has been updated.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_SelectedItemsChanged" xml:space="preserve">
+    <value>Occurs when the SelectedItems have changed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_SelectedItemsChanging" xml:space="preserve">
+    <value>Occurs when the SelectedItems are about to change</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_Sorting" xml:space="preserve">
+    <value>Occurs when the sort order of records is about to change as the result of a user action.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_Sorted" xml:space="preserve">
+    <value>Occurs when the sort order of records has changed as the result of a user action.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_ThemeChanged" xml:space="preserve">
+    <value>Occurs when the 'Theme' property changes</value>
+  </data>
+	<data name="LD_XamDataGrid" xml:space="preserve">
+    <value>A DataPresenterBase derived control that uses a GridViewPanel to arrange its items in a traditional tabular layout, eiher vertically or horizontally.  The XamDataGrid uses elements generated by the XamDataPresenterBase to display each item in the list.</value>
+  </data>
+	<data name="LD_XamDataGrid_P_ViewSettings" xml:space="preserve">
+    <value>Returns/set the GridViewSettings object for this XamDataGrid.</value>
+  </data>
+	<data name="LD_HeaderLabelArea" xml:space="preserve">
+    <value>A control that contains one or more 'LabelPresenter' instances (i.e. column headers) in the 'DataPresenterBase' derived controls that display a separate header area such as in 'XamDataGrid'.  It is used primarily for styling the area around the LabelPresenters.</value>
+  </data>
+	<data name="LD_HeaderLabelArea_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LD_HeaderLabelArea_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the HeaderLabelAreas in the containing Panel.</value>
+  </data>
+	<data name="LD_XamDataCarousel" xml:space="preserve">
+    <value>A DataPresenterBase derived control that uses a CarouselViewPanel to arrange its items along a user defined path.  The XamDataCarousel uses elements generated by the XamDataPresenterBase to display each item in the list.</value>
+  </data>
+	<data name="LD_XamDataCarousel_P_ViewSettings" xml:space="preserve">
+    <value>Returns/set the CarouselViewSettings object for this XamDataCarousel.</value>
+  </data>
+	<data name="LD_DataRecordCellArea" xml:space="preserve">
+    <value>A control that sits within a DataRecordPresenter control and contains the record's cells.  It is used primarily for styling the area around the cells.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_IsActive" xml:space="preserve">
+    <value>Determines if this is the active record</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_IsSelected" xml:space="preserve">
+    <value>Determines if the record is selected</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the RecordCellAreas in the containing Panel.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_Record" xml:space="preserve">
+    <value>Returns the associated record inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_CornerRadius" xml:space="preserve">
+    <value>CornerRadius used by borders in default templates.</value>
+  </data>
+	<data name="LC_Brushes" xml:space="preserve">
+    <value>Brushes</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BackgroundHover" xml:space="preserve">
+    <value>The brush applied by default templates when IsMouseOver = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BorderHoverBrush" xml:space="preserve">
+    <value>The border brush applied by default templates when IsMouseOver = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BackgroundActive" xml:space="preserve">
+    <value>The brush applied by default templates when IsActive = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BorderActiveBrush" xml:space="preserve">
+    <value>The border brush applied by default templates when IsActive = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BackgroundAlternate" xml:space="preserve">
+    <value>The brush applied by default templates when IsAlternate = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BorderAlternateBrush" xml:space="preserve">
+    <value>The border brush applied by default templates when IsAlternate = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BackgroundSelected" xml:space="preserve">
+    <value>The brush applied by default templates when IsSelected = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_BorderSelectedBrush" xml:space="preserve">
+    <value>The border brush applied by default templates when IsSelected = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_ForegroundStyle" xml:space="preserve">
+    <value>Style property applied to internal ContentPresenter used by default templates. Use to style text values.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_ForegroundActiveStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when CellArea.IsActive = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_ForegroundAlternateStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when CellArea.IsAlternate = true. Use to style text values.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_ForegroundSelectedStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when CellArea.IsSelected = true.</value>
+  </data>
+	<data name="LD_DataRecordCellArea_P_ForegroundHoverStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when Cell.IsMouseOver = true.</value>
+  </data>
+	<data name="LD_XamDataPresenter" xml:space="preserve">
+    <value>A DataPresenterBase derived control that can display data using different layouts or 'views', depending on the setting of its View property.  The control contains two built-in views - GridView and CarouselView, and will also support any ViewBase derived view.</value>
+  </data>
+	<data name="LD_XamDataPresenter_P_View" xml:space="preserve">
+    <value>Returns/sets the View to be used to present data in the control.</value>
+  </data>
+	<data name="LD_XamDataCards" xml:space="preserve">
+    <value>A DataPresenterBase derived control that uses a CardView and an associated CardViewPanel to arrange DataRecords inside 'cards' which are organized in a tabular layout.</value>
+  </data>
+	<data name="LD_DataItemPresenter_P_HighlightAsPrimary" xml:space="preserve">
+    <value>Returns true if the data item is associated with a Field that has been marked as a primary Field</value>
+  </data>
+	<data name="LD_DataItemPresenter_P_IsUnbound" xml:space="preserve">
+    <value>Returns true if the Field is unbound (read-only)</value>
+  </data>
+	<data name="LD_RecordSelector" xml:space="preserve">
+    <value>A control used inside a DataRecordPresenter to provide a UI for selecting a record.</value>
+  </data>
+	<data name="LD_RecordSelector_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LD_RecordSelector_P_IsActive" xml:space="preserve">
+    <value>Returns true if the associated 'Record' is the active record in the control (read-only)</value>
+  </data>
+	<data name="LD_RecordSelector_P_IsAddRecord" xml:space="preserve">
+    <value>Returns true if the associated 'Record' is an add record.</value>
+  </data>
+	<data name="LD_RecordSelector_P_IsDataChanged" xml:space="preserve">
+    <value>Returns true if cell data of the associated 'Record' has been edited and have not yet been commited to the data source.</value>
+  </data>
+	<data name="LD_RecordSelector_P_Location" xml:space="preserve">
+    <value>Returns the location of the RecordSelector in relation to the cell area (read-only)</value>
+  </data>
+	<data name="LD_RecordSelector_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the RecordSelectors in the containing Panel.</value>
+  </data>
+	<data name="LD_RecordSelector_P_Record" xml:space="preserve">
+    <value>Returns the associated record inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_CellPresentation" xml:space="preserve">
+    <value>Returns the layout mode of the generated styles</value>
+  </data>
+	<data name="LD_RecordPresenter_P_Description" xml:space="preserve">
+    <value>Returns the record's description property value (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_ExpansionIndicatorVisibility" xml:space="preserve">
+    <value>Gets/sets whether an expansion indicator is shown for the Record</value>
+  </data>
+	<data name="LD_RecordPresenter_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HasChildData" xml:space="preserve">
+    <value>Returns true is this record child records to display</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HasHeaderContent" xml:space="preserve">
+    <value>Returns true if there is nested content (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HasNestedContent" xml:space="preserve">
+    <value>Returns true if there is nested content (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HeaderContent" xml:space="preserve">
+    <value>Returns the header content for the RecordPresenter.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsActive" xml:space="preserve">
+    <value>Determines if this is the active record</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsExpanded" xml:space="preserve">
+    <value>Determines if the record is expanded</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsFixedOnBottom" xml:space="preserve">
+    <value>Returns true if the record is fixed at the bottom of the list of rows.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsFixedOnTop" xml:space="preserve">
+    <value>Returns true if the record is fixed at the top of the list of rows.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsHeaderRecord" xml:space="preserve">
+    <value>Returns true if the record is fixed at the top of the list of rows.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsSelected" xml:space="preserve">
+    <value>Determines if the record is selected</value>
+  </data>
+	<data name="LD_RecordPresenter_P_NestedContent" xml:space="preserve">
+    <value>Returns the nested content (i.e., child data) for the record based on its expanded state (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_NestedContentMargin" xml:space="preserve">
+    <value>Provides extra margins around the nested content readonly)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_NestedContentBackground" xml:space="preserve">
+    <value>The brush applied by default templates as the background of the nested content area</value>
+  </data>
+	<data name="LD_RecordPresenter_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the RecordPresenters in the containing Panel.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_Record" xml:space="preserve">
+    <value>Returns the associated record inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_ShouldDisplayExpandableRecordContent" xml:space="preserve">
+    <value>Returns true if ExpandableRecordContent (i.e., expansion indicator and description) should be displayed (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_ShouldDisplayGroupByRecordContent" xml:space="preserve">
+    <value>Returns true if GroupByRecordContent (i.e., expansion indicator and description) should be displayed (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_ShouldDisplayRecordContent" xml:space="preserve">
+    <value>Returns true if there is nested content (read-only)</value>
+  </data>
+	<data name="LD_RecordPresenter_P_TemplateCardView" xml:space="preserve">
+    <value>Gets/sets the template that is used in the XamDataCarousel</value>
+  </data>
+	<data name="LD_RecordPresenter_P_TemplateGridView" xml:space="preserve">
+    <value>Gets/sets the template that is used for views whose 'CellPresentation' is 'CardView'</value>
+  </data>
+	<data name="LD_DataRecordPresenter" xml:space="preserve">
+    <value>A control that displays the contents of a 'DataRecord' in the 'DataPresenterBase' derived controls such as 'XamDataGrid'.</value>
+  </data>
+	<data name="LD_DataRecordPresenter_P_DataRecord" xml:space="preserve">
+    <value>Returns the associated DataRecord inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_DataRecordPresenter_P_IsAddRecord" xml:space="preserve">
+    <value>Returns true if this is a template add record</value>
+  </data>
+	<data name="LD_DataRecordPresenter_P_IsDataChanged" xml:space="preserve">
+    <value>Returns true if this is a template add record</value>
+  </data>
+	<data name="LD_DataRecordPresenter_P_HeaderAreaBackground" xml:space="preserve">
+    <value>The brush applied by default templates as the background in the HeaderArea. This is the area behind the LabelPresenters </value>
+  </data>
+	<data name="LD_ExpandableFieldRecordPresenter" xml:space="preserve">
+    <value>A control that displays the contents of a 'ExpandableFieldRecord' in the 'DataPresenterBase' derived controls such as 'XamDataGrid'. ExpandableFieldRecords are used to group records in child bands.</value>
+  </data>
+	<data name="LD_GroupByRecordPresenter" xml:space="preserve">
+    <value>A control that displays the contents of a 'GroupByRecord' in the 'DataPresenterBase' derived controls such as 'XamDataGrid'. GroupByRecords are used as parent nodes for a set of logically related records created by a Grouping operation.</value>
+  </data>
+	<data name="LD_FieldLayout_P_AutoGenerateFieldsResolved" xml:space="preserve">
+    <value>Determines whether fields will be automatically generated (read-only)</value>
+  </data>
+	<data name="LD_FieldLayout_P_DataRecordSizingModeResolved" xml:space="preserve">
+    <value>Determines how DataRecords are sized and if they can resized by the user (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_Description" xml:space="preserve">
+    <value>Gets/sets the description for this FieldLayout</value>
+  </data>
+	<data name="LD_FieldLayout_P_FieldSettings" xml:space="preserve">
+    <value>Holds the default settings for fields</value>
+  </data>
+	<data name="LD_FieldLayout_P_HighlightAlternateRecordsResolved" xml:space="preserve">
+    <value>Determines whether the IsAlternate property will return true on every other record.</value>
+  </data>
+	<data name="LD_FieldLayout_P_HighlightPrimaryFieldResolved" xml:space="preserve">
+    <value>Determines whether the primary field will be highlighted (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_Key" xml:space="preserve">
+    <value>The key into the Fieldlayouts collection</value>
+  </data>
+	<data name="LD_FieldLayout_P_LabelLocationResolved" xml:space="preserve">
+    <value>Returns the preferred location of the labels (read-only)</value>
+  </data>
+	<data name="LD_FieldLayout_P_MaxFieldsToAutoGenerateResolved" xml:space="preserve">
+    <value>Returns the maximum number of cells that can be selected at any time (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_MaxSelectedCellsResolved" xml:space="preserve">
+    <value>Returns the maximum number of cells that can be selected at any time (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_MaxSelectedRecordsResolved" xml:space="preserve">
+    <value>Returns the maximum number of records that can be selected at any time (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_RecordSelectorExtentResolved" xml:space="preserve">
+    <value>Gets/sets the extent for the record selector (read-only)</value>
+  </data>
+	<data name="LD_FieldLayout_P_RecordSelectorLocationResolved" xml:space="preserve">
+    <value>Determines if and where RecordSelectors will be displayed relative to a record's cell area (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_ResizingModeResolved" xml:space="preserve">
+    <value>Determines if and how cells and labels are resized by the user (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_SelectionTypeCellResolved" xml:space="preserve">
+    <value>Determines how cells can be selected (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_SelectionTypeFieldResolved" xml:space="preserve">
+    <value>Determines how fields can be selected (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_SelectionTypeRecordResolved" xml:space="preserve">
+    <value>Determines how records can be selected (read-only).</value>
+  </data>
+	<data name="LD_FieldLayout_P_Settings" xml:space="preserve">
+    <value>Gets/sets an object that holds FieldLayout specific settings</value>
+  </data>
+	<data name="LD_FieldLayout_P_SortedFields" xml:space="preserve">
+    <value>Returns the collection of FieldSortDescription objects that determine sort order and groupby status (read-only).</value>
+  </data>
+	<data name="LD_CarouselBreadcrumbControl" xml:space="preserve">
+    <value>A control that displays a collection of CarouselBreadcrumb objects which can be used to represent a trail of visited nodes during hierarchy navigation.  Used by the XamDataCarousel control and XamDataPresenter's CarouselView.</value>
+  </data>
+	<data name="LD_CarouselBreadcrumbControl_P_Breadcrumbs" xml:space="preserve">
+    <value>Returns the collection of Breadcrumbs associated with this BreadcrumbControl</value>
+  </data>
+	<data name="LD_CarouselBreadcrumbControl_P_HasCrumbs" xml:space="preserve">
+    <value>Returns true if the BreadcrumbControl contains at least 1 CarouselBreadcrumb</value>
+  </data>
+	<data name="LD_CarouselBreadcrumbControl_P_Orientation" xml:space="preserve">
+    <value>Returns/sets the orientation of the bread crumbs in the list.</value>
+  </data>
+	<data name="LD_CarouselBreadcrumbControl_E_CarouselBreadcrumbClick" xml:space="preserve">
+    <value>Occurs when a CarouselBreadcrumb is clicked.</value>
+  </data>
+	<data name="LD_GridViewPanel" xml:space="preserve">
+    <value>A 'VirtualizingPanel' derived class used by the 'DataPresenterBase' derived controls such as 'XamDataGrid' to arrange 'RecordPresenter' instances in a tabular fashion, either horizontally or vertically.  The GridViewPanel supports unlimited nesting to display hierarchical data and a single unified scrolling capability for all nested panels.</value>
+  </data>
+	<data name="LD_GridViewPanel_P_ViewSettings" xml:space="preserve">
+    <value>Returns/set the CarouselViewSettings object for this XamCarouselPanel.</value>
+  </data>
+	<data name="LD_CarouselBreadcrumb_P_IsLastBreadcrumb" xml:space="preserve">
+    <value>Returns true if the item is the last CarouselBreadcrumb in the Breadcrumbs collection.</value>
+  </data>
+	<data name="LD_CarouselItem" xml:space="preserve">
+    <value>Element used by the XamDataCarousel and XamDataPresenter's CarouselView to serve as a container (wrapper) for each item in the list.</value>
+  </data>
+	<data name="LD_CarouselItem_P_ExpansionIndicatorVisibility" xml:space="preserve">
+    <value>Returns Visbility.Visible if the record associated with this CarouselItem has child records to display, otherwise returns Visibility.Hidden.</value>
+  </data>
+	<data name="LD_CarouselItem_P_IsExpanded" xml:space="preserve">
+    <value>Determines if the CarouselItem is expanded</value>
+  </data>
+	<data name="LD_CarouselItem_P_ItemDisappearingStoryboard" xml:space="preserve">
+    <value>Returns/sets the storyboard used to animate items before they disappear.</value>
+  </data>
+	<data name="LD_GroupByArea" xml:space="preserve">
+    <value>A control used by the XamDataPresenter, XamDataGrid and XamDataCarousel which displays a list of fields that are available for grouping and a list of fields that are already grouped.  It also provides support for dragging and dropping fields between the lists.</value>
+  </data>
+	<data name="LD_GroupByArea_P_AvailableFieldLabels" xml:space="preserve">
+    <value>Returns a collection of all GroupAreaLabels - those that are currently unavailable for grouping have their Visibility property set to Collapsed.</value>
+  </data>
+	<data name="LD_GroupByArea_P_FieldLabelDragInProgress" xml:space="preserve">
+    <value>Returns true if a field label is currently being dragged</value>
+  </data>
+	<data name="LD_GroupByArea_P_GroupedFieldLabels" xml:space="preserve">
+    <value>Returns a collection of the GroupByAreaFieldLabels that are currently being used to group the data.</value>
+  </data>
+	<data name="LD_GroupByArea_P_IsExpanded" xml:space="preserve">
+    <value>Determines whether the GroupByArea is expanded or collapsed.</value>
+  </data>
+	<data name="LD_GroupByArea_P_Prompt1" xml:space="preserve">
+    <value>Returns the first of 2 instructional prompts displayed in the GroupByArea</value>
+  </data>
+	<data name="LD_GroupByArea_P_Prompt2" xml:space="preserve">
+    <value>Returns the second of 2 instructional prompts displayed in the GroupByArea</value>
+  </data>
+	<data name="LD_GroupByArea_E_Collapsed" xml:space="preserve">
+    <value>Occurs when the GroupByArea is collapsed</value>
+  </data>
+	<data name="LD_GroupByArea_E_Expanded" xml:space="preserve">
+    <value>Occurs when the GroupByArea is expanded</value>
+  </data>
+	<data name="LD_GroupByArea_E_HideInsertionPoint" xml:space="preserve">
+    <value>Occurs when the GroupByArea should hide its insertion point</value>
+  </data>
+	<data name="LD_GroupByArea_E_HidePrompts" xml:space="preserve">
+    <value>Occurs when the GroupByArea should hide its prompts</value>
+  </data>
+	<data name="LD_GroupByArea_E_ShowInsertionPoint" xml:space="preserve">
+    <value>Occurs when the GroupByArea should display its insertion point</value>
+  </data>
+	<data name="LD_GroupByArea_E_ShowPrompts" xml:space="preserve">
+    <value>Occurs when the GroupByArea should display its prompts</value>
+  </data>
+	<data name="LD_GroupByAreaFieldLabel_P_Field" xml:space="preserve">
+    <value>The associated field (read-only)</value>
+  </data>
+	<data name="LD_GroupByAreaFieldLabel_E_AddedToAvailableList" xml:space="preserve">
+    <value>Occurs when the GroupByAreaFieldLabel is added to the AvailableFieldLabels list</value>
+  </data>
+	<data name="LD_GroupByAreaFieldLabel_E_AddedToGroupedList" xml:space="preserve">
+    <value>Occurs when the GroupByAreaFieldLabel is added to the GroupedFieldLabels list</value>
+  </data>
+	<data name="LD_GroupByAreaFieldLabel_E_RemovedFromAvailableList" xml:space="preserve">
+    <value>Occurs when the GroupByAreaFieldLabel is removed from the AvailableFieldLabels list</value>
+  </data>
+	<data name="LD_GroupByAreaFieldListBox" xml:space="preserve">
+    <value>A listBox that contains the list of available or grouped fields for the GroupByArea of a 'DataPresenterBase' derived control such as 'XamDataGrid'.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AddNewRecordLocation" xml:space="preserve">
+    <value>Determines how the add record UI is presented to the user.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AllowAddNew" xml:space="preserve">
+    <value>Gets/sets whether the user can add records.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AllowDelete" xml:space="preserve">
+    <value>Gets/sets whether the user can delete records</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AutoGenerateFields" xml:space="preserve">
+    <value>Gets/sets whether fields will be auotmatically generated</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AutoArrangeCells" xml:space="preserve">
+    <value>Determines hows fields are laid out by default</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AutoArrangeMaxColumns" xml:space="preserve">
+    <value>Gets/sets the maximum number of logical columns in the generated templates.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AutoArrangeMaxRows" xml:space="preserve">
+    <value>Gets/sets the maximum number of logical rows in the generated templates.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_AutoArrangePrimaryFieldReservation" xml:space="preserve">
+    <value>Determines if the first row, column or cell is reserved for the primary field in the generated templates.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordCellAreaGridTemplate" xml:space="preserve">
+    <value>Gets/sets the panel template used to generate the cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordCellAreaStyle" xml:space="preserve">
+    <value>Gets/sets the style for a record's cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordCellAreaStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for a record's cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordPresenterStyle" xml:space="preserve">
+    <value>Gets/sets the style of the presenter for the record</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordPresenterStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for record presenters</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DataRecordSizingMode" xml:space="preserve">
+    <value>Determines how DataRecords are sized and if they can resized by the user.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DefaultColumnDefinition" xml:space="preserve">
+    <value>Gets/sets the default column definition used by the generated grid in the cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_DefaultRowDefinition" xml:space="preserve">
+    <value>Gets/sets the default row definition used by the generated grid in the cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_ExpansionIndicatorDisplayMode" xml:space="preserve">
+    <value>Determines whether an expansion indicator is displayed in each Record.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HeaderAreaStyle" xml:space="preserve">
+    <value>The style for the header area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HeaderLabelAreaStyle" xml:space="preserve">
+    <value>Gets/sets the style of the for a header's label area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HeaderLabelAreaStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for a header's label area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HeaderPrefixAreaStyle" xml:space="preserve">
+    <value>Gets/sets the style of the for a header's prefix area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HeaderPrefixAreaStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for a header's prefix area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HighlightAlternateRecords" xml:space="preserve">
+    <value>Gets/sets whether the IsAlternate property will return true on every other record.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_HighlightPrimaryField" xml:space="preserve">
+    <value>Gets/sets whether the primary field will be highlighted</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_LabelLocation" xml:space="preserve">
+    <value>Gets/sets the preferred location of the labels</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_MaxFieldsToAutoGenerate" xml:space="preserve">
+    <value>Gets/sets the maximum number of fields to auto-generate in the generated templates.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_MaxSelectedCells" xml:space="preserve">
+    <value>Gets/sets the maximum number of cells that can be selected at any time.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_MaxSelectedRecords" xml:space="preserve">
+    <value>Gets/sets the maximum number of records that can be selected at any time.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordListControlStyle" xml:space="preserve">
+    <value>Gets/sets the style used for RecordListControls created to display objects using this field layout</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordSelectorLocation" xml:space="preserve">
+    <value>Determines if and where RecordSelectors will be displayed relative to a record's cell area</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordSelectorExtent" xml:space="preserve">
+    <value>Gets/sets the extent for the record selector</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordSelectorStyle" xml:space="preserve">
+    <value>Gets/sets the style of the selector for the record</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordSelectorStyleSelector" xml:space="preserve">
+    <value>A callback used for supplying styles for record selectors</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_ResizingMode" xml:space="preserve">
+    <value>Determines if and how cells and labels are resized by the user.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_SelectionTypeCell" xml:space="preserve">
+    <value>Determines hows cells can be selected</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_SelectionTypeField" xml:space="preserve">
+    <value>Determines hows fields can be selected</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_SelectionTypeRecord" xml:space="preserve">
+    <value>Determines hows records can be selected</value>
+  </data>
+	<data name="LD_GridViewSettings_P_HeightInInfiniteContainers" xml:space="preserve">
+    <value>Returns/sets a value that is used as default for the height of the control implementing the view when used in a container with infinite height available.</value>
+  </data>
+	<data name="LD_GridViewSettings_P_Orientation" xml:space="preserve">
+    <value>Determines the orientation of records.</value>
+  </data>
+	<data name="LD_GridViewSettings_P_WidthInInfiniteContainers" xml:space="preserve">
+    <value>Returns/sets a value that is used as default for the width of the control implementing the view when used in a container with infinite width available.</value>
+  </data>
+	<data name="LD_CarouselViewPanel" xml:space="preserve">
+    <value>A XamCarouselPanel derived class used by the XamDataCarousel and XamDataPresenter's CarouselView.  This derived panel adds support for XamDataPresenter navigation commands, hierarchical data display and the CarouselBreadCrumb control.</value>
+  </data>
+	<data name="LD_LabelPresenter" xml:space="preserve">
+    <value>A control used to display the 'Label' of an associated 'Field' in the 'DataPresenterBase' derived controls such as 'XamDataGrid'.</value>
+  </data>
+	<data name="LD_LabelPresenter_P_InnerBorderBrush" xml:space="preserve">
+    <value>Brush applied to innermost of two default borders</value>
+  </data>
+	<data name="LD_LabelPresenter_P_IsPressed" xml:space="preserve">
+    <value>Gets a value that indicates whether a label is in a pressed state.</value>
+  </data>
+	<data name="LD_LabelPresenter_P_LabelHighlight" xml:space="preserve">
+    <value>The brush used by default templates when IsMouseOver == True.</value>
+  </data>
+	<data name="LD_LabelPresenter_P_OuterBorderBrush" xml:space="preserve">
+    <value>Brush applied to outermost of two default borders</value>
+  </data>
+	<data name="LD_LabelPresenter_P_SortStatus" xml:space="preserve">
+    <value>Returns the sort status of the Field (read-only)</value>
+  </data>
+	<data name="LD_CellValuePresenter" xml:space="preserve">
+    <value>An element used in the visual tree of the CellPresenter control to display the value associated with the cell.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_IsFieldSelected" xml:space="preserve">
+    <value>Returns true if the field is selected (read-only)</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_SortStatus" xml:space="preserve">
+    <value>Returns the sort status of the Field (read-only)</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BackgroundHover" xml:space="preserve">
+    <value>The brush applied to the background area when IsMouseOver = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BorderHoverBrush" xml:space="preserve">
+    <value>The border brush applied to the background area when IsMouseOver = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BackgroundActive" xml:space="preserve">
+    <value>The brush applied to the background area when IsActive = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BorderActiveBrush" xml:space="preserve">
+    <value>The border brush applied to the background area when IsActive = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BackgroundSelected" xml:space="preserve">
+    <value>The brush applied to the background area when IsSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BorderSelectedBrush" xml:space="preserve">
+    <value>The border brush applied to the background area when IsSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BackgroundFieldSelected" xml:space="preserve">
+    <value>The brush applied to the background area when IsFieldSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BorderFieldSelectedBrush" xml:space="preserve">
+    <value>The border brush applied to the background area when IsFieldSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BackgroundPrimary" xml:space="preserve">
+    <value>The brush applied to the background area when HighlightAsPrimary = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_BorderPrimaryBrush" xml:space="preserve">
+    <value>The border brush applied to the background area when HighlightAsPrimary = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundStyle" xml:space="preserve">
+    <value>Style applied to internal ContentPresenter used by default templates.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundActiveStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when IsActive = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundAlternateStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when IsAlternate = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundSelectedStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when IsFieldSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundFieldSelectedStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when IsFieldSelected = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundHoverStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when IsMouseOver = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_ForegroundPrimaryStyle" xml:space="preserve">
+    <value>Style applied to default ContentPresenter when HighlightAsPrimary = true.</value>
+  </data>
+	<data name="LD_CellValuePresenter_P_CornerRadius" xml:space="preserve">
+    <value>CornerRadius used by borders in default templates.</value>
+  </data>
+	<data name="LD_ExpandedCellPresenter_P_Orientation" xml:space="preserve">
+    <value>Sets the orientation for the stack panel of expanded cells</value>
+  </data>
+	<data name="LD_HeaderPresenter" xml:space="preserve">
+    <value>A control that contains all the elements that make up the header area in the 'DataPresenterBase' derived controls that display a separate header area such as in 'XamDataGrid'.  The HeaderPresenter contains the 'HeaderPrefixArea' and 'HeaderLabelArea' controls.  It is used primarily for styling the outermost portion of the header area.</value>
+  </data>
+	<data name="LD_GridView_P_ViewSettings" xml:space="preserve">
+    <value>Returns/sets the GridViewSettings object for this GridView.</value>
+  </data>
+	<data name="LD_Field_P_AllowGroupByResolved" xml:space="preserve">
+    <value>Determines if the user can initiate a group by operation thru the UI for this field (read-only).</value>
+  </data>
+	<data name="LD_Field_P_AllowResizeResolved" xml:space="preserve">
+    <value>Determines if the user can resize a cell or label in a  field (read-only).</value>
+  </data>
+	<data name="LD_Field_P_AutoGenerated" xml:space="preserve">
+    <value>Returns true if this field was automatically generated (read-only).</value>
+  </data>
+	<data name="LD_Field_P_Column" xml:space="preserve">
+    <value>The column in the grid where this field's cells and/or labels should be placed</value>
+  </data>
+	<data name="LD_Field_P_ColumnSpan" xml:space="preserve">
+    <value>Determines how many logical columns this field's cells span in the layout</value>
+  </data>
+	<data name="LD_Field_P_Converter" xml:space="preserve">
+    <value>Gets/sets a converter to use to convert the value of each cell represented by this Field.</value>
+  </data>
+	<data name="LD_Field_P_ConverterCulture" xml:space="preserve">
+    <value>Gets/sets the culture to use with the Converter.</value>
+  </data>
+	<data name="LD_Field_P_DataType" xml:space="preserve">
+    <value>The data type of the field</value>
+  </data>
+	<data name="LD_Field_P_IsExpandable" xml:space="preserve">
+    <value>Determines if this field can be expanded</value>
+  </data>
+	<data name="LD_Field_P_IsExpandableResolved" xml:space="preserve">
+    <value>Determines if this field can be expanded (read-only)</value>
+  </data>
+	<data name="LD_Field_P_IsGroupBy" xml:space="preserve">
+    <value>Returns true if this is a groupby field (read-only)</value>
+  </data>
+	<data name="LD_Field_P_IsUnbound" xml:space="preserve">
+    <value>Returns true if this is an UnboundField (read-only)</value>
+  </data>
+	<data name="LD_Field_P_Label" xml:space="preserve">
+    <value>The label for the field</value>
+  </data>
+	<data name="LD_Field_P_Name" xml:space="preserve">
+    <value>The name of the field which is used as the key into the Fieldlayout's Fields collection</value>
+  </data>
+	<data name="LD_Field_P_Row" xml:space="preserve">
+    <value>The row in the grid where this field's cells and/or labels should be placed</value>
+  </data>
+	<data name="LD_Field_P_RowSpan" xml:space="preserve">
+    <value>Determines how many logical rows this field's cells span in the layout</value>
+  </data>
+	<data name="LD_Field_P_Settings" xml:space="preserve">
+    <value>Gets/sets an object that holds Field specific settings</value>
+  </data>
+	<data name="LD_Field_P_SortStatus" xml:space="preserve">
+    <value>Returns the current sort status of this field (read-only)</value>
+  </data>
+	<data name="LD_Field_P_Visibility" xml:space="preserve">
+    <value>Description</value>
+  </data>
+	<data name="LD_UnboundField_P_BindingMode" xml:space="preserve">
+    <value>Gets/sets a value that indicates the direction on the data flow in the binding.</value>
+  </data>
+	<data name="LD_UnboundField_P_BindingPath" xml:space="preserve">
+    <value>Gets/sets the path to the binding source property.</value>
+  </data>
+	<data name="LD_UnboundField_P_Binding" xml:space="preserve">
+    <value>Gets/sets a binding that will be used to bind each CellValuePresenter's Value property.</value>
+  </data>
+	<data name="LD_RecordListControl_P_HorizontalScrollBarVisibility" xml:space="preserve">
+    <value>Determines if a horizontal scrollbar is visible.</value>
+  </data>
+	<data name="LD_RecordListControl_P_VerticalScrollBarVisibility" xml:space="preserve">
+    <value>Determines if a vertical scrollbar is visible.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_CellContainerGenerationMode" xml:space="preserve">
+    <value>Gets/sets how Cell containers are generated and cached.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordContainerGenerationMode" xml:space="preserve">
+    <value>Gets/sets how Record containers are generated and cached.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordSelectorExtent" xml:space="preserve">
+    <value>Gets/sets the default base extent for RecordSelectors.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordSelectorErrorIconExtent" xml:space="preserve">
+    <value>Gets/sets the default extent for error icons inside RecordSelectors.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_RecordSelectorFixButtonExtent" xml:space="preserve">
+    <value>Gets/sets the default extent for the fix buttons inside RecordSelectors.</value>
+  </data>
+	<data name="LD_SummaryResultCollection_P_SummaryRecordHeader" xml:space="preserve">
+    <value>Specifies the what to dispaly in the header of the summary record.</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_DisplaySummariesAsCells" xml:space="preserve">
+    <value>Indicates whether summaries are displayed in the group-by record as cells.</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_GroupByRecord" xml:space="preserve">
+    <value>Associated GroupByRecord</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_HasSummaries" xml:space="preserve">
+    <value>Indicates whether there are summaries to be displayed in this presenter.</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_SummariesAsText" xml:space="preserve">
+    <value>Returns all summary results in the form of text.</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_SummaryResults" xml:space="preserve">
+    <value />
+  </data>
+	<data name="LD_SummaryButton_P_Field" xml:space="preserve">
+    <value>Associated field.</value>
+  </data>
+	<data name="LD_SummaryCalculatorHolder_P_IsChecked" xml:space="preserve">
+    <value>Specifies whether the this calculator will be used to summarize field data.</value>
+  </data>
+	<data name="LD_SummaryCalculatorSelectionControl_P_AllowMultipleSummaries" xml:space="preserve">
+    <value>Specifies whether the user is allowed to select multiple summaries for the field.</value>
+  </data>
+	<data name="LD_SummaryCalculatorSelectionControl_P_Field" xml:space="preserve">
+    <value>Field for which summaries are being selected.</value>
+  </data>
+	<data name="LD_SummaryCalculatorSelectionControl_P_SummaryCalculatorHolders" xml:space="preserve">
+    <value>Summary calculators that are valid for the associated field.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_SummaryRecord" xml:space="preserve">
+    <value>Associated SummaryRecord object.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_SummaryRecordHeaderVisibility" xml:space="preserve">
+    <value>Indicates whether the summary record header should be visible.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_SummaryResultsCenter" xml:space="preserve">
+    <value>Summary results that will be displayed in the center of the summary record content area.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_SummaryResultsLeft" xml:space="preserve">
+    <value>Summary results that will be displayed in the center of the summary record content area.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_SummaryResultsRight" xml:space="preserve">
+    <value>Summary results that will be displayed in the center of the summary record content area.</value>
+  </data>
+	<data name="LD_SummaryRecordHeaderPresenter_P_SummaryRecord" xml:space="preserve">
+    <value>Associated summary record object.</value>
+  </data>
+	<data name="LD_RecordPrefixArea" xml:space="preserve">
+    <value>Used by records that do not display record selectors to occupy the area where record selecotrs would go.</value>
+  </data>
+	<data name="LD_RecordPrefixArea_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated field layout</value>
+  </data>
+	<data name="LD_RecordPrefixArea_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation (vertical/horizontal) of the HeaderPrefixAreas in the containing Panel.</value>
+  </data>
+	<data name="LD_RecordPrefixArea_P_Record" xml:space="preserve">
+    <value>Returns the associated record inside a DataPresenterBase (read-only)</value>
+  </data>
+	<data name="LD_SummaryRecordPrefixArea" xml:space="preserve">
+    <value>A control that is placed in the summary record and sized to match the dimensions of the RecordSelectors so that the summary results line up with the cells in data records.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HasSeparatorAfter" xml:space="preserve">
+    <value>Indicates if the record displays a record separator after it.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_HasSeparatorBefore" xml:space="preserve">
+    <value>Indicates if the record displays a record separator before it.</value>
+  </data>
+	<data name="LD_SummaryRecordPresenter_P_HeaderAreaBackground" xml:space="preserve">
+    <value>The brush applied by default templates as the background in the HeaderArea. This is the area behind the LabelPresenters </value>
+  </data>
+	<data name="LD_SummaryRecordPresenter_P_SummaryRecord" xml:space="preserve">
+    <value>Associated SummaryRecord object.</value>
+  </data>
+	<data name="LD_SummaryResultPresenter_P_SummaryResult" xml:space="preserve">
+    <value>Associated SummaryResult object</value>
+  </data>
+	<data name="LD_SummaryResultsPresenter_P_SummaryResults" xml:space="preserve">
+    <value>Specifies the summary results to display.</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowSummaries" xml:space="preserve">
+    <value>Specifies if the summary calculation selection UI is enabled.</value>
+  </data>
+	<data name="LD_FieldSettings_P_SummaryDisplayArea" xml:space="preserve">
+    <value>Specifies if and where summaries associated with this field are displayed.</value>
+  </data>
+	<data name="LD_FieldSettings_P_SummaryUIType" xml:space="preserve">
+    <value>Specifies options for the summary selection user interface.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_SummaryResultChanged" xml:space="preserve">
+    <value>Occurs when a summary result is calculated or recalculated.</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_SummarySelectionControlClosed" xml:space="preserve">
+    <value>Occurs after the summary selection UI is closed</value>
+  </data>
+	<data name="LD_DataPresenterBase_E_SummarySelectionControlOpening" xml:space="preserve">
+    <value>Occurs before the summary selection UI is displayed</value>
+  </data>
+	<data name="LD_SpecialRecordOrder_P_AddRecord" xml:space="preserve">
+    <value>Specifies the order of add-record in relation to other special records.</value>
+  </data>
+	<data name="LD_SpecialRecordOrder_P_SummaryRecord" xml:space="preserve">
+    <value>Specifies the order of add-record in relation to other special records.</value>
+  </data>
+	<data name="LD_SummaryResult_P_DisplayAreaResolved" xml:space="preserve">
+    <value>Determines if and where summaries are displayed (read-only).</value>
+  </data>
+	<data name="LD_SummaryResult_P_ToolTip" xml:space="preserve">
+    <value>Tooltip to display over the summary result.</value>
+  </data>
+	<data name="LD_GroupByRecordPresenter_P_ShouldDisplaySummaries" xml:space="preserve">
+    <value>Indicates whether to display summary results inside the group-by record.</value>
+  </data>
+	<data name="LD_FieldLayout_P_SummaryDefinitions" xml:space="preserve">
+    <value>Specifies field data summaries for the field layout.</value>
+  </data>
+	<data name="LD_FieldLayout_P_SummaryDescriptionMask" xml:space="preserve">
+    <value>Specifies the what to dispaly in the header of the summary record.</value>
+  </data>
+	<data name="LD_FieldLayout_P_SummaryDescriptionMaskInGroupBy" xml:space="preserve">
+    <value>Specifies the what to dispaly in the header of the summary record when records are grouped.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_CalculationSettings" xml:space="preserve">
+    <value>Get/sets the calculation settings related to this summary defintion. This information is used for exposing cell summary data to a XamCalculationManager's network.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_Calculator" xml:space="preserve">
+    <value>Specifies the type of summary calculation to perform.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_DisplayArea" xml:space="preserve">
+    <value>Specifies if and where summaries are displayed.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_DisplayFormat" xml:space="preserve">
+    <value>Format to use to when displaying the summary result.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_DisplayFormatProvider" xml:space="preserve">
+    <value>Format provider to use when formatting the summary result.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_Key" xml:space="preserve">
+    <value>Key of the SummaryDefinition object</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_Position" xml:space="preserve">
+    <value>Position of the summary in the summary record.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_PositionFieldName" xml:space="preserve">
+    <value>The field under which to position the summary result.</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_SourceFieldName" xml:space="preserve">
+    <value>Field whose values are summarized</value>
+  </data>
+	<data name="LD_SummaryDefinition_P_ToolTip" xml:space="preserve">
+    <value>Tooltip to display over the associated summary results.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_CalculationScope" xml:space="preserve">
+    <value>Specifies which records to use for calculation purposes.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_GroupBySummaryDisplayMode" xml:space="preserve">
+    <value>Specifies how to display summaries inside each group-by record.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_RecordSeparatorLocation" xml:space="preserve">
+    <value>Specifies if and where to display record separators</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_SpecialRecordOrder" xml:space="preserve">
+    <value>Specifies the order of special records.</value>
+  </data>
+	<data name="LD_FieldLayoutSettings_P_SummaryDescriptionVisibility" xml:space="preserve">
+    <value>Specifies whether summary records display description.</value>
+  </data>
+	<data name="LD_Field_P_AllowSummariesResolved" xml:space="preserve">
+    <value>Determines if the summary calculation selection UI is enabled (read-only).</value>
+  </data>
+	<data name="LD_Field_P_SummaryUITypeResolved" xml:space="preserve">
+    <value>Determines options for summary calculation selection UI (read-only).</value>
+  </data>
+	<data name="LD_Field_P_SummaryStringFormats" xml:space="preserve">
+    <value>Specifies string formats to use to format summary results for one or more calculator types.</value>
+  </data>
+	<data name="LD_GroupBySummariesPresenter_P_ContentAreaMargins" xml:space="preserve">
+    <value>Returns the margins for the contents inside the element.</value>
+  </data>
+	<data name="LD_SummaryRecordPresenter_P_ContentAreaMargins" xml:space="preserve">
+    <value>Returns the margins for the contents inside the element.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_ReportView" xml:space="preserve">
+    <value>Returns/sets the view to be used when printing/exporting the DataPresenter's contents.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_FieldPositionChanged" xml:space="preserve">
+    <value>Occurs when a field is repositioned via drag-and-drop.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_FieldPositionChanging" xml:space="preserve">
+    <value>Occurs when a field is repositioned via drag-and-drop.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_AllowFieldMoving" xml:space="preserve">
+    <value>Specifies whether the user is allowed to re-arrange fields.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FieldMovingMaxColumns" xml:space="preserve">
+    <value>Specifies maximum number of logical columns the user can create.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FieldMovingMaxRows" xml:space="preserve">
+    <value>Specifies maximum number of logical columns the user can create.</value>
+  </data>
+  <data name="LD_DataItemPresenter_P_IsDragIndicator" xml:space="preserve">
+    <value>Indicates if the data item is part of drag indicator.</value>
+  </data>
+  <data name="LD_FieldDragIndicator_P_Field" xml:space="preserve">
+    <value>Specifies the associated field being dragged.</value>
+  </data>
+  <data name="LD_FieldDragIndicator_P_IncludeCell" xml:space="preserve">
+    <value>Specifies whether cell is also displayed in addition to the field label.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_CellPageSpanStrategy" xml:space="preserve">
+    <value>Determines the strategy used during printing when a cell is encountered that will not fit on a page.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeCellValuePresenterStyles" xml:space="preserve">
+    <value>Determines if the CellValuePresenterStyle settings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeEditorSettings" xml:space="preserve">
+    <value>Determines if the editor related settings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeExpandedState" xml:space="preserve">
+    <value>Determines if each record's IsExpanded state from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeFieldLayoutSettings" xml:space="preserve">
+    <value>Determines if the FieldLayoutSettings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeFieldSettings" xml:space="preserve">
+    <value>Determines if the FieldSettings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeGroupBySettings" xml:space="preserve">
+    <value>Determines if the groupby settings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeLabelPresenterStyles" xml:space="preserve">
+    <value>Determines if the LabelPresenterStyle settings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeRecordVisibility" xml:space="preserve">
+    <value>Determines if each record's Visibility setting from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeSortOrder" xml:space="preserve">
+    <value>Determines if the sorted fields from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeSummaries" xml:space="preserve">
+    <value>Determines if the groupby settings from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_Theme" xml:space="preserve">
+    <value>Determines if the sorted fields from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_TabularReportView_P_LevelIndentation" xml:space="preserve">
+    <value>Returns/sets the how far each level is indented. </value>
+  </data>
+  <data name="LD_TabularReportView_P_Orientation" xml:space="preserve">
+    <value>Returns/ sets the orientation of the report contents.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_IsDragSource" xml:space="preserve">
+    <value>Indicates if this label presenter in the data grid is being dragged.</value>
+  </data>
+  <data name="LD_CellPresenter_P_IsFixed" xml:space="preserve">
+    <value>Returns a boolean indicating if the field is currently fixed.</value>
+  </data>
+  <data name="LD_DataItemPresenter_P_IsFixed" xml:space="preserve">
+    <value>Returns a boolean indicating if the field is currently fixed.</value>
+  </data>
+  <data name="LD_FilterButton_P_Field" xml:space="preserve">
+    <value>Gets or sets the associated field whose label is displaying this filter button inside it.</value>
+  </data>
+  <data name="LD_FilterButton_P_SelectedOperand" xml:space="preserve">
+    <value>Gets/sets the selected item from the Operands collection</value>
+  </data>
+  <data name="LD_FilterCellValuePresenter_P_IsOperandDropDownOpen" xml:space="preserve">
+    <value>Gets or sets if the operand drop down is open.</value>
+  </data>
+  <data name="LD_FilterCellValuePresenter_P_IsOperatorDropDownOpen" xml:space="preserve">
+    <value>Gets or sets if the operator drop down is open.</value>
+  </data>
+  <data name="LD_FilterCellValuePresenter_P_Operator" xml:space="preserve">
+    <value>Gets or sets the operator to use for the filter</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_AddConditionLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Add Condition' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_AddConditionLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_AndGroupLegendDescription" xml:space="preserve">
+    <value>Returns the description used for 'And' groups in the legend.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_AndGroupLegendDescriptionProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_AndLogicalOperatorBrush" xml:space="preserve">
+    <value>Returns/sets the brush to use when coloring conditions that belong to groups with an 'AND' LogicalOperator.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_CancelButtonLabel" xml:space="preserve">
+    <value>Returns the prompt used for the Cancel button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_CancelButtonLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_CancelMessageText" xml:space="preserve">
+    <value>Returns the text of the message displayed when the user clicks the Cancel button after making changes to the Filters.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_CancelMessageTextProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_CancelMessageTitle" xml:space="preserve">
+    <value>Returns the Title of the MessageBox displayed when the user clicks the Cancel button after making changes to the Filters.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_CancelMessageTitleProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_FieldDescription" xml:space="preserve">
+    <value>Returns the description of the Field whose filters are being customized by the control.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_FieldDescriptionProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_FilterSummaryDescription" xml:space="preserve">
+    <value>Returns a string that describes the current set of filter conditions in human readable form.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_GroupSelectedConditionsAsAndGroupLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Group Selected Conditions as As And Group' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_GroupSelectedConditionsAsAndGroupLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_GroupSelectedConditionsAsOrGroupLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Group Selected Conditions as As Or Group' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_GroupSelectedConditionsAsOrGroupLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+	<data name="LD_CustomFilterSelectionControl_P_GroupSelectedLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Group Selected' label.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_GroupSelectedLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+	<data name="LD_CustomFilterSelectionControl_P_OkButtonLabel" xml:space="preserve">
+    <value>Returns the prompt used for the OK button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_OkButtonLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_OrGroupLegendDescription" xml:space="preserve">
+    <value>Returns the description used for 'Or' groups in the legend.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_OrGroupLegendDescriptionProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_OrLogicalOperatorBrush" xml:space="preserve">
+    <value>Returns/sets the brush to use when coloring conditions that belong to groups with an 'OR' LogicalOperator.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_RemoveSelectedConditionsLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Remove Selected Conditions' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_RemoveSelectedConditionsLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_TitleDescription" xml:space="preserve">
+    <value>Returns the description used for the Title of the container hosting the control.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_TitleDescriptionProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_ToggleOperatorOfSelectedConditionsLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Toggle Operator Of Selected Conditions' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_ToggleOperatorOfSelectedConditionsLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_CustomFilterSelectionControl_P_UngroupSelectedConditionsLabel" xml:space="preserve">
+    <value>Returns the prompt used for the 'Ungroup Selected Conditions' button.  Use Infragistics.Windows.DataPresenter.Resources.Customizer.SetCustomizedString("CustomFilterSelectionControl_UngroupSelectedConditionsLabelProperty", "Custom text") to change the contents of the string.</value>
+  </data>
+  <data name="LD_RecordFilter_P_FieldName" xml:space="preserve">
+    <value>Gets or sets the name of the field whose cell data will be matched against filter conditions.</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_Field" xml:space="preserve">
+    <value>Returns or sets the Field whose FixedLocation will be affected by the element.</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_FixToFarEdgePrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Fix To Far Edge' item in the menu displayed when the FixedFieldButton is clicked.</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_FixToNearEdgePrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Fix To Near Edge' item in the menu displayed when the FixedFieldButton is clicked.</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_UnfixPrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Unfix' item in the menu displayed when the FixedFieldButton is clicked.</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_CurrentCommand" xml:space="preserve">
+    <value>Returns the currently active command to bind to the button inside this element's template (read-only).</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_FixToNearEdgeCommand" xml:space="preserve">
+    <value>Returns the command to fix the field to the near edge (read-only).</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_FixToFarEdgeCommand" xml:space="preserve">
+    <value>Returns the command to fix the field to the far edge (read-only).</value>
+  </data>
+  <data name="LD_FixedFieldButton_P_UnfixCommand" xml:space="preserve">
+    <value>Returns the command to unfix the field to make it scrollable (read-only).</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_IsHighlighted" xml:space="preserve">
+    <value>Returns a boolean indicating if the mouse is over the splitter or any other splitter for the same 'FieldLayout' with the same 'SplitterType'.</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_IsInHeader" xml:space="preserve">
+    <value>Indicates if the element is being used within a HeaderPresenter.</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_Orientation" xml:space="preserve">
+    <value>Returns the orientation of the splitter.</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_SplitterType" xml:space="preserve">
+    <value>Indicates the edge to which the fields will be fixed/unfixed using the splitter.</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_HorizontalCursor" xml:space="preserve">
+    <value>Gets/sets the cursor to use when the Orientation property is set to 'Horizontal'</value>
+  </data>
+  <data name="LD_FixedFieldSplitter_P_VerticalCursor" xml:space="preserve">
+    <value>Gets/sets the cursor to use when the Orientation property is set to 'Vertical'</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_IsSynchronizedWithCurrentItem" xml:space="preserve">
+    <value>Gets/sets a value that indicates whether the ActiveRecord is synchronized with the CurrentItem of a DataSource that implements the ICollectionView interface.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_CustomFilterSelectionControlOpening" xml:space="preserve">
+    <value>Raised before the UI for entering custom filter criteria is displayed.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFilterChanged" xml:space="preserve">
+    <value>Raised when the user changes record filter criteria.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFilterChanging" xml:space="preserve">
+    <value>Raised when the user changes record filter criteria.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFilterDropDownOpening" xml:space="preserve">
+    <value>Raised before the filter drop-down is displayed.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFilterDropDownPopulating" xml:space="preserve">
+    <value>Raised before the filter drop-down is populated by the data presenter.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeRecordFilters" xml:space="preserve">
+    <value>Determines if record filter criteria from the ui XamDataGrid is used within the report.</value>
+  </data>
+  <data name="LD_ReportViewBase_P_ExcludeRecordSizing" xml:space="preserve">
+    <value>Determines if each record's Visibility setting from the ui XamDataGrid are used within the report.</value>
+  </data>
+  <data name="LD_RecordPresenter_P_FixedNearElementTransform" xml:space="preserve">
+    <value>Returns a transform object that can be used to scroll an element back into view if it were fixed on the near edge when using fixed fields.</value>
+  </data>
+  <data name="LD_RecordPresenter_P_FixedFarElementTransform" xml:space="preserve">
+    <value>Returns a transform object that can be used to scroll an element back into view if it were fixed on the far edge when using fixed fields.</value>
+  </data>
+  <data name="LD_RecordPresenter_P_ScrollableElementTransform" xml:space="preserve">
+    <value>Returns a transform object that can be used to scroll an element back into view when using fixed fields.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FilterAction" xml:space="preserve">
+    <value>Specifies what action to take on records that are filtered out.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FilterClearButtonLocation" xml:space="preserve">
+    <value>Specifies if and where to display the filter clear button.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FilterRecordLocation" xml:space="preserve">
+    <value>Specifies the location of the filter record.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FilterUIType" xml:space="preserve">
+    <value>Specifies the user interface type for letting the user filter records.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FixedFieldUIType" xml:space="preserve">
+    <value>Determines the type of ui displayed to allow the end user to changed the fixed state of the fields.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_HeaderPlacement" xml:space="preserve">
+    <value>Gets/sets the placement of headers</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_HeaderPlacementInGroupBy" xml:space="preserve">
+    <value>Gets/sets the placement of headers when records are grouped.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_RecordFilterScope" xml:space="preserve">
+    <value>Specifies whether to filter all records of the field-layout or just the particular record collection.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_RecordFiltersLogicalOperator" xml:space="preserve">
+    <value>Specifies whether filter conditions across fields are to be combined using logical 'Or' or 'And'.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_ReevaluateFiltersOnDataChange" xml:space="preserve">
+    <value>Specifies whether to re-evaluate record filters when cell data changes.</value>
+  </data>
+  <data name="LD_FieldSettings_P_AllowFixing" xml:space="preserve">
+    <value>Determines if the end user should be allowed to change the fixed state of the field and to which edges the field may be fixed.</value>
+  </data>
+  <data name="LD_FieldSettings_P_AllowRecordFiltering" xml:space="preserve">
+    <value>Enables the record filtering user interface.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterCellValuePresenterStyle" xml:space="preserve">
+    <value>The style for the filter cell</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterCellEditorStyle" xml:space="preserve">
+    <value>The style for the ValueEditor used within a cell</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterClearButtonVisibility" xml:space="preserve">
+    <value>Specifies the visibility of the filter clear button in the filter cell.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterEvaluationTrigger" xml:space="preserve">
+    <value>Controls when the filters are evalulated whenever the user modifies filter criteria via filter cell.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterOperandUIType" xml:space="preserve">
+    <value>Specifies the type of UI to use for the operand portion in a filter cell.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterOperatorDefaultValue" xml:space="preserve">
+    <value>Specifies the default/initial filter operator.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterOperatorDropDownItems" xml:space="preserve">
+    <value>Specifies which operators to display in the filter operator drop-down.</value>
+  </data>
+  <data name="LD_FieldSettings_P_FilterStringComparisonType" xml:space="preserve">
+    <value>Specifies whether filters will be case-sensitve or case insensitive.</value>
+  </data>
+	<data name="LD_FieldSettings_P_FilterComparer" xml:space="preserve">
+    <value>Specifies a custom comparer used for comparing values when evaluating filter conditions.</value>
+  </data>
+	<data name="LD_FieldSettings_P_FilterLabelIconDropDownType" xml:space="preserve">
+    <value>Specifies a value that is used to determine the type of dropdown that is displayed when the FilterUIType is resolved to LabelIcons.</value>
+  </data>
+	<data name="LD_SpecialRecordOrder_P_FilterRecord" xml:space="preserve">
+    <value>Specifies the order of the filter record in relation to other special records.</value>
+  </data>
+  <data name="LD_Field_P_FixedButtonVisibility" xml:space="preserve">
+    <value>Returns a value indicating if the fixed button should be visibility for the field.</value>
+  </data>
+  <data name="LD_Field_P_FixedLocation" xml:space="preserve">
+    <value>Indicates whether the field should be fixed and if so to which edge.</value>
+  </data>
+  <data name="LD_Field_P_IsFixed" xml:space="preserve">
+    <value>Returns a boolean indicating if the field is fixed based on the FixedLocation and whether the current view supports fixing fields.</value>
+  </data>
+  <data name="LD_Field_P_IsFixedStateChanging" xml:space="preserve">
+    <value>Returns a boolean indicating that the fixed state of the field will be changing.</value>
+  </data>
+  <data name="LD_FieldLayout_P_RecordFilters" xml:space="preserve">
+    <value>Specifies the filter criteria with which to filter records.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_FilterButtonVisibility" xml:space="preserve">
+    <value>Indicates the visibility of the FilterButton within the element based on the resolved FixedFieldUIType and the AllowFixing of the Field.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_FixedButtonVisibility" xml:space="preserve">
+    <value>Indicates the preferred visibility of the FixedFieldButton within the element based on the resolved FixedFieldUIType and the AllowFixing of the Field.</value>
+  </data>
+  <data name="LD_RecordListControl_P_FixedNearElementTransform" xml:space="preserve">
+    <value>Returns a transform object that can be used to scroll an element back into view when using fixed fields.</value>
+  </data>
+  <data name="LD_RecordListControl_P_ScrollableElementTransform" xml:space="preserve">
+    <value>Returns a transform object that can be used to scroll an element back into view when using fixed fields.</value>
+  </data>
+  <data name="LD_RecordManager_P_RecordFilters" xml:space="preserve">
+    <value>Specifies the filter criteria with which to filter recods.</value>
+  </data>
+  <data name="LD_RecordSelector_P_FilterClearButtonVisibility" xml:space="preserve">
+    <value>Gete the visibility of the filter clear button (read-only)</value>
+  </data>
+  <data name="LD_RecordSelector_P_IsFilterRecord" xml:space="preserve">
+    <value>Returns true if the associated 'Record' is a filter record.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_ClipboardCellDelimiter" xml:space="preserve">
+    <value>Returns or sets the string used to wrap a cell/label value when copied to the clipboard.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_ClipboardCellSeparator" xml:space="preserve">
+    <value>The string used to separate the values of cells/labels when copying to the clipboard.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_ClipboardRecordSeparator" xml:space="preserve">
+    <value>Returns or sets the strings used to separate the values of cells from different records when copied to the clipboard.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_GroupByArea" xml:space="preserve">
+    <value>Returns/sets the GroupByArea that is used for Outlook style grouping.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_GroupByAreaMode" xml:space="preserve">
+    <value>Gets/sets how fields are grouped by the end-user.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_GroupByAreaMulti" xml:space="preserve">
+    <value>Returns/sets the GroupByArea that is used for Outlook style grouping across multiple FieldLayouts.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_IsUndoEnabled" xml:space="preserve">
+    <value>Returns or sets a value when undo/redo functionality is enabled within the control.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_UndoLimit" xml:space="preserve">
+    <value>Returns/sets the maximum number of operations that can be stored in the undo and redo history.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_ClipboardCopying" xml:space="preserve">
+    <value>Occurs when the 'Copy' or 'Cut' command is executed and the cell values will be placed on the clipboard.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_ClipboardOperationError" xml:space="preserve">
+    <value>Occurs when an error is encountered during a clipboard operation.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_ClipboardPasting" xml:space="preserve">
+    <value>Occurs when an error is encountered during a clipboard operation.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_DataValueChanged" xml:space="preserve">
+    <value>Occurs when a Cell value has changed for a Field whose FieldSettings.DataValueChangedNotificationsActive property has been set to true.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_FieldChooserOpening" xml:space="preserve">
+    <value>Raised before the data presenter displays a FieldChooser</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_InitializeCellValuePresenter" xml:space="preserve">
+    <value>Occurs when a CellValuePresenter element is created or reused to display the value of a Cell.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFixedLocationChanged" xml:space="preserve">
+    <value>Occurs after a Record's fix state has changed.</value>
+  </data>
+  <data name="LD_DataPresenterBase_E_RecordFixedLocationChanging" xml:space="preserve">
+    <value>Occurs before a Record's fix state has changed.</value>
+  </data>
+	<data name="LD_DataPresenterBase_P_DataSourceResetBehavior" xml:space="preserve">
+    <value>Specifies what action to take when Reset notification is recieved from data source.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_ScrollBehaviorOnListChange" xml:space="preserve">
+    <value>Determines the scroll position behavior when records are added or removed before the current records in view.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_Foreground" xml:space="preserve">
+    <value>Gets or sets a brush that describes the foreground color. </value>
+  </data>
+  <data name="LD_DataPresenterBase_P_Background" xml:space="preserve">
+    <value>Gets or sets a brush that describes the background color. </value>
+  </data>
+  <data name="LD_DataPresenterBase_P_RecordContainerRetentionMode" xml:space="preserve">
+    <value>Gets or sets whether de-activated (i.e. unused) record containers will be retained in the visual tree for possible future use.</value>
+  </data>
+  <data name="LD_DataPresenterBase_P_CalculationAdapter" xml:space="preserve">
+    <value>Gets or sets the adapter that allows fields and summaries to participdate in a XamCalculationManager's network. </value>
+  </data>
+  <data name="LD_FieldChooser_P_AllCurrentFieldsVisible" xml:space="preserve">
+    <value>Indicates if all fields currently in view are visible in data presenter.</value>
+  </data>
+  <data name="LD_FieldChooser_P_CurrentFieldGroup" xml:space="preserve">
+    <value>Specifies the current group of fields that are displayed.</value>
+  </data>
+  <data name="LD_FieldChooser_P_CurrentFields" xml:space="preserve">
+    <value>Read-only collection of fields currently displayed in the field chooser.</value>
+  </data>
+  <data name="LD_FieldChooser_P_DataPresenter" xml:space="preserve">
+    <value>Specifies the data presenter whose fields are displayed.</value>
+  </data>
+  <data name="LD_FieldChooser_P_DisplayHiddenFieldsOnly" xml:space="preserve">
+    <value>Specifies whether to display all fields or just the hidden fields.</value>
+  </data>
+  <data name="LD_FieldChooser_P_FieldDisplayOrder" xml:space="preserve">
+    <value>Specifies the order in which to displaye the fields.</value>
+  </data>
+  <data name="LD_FieldChooser_P_FieldDisplayOrderComparer" xml:space="preserve">
+    <value>Specifies a comparer that's used to determine the order in which to display the fields in the FieldChooser.</value>
+  </data>
+  <data name="LD_FieldChooser_P_FieldFilters" xml:space="preserve">
+    <value>Used to categorize fields into subgroups.</value>
+  </data>
+  <data name="LD_FieldChooser_P_FieldGroups" xml:space="preserve">
+    <value>Field groups that are displayed in the field group selector drop-down.</value>
+  </data>
+  <data name="LD_FieldChooser_P_FieldGroupSelectorVisibility" xml:space="preserve">
+    <value>Specifies whether the field group selector is visible.</value>
+  </data>
+  <data name="LD_FieldChooser_P_IsDragItemOver" xml:space="preserve">
+    <value>Indicates if the user has dragged a field over the field chooser currently.</value>
+  </data>
+  <data name="LD_FieldChooser_P_IsDraggingItem" xml:space="preserve">
+    <value>Indicates if the user is currently dragging a field from the FieldChooser.</value>
+  </data>
+  <data name="LD_FieldChooser_P_IsDraggingItemFromDataPresenter" xml:space="preserve">
+    <value>Indicates if the user is currently dragging a field from the data presenter.</value>
+  </data>
+  <data name="LD_FieldChooser_P_SelectedField" xml:space="preserve">
+    <value>The field that's currently selected in the FieldChooser.</value>
+  </data>
+  <data name="LD_DataRecordCellArea_P_DataError" xml:space="preserve">
+    <value>The record data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_DataRecordCellArea_P_HasDataError" xml:space="preserve">
+    <value>Indicates if the record has data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_GroupByAreaBase_P_Prompt1Template" xml:space="preserve">
+    <value>Returns/sets the DataTemplate to use for the first prompt in the GroupByArea and GroupByAreaMulti.</value>
+  </data>
+  <data name="LD_GroupByAreaBase_P_Prompt2Template" xml:space="preserve">
+    <value>Returns/sets the DataTemplate to use for the second prompt in the GroupByArea and GroupByAreaMulti.</value>
+  </data>
+  <data name="LD_FieldDragIndicator_P_IsSourceFromFieldChooser" xml:space="preserve">
+    <value>Indicates if the field being dragged is from a FieldChooser.</value>
+  </data>
+  <data name="LD_FieldDragIndicator_P_IsSourceFromGroupByArea" xml:space="preserve">
+    <value>Indicates if the field being dragged is from the group-by area.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_IsFixedOnBottomAllowed" xml:space="preserve">
+    <value>Indicates whether fixing to the bottom edge is allowed for this record.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_IsFixedOnTopAllowed" xml:space="preserve">
+    <value>Indicates whether fixing to the top edge is allowed for this record.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_FixToBottomPrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Fix To Bottom' item in the menu displayed when the FixedRecordButton is clicked.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_FixToTopPrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Fix To Top' item in the menu displayed when the FixedRecordButton is clicked.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_UnfixPrompt" xml:space="preserve">
+    <value>Returns/sets the prompt used for the 'Unfix' item in the menu displayed when the FixedRecordButton is clicked.</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_CurrentCommand" xml:space="preserve">
+    <value>Returns the currently active command to bind to the button inside this element's template (read-only).</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_FixToNearEdgeCommand" xml:space="preserve">
+    <value>Returns the command to fix the record to the top (read-only).</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_FixToFarEdgeCommand" xml:space="preserve">
+    <value>Returns the command to fix the record to the bottom (read-only).</value>
+  </data>
+  <data name="LD_FixedRecordButton_P_UnfixCommand" xml:space="preserve">
+    <value>Returns the command to unfix the record to make it scrollable (read-only).</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_DataError" xml:space="preserve">
+    <value>Data error associated with the cell.</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_HasDataError" xml:space="preserve">
+    <value>Indicates if the cell has data error.</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_IsDataErrorDisplayModeHighlight" xml:space="preserve">
+    <value>Indicates if the cell is to be highlighted if it has data error.</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_IsDataErrorDisplayModeIcon" xml:space="preserve">
+    <value>Indicates if the cell is to display an error icon if it has data error.</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_IsDataErrorTemplateActive" xml:space="preserve">
+    <value>Indicates if the data error template is being used.</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_IsMouseOverRecord" xml:space="preserve">
+    <value>Returns whether the mouse is over the ancestor DataRecordCellArea (read-only)</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_IsRecordSelected" xml:space="preserve">
+    <value>Returns true if the associated record is selected (read-only)</value>
+  </data>
+  <data name="LD_CellValuePresenter_P_ValueHistory" xml:space="preserve">
+    <value>Returns an IList of DataValueInfo instances contain the value change history for the data values associated with this CellValuePresenter.</value>
+  </data>
+  <data name="LD_RecordSelector_P_DataError" xml:space="preserve">
+    <value>The record data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_RecordSelector_P_FixedButtonVisibility" xml:space="preserve">
+    <value>Indicates the visibility of the FixedRecordButton within the element based on the resolved FixedRecordUIType and the AllowRecordFixing of the FieldLayout.</value>
+  </data>
+  <data name="LD_RecordSelector_P_HasDataError" xml:space="preserve">
+    <value>Indicates if the record has data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_RecordSelector_P_IsDataErrorDisplayModeHighlight" xml:space="preserve">
+    <value>Indicates if the record selector is to be highlighted if it the record has data error.</value>
+  </data>
+  <data name="LD_RecordSelector_P_IsDataErrorDisplayModeIcon" xml:space="preserve">
+    <value>Indicates if the record selector is to display an error icon if the record has data error.</value>
+  </data>
+  <data name="LD_RecordSelector_P_IsFixedOnBottomAllowed" xml:space="preserve">
+    <value>Indicates whether fixing to the bottom edge is allowed for this record.</value>
+  </data>
+  <data name="LD_RecordSelector_P_IsFixedOnTopAllowed" xml:space="preserve">
+    <value>Indicates whether fixing to the top edge is allowed for this record.</value>
+  </data>
+  <data name="LD_GroupByAreaMultiPanel_P_ConnectorLinePen" xml:space="preserve">
+    <value>Gets/sets the Pen that will be used for drawing connector lines between fields</value>
+  </data>
+  <data name="LD_FieldChooserFilter_P_Description" xml:space="preserve">
+    <value>Specifies the description of category or subgroup of fields this filter will form.</value>
+  </data>
+  <data name="LD_FieldChooserFilter_P_Filter" xml:space="preserve">
+    <value>Used to filter fields to form a subgroup or subcategory of fields.</value>
+  </data>
+  <data name="LD_FieldChooserFilter_P_ToolTip" xml:space="preserve">
+    <value>Tool-tip that's displayed for the filter.</value>
+  </data>
+  <data name="LD_FieldLayout_P_CalculationReferenceId" xml:space="preserve">
+    <value>Gets/sets the id that will be used to reference Field and SummaryDefinitions inside a XamCalculationManager's network.</value>
+  </data>
+  <data name="LD_FieldLayout_P_KeyMatchingEnforced" xml:space="preserve">
+    <value>Gets/sets whether the Key property must match the data item provider's key when assiging the FieldLayout to the associated DataRecord</value>
+  </data>
+  <data name="LD_FieldLayout_P_ParentFieldLayoutKey" xml:space="preserve">
+    <value>Gets/sets the key of the parent FieldLayout</value>
+  </data>
+  <data name="LD_FieldLayout_P_ParentFieldName" xml:space="preserve">
+    <value>Gets/sets the name of the parent Field</value>
+  </data>
+  <data name="LD_FieldLayout_P_ToolTip" xml:space="preserve">
+    <value>Specifies the tooltip that's displayed when the mouse is hovered over the field-layout label.</value>
+  </data>
+  <data name="LD_Field_P_CalculationSettings" xml:space="preserve">
+    <value>Get/sets the calculation settings related to this field. This information is used for exposing cell data to a XamCalculationManager's network.</value>
+  </data>
+  <data name="LD_Field_P_DisallowModificationViaClipboard" xml:space="preserve">
+    <value>Returns or sets a value indicating whether clipboard operations that would attempt to modify the value of the cell should be skipped.</value>
+  </data>
+  <data name="LD_Field_P_Height" xml:space="preserve">
+    <value>Returns or sets a FieldLength instance that represents the height of the field.</value>
+  </data>
+  <data name="LD_Field_P_ToolTip" xml:space="preserve">
+    <value>Specifies the tooltip that's displayed when the mouse is hovered over the field label.</value>
+  </data>
+  <data name="LD_Field_P_Width" xml:space="preserve">
+    <value>Returns or sets a FieldLength instance that represents the width of the field.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_AllowRecordFixing" xml:space="preserve">
+    <value>Specifies whether the user is allowed to fix records.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_AllowClipboardOperations" xml:space="preserve">
+    <value>Returns or sets which clipboard operations can be performed.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_AllowHidingViaFieldChooser" xml:space="preserve">
+    <value>Specifies if the user can hide the field by dragging it outside of the data presenter.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_AutoFitMode" xml:space="preserve">
+    <value>Returns or sets a value indicating which fields should be resized when AutoFit is enabled.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_CopyFieldLabelsToClipboard" xml:space="preserve">
+    <value>Returns or sets a value that indicates whether the field labels associated with the cells being copied should be included in the output placed on the clipboard.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_DataErrorDisplayMode" xml:space="preserve">
+    <value>Specifies if and how to display cell and record data error information.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FixedRecordLimit" xml:space="preserve">
+    <value>Determines how many sibling records can be fixed at a time.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FixedRecordUIType" xml:space="preserve">
+    <value>Determines the type of ui displayed to allow the end user to changed the fixed state of a record.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_FixedRecordSortOrder" xml:space="preserve">
+    <value>Determines the order of fixed records relative to each other.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_GroupByExpansionIndicatorVisibility" xml:space="preserve">
+    <value>Determines if expansion indicators will be displayed in groupby records.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_HeaderPrefixAreaDisplayMode" xml:space="preserve">
+    <value>Specifies what to display the area that's left of the field labels and over the record selector.</value>
+  </data>
+  <data name="LD_FieldLayoutSettings_P_SupportDataErrorInfo" xml:space="preserve">
+    <value>Specifies whether to display error information provided by IDataErrorInfo.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_IsInFieldChooser" xml:space="preserve">
+    <value>Indicates if the LabelPresenter is in a FieldChooser.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_IsInGroupByArea" xml:space="preserve">
+    <value>Indicates if this LabelPresenter is in the GroupByArea.</value>
+  </data>
+  <data name="LD_LabelPresenter_P_IsSelectedInFieldChooser" xml:space="preserve">
+    <value>Indicates if the LabelPresenter is currently selected in the FieldChooser.</value>
+  </data>
+  <data name="LD_FieldLayoutGroupByInfo_P_FieldLayout" xml:space="preserve">
+    <value>Returns the associated FieldLayout (read-only).</value>
+  </data>
+  <data name="LD_FieldLayoutGroupByInfo_P_FieldLayoutDescriptionTemplate" xml:space="preserve">
+    <value>Returns the DataTemplate to use for the ContentControl element that represents the FieldLayout description (read only).</value>
+  </data>
+  <data name="LD_FieldLayoutGroupByInfo_P_FieldLayoutDescriptionVisibility" xml:space="preserve">
+    <value>Gets/sets the visibility of the FieldLayout's Description (read-only)</value>
+  </data>
+  <data name="LD_FieldSettings_P_AllowHidingViaDragging" xml:space="preserve">
+    <value>Specifies if the user can hide the field by dragging it outside of the data presenter.</value>
+  </data>
+  <data name="LD_FieldSettings_P_AllowHidingViaFieldChooser" xml:space="preserve">
+    <value>Specifies if the user can hide the field by dragging it outside of the data presenter.</value>
+  </data>
+  <data name="LD_FieldSettings_P_AutoSizeOptions" xml:space="preserve">
+    <value>Returns or sets what values are considered when autosizing a field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_AutoSizeScope" xml:space="preserve">
+    <value>Returns or sets a value that indicates which records are evaluated when performing an autosize of a field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_DataValueChangedHistoryLimit" xml:space="preserve">
+    <value>Returns/sets the maximum number of value changes to maintain for all Cells associated with the Field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_DataValueChangedNotificationsActive" xml:space="preserve">
+    <value>Returns/sets whether DataValueChanged and InitializeCellValuePresenter events should be raised for all Cells associated with the Field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_DataValueChangedScope" xml:space="preserve">
+    <value>Returns/sets a value that determines the range of DataRecords for which DataValueChanged and InitializeCellValuePresenter events will be raised.</value>
+  </data>
+  <data name="LD_FieldSettings_P_Height" xml:space="preserve">
+    <value>Returns or sets a FieldLength instance that represents the default height of the field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_SupportDataErrorInfo" xml:space="preserve">
+    <value>Specifies whether to display field error information provided by IDataErrorInfo.</value>
+  </data>
+  <data name="LD_FieldSettings_P_Width" xml:space="preserve">
+    <value>Returns or sets a FieldLength instance that represents the default width of the field.</value>
+  </data>
+  <data name="LD_FieldSettings_P_NonSpecificNotificationBehavior" xml:space="preserve">
+    <value>Determines if values are refreshed when a notification is received that a change has occured for a DataRecord but the notification doesn't specify which field values have been changed.</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_ConnectorLinePen" xml:space="preserve">
+    <value>Gets/sets the Pen that will be used for drawing connector lines between fields</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldLayoutDescriptionTemplate" xml:space="preserve">
+    <value>Returns/sets the DataTemplate to use for the FieldLayout description element.</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldLayoutOrientation" xml:space="preserve">
+    <value>Gets/sets how fieldLayout information is orientated (read-only)</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldLayoutOffsetX" xml:space="preserve">
+    <value>Gets or sets the amount to offset between FieldLayoutGroupByInfos in the X dimension.</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldLayoutOffsetY" xml:space="preserve">
+    <value>Gets or sets the amount to offset between FieldLayoutGroupByInfos in the Y dimension.</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldOffsetX" xml:space="preserve">
+    <value>Gets or sets the amount to offset between Fields within a FieldLayout in the X dimension.</value>
+  </data>
+  <data name="LD_GroupByAreaMulti_P_FieldOffsetY" xml:space="preserve">
+    <value>Gets or sets the amount to offset between Fields within a FieldLayout in the Y dimension.</value>
+  </data>
+  <data name="LD_FieldChooserGroup_P_FieldFilter" xml:space="preserve">
+    <value>Used to filter fields to form the subgroup of fields.</value>
+  </data>
+  <data name="LD_FieldChooserGroup_P_FieldLayout" xml:space="preserve">
+    <value>Associated FieldLayout.</value>
+  </data>
+  <data name="LD_FieldChooserGroup_P_HasFieldFilter" xml:space="preserve">
+    <value>Indicates if FieldFilter property value is non-null.</value>
+  </data>
+  <data name="LD_DataRecordPresenter_P_DataError" xml:space="preserve">
+    <value>The record data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_DataRecordPresenter_P_HasDataError" xml:space="preserve">
+    <value>Indicates if the record has data error (IDataErrorInfo.Error).</value>
+  </data>
+  <data name="LD_GridViewSettings_P_UseNestedPanels" xml:space="preserve">
+    <value>Determines how items panels are used to display hierarchical data.</value>
+  </data>
+  <data name="LC_Layout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+	<data name="LD_CardHeaderPresenter" xml:space="preserve">
+    <value>An element used to represent the header area of a Card.</value>
+  </data>
+	<data name="LC_CardsControl Properties" xml:space="preserve">
+    <value>CardsControl Properties</value>
+  </data>
+	<data name="LD_CardHeaderPresenter_P_Card" xml:space="preserve">
+    <value>Gets/sets the CardViewCard that contains the header.</value>
+  </data>
+	<data name="LD_CardView_P_ViewSettings" xml:space="preserve">
+    <value>Returns/sets the CardViewSettings object for this CardView.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_AllowCardWidthResizing" xml:space="preserve">
+    <value>Returns/sets whether the end user can resize Card widths by selecting the right edge of card and dragging.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_AllowCardHeightResizing" xml:space="preserve">
+    <value>Returns/sets whether the end user can resize Card Heights by selecting the bottom edge of card and dragging.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_AutoFitCards" xml:space="preserve">
+    <value>Returns/sets whether Card widths/heights are automatically increased to use up all available horizontal/vertical space.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_CardHeight" xml:space="preserve">
+    <value>Returns/sets the Height of each Card.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_CardWidth" xml:space="preserve">
+    <value>Returns/sets the Width of each Card.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_CollapseCardButtonVisibility" xml:space="preserve">
+    <value>Returns/sets whether a button is displayed in the Card header which can be clicked by the end user to collapse a Card so it shows its header only.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_CollapseEmptyCellsButtonVisibility" xml:space="preserve">
+    <value>Returns/sets whether a button is displayed in the Card header which can be clicked by the end user to collapse cells that contain empty values (e.g. empty string/null for string, null for nullable types, and 0 for numeric types).</value>
+  </data>
+	<data name="LD_CardViewSettings_P_HeaderPath" xml:space="preserve">
+    <value>Returns/sets a string that represents the Path to a value on the source object that should be displayed as a Card header.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_HeaderVisibility" xml:space="preserve">
+    <value>Returns/sets the Visibility of the Card header.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_InterCardSpacingX" xml:space="preserve">
+    <value>Returns/sets the horizontal spacing between each Card.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_InterCardSpacingY" xml:space="preserve">
+    <value>Returns/sets the vertical spacing between each Card.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_MaxCardCols" xml:space="preserve">
+    <value>Returns/sets the maximum number of columns of Cards that should be displayed.  A value of zero forces CardView to display as many columns as space will allow.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_MaxCardRows" xml:space="preserve">
+    <value>Returns/sets the maximum number of rows of Cards that should be displayed.  A value of zero forces CardView to display as many rows as space will allow.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_Orientation" xml:space="preserve">
+    <value>Returns/sets whether Cards are arranged horizontally (left-to-right top-to-bottom) or vertically (top-to-bottom left-to-right).</value>
+  </data>
+	<data name="LD_CardViewSettings_P_Padding" xml:space="preserve">
+    <value>Returns/sets the padding between the outermost cards and the bounds of the control.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_RepositionAnimation" xml:space="preserve">
+    <value>Returns/sets a DoubleAnimationBase derived instance that should be used when animating Cards to new layout positions.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_ShouldAnimateCardPositioning" xml:space="preserve">
+    <value>Returns/sets whether Cards should be animated into their new positions when the CardView is scrolled.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_ShouldCollapseCards" xml:space="preserve">
+    <value>Returns/sets whether Cards should be collapsed.</value>
+  </data>
+	<data name="LD_CardViewSettings_P_ShouldCollapseEmptyCells" xml:space="preserve">
+    <value>Returns/sets whether cells whose value is determined to be empty (e.g. empty string/null for string, null for nullable types, and 0 for numeric types) will be collapsed and not displayed within the record.</value>
+  </data>
+	<data name="LD_SummaryRecordContentArea_P_HasSummariesInCellArea" xml:space="preserve">
+    <value>Indicates whether the cell are element has any summaries.</value>
+  </data>
+	<data name="LD_RecordPresenter_P_IsInCard" xml:space="preserve">
+    <value>Returns true if the RecordPresenter is being hosted by a CardViewCard in CardView</value>
+  </data>
+	<data name="LD_FieldSettings_P_AllowHiding" xml:space="preserve">
+    <value>Specifies if the user can show or hide the field.</value>
+  </data>
+	<data name="LD_FieldSettings_P_CollapseWhenEmpty" xml:space="preserve">
+    <value>Returns/sets whether Views that support the collapsing of cells should collapse cells associated with a Field when the cells contain empty values (e.g. empty string/null for string, null for nullable types, and 0 for numeric types).</value>
+  </data>
+	<data name="LD_CardViewPanel_P_ViewSettings" xml:space="preserve">
+    <value>Returns/set the CardViewSettings object for this CardViewPanel.</value>
+  </data>
+	<data name="LD_CardViewCard_P_CollapseCardButtonVisibility" xml:space="preserve">
+    <value>Returns/sets the Visibility of a button in the Card header which can be clicked by the end user to collapse a Card so it shows its header only. </value>
+  </data>
+	<data name="LD_CardViewCard_P_CollapseEmptyCellsButtonVisibility" xml:space="preserve">
+    <value>Returns/sets the Visibility of a button in the Card header which can be clicked by the end user to collapse cells that contain empty values (e.g. empty string/null for string, null for nullable types, and 0 for numeric types).</value>
+  </data>
+	<data name="LD_CardViewCard_P_HasHeader" xml:space="preserve">
+    <value>Returns a boolean indicating if the Header property has been set.</value>
+  </data>
+	<data name="LD_CardViewCard_P_Header" xml:space="preserve">
+    <value>Gets/sets an object that will appear in the header of this card.</value>
+  </data>
+	<data name="LC_Control" xml:space="preserve">
+    <value>Control</value>
+  </data>
+	<data name="LD_CardViewCard_P_HeaderStringFormat" xml:space="preserve">
+    <value>Gets/sets the format of the card header</value>
+  </data>
+	<data name="LD_CardViewCard_P_HeaderTemplate" xml:space="preserve">
+    <value>Gets/sets the template used to display the content of the card's header.</value>
+  </data>
+	<data name="LD_CardViewCard_P_HeaderTemplateSelector" xml:space="preserve">
+    <value>Gets/sets a selector to allow the application writer to assign different header templates for each card.</value>
+  </data>
+	<data name="LD_CardViewCard_P_HeaderVisibility" xml:space="preserve">
+    <value>Returns/sets the Visibiolity of the Card's Header.</value>
+  </data>
+	<data name="LD_CardViewCard_P_IsAddRecord" xml:space="preserve">
+    <value>Returns true if the associated Record is an Add record. (read only)</value>
+  </data>
+	<data name="LD_CardViewCard_P_IsActive" xml:space="preserve">
+    <value>Returns/sets whether the associated record is active.</value>
+  </data>
+	<data name="LD_CardViewCard_P_IsCollapsed" xml:space="preserve">
+    <value>Returns/sets whether the CardViewCard is collapsed to show only its header and not its content.</value>
+  </data>
+	<data name="LD_CardViewCard_P_IsFilterRecord" xml:space="preserve">
+    <value>Returns true if the associated Record is a Filter record. (read only)</value>
+  </data>
+	<data name="LD_CardViewCard_P_IsSelected" xml:space="preserve">
+    <value>Returns/sets whether the associated record is selected.</value>
+  </data>
+	<data name="LD_CardViewCard_P_ShouldCollapseEmptyCells" xml:space="preserve">
+    <value>Returns/sets whether Cells contained in this CardViewCard should be collapsed if they contain empty values.</value>
+  </data>
+	<data name="LD_DataPresenterCalculationSettingsBase_P_Formula" xml:space="preserve">
+    <value>Specifies the formula to use to calculate the target's value.</value>
+  </data>
+	<data name="LD_DataPresenterCalculationSettingsBase_P_ReferenceId" xml:space="preserve">
+    <value>Identifies the object. Id is used to refer to the value of the associated object in other formulas.</value>
+  </data>
+	<data name="LD_DataPresenterCalculationSettingsBase_P_TreatAsType" xml:space="preserve">
+    <value>Specifies the type to treat the values of the associated object as. For example if the cell date type is string you may want to treat it as double when providing the value to the calculation engine for formula calculations.</value>
+  </data>
+	<data name="LD_DataPresenterCalculationSettingsBase_P_TreatAsTypeName" xml:space="preserve">
+    <value>Specifies the name of the type to treat the values of the associated object as. For example if the cell date type is string you may want to treat it as double when providing the value to the calculation engine for formula calculations.</value>
+  </data>
+	<data name="LD_DataPresenterCalculationSettingsBase_P_ValueConverter" xml:space="preserve">
+    <value>Specifies the converter to use to convert between the underlying value of the cell to the value that is used in calculations.</value>
+  </data>
+	<data name="LD_XamDataCards" xml:space="preserve">
+    <value>A DataPresenterBase derived control that uses a CardViewPanel to arrange its items inside cards which are organized in a tabular layout, snaking either vertically or horizontally.  The XamDataCards control uses elements generated by the XamDataPresenterBase to display each item in the list.</value>
+  </data>
+	<data name="LD_XamDataCards_P_ViewSettings" xml:space="preserve">
+    <value>Returns/set the CardViewSettings object for this XamDataCards control.</value>
+  </data>
+	<data name="SmartTag_G_GroupByArea" xml:space="preserve">
+    <value>GroupByArea</value>
+  </data>
+	<data name="SmartTag_G_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+	<data name="SmartTag_G_Allow" xml:space="preserve">
+    <value>Allow ...</value>
+  </data>
+	<data name="SmartTag_G_Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+	<data name="SmartTag_G_Cells" xml:space="preserve">
+    <value>Cells</value>
+  </data>
+	<data name="SmartTag_G_Labels" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+	<data name="SmartTag_G_Virtualization" xml:space="preserve">
+    <value>Virtualization and Performance</value>
+  </data>
+	<data name="SmartTag_G_RecordAddDelete" xml:space="preserve">
+    <value>Adding and Deleting Records</value>
+  </data>
+	<data name="SmartTag_G_Filtering" xml:space="preserve">
+    <value>Record Filtering</value>
+  </data>
+	<data name="SmartTag_G_Summaries" xml:space="preserve">
+    <value>Summaries</value>
+  </data>
+	<data name="SmartTag_G_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+	<data name="SmartTag_G_Selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+	<data name="SmartTag_G_RecordFixing" xml:space="preserve">
+    <value>Record Fixing</value>
+  </data>
+	<data name="SmartTag_G_Clipboard" xml:space="preserve">
+    <value>Clipboard Undo/Redo</value>
+  </data>
+	<data name="SmartTag_G_View" xml:space="preserve">
+    <value>View</value>
+  </data>
+	<data name="SmartTag_G_ViewSettings" xml:space="preserve">
+    <value>ViewSettings</value>
+  </data>
+	<data name="SmartTag_G_CardSizing" xml:space="preserve">
+    <value>Card Sizing</value>
+  </data>
+	<data name="SmartTag_G_CardLayout" xml:space="preserve">
+    <value>Card Layout</value>
+  </data>
+	<data name="SmartTag_G_CardHeader" xml:space="preserve">
+    <value>Card Header</value>
+  </data>
+	<data name="SmartTag_G_CardOptions" xml:space="preserve">
+    <value>Card Options</value>
+  </data>
+	<data name="SmartTag_G_CarouselItemSizing" xml:space="preserve">
+    <value>Carousel Item Sizing</value>
+  </data>
+	<data name="SmartTag_G_CarouselItemLayout" xml:space="preserve">
+    <value>Carousel Item Layout</value>
+  </data>
+	<data name="SmartTag_G_CarouselItemPath" xml:space="preserve">
+    <value>Carousel ItemPath</value>
+  </data>
+	<data name="SmartTag_G_CarouselOptions" xml:space="preserve">
+    <value>Carousel Options</value>
+  </data>
+	<data name="SmartTag_G_CarouselEffects" xml:space="preserve">
+    <value>Carousel Effects</value>
+  </data>
+	<data name="SmartTag_T_XamDataPresenter" xml:space="preserve">
+    <value>XamDataPresenter</value>
+  </data>
+	<data name="SmartTag_T_XamDataGrid" xml:space="preserve">
+    <value>XamDataGrid</value>
+  </data>
+	<data name="SmartTag_T_XamDataCards" xml:space="preserve">
+    <value>XamDataCards</value>
+  </data>
+	<data name="SmartTag_T_XamDataCarousel" xml:space="preserve">
+    <value>XamDataCarousel</value>
+  </data>
+	<data name="SmartTag_T_FieldSettings" xml:space="preserve">
+    <value>FieldSettings</value>
+  </data>
+	<data name="SmartTag_T_FieldLayoutSettings" xml:space="preserve">
+    <value>FieldLayoutSettings</value>
+  </data>
+	<data name="SmartTag_T_GridViewSettings" xml:space="preserve">
+    <value>GridView Settings</value>
+  </data>
+	<data name="SmartTag_T_GridView" xml:space="preserve">
+    <value>GridView</value>
+  </data>
+	<data name="SmartTag_T_CardViewSettings" xml:space="preserve">
+    <value>CardView Settings</value>
+  </data>
+	<data name="SmartTag_T_CardView" xml:space="preserve">
+    <value>CardView</value>
+  </data>
+	<data name="SmartTag_T_CarouselViewSettings" xml:space="preserve">
+    <value>CarouselView Settings</value>
+  </data>
+	<data name="SmartTag_T_CarouselView" xml:space="preserve">
+    <value>CarouselView</value>
+  </data>
+	<data name="SmartTag_D_FieldSettingsRecordFiltering" xml:space="preserve">
+    <value>Record Filtering Properties on FieldSettings</value>
+  </data>
+	<data name="SmartTag_D_FieldLayoutSettingsRecordFiltering" xml:space="preserve">
+    <value>Record Filtering Properties on FieldLayoutSettings</value>
+  </data>
+	<data name="SmartTag_D_FieldSettingsSummaries" xml:space="preserve">
+    <value>Summary Properties on FieldSettings</value>
+  </data>
+	<data name="SmartTag_D_FieldLayoutSettingsSummaries" xml:space="preserve">
+    <value>Summary Properties on FieldLayoutSettings</value>
+  </data>
+	<data name="SmartTag_D_GridView" xml:space="preserve">
+    <value>Set View to GridView</value>
+  </data>
+	<data name="SmartTag_D_CardView" xml:space="preserve">
+    <value>Set View to CardView</value>
+  </data>
+	<data name="SmartTag_D_CarouselView" xml:space="preserve">
+    <value>Set View to CarouselView</value>
+  </data>
+	<data name="SmartTag_N_RecordFiltering" xml:space="preserve">
+    <value>NOTE: Properties that control RecordFiltering are exposed on both the FieldSettings and FieldLayoutSettings objects.</value>
+  </data>
+	<data name="SmartTag_N_Summaries" xml:space="preserve">
+    <value>NOTE: Properties that control Summaries are exposed on both the FieldSettings and FieldLayoutSettings objects.</value>
+  </data>
+	<data name="SmartTag_N_GridView" xml:space="preserve">
+    <value>Set the View of the XamDataPresenter to a GridView.</value>
+  </data>
+	<data name="SmartTag_N_CardView" xml:space="preserve">
+    <value>Set the View of the XamDataPresenter to a CardView.</value>
+  </data>
+	<data name="SmartTag_N_CarouselView" xml:space="preserve">
+    <value>Set the View of the XamDataPresenter to a CarouselView.</value>
+  </data>
+	<data name="XamDataGridAssetLibrary">
+		<value>Infragistics</value>
+	</data>
+	<data name="XamDataCarouselAssetLibrary">
+		<value>Infragistics</value>
+	</data>
+	<data name="XamDataPresenterAssetLibrary">
+		<value>Infragistics</value>
+	</data>
+	<data name="XamDataCardsAssetLibrary">
+		<value>Infragistics</value>
+	</data>
+</root>

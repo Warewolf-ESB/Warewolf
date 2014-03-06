@@ -1,0 +1,200 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+					mc:Ignorable="PresentationOptions"
+					xmlns:igEditors="clr-namespace:Infragistics.Controls.Editors"
+					xmlns:igEditorsPrim="clr-namespace:Infragistics.Controls.Editors.Primitives"
+					xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives">
+
+	<igPrim:SystemResourceProvider x:Key="SRP"/>
+
+
+	<!-- =========================================================================================================================================== -->
+	<!-- =========================================================================================================================================== -->
+	<!-- Note:                                                                                                                                       -->
+	<!-- The keys of the following resources should not be removed or changed. They must correspond to the CalendarResourceId enumeration values-->
+	<!-- =========================================================================================================================================== -->
+	<!-- =========================================================================================================================================== -->
+
+	<!-- ======================== -->
+	<!-- BrushResources           -->
+	<!-- ======================== -->
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="CalendarBackgroundBrush" Color="{Binding Source={StaticResource SRP}, Path=[WindowColor]}"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="DayOfWeekBackgroundBrush" Color="#00000000"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="DayOfWeekForegroundBrush" Color="#FF000000"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="DayOfWeekSeparatorBrush" Color="#FFF5F5F5"/>
+	
+	<!-- JJD 8/26/11 - TFS85067  
+			Add explicit background and foreground brushes for disabled items -->
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="DisabledItemBackgroundBrush" Color="Transparent"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="DisabledItemForegroundBrush" Color="#99B3B3B3"/>
+	
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="GroupTitleBackgroundBrush" Color="#006FA1D9"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="GroupTitleForegroundBrush" Color="#FF000000"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="ItemBackgroundBrush" Color="Transparent"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="ItemBorderBrush" Color="Transparent"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="ItemForegroundBrush" Color="{Binding Source={StaticResource SRP}, Path=[WindowTextColor]}"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="ItemInnerBorderBrush" Color="Transparent"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="LeadingOrTrailingItemForegroundBrush" Color="#FFB3B3B3"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="MouseOverGroupTitleBackgroundBrush" Color="#006FA1D9"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="MouseOverGroupTitleForegroundBrush" Color="#FF0066CC"/>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="MouseOverItemBackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FFF6FCFF" Offset="0"/>
+		<GradientStop Color="#FFEAF7FF" Offset="1"/>
+	</LinearGradientBrush>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="MouseOverItemBorderBrush" Color="#FFDAF2FC"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="MouseOverItemForegroundBrush" Color="#FF0066CC"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="MouseOverItemInnerBorderBrush" Color="#72FFFFFF"/>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="SelectedFocusedItemBackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FFF7FCFE" Offset="0"/>
+		<GradientStop Color="#FFD6F0FD" Offset="1"/>
+	</LinearGradientBrush>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedFocusedItemBorderBrush" Color="#FF9ADFFE"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedFocusedItemForegroundBrush" Color="#FF0066CC"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedFocusedItemInnerBorderBrush" Color="#72FFFFFF"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedItemBackgroundBrush"  Color="{Binding Source={StaticResource SRP}, Path=[ControlLightColor]}"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedItemBorderBrush" Color="{Binding Source={StaticResource SRP}, Path=[ControlLightColor]}"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedItemForegroundBrush" Color="{Binding Source={StaticResource SRP}, Path=[WindowTextColor]}"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="SelectedItemInnerBorderBrush" Color="#72FFFFFF"/>
+
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="TodayBorderBrush" Color="#FF0066CC"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="TodayForegroundBrush" Color="#FF0066CC"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="TodayBackgroundBrush" Color="#00000000"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="TodayInnerBorderBrush" Color="#72FFFFFF"/>
+	<!--_________________________ Brushes End  ____________________________________--> 
+
+	<CornerRadius x:Key="ItemCorderRadius">3</CornerRadius>
+
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="NavGlyphFill" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FF3B3B3B" Offset="0"/>
+		<GradientStop Color="#FF0B0B0B" Offset="1"/>
+	</LinearGradientBrush>
+	
+  <!-- _________________________ NaviButtons ______________________________________ -->
+	<Style x:Key="ScrollPreviousRepeatButtonStyle" TargetType="RepeatButton">
+		<!--<Setter Property="Foreground" Value="{StaticResource NavGlyphFill}"/>-->
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Grid Width="16" Height="14" Background="#00FFFFFF">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal"/>
+								<VisualState x:Name="MouseOver">
+									<Storyboard TargetProperty="(Path.Fill)" TargetName="path">
+										<ObjectAnimationUsingKeyFrames>
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MouseOverGroupTitleForegroundBrush}"/>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed"/>
+								<VisualState x:Name="Disabled"/>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Path
+							x:Name="path"
+							Stretch="Fill"
+							Opacity="1"
+							Data="M 431,43 C431,43 427,46.5 427,46.5 427,46.5 431,50 431,50 431,50 431,43 431,43z"
+							Fill="{StaticResource NavGlyphFill}" Width="4" Height="7" />
+					</Grid>
+				</ControlTemplate>
+
+			</Setter.Value>
+		</Setter>
+
+	</Style>
+
+	<Style x:Key="ScrollNextRepeatButtonStyle" TargetType="RepeatButton">
+		<!--<Setter Property="Foreground" Value="{StaticResource NavGlyphFill}"/>-->
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Grid Width="16" Height="14" Background="#00FFFFFF">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal"/>
+								<VisualState x:Name="MouseOver">
+									<Storyboard TargetProperty="(Path.Fill)" TargetName="path">
+										<ObjectAnimationUsingKeyFrames>
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MouseOverGroupTitleForegroundBrush}"/>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed"/>
+								<VisualState x:Name="Disabled"/>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Path 
+							x:Name="path" 
+							Stretch="Fill"
+							Opacity="1"
+							Data="M437,43C437,43 441,46.5 441,46.5 441,46.5 437,50 437,50 437,50 437,43 437,43z"
+							Fill="{StaticResource NavGlyphFill}" Width="4" Height="7"/>
+					</Grid>
+				</ControlTemplate>
+
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="GrayTextBrush" Color="{Binding Source={StaticResource SRP}, Path=[GrayTextColor]}"/>
+
+	<!-- TodayButtonStyle -->
+	<Style TargetType="Button" x:Key="TodayButtonStyle">
+	
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Margin" Value="3" />
+		<Setter Property="igPrim:XamlHelper.Focusable" Value="False" />
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border BorderThickness="{TemplateBinding BorderThickness}"
+									BorderBrush="{TemplateBinding BorderBrush}"
+									Background="{TemplateBinding Background}"
+									Padding="{TemplateBinding Padding}"
+									igPrim:XamlHelper.SnapsToDevicePixels="True">
+						<!--<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal"/>
+								<VisualState x:Name="MouseOver">
+									<Storyboard TargetProperty="(Control.Foreground)" TargetName="content">
+										<ObjectAnimationUsingKeyFrames>
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource MouseOverGroupTitleForegroundBrush}"/>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Disabled">
+									<Storyboard TargetProperty="(Control.Foreground)" TargetName="content">
+										<ObjectAnimationUsingKeyFrames>
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource GrayTextBrush}"/>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>-->
+						<StackPanel Orientation="Horizontal">
+							<Border BorderBrush="{StaticResource TodayBorderBrush}"
+									BorderThickness="1"
+									Width="20"
+									Margin="0,0,2,0"
+									VerticalAlignment="Stretch"
+									Background="{StaticResource TodayBackgroundBrush}"
+									CornerRadius="{StaticResource ItemCorderRadius}" />
+							<ContentPresenter x:Name="content"
+																igPrim:XamlHelper.SnapsToDevicePixels="{TemplateBinding igPrim:XamlHelper.SnapsToDevicePixels}"/>
+						</StackPanel>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+
+	</Style>
+
+</ResourceDictionary>

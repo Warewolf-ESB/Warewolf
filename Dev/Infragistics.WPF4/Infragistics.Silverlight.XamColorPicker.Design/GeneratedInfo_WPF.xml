@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorPickerDialog" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsOpen" DisplayName="IsOpen" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ColorPicker" DisplayName="ColorPicker" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DialogCaption" DisplayName="DialogCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPickerDialogCommandBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPickerDialogCloseCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPickerDialogOpenCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorStripsCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandType" DisplayName="CommandType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.XamPickerCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandType" CategoryKey="XamPickerCommandSource_Properties" DisplayName="CommandType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPalette" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Colors" CategoryKey="ColorPalette_Properties" DisplayName="Colors" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DefaultColor" CategoryKey="ColorPalette_Properties" DisplayName="DefaultColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPatch" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Color" CategoryKey="ColorPatch_Properties" DisplayName="Color" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPaletteCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPatchCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ColorPickerDialogCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandType" DisplayName="CommandType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorSlidersCommandBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.RGBCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.HSLCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CMYKCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.AcceptColorCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.PickerCommandBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.PickerToggleCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.PickerCloseCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.PreviousPaletteCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.NextPaletteCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.OpenAdvanceEditorCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.XamColorPicker" HideFromToolbox="false" ToolBoxCategoryKey="XamColorPickerAssetLibrary" ImageResource="">
+    <PropertyInformation Name="PreviouslySelectedColor" CategoryKey="XamColorPicker_Properties" DisplayName="PreviouslySelectedColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedColor" CategoryKey="XamColorPicker_Properties" DisplayName="SelectedColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DerivedPalettesCount" CategoryKey="XamColorPicker_Properties" DisplayName="DerivedPalettesCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentPalette" CategoryKey="XamColorPicker_Properties" DisplayName="CurrentPalette" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ColorPalettes" CategoryKey="XamColorPicker_Properties" DisplayName="ColorPalettes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropDownOpen" CategoryKey="XamColorPicker_Properties" DisplayName="IsDropDownOpen" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowAdvancedEditorButton" CategoryKey="XamColorPicker_Properties" DisplayName="ShowAdvancedEditorButton" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowRecentColorsPalette" CategoryKey="XamColorPicker_Properties" DisplayName="ShowRecentColorsPalette" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowDerivedColorPalettes" CategoryKey="XamColorPicker_Properties" DisplayName="ShowDerivedColorPalettes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentPaletteCaption" CategoryKey="XamColorPicker_Properties" DisplayName="CurrentPaletteCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RecentColorPaletteCaption" CategoryKey="XamColorPicker_Properties" DisplayName="RecentColorPaletteCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DerivedColorPalettesCaption" CategoryKey="XamColorPicker_Properties" DisplayName="DerivedColorPalettesCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AdvancedButtonCaption" CategoryKey="XamColorPicker_Properties" DisplayName="AdvancedButtonCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentColorCaption" CategoryKey="XamColorPicker_Properties" DisplayName="CurrentColorCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DerivedPaletteColorItemBoxStyle" CategoryKey="XamColorPicker_Properties" DisplayName="DerivedPaletteColorItemBoxStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorStripManager" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ColorStrips" DisplayName="ColorStrips" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorItem" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Parent" DisplayName="Parent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Color" DisplayName="Color" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.SpecializedEditorsBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ByteTextBox" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.DegreeTextBox" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.PercentTextBox" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorStrip" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="VisibleItemCount" DisplayName="VisibleItemCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ColorPalette" DisplayName="ColorPalette" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedColorItem" DisplayName="SelectedColorItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DarknessShift" DisplayName="DarknessShift" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ColorItemBoxStyle" DisplayName="ColorItemBoxStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CurrentColor" DisplayName="CurrentColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedColor" DisplayName="SelectedColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Alpha" DisplayName="Alpha" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Red" DisplayName="Red" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Blue" DisplayName="Blue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Green" DisplayName="Green" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="H" DisplayName="H" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="S" DisplayName="S" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="L" DisplayName="L" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="C" DisplayName="C" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="M" DisplayName="M" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Y" DisplayName="Y" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="K" DisplayName="K" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AlphaCaption" DisplayName="AlphaCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RedCaption" DisplayName="RedCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="BlueCaption" DisplayName="BlueCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="GreenCaption" DisplayName="GreenCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HueCaption" DisplayName="HueCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SaturationCaption" DisplayName="SaturationCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LightnessCaption" DisplayName="LightnessCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CyanCaption" DisplayName="CyanCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="YellowCaption" DisplayName="YellowCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MagentaCaption" DisplayName="MagentaCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="BlackCaption" DisplayName="BlackCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OKCaption" DisplayName="OKCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CancelCaption" DisplayName="CancelCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ColorItemBox" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ColorItemBrush" DisplayName="ColorItemBrush" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ColorItem" DisplayName="ColorItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ByteSlider" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="MaxValue" DisplayName="MaxValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinValue" DisplayName="MinValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.SelectedColorItemChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OriginalColorItem" DisplayName="OriginalColorItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewColorItem" DisplayName="NewColorItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.SelectedColorChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OriginalColor" DisplayName="OriginalColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewColor" DisplayName="NewColor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.AutomationPeers.XamColorPickerAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ExpandCollapseState" CategoryKey="XamColorPickerAutomationPeer_Properties" DisplayName="ExpandCollapseState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsReadOnly" CategoryKey="XamColorPickerAutomationPeer_Properties" DisplayName="IsReadOnly" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CancelColorCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.NullableColorConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.ColorItemBoxAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.ByteSliderThumb" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.SpecializedTextBoxValueConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.TransparencyBackgroundControl" HideFromToolbox="true">
+    <PropertyInformation Name="Color1" DisplayName="Color1" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Color2" DisplayName="Color2" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SquareSize" DisplayName="SquareSize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+</root>

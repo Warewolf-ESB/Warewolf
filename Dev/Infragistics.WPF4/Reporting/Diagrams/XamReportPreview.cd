@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.Reporting.XamReportPreview">
+    <Position X="1" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="_documentForPreview" Hidden="true" />
+      <Field Name="_documentViewer" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_package" Hidden="true" />
+      <Field Name="_packageRegisteredUri" Hidden="true" />
+      <Field Name="_stream" Hidden="true" />
+      <Field Name="_xpsDocument" Hidden="true" />
+      <Field Name="DocumentTrackerProperty" Hidden="true" />
+      <Field Name="DocumentViewerStyleKey" Hidden="true" />
+      <Field Name="IsContentVisibleProperty" Hidden="true" />
+      <Method Name="OnCoerceIsContentVisible" Hidden="true" />
+      <Method Name="OnDocumentTrackerChanged" Hidden="true" />
+      <Method Name="OnIsContentVisibleChangedCallback" Hidden="true" />
+      <Method Name="OnPreviewDocumentCommand" Hidden="true" />
+      <Method Name="OnUnloaded" Hidden="true" />
+      <Method Name="Refresh" Hidden="true" />
+      <Method Name="ReleaseDocumentResources" Hidden="true" />
+      <Field Name="ReportProperty" Hidden="true" />
+      <Field Name="ReportPropertyKey" Hidden="true" />
+      <Method Name="VerifyUnloaded" Hidden="true" />
+      <Method Name="XamReportPreview" Hidden="true" />
+      <Method Name="XamReportPreview_GotFocus" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Delegate Name="Infragistics.Windows.Reporting.XamReportPreview.MethodDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>XamReportPreview.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAACACAQADEEAAAQAiAAEAAAQAABQQAICQIBACQBFA=</HashCode>
+      <FileName>XamReportPreview.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Report" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.Reporting.Report">
+    <Position X="4.5" Y="0.5" Width="3" />
+    <Members>
+      <Field Name="_buildInProgressWnd" Hidden="true" />
+      <Field Name="_countPrintedPages" Hidden="true" />
+      <Field Name="_defaultExportFileName" Hidden="true" />
+      <Field Name="_exportDoc" Hidden="true" />
+      <Field Name="_exportPackage" Hidden="true" />
+      <Field Name="_logicalPageNumber" Hidden="true" />
+      <Field Name="_logicalPagePartNumber" Hidden="true" />
+      <Field Name="_paginator" Hidden="true" />
+      <Field Name="_physicalPageNumber" Hidden="true" />
+      <Field Name="_reportProgressControlOwnedElement" Hidden="true" />
+      <Field Name="_reportSettings" Hidden="true" />
+      <Field Name="_runningLogicalPageCount" Hidden="true" />
+      <Field Name="_sectionLogicalPageNumber" Hidden="true" />
+      <Field Name="_sectionLogicalPagePartNumber" Hidden="true" />
+      <Field Name="_sectionPhysicalPageNumber" Hidden="true" />
+      <Field Name="_sections" Hidden="true" />
+      <Method Name="CheckUserSettings" Hidden="true" />
+      <Method Name="CleanUpDocAndPackage" Hidden="true" />
+      <Method Name="CloseReportProgressControl" Hidden="true" />
+      <Method Name="CreateAndInitializePrintDialog" Hidden="true" />
+      <Method Name="CreateFixedPageContent" Hidden="true" />
+      <Method Name="ExportToXPS" Hidden="true" />
+      <Method Name="GenerateReport" Hidden="true" />
+      <Property Name="IDocumentPaginatorSource.DocumentPaginator" Hidden="true" />
+      <Method Name="InitializeReport" Hidden="true" />
+      <Method Name="IsPermissionGranted" Hidden="true" />
+      <Method Name="PrintViaPrintDialog" Hidden="true" />
+      <Method Name="ProcessXpsDocumentWriter" Hidden="true" />
+      <Method Name="RaisePrintEndedEvent" Hidden="true" />
+      <Method Name="RaisePrintProgressEvent" Hidden="true" />
+      <Method Name="RaisePrintStartEvent" Hidden="true" />
+      <Property Name="ReportProgressControlOwnedElementResolved" Hidden="true" />
+      <Property Name="RunningLogicalPageCount" Hidden="true" />
+      <Method Name="ShowReportProgressControl" Hidden="true" />
+      <Method Name="UpdateSettingsFromPrintDialog" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.Reporting.Report.Paginator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Report.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AgQFMZAGgSACEAAQwImADHwBAEAKACgGCUAJBAAEEJA=</HashCode>
+      <FileName>Report.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

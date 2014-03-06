@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:igWindows="http://infragistics.com/Windows"
+    xmlns:igDock="clr-namespace:Infragistics.Windows.DockManager"
+    xmlns:luna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+    xmlns:igThemes="clr-namespace:Infragistics.Windows.Themes"
+	>
+    <ResourceDictionary.MergedDictionaries>
+        <!--<igThemes:DockManagerGeneric />
+        <igThemes:DockManagerOffice2k7Black />
+        <igThemes:DockManagerOffice2k7BlueBrushes />-->
+        <ResourceDictionary Source="DockManagerOffice2k7Black.xaml" />
+        <ResourceDictionary Source="../DockManagerBrushes/DockManagerOffice2010Blue_Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

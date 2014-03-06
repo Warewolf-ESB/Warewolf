@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CalcSettingsPropertyName_Not_Set" xml:space="preserve">
+    <value>CalcSettings で PropertyName が設定されていないか、あるいはプロパティを見つけることができません。</value>
+  </data>
+  <data name="FormulaCircularityError_Default_Message" xml:space="preserve">
+    <value>数式[{0}]に循環参照が見つかりました。数式: {1}。UltraCalcManagerは循環参照を解決できないため、循環参照を含む数式は実行することができません。</value>
+  </data>
+  <data name="FormulaCircularityError_Message_Title" xml:space="preserve">
+    <value>循環参照エラー</value>
+  </data>
+  <data name="FormulaSyntaxError_Default_Message" xml:space="preserve">
+    <value>コンパイル時に構文エラーが発生しました。: {0}。
+
+エラー:
+{1}</value>
+  </data>
+  <data name="FormulaSyntaxError_Message_Title" xml:space="preserve">
+    <value>構文エラー</value>
+  </data>
+  <data name="LC_Behavior" xml:space="preserve">
+    <value>動作</value>
+  </data>
+  <data name="LC_Design" xml:space="preserve">
+    <value>デザイン</value>
+  </data>
+  <data name="LC_Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="LER_Calc_InvalidReference" xml:space="preserve">
+    <value>不正な参照: {0}</value>
+  </data>
+  <data name="LER_Exception_34" xml:space="preserve">
+    <value>数式構文エラー次の数式をコンパイルできません: {0}</value>
+  </data>
+  <data name="LE_Exception_0" xml:space="preserve">
+    <value>指定されたプロパティ名は、コントロールに存在しません。</value>
+  </data>
+  <data name="LE_Exception_1" xml:space="preserve">
+    <value>NamedReferencesコレクションに既に割り当てられるため、NamedReferenceを加えることができません。</value>
+  </data>
+  <data name="LE_Exception_10" xml:space="preserve">
+    <value>RootReferenceはNullにすることはできません。</value>
+  </data>
+  <data name="LE_Exception_11" xml:space="preserve">
+    <value>パーティシパント</value>
+  </data>
+  <data name="LE_Exception_14" xml:space="preserve">
+    <value>パーティシパントは見つかりませんでした。</value>
+  </data>
+  <data name="LE_Exception_15" xml:space="preserve">
+    <value>participant.RootReference</value>
+  </data>
+  <data name="LE_Exception_16" xml:space="preserve">
+    <value>participant.RootReference はルートの参照ではありません。</value>
+  </data>
+  <data name="LE_Exception_2" xml:space="preserve">
+    <value>AsynchronousCalcDuration</value>
+  </data>
+  <data name="LE_Exception_20" xml:space="preserve">
+    <value>calcManager</value>
+  </data>
+  <data name="LE_Exception_3" xml:space="preserve">
+    <value>AsynchronousCalcDurationは0未満に設定することはできません。</value>
+  </data>
+  <data name="LE_Exception_32" xml:space="preserve">
+    <value>ReCalc()のmillisパラメーターは、-1以上である必要があります。</value>
+  </data>
+  <data name="LE_Exception_33" xml:space="preserve">
+    <value>ReCalc()のmillisパラメーターはInt64型の範囲を超えることはできません。</value>
+  </data>
+  <data name="LE_Exception_34" xml:space="preserve">
+    <value>列</value>
+  </data>
+  <data name="LE_Exception_35" xml:space="preserve">
+    <value>dataGridView</value>
+  </data>
+  <data name="LE_Exception_4" xml:space="preserve">
+    <value>AsynchronousCalcInterval</value>
+  </data>
+  <data name="LE_Exception_5" xml:space="preserve">
+    <value>CalcIntervalは1未満に設定することはできません。</value>
+  </data>
+  <data name="LE_Exception_6" xml:space="preserve">
+    <value>ミリ秒</value>
+  </data>
+  <data name="LE_Exception_7" xml:space="preserve">
+    <value>Calc Networkで指定されたコントロールを見つけることができません。</value>
+  </data>
+  <data name="LE_Exception_8" xml:space="preserve">
+    <value>コントロール</value>
+  </data>
+  <data name="LE_InvalidOperationException_1" xml:space="preserve">
+    <value>数式がオブジェクトへ割り当てられている場合、値を設定できません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_2" xml:space="preserve">
+    <value>名前付き参照名 {0} は既にコレクションに存在します</value>
+  </data>
+  <data name="LE_InvalidOperationException_3" xml:space="preserve">
+    <value>ReferenceId のない NamedReference は追加できません。</value>
+  </data>
+  <data name="LE_InvalidReferenceName" xml:space="preserve">
+    <value>無効な参照名です。
+		
+以下の文字を Reference の名前に使用できません: {0}</value>
+  </data>
+  <data name="NamedReference_Category_All" xml:space="preserve">
+    <value>(すべて)</value>
+  </data>
+  <data name="NamedReference_Category_Unassigned" xml:space="preserve">
+    <value>(未割り当て)</value>
+  </data>
+  <data name="Operand_Category_Controls" xml:space="preserve">
+    <value>コントロール</value>
+  </data>
+  <data name="Operand_Category_NamedReferences" xml:space="preserve">
+    <value>名前付き参照</value>
+  </data>
+  <data name="LE_NotSupported_1" xml:space="preserve">
+    <value>ディクショナリは読み取り専用です。</value>
+  </data>
+  <data name="FindReferenceError" xml:space="preserve">
+    <value>参照が見つかりませんでした。</value>
+  </data>
+  <data name="TargetPropertyNotFound" xml:space="preserve">
+    <value>TargetProperty {0} は {1} で見つかりませんでした。</value>
+  </data>
+  <data name="PropertyGetFailed" xml:space="preserve">
+    <value>{1} の Property {0} の取得に失敗しました。</value>
+  </data>
+  <data name="PropertySetFailed" xml:space="preserve">
+    <value>{1} の Property {0} に値 {2} を設定できませんでした。</value>
+  </data>
+  <data name="ItemCalculation_Desc" xml:space="preserve">
+    <value>ItemCalculation: ReferenceId = '{0}', Formula = '{1}', TargetProperty = '{2}'</value>
+  </data>
+  <data name="ListCalculation_Desc" xml:space="preserve">
+    <value>ListCalculation: ReferenceId = '{0}', Formula = '{1}'</value>
+  </data>
+  <data name="ItemCalculator_Desc" xml:space="preserve">
+    <value>ItemCalculator: ReferenceId = '{0}', Item = '{1}'</value>
+  </data>
+  <data name="ListCalculator_Desc" xml:space="preserve">
+    <value>ListCalculator: ReferenceId = '{0}'</value>
+  </data>
+  <data name="ItemCalculation_RefID_Warning" xml:space="preserve">
+    <value>ReferenceId または TargetProperty が {0} に指定されていないため、 数式結果を参照できません。</value>
+  </data>
+  <data name="ListCalculation_RefID_Warning" xml:space="preserve">
+    <value>{0} に ReferenceId または TargetProperty が指定されていないため、 数式結果を参照できません。</value>
+  </data>
+  <data name="ResultKeyNotFound" xml:space="preserve">
+    <value>結果キー: {0} が見つかりませんでした。</value>
+  </data>
+  <data name="UnknownTypeName" xml:space="preserve">
+    <value>{1} で ValueTypeName '{0}' を解決できません。</value>
+  </data>
+  <data name="CellIndexOutOfRange" xml:space="preserve">
+    <value>'{1}' のインデックス '{0}' は範囲外です。</value>
+  </data>
+  <data name="DuplicateReferenceId" xml:space="preserve">
+    <value>ReferneceId: '{0}' は '{1}' の他の ItemCalculation または ListCalculation で既に使用されています。</value>
+  </data>
+  <data name="CalculationUsedMoreThanOnce" xml:space="preserve">
+    <value>複数の計算に同じ {0} インスタンスは使用できません。</value>
+  </data>
+  <data name="ListCalculationsTreeNode" xml:space="preserve">
+    <value>List 計算。</value>
+  </data>
+  <data name="NamedReferencUsedMoreThanOnce" xml:space="preserve">
+    <value>複数の XamCalculationManagers に同じ NamedReferenceCollection インスタンスは使用できません。</value>
+  </data>
+  <data name="ParticipantUsedMoreThanOnce" xml:space="preserve">
+    <value>participant 名 {0} はコレクションに既に存在します。</value>
+  </data>
+  <data name="FormulaSyntaxError" xml:space="preserve">
+    <value>数式 {0} に構文エラーがあります。エラー: {1}</value>
+  </data>
+  <data name="SourceItemNotSpecified" xml:space="preserve">
+    <value>ソース項目が指定されていません。</value>
+  </data>
+  <data name="TargetPropertyNotValue" xml:space="preserve">
+    <value>TargetProperty {1} は見つかりませんでした。Type '{1}' は、項目自身を返す読み取り専用の 'Value' という名の単一のプロパティを公開します。</value>
+  </data>
+  <data name="ValuePropertyIsReadOnly" xml:space="preserve">
+    <value>Type '{0}' は、項目自身を返す読み取り専用の 'Value' という名の単一のプロパティを公開します。そのため 'Value' プロパティは数式のターゲットにできません。</value>
+  </data>
+</root>

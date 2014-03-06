@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TickMarksPanel`1_Owner_Property" xml:space="preserve">
+    <value>Gets or sets the Infragistics.Controls.Editors.XamSliderBase`1 owner.</value>
+  </data>
+  <data name="SliderTickMarksBase_HorizontalTickMarksTemplate_Property" xml:space="preserve">
+    <value>Gets or sets the DataTemplate for horizontal tick marks.</value>
+  </data>
+  <data name="SliderTickMarks`1_Owner_Property" xml:space="preserve">
+    <value>Gets or sets the Infragistics.Controls.Editors.XamSliderBase`1 owner.</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarks_Property" xml:space="preserve">
+    <value>Gets or sets the collection from tick marks,
+ set to the slider</value>
+  </data>
+  <data name="SliderTickMarksBase_NumberOfTickMarks_Property" xml:space="preserve">
+    <value>Gets or sets the number of tick marks for 
+ specified Infragistics.Controls.Editors.SliderTickMarksBase instance.</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarksFrequency_Property" xml:space="preserve">
+    <value>Gets or sets the tick marks frequency - 
+ equal double value that is the difference
+ between two adjacent tick marks.</value>
+  </data>
+  <data name="SliderTickMarksBase_UseFrequency_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether arranging the
+ tick marks will be based of its frequency.</value>
+  </data>
+  <data name="SliderTickMarksBase_VerticalTickMarksTemplate_Property" xml:space="preserve">
+    <value>Gets or sets the DataTemplate for the tick marks when 
+ orientation of the slider is vertical.</value>
+  </data>
+  <data name="DateTimeSliderTickMarks_FrequencyType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the 
+ Infragistics.Controls.Editors.DateTimeSliderTickMarks.FrequencyType
+ from Infragistics.Controls.Editors.FrequencyType 
+ enum type.</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_OldValue_Property" xml:space="preserve">
+    <value>Gets the old value of the thumb 
+ of the thumb</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_NewValue_Property" xml:space="preserve">
+    <value>Gets the new value of the thumb.</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_Thumb_Property" xml:space="preserve">
+    <value>Gets the thumb which property is changed.</value>
+  </data>
+  <data name="TrackClickRoutedEventArgs`1_Value_Property" xml:space="preserve">
+    <value>Gets the value where track is ckicked; 
+ of the thumb</value>
+  </data>
+  <data name="TrackClickEventArgs`1_Value_Property" xml:space="preserve">
+    <value>Gets the value where track is ckicked; 
+ of the thumb</value>
+  </data>
+  <data name="SliderTickMarksBase_IncludeSliderEnds_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether include slider ends tickmarks</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarksValues_Property" xml:space="preserve">
+    <value>Gets the collection of Tick Mark Values of Type T that are used to set the slider.</value>
+  </data>
+  <data name="XamSliderAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamSliderSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamSlider</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_LargeChangeType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the
+ Infragistics.Controls.Editors.XamDateTimeRangeSlider.LargeChangeType
+ from Infragistics.Controls.Editors.FrequencyType
+ enum type.</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the maximum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the minimum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_SmallChangeType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the
+ Infragistics.Controls.Editors.XamDateTimeRangeSlider.SmallChangeType
+ from Infragistics.Controls.Editors.FrequencyType
+ enum type.</value>
+  </data>
+  <data name="XamRangeSlider`1_ActiveThumb_Property" xml:space="preserve">
+    <value>Gets or sets the active thumb.
+ It specified thumb from slider thumbs,
+ that is active at the moment</value>
+  </data>
+  <data name="XamRangeSlider`1_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamRangeSlider`1_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance is selection range enabled.
+ When selection rabge is enabled draggung the track fill will drag also the closest thumb
+ at equal distance</value>
+  </data>
+  <data name="XamRangeSlider`1_Thumbs_Property" xml:space="preserve">
+    <value>Gets the thumbs - collection from Infragistics.Controls.Editors.XamSliderThumb`1
+ instances.</value>
+  </data>
+  <data name="XamSliderBase`1_LargeChange_Property" xml:space="preserve">
+    <value>Gets or sets the value of the LargeChange property.</value>
+  </data>
+  <data name="XamSliderBase`1_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamSliderBase`1_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the maximum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamSliderBase`1_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the minimum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamSliderBase`1_SmallChange_Property" xml:space="preserve">
+    <value>Gets or sets the value of the SmallChange property.</value>
+  </data>
+  <data name="XamSliderBase`1_TickMarks_Property" xml:space="preserve">
+    <value>Gets the collection of tick marks - Infragistics.Controls.Editors.SliderTickMarks`1
+ instances.</value>
+  </data>
+  <data name="XamSliderBase_DecreaseButtonVisibility_Property" xml:space="preserve">
+    <value>Gets or sets the decrease button visibility.
+ It specifies the Visibility of the button in default template,
+ that is used to decrease with SmallChange value the value of the
+ ActiveThumb</value>
+  </data>
+  <data name="XamSliderBase_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamSliderBase_EnableKeyboardNavigation_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether is enable keyboard navigation.</value>
+  </data>
+  <data name="XamSliderBase_HorizontalTickMarksTemplate_Property" xml:space="preserve">
+    <value>Gets or sets the DataTemplate for horizontal Infragistics.Controls.Editors.SliderTickMarks`1.</value>
+  </data>
+  <data name="XamSliderBase_IncreaseButtonVisibility_Property" xml:space="preserve">
+    <value>Gets or sets the increase button visibility.
+ It specifies the Visibility of the button in default template,
+ that is used to increase with SmallChange value the value of the
+ ActiveThumb</value>
+  </data>
+  <data name="XamSliderBase_IsDirectionReversed_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether the direction
+ form MinValue to MaxValue for this Infragistics.Controls.Editors.XamSliderBase instance is reversed.</value>
+  </data>
+  <data name="XamSliderBase_IsMouseWheelEnabled_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance is mouse wheel enabled.</value>
+  </data>
+  <data name="XamSliderBase_Orientation_Property" xml:space="preserve">
+    <value>Gets or sets the System.Windows.Controls.Orientation orientation.</value>
+  </data>
+  <data name="XamSliderBase_ThumbStyle_Property" xml:space="preserve">
+    <value>Gets or sets the Style property for the Infragistics.Controls.Editors.XamSliderBase.</value>
+  </data>
+  <data name="XamSliderBase_TrackFillBrush_Property" xml:space="preserve">
+    <value>Gets or sets the Brush of the all thumb's trackfills if
+ there is not explict set another style to thumb's trackfill.</value>
+  </data>
+  <data name="XamSliderBase_TrackFillStyle_Property" xml:space="preserve">
+    <value>Gets or sets the Style of the all thumbs if
+ there is not explict set another style to thumb.</value>
+  </data>
+  <data name="XamSliderBase_TrackClickAction_Property" xml:space="preserve">
+    <value>Gets or sets the action when click over slider track.
+ It is possible to have no action, to change the ActiveThumb
+ value with value of the LargeChange property or move the
+ ActiveThumb to the position of the mouse cursor</value>
+  </data>
+  <data name="XamSliderBase_VerticalTickMarksTemplate_Property" xml:space="preserve">
+    <value>Gets or sets the the DataTemplate for vertical Infragistics.Controls.Editors.SliderTickMarks`1.</value>
+  </data>
+  <data name="XamDateTimeSlider_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the maximum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamDateTimeSlider_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamDateTimeSlider_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the minimum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamDateTimeSlider_Value_Property" xml:space="preserve">
+    <value>Gets or sets the value.
+ It is the current value of the ActiveThumb , respectively
+ Thumb of the simple slider</value>
+  </data>
+  <data name="XamDateTimeSlider_LargeChangeType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the
+ Infragistics.Controls.Editors.XamDateTimeSlider.LargeChangeType
+ from Infragistics.Controls.Editors.FrequencyType
+ enum type.</value>
+  </data>
+  <data name="XamDateTimeSlider_SmallChangeType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the
+ Infragistics.Controls.Editors.XamDateTimeSlider.SmallChangeType
+ from Infragistics.Controls.Editors.FrequencyType
+ enum type.</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Thumb_Property" xml:space="preserve">
+    <value>Gets or sets the thumb.</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Value_Property" xml:space="preserve">
+    <value>Gets or sets the value.
+ It is the current value of the ActiveThumb , respectively 
+ Thumb of the simple slider</value>
+  </data>
+  <data name="XamSliderBaseCommandSource_CommandType_Property" xml:space="preserve">
+    <value>Gets or sets the XamSliderBaseCommand which is to be executed by the command.</value>
+  </data>
+  <data name="XamSliderBaseCommandSource_Properties" xml:space="preserve">
+    <value>XamSliderBaseCommandSource Properties</value>
+  </data>
+  <data name="XamSliderDateTimeThumb_Value_Property" xml:space="preserve">
+    <value>Gets or sets the DateTime value of
+ the Value property.</value>
+  </data>
+  <data name="XamSliderDateTimeThumb_Properties" xml:space="preserve">
+    <value>XamSliderThumb Properties</value>
+  </data>
+  <data name="XamSliderThumb`1_IsSnapToTickEnabled_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this thumb instance is snap to tick enabled.</value>
+  </data>
+  <data name="XamSliderThumb`1_Properties" xml:space="preserve">
+    <value>XamSliderThumb Properties</value>
+  </data>
+  <data name="XamSliderThumb`1_IsTrackFillVisible_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether TrackFill of the thumb is visible.</value>
+  </data>
+  <data name="XamSliderThumb`1_TrackFillBrush_Property" xml:space="preserve">
+    <value>Gets or sets the Brush, used for background of
+ the Infragistics.Controls.Editors.XamSliderThumb`1.TrackFill instance,
+ assigned to the Infragistics.Controls.Editors.XamSliderThumb`1.</value>
+  </data>
+  <data name="XamSliderThumb`1_TrackFillStyle_Property" xml:space="preserve">
+    <value>Gets or sets the Style, used for background of
+ the Infragistics.Controls.Editors.XamSliderThumb`1.TrackFill instance,
+ assigned to the Infragistics.Controls.Editors.XamSliderThumb`1.</value>
+  </data>
+  <data name="XamSliderThumb`1_Value_Property" xml:space="preserve">
+    <value>Gets or sets the generic value of
+ the Value property.</value>
+  </data>
+  <data name="XamSliderThumbBase_InteractionMode_Property" xml:space="preserve">
+    <value>Gets or sets the interaction mode
+ of the Infragistics.Controls.Editors.XamSliderThumbBase.</value>
+  </data>
+  <data name="XamSliderThumbBase_Properties" xml:space="preserve">
+    <value>XamSliderThumb Properties</value>
+  </data>
+  <data name="XamSliderThumbBase_IsActive_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance
+ is in active state.</value>
+  </data>
+  <data name="XamSliderThumbBase_Owner_Property" xml:space="preserve">
+    <value>Gets or sets the Infragistics.Controls.Editors.XamSliderBase, that is owner
+ of the thumb</value>
+  </data>
+  <data name="XamSliderThumbBase_IsDragEnabled_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance is draggable or not.</value>
+  </data>
+  <data name="XamSliderThumbBase_ToolTipTemplate_Property" xml:space="preserve">
+    <value>Gets or sets the ContentTemplate of the ToolTip .</value>
+  </data>
+  <data name="XamSliderThumbBase_ToolTipVisibility_Property" xml:space="preserve">
+    <value>Gets or sets the Visibility of the ToolTip .</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_CanSelectMultiple_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the UI automation provider allows more than one child element to be selected concurrently.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Properties" xml:space="preserve">
+    <value>XamSliderBaseAutomationPeer`1 Properties</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_IsSelectionRequired_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the UI automation provider requires at least one child element to be selected.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_IsReadOnly_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the value of a control is read-only.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_LargeChange_Property" xml:space="preserve">
+    <value>Gets the value that is added to or subtracted from the System.Windows.Automation.Provider.IRangeValueProvider.Value property when a large change is made, such as with the PAGE DOWN key.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Maximum_Property" xml:space="preserve">
+    <value>Gets the maximum range value that is supported by the control.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Minimum_Property" xml:space="preserve">
+    <value>Gets the minimum range value that is supported by the control.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_SmallChange_Property" xml:space="preserve">
+    <value>Gets the value that is added to or subtracted from the System.Windows.Automation.Provider.IRangeValueProvider.Value property when a small change is made, such as with an arrow key.</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Value_Property" xml:space="preserve">
+    <value>Gets the value of the control.</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_IsSelected_Property" xml:space="preserve">
+    <value>Gets a value indicating whether an item is selected.</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_Properties" xml:space="preserve">
+    <value>XamSliderThumbAutomationPeer`1 Properties</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_SelectionContainer_Property" xml:space="preserve">
+    <value>Gets the UI automation provider that implements System.Windows.Automation.Provider.ISelectionProvider and acts as the container for the calling object.</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_IsReadOnly_Property" xml:space="preserve">
+    <value>Gets a value that indicates whether the value of a control is read-only.</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_Value_Property" xml:space="preserve">
+    <value>Gets the value of the XamSlider.</value>
+  </data>
+  <data name="XamNumericSlider_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the maximum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamNumericSlider_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamNumericSlider_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the minimum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamNumericSlider_Value_Property" xml:space="preserve">
+    <value>Gets or sets the value.
+ It is the current value of the ActiveThumb , respectively
+ Thumb of the simple slider</value>
+  </data>
+  <data name="XamNumericSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericSlider_TickMarks_Property" xml:space="preserve">
+    <value>Gets the collection of tick marks.</value>
+  </data>
+  <data name="XamNumericSlider_Thumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_TickMarks_Property" xml:space="preserve">
+    <value>Gets the collection of tick marks.</value>
+  </data>
+  <data name="XamDateTimeSlider_Thumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_ActiveThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_Properties" xml:space="preserve">
+    <value>XamSlider Properties</value>
+  </data>
+  <data name="XamNumericRangeSlider_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_TickMarks_Property" xml:space="preserve">
+    <value>Gets the collection of tick marks.</value>
+  </data>
+  <data name="XamNumericRangeSlider_Thumbs_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the maximum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamNumericRangeSlider_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the minimum allowable value for this slider's range.</value>
+  </data>
+  <data name="XamNumericRangeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_TickMarks_Property" xml:space="preserve">
+    <value>Gets the collection of tick marks.</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_Thumbs_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_ActiveThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data xml:space="preserve" name="SliderTickMarks_TickMarksValues_Property">
+    <value>Gets the collection of Tick Mark Values of Type double that are used to set the slider.</value>
+  </data>
+  <data xml:space="preserve" name="DateTimeSliderTickMarks_TickMarksValues_Property">
+    <value>Gets the collection of Tick Mark Values of Type DateTime that are used to set the slider.</value>
+  </data>
+  <data xml:space="preserve" name="XamSliderNumericThumb_Value_Property">
+    <value>Gets or sets the Double value of
+ the Value property.</value>
+  </data>
+  <data xml:space="preserve" name="XamSliderNumericThumb_Properties">
+    <value>XamSliderNumericThumb Properties</value>
+  </data>
+  <data xml:space="preserve" name="TrackFillChangedEventArgs`1_LesserThumb_Property">
+    <value>The Thumb with the lesser value on the TrackFill Edge</value>
+  </data>
+  <data xml:space="preserve" name="TrackFillChangedEventArgs`1_GreaterThumb_Property">
+    <value>The Thumb with the greater value on the TrackFill Edge</value>
+  </data>
+  <data xml:space="preserve" name="XamSliderBase_TouchTargetAreaWidth_Property">
+    <value>Width of touch target area in pixels.
+ If zero value is set none specific size is ensured, in this case the area gets the size set in the template.</value>
+  </data>
+  <data xml:space="preserve" name="XamSliderBase_TouchTargetAreaHeight_Property">
+    <value>Height of touch target area in pixels.
+ If zero value is set none specific size is ensured, in this case the area gets the size set in the template.</value>
+  </data>
+</root>

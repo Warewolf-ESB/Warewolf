@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Outlook_GroupByMode_Description_BeyondNextMonth" xml:space="preserve">
+    <value>Nach dem nächsten Monat</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextMonth" xml:space="preserve">
+    <value>Nächsten Monat</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LaterThisMonth" xml:space="preserve">
+    <value>Im Verlauf des Monats</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAway" xml:space="preserve">
+    <value>In drei Wochen</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAway" xml:space="preserve">
+    <value>In zwei Wochen</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextWeek" xml:space="preserve">
+    <value>Nächste Woche</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Today" xml:space="preserve">
+    <value>Heute</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Yesterday" xml:space="preserve">
+    <value>Gestern</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_DayOfWeekFormatString" xml:space="preserve">
+    <value>{0:dddd}</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastWeek" xml:space="preserve">
+    <value>Letzte Woche</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAgo" xml:space="preserve">
+    <value>Vor zwei Wochen</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAgo" xml:space="preserve">
+    <value>Vor drei Wochen</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_EarlierThisMonth" xml:space="preserve">
+    <value>Anfang des Monats</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastMonth" xml:space="preserve">
+    <value>Letzten Monat</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Older" xml:space="preserve">
+    <value>Älter</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_None" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="GroupByDescription_NullValue_Literal" xml:space="preserve">
+    <value>[Null]</value>
+  </data>
+  <data name="GroupByDescription_Format_OneChild" xml:space="preserve">
+    <value>{0} ({1} Element)</value>
+  </data>
+  <data name="GroupByDescription_Format_NotOneChild" xml:space="preserve">
+    <value>{0} ({1:n0} Elemente)</value>
+  </data>
+  <data name="GroupByArea_Prompt1" xml:space="preserve">
+    <value>Nach Bereich gruppieren</value>
+  </data>
+  <data name="GroupByArea_Prompt2" xml:space="preserve">
+    <value>Ziehen Sie einen Spaltenkopf an diese Stelle, um nach dieser Spalte zu gruppieren.</value>
+  </data>
+  <data name="DataErrorMessageTitle" xml:space="preserve">
+    <value>Datenfehler</value>
+  </data>
+  <data name="DeleteSingleRecordMessageTitle" xml:space="preserve">
+    <value>Datensatz löschen</value>
+  </data>
+  <data name="DeleteRecordsMessageTitle" xml:space="preserve">
+    <value>Datensätze löschen</value>
+  </data>
+  <data name="DeleteMultipleRecordsPrompt" xml:space="preserve">
+    <value>Sie haben {0} Datensätze zum Löschen ausgewählt. Wählen Sie Ja, um die Datensätze zu löschen, oder Nein, um den Vorgang zu beenden.</value>
+  </data>
+  <data name="DeleteSingleRecordPrompt" xml:space="preserve">
+    <value>Sie haben 1 Datensatz zum Löschen ausgewählt. Wählen Sie Ja, um den Datensatz zu löschen, oder Nein, um den Vorgang zu beenden.</value>
+  </data>
+  <data name="DataErrorDeleteRecordUnableToDelete" xml:space="preserve">
+    <value>Der Datensatz kann nicht gelöscht werden: {0}</value>
+  </data>
+  <data name="DataError_GetCellValue" xml:space="preserve">
+    <value>Der Zellwert kann nicht abgerufen werden.</value>
+  </data>
+  <data name="DataError_UpdateCellValue" xml:space="preserve">
+    <value>Der Zellwert kann nicht festgelegt werden.</value>
+  </data>
+  <data name="DataError_UpdateRecord" xml:space="preserve">
+    <value>Der Datensatz kann nicht aktualisiert werden.</value>
+  </data>
+  <data name="SummaryCalculator_Average_Description" xml:space="preserve">
+    <value>Berechnet den Mittelwert</value>
+  </data>
+  <data name="SummaryCalculator_Average_Name" xml:space="preserve">
+    <value>Mittelwert</value>
+  </data>
+  <data name="SummaryCalculator_Count_Description" xml:space="preserve">
+    <value>Berechnet die Anzahl nicht leerer Werte</value>
+  </data>
+  <data name="SummaryCalculator_Count_Name" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Description" xml:space="preserve">
+    <value>Berechnet den Maximalwert</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Name" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Description" xml:space="preserve">
+    <value>Berechnet den Minimalwert</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Name" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Description" xml:space="preserve">
+    <value>Berechnet die Gesamtsumme</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Name" xml:space="preserve">
+    <value>Summe</value>
+  </data>
+  <data name="SR_FilterDropDownItem_Custom" xml:space="preserve">
+    <value>(Benutzerdefiniert)</value>
+  </data>
+  <data name="SR_FilterDropDownItem_All" xml:space="preserve">
+    <value>(Alle)</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperatorFieldLabel" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperandFieldLabel" xml:space="preserve">
+    <value>Operand</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AddConditionLabelProperty" xml:space="preserve">
+    <value>Bedingung hinzufügen</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedLabelProperty" xml:space="preserve">
+    <value>Ausgewählte Gruppe:</value>
+  </data>
+  <data name="CustomFilterSelectionControl_RemoveSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Bedingung(en) entfernen</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsAndGroupLabelProperty" xml:space="preserve">
+    <value>'And'-Gruppe</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsOrGroupLabelProperty" xml:space="preserve">
+    <value>'Or'-Gruppe</value>
+  </data>
+  <data name="CustomFilterSelectionControl_UngroupSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Gruppierung aufheben</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ToggleOperatorOfSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>Ein-/Ausblenden</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AndGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>'And'-Gruppe</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OrGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>'Or'-Gruppe</value>
+  </data>
+  <data name="CustomFilterSelectionControl_TitleDescriptionProperty" xml:space="preserve">
+    <value>Auswahl eines benutzerdefinierten Filters</value>
+  </data>
+  <data name="CustomFilterSelectionControl_FieldDescriptionProperty" xml:space="preserve">
+    <value>Für Feld '{0}'</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OkButtonLabelProperty" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelButtonLabelProperty" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTextProperty" xml:space="preserve">
+    <value>Mindestens ein Filter wurde geändert.  Möchten Sie die Änderungen wirklich verwerfen und den Vorgang beenden?</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTitleProperty" xml:space="preserve">
+    <value>Änderungen am benutzerdefinierten Filter löschen</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTextProperty" xml:space="preserve">
+    <value>Mindestens eine Bedingung enthält Überprüfungsfehler.  Korrigieren Sie die Fehler, bevor Sie den Vorgang fortsetzen.</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTitleProperty" xml:space="preserve">
+    <value>Bedingungsfehler</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionError_Empty" xml:space="preserve">
+    <value>Die Bedingung ist leer.</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_Or" xml:space="preserve">
+    <value>Klicken Sie hier, um den LogicalOperator für diese Gruppe auf 'Or' zu ändern.</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_And" xml:space="preserve">
+    <value>Klicken Sie hier, um den LogicalOperator für diese Gruppe auf 'And' zu ändern.</value>
+  </data>
+  <data name="FixedFieldButton_FixToFarEdgePromptProperty" xml:space="preserve">
+    <value>An entfernten Rand befestigen</value>
+  </data>
+  <data name="FixedFieldButton_FixToNearEdgePromptProperty" xml:space="preserve">
+    <value>An nahem Rand befestigen</value>
+  </data>
+  <data name="FixedFieldButton_UnfixPromptProperty" xml:space="preserve">
+    <value>Befestigung aufheben</value>
+  </data>
+  <data name="FixedRecordButton_FixToBottomPromptProperty" xml:space="preserve">
+    <value>Unten befestigen</value>
+  </data>
+  <data name="FixedRecordButton_FixToTopPromptProperty" xml:space="preserve">
+    <value>Oben befestigen</value>
+  </data>
+  <data name="FixedRecordButton_UnfixPromptProperty" xml:space="preserve">
+    <value>Befestigung aufheben</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Text" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Tooltip" xml:space="preserve">
+    <value>Entfernt vorhandene Berechnung</value>
+  </data>
+  <data name="ClipboardError_CopyTitle" xml:space="preserve">
+    <value>Fehler beim Kopieren</value>
+  </data>
+  <data name="ClipboardError_PasteTitle" xml:space="preserve">
+    <value>Fehler beim Einfügen</value>
+  </data>
+  <data name="ClipboardError_CutTitle" xml:space="preserve">
+    <value>Fehler beim Ausschneiden</value>
+  </data>
+  <data name="ClipboardError_ClearContentsTitle" xml:space="preserve">
+    <value>Inhaltsfehler löschen</value>
+  </data>
+  <data name="ClipboardError_MixedSelectionMessage" xml:space="preserve">
+    <value>Der Befehl kann bei einer Mehrfachauswahl nicht durchgeführt werden.</value>
+  </data>
+  <data name="ClipboardError_NonRectangularSelectionMessage" xml:space="preserve">
+    <value>Die Markierung muss rechteckig sein. Wählen Sie einen Zellbereich aus oder stellen Sie sicher, dass die gleichen Felder in allen Datensätzen mit Markierung ausgewählt wurden.</value>
+  </data>
+  <data name="ClipboardError_NotEnoughColumnsMessage" xml:space="preserve">
+    <value>In diesem Bereich sind nicht genügend Spalten für die einzufügenden Informationen aus der Zwischenablage vorhanden. Wenn Sie fortfahren, werden so viele Informationen wie möglich in den verfügbaren Zellen eingefügt; dies führt jedoch zu Datenverlust.  Möchten Sie den Vorgang fortsetzen?</value>
+  </data>
+  <data name="ClipboardError_NotEnoughRowsMessage" xml:space="preserve">
+    <value>In diesem Bereich sind nicht genügend Reihen für die einzufügenden Informationen aus der Zwischenablage vorhanden. Wenn Sie fortfahren, werden so viele Informationen wie möglich in den verfügbaren Zellen eingefügt; dies führt jedoch zu Datenverlust. Möchten Sie den Vorgang fortsetzen?</value>
+  </data>
+  <data name="ClipboardError_ReadOnlyCellMessage" xml:space="preserve">
+    <value>Zelle '{0}' ist schreibgeschützt. Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_ConversionErrorMessage" xml:space="preserve">
+    <value>Der Wert kann nicht in den Zieltyp für Feld '{0}' konvertiert werden. Zusätzliche Informationen {1}
+
+Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_SetCellValueErrorMessage" xml:space="preserve">
+    <value>Beim Ändern einer Zelle ist ein Fehler aufgetreten. Zusätzliche Informationen: {0}
+
+Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_UpdateRecordErrorMessage" xml:space="preserve">
+    <value>Beim Ändern des Datensatzes ist ein Fehler aufgetreten. Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_InsertRecordErrorMessage" xml:space="preserve">
+    <value>Beim Einfügen eines neuen Datensatzes ist ein Fehler aufgetreten.</value>
+  </data>
+  <data name="ClipboardError_ValidationErrorMessage" xml:space="preserve">
+    <value>Beim Überprüfen des Werts für die Zelle ist ein Fehler aufgetreten. Zusätzliche Informationen: {0}
+
+Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCanContinue" xml:space="preserve">
+    <value>Der Vorgang kann nicht durchgeführt werden. Zusätzliche Informationen: {0} Möchten Sie mit den verbleibenden Zellen fortfahren?</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCannotContinue" xml:space="preserve">
+    <value>Der Vorgang kann nicht durchgeführt werden. Zusätzliche Informationen: {0}</value>
+  </data>
+  <data name="FieldChooser_Title" xml:space="preserve">
+    <value>Feldauswahl</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseCardToolTip" xml:space="preserve">
+    <value>Karte reduzieren</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>Leere Zellen reduzieren</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseCardToolTip" xml:space="preserve">
+    <value>Karte wiederherstellen</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>Leere Zellen wiederherstellen</value>
+  </data>
+  <data name="Card_AddNewRecordTitle" xml:space="preserve">
+    <value>Neuen Datensatz hinzufügen</value>
+  </data>
+  <data name="Card_FilterRecordTitle" xml:space="preserve">
+    <value>Filterkriterien</value>
+  </data>
+  <data name="Export_CannotExportMultipleTimes" xml:space="preserve">
+    <value>Exportvorgang kann nicht initiiert werden, während ein anderer Exportvorgang aussteht oder in Bearbeitung ist.</value>
+  </data>
+  <data name="RecordExportStatus_Message_Pending" xml:space="preserve">
+    <value>Export nach '{0}' – Ausstehend</value>
+  </data>
+  <data name="RecordExportStatus_Message_Initializing" xml:space="preserve">
+    <value>Export nach '{0}' – Initialisierung</value>
+  </data>
+  <data name="RecordExportStatus_Message_Exporting" xml:space="preserve">
+    <value>Export nach '{0}' – {1} Datensätze verarbeitet</value>
+  </data>
+  <data name="RecordExportStatus_CancelExportToolTip" xml:space="preserve">
+    <value>Export abbrechen</value>
+  </data>
+  <data name="ExportOperationDisabled_Title" xml:space="preserve">
+    <value>Vorgang abgebrochen</value>
+  </data>
+  <data name="ExportOperationDisabled_Message" xml:space="preserve">
+    <value>{0}' ist während eines Exportvorgangs nicht erlaubt.</value>
+  </data>
+  <data name="UIOperation_ClearCellContents" xml:space="preserve">
+    <value>Zelleninhalte werden gelöscht</value>
+  </data>
+  <data name="UIOperation_Edit" xml:space="preserve">
+    <value>Bearbeitung</value>
+  </data>
+  <data name="UIOperation_FieldMoving" xml:space="preserve">
+    <value>Felder verschieben</value>
+  </data>
+  <data name="UIOperation_FieldFixing" xml:space="preserve">
+    <value>Felder andocken/abdocken</value>
+  </data>
+  <data name="UIOperation_FieldGrouping" xml:space="preserve">
+    <value>Gruppierung/Gruppierung aufheben</value>
+  </data>
+  <data name="UIOperation_FieldVisibility" xml:space="preserve">
+    <value>Felder anzeigen/ausblenden</value>
+  </data>
+  <data name="UIOperation_FieldResizing" xml:space="preserve">
+    <value>Größenänderung</value>
+  </data>
+  <data name="UIOperation_FieldAutoSizing" xml:space="preserve">
+    <value>Größenänderung</value>
+  </data>
+  <data name="UIOperation_FieldSorting" xml:space="preserve">
+    <value>Sortierung</value>
+  </data>
+  <data name="UIOperation_Paste" xml:space="preserve">
+    <value>Einfügen</value>
+  </data>
+  <data name="UIOperation_FieldSummaries" xml:space="preserve">
+    <value>Zusammenfassungen ändern</value>
+  </data>
+  <data name="UIOperation_RecordResizing" xml:space="preserve">
+    <value>Größenänderung</value>
+  </data>
+  <data name="UIOperation_RecordFixing" xml:space="preserve">
+    <value>Datensätze andocken/abdocken</value>
+  </data>
+  <data name="UIOperation_RecordFiltering" xml:space="preserve">
+    <value>Filter ändern</value>
+  </data>
+  <data name="UIOperation_RecordExpandCollapse" xml:space="preserve">
+    <value>Erweitern/Reduzieren</value>
+  </data>
+  <data name="UIOperation_DeleteRecord" xml:space="preserve">
+    <value>Datensätze werden gelöscht</value>
+  </data>
+  <data name="UIOperation_Undo" xml:space="preserve">
+    <value>Rückgängig/wiederholen</value>
+  </data>
+  <data name="CalculationAdapter_InvalidValue" xml:space="preserve">
+    <value>CalculationAdapter kann nur auf eine Instanz von DataPresenterCalculationAdapter eingestellt werden</value>
+  </data>
+  <data name="CalculationAdapter_NotMultiUse" xml:space="preserve">
+    <value>CalculationAdapter ist bereits auf eine andere Instanz von DataPresenterBase eingestellt</value>
+  </data>
+  <data name="FilterMenuCaption_AboveAverage_Operand" xml:space="preserve">
+    <value>Über dem Dur_chschnitt</value>
+  </data>
+  <data name="FilterMenuCaption_After" xml:space="preserve">
+    <value>N_ach...</value>
+  </data>
+  <data name="FilterMenuCaption_AllDates" xml:space="preserve">
+    <value>Alle _Datumswerte im Zeitraum</value>
+  </data>
+  <data name="FilterMenuCaption_April_Operand" xml:space="preserve">
+    <value>_April</value>
+  </data>
+  <data name="FilterMenuCaption_August_Operand" xml:space="preserve">
+    <value>Augus_t</value>
+  </data>
+  <data name="FilterMenuCaption_Before" xml:space="preserve">
+    <value>_Vor...</value>
+  </data>
+  <data name="FilterMenuCaption_BeginsWith" xml:space="preserve">
+    <value>Beginnt m_it...</value>
+  </data>
+  <data name="FilterMenuCaption_BelowAverage_Operand" xml:space="preserve">
+    <value>Un_ter dem Durchschnitt</value>
+  </data>
+  <data name="FilterMenuCaption_Between" xml:space="preserve">
+    <value>Z_wischen...</value>
+  </data>
+  <data name="FilterMenuCaption_ClearFieldFilter" xml:space="preserve">
+    <value>_Filter löschen aus "{0}"</value>
+  </data>
+  <data name="FilterMenuCaption_Contains" xml:space="preserve">
+    <value>E_nthält...</value>
+  </data>
+  <data name="FilterMenuCaption_CustomFilter" xml:space="preserve">
+    <value>Benutzerdefinierter _Filter...</value>
+  </data>
+  <data name="FilterMenuCaption_DateFilters" xml:space="preserve">
+    <value>Datums_filter</value>
+  </data>
+  <data name="FilterMenuCaption_December_Operand" xml:space="preserve">
+    <value>_Dezember</value>
+  </data>
+  <data name="FilterMenuCaption_EndsWith" xml:space="preserve">
+    <value>Endet mit_t...</value>
+  </data>
+  <data name="FilterMenuCaption_Equals" xml:space="preserve">
+    <value>Ist gl_eich...</value>
+  </data>
+  <data name="FilterMenuCaption_February_Operand" xml:space="preserve">
+    <value>_Februar</value>
+  </data>
+  <data name="FilterMenuCaption_GreaterThan" xml:space="preserve">
+    <value>Größer a_ls...</value>
+  </data>
+  <data name="FilterMenuCaption_GreaterThanOrEqual" xml:space="preserve">
+    <value>Größe _oder gleich...</value>
+  </data>
+  <data name="FilterMenuCaption_January_Operand" xml:space="preserve">
+    <value>_Januar</value>
+  </data>
+  <data name="FilterMenuCaption_July_Operand" xml:space="preserve">
+    <value>Ju_li</value>
+  </data>
+  <data name="FilterMenuCaption_June_Operand" xml:space="preserve">
+    <value>_Juni</value>
+  </data>
+  <data name="FilterMenuCaption_LastMonth_Operand" xml:space="preserve">
+    <value>Letzter Mo_nat</value>
+  </data>
+  <data name="FilterMenuCaption_LastQuarter_Operand" xml:space="preserve">
+    <value>Letztes Qua_rtal</value>
+  </data>
+  <data name="FilterMenuCaption_LastWeek_Operand" xml:space="preserve">
+    <value>_Letzte Woche</value>
+  </data>
+  <data name="FilterMenuCaption_LastYear_Operand" xml:space="preserve">
+    <value>_Letztes Jahr</value>
+  </data>
+  <data name="FilterMenuCaption_LessThan" xml:space="preserve">
+    <value>_Kleiner als...</value>
+  </data>
+  <data name="FilterMenuCaption_LessThanOrEqual" xml:space="preserve">
+    <value>_Kleiner oder gleich...</value>
+  </data>
+  <data name="FilterMenuCaption_March_Operand" xml:space="preserve">
+    <value>_März</value>
+  </data>
+  <data name="FilterMenuCaption_May_Operand" xml:space="preserve">
+    <value>_Mai</value>
+  </data>
+  <data name="FilterMenuCaption_NextMonth_Operand" xml:space="preserve">
+    <value>Nächsten _Monat</value>
+  </data>
+  <data name="FilterMenuCaption_NextQuarter_Operand" xml:space="preserve">
+    <value>Nächstes _Quartal</value>
+  </data>
+  <data name="FilterMenuCaption_NextWeek_Operand" xml:space="preserve">
+    <value>_Nächste Woche</value>
+  </data>
+  <data name="FilterMenuCaption_NextYear_Operand" xml:space="preserve">
+    <value>_Nächstes Jahr</value>
+  </data>
+  <data name="FilterMenuCaption_NotContains" xml:space="preserve">
+    <value>Enthält _nicht...</value>
+  </data>
+  <data name="FilterMenuCaption_NotEquals" xml:space="preserve">
+    <value>Ist _nicht gleich...</value>
+  </data>
+  <data name="FilterMenuCaption_November_Operand" xml:space="preserve">
+    <value>_November</value>
+  </data>
+  <data name="FilterMenuCaption_NumberFilters" xml:space="preserve">
+    <value>Zahlen_filter</value>
+  </data>
+  <data name="FilterMenuCaption_October_Operand" xml:space="preserve">
+    <value>_Oktober</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter1_Operand" xml:space="preserve">
+    <value>Quartal _1</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter2_Operand" xml:space="preserve">
+    <value>Quartal _2</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter3_Operand" xml:space="preserve">
+    <value>Quartal _3</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter4_Operand" xml:space="preserve">
+    <value>Quartal _4</value>
+  </data>
+  <data name="FilterMenuCaption_September_Operand" xml:space="preserve">
+    <value>_September</value>
+  </data>
+  <data name="FilterMenuCaption_TextFilters" xml:space="preserve">
+    <value>Text_filter</value>
+  </data>
+  <data name="FilterMenuCaption_ThisMonth_Operand" xml:space="preserve">
+    <value>Die_ser Monat</value>
+  </data>
+  <data name="FilterMenuCaption_ThisQuarter_Operand" xml:space="preserve">
+    <value>Dieses Q_uartal</value>
+  </data>
+  <data name="FilterMenuCaption_ThisWeek_Operand" xml:space="preserve">
+    <value>_Diese Woche</value>
+  </data>
+  <data name="FilterMenuCaption_ThisYear_Operand" xml:space="preserve">
+    <value>_Dieses Jahr</value>
+  </data>
+  <data name="FilterMenuCaption_Today_Operand" xml:space="preserve">
+    <value>_Heute</value>
+  </data>
+  <data name="FilterMenuCaption_Tomorrow_Operand" xml:space="preserve">
+    <value>_Morgen</value>
+  </data>
+  <data name="FilterMenuCaption_Top10" xml:space="preserve">
+    <value>_Top 10...</value>
+  </data>
+  <data name="FilterMenuCaption_YearToDate_Operand" xml:space="preserve">
+    <value>J_ahr bis zum aktuellen Datum</value>
+  </data>
+  <data name="FilterMenuCaption_Yesterday_Operand" xml:space="preserve">
+    <value>_Gestern</value>
+  </data>
+  <data name="RecordFilterTreeItem_AddToFilter" xml:space="preserve">
+    <value>Aktuelle Auswahl zu Filter hinzufügen</value>
+  </data>
+  <data name="RecordFilterTreeItem_SelectAll" xml:space="preserve">
+    <value>(Alle auswählen)</value>
+  </data>
+  <data name="RecordFilterTreeItem_SelectAllSearch" xml:space="preserve">
+    <value>(Alle Suchergebnisse auswählen)</value>
+  </data>
+  <data name="RecordFilterTreeNoSearchMatches" xml:space="preserve">
+    <value>Keine Elemente stimmen mit der Sucheingabe überein.</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_All" xml:space="preserve">
+    <value>(Alle)</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Day" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Hour" xml:space="preserve">
+    <value>Stunde</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Month" xml:space="preserve">
+    <value>Monat</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Second" xml:space="preserve">
+    <value>Sekunde</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Year" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
+  <data name="RecordFilterTreeSearchTextPrompt" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="RecordFilterTreeSearchTextPromptScoped" xml:space="preserve">
+    <value>Suche {0}</value>
+  </data>
+  <data name="UnknownTypeName" xml:space="preserve">
+    <value>TreatAsTypeName '{0}' konnte in {1} nicht aufgelöst werden</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionError_IncompatibleOperator" xml:space="preserve">
+    <value>Inkompatibler Operator.</value>
+  </data>
+</root>

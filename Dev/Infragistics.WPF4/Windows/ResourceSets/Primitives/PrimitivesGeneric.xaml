@@ -1,0 +1,2375 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ig="clr-namespace:Infragistics.Windows"
+	xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:tiles="clr-namespace:Infragistics.Windows.Tiles"
+	xmlns:igWindowsBase="clr-namespace:Infragistics.Windows"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	>
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="PrimitivesGeneric_Brushes.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+    <!-- AS 2/13/09 TFS14003 - Added x:Shared="false" so each element has its 
+        own reference. otherwise the shared tooltip (or the deferredresourcereference 
+        that wpf uses) causes the elements that used it to be rooted -->
+    <ToolTip x:Key="closeToolTip" x:Shared="false" Content="{x:Static igWindowsBase:Resources.CloseButtonToolTip}"/>
+
+	<!-- NA 2011.1 - ToolWindow changes -->
+	<ToolTip x:Key="minimizeToolTip" x:Shared="false" Content="{x:Static igWindowsBase:Resources.MinimizeButtonToolTip}"/>
+	<ToolTip x:Key="maximizeToolTip" x:Shared="false" Content="{x:Static igWindowsBase:Resources.MaximizeButtonToolTip}"/>
+	<ToolTip x:Key="restoreUpToolTip" x:Shared="false" Content="{x:Static igWindowsBase:Resources.RestoreUpButtonToolTip}"/>
+	<ToolTip x:Key="restoreDownToolTip" x:Shared="false" Content="{x:Static igWindowsBase:Resources.RestoreDownButtonToolTip}"/>
+
+	<!-- ========================== BUTTON STYLES ========================== -->
+
+	<!-- NA 2011.1 - ToolWindow changes -->
+	<Style x:Key="ToolWindowButtonStyle" TargetType="{x:Type Button}">
+		<Setter Property="Width" Value="17"/>
+		<Setter Property="Height" Value="15"/>
+		<Setter Property="Focusable" Value="False"/>
+    </Style>
+	
+	<Style x:Key="ToolWindowMinimizeButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ToolWindowButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="root">
+                        <Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalOuterBorderFillKey}}"
+                            Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalCenterFillKey}}"
+							CornerRadius="2"
+                            SnapsToDevicePixels="True">
+                            <Rectangle x:Name="highlight" Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalInnerBorderFillKey}}" SnapsToDevicePixels="True"/>
+                        </Border>
+                        <Rectangle x:Name="closeGlyph" 
+                                   Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphStrokeKey}}" 
+                                   VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                   Margin="0,0,0,4"
+                                   StrokeThickness="1" 
+                                   Height="4" 
+                                   Width="9"
+                                   Fill="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}"
+                                   SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ToolWindow}, 1}}" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalInnerBorderFillKey}}"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonInnerBorderFillKey}}"/>
+                            <Setter TargetName="root" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ToolWindowMaximizeButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ToolWindowButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="root">
+                        <Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalOuterBorderFillKey}}"
+                            Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalCenterFillKey}}"
+							CornerRadius="2"
+                            SnapsToDevicePixels="True">
+                            <Rectangle x:Name="highlight" Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalInnerBorderFillKey}}" SnapsToDevicePixels="True"/>
+                        </Border>
+                        <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,4">
+                            <Rectangle Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphStrokeKey}}" StrokeThickness="3" Height="7" Width="9" SnapsToDevicePixels="True"/>
+                            <Rectangle Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}" StrokeThickness="1" Height="5" Width="7" SnapsToDevicePixels="True"/>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ToolWindow}, 1}}" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalInnerBorderFillKey}}"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonInnerBorderFillKey}}"/>
+                            <Setter TargetName="root" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+	<Style x:Key="ToolWindowRestoreButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ToolWindowButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="root">
+                        <Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalOuterBorderFillKey}}"
+                            Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalCenterFillKey}}"
+							CornerRadius="2"
+                            SnapsToDevicePixels="True">
+                            <Rectangle x:Name="highlight" Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalInnerBorderFillKey}}" SnapsToDevicePixels="True"/>
+                        </Border>
+                        <Grid Width="12" Height="11" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,2">
+                            <Path
+			                    Width="12"
+			                    Height="11"
+			                    Data="M 3,7 C3,7 5,7 5,7 5,7 5,8 5,8 5,8 3,8 3,8 3,8 3,7 3,7 zM 8,4 C8,4 9,4 9,4 9,4 9,5 9,5 9,5 8,5 8,5 8,5 8,4 8,4 zM 0,3 C0,3 0,11 0,11 0,11 8,11 8,11 8,11 8,8 8,8 8,8 12,8 12,8 12,8 12,0 12,0 12,0 4,0 4,0 4,0 4,3 4,3 4,3 0,3 0,3 z"
+			                    Fill="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphStrokeKey}}"
+			                    SnapsToDevicePixels="True"
+			                    Stretch="Fill"/>
+                            <Path
+			                    Width="10"
+			                    Height="9"
+			                    Data="M 4,0 C4,0 4,2 4,2 4,2 9,2 9,2 9,2 9,5 9,5 9,5 7,5 7,5 7,5 7,6 7,6 7,6 10,6 10,6 10,6 10,0 10,0 10,0 4,0 4,0 zM 1,5 C1,5 5,5 5,5 5,5 5,8 5,8 5,8 1,8 1,8 1,8 1,5 1,5 zM 0,3 C0,3 0,9 0,9 0,9 6,9 6,9 6,9 6,3 6,3 6,3 0,3 0,3 z"
+			                    Fill="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}"
+			                    SnapsToDevicePixels="True"
+			                    Stretch="Fill"/>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ToolWindow}, 1}}" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalInnerBorderFillKey}}"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedInnerBorderFillKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonOuterBorderFillKey}}"/>
+                            <Setter TargetName="closeButtonOuterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonCenterFillKey}}"/>
+                            <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonInnerBorderFillKey}}"/>
+                            <Setter TargetName="root" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+	<!-- ToolWindowCloseButtonStyle -->
+	<Style x:Key="ToolWindowCloseButtonStyle" TargetType="{x:Type Button}">
+		<Setter Property="ToolTip" Value="{StaticResource closeToolTip}"/>
+		<Setter Property="Width" Value="17"/>
+		<Setter Property="Height" Value="15"/>
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid>
+						<Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="1,1,1,1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalOuterBorderFillKey}}"
+                            SnapsToDevicePixels="True"
+							CornerRadius="2"/>
+						<Border
+							x:Name="closeButtonInnerBorder"
+							BorderThickness="1,1,1,1"
+							Margin="1"
+                            SnapsToDevicePixels="True"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalInnerBorderFillKey}}"
+							CornerRadius="1"/>
+						<Border
+							x:Name="closeButtonCenter"
+							Margin="2"
+                            SnapsToDevicePixels="True"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalCenterFillKey}}"
+							CornerRadius="1">
+                            <Grid Width="8" Height="7">
+                                <Path
+			                        Width="8"
+			                        Height="7"
+			                        Data="M 3,1 C3,1 3,0 3,0 3,0 0,0 0,0 0,0 0,3 0,3 0,3 2,3 2,3 2,3 2,4 2,4 2,4 0,4 0,4 0,4 0,7 0,7 0,7 3,7 3,7 3,7 3,6 3,6 3,6 5,6 5,6 5,6 5,7 5,7 5,7 8,7 8,7 8,7 8,4 8,4 8,4 6,4 6,4 6,4 6,3 6,3 6,3 8,3 8,3 8,3 8,0 8,0 8,0 5,0 5,0 5,0 5,1 5,1 5,1 3,1 3,1 z"
+			                        Fill="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphStrokeKey}}"
+			                        Stretch="Fill"
+                                    SnapsToDevicePixels="True"/>
+                                <Path
+                                    x:Name="closeGlyph"
+			                        Width="6"
+			                        Height="5"
+			                        Data="M 0,0 C0,0 0,1 0,1 0,1 1,1 1,1 1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 1,3 1,3 1,3 1,4 1,4 1,4 0,4 0,4 0,4 0,5 0,5 0,5 2,5 2,5 2,5 2,4 2,4 2,4 4,4 4,4 4,4 4,5 4,5 4,5 6,5 6,5 6,5 6,4 6,4 6,4 5,4 5,4 5,4 5,3 5,3 5,3 4,3 4,3 4,3 4,2 4,2 4,2 5,2 5,2 5,2 5,1 5,1 5,1 6,1 6,1 6,1 6,0 6,0 6,0 4,0 4,0 4,0 4,1 4,1 4,1 2,1 2,1 2,1 2,0 2,0 2,0 0,0 0,0 z"
+			                        Fill="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}"
+			                        Stretch="Fill"
+                                    SnapsToDevicePixels="True"/>
+                            </Grid>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ToolWindow}, 1}}" Value="False">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalCenterFillKey}}"/>
+						</DataTrigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackCenterFillKey}}"/>
+							<Setter TargetName="closeGlyph" Property="Fill" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackGlyphFillKey}}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedCenterFillKey}}"/>
+                            <Setter TargetName="closeGlyph" Property="Fill" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedGlyphFillKey}}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonCenterFillKey}}"/>
+                            <Setter TargetName="closeGlyph" Property="Fill" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonGlyphFillKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<!-- XamTabControl.CloseButtonStyle -->
+	<Style x:Key="{x:Static igWindows:XamTabControl.CloseButtonStyleKey}" TargetType="{x:Type Button}">
+		<Setter Property="ToolTip" Value="{StaticResource closeToolTip}"/>
+		<Setter Property="Width" Value="11"/>
+		<Setter Property="Height" Value="11"/>
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Grid>
+						<Border
+							x:Name="closeButtonOuterBorder"
+							BorderThickness="1,1,1,1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalOuterBorderFillKey}}"
+							CornerRadius="2"/>
+						<Border
+							x:Name="closeButtonInnerBorder"
+							BorderThickness="1,1,1,1"
+							Margin="1"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalInnerBorderFillKey}}"
+							CornerRadius="1"/>
+						<Border
+							x:Name="closeButtonCenter"
+							Margin="2"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalCenterFillKey}}"
+							CornerRadius="1">
+							<Path
+								x:Name="closeGlyph"
+								Data="M0,0L5,5 M0,5L5,0"
+								Margin="1"
+								StrokeThickness="1.75"
+								SnapsToDevicePixels="True"
+								Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}}"/>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackCenterFillKey}}"/>
+							<Setter TargetName="closeGlyph" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackGlyphFillKey}}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="closeButtonOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedOuterBorderFillKey}}"/>
+							<Setter TargetName="closeButtonInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedInnerBorderFillKey}}"/>
+							<Setter TargetName="closeButtonCenter" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedCenterFillKey}}"/>
+							<Setter TargetName="closeGlyph" Property="Stroke" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedGlyphFillKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<!-- ======================== END BUTTON STYLES ======================== -->
+	
+    
+    
+
+    <!-- _________________________ CarouselListBox ______________________________________ -->
+	<Style TargetType="{x:Type igWindows:XamCarouselListBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamCarouselListBox}">
+          <Grid Margin="{TemplateBinding Padding}">
+            <!-- [JM 05-31-07 BR22561]  Explicitly add an AdornerDecorator to the control template so that the adorner layer we create
+                 for the CarouselPanelNavigator gets placed here instead of somewhere up the parent chain. -->
+            <AdornerDecorator>
+              <Border Name="Border"
+							     BorderBrush="{TemplateBinding BorderBrush}"
+							     BorderThickness="{TemplateBinding BorderThickness}"
+							     Background="{TemplateBinding Background}">
+                <!--<igWindows:XamCarouselPanel Margin="3" IsItemsHost="True" Background="{TemplateBinding Background}"/>-->
+                <ItemsPresenter
+								  x:Name="ItemsPresenter"
+								  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+              </Border>
+            </AdornerDecorator>
+          </Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- _________________________ CarouselPanelItem ______________________________________ -->
+	<Style TargetType="{x:Type igWindows:CarouselPanelItem}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:CarouselPanelItem}">
+					<Grid>
+						<Grid.RowDefinitions>
+              <!-- JM 11-27-07 Work Item #1261 - Move the binding from the ScrollViewer's Height property (below) to the first grid row. -->
+              <!--<RowDefinition Height="Auto"/>-->
+              <RowDefinition Height="{Binding Path=(igWindows:XamCarouselPanel.ViewSettings).(igWindows:CarouselViewSettings.ItemSize).Height,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type igWindows:XamCarouselPanel}}}"/>
+              <RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+            <!-- JM 11-27-07 Work Item #1261 - Move the binding on the ScrollViewer's Height property to the first grid row above and set the ScrollViewer's VerticalAlignment to 'Bottom'. -->
+            <!-- [JM 05-01-07] Set Focusable to False on ScrollViewer to allow mouse clicks to percolate up to the CarouselPanelItem -->
+            <!--<ScrollViewer Name="ScrollViewer" 
+								    HorizontalScrollBarVisibility="{TemplateBinding ItemHorizontalScrollBarVisibility}" 
+								    VerticalScrollBarVisibility="{TemplateBinding ItemVerticalScrollBarVisibility}"
+                    Focusable="False" 
+								    Height="{Binding Path=(igWindows:XamCarouselPanel.ViewSettings).(igWindows:CarouselViewSettings.ItemSize).Height,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type igWindows:XamCarouselPanel}}}">-->
+            <ScrollViewer Name="ScrollViewer"
+								    HorizontalScrollBarVisibility="{TemplateBinding ItemHorizontalScrollBarVisibility}"
+								    VerticalScrollBarVisibility="{TemplateBinding ItemVerticalScrollBarVisibility}"
+                    Focusable="False"
+								    VerticalAlignment="Bottom">
+              <Viewbox Name="ViewBox" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+								<Grid Name="itemContentHolder">
+									<Border CornerRadius="0,0,0,0" Background="{TemplateBinding Background}" Name="itemContentHolderBackground" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                  
+                  <!-- [JM 06-18-07] Add a binding for the ContentTemplateSelector property. -->
+									<!--<ContentControl Name="itemContent" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"  Margin="{TemplateBinding Padding}"/>-->
+                  <ContentControl Name="itemContent" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"  Margin="{TemplateBinding Padding}"/>
+                </Grid>
+							</Viewbox>
+						</ScrollViewer>
+
+						<Border Grid.Row="1" 
+							 Visibility="{Binding Path=ReflectionVisibility,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type igWindows:XamCarouselPanel}}}"
+							 Height="{Binding ActualHeight, ElementName=ScrollViewer}"
+							 Width="{Binding ActualWidth, ElementName=ScrollViewer}"
+							 Margin="0,1,0,0" IsHitTestVisible="False"
+                                                      VerticalAlignment="Top"
+                                                      >
+							<Border.Background>
+								<VisualBrush  Visual="{Binding ElementName=ScrollViewer}" 
+										    Stretch="None" 
+										    Opacity=".15" 
+										    AlignmentX="Center" 
+										    AlignmentY="Bottom">
+									<VisualBrush.RelativeTransform>
+										<TransformGroup>
+											<MatrixTransform Matrix="1,0,0,-1,0,0" />
+											<TranslateTransform Y="1" />
+										</TransformGroup>
+									</VisualBrush.RelativeTransform>
+								</VisualBrush>
+							</Border.Background>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected" Value="true">
+							<Setter TargetName="itemContent" Property="Margin" Value="4" />
+							<Setter Property="Background" TargetName="itemContentHolderBackground" Value="{DynamicResource {ComponentResourceKey {x:Type igWindows:IGControlBase}, CarouselItemSelected}}"/>
+						</Trigger>
+
+						<Trigger Property="AutoScaleItemContentsToFit" Value="true">
+							<!-- JM 01-08-08 Use disabled here instead of Hidden so children are measured properly -->
+							<!--<Setter TargetName="ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Hidden"/>-->
+							<!--<Setter TargetName="ScrollViewer" Property="VerticalScrollBarVisibility" Value="Hidden"/>-->
+							<Setter TargetName="ScrollViewer" Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+							<Setter TargetName="ScrollViewer" Property="VerticalScrollBarVisibility" Value="Disabled"/>
+							
+							<Setter TargetName="ViewBox" Property="Stretch" Value="Uniform"/>
+							<Setter TargetName="ViewBox" Property="StretchDirection" Value="Both"/>
+							
+							<!-- JM 01-03-08 BR29383 After making change for workitem #1261 above, these Setters were resuting in improper item sizing in certain scenarios. -->
+							<!--<Setter TargetName="ViewBox" Property="Width" Value="{Binding Path=ActualWidth,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollContentPresenter}}}"/>
+							<Setter TargetName="ViewBox" Property="Height" Value="{Binding Path=ActualHeight,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollContentPresenter}}}"/>-->
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- _________________________ CarouselListBoxItem ______________________________________ -->
+	<Style TargetType="{x:Type igWindows:CarouselListBoxItem}" BasedOn="{x:Static themes:PrimitivesGeneric.CarouselPanelItem}"/>
+
+	<!-- _________________________ CarouselPanelNavigator ______________________________________ -->
+	<!-- ************************************************** -->
+	<!-- CarouselPanelNavigator Resources -->
+	<!-- ************************************************** -->
+	<Style x:Key="btnArrowRight" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Canvas d:LayoutOverrides="Width, Height" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" x:Name="arrowButton">
+						<Path Opacity="1" Fill="sc#1, 0.13831535, 0.13831535, 0.13831535" Width="26.538508892059326" Height="26.87999725341797" Canvas.Left="3.934021472930908" Canvas.Top="3.5599842071533203" Stretch="Fill" Data="M 4.260498046875,13.852081298828125 C5.87066650390625,6.6312255859375 12.97955322265625,2.189300537109375 20.136474609375,3.94232177734375 27.2935791015625,5.69525146484375 31.76953125,12.9747314453125 30.13641357421875,20.190185546875 28.50628662109375,27.39276123046875 21.4036865234375,31.8055419921875 14.26959228515625,30.05792236328125 7.13555908203125,28.3104248046875 2.6534423828125,21.060028076171875 4.260498046875,13.852081298828125 z" x:Name="Path">
+						</Path>
+						<Path Opacity="0.6117647058823529" Width="25.334744453430176" Height="24.591683864593506" Canvas.Left="4.615653038024902" Canvas.Top="5.23879861831665" Stretch="Fill" Data="M 5.1971435546875,12.100372314453125 C2.78692626953125,21.748779296875 8.26190185546875,27.98516845703125 14.3975830078125,29.48809814453125 20.53326416015625,30.991180419921875 28.99749755859375,27.63360595703125 29.88873291015625,17.663482666015625 31.31402587890625,1.718536376953125 7.58233642578125,2.5518798828125 5.1971435546875,12.100372314453125 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.3820454835904064,0.9977895195654568" EndPoint="0.5811230432963472,0.08484155479842076">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#000574B7" Offset="0.9611110091209412"/>
+									<GradientStop Color="#000172b6" Offset="0.9777780175209045"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="24.118662357330322" Height="16.906932830810547" Canvas.Left="5.5799479484558105" Canvas.Top="4.055765151977539" Stretch="Fill" Data="M 5.63800048828125,12.484771728515625 C7.0235595703125,6.27349853515625 13.85638427734375,2.90582275390625 20.010986328125,4.413238525390625 26.16558837890625,5.92071533203125 30.85211181640625,12.1099853515625 29.4483642578125,18.316986083984375 28.046630859375,24.51470947265625 4.25445556640625,18.68682861328125 5.63800048828125,12.484771728515625 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.5971683238171168,0.018452292178045785" EndPoint="0.3879392376916156,1.3473106469217073">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#005C8DC3" Offset="0.949999988079071"/>
+									<GradientStop Color="#005588c1" Offset="0.9944440126419067"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="16.575005531311035" Height="14.999998092651367" Canvas.Left="9.424983024597168" Canvas.Top="9.999992370605469" Stretch="Fill" Data="M 17.391357421875,24.249237060546875 C18.13848876953125,25.17987060546875 19.4166259765625,25.255950927734375 20.223876953125,24.4178466796875 20.223876953125,24.4178466796875 25.51727294921875,18.86846923828125 25.51727294921875,18.86846923828125 26.20782470703125,18.1514892578125 26.1473388671875,16.94146728515625 25.40081787109375,16.16644287109375 25.40081787109375,16.16644287109375 25.34283447265625,16.1090087890625 25.34283447265625,16.1090087890625 25.34283447265625,16.1090087890625 25.28924560546875,16.050628662109375 25.28924560546875,16.050628662109375 25.28924560546875,16.050628662109375 19.995849609375,10.501190185546875 19.995849609375,10.501190185546875 19.30523681640625,9.784210205078125 18.1396484375,9.847015380859375 17.3931884765625,10.62200927734375 16.6571044921875,11.38616943359375 16.59112548828125,12.572845458984375 17.24468994140625,13.291290283203125 17.24468994140625,13.291290283203125 19.0980224609375,15.481903076171875 19.0980224609375,15.481903076171875 19.0980224609375,15.481903076171875 11.58636474609375,15.4017333984375 11.58636474609375,15.4017333984375 10.5029296875,15.3839111328125 9.53753662109375,16.282623291015625 9.43402099609375,17.42413330078125 9.3291015625,18.5823974609375 10.14984130859375,19.53936767578125 11.26312255859375,19.5460205078125 11.26312255859375,19.5460205078125 19.1920166015625,19.579071044921875 19.1920166015625,19.579071044921875 19.1920166015625,19.579071044921875 17.53582763671875,21.1612548828125 17.53582763671875,21.1612548828125 16.73016357421875,21.951171875 16.6558837890625,23.332916259765625 17.391357421875,24.249237060546875 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="-1.5499975748199686,0.5000005722046627" EndPoint="0.19934859031448113,0.5000005722046627">
+									<GradientStop Color="#FF666666" Offset="0"/>
+									<GradientStop Color="#FFffffff" Offset="1"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+					</Canvas>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavHoverBrush}" TargetName="Path"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavPressedBrush}" TargetName="Path"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="btnArrowLeft" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Canvas d:LayoutOverrides="Width, Height" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" x:Name="arrowButton">
+						<Path Opacity="1" Fill="{StaticResource pathNavUpBrush}" Width="26.538508892059326" Height="26.87999725341797" Canvas.Left="3.934021472930908" Canvas.Top="3.5599842071533203" Stretch="Fill" Data="M 4.260498046875,13.852081298828125 C5.87066650390625,6.6312255859375 12.97955322265625,2.189300537109375 20.136474609375,3.94232177734375 27.2935791015625,5.69525146484375 31.76953125,12.9747314453125 30.13641357421875,20.190185546875 28.50628662109375,27.39276123046875 21.4036865234375,31.8055419921875 14.26959228515625,30.05792236328125 7.13555908203125,28.3104248046875 2.6534423828125,21.060028076171875 4.260498046875,13.852081298828125 z" x:Name="Path">
+						</Path>
+						<Path Opacity="0.6117647058823529" Width="25.334744453430176" Height="24.591683864593506" Canvas.Left="4.615653038024902" Canvas.Top="5.23879861831665" Stretch="Fill" Data="M 5.1971435546875,12.100372314453125 C2.78692626953125,21.748779296875 8.26190185546875,27.98516845703125 14.3975830078125,29.48809814453125 20.53326416015625,30.991180419921875 28.99749755859375,27.63360595703125 29.88873291015625,17.663482666015625 31.31402587890625,1.718536376953125 7.58233642578125,2.5518798828125 5.1971435546875,12.100372314453125 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.3820454835904064,0.9977895195654568" EndPoint="0.5811230432963472,0.08484155479842076">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#000574B7" Offset="0.9611110091209412"/>
+									<GradientStop Color="#000172b6" Offset="0.9777780175209045"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="24.118662357330322" Height="16.906932830810547" Canvas.Left="5.5799479484558105" Canvas.Top="4.055765151977539" Stretch="Fill" Data="M 5.63800048828125,12.484771728515625 C7.0235595703125,6.27349853515625 13.85638427734375,2.90582275390625 20.010986328125,4.413238525390625 26.16558837890625,5.92071533203125 30.85211181640625,12.1099853515625 29.4483642578125,18.316986083984375 28.046630859375,24.51470947265625 4.25445556640625,18.68682861328125 5.63800048828125,12.484771728515625 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.5971683238171168,0.018452292178045785" EndPoint="0.3879392376916156,1.3473106469217073">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#005C8DC3" Offset="0.949999988079071"/>
+									<GradientStop Color="#005588c1" Offset="0.9944440126419067"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="16.575005531311035" Height="14.999998092651367" Canvas.Left="9.424983024597168" Canvas.Top="9.999992370605469" Stretch="Fill" Data="M 17.391357421875,24.249237060546875 C18.13848876953125,25.17987060546875 19.4166259765625,25.255950927734375 20.223876953125,24.4178466796875 20.223876953125,24.4178466796875 25.51727294921875,18.86846923828125 25.51727294921875,18.86846923828125 26.20782470703125,18.1514892578125 26.1473388671875,16.94146728515625 25.40081787109375,16.16644287109375 25.40081787109375,16.16644287109375 25.34283447265625,16.1090087890625 25.34283447265625,16.1090087890625 25.34283447265625,16.1090087890625 25.28924560546875,16.050628662109375 25.28924560546875,16.050628662109375 25.28924560546875,16.050628662109375 19.995849609375,10.501190185546875 19.995849609375,10.501190185546875 19.30523681640625,9.784210205078125 18.1396484375,9.847015380859375 17.3931884765625,10.62200927734375 16.6571044921875,11.38616943359375 16.59112548828125,12.572845458984375 17.24468994140625,13.291290283203125 17.24468994140625,13.291290283203125 19.0980224609375,15.481903076171875 19.0980224609375,15.481903076171875 19.0980224609375,15.481903076171875 11.58636474609375,15.4017333984375 11.58636474609375,15.4017333984375 10.5029296875,15.3839111328125 9.53753662109375,16.282623291015625 9.43402099609375,17.42413330078125 9.3291015625,18.5823974609375 10.14984130859375,19.53936767578125 11.26312255859375,19.5460205078125 11.26312255859375,19.5460205078125 19.1920166015625,19.579071044921875 19.1920166015625,19.579071044921875 19.1920166015625,19.579071044921875 17.53582763671875,21.1612548828125 17.53582763671875,21.1612548828125 16.73016357421875,21.951171875 16.6558837890625,23.332916259765625 17.391357421875,24.249237060546875 z" RenderTransformOrigin="0.5,0.5">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="-1.5499975748199686,0.5000005722046627" EndPoint="0.19934859031448113,0.5000005722046627">
+									<GradientStop Color="#FF666666" Offset="0"/>
+									<GradientStop Color="#FFffffff" Offset="1"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+							<Path.RenderTransform>
+								<TransformGroup>
+									<TranslateTransform X="0" Y="0"/>
+									<ScaleTransform ScaleX="1" ScaleY="1"/>
+									<SkewTransform AngleX="0" AngleY="0"/>
+									<RotateTransform Angle="180"/>
+									<TranslateTransform X="0" Y="0"/>
+									<TranslateTransform X="0" Y="0"/>
+								</TransformGroup>
+							</Path.RenderTransform>
+						</Path>
+					</Canvas>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavHoverBrush}" TargetName="Path"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavPressedBrush}" TargetName="Path"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="btnDoubleArrowRight" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Canvas x:Name="arrowEnd">
+						<Path Opacity="1" Fill="{StaticResource pathNavUpBrush}" Width="26.538509130477905" Height="26.87999701499939" Canvas.Left="3.934021234512329" Canvas.Top="3.5599844455718994" Stretch="Fill" Data="M 4.260498046875,13.852081298828125 C5.870666980743408,6.631226062774658 12.97955322265625,2.189301013946533 20.136474609375,3.942322015762329 27.2935791015625,5.695250988006592 31.76953125,12.9747314453125 30.13641357421875,20.190185546875 28.50628662109375,27.39276123046875 21.4036865234375,31.8055419921875 14.26959228515625,30.05792236328125 7.13555908203125,28.3104248046875 2.653441905975342,21.060028076171875 4.260498046875,13.852081298828125 z" x:Name="Path">
+						</Path>
+						<Path Opacity="0.6117647058823529" Width="25.334743976593018" Height="24.591683864593506" Canvas.Left="4.6156535148620605" Canvas.Top="5.23879861831665" Stretch="Fill" Data="M 5.197144031524658,12.100372314453125 C2.786926031112671,21.748779296875 8.26190185546875,27.98516845703125 14.3975830078125,29.48809814453125 20.53326416015625,30.991180419921875 28.99749755859375,27.63360595703125 29.88873291015625,17.663482666015625 31.31402587890625,1.7185360193252563 7.582335948944092,2.5518798828125 5.197144031524658,12.100372314453125 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.38204547195959315,0.9977895195654568" EndPoint="0.5811230354124666,0.0848415354082415">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#000574B7" Offset="0.9611110091209412"/>
+									<GradientStop Color="#000172b6" Offset="0.9777780175209045"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="24.11866283416748" Height="16.906932830810547" Canvas.Left="5.579947471618652" Canvas.Top="4.055765151977539" Stretch="Fill" Data="M 5.638000011444092,12.484771728515625 C7.023560047149658,6.273499011993408 13.85638427734375,2.905822992324829 20.010986328125,4.413239002227783 26.16558837890625,5.920714855194092 30.85211181640625,12.1099853515625 29.4483642578125,18.316986083984375 28.046630859375,24.51470947265625 4.254456043243408,18.68682861328125 5.638000011444092,12.484771728515625 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.597168331781286,0.018452292178045785" EndPoint="0.38793924979234096,1.3473106469217073">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#005C8DC3" Offset="0.949999988079071"/>
+									<GradientStop Color="#005588c1" Offset="0.9944440126419067"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Fill="#ffffff" Width="9.205267906188965" Height="14.999998092651367" Canvas.Left="15.794720649719238" Canvas.Top="9.999992370605469" Stretch="Fill" Data="M 16.391357421875,24.249237060546875 C17.13848876953125,25.17987060546875 18.4166259765625,25.255950927734375 19.223876953125,24.4178466796875 19.223876953125,24.4178466796875 24.51727294921875,18.86846923828125 24.51727294921875,18.86846923828125 25.20782470703125,18.1514892578125 25.1473388671875,16.94146728515625 24.40081787109375,16.16644287109375 24.40081787109375,16.16644287109375 24.34283447265625,16.1090087890625 24.34283447265625,16.1090087890625 24.34283447265625,16.1090087890625 24.28924560546875,16.050628662109375 24.28924560546875,16.050628662109375 24.28924560546875,16.050628662109375 18.995849609375,10.501190185546875 18.995849609375,10.501190185546875 18.30523681640625,9.784210205078125 17.1396484375,9.847015380859375 16.3931884765625,10.62200927734375 15.6571044921875,11.38616943359375 15.59112548828125,12.572845458984375 16.24468994140625,13.291290283203125 16.24468994140625,13.291290283203125 20.184280395507812,17.568161010742188 20.184280395507812,17.568161010742188 20.184280395507812,17.568161010742188 18.1920166015625,19.579071044921875 18.1920166015625,19.579071044921875 18.1920166015625,19.579071044921875 16.53582763671875,21.1612548828125 16.53582763671875,21.1612548828125 15.73016357421875,21.951171875 15.6558837890625,23.332916259765625 16.391357421875,24.249237060546875 z"/>
+						<Path Opacity="1" Fill="#ffffff" Width="6.650805473327637" Height="10.837495803833008" Canvas.Left="10.071951866149902" Canvas.Top="12.081243515014648" Stretch="Fill" Data="M 10.503021240234375,22.37632179260254 C11.042823791503906,23.048704147338867 11.966278076171875,23.10367202758789 12.549516677856445,22.49814224243164 12.549516677856445,22.49814224243164 16.37399673461914,18.488718032836914 16.37399673461914,18.488718032836914 16.8729190826416,17.970699310302734 16.8292179107666,17.096458435058594 16.28985595703125,16.536502838134766 16.28985595703125,16.536502838134766 16.247962951660156,16.495006561279297 16.247962951660156,16.495006561279297 16.247962951660156,16.495006561279297 16.209245681762695,16.45282745361328 16.209245681762695,16.45282745361328 16.209245681762695,16.45282745361328 12.384767532348633,12.443358421325684 12.384767532348633,12.443358421325684 11.885799407958984,11.92534065246582 11.043662071228027,11.97071647644043 10.504344940185547,12.530649185180664 9.972524642944336,13.082755088806152 9.924854278564453,13.940128326416016 10.397054672241211,14.459205627441406 10.397054672241211,14.459205627441406 13.243409156799316,17.549243927001953 13.243409156799316,17.549243927001953 13.243409156799316,17.549243927001953 11.803997993469238,19.002126693725586 11.803997993469238,19.002126693725586 11.803997993469238,19.002126693725586 10.607400894165039,20.14525604248047 10.607400894165039,20.14525604248047 10.025309562683105,20.71596908569336 9.971641540527344,21.714279174804688 10.503021240234375,22.37632179260254 z"/>
+					</Canvas>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavHoverBrush}" TargetName="Path"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavPressedBrush}" TargetName="Path"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="btnDoubleArrowLeft" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Canvas x:Name="arrowEnd">
+						<Path Opacity="1" Fill="{StaticResource pathNavUpBrush}" Width="26.538509130477905" Height="26.87999701499939" Canvas.Left="3.934021234512329" Canvas.Top="3.5599844455718994" Stretch="Fill" Data="M 4.260498046875,13.852081298828125 C5.870666980743408,6.631226062774658 12.97955322265625,2.189301013946533 20.136474609375,3.942322015762329 27.2935791015625,5.695250988006592 31.76953125,12.9747314453125 30.13641357421875,20.190185546875 28.50628662109375,27.39276123046875 21.4036865234375,31.8055419921875 14.26959228515625,30.05792236328125 7.13555908203125,28.3104248046875 2.653441905975342,21.060028076171875 4.260498046875,13.852081298828125 z" x:Name="Path2">
+						</Path>
+						<Path Opacity="0.6117647058823529" Width="25.334743976593018" Height="24.591683864593506" Canvas.Left="4.6156535148620605" Canvas.Top="5.23879861831665" Stretch="Fill" Data="M 5.197144031524658,12.100372314453125 C2.786926031112671,21.748779296875 8.26190185546875,27.98516845703125 14.3975830078125,29.48809814453125 20.53326416015625,30.991180419921875 28.99749755859375,27.63360595703125 29.88873291015625,17.663482666015625 31.31402587890625,1.7185360193252563 7.582335948944092,2.5518798828125 5.197144031524658,12.100372314453125 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.38204547195959315,0.9977895195654568" EndPoint="0.5811230354124666,0.0848415354082415">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#000574B7" Offset="0.9611110091209412"/>
+									<GradientStop Color="#000172b6" Offset="0.9777780175209045"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<Path Opacity="1" Width="24.11866283416748" Height="16.906932830810547" Canvas.Left="5.579947471618652" Canvas.Top="4.055765151977539" Stretch="Fill" Data="M 5.638000011444092,12.484771728515625 C7.023560047149658,6.273499011993408 13.85638427734375,2.905822992324829 20.010986328125,4.413239002227783 26.16558837890625,5.920714855194092 30.85211181640625,12.1099853515625 29.4483642578125,18.316986083984375 28.046630859375,24.51470947265625 4.254456043243408,18.68682861328125 5.638000011444092,12.484771728515625 z">
+							<Path.Fill>
+								<LinearGradientBrush StartPoint="0.597168331781286,0.018452292178045785" EndPoint="0.38793924979234096,1.3473106469217073">
+									<GradientStop Color="#FFffffff" Offset="0"/>
+									<GradientStop Color="#005C8DC3" Offset="0.949999988079071"/>
+									<GradientStop Color="#005588c1" Offset="0.9944440126419067"/>
+								</LinearGradientBrush>
+							</Path.Fill>
+						</Path>
+						<ItemsControl d:IsGroup="True" Width="14.9280366897583" Height="14.9999980926514" Canvas.Left="10" Canvas.Top="9.99999237060547" x:Name="Group" RenderTransformOrigin="0.5,0.5">
+							<ItemsControl.RenderTransform>
+								<TransformGroup>
+									<TranslateTransform X="0" Y="0"/>
+									<ScaleTransform ScaleX="-1" ScaleY="1"/>
+									<SkewTransform AngleX="0" AngleY="0"/>
+									<RotateTransform Angle="0"/>
+									<TranslateTransform X="0" Y="0"/>
+									<TranslateTransform X="-0.5" Y="0"/>
+								</TransformGroup>
+							</ItemsControl.RenderTransform>
+							<ItemsControl.Template>
+								<ControlTemplate TargetType="{x:Type ItemsControl}">
+									<Viewbox>
+										<Viewbox.Child>
+											<Canvas Width="14.9280366897583" Height="14.9999980926514" IsItemsHost="True"/>
+										</Viewbox.Child>
+									</Viewbox>
+								</ControlTemplate>
+							</ItemsControl.Template>
+							<Path Opacity="1" Fill="#ffffff" Width="9.20526790618896" Height="14.9999980926514" Canvas.Left="5.72276878356934" Canvas.Top="0" Stretch="Fill" Data="M 16.391357421875,24.249237060546875 C17.13848876953125,25.17987060546875 18.4166259765625,25.255950927734375 19.223876953125,24.4178466796875 19.223876953125,24.4178466796875 24.51727294921875,18.86846923828125 24.51727294921875,18.86846923828125 25.20782470703125,18.1514892578125 25.1473388671875,16.94146728515625 24.40081787109375,16.16644287109375 24.40081787109375,16.16644287109375 24.34283447265625,16.1090087890625 24.34283447265625,16.1090087890625 24.34283447265625,16.1090087890625 24.28924560546875,16.050628662109375 24.28924560546875,16.050628662109375 24.28924560546875,16.050628662109375 18.995849609375,10.501190185546875 18.995849609375,10.501190185546875 18.30523681640625,9.784210205078125 17.1396484375,9.847015380859375 16.3931884765625,10.62200927734375 15.6571044921875,11.38616943359375 15.59112548828125,12.572845458984375 16.24468994140625,13.291290283203125 16.24468994140625,13.291290283203125 20.184280395507812,17.568161010742188 20.184280395507812,17.568161010742188 20.184280395507812,17.568161010742188 18.1920166015625,19.579071044921875 18.1920166015625,19.579071044921875 18.1920166015625,19.579071044921875 16.53582763671875,21.1612548828125 16.53582763671875,21.1612548828125 15.73016357421875,21.951171875 15.6558837890625,23.332916259765625 16.391357421875,24.249237060546875 z" x:Name="Path"/>
+							<Path Opacity="1" Fill="#ffffff" Width="6.65080547332764" Height="10.837495803833" Canvas.Left="0" Canvas.Top="2.08125114440918" Stretch="Fill" Data="M 10.503021240234375,22.37632179260254 C11.042823791503906,23.048704147338867 11.966278076171875,23.10367202758789 12.549516677856445,22.49814224243164 12.549516677856445,22.49814224243164 16.37399673461914,18.488718032836914 16.37399673461914,18.488718032836914 16.8729190826416,17.970699310302734 16.8292179107666,17.096458435058594 16.28985595703125,16.536502838134766 16.28985595703125,16.536502838134766 16.247962951660156,16.495006561279297 16.247962951660156,16.495006561279297 16.247962951660156,16.495006561279297 16.209245681762695,16.45282745361328 16.209245681762695,16.45282745361328 16.209245681762695,16.45282745361328 12.384767532348633,12.443358421325684 12.384767532348633,12.443358421325684 11.885799407958984,11.92534065246582 11.043662071228027,11.97071647644043 10.504344940185547,12.530649185180664 9.972524642944336,13.082755088806152 9.924854278564453,13.940128326416016 10.397054672241211,14.459205627441406 10.397054672241211,14.459205627441406 13.243409156799316,17.549243927001953 13.243409156799316,17.549243927001953 13.243409156799316,17.549243927001953 11.803997993469238,19.002126693725586 11.803997993469238,19.002126693725586 11.803997993469238,19.002126693725586 10.607400894165039,20.14525604248047 10.607400894165039,20.14525604248047 10.025309562683105,20.71596908569336 9.971641540527344,21.714279174804688 10.503021240234375,22.37632179260254 z" x:Name="Path1"/>
+						</ItemsControl>
+					</Canvas>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavHoverBrush}" TargetName="Path2"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Fill" Value="{StaticResource pathNavPressedBrush}" TargetName="Path2"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<!-- ************************************************** -->
+	<!-- End CarouselPanelNavigator Resources -->
+	<!-- ************************************************** -->
+	<Style TargetType="{x:Type igWindows:CarouselPanelNavigator}">
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+		<Setter Property="VerticalAlignment" Value="Bottom"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:CarouselPanelNavigator}">
+					<Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,4,4" x:Name="navGrid" RenderTransformOrigin="0.5,0.5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.RenderTransform>
+							<TransformGroup>
+								<TranslateTransform X="0" Y="0"/>
+								<ScaleTransform ScaleX="1" ScaleY="1"/>
+								<SkewTransform AngleX="0" AngleY="0"/>
+								<RotateTransform Angle="0"/>
+								<TranslateTransform X="0" Y="0"/>
+								<TranslateTransform X="0" Y="0"/>
+							</TransformGroup>
+						</Grid.RenderTransform>
+						<Rectangle Opacity="0.3" Fill="sc#1, 1, 1, 1" RadiusX="10" RadiusY="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Width="Auto" Height="Auto" x:Name="Rectangle1"/>
+						<Rectangle Opacity="0.3" Fill="sc#1, 1, 1, 1" RadiusX="8.56683218782632" RadiusY="8.56683218782632" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,2,2" Width="Auto" Height="Auto" x:Name="Rectangle2"/>
+						<Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8,0,0" Width="109.417478206505" Height="Auto" x:Name="gridButtons">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Button 
+								x:Name="navigateLineRight"
+								Style="{StaticResource btnArrowRight}" 
+								HorizontalAlignment="Right" 
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToNextItem}" 
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}" 
+								Margin="0,4.75708557998065,24,0" 
+								Width="33" 										 
+								d:LayoutOverrides="Height" 
+								VerticalAlignment="Top" Height="33" 
+								Canvas.Left="51.5027555076267" Canvas.Top="0">
+								<Button.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform X="0" Y="0"/>
+										<ScaleTransform ScaleX="1" ScaleY="1"/>
+										<SkewTransform AngleX="0" AngleY="0"/>
+										<RotateTransform Angle="0"/>
+										<TranslateTransform X="0" Y="0"/>
+										<TranslateTransform X="0" Y="0"/>
+									</TransformGroup>
+								</Button.RenderTransform>
+							</Button>
+							<Button 
+								x:Name="navigatePageRight" 
+								d:LayoutOverrides="Width" 
+								Style="{StaticResource btnDoubleArrowRight}" 
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToNextPage}" 
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}" 
+								HorizontalAlignment="Right" VerticalAlignment="Top" 
+								Margin="0,4.75708557998065,0,0" 
+								Width="33" Height="33" 
+								Canvas.Left="76.0445939324419" Canvas.Top="0" 										
+								RenderTransformOrigin="0.5,0.5">
+								<Button.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform X="0" Y="0"/>
+										<ScaleTransform ScaleX="0.70000000000000007" ScaleY="0.70000000000000007"/>
+										<SkewTransform AngleX="0" AngleY="0"/>
+										<RotateTransform Angle="0"/>
+										<TranslateTransform X="0" Y="0"/>
+										<TranslateTransform X="0" Y="0"/>
+									</TransformGroup>
+								</Button.RenderTransform>
+							</Button>
+							<Button 
+								x:Name="navigateLineLeft" 
+								d:LayoutOverrides="HorizontalAlignment" 
+								Style="{StaticResource btnArrowLeft}" 
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToPreviousItem}" 
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}" 
+								HorizontalAlignment="Left" 
+								VerticalAlignment="Top" 										
+								Margin="24,4.75708557998065,0,0" 
+								Width="32.9999999999999" Height="33"										
+								Canvas.Left="18.7709176140105" Canvas.Top="0">
+								<Button.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform X="0" Y="0"/>
+										<ScaleTransform ScaleX="1" ScaleY="1"/>
+										<SkewTransform AngleX="0" AngleY="0"/>
+										<RotateTransform Angle="0"/>
+										<TranslateTransform X="0" Y="0"/>
+										<TranslateTransform X="0" Y="0"/>
+									</TransformGroup>
+								</Button.RenderTransform>
+							</Button>
+							<Button 
+								x:Name="navigatePageLeft" 
+								d:LayoutOverrides="Width" 
+								Style="{StaticResource btnDoubleArrowLeft}" 
+								Command="{x:Static igWindows:XamCarouselPanelCommands.NavigateToPreviousPage}" 
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CarouselPanel}" 
+								HorizontalAlignment="Left" 
+								Margin="0,4.75708557998065,0,0" 
+								Width="33" Height="33" 										
+								VerticalAlignment="Top" 
+								Canvas.Left="-4.95" Canvas.Top="0" 
+								RenderTransformOrigin="0.5,0.5">
+								<Button.RenderTransform>
+									<TransformGroup>
+										<TranslateTransform X="0" Y="0"/>
+										<ScaleTransform ScaleX="0.70000000000000007" ScaleY="0.70000000000000007"/>
+										<SkewTransform AngleX="0" AngleY="0"/>
+										<RotateTransform Angle="0"/>
+										<TranslateTransform X="0" Y="0"/>
+										<TranslateTransform X="0" Y="0"/>
+									</TransformGroup>
+								</Button.RenderTransform>
+							</Button>
+						</Grid>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+    <!-- ==================== -->
+    <!--     NA 2008 Vol 2    -->
+    <!-- ==================== -->
+    <!-- _________________________ XamTabControl Resources __________________________________________ -->
+    <!-- ************************************************** -->
+    <!-- XamTabControl Resources -->
+    <!-- ************************************************** -->
+	<Style TargetType="{x:Type RepeatButton}" x:Key="PagerScrollBtnBase">
+		<!--<Setter Property="ClickMode" Value="Hover"/>-->
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTopCenterFillKey}}"/>
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Padding" Value="3"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}"
+							CornerRadius="3">
+							<Path
+								Margin="{TemplateBinding Padding}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+								Fill="{TemplateBinding Foreground}"/>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							Visibility="Collapsed"/>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+		</Style.Triggers>
+	</Style>
+	
+	<Style x:Key="{x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+		<Setter Property="Content" Value="M 4,0 L 4,6 0,3 Z"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}"
+							CornerRadius="3,0,0,3">
+							<Path
+								Margin="{TemplateBinding Padding}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+								Fill="{TemplateBinding Foreground}"/>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							Visibility="Collapsed"
+							CornerRadius="3,0,0,3"
+							BorderThickness="1,1,0,1"
+							Width="3"
+							HorizontalAlignment="Left"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style x:Key="{x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+		<Setter Property="Content" Value="M 0,0 L 0,6 4,3 Z"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}"
+							CornerRadius="0,3,3,0">
+							<Path
+								Margin="{TemplateBinding Padding}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+								Fill="{TemplateBinding Foreground}"/>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							Visibility="Collapsed"
+							CornerRadius="0,3,3,0"
+							BorderThickness="0,1,1,1"
+							Width="3"
+							HorizontalAlignment="Right"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style x:Key="{x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+		<Setter Property="Content" Value="M 0,4 L 6,4 3,0 Z"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}"
+							CornerRadius="3,3,0,0">
+							<Path
+								Margin="{TemplateBinding Padding}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+								Fill="{TemplateBinding Foreground}"/>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							Visibility="Collapsed"
+							CornerRadius="3,3,0,0"
+							BorderThickness="1,1,1,0"
+							Height="3"
+							VerticalAlignment="Top"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style x:Key="{x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}" TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}">
+		<Setter Property="Content" Value="M 0,0 L 6,0 3,4 Z"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}"
+							CornerRadius="0,0,3,3">
+							<Path
+								Margin="{TemplateBinding Padding}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+								Fill="{TemplateBinding Foreground}"/>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							Visibility="Collapsed"
+							CornerRadius="0,0,3,3"
+							BorderThickness="1,0,1,1"
+							Height="3"
+							VerticalAlignment="Bottom"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	
+
+	<!-- _________________________ XamTabControl - SingleRowTabItemPagerStyleKey ______________________________________ -->
+	<Style x:Key="{x:Static igWindows:XamTabControl.SingleRowTabItemPagerStyleKey}" TargetType="{x:Type igWindows:XamPager}">
+		<Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}}"/>
+		<Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+		<Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}}"/>
+		<Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}}"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamPager}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="row1" Height="Auto"/>
+							<RowDefinition x:Name="row2" Height="Auto"/>
+							<RowDefinition x:Name="row3" Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="col1" Width="Auto"/>
+							<ColumnDefinition x:Name="col2" Width="Auto"/>
+							<ColumnDefinition x:Name="col3" Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<!-- I would have template bound the cancontent scroll but when we try to change 
+					this property from the tab control template trigger its being ignored because the 
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+						<igWindows:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+						<RepeatButton
+								x:Name="PART_ScrollLeft"
+								Style="{TemplateBinding ScrollLeftButtonStyle}"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineLeftCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollUp"
+								Style="{TemplateBinding ScrollUpButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineUpCommand}"/>
+						<RepeatButton
+								x:Name="PART_ScrollRight"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								Style="{TemplateBinding ScrollRightButtonStyle}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineRightCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollDown"
+								Style="{TemplateBinding ScrollDownButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineDownCommand}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,0,1,2"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,1,2"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,2,1,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,2,1,0"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row3" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="0,3,2,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="0,1,2,1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="2,3,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="2,1,0,1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col2" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	
+	<!-- _________________________ XamTabControl - MultiRowTabItemPagerStyleKey ______________________________________ -->
+	<Style x:Key="{x:Static igWindows:XamTabControl.MultiRowTabItemPagerStyleKey}" TargetType="{x:Type igWindows:XamPager}">
+		<Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}}"/>
+		<Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+		<Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}}"/>
+		<Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}}"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamPager}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="row1" Height="Auto"/>
+							<RowDefinition x:Name="row2" Height="Auto"/>
+							<RowDefinition x:Name="row3" Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="col1" Width="Auto"/>
+							<ColumnDefinition x:Name="col2" Width="Auto"/>
+							<ColumnDefinition x:Name="col3" Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<!-- I would have template bound the cancontent scroll but when we try to change 
+					this property from the tab control template trigger its being ignored because the 
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+						<igWindows:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+						<RepeatButton
+								x:Name="PART_ScrollLeft"
+								Style="{TemplateBinding ScrollLeftButtonStyle}"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineLeftCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollUp"
+								Style="{TemplateBinding ScrollUpButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineUpCommand}"/>
+						<RepeatButton
+								x:Name="PART_ScrollRight"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								Style="{TemplateBinding ScrollRightButtonStyle}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineRightCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollDown"
+								Style="{TemplateBinding ScrollDownButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineDownCommand}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,0,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,3"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,3,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,0"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row3" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="0,0,1,3"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,3,3"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Height" TargetName="row3" Value="0"/>
+							<Setter Property="Height" TargetName="row2" Value="*"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,3,1,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,3,0,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="0"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Height" TargetName="row3" Value="0"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="*"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- ************************************************** -->
+    <!-- End XamTabControl Resources -->
+    <!-- ************************************************** -->
+
+
+    <!-- _________________________ XamTabControl ______________________________________ -->
+	<Style TargetType="{x:Type igWindows:XamTabControl}">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+		<Setter Property="Padding" Value="4"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabContentBackgroundFillKey}}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamTabControl}">
+					<Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="gridCol0"/>
+							<ColumnDefinition Width="0" x:Name="gridCol1"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" x:Name="gridRow0"/>
+							<RowDefinition Height="*" x:Name="gridRow1"/>
+						</Grid.RowDefinitions>
+						<Border
+							BorderBrush="{TemplateBinding BorderBrush}"
+							x:Name="ContentPanel"
+							KeyboardNavigation.TabIndex="2"
+							KeyboardNavigation.TabNavigation="Local"
+							KeyboardNavigation.DirectionalNavigation="Contained"
+							Grid.Row="1"
+							Visibility="Visible"
+							Margin="0,-1,0,0"
+							Background="{TemplateBinding Background}">
+							<!--Background="#FF515151"-->
+							<Border
+								BorderThickness="{TemplateBinding Border.BorderThickness}"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								Margin="0,1,0,0">
+								<!--<Border Background="{DynamicResource Container_Fill}" BorderBrush="{DynamicResource Container_BorderFill}" CornerRadius="5,5,5,5">-->
+								<Border CornerRadius="5,5,5,5">
+									<ContentPresenter
+										ContentSource="SelectedContent"
+										Margin="{TemplateBinding Control.Padding}"
+										Height="{TemplateBinding TabItemContentHeight}"
+										Name="PART_SelectedContentHost"
+										SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+								</Border>
+							</Border>
+						</Border>
+						<!--<DockPanel x:Name="PART_HeaderArea" Panel.ZIndex="1" Background="#FF535353">-->
+            <!-- AS 5/4/10 TFS30695 
+              Added Tab(Index|Navigation) settings so this gets focus first. -->
+						<DockPanel 
+							x:Name="PART_HeaderArea" 
+							Panel.ZIndex="1"
+							KeyboardNavigation.TabIndex="1"
+							KeyboardNavigation.TabNavigation="Local"
+                            Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabControlTabStripCenterFillKey}}">
+							<ContentPresenter
+								x:Name="PreTabItemContent"
+								DockPanel.Dock="Left"
+								ContentSource="PreTabItemContent"
+								/>
+							<Button
+								Name="CloseButton"
+								DockPanel.Dock="Right"
+								Command="igWindows:TabControlCommands.CloseSelected"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Visibility="Collapsed"
+								Style="{DynamicResource {x:Static igWindows:XamTabControl.CloseButtonStyleKey}}"/>
+							<ContentPresenter
+								x:Name="PostTabItemContent"
+								DockPanel.Dock="Right"
+								ContentSource="PostTabItemContent" />
+							<igWindows:XamPager x:Name="PART_TabItemScrollViewer" 
+                                                Style="{DynamicResource {x:Static igWindows:XamTabControl.SingleRowTabItemPagerStyleKey}}"
+                                                CanContentScroll="True" 
+                                                ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding TabItemVerticalScrollBarVisibility}" 
+                                                ScrollViewer.HorizontalScrollBarVisibility="{TemplateBinding TabItemHorizontalScrollBarVisibility}">
+								<ItemsPresenter x:Name="PART_TabHeaderPanel" Margin="2,2,1,0" />
+							</igWindows:XamPager>
+						</DockPanel>
+						<Popup
+							x:Name="PART_Popup"
+							StaysOpen="False"
+							Width="{TemplateBinding PreferredDropDownExtent}"
+							IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+							CustomPopupPlacementCallback="{TemplateBinding PreferredDropDownPlacementCallback}"
+							Placement="Custom"
+							AllowsTransparency="True"
+							PopupAnimation="{Binding Path=DropDownAnimation, RelativeSource={RelativeSource TemplatedParent}}">
+							<Border
+								BorderBrush="#FFD0CEBF"
+								BorderThickness="0,0,1,1"
+								KeyboardNavigation.TabIndex="2"
+								KeyboardNavigation.TabNavigation="Local"
+								KeyboardNavigation.DirectionalNavigation="Contained">
+								<Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="{TemplateBinding Border.BorderThickness}">
+									<Border Background="{TemplateBinding Panel.Background}">
+										<ContentPresenter
+											ContentSource="SelectedContent"
+											Margin="{TemplateBinding Control.Padding}"
+											Height="{TemplateBinding TabItemContentHeight}"
+											Name="PART_SelectedContentHostMinimized"
+											HorizontalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=HorizontalAlignment}"
+											VerticalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=VerticalAlignment}"
+											SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+											ContentTemplateSelector="{TemplateBinding TabControl.SelectedContentTemplateSelector}"
+											ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}"
+											Content="{x:Null}"/>
+									</Border>
+								</Border>
+							</Border>
+						</Popup>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="ShowTabHeaderCloseButton" Value="True">
+							<Setter Property="Visibility" TargetName="CloseButton" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="DropDownAnimation" Value="None">
+							<!--<Setter Property="AllowsTransparency" TargetName="PART_Popup" Value="False"/>-->
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Top">
+							<Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter TargetName="CloseButton" Property="Margin" Value="3,1,3,0"/>
+							<Setter TargetName="PreTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+							<Setter TargetName="PostTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="3,0,3,2"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="3,0,3,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+							<Setter TargetName="CloseButton" Property="Margin" Value="3,0,3,1"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="3,2,3,0"/>
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="3,2,3,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="*"/>
+							<Setter Property="Height" TargetName="gridRow1" Value="Auto"/>
+							<Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,0,2,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Left">
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="5,3,0,3"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="5,3,0,3"/>
+							<Setter Property="Margin" TargetName="CloseButton" Value="0,0,4,3"/>
+							<Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+							<Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Right"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="0"/>
+							<Setter Property="Width" TargetName="gridCol0" Value="Auto"/>
+							<Setter Property="Width" TargetName="gridCol1" Value="*"/>
+							<Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+							<Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+							<Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,2,0,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Right">
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="4,3,0,3"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="4,3,0,3"/>
+							<Setter Property="Margin" TargetName="CloseButton" Value="4,0,0,3"/>
+							<Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+							<Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Left"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="0"/>
+							<Setter Property="Width" TargetName="gridCol0" Value="*"/>
+							<Setter Property="Width" TargetName="gridCol1" Value="Auto"/>
+							<Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+							<Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+							<Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="0,2,2,2"/>
+						</Trigger>
+						<Trigger Property="UIElement.IsEnabled" Value="False">
+							<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.GrayTextBrushKey}}"/>
+						</Trigger>
+						<Trigger Property="IsMinimized" Value="True">
+							<Setter Property="Visibility" TargetName="ContentPanel" Value="Collapsed"/>
+						</Trigger>
+							<Trigger Property="IsMultiRow" Value="True">
+								<Setter TargetName="PART_TabItemScrollViewer" Property="Style" Value="{DynamicResource {x:Static igWindows:XamTabControl.MultiRowTabItemPagerStyleKey}}"/>
+							</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<!--<Setter Property="Background" Value="{DynamicResource Container_Fill}"/>-->
+		<Style.Triggers>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+			</Trigger>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Left">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+			</Trigger>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Right">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+
+	<!-- _________________________ TabItemEx ______________________________________ -->
+	<Style x:Key="{x:Type igWindows:TabItemEx}" TargetType="{x:Type igWindows:TabItemEx}">
+		<!-- <Setter Property="FocusVisualStyle" Value="{StaticResource Foo}" /> -->
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTextFillKey}}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTopCenterFillKey}}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:TabItemEx}">
+					<Grid SnapsToDevicePixels="true">
+						<Border
+							Name="Bd"
+							Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							Background="{TemplateBinding Background}"
+							BorderThickness="1,1,1,0"
+							CornerRadius="3,3,0,0">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<ContentPresenter
+									Name="Content"
+									ContentSource="Header"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									RecognizesAccessKey="true"
+									HorizontalAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+									VerticalAlignment="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+								<Button
+									Name="CloseButton"
+									Grid.Column="1"
+									Command="igWindows:TabItemExCommands.Close"
+									CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+									Visibility="{TemplateBinding ComputedCloseButtonVisibility}" 
+									Style="{DynamicResource {x:Static igWindows:XamTabControl.CloseButtonStyleKey}}"
+									Margin="10,0,0,0"
+									/>
+							</Grid>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Height="3"
+							CornerRadius="3,3,0,0"
+							Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}}"
+							BorderThickness="1,1,1,0"
+							Visibility="Collapsed"
+							VerticalAlignment="Top"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="true"/>
+						<Trigger Property="IsSelected" Value="true">
+							<Setter Property="Panel.ZIndex" Value="1"/>
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Highlight" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedHighlightLightFillKey}}"/>
+                            <Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedHighlightDarkFillKey}}"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTopCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTextFillKey}}"/>
+                        </Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="false"/>
+								<Condition Property="IsMouseOver" Value="true"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+						</MultiTrigger>
+						
+						<Trigger Property="TabStripPlacement" Value="Top">
+							<Setter Property="Padding" Value="5,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,1,0"/>
+						</Trigger>
+
+						<Trigger Property="TabStripPlacement" Value="Bottom">
+							<Setter Property="Padding" Value="5,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,1,0"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalBottomCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="1,0,1,1"/>
+							<Setter TargetName="Bd" Property="CornerRadius" Value="0,0,3,3"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="1,0,1,1"/>
+							<Setter TargetName="Highlight" Property="VerticalAlignment" Value="Bottom"/>
+							<Setter TargetName="Highlight" Property="CornerRadius" Value="0,0,3,3"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="1,0,1,1"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Left">
+							<Setter Property="Padding" Value="4,3,4,3"/>
+							<Setter Property="Margin" Value="0,0,0,1"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalLeftCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="1,1,0,1"/>
+							<Setter TargetName="Bd" Property="CornerRadius" Value="3,0,0,3"/>
+							<Setter TargetName="Highlight" Property="VerticalAlignment" Value="Stretch"/>
+							<Setter TargetName="Highlight" Property="HorizontalAlignment" Value="Left"/>
+							<Setter TargetName="Highlight" Property="Height" Value="Auto"/>
+							<Setter TargetName="Highlight" Property="Width" Value="3"/>
+							<Setter TargetName="Highlight" Property="CornerRadius" Value="3,0,0,3"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="1,1,0,1"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Right">
+							<Setter Property="Padding" Value="4,3,4,3"/>
+							<Setter Property="Margin" Value="0,0,0,1"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalRightCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="0,1,1,1"/>
+							<Setter TargetName="Bd" Property="CornerRadius" Value="0,3,3,0"/>
+							<Setter TargetName="Highlight" Property="VerticalAlignment" Value="Stretch"/>
+							<Setter TargetName="Highlight" Property="HorizontalAlignment" Value="Right"/>
+							<Setter TargetName="Highlight" Property="Height" Value="Auto"/>
+							<Setter TargetName="Highlight" Property="Width" Value="3"/>
+							<Setter TargetName="Highlight" Property="CornerRadius" Value="0,3,3,0"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="0,1,1,1"/>
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Top"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Margin" Value="-2,-2,-3,-1"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,0,0,1"/>
+							<Setter Property="Padding" Value="7,1,8,3"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Bottom"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-2,-1,-3,-2"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,1,0,0"/>
+							<Setter Property="Padding" Value="7,3,8,1"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Left"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-2,-2,-1,-3"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,0,1,0"/>
+							<Setter Property="Padding" Value="4,5,4,7"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Right"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-1,-2,-2,-3"/>
+							<Setter TargetName="Content" Property="Margin" Value="1,0,0,0"/>
+							<Setter Property="Padding" Value="4,5,4,7"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="false"/>
+								<Condition Property="IsMouseOver" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Top"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackTopCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="false"/>
+								<Condition Property="IsMouseOver" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Bottom"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackBottomCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="false"/>
+								<Condition Property="IsMouseOver" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Left"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackLeftCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="false"/>
+								<Condition Property="IsMouseOver" Value="true"/>
+								<Condition Property="TabStripPlacement" Value="Right"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackRightCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledOuterBorderFillKey}}" />
+							<Setter Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Property="Foreground"/>
+							<Setter TargetName="Highlight" Property="Visibility" Value="Collapsed"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
+	<!-- _________________________ XamScreenTip ______________________________________ -->
+  <Style TargetType="{x:Type igWindows:XamScreenTip}">
+    <Setter Property="Foreground" Value="#EE000000"/>
+    <Setter Property="FontFamily" Value="Segoe UI"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="Black"/>
+
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+          <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFE4E4F0" />
+            <GradientStop Offset=".8" Color="#FFFEFEFE" />
+            <GradientStop Offset="1" Color="#FFFEFEFE" />
+          </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igWindows:XamScreenTip}">
+          <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+            <Grid Margin="{TemplateBinding Padding}">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <!-- Header Content -->
+              <ContentControl Grid.Row="0" FontWeight="Bold"  Margin="5,5,5,5" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"/>
+              
+              <!-- Header Separator -->
+              <StackPanel Grid.Row="1" Margin="3,0,3,5" Visibility="{TemplateBinding HeaderSeparatorVisibility}">
+                <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
+                <Rectangle Height="1" Fill="White" HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
+              </StackPanel>
+
+              <!-- Main Content -->
+              <ContentPresenter Grid.Row="2" Margin="13,3,13,0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
+              
+              <!-- Footer Separator -->
+              <StackPanel Grid.Row="3" Margin="3,5,3,7" Visibility="{TemplateBinding FooterSeparatorVisibility}">
+                <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
+                <Rectangle Height="1" Fill="White" HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
+              </StackPanel>
+
+              <!-- Footer Content -->
+              <ContentControl Grid.Row="4" FontWeight="Bold" Margin="5,0,5,5" Content="{TemplateBinding Footer}" ContentTemplate="{TemplateBinding FooterTemplate}" ContentTemplateSelector="{TemplateBinding FooterTemplateSelector}"/>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  
+  
+  <!-- _________________________ PopupResizerBar ______________________________________ -->
+
+  <!--ResizerBar Resource-->
+  <LinearGradientBrush
+				PresentationOptions:Freeze="true" 
+                x:Key="GalleryToolDropDownPresenter_FooterBarGradient"
+				StartPoint="0.5,0"
+				EndPoint="0.5,1">
+    <LinearGradientBrush.GradientStops>
+      <GradientStopCollection>
+        <GradientStop
+          Color="#FFffffff"
+          Offset="0" />
+        <GradientStop
+          Color="#FFffffff"
+          Offset="0.02" />
+        <GradientStop
+          Color="#FFc6c6c6"
+          Offset="0.9" />
+        <GradientStop
+          Color="#FFc6c6c6"
+          Offset="1" />
+      </GradientStopCollection>
+    </LinearGradientBrush.GradientStops>
+  </LinearGradientBrush>
+  
+  
+  <Style TargetType="{x:Type igWindows:PopupResizerBar}">
+    <Setter Property="Background" Value="#00000000"/>
+    <Setter Property="Foreground" Value="{StaticResource GalleryToolDropDownPresenter_FooterBarGradient}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="#00000000"/>
+    <Setter Property="Height" Value="12"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igWindows:PopupResizerBar}">
+          <Border SnapsToDevicePixels="True" Background="{TemplateBinding Foreground}" BorderBrush="#FFE1E1E1" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Margin="0">
+            <igWindows:CardPanel Margin="{TemplateBinding Padding}">
+              <igWindows:CardPanel x:Name="GlyphArea">
+                <!-- the glyph that is used when the resizemode is Both and the location is Bottom-->
+                <!-- TODO: replace with actual Glyph-->
+                <!--<Rectangle
+                    x:Name="BottomRightGlyph" 
+                    Fill="{TemplateBinding Foreground}" 
+                    Visibility="Collapsed" 
+                     Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Mode=OneWay}"
+                     />-->
+
+                <!-- the thumb is transparent and needs to be placed after the glyphs so that it is on top with respect to z-order -->
+                <Thumb x:Name="PART_Thumb" Background="Transparent" Foreground="Transparent" Opacity="0"/>
+
+                                <Grid
+										x:Name="BottomRightGlyph"
+										Visibility="Collapsed"
+										Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Mode=OneWay}"
+										VerticalAlignment="Bottom"
+										HorizontalAlignment="Right"
+										Margin="0,0,2,2"
+										Background="{x:Null}"
+										IsHitTestVisible="False">
+                                    <Path
+										  Margin="1,1,0,0"
+										  VerticalAlignment="Top"
+										  Height="6"
+										  Stretch="Fill"
+										  Opacity="1"
+										  Data="M 1,6 C1,6.5522918701171875 1.4477081298828125,7 2,7 2.5522918701171875,7 3,6.5522918701171875 3,6 3,5.4477081298828125 2.5522918701171875,5 2,5 1.4477081298828125,5 1,5.4477081298828125 1,6 zM 5,2 C5,2.5522918701171875 5.4477081298828125,3 6,3 6.5522918701171875,3 7,2.5522918701171875 7,2 7,1.4477081298828125 6.5522918701171875,1 6,1 5.4477081298828125,1 5,1.4477081298828125 5,2 zM 5,6 C5,6.5522918701171875 5.4477081298828125,7 6,7 6.5522918701171875,7 7,6.5522918701171875 7,6 7,5.4477081298828125 6.5522918701171875,5 6,5 5.4477081298828125,5 5,5.4477081298828125 5,6 z"
+										  Fill="#FFFFFFFF" SnapsToDevicePixels="True" HorizontalAlignment="Left" Width="6" />
+                                    <Grid
+										  Opacity="1"
+										  Margin="0,0,0,0"
+										  HorizontalAlignment="Left" Width="6">
+                                        <Path
+											  Margin="0,4,0,0"
+											  HorizontalAlignment="Left"
+											  VerticalAlignment="Top"
+											  Height="2"
+											  Width="2"
+											  Stretch="Fill"
+											  Opacity="1"
+											  Data="M 0,5 C0,4.4477081298828125 0.4477081298828125,4 1,4 1.5522918701171875,4 2,4.4477081298828125 2,5 2,5.5522918701171875 1.5522918701171875,6 1,6 0.4477081298828125,6 0,5.5522918701171875 0,5 z" SnapsToDevicePixels="True">
+                                            <Path.Fill>
+                                                <RadialGradientBrush
+                                                    Center="1,1"
+                                                    GradientOrigin="1,1"
+                                                    RadiusX="2.362003799491166"
+                                                    RadiusY="2.362003799491166">
+                                                    <RadialGradientBrush.GradientStops>
+                                                        <GradientStopCollection>
+                                                            <GradientStop
+                                                                Color="#FF444444"
+                                                                Offset="0" />
+                                                                                <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="0.7623000144958496" />
+                                                                                <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="1" />
+                                                        </GradientStopCollection>
+                                                    </RadialGradientBrush.GradientStops>
+                                                </RadialGradientBrush>
+                                            </Path.Fill>
+                                        </Path>
+                                        
+                                        <Path
+											  Margin="4,4,0,0"
+											  HorizontalAlignment="Left"
+											  VerticalAlignment="Top"
+											  Height="2"
+											  Width="2"
+											  Stretch="Fill"
+											  Opacity="1"
+											  Data="M 4,5 C4,4.4477081298828125 4.4477081298828125,4 5,4 5.5522918701171875,4 6,4.4477081298828125 6,5 6,5.5522918701171875 5.5522918701171875,6 5,6 4.4477081298828125,6 4,5.5522918701171875 4,5 z" SnapsToDevicePixels="True">
+                                            <Path.Fill>
+                                                <RadialGradientBrush
+                                                    Center="1,1"
+                                                    GradientOrigin="1,1"
+                                                    RadiusX="2.362003799491166"
+                                                    RadiusY="2.362003799491166">
+                                                    <RadialGradientBrush.GradientStops>
+                                                        <GradientStopCollection>
+                                                            <GradientStop
+                                                                Color="#FF444444"
+                                                                Offset="0" />
+                                                            <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="0.7623000144958496" />
+                                                            <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="1" />
+                                                        </GradientStopCollection>
+                                                    </RadialGradientBrush.GradientStops>
+                                                </RadialGradientBrush>
+                                            </Path.Fill>
+                                        </Path>
+                                        
+                                        <Path
+											  Margin="4,0,0,0"
+											  HorizontalAlignment="Left"
+											  VerticalAlignment="Top"
+											  Height="2"
+											  Width="2"
+											  Stretch="Fill"
+											  Opacity="1"
+											  Data="M 4,1 C4,0.4477081298828125 4.4477081298828125,0 5,0 5.5522918701171875,0 6,0.4477081298828125 6,1 6,1.5522918701171875 5.5522918701171875,2 5,2 4.4477081298828125,2 4,1.5522918701171875 4,1 z" SnapsToDevicePixels="True">
+                                            <Path.Fill>
+                                                <RadialGradientBrush
+                                                    Center="1,1"
+                                                    GradientOrigin="1,1"
+                                                    RadiusX="2.362003799491166"
+                                                    RadiusY="2.362003799491166">
+                                                    <RadialGradientBrush.GradientStops>
+                                                        <GradientStopCollection>
+                                                            <GradientStop
+                                                                Color="#FF444444"
+                                                                Offset="0" />
+                                                            <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="0.7623000144958496" />
+                                                            <GradientStop
+                                                                Color="#FFffffff"
+                                                                Offset="1" />
+                                                        </GradientStopCollection>
+                                                    </RadialGradientBrush.GradientStops>
+                                                </RadialGradientBrush>
+                                            </Path.Fill>
+                                        </Path>
+                                        
+                                    </Grid>
+                                </Grid>
+
+                                <!-- the glyph that is used when the resizemode is Both and the location is Top-->
+                            <Grid
+                            x:Name="TopRightGlyph"
+                            Visibility="Collapsed"
+                            d:LayoutOverrides="HorizontalAlignment"
+                            Background="{x:Null}"
+                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Mode=OneWay}"
+                            IsHitTestVisible="False">
+                            <Path SnapsToDevicePixels="True" HorizontalAlignment="Right" Margin="0,1,2,0" VerticalAlignment="Top" Width="6" Height="6" Fill="#FFFFFFFF" Stretch="Fill" Data="F1 M1,2.9802322E-08 C1.5522847,0 2,0.44771525 2,1 C2,1.5522847 1.5522847,2 1,2 0.44771525,2 0,1.5522847 -5.9604645E-08,1 0,0.44771525 0.44771525,0 1,2.9802322E-08 z M1,-4 C1.5522847,-4 2,-3.5522847 2,-3 C2,-2.4477153 1.5522847,-2 1,-2 0.44771525,-2 0,-2.4477153 -5.9604645E-08,-3 0,-3.5522847 0.44771525,-4 1,-4 z M-3,-4 C-2.4477153,-4 -2,-3.5522847 -2,-3 C-2,-2.4477153 -2.4477153,-2 -3,-2 -3.5522847,-2 -4,-2.4477153 -4,-3 -4,-3.5522847 -3.5522847,-4 -3,-4 z"/>
+                            <Grid
+                            Opacity="1"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Top">
+                            <Path
+                            Margin="0,2,7,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Height="2"
+                            Width="2"
+                            Stretch="Fill"
+                            Opacity="1"
+                            Data="M 0,5 C0,4.4477081298828125 0.4477081298828125,4 1,4 1.5522918701171875,4 2,4.4477081298828125 2,5 2,5.5522918701171875 1.5522918701171875,6 1,6 0.4477081298828125,6 0,5.5522918701171875 0,5 z" SnapsToDevicePixels="True">
+                            <Path.Fill>
+                            <RadialGradientBrush
+                            Center="1,1"
+                            GradientOrigin="1,1"
+                            RadiusX="2.362003799491166"
+                            RadiusY="2.362003799491166">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop
+                                            Color="#FF444444"
+                                            Offset="0" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="0.7623000144958496" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="1" />
+                                    </GradientStopCollection>
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                            </Path.Fill>
+                            </Path>
+                                
+                            <Path
+                            Margin="0,6,3,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Height="2"
+                            Width="2"
+                            Stretch="Fill"
+                            Opacity="1"
+                            Data="M 4,5 C4,4.4477081298828125 4.4477081298828125,4 5,4 5.5522918701171875,4 6,4.4477081298828125 6,5 6,5.5522918701171875 5.5522918701171875,6 5,6 4.4477081298828125,6 4,5.5522918701171875 4,5 z" SnapsToDevicePixels="True" >
+                            <Path.Fill>
+                            <RadialGradientBrush
+                            Center="1,1"
+                            GradientOrigin="1,1"
+                            RadiusX="2.362003799491166"
+                            RadiusY="2.362003799491166">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop
+                                            Color="#FF444444"
+                                            Offset="0" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="0.7623000144958496" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="1" />
+                                    </GradientStopCollection>
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                            </Path.Fill>
+                            </Path>
+
+                            <Path
+                            Margin="0,2,3,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Height="2"
+                            Width="2"
+                            Stretch="Fill"
+                            Opacity="1"
+                            Data="M 4,1 C4,0.4477081298828125 4.4477081298828125,0 5,0 5.5522918701171875,0 6,0.4477081298828125 6,1 6,1.5522918701171875 5.5522918701171875,2 5,2 4.4477081298828125,2 4,1.5522918701171875 4,1 z" SnapsToDevicePixels="True">
+                            <Path.Fill>
+                            <RadialGradientBrush
+                            Center="1,1"
+                            GradientOrigin="1,1"
+                            RadiusX="2.362003799491166"
+                            RadiusY="2.362003799491166">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop
+                                            Color="#FF444444"
+                                            Offset="0" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="0.7623000144958496" />
+                                                        <GradientStop
+                                            Color="#FFffffff"
+                                            Offset="1" />
+                                    </GradientStopCollection>
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                            </Path.Fill>
+                            </Path>
+                            </Grid>
+                            </Grid>
+
+                                <!-- the glyph that is used when the resizemode is VerticalOnly-->
+                                <Grid
+									x:Name="VerticalOnlyGlyph"
+									 IsHitTestVisible="False"
+									 Visibility="Collapsed"
+									 Margin="0,0,0,0"
+									 HorizontalAlignment="Center"
+									 Width="Auto"
+									 VerticalAlignment="Center"
+									 Height="Auto">
+                                    <Path SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="1,1,0,0" x:Name="WhiteShadows" VerticalAlignment="Top" Width="17" Height="2" Fill="#FFFFFFFF" Stretch="None" Data="F1 M16,5.9604645E-08 C16.552284,0 17,0.44771525 17,1 C17,1.5522847 16.552284,2 16,2 15.447715,2 15,1.5522847 15,1 15,0.44771525 15.447715,0 16,5.9604645E-08 z M11,5.9604645E-08 C11.552285,0 12,0.44771525 12,1 C12,1.5522847 11.552285,2 11,2 10.447715,2 10,1.5522847 10,1 10,0.44771525 10.447715,0 11,5.9604645E-08 z M6,5.9604645E-08 C6.5522847,0 7,0.44771525 7,1 C7,1.5522847 6.5522847,2 6,2 5.4477153,2 5,1.5522847 5,1 5,0.44771525 5.4477153,0 6,5.9604645E-08 z M0.99999994,5.9604645E-08 C1.5522847,0 2,0.44771525 1.9999999,1 C2,1.5522847 1.5522847,2 0.99999994,2 0.44771525,2 0,1.5522847 0,1 0,0.44771525 0.44771525,0 0.99999994,5.9604645E-08 z"/>
+                                    <Path
+											Height="2"
+											Width="2"
+											Stretch="Fill"
+											Opacity="1"
+											Data="M 4,5 C4,4.4477081298828125 4.4477081298828125,4 5,4 5.5522918701171875,4 6,4.4477081298828125 6,5 6,5.5522918701171875 5.5522918701171875,6 5,6 4.4477081298828125,6 4,5.5522918701171875 4,5 z" SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="0,0,6,0" x:Name="_1" VerticalAlignment="Top">
+                                    <Path.Fill>
+                                        <RadialGradientBrush
+                                              Center="1,1"
+                                              GradientOrigin="1,1"
+                                              RadiusX="2.362003799491166"
+                                              RadiusY="2.362003799491166">
+                                            <RadialGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop
+                                                            Color="#FF444444"
+                                                            Offset="0" />
+                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="0.7623000144958496" />
+                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="1" />
+                                                </GradientStopCollection>
+                                            </RadialGradientBrush.GradientStops>
+                                        </RadialGradientBrush>
+                                    </Path.Fill>
+                                    </Path>
+                
+                                    <Path
+											Margin="5,0,0,0"
+											HorizontalAlignment="Left"
+											VerticalAlignment="Top"
+											Height="2"
+											Width="2"
+											Stretch="Fill"
+											Opacity="1"
+											Data="M 0,5 C0,4.4477081298828125 0.4477081298828125,4 1,4 1.5522918701171875,4 2,4.4477081298828125 2,5 2,5.5522918701171875 1.5522918701171875,6 1,6 0.4477081298828125,6 0,5.5522918701171875 0,5 z" SnapsToDevicePixels="True" x:Name="_2">
+                                    <Path.Fill>
+                                        <RadialGradientBrush
+                                              Center="1,1"
+                                              GradientOrigin="1,1"
+                                              RadiusX="2.362003799491166"
+                                              RadiusY="2.362003799491166">
+                                            <RadialGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop
+                                                            Color="#FF444444"
+                                                            Offset="0" />
+                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="0.7623000144958496" />
+                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="1" />
+                                                </GradientStopCollection>
+                                            </RadialGradientBrush.GradientStops>
+                                        </RadialGradientBrush>
+                                    </Path.Fill>
+                                    </Path>
+
+                                    <Path
+											Margin="10,0,0,0"
+											HorizontalAlignment="Left"
+											VerticalAlignment="Top"
+											Height="2"
+											Width="2"
+											Stretch="Fill"
+											Opacity="1"
+											Data="M 4,5 C4,4.4477081298828125 4.4477081298828125,4 5,4 5.5522918701171875,4 6,4.4477081298828125 6,5 6,5.5522918701171875 5.5522918701171875,6 5,6 4.4477081298828125,6 4,5.5522918701171875 4,5 z" SnapsToDevicePixels="True" x:Name="_3">
+                                        <Path.Fill>
+                                            <RadialGradientBrush
+                                              Center="1,1"
+                                              GradientOrigin="1,1"
+                                              RadiusX="2.362003799491166"
+                                              RadiusY="2.362003799491166">
+                                                <RadialGradientBrush.GradientStops>
+                                                    <GradientStopCollection>
+                                                        <GradientStop
+                                                            Color="#FF444444"
+                                                            Offset="0" />
+                                                        <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="0.7623000144958496" />
+                                                        <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="1" />
+                                                    </GradientStopCollection>
+                                                </RadialGradientBrush.GradientStops>
+                                            </RadialGradientBrush>
+                                        </Path.Fill>
+                                    </Path>
+                                    
+                                    <Path
+											Margin="15,0,0,0"
+											HorizontalAlignment="Left"
+											VerticalAlignment="Top"
+											Height="2"
+											Width="2"
+											Stretch="Fill"
+											Opacity="1"
+											Data="M 4,1 C4,0.4477081298828125 4.4477081298828125,0 5,0 5.5522918701171875,0 6,0.4477081298828125 6,1 6,1.5522918701171875 5.5522918701171875,2 5,2 4.4477081298828125,2 4,1.5522918701171875 4,1 z" SnapsToDevicePixels="True" x:Name="_4">
+                                        <Path.Fill>
+                                            <RadialGradientBrush
+                                              Center="1,1"
+                                              GradientOrigin="1,1"
+                                              RadiusX="2.362003799491166"
+                                              RadiusY="2.362003799491166">
+                                                <RadialGradientBrush.GradientStops>
+                                                    <GradientStopCollection>
+                                                        <GradientStop
+                                                            Color="#FF444444"
+                                                            Offset="0" />
+                                                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="0.7623000144958496" />
+                                                                                    <GradientStop
+                                                            Color="#FFffffff"
+                                                            Offset="1" />
+                                                    </GradientStopCollection>
+                                                </RadialGradientBrush.GradientStops>
+                                            </RadialGradientBrush>
+                                        </Path.Fill>
+                                    </Path>
+                                </Grid>
+                  
+                            </igWindows:CardPanel>
+            </igWindows:CardPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Bottom"/>
+              </MultiTrigger.Conditions>
+             <Setter TargetName="BottomRightGlyph" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+             <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+              </MultiTrigger>
+
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="ResizeMode" Value="Both"/>
+								<Condition Property="Location" Value="Bottom"/>
+								<Condition Property="FlowDirection" Value="RightToLeft"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+						</MultiTrigger>
+
+						<MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Top"/>
+              </MultiTrigger.Conditions>
+             <Setter TargetName="TopRightGlyph" Property="Visibility" Value="Visible"/>
+             <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+             <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+            </MultiTrigger>
+
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="ResizeMode" Value="Both"/>
+								<Condition Property="Location" Value="Top"/>
+								<Condition Property="FlowDirection" Value="RightToLeft"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+						</MultiTrigger>
+
+						<Trigger Property="ResizeMode" Value="VerticalOnly">
+              <Setter TargetName="VerticalOnlyGlyph" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNS"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+
+    <!-- ================================ -->
+    <!--          ToolWindow          -->
+    <!-- ================================ -->
+    <Style TargetType="{x:Type igWindows:ToolWindow}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowBackgroundFillKey}}" />
+        <Setter Property="BorderThickness" Value="15" />
+        <Setter Property="BorderThickness" Value="{Binding Path=PreferredBorderThickness, RelativeSource={x:Static RelativeSource.Self}}" />
+        <!-- AS 6/30/10 TFS14299
+        <Setter Property="SnapsToDevicePixels" Value="True"/>-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
+                    <AdornerDecorator>
+                        <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <Border x:Name="windowOuterBorder" BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveOuterBorderFillKey}}" BorderThickness="1,1,1,1"/>
+                            <Border x:Name="windowInnerBorder" BorderThickness="1,1,1,1" BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveInnerBorderFillKey}}" Margin="1,1,1,1"/>
+                            <Border x:Name="windowCenterBorder" Margin="2,2,2,2" Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCenterFillKey}}">
+                                <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition x:Name="captionRow" Height="Auto" />
+                                        <RowDefinition x:Name="contentRow" Height="*" />
+                                    </Grid.RowDefinitions>
+									<!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
+                                    <igWindows:CardPanel x:Name="PART_Caption" Background="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionFillKey}}" Visibility="{TemplateBinding CaptionVisibility}">
+                                        <DockPanel x:Name="captionPanel" Margin="6,6,6,2">
+                                            <Button 
+                                                Style="{StaticResource ToolWindowCloseButtonStyle}" 
+                                                Command="{x:Static igWindows:ToolWindow.CloseCommand}" 
+                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                DockPanel.Dock="Right"/>
+											<!-- NA 2011.1 - ToolWindow changes -->
+											<Button x:Name="MaximizeButton"
+												Style="{StaticResource ToolWindowMaximizeButtonStyle}"
+                                                Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
+												Visibility="{TemplateBinding MaximizeButtonVisibility}"
+                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+												ToolTip="{StaticResource maximizeToolTip}"
+                                                DockPanel.Dock="Right"
+                                                Margin="1,0"/>
+											<Button x:Name="MinimizeButton" 
+												Style="{StaticResource ToolWindowMinimizeButtonStyle}"
+                                                Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
+												Visibility="{TemplateBinding MinimizeButtonVisibility}"
+                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+												ToolTip="{StaticResource minimizeToolTip}"
+                                                DockPanel.Dock="Right"/>
+											<TextBlock x:Name="txtCaption"
+											           Text="{TemplateBinding Title}" 
+                                                       IsHitTestVisible="False" 
+                                                       TextTrimming="CharacterEllipsis"
+											           Foreground="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionTextFillKey}}"
+											           FontFamily="{DynamicResource {x:Static SystemFonts.SmallCaptionFontFamilyKey}}"
+											           FontSize="{DynamicResource {x:Static SystemFonts.SmallCaptionFontSizeKey}}"
+											           FontStyle="{DynamicResource {x:Static SystemFonts.SmallCaptionFontStyleKey}}"
+											           FontWeight="{DynamicResource {x:Static SystemFonts.SmallCaptionFontWeightKey}}"
+											           TextDecorations="{DynamicResource {x:Static SystemFonts.SmallCaptionFontTextDecorationsKey}}"/>
+								        </DockPanel>
+                                    </igWindows:CardPanel>
+                                    <Grid x:Name="Content" Background="{TemplateBinding Background}" Margin="6,0,6,6" Grid.Row="1">
+                                        <ContentPresenter x:Name="PART_Content"
+										    Grid.Row="1"
+										    Margin="{TemplateBinding Padding}"
+										    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										    ContentSource="Content" />
+                                        <!-- Put the resize grip within the border so it doesn't overlap the border -->
+                                        <Grid Name="PART_ResizeGrip" Grid.RowSpan="2" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Collapsed">
+                                            <!-- We need to wrap the resize grip in an element and prevent hittesting on the resize grip -->
+                                            <ResizeGrip IsTabStop="False" IsHitTestVisible="False" />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <Grid x:Name="resizeAreas" Visibility="Collapsed" FlowDirection="LeftToRight">
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderTop" BorderLocation="Top"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderLeft" BorderLocation="Left"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottom" BorderLocation="Bottom"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderRight" BorderLocation="Right"/>
+
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderTopLeft" BorderLocation="TopLeft"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderTopRight" BorderLocation="TopRight"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomLeft" BorderLocation="BottomLeft"/>
+                                <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomRight" BorderLocation="BottomRight"/>
+                            </Grid>
+                        </Grid>
+                    </AdornerDecorator>
+                    <ControlTemplate.Triggers>
+						<!-- NA 2011.1 - ToolWindow changes -->
+						<Trigger Property="WindowState" Value="Minimized">
+							<Setter Property="Command" TargetName="MinimizeButton" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+							<Setter Property="ToolTip" TargetName="MinimizeButton" Value="{StaticResource restoreUpToolTip}" />
+							<Setter Property="Style" TargetName="MinimizeButton" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
+						</Trigger>
+						<Trigger Property="WindowState" Value="Maximized">
+							<Setter Property="Command" TargetName="MaximizeButton" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+							<Setter Property="ToolTip" TargetName="MaximizeButton" Value="{StaticResource restoreDownToolTip}" />
+							<Setter Property="Style" TargetName="MaximizeButton" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
+						</Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="WindowState" Value="Minimized" />
+                                <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                <!-- AS 1/4/12 TFS85418 -->
+                                <Condition Property="CaptionVisibility" Value="Visible" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="PART_Content" Value="Collapsed" />
+                            <Setter Property="Height" TargetName="captionRow" Value="*" />
+							<Setter Property="Height" TargetName="contentRow" Value="0" />
+							<Setter Property="Margin" TargetName="captionPanel" Value="6,0" />
+							<Setter Property="VerticalAlignment" TargetName="txtCaption" Value="Center" />
+						</MultiTrigger>
+						
+						<!-- AS 6/24/11 FloatingWindowCaptionSource - Don't show any non-client area when maximized and window style is none -->
+						<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="WindowState" Value="Maximized" />
+                                <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                            </MultiTrigger.Conditions>
+							<Setter Property="Margin" TargetName="Content" Value="0" />
+						</MultiTrigger>
+						
+						<Trigger Property="IsActive" Value="True">
+                            <Setter Property="Foreground" TargetName="txtCaption" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionTextFillKey}}" />
+                            <Setter TargetName="windowOuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveOuterBorderFillKey}}"/>
+                            <Setter TargetName="windowInnerBorder" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveInnerBorderFillKey}}"/>
+                            <Setter TargetName="windowCenterBorder" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCenterFillKey}}"/>
+                            <Setter TargetName="PART_Caption" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionFillKey}}"/>
+                        </Trigger>
+
+                        <!-- Do not allow resizing unless canresize or canresizewithgrip -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="CanResize" />
+                                <Condition Property="IsUsingOSNonClientArea" Value="False" />
+								<!-- NA 2011.1 - ToolWindow changes -->
+								<Condition Property="WindowState" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="resizeAreas" Value="Visible" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                <Condition Property="IsUsingOSNonClientArea" Value="False" />
+								<!-- NA 2011.1 - ToolWindow changes -->
+								<Condition Property="WindowState" Value="Normal" />
+							</MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="resizeAreas" Value="Visible" />
+                        </MultiTrigger>
+
+						<!-- NA 2011.1 - ToolWindow changes -->
+						<!--<Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                            <Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
+                        </Trigger>-->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+								<Condition Property="WindowState" Value="Normal" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
+						</MultiTrigger>
+
+						<Trigger Property="IsUsingOSNonClientArea" Value="True">
+                            <Setter Property="Visibility" TargetName="PART_Caption" Value="Collapsed" />
+                            <Setter Property="Margin" TargetName="Content" Value="0,0,0,0" />
+                            <Setter Property="Visibility" TargetName="windowOuterBorder" Value="Collapsed" />
+                            <Setter Property="Visibility" TargetName="windowInnerBorder" Value="Collapsed" />
+                            <Setter Property="Background" TargetName="windowCenterBorder" Value="Transparent" />
+                            <Setter Property="Padding" TargetName="windowCenterBorder" Value="0,0,0,0" />
+                            <Setter Property="Margin" TargetName="windowCenterBorder" Value="0,0,0,0" />
+                        </Trigger>
+
+						<!-- AS 6/24/11 FloatingWindowCaptionSource - Show space on top when we're not providing the caption -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsUsingOSNonClientArea" Value="False" />
+								<Condition Property="CaptionVisibility" Value="Collapsed" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Margin" TargetName="Content" Value="6" />
+						</MultiTrigger>
+						
+						<!-- AS 6/24/11 FloatingWindowCaptionSource - Hide the resize area when maximized and we're providing the nonclient area. -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsUsingOSNonClientArea" Value="False" />
+								<Condition Property="WindowState" Value="Maximized" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Margin" TargetName="windowCenterBorder" Value="0" />
+							<Setter Property="Visibility" TargetName="windowInnerBorder" Value="Collapsed" />
+							<Setter Property="Visibility" TargetName="windowOuterBorder" Value="Collapsed" />
+							<Setter Property="Margin" TargetName="Content" Value="0" />
+						</MultiTrigger>
+                        
+                        <!-- AS 1/4/12 TFS85418 -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="WindowState" Value="Minimized" />
+                                <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                <Condition Property="CaptionVisibility" Value="Collapsed" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Margin" TargetName="Content" Value="0" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+	
+    <!-- ================================ -->
+    <!--          TileDragIndicator       -->
+    <!-- ================================ -->
+    <!-- JJD 12/14/09 - added -->
+	<Style TargetType="{x:Type tiles:TileDragIndicator}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type tiles:TileDragIndicator}">
+                    <ContentPresenter/>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

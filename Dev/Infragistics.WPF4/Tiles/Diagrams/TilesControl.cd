@@ -1,0 +1,960 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.Tiles.Tile">
+    <Position X="20.25" Y="2.25" Width="3.5" />
+    <Members>
+      <Field Name="_constraints" Hidden="true" />
+      <Field Name="_constraintsMaximized" Hidden="true" />
+      <Field Name="_constraintsMinimized" Hidden="true" />
+      <Field Name="_constraintsMinimizedExpanded" Hidden="true" />
+      <Field Name="_headerPresenter" Hidden="true" />
+      <Field Name="_isSynchonizingFromItemInfo" Hidden="true" />
+      <Field Name="_panel" Hidden="true" />
+      <Field Name="_scaleTransform" Hidden="true" />
+      <Field Name="_snapshotImage" Hidden="true" />
+      <Field Name="_snapshotImageScaleTransform" Hidden="true" />
+      <Field Name="_tilesControl" Hidden="true" />
+      <Field Name="_tracker" Hidden="true" />
+      <Field Name="_transformGroup" Hidden="true" />
+      <Field Name="_translateTransform" Hidden="true" />
+      <Field Name="AllowMaximizeProperty" Hidden="true" />
+      <Method Name="CanExecuteCommandHandler" Hidden="true" />
+      <Field Name="CloseActionProperty" Hidden="true" />
+      <Field Name="CloseButtonVisibilityProperty" Hidden="true" />
+      <Field Name="CloseButtonVisibilityResolvedProperty" Hidden="true" />
+      <Field Name="CloseButtonVisibilityResolvedPropertyKey" Hidden="true" />
+      <Field Name="CloseCommand" Hidden="true" />
+      <Method Name="CoerceContentTemplate" Hidden="true" />
+      <Method Name="CoerceRenderTransform" Hidden="true" />
+      <Method Name="CoerceState" Hidden="true" />
+      <Method Name="CoerceVisibility" Hidden="true" />
+      <Field Name="ColumnProperty" Hidden="true" />
+      <Field Name="ColumnSpanProperty" Hidden="true" />
+      <Field Name="ColumnWeightProperty" Hidden="true" />
+      <Field Name="ConstraintsMaximizedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedExpandedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedProperty" Hidden="true" />
+      <Field Name="ConstraintsProperty" Hidden="true" />
+      <Field Name="ContentTemplateMaximizedProperty" Hidden="true" />
+      <Field Name="ContentTemplateMinimizedExpandedProperty" Hidden="true" />
+      <Field Name="ContentTemplateMinimizedProperty" Hidden="true" />
+      <Field Name="ContentVisibilityProperty" Hidden="true" />
+      <Field Name="ContentVisibilityPropertyKey" Hidden="true" />
+      <Method Name="ExecuteCommandHandler" Hidden="true" />
+      <Field Name="ExpandButtonVisibilityProperty" Hidden="true" />
+      <Field Name="ExpandButtonVisibilityResolvedProperty" Hidden="true" />
+      <Field Name="ExpandButtonVisibilityResolvedPropertyKey" Hidden="true" />
+      <Method Name="GetVisualChild" Hidden="true" />
+      <Field Name="HasHeaderProperty" Hidden="true" />
+      <Field Name="HasHeaderPropertyKey" Hidden="true" />
+      <Property Name="HasHwndHost" Hidden="true" />
+      <Field Name="HasImageProperty" Hidden="true" />
+      <Field Name="HasImagePropertyKey" Hidden="true" />
+      <Property Name="HeaderPresenter" Hidden="true" />
+      <Field Name="HeaderProperty" Hidden="true" />
+      <Field Name="HeaderTemplateProperty" Hidden="true" />
+      <Field Name="HeaderTemplateSelectorProperty" Hidden="true" />
+      <Field Name="ImageProperty" Hidden="true" />
+      <Method Name="InitializeHeaderPresenter" Hidden="true" />
+      <Method Name="InitializePanel" Hidden="true" />
+      <Method Name="InitializeTilesControl" Hidden="true" />
+      <Property Name="IResizableElement.ResizeContext" Hidden="true" />
+      <Field Name="IsClosedProperty" Hidden="true" />
+      <Field Name="IsDraggingProperty" Hidden="true" />
+      <Field Name="IsExpandedWhenMinimizedProperty" Hidden="true" />
+      <Property Name="IsExpandedWhenMinimizedResolved" Hidden="true" />
+      <Method Name="IsOldStateLarger" Hidden="true" />
+      <Field Name="IsSwapTargetProperty" Hidden="true" />
+      <Property Name="LogicalChildren" Hidden="true" />
+      <Field Name="MaximizeButtonVisibilityProperty" Hidden="true" />
+      <Field Name="MaximizeButtonVisibilityResolvedProperty" Hidden="true" />
+      <Field Name="MaximizeButtonVisibilityResolvedPropertyKey" Hidden="true" />
+      <Field Name="MaximizedBox" Hidden="true" />
+      <Field Name="MinimizedBox" Hidden="true" />
+      <Field Name="MinimizedExpandedBox" Hidden="true" />
+      <Field Name="NormalBox" Hidden="true" />
+      <Method Name="OnAnimationEnded" Hidden="true" />
+      <Method Name="OnConstraintsChanged" Hidden="true" />
+      <Method Name="OnConstraintsMaximizedChanged" Hidden="true" />
+      <Method Name="OnConstraintsMinimizedChanged" Hidden="true" />
+      <Method Name="OnConstraintsMinimizedExpandedChanged" Hidden="true" />
+      <Method Name="OnConstraintsPropertyChanged" Hidden="true" />
+      <Method Name="OnContentTemplateMaximizedChanged" Hidden="true" />
+      <Method Name="OnContentTemplateMinimizedChanged" Hidden="true" />
+      <Method Name="OnContentTemplateMinimizedExpandedChanged" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnExpandButtonVisibilityChanged" Hidden="true" />
+      <Method Name="OnHeaderChanged" Hidden="true" />
+      <Method Name="OnImageChanged" Hidden="true" />
+      <Method Name="OnInitialized" Hidden="true" />
+      <Method Name="OnIsClosedChanged" Hidden="true" />
+      <Method Name="OnIsExpandedWhenMinimizedChanged" Hidden="true" />
+      <Method Name="OnLayoutVersionChanged" Hidden="true" />
+      <Method Name="OnRenderTransformChanged" Hidden="true" />
+      <Method Name="OnStateChanged" Hidden="true" />
+      <Method Name="OnVisualParentChanged" Hidden="true" />
+      <Property Name="Panel" Hidden="true" />
+      <Method Name="ProcessConstraintsChanged" Hidden="true" />
+      <Method Name="ReleaseSnapshotImage" Hidden="true" />
+      <Field Name="RowProperty" Hidden="true" />
+      <Field Name="RowSpanProperty" Hidden="true" />
+      <Field Name="RowWeightProperty" Hidden="true" />
+      <Field Name="s_HeaderStringFormatProperty" Hidden="true" />
+      <Field Name="SaveInLayoutProperty" Hidden="true" />
+      <Field Name="SerializationIdProperty" Hidden="true" />
+      <Method Name="SetContentVisibility" Hidden="true" />
+      <Method Name="SetResolvedVisibilityProperties" Hidden="true" />
+      <Method Name="SnapshotImage" Hidden="true" />
+      <Field Name="StateProperty" Hidden="true" />
+      <Method Name="SynchIsExpandedFromState" Hidden="true" />
+      <Method Name="SynchStateFromInfo" Hidden="true" />
+      <Method Name="Tile" Hidden="true" />
+      <Property Name="TilesControl" Hidden="true" />
+      <Field Name="ToggleMaximizedCommand" Hidden="true" />
+      <Field Name="ToggleMinimizedExpansionCommand" Hidden="true" />
+      <Method Name="UpdateTransform" Hidden="true" />
+      <Property Name="VisualChildrenCount" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.Tiles.Tile.HwndHostTracker" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Tile.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ThOH5kUK7hAmTOgYuA1Z1s5bAVw+K3qRCqgY7gCAomI=</HashCode>
+      <FileName>Tile.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="State" />
+      <Property Name="CloseAction" />
+      <Property Name="Constraints" />
+      <Property Name="ConstraintsMaximized" />
+      <Property Name="ConstraintsMinimized" />
+      <Property Name="ConstraintsMinimizedExpanded" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.TilesPanel">
+    <Position X="7.25" Y="11.25" Width="3" />
+    <Members>
+      <Field Name="_currentMinimizedExpandedTile" Hidden="true" />
+      <Field Name="_interTileAreaSpacingResolved" Hidden="true" />
+      <Field Name="_interTileSpacingX" Hidden="true" />
+      <Field Name="_interTileSpacingXMaximizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingXMinimizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingY" Hidden="true" />
+      <Field Name="_interTileSpacingYMaximizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingYMinimizedResolved" Hidden="true" />
+      <Field Name="_isInitializingTilesControl" Hidden="true" />
+      <Field Name="_isSettingTileState" Hidden="true" />
+      <Field Name="_itemsControl" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_maximizedItems" Hidden="true" />
+      <Field Name="_maximizedItemsReadOnly" Hidden="true" />
+      <Field Name="_maximizedModeSettings" Hidden="true" />
+      <Field Name="_normalModeSettings" Hidden="true" />
+      <Field Name="_standAloneManager" Hidden="true" />
+      <Field Name="_tilesControl" Hidden="true" />
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="BumpLayoutVersion" Hidden="true" />
+      <Method Name="CalculateResolvedSpacing" Hidden="true" />
+      <Property Name="CanDragTiles" Hidden="true" />
+      <Method Name="CanSwapContainers" Hidden="true" />
+      <Method Name="ChangeTileState" Hidden="true" />
+      <Method Name="ChangeTileStateHelper" Hidden="true" />
+      <Method Name="CloseTile" Hidden="true" />
+      <Field Name="ConstraintsMaximizedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedExpandedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedProperty" Hidden="true" />
+      <Field Name="ConstraintsProperty" Hidden="true" />
+      <Property Name="CurrentMinimizedExpandedTile" Hidden="true" />
+      <Method Name="ExecuteTileCommandImpl" Hidden="true" />
+      <Method Name="FindSlotForNewlyRealizedRecordPresenter" Hidden="true" />
+      <Method Name="GetAllowTileDragging" Hidden="true" />
+      <Method Name="GetConstraints" Hidden="true" />
+      <Method Name="GetConstraintsMaximized" Hidden="true" />
+      <Method Name="GetConstraintsMinimized" Hidden="true" />
+      <Method Name="GetConstraintsMinimizedExpanded" Hidden="true" />
+      <Method Name="GetContainerConstraints" Hidden="true" />
+      <Method Name="GetContainerConstraintsInternal" Hidden="true" />
+      <Method Name="GetContainerState" Hidden="true" />
+      <Method Name="GetDefaultConstraints" Hidden="true" />
+      <Method Name="GetDefaultConstraintsInternal" Hidden="true" />
+      <Method Name="GetExplicitMinimizedAreaExtent" Hidden="true" />
+      <Method Name="GetGenerator" Hidden="true" />
+      <Method Name="GetGeneratorPositionFromItemIndex" Hidden="true" />
+      <Method Name="GetHorizontalTileAreaAlignment" Hidden="true" />
+      <Method Name="GetIndexInMaximizedCollection" Hidden="true" />
+      <Method Name="GetInterTileAreaSpacing" Hidden="true" />
+      <Method Name="GetInterTileSpacing" Hidden="true" />
+      <Method Name="GetIsExpandedWhenMinimizedHelper" Hidden="true" />
+      <Method Name="GetIsInMaximizedMode" Hidden="true" />
+      <Method Name="GetManager" Hidden="true" />
+      <Method Name="GetMaxColumns" Hidden="true" />
+      <Method Name="GetMaximizedItemLimit" Hidden="true" />
+      <Method Name="GetMaximizedItems" Hidden="true" />
+      <Method Name="GetMaximizedTileLayoutOrder" Hidden="true" />
+      <Method Name="GetMaximizedTileLocation" Hidden="true" />
+      <Method Name="GetMaxRows" Hidden="true" />
+      <Method Name="GetMinColumns" Hidden="true" />
+      <Method Name="GetMinRows" Hidden="true" />
+      <Method Name="GetRepositionAnimation" Hidden="true" />
+      <Method Name="GetResizeAnimation" Hidden="true" />
+      <Method Name="GetSerializationId" Hidden="true" />
+      <Method Name="GetShouldAnimate" Hidden="true" />
+      <Method Name="GetShowAllMinimizedTiles" Hidden="true" />
+      <Method Name="GetShowAllTiles" Hidden="true" />
+      <Method Name="GetSplitterRect" Hidden="true" />
+      <Method Name="GetSynchronizedSize" Hidden="true" />
+      <Method Name="GetTileAreaPadding" Hidden="true" />
+      <Method Name="GetTileLayoutOrder" Hidden="true" />
+      <Method Name="GetVerticalTileAreaAlignment" Hidden="true" />
+      <Method Name="InitializeTilesControl" Hidden="true" />
+      <Property Name="InterTileAreaSpacingResolved" Hidden="true" />
+      <Field Name="InterTileAreaSpacingResolvedProperty" Hidden="true" />
+      <Field Name="InterTileAreaSpacingResolvedPropertyKey" Hidden="true" />
+      <Property Name="InterTileSpacingXMaximizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingXMaximizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingXMaximizedResolvedPropertyKey" Hidden="true" />
+      <Property Name="InterTileSpacingXMinimizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingXMinimizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingXMinimizedResolvedPropertyKey" Hidden="true" />
+      <Field Name="InterTileSpacingXProperty" Hidden="true" />
+      <Property Name="InterTileSpacingYMaximizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingYMaximizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingYMaximizedResolvedPropertyKey" Hidden="true" />
+      <Property Name="InterTileSpacingYMinimizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingYMinimizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingYMinimizedResolvedPropertyKey" Hidden="true" />
+      <Field Name="InterTileSpacingYProperty" Hidden="true" />
+      <Method Name="IsElementInArrangeCache" Hidden="true" />
+      <Property Name="IsExpandedWhenMinimizedDefault" Hidden="true" />
+      <Field Name="IsInMaximizedModeProperty" Hidden="true" />
+      <Field Name="IsInMaximizedModePropertyKey" Hidden="true" />
+      <Property Name="IsOkToCleanupUnusedGeneratedElements" Hidden="true" />
+      <Property Name="Items" Hidden="true" />
+      <Property Name="LayoutVersion" Hidden="true" />
+      <Field Name="LayoutVersionProperty" Hidden="true" />
+      <Field Name="LayoutVersionPropertyKey" Hidden="true" />
+      <Property Name="Manager" Hidden="true" />
+      <Property Name="MaximizedItemsInternal" Hidden="true" />
+      <Field Name="MaximizedModeSettingsProperty" Hidden="true" />
+      <Property Name="MaximizedModeSettingsSafe" Hidden="true" />
+      <Field Name="MaximizedTileLimitProperty" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Property Name="MinimizedAreaCurrentExtent" Hidden="true" />
+      <Property Name="MinimizedAreaExplicitExtent" Hidden="true" />
+      <Property Name="MinimizedAreaMaxExtent" Hidden="true" />
+      <Property Name="MinimizedAreaMinExtent" Hidden="true" />
+      <Method Name="MoveTileHelper" Hidden="true" />
+      <Field Name="NormalModeSettingsProperty" Hidden="true" />
+      <Property Name="NormalModeSettingsSafe" Hidden="true" />
+      <Method Name="OnAnimationEnded" Hidden="true" />
+      <Method Name="OnConstraintPropertyChanged" Hidden="true" />
+      <Method Name="OnContainersSwapped" Hidden="true" />
+      <Method Name="OnInterTileAreaSpacingResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXMaximizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXMinimizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYMaximizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYMinimizedResolvedChanged" Hidden="true" />
+      <Method Name="OnMaximizedModeSettingsChanged" Hidden="true" />
+      <Method Name="OnMaximizedModeSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnMaximizedTileLimitChanged" Hidden="true" />
+      <Method Name="OnNormalModeSettingsChanged" Hidden="true" />
+      <Method Name="OnNormalModeSettingsPropertyChanged" Hidden="true" />
+      <Method Name="OnTileCloseActionChanged" Hidden="true" />
+      <Method Name="OnTileClosed" Hidden="true" />
+      <Method Name="OnTileClosing" Hidden="true" />
+      <Method Name="OnTileDragging" Hidden="true" />
+      <Method Name="OnTileStateChanged" Hidden="true" />
+      <Method Name="OnTileStateChanging" Hidden="true" />
+      <Method Name="OnTileSwapped" Hidden="true" />
+      <Method Name="OnTileSwapping" Hidden="true" />
+      <Method Name="ProcessNewMaximizedTileLimit" Hidden="true" />
+      <Method Name="RaiseTileClosed" Hidden="true" />
+      <Method Name="RaiseTileClosing" Hidden="true" />
+      <Method Name="RaiseTileDragging" Hidden="true" />
+      <Method Name="RaiseTileStateChanged" Hidden="true" />
+      <Method Name="RaiseTileStateChanging" Hidden="true" />
+      <Method Name="RaiseTileSwapped" Hidden="true" />
+      <Method Name="RaiseTileSwapping" Hidden="true" />
+      <Method Name="RefreshTileContentVisibility" Hidden="true" />
+      <Field Name="s_DefaultMaximizedModeSettings" Hidden="true" />
+      <Field Name="s_DefaultNormalModeSettings" Hidden="true" />
+      <Field Name="SerializationIdProperty" Hidden="true" />
+      <Method Name="SetConstraints" Hidden="true" />
+      <Method Name="SetConstraintsMaximized" Hidden="true" />
+      <Method Name="SetConstraintsMinimized" Hidden="true" />
+      <Method Name="SetConstraintsMinimizedExpanded" Hidden="true" />
+      <Method Name="SetSerializationId" Hidden="true" />
+      <Property Name="ShouldAnimate" Hidden="true" />
+      <Method Name="StartDrag" Hidden="true" />
+      <Method Name="SyncItemInfo" Hidden="true" />
+      <Method Name="SyncTileFromItemInfo" Hidden="true" />
+      <Property Name="TileArea" Hidden="true" />
+      <Field Name="TileAreaPaddingProperty" Hidden="true" />
+      <Field Name="TileCloseActionProperty" Hidden="true" />
+      <Field Name="TileClosedEvent" Hidden="true" />
+      <Field Name="TileClosingEvent" Hidden="true" />
+      <Field Name="TileDraggingEvent" Hidden="true" />
+      <Method Name="TileFromItem" Hidden="true" />
+      <Property Name="TilesControl" Hidden="true" />
+      <Method Name="TilesPanel" Hidden="true" />
+      <Field Name="TileStateChangedEvent" Hidden="true" />
+      <Field Name="TileStateChangingEvent" Hidden="true" />
+      <Field Name="TileSwappedEvent" Hidden="true" />
+      <Field Name="TileSwappingEvent" Hidden="true" />
+      <Method Name="UpdateTransform" Hidden="true" />
+      <Method Name="ValidateColumnRow" Hidden="true" />
+      <Method Name="ValidateColumnRowSpan" Hidden="true" />
+      <Method Name="ValidateColumnRowWeight" Hidden="true" />
+      <Method Name="ValidateInterTileSpacing" Hidden="true" />
+      <Method Name="ValidateMaximizedTileLimit" Hidden="true" />
+      <Method Name="ValidateTileCloseAction" Hidden="true" />
+      <Method Name="VerifyMaximizedItems" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.Tiles.TilesPanel.TileMgr" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TilesPanel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="MaximizedModeSettings" Type="Infragistics.Windows.Tiles.MaximizedModeSettings" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.25" Y="11.562" />
+        <Point X="10.25" Y="11.57" />
+        <Point X="12.312" Y="11.57" />
+        <Point X="12.312" Y="9.079" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.07" Y="0.354" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="NormalModeSettings" Type="Infragistics.Windows.Tiles.NormalModeSettings" FixedFromPoint="true">
+      <Path>
+        <Point X="8.188" Y="11.25" />
+        <Point X="8.188" Y="7.002" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.091" Y="3.413" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>bJoE/FfQO38iLJLjSh69VU/QE8v2PDmcd3aqKxgL33E=</HashCode>
+      <FileName>TilesPanel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MaximizedModeSettings" />
+      <Property Name="NormalModeSettings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.XamTilesControl">
+    <Position X="0.5" Y="1.75" Width="2.75" />
+    <Members>
+      <Field Name="_extraVisualChildren" Hidden="true" />
+      <Field Name="_headerPath" Hidden="true" />
+      <Field Name="_interTileAreaSpacingResolved" Hidden="true" />
+      <Field Name="_interTileSpacingX" Hidden="true" />
+      <Field Name="_interTileSpacingXMaximizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingXMinimizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingY" Hidden="true" />
+      <Field Name="_interTileSpacingYMaximizedResolved" Hidden="true" />
+      <Field Name="_interTileSpacingYMinimizedResolved" Hidden="true" />
+      <Field Name="_isLoadingLayout" Hidden="true" />
+      <Field Name="_itemSerializationMap" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_manager" Hidden="true" />
+      <Field Name="_maximizedItems" Hidden="true" />
+      <Field Name="_maximizedItemsReadOnly" Hidden="true" />
+      <Field Name="_minimizedAreaExplicitExtentX" Hidden="true" />
+      <Field Name="_minimizedAreaExplicitExtentY" Hidden="true" />
+      <Field Name="_panel" Hidden="true" />
+      <Field Name="_resizeController" Hidden="true" />
+      <Field Name="_serializationIdPath" Hidden="true" />
+      <Field Name="_splitter" Hidden="true" />
+      <Field Name="_splitterMinExtent" Hidden="true" />
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="BindPathProperty" Hidden="true" />
+      <Method Name="ClearContainerForItemOverride" Hidden="true" />
+      <Field Name="ColumnProperty" Hidden="true" />
+      <Field Name="ColumnSpanProperty" Hidden="true" />
+      <Field Name="ColumnWeightProperty" Hidden="true" />
+      <Field Name="ConstraintsMaximizedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedExpandedProperty" Hidden="true" />
+      <Field Name="ConstraintsMinimizedProperty" Hidden="true" />
+      <Field Name="ConstraintsProperty" Hidden="true" />
+      <Method Name="FindPanel" Hidden="true" />
+      <Method Name="GetColumn" Hidden="true" />
+      <Method Name="GetColumnSpan" Hidden="true" />
+      <Method Name="GetColumnWeight" Hidden="true" />
+      <Method Name="GetConstraints" Hidden="true" />
+      <Method Name="GetConstraintsMaximized" Hidden="true" />
+      <Method Name="GetConstraintsMinimized" Hidden="true" />
+      <Method Name="GetConstraintsMinimizedExpanded" Hidden="true" />
+      <Method Name="GetContainerForItemOverride" Hidden="true" />
+      <Method Name="GetItemFromSerializationId" Hidden="true" />
+      <Method Name="GetItemInfoFromContainer" Hidden="true" />
+      <Method Name="GetRow" Hidden="true" />
+      <Method Name="GetRowSpan" Hidden="true" />
+      <Method Name="GetRowWeight" Hidden="true" />
+      <Method Name="GetSerializationId" Hidden="true" />
+      <Method Name="GetSerializationIdFromItem" Hidden="true" />
+      <Method Name="GetVisualChild" Hidden="true" />
+      <Property Name="HandlesScrolling" Hidden="true" />
+      <Property Name="HasHwndHost" Hidden="true" />
+      <Field Name="HeaderPathProperty" Hidden="true" />
+      <Method Name="InitializeSplitter" Hidden="true" />
+      <Method Name="InitializeTileContainer" Hidden="true" />
+      <Method Name="InitializeTilesPanel" Hidden="true" />
+      <Method Name="InitialzeTilePropertyIfNonDefault" Hidden="true" />
+      <Property Name="InterTileAreaSpacingResolved" Hidden="true" />
+      <Field Name="InterTileAreaSpacingResolvedProperty" Hidden="true" />
+      <Property Name="InterTileSpacingXMaximizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingXMaximizedResolvedProperty" Hidden="true" />
+      <Property Name="InterTileSpacingXMinimizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingXMinimizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingXProperty" Hidden="true" />
+      <Property Name="InterTileSpacingYMaximizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingYMaximizedResolvedProperty" Hidden="true" />
+      <Property Name="InterTileSpacingYMinimizedResolved" Hidden="true" />
+      <Field Name="InterTileSpacingYMinimizedResolvedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingYProperty" Hidden="true" />
+      <Method Name="IResizeHost.AddResizerBar" Hidden="true" />
+      <Method Name="IResizeHost.CanResize" Hidden="true" />
+      <Property Name="IResizeHost.Controller" Hidden="true" />
+      <Method Name="IResizeHost.GetResizeAreaForItem" Hidden="true" />
+      <Method Name="IResizeHost.GetResizeCursor" Hidden="true" />
+      <Method Name="IResizeHost.InitializeResizeConstraints" Hidden="true" />
+      <Method Name="IResizeHost.RemoveResizerBar" Hidden="true" />
+      <Method Name="IResizeHost.Resize" Hidden="true" />
+      <Property Name="IResizeHost.RootElement" Hidden="true" />
+      <Method Name="IResizeHostMulti.CanResizeInBothDimensions" Hidden="true" />
+      <Method Name="IResizeHostMulti.GetMultiResizeCursor" Hidden="true" />
+      <Method Name="IResizeHostMulti.ResizeBothDimensions" Hidden="true" />
+      <Method Name="IsContainerCompatibleWithItem" Hidden="true" />
+      <Field Name="IsInMaximizedModeProperty" Hidden="true" />
+      <Method Name="IsItemItsOwnContainerOverride" Hidden="true" />
+      <Property Name="IsLoadingLayout" Hidden="true" />
+      <Field Name="ItemHeaderTemplateProperty" Hidden="true" />
+      <Field Name="ItemHeaderTemplateSelectorProperty" Hidden="true" />
+      <Field Name="ItemTemplateMaximizedProperty" Hidden="true" />
+      <Field Name="ItemTemplateMinimizedExpandedProperty" Hidden="true" />
+      <Field Name="ItemTemplateMinimizedProperty" Hidden="true" />
+      <Field Name="LoadingItemMappingEvent" Hidden="true" />
+      <Property Name="LogicalChildren" Hidden="true" />
+      <Property Name="Manager" Hidden="true" />
+      <Property Name="MaximizedItemsInternal" Hidden="true" />
+      <Field Name="MaximizedModeSettingsProperty" Hidden="true" />
+      <Field Name="MaximizedTileLimitProperty" Hidden="true" />
+      <Property Name="MinimizedAreaExplicitExtentX" Hidden="true" />
+      <Property Name="MinimizedAreaExplicitExtentY" Hidden="true" />
+      <Field Name="NormalModeSettingsProperty" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnHeaderPathChanged" Hidden="true" />
+      <Method Name="OnInterTileAreaSpacingResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXMaximizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingXMinimizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYMaximizedResolvedChanged" Hidden="true" />
+      <Method Name="OnInterTileSpacingYMinimizedResolvedChanged" Hidden="true" />
+      <Method Name="OnIsInMaximizedModeChanged" Hidden="true" />
+      <Method Name="OnItemsChanged" Hidden="true" />
+      <Method Name="OnLoadingItemMapping" Hidden="true" />
+      <Method Name="OnMaximizedItemsCollectionChanged" Hidden="true" />
+      <Method Name="OnSavingItemMapping" Hidden="true" />
+      <Method Name="OnSerializationIdPathChanged" Hidden="true" />
+      <Method Name="OnThemeChanged" Hidden="true" />
+      <Method Name="OnTileClosed" Hidden="true" />
+      <Method Name="OnTileClosing" Hidden="true" />
+      <Method Name="OnTileDragging" Hidden="true" />
+      <Method Name="OnTileStateChanged" Hidden="true" />
+      <Method Name="OnTileStateChanging" Hidden="true" />
+      <Method Name="OnTileSwapped" Hidden="true" />
+      <Method Name="OnTileSwapping" Hidden="true" />
+      <Property Name="Panel" Hidden="true" />
+      <Method Name="PerformResize" Hidden="true" />
+      <Method Name="PrepareContainerForItemOverride" Hidden="true" />
+      <Method Name="RaiseLoadingItemMapping" Hidden="true" />
+      <Method Name="RaiseSavingItemMapping" Hidden="true" />
+      <Method Name="ReuseContainerForNewItem" Hidden="true" />
+      <Field Name="RowProperty" Hidden="true" />
+      <Field Name="RowSpanProperty" Hidden="true" />
+      <Field Name="RowWeightProperty" Hidden="true" />
+      <Field Name="s_BindingStringFormatInfo" Hidden="true" />
+      <Field Name="s_ContentStringFormatProperty" Hidden="true" />
+      <Field Name="s_HeaderStringFormatProperty" Hidden="true" />
+      <Field Name="s_ItemStringFormatProperty" Hidden="true" />
+      <Field Name="SavingItemMappingEvent" Hidden="true" />
+      <Field Name="SerializationIdPathProperty" Hidden="true" />
+      <Field Name="SerializationIdProperty" Hidden="true" />
+      <Method Name="SetColumn" Hidden="true" />
+      <Method Name="SetColumnSpan" Hidden="true" />
+      <Method Name="SetColumnWeight" Hidden="true" />
+      <Method Name="SetConstraints" Hidden="true" />
+      <Method Name="SetConstraintsMaximized" Hidden="true" />
+      <Method Name="SetConstraintsMinimized" Hidden="true" />
+      <Method Name="SetConstraintsMinimizedExpanded" Hidden="true" />
+      <Method Name="SetRow" Hidden="true" />
+      <Method Name="SetRowSpan" Hidden="true" />
+      <Method Name="SetRowWeight" Hidden="true" />
+      <Method Name="SetSerializationId" Hidden="true" />
+      <Property Name="ShowSplitterInPopup" Hidden="true" />
+      <Property Name="ShowToolWindowsInPopup" Hidden="true" />
+      <Property Name="SplitterMinExtent" Hidden="true" />
+      <Method Name="SynchronizeMaximizedItemsCollection" Hidden="true" />
+      <Field Name="ThemeChangedEvent" Hidden="true" />
+      <Field Name="ThemeProperty" Hidden="true" />
+      <Field Name="TileAreaPaddingProperty" Hidden="true" />
+      <Field Name="TileCloseActionProperty" Hidden="true" />
+      <Field Name="TileClosedEvent" Hidden="true" />
+      <Method Name="TileClosedHandler" Hidden="true" />
+      <Field Name="TileClosingEvent" Hidden="true" />
+      <Method Name="TileClosingHandler" Hidden="true" />
+      <Field Name="TileDraggingEvent" Hidden="true" />
+      <Method Name="TileDraggingHandler" Hidden="true" />
+      <Field Name="TileStateChangedEvent" Hidden="true" />
+      <Method Name="TileStateChangedHandler" Hidden="true" />
+      <Field Name="TileStateChangingEvent" Hidden="true" />
+      <Method Name="TileStateChangingHandler" Hidden="true" />
+      <Field Name="TileSwappedEvent" Hidden="true" />
+      <Method Name="TileSwappedHandler" Hidden="true" />
+      <Field Name="TileSwappingEvent" Hidden="true" />
+      <Method Name="TileSwappingHandler" Hidden="true" />
+      <Field Name="ToolTipStyleKey" Hidden="true" />
+      <Method Name="UpdateThemeResources" Hidden="true" />
+      <Property Name="VisualChildrenCount" Hidden="true" />
+      <Method Name="XamTilesControl" Hidden="true" />
+    </Members>
+    <AssociationLine Name="MaximizedModeSettings" Type="Infragistics.Windows.Tiles.MaximizedModeSettings" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="8.688" />
+        <Point X="8.104" Y="8.688" Type="JumpStart" />
+        <Point X="8.271" Y="8.688" Type="JumpEnd" />
+        <Point X="11" Y="8.688" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.089" Y="0.163" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="NormalModeSettings" Type="Infragistics.Windows.Tiles.NormalModeSettings" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="6.188" />
+        <Point X="7.25" Y="6.188" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>JJwffK0Tf39gcMPTex7kU++RMMXazTmfenK5Ar4tH2Y=</HashCode>
+      <FileName>XamTilesControl.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MaximizedModeSettings" />
+      <Property Name="NormalModeSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.ModeSettingsBase">
+    <Position X="7.75" Y="1.5" Width="2.25" />
+    <Members>
+      <Field Name="AllowTileDraggingProperty" Hidden="true" />
+      <Field Name="DEFAULT_REPOSITION_ANIMATION_DURATION" Hidden="true" />
+      <Field Name="DEFAULT_RESIZE_ANIMATION_DURATION" Hidden="true" />
+      <Field Name="HorizontalTileAreaAlignmentProperty" Hidden="true" />
+      <Method Name="ModeSettingsBase" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Property Name="RepositionAnimationProperty" Hidden="true" />
+      <Property Name="ResizeAnimationProperty" Hidden="true" />
+      <Field Name="s_RepositionAnimation" Hidden="true" />
+      <Field Name="s_ResizeAnimation" Hidden="true" />
+      <Field Name="ShouldAnimateProperty" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+      <Method Name="ValidateAllowTileDragging" Hidden="true" />
+      <Method Name="ValidateHorizontalTileAreaAlignment" Hidden="true" />
+      <Method Name="ValidateMaxRowColumn" Hidden="true" />
+      <Method Name="ValidateMinRowColumn" Hidden="true" />
+      <Method Name="ValidateSpacing" Hidden="true" />
+      <Method Name="ValidateVerticalTileAreaAlignment" Hidden="true" />
+      <Field Name="VerticalTileAreaAlignmentProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>qCBAIgEAAAAAgQIEIAABAgAAABEAABAAAEIAQAACAAA=</HashCode>
+      <FileName>ModeSettingsBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AllowTileDragging" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.MaximizedModeSettings">
+    <Position X="11" Y="6.5" Width="2.75" />
+    <Members>
+      <Field Name="_maximizedTileConstraints" Hidden="true" />
+      <Field Name="_minimizedExpandedTileConstraints" Hidden="true" />
+      <Field Name="_minimizedTileConstraints" Hidden="true" />
+      <Field Name="InterTileAreaSpacingProperty" Hidden="true" />
+      <Field Name="InterTileSpacingXMaximizedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingXMinimizedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingYMaximizedProperty" Hidden="true" />
+      <Field Name="InterTileSpacingYMinimizedProperty" Hidden="true" />
+      <Method Name="MaximizedModeSettings" Hidden="true" />
+      <Field Name="MaximizedTileConstraintsProperty" Hidden="true" />
+      <Field Name="MaximizedTileLayoutOrderProperty" Hidden="true" />
+      <Field Name="MaximizedTileLocationProperty" Hidden="true" />
+      <Field Name="MinimizedExpandedTileConstraintsProperty" Hidden="true" />
+      <Field Name="MinimizedTileConstraintsProperty" Hidden="true" />
+      <Field Name="MinimizedTileExpandButtonVisibilityProperty" Hidden="true" />
+      <Field Name="MinimizedTileExpansionModeProperty" Hidden="true" />
+      <Method Name="OnMaximizedTileConstraintsChanged" Hidden="true" />
+      <Method Name="OnMaximizedTileConstraintsPropertyChanged" Hidden="true" />
+      <Method Name="OnMinimizedExpandedTileConstraintsChanged" Hidden="true" />
+      <Method Name="OnMinimizedExpandedTileConstraintsPropertyChanged" Hidden="true" />
+      <Method Name="OnMinimizedTileConstraintsChanged" Hidden="true" />
+      <Method Name="OnMinimizedTileConstraintsPropertyChanged" Hidden="true" />
+      <Field Name="ShowAllMinimizedTilesProperty" Hidden="true" />
+      <Field Name="ShowTileAreaSplitterProperty" Hidden="true" />
+      <Method Name="ValidateMaximizedTileLayoutOrder" Hidden="true" />
+      <Method Name="ValidateMaximizedTileLocation" Hidden="true" />
+      <Method Name="ValidateMinimizedTileExpansionMode" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="Infragistics.Windows.Tiles.ModeSettingsBase" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.875" Y="3.502" />
+        <Point X="8.875" Y="4.605" />
+        <Point X="11.688" Y="4.605" />
+        <Point X="11.688" Y="6.5" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="MaximizedTileLayoutOrder" Type="Infragistics.Windows.Tiles.MaximizedTileLayoutOrder" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.75" Y="8.5" />
+        <Point X="14.028" Y="8.5" />
+        <Point X="14.028" Y="9.853" />
+        <Point X="16" Y="9.853" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.017" Y="0.101" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MaximizedTileConstraints" Type="Infragistics.Windows.Tiles.TileConstraints" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.188" Y="6.5" />
+        <Point X="13.188" Y="4" />
+        <Point X="15.5" Y="4" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.089" Y="0.112" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MinimizedExpandedTileConstraints" Type="Infragistics.Windows.Tiles.TileConstraints" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.938" Y="6.5" />
+        <Point X="12.938" Y="3.25" />
+        <Point X="15.5" Y="3.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.131" Y="0.101" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MinimizedTileConstraints" Type="Infragistics.Windows.Tiles.TileConstraints" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.453" Y="6.5" />
+        <Point X="13.453" Y="4.688" />
+        <Point X="15.5" Y="4.688" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.1" Y="0.122" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MaximizedTileLocation" Type="Infragistics.Windows.Tiles.MaximizedTileLocation" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.5" Y="9.079" />
+        <Point X="13.5" Y="11.903" />
+        <Point X="16" Y="11.903" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>GhNAMIUIQEAMQADBAJAAEAAEAgAAgkiEAIAQAAAAKIA=</HashCode>
+      <FileName>MaximizedModeSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MinimizedTileExpansionMode" />
+      <Property Name="MaximizedTileLayoutOrder" />
+      <Property Name="MaximizedTileConstraints" />
+      <Property Name="MinimizedExpandedTileConstraints" />
+      <Property Name="MinimizedTileConstraints" />
+      <Property Name="MaximizedTileLocation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.NormalModeSettings">
+    <Position X="7.25" Y="5" Width="2.5" />
+    <Members>
+      <Field Name="_tileConstraints" Hidden="true" />
+      <Field Name="AllowTileSizingProperty" Hidden="true" />
+      <Field Name="MaxColumnsProperty" Hidden="true" />
+      <Field Name="MaxRowsProperty" Hidden="true" />
+      <Field Name="MinColumnsProperty" Hidden="true" />
+      <Field Name="MinRowsProperty" Hidden="true" />
+      <Method Name="OnTileConstraintsChanged" Hidden="true" />
+      <Method Name="OnTileConstraintsPropertyChanged" Hidden="true" />
+      <Field Name="ShowAllTilesProperty" Hidden="true" />
+      <Field Name="TileConstraintsProperty" Hidden="true" />
+      <Field Name="TileLayoutOrderProperty" Hidden="true" />
+      <Method Name="ValidateTileLayoutOrder" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="TileLayoutOrder" Type="Infragistics.Windows.Tiles.TileLayoutOrder">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.669" Y="-1.366" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="AllowTileSizing" Type="Infragistics.Windows.Tiles.AllowTileSizing" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="6.938" />
+        <Point X="5.25" Y="6.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="TileConstraints" Type="Infragistics.Windows.Tiles.TileConstraints" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.469" Y="5" />
+        <Point X="7.469" Y="0.932" />
+        <Point X="17" Y="0.932" />
+        <Point X="17" Y="2" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.287" Y="1.152" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACBAIkDAAAAAAAAAAAAAEAKAACQQAAgSAAAAAYYAA=</HashCode>
+      <FileName>NormalModeSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TileLayoutOrder" />
+      <Property Name="AllowTileSizing" />
+      <Property Name="TileConstraints" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.TileConstraints">
+    <Position X="15.5" Y="2" Width="2.25" />
+    <Members>
+      <Field Name="_horizontalAlignment" Hidden="true" />
+      <Field Name="_margin" Hidden="true" />
+      <Field Name="_maxHeight" Hidden="true" />
+      <Field Name="_maxWidth" Hidden="true" />
+      <Field Name="_minHeight" Hidden="true" />
+      <Field Name="_minWidth" Hidden="true" />
+      <Field Name="_preferredHeight" Hidden="true" />
+      <Field Name="_preferredWidth" Hidden="true" />
+      <Field Name="_verticalAlignment" Hidden="true" />
+      <Field Name="HorizontalAlignmentProperty" Hidden="true" />
+      <Field Name="MarginProperty" Hidden="true" />
+      <Field Name="MaxHeightProperty" Hidden="true" />
+      <Field Name="MaxWidthProperty" Hidden="true" />
+      <Field Name="MinHeightProperty" Hidden="true" />
+      <Field Name="MinWidthProperty" Hidden="true" />
+      <Method Name="OnHorizontalAlignmentChanged" Hidden="true" />
+      <Method Name="OnMarginChanged" Hidden="true" />
+      <Method Name="OnMaxHeightChanged" Hidden="true" />
+      <Method Name="OnMaxWidthChanged" Hidden="true" />
+      <Method Name="OnMinHeightChanged" Hidden="true" />
+      <Method Name="OnMinWidthChanged" Hidden="true" />
+      <Method Name="OnPreferredHeightChanged" Hidden="true" />
+      <Method Name="OnPreferredWidthChanged" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnVerticalAlignmentChanged" Hidden="true" />
+      <Field Name="PreferredHeightProperty" Hidden="true" />
+      <Field Name="PreferredWidthProperty" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+      <Method Name="ValidateMaxWidthHeight" Hidden="true" />
+      <Method Name="ValidateMinWidthHeight" Hidden="true" />
+      <Method Name="ValidatePreferredWidthHeight" Hidden="true" />
+      <Field Name="VerticalAlignmentProperty" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QhAQIAAiEgAAEAQE5ABFAAAEAAAABANJGAARACAIEJI=</HashCode>
+      <FileName>TileConstraints.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.ItemInfo">
+    <Position X="24.5" Y="6" Width="2.75" />
+    <Members>
+      <Field Name="_isClosed" Hidden="true" />
+      <Field Name="_isExpandedWhenMinimized" Hidden="true" />
+      <Field Name="_isExpandedWhenMinimizedLastReturned" Hidden="true" />
+      <Field Name="_isMaximized" Hidden="true" />
+      <Field Name="_serializationInfo" Hidden="true" />
+      <Method Name="GetIsClosed" Hidden="true" />
+      <Method Name="GetIsMaximized" Hidden="true" />
+      <Method Name="GetResizeRangeInternal" Hidden="true" />
+      <Method Name="ItemInfo" Hidden="true" />
+      <Method Name="OnResizeInternal" Hidden="true" />
+      <Property Name="SerializationInfo" Hidden="true" />
+      <Method Name="SetIsClosedInternal" Hidden="true" />
+      <Method Name="SetIsExpandedWhenMinimizedInternal" Hidden="true" />
+      <Method Name="SetIsMaximizedInternal" Hidden="true" />
+      <Property Name="SizeOverride" Hidden="true" />
+      <Method Name="SyncFromTileState" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>QAAAAABEAaAAQAAAAIEAAABAEBAAAUAAAAAAJAEAEAE=</HashCode>
+      <FileName>ItemInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.Tiles.TilesPanelBase">
+    <Position X="0.5" Y="11.25" Width="3" />
+    <Members>
+      <Method Name="ArrangeOverride" Hidden="true" />
+      <Method Name="CanSwapContainers" Hidden="true" />
+      <Field Name="ColumnProperty" Hidden="true" />
+      <Field Name="ColumnSpanProperty" Hidden="true" />
+      <Field Name="ColumnWeightProperty" Hidden="true" />
+      <Method Name="CreateUIElementCollection" Hidden="true" />
+      <Method Name="GetActualMinimizedAreaExtent" Hidden="true" />
+      <Method Name="GetAllowTileDragging" Hidden="true" />
+      <Method Name="GetCanCleanupItem" Hidden="true" />
+      <Method Name="GetCanDropContainer" Hidden="true" />
+      <Method Name="GetContainerConstraints" Hidden="true" />
+      <Method Name="GetContainerState" Hidden="true" />
+      <Method Name="GetDefaultConstraints" Hidden="true" />
+      <Method Name="GetDefaultMinimumItemSize" Hidden="true" />
+      <Method Name="GetExplicitMinimizedAreaExtent" Hidden="true" />
+      <Method Name="GetHorizontalTileAreaAlignment" Hidden="true" />
+      <Method Name="GetInterTileAreaSpacing" Hidden="true" />
+      <Method Name="GetInterTileSpacing" Hidden="true" />
+      <Method Name="GetIsInDeferredScrollingMode" Hidden="true" />
+      <Method Name="GetIsInMaximizedMode" Hidden="true" />
+      <Method Name="GetItemAtScrollIndex" Hidden="true" />
+      <Method Name="GetItemsInView" Hidden="true" />
+      <Method Name="GetLayoutClip" Hidden="true" />
+      <Method Name="GetManager" Hidden="true" />
+      <Method Name="GetMaxColumns" Hidden="true" />
+      <Method Name="GetMaximizedItemLimit" Hidden="true" />
+      <Method Name="GetMaximizedItems" Hidden="true" />
+      <Method Name="GetMaximizedTileArea" Hidden="true" />
+      <Method Name="GetMaximizedTileAreaConstraints" Hidden="true" />
+      <Method Name="GetMaximizedTileLayoutOrder" Hidden="true" />
+      <Method Name="GetMaximizedTileLocation" Hidden="true" />
+      <Method Name="GetMaxRows" Hidden="true" />
+      <Method Name="GetMinColumns" Hidden="true" />
+      <Method Name="GetMinimizedTileArea" Hidden="true" />
+      <Method Name="GetMinimizedTileAreaConstraints" Hidden="true" />
+      <Method Name="GetMinRows" Hidden="true" />
+      <Method Name="GetOffsetFromScrollPosition" Hidden="true" />
+      <Method Name="GetRepositionAnimation" Hidden="true" />
+      <Method Name="GetResizeAnimation" Hidden="true" />
+      <Method Name="GetScrollPositionFromOffset" Hidden="true" />
+      <Method Name="GetShouldAnimate" Hidden="true" />
+      <Method Name="GetShowAllMinimizedTiles" Hidden="true" />
+      <Method Name="GetShowAllTiles" Hidden="true" />
+      <Method Name="GetSupportsDeferredScrolling" Hidden="true" />
+      <Method Name="GetSynchronizedSize" Hidden="true" />
+      <Method Name="GetTargetRectOfContainer" Hidden="true" />
+      <Method Name="GetTargetRectOfItem" Hidden="true" />
+      <Method Name="GetTileArea" Hidden="true" />
+      <Method Name="GetTileAreaPadding" Hidden="true" />
+      <Method Name="GetTileLayoutOrder" Hidden="true" />
+      <Method Name="GetTotalColumnsDisplayed" Hidden="true" />
+      <Method Name="GetTotalRowsDisplayed" Hidden="true" />
+      <Method Name="GetVerticalTileAreaAlignment" Hidden="true" />
+      <Property Name="HasLogicalOrientation" Hidden="true" />
+      <Property Name="IsAnimationInProgress" Hidden="true" />
+      <Method Name="IsContainerInArrangeCache" Hidden="true" />
+      <Field Name="IsDraggingProperty" Hidden="true" />
+      <Property Name="IsOkToCleanupUnusedGeneratedElements" Hidden="true" />
+      <Field Name="IsSwapTargetProperty" Hidden="true" />
+      <Property Name="LogicalOrientation" Hidden="true" />
+      <Property Name="MaximumUnusedGeneratedItemsToKeep" Hidden="true" />
+      <Method Name="MeasureOverride" Hidden="true" />
+      <Method Name="MoveTile" Hidden="true" />
+      <Method Name="OnAnimationEnded" Hidden="true" />
+      <Method Name="OnChildDesiredSizeChanged" Hidden="true" />
+      <Method Name="OnContainersSwapped" Hidden="true" />
+      <Method Name="OnDeferredScrollingEnded" Hidden="true" />
+      <Method Name="OnDeferredScrollingStarted" Hidden="true" />
+      <Method Name="OnDeferredScrollOffsetChanged" Hidden="true" />
+      <Method Name="OnItemsChanged" Hidden="true" />
+      <Method Name="OnLostMouseCapture" Hidden="true" />
+      <Method Name="OnMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="OnNewElementRealized" Hidden="true" />
+      <Method Name="OnTileDragEnd" Hidden="true" />
+      <Method Name="OnTileDragStart" Hidden="true" />
+      <Method Name="OnVisualChildrenChanged" Hidden="true" />
+      <Field Name="RowProperty" Hidden="true" />
+      <Field Name="RowSpanProperty" Hidden="true" />
+      <Field Name="RowWeightProperty" Hidden="true" />
+      <Property Name="ScrollIndexOfFirstArrangedItem" Hidden="true" />
+      <Property Name="ScrollIndexOfLastArrangedItem" Hidden="true" />
+      <Property Name="ScrollPosition" Hidden="true" />
+      <Method Name="StartTileDrag" Hidden="true" />
+      <Method Name="TilesPanelBase" Hidden="true" />
+      <Property Name="TotalVisibleGeneratedItems" Hidden="true" />
+      <Method Name="UpdateTransform" Hidden="true" />
+      <Method Name="VerifyMaximizedItems" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.Tiles.TilesPanelBase.TilesPanelUIElementCollection" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="Infragistics.Windows.Tiles.TileLayoutOrder">
+    <Position X="3.75" Y="3" Width="1.75" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.MinimizedTileExpansionMode">
+    <Position X="16" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAACAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.AllowTileDragging">
+    <Position X="11.75" Y="1.5" Width="2" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.MaximizedTileLayoutOrder">
+    <Position X="16" Y="8.75" Width="2.25" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.TileState">
+    <Position X="24.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.TileCloseAction">
+    <Position X="23" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAABAAAAAAAAAIAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.AllowTileSizing">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.Tiles.MaximizedTileLocation">
+    <Position X="16" Y="11" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

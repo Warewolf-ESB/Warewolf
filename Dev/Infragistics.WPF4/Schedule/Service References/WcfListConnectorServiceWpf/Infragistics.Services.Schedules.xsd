@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/Infragistics.Controls.Schedules.Services" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/System.Windows.Media" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:complexType name="GetInitialInfoContext">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallContext">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RequestedInfo" type="tns:InitialInfoTypes" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetInitialInfoContext" nillable="true" type="tns:GetInitialInfoContext" />
+  <xs:complexType name="CallContext">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SecurityToken" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CallContext" nillable="true" type="tns:CallContext" />
+  <xs:complexType name="PollForItemSourceChangesDetailedContext">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallContext">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ClientItemSourceVersions" nillable="true" type="q1:ArrayOfKeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PollForItemSourceChangesDetailedContext" nillable="true" type="tns:PollForItemSourceChangesDetailedContext" />
+  <xs:simpleType name="ItemSourceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ActivityCategory" />
+      <xs:enumeration value="Appointment" />
+      <xs:enumeration value="Journal" />
+      <xs:enumeration value="RecurringAppointment" />
+      <xs:enumeration value="ResourceCalendar" />
+      <xs:enumeration value="Resource" />
+      <xs:enumeration value="Task" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ItemSourceType" nillable="true" type="tns:ItemSourceType" />
+  <xs:complexType name="ListManagerVersionInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChangeHistoryId" type="ser:guid" />
+      <xs:element minOccurs="0" name="DataListVersion" type="xs:int" />
+      <xs:element minOccurs="0" name="HasList" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ListCapabilities" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="PropertyMappingsVersion" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListManagerVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+  <xs:complexType name="QueryActivitiesContext">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallContext">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="LinqStatementEncoded" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ListType" type="tns:ActivityListType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="QueryActivitiesContext" nillable="true" type="tns:QueryActivitiesContext" />
+  <xs:simpleType name="ActivityListType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Appointment" />
+      <xs:enumeration value="Journal" />
+      <xs:enumeration value="RecurringAppointment" />
+      <xs:enumeration value="Task" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ActivityListType" nillable="true" type="tns:ActivityListType" />
+  <xs:complexType name="PerformActivityOperationContext">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallContext">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Activity" nillable="true" type="tns:ActivityBaseSerializableItem" />
+          <xs:element minOccurs="0" name="ClientVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Infragistics.Controls.Schedules.Services" minOccurs="0" name="Operation" type="q2:ActivityOperation" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PerformActivityOperationContext" nillable="true" type="tns:PerformActivityOperationContext" />
+  <xs:complexType name="ActivityBaseSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializableItemBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Categories" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="End" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EndTimeZoneId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsLocked" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsOccurrenceDeleted" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsTimeZoneNeutral" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsVisible" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LastModifiedTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MaxOccurrenceDateTime" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="OriginalOccurrenceEnd" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="OriginalOccurrenceStart" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="OwningCalendarId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OwningResourceId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Recurrence" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RecurrenceVersion" type="xs:int" />
+          <xs:element minOccurs="0" name="Reminder" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReminderEnabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ReminderInterval" type="ser:duration" />
+          <xs:element minOccurs="0" name="RootActivityId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Start" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="StartTimeZoneId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="VariantProperties" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ActivityBaseSerializableItem" nillable="true" type="tns:ActivityBaseSerializableItem" />
+  <xs:complexType name="SerializableItemBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnmappedProperties" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SerializableItemBase" nillable="true" type="tns:SerializableItemBase" />
+  <xs:complexType name="ResourceCalendarSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializableItemBase">
+        <xs:sequence>
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/System.Windows.Media" minOccurs="0" name="BaseColor" nillable="true" type="q3:Color" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsVisible" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OwningResourceId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResourceCalendarSerializableItem" nillable="true" type="tns:ResourceCalendarSerializableItem" />
+  <xs:complexType name="ResourceSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializableItemBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomActivityCategories" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DaySettingsOverrides" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DaysOfWeek" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="FirstDayOfWeek" nillable="true" type="q4:DayOfWeek" />
+          <xs:element minOccurs="0" name="IsLocked" type="xs:boolean" />
+          <xs:element minOccurs="0" name="IsVisible" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PrimaryCalendarId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PrimaryTimeZoneId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ResourceSerializableItem" nillable="true" type="tns:ResourceSerializableItem" />
+  <xs:complexType name="TaskSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActivityBaseSerializableItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PercentageComplete" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TaskSerializableItem" nillable="true" type="tns:TaskSerializableItem" />
+  <xs:complexType name="JournalSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActivityBaseSerializableItem">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="JournalSerializableItem" nillable="true" type="tns:JournalSerializableItem" />
+  <xs:complexType name="AppointmentSerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ActivityBaseSerializableItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AppointmentSerializableItem" nillable="true" type="tns:AppointmentSerializableItem" />
+  <xs:complexType name="PollForItemSourceChangesContext">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallContext">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PollForItemSourceChangesContext" nillable="true" type="tns:PollForItemSourceChangesContext" />
+  <xs:simpleType name="InitialInfoTypes">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ResourceItemSource" />
+          <xs:enumeration value="ResourceCalendarItemSource" />
+          <xs:enumeration value="ItemSourceInfos" />
+          <xs:enumeration value="ActivityCategoryItemSource" />
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="InitialInfoTypes" nillable="true" type="tns:InitialInfoTypes" />
+  <xs:complexType name="GetInitialInfoResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ActivityCategoryItemsSource" nillable="true" type="tns:ArrayOfActivityCategorySerializableItem" />
+          <xs:element minOccurs="0" name="ActivityCategoryItemsVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+          <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ItemSourceInfos" nillable="true" type="q5:ArrayOfKeyValueOfItemSourceTypeItemSourceInfob3yDyBEp" />
+          <xs:element minOccurs="0" name="ResourceCalendarItemsSource" nillable="true" type="tns:ArrayOfResourceCalendarSerializableItem" />
+          <xs:element minOccurs="0" name="ResourceCalendarItemsVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+          <xs:element minOccurs="0" name="ResourceItemsSource" nillable="true" type="tns:ArrayOfResourceSerializableItem" />
+          <xs:element minOccurs="0" name="ResourceItemsVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetInitialInfoResult" nillable="true" type="tns:GetInitialInfoResult" />
+  <xs:complexType name="CallResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorInfo" nillable="true" type="tns:WcfRemoteErrorInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CallResult" nillable="true" type="tns:CallResult" />
+  <xs:complexType name="WcfRemoteErrorInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ExceptionType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StackTrace" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WcfRemoteErrorInfo" nillable="true" type="tns:WcfRemoteErrorInfo" />
+  <xs:complexType name="PerformActivityOperationResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="NewVersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+          <xs:element minOccurs="0" name="UpdatedActivityIfChanged" nillable="true" type="tns:ActivityBaseSerializableItem" />
+          <xs:element minOccurs="0" name="VersionWasOutOfDate" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PerformActivityOperationResult" nillable="true" type="tns:PerformActivityOperationResult" />
+  <xs:complexType name="PollForItemSourceChangesResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallResult">
+        <xs:sequence>
+          <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="VersionInfos" nillable="true" type="q6:ArrayOfKeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PollForItemSourceChangesResult" nillable="true" type="tns:PollForItemSourceChangesResult" />
+  <xs:complexType name="PollForItemSourceChangesDetailedResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallResult">
+        <xs:sequence>
+          <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="DetailedChanges" nillable="true" type="q7:ArrayOfKeyValueOfItemSourceTypeDetailedItemSourceChangeInfob3yDyBEp" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PollForItemSourceChangesDetailedResult" nillable="true" type="tns:PollForItemSourceChangesDetailedResult" />
+  <xs:complexType name="DetailedItemSourceChangeInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Changes" nillable="true" type="tns:ArrayOfItemSourceChange" />
+      <xs:element minOccurs="0" name="VersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DetailedItemSourceChangeInfo" nillable="true" type="tns:DetailedItemSourceChangeInfo" />
+  <xs:complexType name="ArrayOfItemSourceChange">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemSourceChange" nillable="true" type="tns:ItemSourceChange" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemSourceChange" nillable="true" type="tns:ArrayOfItemSourceChange" />
+  <xs:complexType name="ItemSourceChange">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChangeType" type="tns:ItemSourceChangeType" />
+      <xs:element minOccurs="0" name="ChangedItem" nillable="true" type="tns:SerializableItemBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemSourceChange" nillable="true" type="tns:ItemSourceChange" />
+  <xs:simpleType name="ItemSourceChangeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AddItem" />
+      <xs:enumeration value="ChangeItem" />
+      <xs:enumeration value="RemoveItem" />
+      <xs:enumeration value="Reset" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ItemSourceChangeType" nillable="true" type="tns:ItemSourceChangeType" />
+  <xs:complexType name="QueryActivitiesResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CallResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Activities" nillable="true" type="tns:ArrayOfActivityBaseSerializableItem" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="QueryActivitiesResult" nillable="true" type="tns:QueryActivitiesResult" />
+  <xs:complexType name="ArrayOfActivityBaseSerializableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ActivityBaseSerializableItem" nillable="true" type="tns:ActivityBaseSerializableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfActivityBaseSerializableItem" nillable="true" type="tns:ArrayOfActivityBaseSerializableItem" />
+  <xs:complexType name="ArrayOfActivityCategorySerializableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ActivityCategorySerializableItem" nillable="true" type="tns:ActivityCategorySerializableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfActivityCategorySerializableItem" nillable="true" type="tns:ArrayOfActivityCategorySerializableItem" />
+  <xs:complexType name="ActivityCategorySerializableItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializableItemBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CategoryName" nillable="true" type="xs:string" />
+          <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/System.Windows.Media" minOccurs="0" name="Color" nillable="true" type="q8:Color" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ActivityCategorySerializableItem" nillable="true" type="tns:ActivityCategorySerializableItem" />
+  <xs:complexType name="ItemSourceInfo">
+    <xs:sequence>
+      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="MappedProperties" nillable="true" type="q9:ArrayOfstring" />
+      <xs:element minOccurs="0" name="VersionInfo" nillable="true" type="tns:ListManagerVersionInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemSourceInfo" nillable="true" type="tns:ItemSourceInfo" />
+  <xs:complexType name="ArrayOfResourceCalendarSerializableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResourceCalendarSerializableItem" nillable="true" type="tns:ResourceCalendarSerializableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResourceCalendarSerializableItem" nillable="true" type="tns:ArrayOfResourceCalendarSerializableItem" />
+  <xs:complexType name="ArrayOfResourceSerializableItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ResourceSerializableItem" nillable="true" type="tns:ResourceSerializableItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfResourceSerializableItem" nillable="true" type="tns:ArrayOfResourceSerializableItem" />
+</xs:schema>

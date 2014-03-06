@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.ObjectConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.FastReflectionHelper" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="PropertyName" DisplayName="PropertyName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UseTraditionalReflection" DisplayName="UseTraditionalReflection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Invalid" DisplayName="Invalid" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.RectUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.GeometryUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="UnitNone" DisplayName="UnitNone" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitBubble" DisplayName="UnitBubble" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitTriangle" DisplayName="UnitTriangle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitPyramid" DisplayName="UnitPyramid" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitSquare" DisplayName="UnitSquare" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitDiamond" DisplayName="UnitDiamond" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitPentagon" DisplayName="UnitPentagon" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitHexagon" DisplayName="UnitHexagon" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitTetragram" DisplayName="UnitTetragram" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitPentagram" DisplayName="UnitPentagram" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitHexagram" DisplayName="UnitHexagram" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitThermometer" DisplayName="UnitThermometer" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitHourglass" DisplayName="UnitHourglass" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitTube" DisplayName="UnitTube" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitRaindrop" DisplayName="UnitRaindrop" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UnitSmiley" DisplayName="UnitSmiley" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.SmartPlacer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Bounds" DisplayName="Bounds" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Overlap" DisplayName="Overlap" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Fade" DisplayName="Fade" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.MarkBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Stroke" DisplayName="Stroke" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Fill" DisplayName="Fill" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="StrokeThickness" DisplayName="StrokeThickness" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TickMarkSize" DisplayName="TickMarkSize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.FastItemsSourceEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Action" DisplayName="Action" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Position" DisplayName="Position" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PropertyName" DisplayName="PropertyName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.DataMappingPair" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="InternalName" DisplayName="InternalName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExternalName" DisplayName="ExternalName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.DataMapping" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.StripeGroupBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Stroke" DisplayName="Stroke" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="StrokeThickness" DisplayName="StrokeThickness" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Style" DisplayName="Style" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Fill" DisplayName="Fill" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Unit" DisplayName="Unit" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Width" DisplayName="Width" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.TypeUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.RectChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OldRect" DisplayName="OldRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewRect" DisplayName="NewRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.RectChangedEventHandler" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Platform" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.TimeSpanConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.SolidBrushCollectionConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Flattener" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AxisBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AutoRange" DisplayName="AutoRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollScale" DisplayName="ScrollScale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollPosition" DisplayName="ScrollPosition" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.StringFormatConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.TransformUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.PriorityQueue`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.ArrayUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.FastItemsSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Dispatcher" DisplayName="Dispatcher" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemsSource" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.BrushCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="InterpolationMode" DisplayName="InterpolationMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.ShapeUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.DateTimeConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Clipper" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Target" DisplayName="Target" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsClosed" DisplayName="IsClosed" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.StringFormatter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="FormatString" DisplayName="FormatString" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CompiledFormatString" DisplayName="CompiledFormatString" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PropertyNames" DisplayName="PropertyNames" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.StringFormatUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.MathUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.StripeBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Stroke" DisplayName="Stroke" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="StrokeThickness" DisplayName="StrokeThickness" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Fill" DisplayName="Fill" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.InteractionHelper" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Control" DisplayName="Control" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsFocused" DisplayName="IsFocused" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMouseOver" DisplayName="IsMouseOver" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsReadOnly" DisplayName="IsReadOnly" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsPressed" DisplayName="IsPressed" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ClickCount" DisplayName="ClickCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.PathFigureUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.MatrixUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.ColorUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.ColorConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.BrushUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.CultureInfoHelper" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CultureToUse" DisplayName="CultureToUse" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.XamDock" HideFromToolbox="false" ToolBoxCategoryKey="XamDVSharedAssetLibrary" ImageResource="">
+    <PropertyInformation Name="LayoutPriority" CategoryKey="XamDock_Properties" DisplayName="LayoutPriority" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.InputContext" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ViewMousePosition" DisplayName="ViewMousePosition" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DocMousePosition" DisplayName="DocMousePosition" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Key" DisplayName="Key" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.InteractiveControl" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="LastInput" DisplayName="LastInput" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Canvas" DisplayName="Canvas" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentTool" DisplayName="CurrentTool" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MouseDownTools" DisplayName="MouseDownTools" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MouseMoveTools" DisplayName="MouseMoveTools" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.DefaultTool" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Tool" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="View" DisplayName="View" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LastInput" DisplayName="LastInput" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Range" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Minimum" DisplayName="Minimum" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Maximum" DisplayName="Maximum" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Scale" DisplayName="Scale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Scroll" DisplayName="Scroll" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.XamZoombar" HideFromToolbox="false" ToolBoxCategoryKey="XamDVSharedAssetLibrary" ImageResource="">
+    <PropertyInformation Name="PreviewContentSize" CategoryKey="XamZoombar_Properties" DisplayName="PreviewContentSize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalPreviewContent" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalPreviewContent" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="VerticalPreviewContent" CategoryKey="XamZoombar_Properties" DisplayName="VerticalPreviewContent" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HorizontalScaleLeftStyle" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalScaleLeftStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalScaleRightStyle" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalScaleRightStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalThumbStyle" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalThumbStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalScrollLeftStyle" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalScrollLeftStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalScrollRightStyle" CategoryKey="XamZoombar_Properties" DisplayName="HorizontalScrollRightStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalScaleTopStyle" CategoryKey="XamZoombar_Properties" DisplayName="VerticalScaleTopStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalScaleBottomStyle" CategoryKey="XamZoombar_Properties" DisplayName="VerticalScaleBottomStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalThumbStyle" CategoryKey="XamZoombar_Properties" DisplayName="VerticalThumbStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalScrollTopStyle" CategoryKey="XamZoombar_Properties" DisplayName="VerticalScrollTopStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalScrollBottomStyle" CategoryKey="XamZoombar_Properties" DisplayName="VerticalScrollBottomStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Minimum" CategoryKey="XamZoombar_Properties" DisplayName="Minimum" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Maximum" CategoryKey="XamZoombar_Properties" DisplayName="Maximum" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Range" CategoryKey="XamZoombar_Properties" DisplayName="Range" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SmallChange" CategoryKey="XamZoombar_Properties" DisplayName="SmallChange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LargeChange" CategoryKey="XamZoombar_Properties" DisplayName="LargeChange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Orientation" CategoryKey="XamZoombar_Properties" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.ZoomChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NewRange" DisplayName="NewRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.ZoomChangeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NewRange" DisplayName="NewRange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.DraggingTool" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.ResizingTool" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.TrackbarTool" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Silverlight.HalfEdge" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Beg" DisplayName="Beg" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="End" DisplayName="End" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Silverlight.HalfEdgeCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Silverlight.Triangle" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="v0" DisplayName="v0" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="v1" DisplayName="v1" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="v2" DisplayName="v2" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Silverlight.TriangleMesh" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="TriangleList" DisplayName="TriangleList" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EdgeCollection" DisplayName="EdgeCollection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Points" DisplayName="Points" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.ErrorMessageDisplayingEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ErrorMessage" DisplayName="ErrorMessage" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.SafeSetters" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.SafeSetterCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.SafeSetter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueAsXamlString" DisplayName="ValueAsXamlString" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PropertyName" DisplayName="PropertyName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.GroupBy" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ItemsSource" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="KeyMemberPath" DisplayName="KeyMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueMemberPath" DisplayName="ValueMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="GroupMemberPath" DisplayName="GroupMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.SurfaceViewer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DragStroke" CategoryKey="SurfaceViewer_Properties" DisplayName="DragStroke" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DragStrokeThickness" CategoryKey="SurfaceViewer_Properties" DisplayName="DragStrokeThickness" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DragStrokeDashArray" CategoryKey="SurfaceViewer_Properties" DisplayName="DragStrokeDashArray" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviewBrush" CategoryKey="SurfaceViewer_Properties" DisplayName="PreviewBrush" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WorldRect" CategoryKey="SurfaceViewer_Properties" DisplayName="WorldRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WindowRect" CategoryKey="SurfaceViewer_Properties" DisplayName="WindowRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviewRect" CategoryKey="SurfaceViewer_Properties" DisplayName="PreviewRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ViewportRect" CategoryKey="SurfaceViewer_Properties" DisplayName="ViewportRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NavigationSettings" DisplayName="NavigationSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimumZoomLevel" CategoryKey="SurfaceViewer_Properties" DisplayName="MinimumZoomLevel" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaximumZoomLevel" CategoryKey="SurfaceViewer_Properties" DisplayName="MaximumZoomLevel" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomLevel" CategoryKey="SurfaceViewer_Properties" DisplayName="ZoomLevel" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OverviewPlusDetailPaneStyle" CategoryKey="SurfaceViewer_Properties" DisplayName="OverviewPlusDetailPaneStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalOverviewPlusDetailPaneAlignment" CategoryKey="SurfaceViewer_Properties" DisplayName="HorizontalOverviewPlusDetailPaneAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalOverviewPlusDetailPaneAlignment" CategoryKey="SurfaceViewer_Properties" DisplayName="VerticalOverviewPlusDetailPaneAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OverviewPlusDetailPaneVisibility" CategoryKey="SurfaceViewer_Properties" DisplayName="OverviewPlusDetailPaneVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OverviewPlusDetailPane" CategoryKey="SurfaceViewer_Properties" DisplayName="OverviewPlusDetailPane" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomLevelDisplayText" DisplayName="ZoomLevelDisplayText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DefaultInteraction" DisplayName="DefaultInteraction" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.StackPool`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DeferDisactivate" DisplayName="DeferDisactivate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ActiveCount" DisplayName="ActiveCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InactiveCount" DisplayName="InactiveCount" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Create" DisplayName="Create" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Deactivate" DisplayName="Deactivate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Activate" DisplayName="Activate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Destroy" DisplayName="Destroy" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.PropertyChangedEventArgs`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OldValue" DisplayName="OldValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewValue" DisplayName="NewValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.NavigationSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AllowPan" DisplayName="AllowPan" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowZoom" DisplayName="AllowZoom" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.XamOverviewPlusDetailPane" HideFromToolbox="true" ToolBoxCategoryKey="CommonSupportingControlsAssetLibrary" ImageResource="">
+    <PropertyInformation Name="Immediate" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="Immediate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="World" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="World" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WorldStyle" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="WorldStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Window" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="Window" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WindowStyle" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="WindowStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Preview" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="Preview" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviewStyle" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="PreviewStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Mode" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="Mode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShrinkToThumbnail" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ShrinkToThumbnail" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SurfaceViewer" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="SurfaceViewer" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviewCanvas" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="PreviewCanvas" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviewViewportdRect" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="PreviewViewportdRect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Viewport" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="Viewport" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomTo100ButtonVisibility" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ZoomTo100ButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScaleToFitButtonVisibility" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ScaleToFitButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InteractionStatesToolVisibility" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="InteractionStatesToolVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomTo100ButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ZoomTo100ButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScaleToFitButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ScaleToFitButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DragPanButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="DragPanButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DragZoomButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="DragZoomButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomInButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ZoomInButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomOutButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ZoomOutButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DefaultInteractionButtonToolTip" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="DefaultInteractionButtonToolTip" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ZoomLevelLargeChange" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="ZoomLevelLargeChange" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsZoomable" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="IsZoomable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UpdatingSliderRanges" CategoryKey="XamOverviewPlusDetailPane_Properties" DisplayName="UpdatingSliderRanges" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.SelectedCollectionBase`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Collections.AggregateValueSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ItemsSource" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueMemberPath" DisplayName="ValueMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Collections.AggregateValueCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ItemsSources" DisplayName="ItemsSources" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Maps.OpenStreetMapTileSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Maps.MapTileSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Maps.XamMultiScaleTileSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ImageWidth" CategoryKey="XamMultiScaleTileSource_Properties" DisplayName="ImageWidth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ImageHeight" CategoryKey="XamMultiScaleTileSource_Properties" DisplayName="ImageHeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TileWidth" CategoryKey="XamMultiScaleTileSource_Properties" DisplayName="TileWidth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TileHeight" CategoryKey="XamMultiScaleTileSource_Properties" DisplayName="TileHeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TileOverlap" CategoryKey="XamMultiScaleTileSource_Properties" DisplayName="TileOverlap" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Maps.CloudMadeTileSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Key" DisplayName="Key" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Parameter" DisplayName="Parameter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Maps.DesignServices" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsInDesignModeStatic" DisplayName="IsInDesignModeStatic" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Maps.XamMultiScaleImage" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ContentPresenter" CategoryKey="XamMultiScaleImage_Properties" DisplayName="ContentPresenter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Source" CategoryKey="XamMultiScaleImage_Properties" DisplayName="Source" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ViewportOrigin" CategoryKey="XamMultiScaleImage_Properties" DisplayName="ViewportOrigin" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ViewportWidth" CategoryKey="XamMultiScaleImage_Properties" DisplayName="ViewportWidth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DeferralHandler" CategoryKey="XamMultiScaleImage_Properties" DisplayName="DeferralHandler" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UseSprings" CategoryKey="XamMultiScaleImage_Properties" DisplayName="UseSprings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SpringsEasingFunction" CategoryKey="XamMultiScaleImage_Properties" DisplayName="SpringsEasingFunction" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.PointCollectionUtil" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Maps.BingMapsTileSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="TilePath" DisplayName="TilePath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SubDomains" DisplayName="SubDomains" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CultureName" DisplayName="CultureName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.DoubleAnimator" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="TransitionProgress" DisplayName="TransitionProgress" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IntervalMilliseconds" DisplayName="IntervalMilliseconds" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Charts.Util.Numeric" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Charts.Util.LeastSquaresFit" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.SRProvider" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OPD_DefaultInteraction" DisplayName="OPD_DefaultInteraction" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OPD_ScaleToFit" DisplayName="OPD_ScaleToFit" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OPD_ZoomTo100" DisplayName="OPD_ZoomTo100" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OPD_ScaleToFit_SeriesViewer" DisplayName="OPD_ScaleToFit_SeriesViewer" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.SmartPlaceableWrapper`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NoWiggle" DisplayName="NoWiggle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Element" DisplayName="Element" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ElementLocationResult" DisplayName="ElementLocationResult" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OriginalLocation" DisplayName="OriginalLocation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Opacity" DisplayName="Opacity" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SmartPosition" DisplayName="SmartPosition" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Extensions" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.AutomationPeers.XamDockAutomationPeer" HideFromToolbox="true">
+    <PropertyInformation Name="Dock" CategoryKey="XamDockAutomationPeer_Properties" DisplayName="Dock" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Charts.TrendCalculators" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.RearrangedList`1" HideFromToolbox="true">
+    <PropertyInformation Name="Count" DisplayName="Count" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsReadOnly" DisplayName="IsReadOnly" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.CursorTypeConverter" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.MainWidgetAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.SuppressWidgetMemberAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetDefaultStringAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetDefaultNumberAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetDefaultBooleanAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Value" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.SuppressWidgetMemberCopyAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetModuleAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetModuleParentAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.WidgetIgnoreDependsAttribute" HideFromToolbox="true">
+    <PropertyInformation Name="Name" DisplayName="Name" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="System.Runtime.CompilerServices.DontObfuscateAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="System.Runtime.CompilerServices.WeakAttribute" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.GroupingBase" HideFromToolbox="true">
+    <PropertyInformation Name="Key" DisplayName="Key" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.VisualStates" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.PolySimplification" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.EncodingsCollection" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.Controls.Maps.ImageStreamValidEventArgs" HideFromToolbox="true">
+    <PropertyInformation Name="Stream" DisplayName="Stream" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Maps.ImageStreamValidEventHandler" HideFromToolbox="true" />
+  <ControlInfo Name="Infragistics.AutomationPeers.XamZoombarAutomationPeer" HideFromToolbox="true">
+    <PropertyInformation Name="Zoombar" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="Zoombar" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontallyScrollable" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="HorizontallyScrollable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalScrollPercent" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="HorizontalScrollPercent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalViewSize" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="HorizontalViewSize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticallyScrollable" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="VerticallyScrollable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalScrollPercent" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="VerticalScrollPercent" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalViewSize" CategoryKey="XamZoombarAutomationPeer_Properties" DisplayName="VerticalViewSize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+</root>

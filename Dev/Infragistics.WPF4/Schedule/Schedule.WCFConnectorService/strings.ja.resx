@@ -1,0 +1,1408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LE_BrushProvider_1" xml:space="preserve">
+    <value>再び BeginProviderAssigments を呼び出す前に EndProviderAssignments を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_BrushProvider_2" xml:space="preserve">
+    <value>EndProviderAssignments を呼び出す前に BeginProviderAssignments を呼び出す必要があります。</value>
+  </data>
+  <data name="LE_BrushProvider_3" xml:space="preserve">
+    <value>ブラシ プロバイダーを割り当てる前に BeginProvderAssignments を呼び出す必要があります。</value>
+  </data>
+  <data name="MSG_TITLE_EditAppointment" xml:space="preserve">
+    <value>予定の編集</value>
+  </data>
+  <data name="MSG_TITLE_UpdateAppointment" xml:space="preserve">
+    <value>予定の更新</value>
+  </data>
+  <data name="MSG_TITLE_AddAppointment" xml:space="preserve">
+    <value>予定の追加</value>
+  </data>
+  <data name="MSG_TEXT_SavePrompt" xml:space="preserve">
+    <value>変更点を保存しますか？</value>
+  </data>
+  <data name="DLG_Appointment_Core_AllDayEvent" xml:space="preserve">
+    <value>終日</value>
+  </data>
+  <data name="DLG_Appointment_Core_EndTime" xml:space="preserve">
+    <value>終了時刻：</value>
+  </data>
+  <data name="DLG_Appointment_Core_Location" xml:space="preserve">
+    <value>場所：</value>
+  </data>
+  <data name="DLG_Appointment_Core_StartTime" xml:space="preserve">
+    <value>開始時刻：</value>
+  </data>
+  <data name="DLG_Appointment_Core_Subject" xml:space="preserve">
+    <value>件名：</value>
+  </data>
+  <data name="LD_TimePicker_Hours" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="LD_TimePicker_Minutes" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="MSG_TEXT_AppointmentDateConflict" xml:space="preserve">
+    <value>入力した終了日付は開始日付の前です。</value>
+  </data>
+  <data name="MSG_TEXT_DeleteAppointmentPrompt" xml:space="preserve">
+    <value>この予定を削除しますか?</value>
+  </data>
+  <data name="MSG_TITLE_AppointmentDateConflict" xml:space="preserve">
+    <value>予定日付の競合</value>
+  </data>
+  <data name="MSG_TITLE_DeleteAppointment" xml:space="preserve">
+    <value>予定の削除</value>
+  </data>
+  <data name="CalendarCloseButtonToolTip" xml:space="preserve">
+    <value>予定表を閉じる</value>
+  </data>
+  <data name="MSGBOX_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="MSGBOX_No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="MSGBOX_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MSGBOX_Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="OverlayButtonIsInOverlayModeToolTip" xml:space="preserve">
+    <value>並べて表示</value>
+  </data>
+  <data name="OverlayButtonIsNotInOverlayModeToolTip" xml:space="preserve">
+    <value>重ねて表示</value>
+  </data>
+  <data name="ClickToAddAppointmentPrompt" xml:space="preserve">
+    <value>予定追加はクリックしてください。</value>
+  </data>
+  <data name="ClickToAddEventPrompt" xml:space="preserve">
+    <value>イベント追加はクリックしてください。</value>
+  </data>
+  <data name="DLG_Appointment_Core_AdjacentAppointmentConflictMessage" xml:space="preserve">
+    <value>予定表には、この時間帯の前後に別の予定が入っています。</value>
+  </data>
+  <data name="DLG_Appointment_Core_AppointmentConflictMessage" xml:space="preserve">
+    <value>カレンダーにある既存の予定と競合しています。</value>
+  </data>
+  <data name="Morocco Standard Time" xml:space="preserve">
+    <value>(UTC) カサブランカ</value>
+  </data>
+  <data name="GMT Standard Time" xml:space="preserve">
+    <value>(UTC) ダブリン、エジンバラ、リスボン、ロンドン</value>
+  </data>
+  <data name="Greenwich Standard Time" xml:space="preserve">
+    <value>(UTC) モンロビア、レイキャビク</value>
+  </data>
+  <data name="UTC" xml:space="preserve">
+    <value>(UTC) 協定世界時</value>
+  </data>
+  <data name="W. Europe Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) アムステルダム、ベルリン､ベルン、ローマ､ストックホルム､ウィーン</value>
+  </data>
+  <data name="Central European Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) サラエボ、スコピエ、ワルシャワ、ザグレブ</value>
+  </data>
+  <data name="Romance Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) ブリュッセル、コペンハーゲン、マドリード、パリ</value>
+  </data>
+  <data name="Central Europe Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) ベオグラード、ブラチスラバ、ブダペスト、リュブリャナ、プラハ</value>
+  </data>
+  <data name="W. Central Africa Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) 西中央アフリカ</value>
+  </data>
+  <data name="Syria Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) ダマスカス</value>
+  </data>
+  <data name="GTB Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) アテネ、ブカレスト、イスタンブール</value>
+  </data>
+  <data name="Jordan Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) アンマン</value>
+  </data>
+  <data name="Namibia Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) ウィントフック</value>
+  </data>
+  <data name="Israel Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) エルサレム</value>
+  </data>
+  <data name="Egypt Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) カイロ</value>
+  </data>
+  <data name="South Africa Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) ハラーレ、プレトリア</value>
+  </data>
+  <data name="FLE Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) ヘルシンキ、キエフ、リガ、ソフィア、タリン、ビリニュス</value>
+  </data>
+  <data name="Middle East Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) ベイルート</value>
+  </data>
+  <data name="E. Europe Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) ミンスク</value>
+  </data>
+  <data name="Arab Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) クウェート、リヤド</value>
+  </data>
+  <data name="E. Africa Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) ナイロビ</value>
+  </data>
+  <data name="Arabic Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) バグダッド</value>
+  </data>
+  <data name="Russian Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) モスクワ、サンクトペテルブルク、ボルゴグラード</value>
+  </data>
+  <data name="Iran Standard Time" xml:space="preserve">
+    <value>(UTC+03:30) テヘラン</value>
+  </data>
+  <data name="Georgian Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) トビリシ</value>
+  </data>
+  <data name="Arabian Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) アブダビ、マスカット</value>
+  </data>
+  <data name="Caucasus Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) エレバン</value>
+  </data>
+  <data name="Azerbaijan Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) バク</value>
+  </data>
+  <data name="Mauritius Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) ポート ルイス</value>
+  </data>
+  <data name="Afghanistan Standard Time" xml:space="preserve">
+    <value>(UTC+04:30) カブール</value>
+  </data>
+  <data name="Pakistan Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) イスラマバード、カラチ</value>
+  </data>
+  <data name="Ekaterinburg Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) エカテリンバーグ</value>
+  </data>
+  <data name="West Asia Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) タシケント</value>
+  </data>
+  <data name="Sri Lanka Standard Time" xml:space="preserve">
+    <value>(UTC+05:30) スリジャヤワルダナプラコッテ</value>
+  </data>
+  <data name="India Standard Time" xml:space="preserve">
+    <value>(UTC+05:30) チェンナイ、コルカタ、ムンバイ、ニューデリー</value>
+  </data>
+  <data name="Nepal Standard Time" xml:space="preserve">
+    <value>(UTC+05:45) カトマンズ</value>
+  </data>
+  <data name="Central Asia Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) アスタナ</value>
+  </data>
+  <data name="Bangladesh Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) ダッカ</value>
+  </data>
+  <data name="N. Central Asia Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) ノボシビルスク</value>
+  </data>
+  <data name="Myanmar Standard Time" xml:space="preserve">
+    <value>(UTC+06:30) ヤンゴン (ラングーン)</value>
+  </data>
+  <data name="North Asia Standard Time" xml:space="preserve">
+    <value>(UTC+07:00) クラスノヤルスク</value>
+  </data>
+  <data name="SE Asia Standard Time" xml:space="preserve">
+    <value>(UTC+07:00) バンコク、ハノイ、ジャカルタ</value>
+  </data>
+  <data name="North Asia East Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) イルクーツク</value>
+  </data>
+  <data name="Ulaanbaatar Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) ウランバートル</value>
+  </data>
+  <data name="Singapore Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) クアラルンプール、シンガポール</value>
+  </data>
+  <data name="W. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) パース</value>
+  </data>
+  <data name="China Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) 北京、重慶、香港特別行政区、ウルムチ</value>
+  </data>
+  <data name="Taipei Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) 台北</value>
+  </data>
+  <data name="Korea Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) ソウル</value>
+  </data>
+  <data name="Yakutsk Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) ヤクーツク</value>
+  </data>
+  <data name="Tokyo Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) 大阪、札幌、東京</value>
+  </data>
+  <data name="Cen. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+09:30) アデレード</value>
+  </data>
+  <data name="AUS Central Standard Time" xml:space="preserve">
+    <value>(UTC+09:30) ダーウィン</value>
+  </data>
+  <data name="Vladivostok Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) ウラジオストク</value>
+  </data>
+  <data name="AUS Eastern Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) キャンベラ、メルボルン、シドニー</value>
+  </data>
+  <data name="West Pacific Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) グアム、ポートモレスビー</value>
+  </data>
+  <data name="E. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) ブリズベン</value>
+  </data>
+  <data name="Tasmania Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) ホバート</value>
+  </data>
+  <data name="Central Pacific Standard Time" xml:space="preserve">
+    <value>(UTC+11:00) ソロモン諸島、ニューカレドニア</value>
+  </data>
+  <data name="UTC+12" xml:space="preserve">
+    <value>(UTC+12:00) 協定世界時+12</value>
+  </data>
+  <data name="Fiji Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) フィジー</value>
+  </data>
+  <data name="Kamchatka Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) ペトロパブロフスク・カムチャツキー - (古い)</value>
+  </data>
+  <data name="New Zealand Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) オークランド、ウェリントン</value>
+  </data>
+  <data name="Tonga Standard Time" xml:space="preserve">
+    <value>(UTC+13:00) ヌクアロファ</value>
+  </data>
+  <data name="Azores Standard Time" xml:space="preserve">
+    <value>(UTC-01:00) アゾレス諸島</value>
+  </data>
+  <data name="Cape Verde Standard Time" xml:space="preserve">
+    <value>(UTC-01:00) カーボベルデ諸島</value>
+  </data>
+  <data name="UTC-02" xml:space="preserve">
+    <value>(UTC-02:00) 協定世界時-02</value>
+  </data>
+  <data name="Mid-Atlantic Standard Time" xml:space="preserve">
+    <value>(UTC-02:00) 中央大西洋</value>
+  </data>
+  <data name="SA Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) カイエンヌ、フォルタレザ</value>
+  </data>
+  <data name="Greenland Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) グリーンランド</value>
+  </data>
+  <data name="Argentina Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) ブエノスアイレス</value>
+  </data>
+  <data name="E. South America Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) ブラジリア</value>
+  </data>
+  <data name="Montevideo Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) モンテビデオ</value>
+  </data>
+  <data name="Newfoundland Standard Time" xml:space="preserve">
+    <value>(UTC-03:30) ニューファンドランド</value>
+  </data>
+  <data name="Central Brazilian Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) クイアバ</value>
+  </data>
+  <data name="SA Western Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) ジョージタウン、ラパス、マナウス、サンフアン</value>
+  </data>
+  <data name="Paraguay Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) アスンシオン</value>
+  </data>
+  <data name="Pacific SA Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) サンティアゴ</value>
+  </data>
+  <data name="Atlantic Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) 大西洋標準時 (カナダ)</value>
+  </data>
+  <data name="Venezuela Standard Time" xml:space="preserve">
+    <value>(UTC-04:30) カラカス</value>
+  </data>
+  <data name="US Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) インディアナ東部</value>
+  </data>
+  <data name="SA Pacific Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) ボゴタ、リマ、キト</value>
+  </data>
+  <data name="Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) 東部標準時 (米国およびカナダ)</value>
+  </data>
+  <data name="Central Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-06:00) グアダラハラ、メキシコシティ、モンテレー</value>
+  </data>
+  <data name="Canada Central Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) サスカチュワン</value>
+  </data>
+  <data name="Central America Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) 中央アメリカ</value>
+  </data>
+  <data name="Central Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) 中部標準時 (米国およびカナダ)</value>
+  </data>
+  <data name="US Mountain Standard Time" xml:space="preserve">
+    <value>(UTC-07:00) アリゾナ</value>
+  </data>
+  <data name="Mountain Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-07:00) チワワ、ラパス、マサトラン</value>
+  </data>
+  <data name="Mountain Standard Time" xml:space="preserve">
+    <value>(UTC-07:00) 山地標準時 (米国およびカナダ)</value>
+  </data>
+  <data name="Pacific Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-08:00) バハカリフォルニア</value>
+  </data>
+  <data name="Pacific Standard Time" xml:space="preserve">
+    <value>(UTC-08:00) 太平洋標準時 (米国およびカナダ)</value>
+  </data>
+  <data name="Alaskan Standard Time" xml:space="preserve">
+    <value>(UTC-09:00) アラスカ</value>
+  </data>
+  <data name="Hawaiian Standard Time" xml:space="preserve">
+    <value>(UTC-10:00) ハワイ</value>
+  </data>
+  <data name="UTC-11" xml:space="preserve">
+    <value>(UTC-11:00) 協定世界時-11</value>
+  </data>
+  <data name="Samoa Standard Time" xml:space="preserve">
+    <value>(UTC-11:00) サモア</value>
+  </data>
+  <data name="Dateline Standard Time" xml:space="preserve">
+    <value>(UTC-12:00) 国際日付変更線 西側</value>
+  </data>
+  <data name="DLG_Appointment_Core_OccurrenceDescription" xml:space="preserve">
+    <value>繰り返しパターンに基づいて定期的な予定を設定します。</value>
+  </data>
+  <data name="DLG_Appointment_Core_RecurrenceRootDescription" xml:space="preserve">
+    <value>繰り返しパターンに基づいて定期的な予定を設定します。</value>
+  </data>
+  <data name="DLG_Appointment_Core_RecurrenceRootLabel" xml:space="preserve">
+    <value>定期的な予定：</value>
+  </data>
+  <data name="DLG_Recurrence_Core_ActivityRecurrenceTitle" xml:space="preserve">
+    <value>定期的なアクティビティの設定</value>
+  </data>
+  <data name="DLG_Recurrence_Core_ActivityTime" xml:space="preserve">
+    <value>時間の設定</value>
+  </data>
+  <data name="DLG_Recurrence_Core_Duration" xml:space="preserve">
+    <value>期間：</value>
+  </data>
+  <data name="DLG_Recurrence_Core_End" xml:space="preserve">
+    <value>終了：</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RecurrencePattern" xml:space="preserve">
+    <value>パターンの設定</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RecurrenceRange" xml:space="preserve">
+    <value>期間</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RemoveRecurrence" xml:space="preserve">
+    <value>定期的な設定を解除</value>
+  </data>
+  <data name="DLG_Recurrence_Core_Start" xml:space="preserve">
+    <value>開始：</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Days" xml:space="preserve">
+    <value>{0} 日間</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Hours" xml:space="preserve">
+    <value>{0} 時間</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Hour" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Minute" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Week" xml:space="preserve">
+    <value>週</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Minutes" xml:space="preserve">
+    <value>{0} 分</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneDay" xml:space="preserve">
+    <value>1 日</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneHour" xml:space="preserve">
+    <value>1 時間</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneMinute" xml:space="preserve">
+    <value>1 分間</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneWeek" xml:space="preserve">
+    <value>1 週間</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Weeks" xml:space="preserve">
+    <value>{0} 週間</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_Days" xml:space="preserve">
+    <value>日ごと</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_Every" xml:space="preserve">
+    <value>間隔</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_EveryWeekday" xml:space="preserve">
+    <value>すべての平日</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Daily" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Monthly" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Weekly" xml:space="preserve">
+    <value>週</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Yearly" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="DLG_Recurrence_WeeklyPattern_Literal_RecurEvery" xml:space="preserve">
+    <value>間隔</value>
+  </data>
+  <data name="DLG_Recurrence_WeeklyPattern_Literal_WeeksOn" xml:space="preserve">
+    <value>週ごと</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_DayCapitalized" xml:space="preserve">
+    <value>日:</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Months" xml:space="preserve">
+    <value>に設定</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_OfEvery" xml:space="preserve">
+    <value>か月ごとの</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_First" xml:space="preserve">
+    <value>第 1</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Fourth" xml:space="preserve">
+    <value>第 4</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Last" xml:space="preserve">
+    <value>最終</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Second" xml:space="preserve">
+    <value>第 2</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Third" xml:space="preserve">
+    <value>第 3</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_The" xml:space="preserve">
+    <value>曜日</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_WeekDay" xml:space="preserve">
+    <value>平日</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_WeekendDay" xml:space="preserve">
+    <value>週末</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_EndAfter" xml:space="preserve">
+    <value>反復回数：</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_EndBy" xml:space="preserve">
+    <value>終了日：</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_NoEndDate" xml:space="preserve">
+    <value>終了日未定</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_Occurrences" xml:space="preserve">
+    <value>回</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_Start" xml:space="preserve">
+    <value>開始日：</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_Of" xml:space="preserve">
+    <value />
+    <comment>Leaving this blank, as I don't think this label is used in the Japanese version.</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_On" xml:space="preserve">
+    <value>指定日：</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_OnThe" xml:space="preserve">
+    <value>指定曜日：</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_RecurEvery" xml:space="preserve">
+    <value>間隔</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_Years" xml:space="preserve">
+    <value>年ごと</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_Open" xml:space="preserve">
+    <value>定期的なアイテムを開く</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteOccurrence" xml:space="preserve">
+    <value>これのみを削除する</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteSeries" xml:space="preserve">
+    <value>全ての定期的な予定を削除する</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeletingMessage" xml:space="preserve">
+    <value>定期的な予定 '{0}' をすべて削除しますか？または、このアイテムのみを削除しますか？</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpeningMessage" xml:space="preserve">
+    <value>{0} は定期的な予定です。この予定のみ、もしくはこれを定期的な予定として開きますか?</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpenOccurrence" xml:space="preserve">
+    <value>このアイテムのみを開く</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpenSeries" xml:space="preserve">
+    <value>定期的なアイテムとして開く</value>
+  </data>
+  <data name="MSG_TEXT_UpdateRecurrenceInvalidPattern" xml:space="preserve">
+    <value>定期的な予定パターンは有効ではありません。</value>
+  </data>
+  <data name="MSG_TITLE_UpdateRecurrence" xml:space="preserve">
+    <value>定期的な予定を更新する</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_Delete" xml:space="preserve">
+    <value>削除の確認</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Recurrence" xml:space="preserve">
+    <value>定期的なアイテム</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_SaveClose" xml:space="preserve">
+    <value>保存して閉じる</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_TimeZones" xml:space="preserve">
+    <value>タイムゾーン</value>
+  </data>
+  <data name="DLG_Appointment_Core_ComboTool_Reminder" xml:space="preserve">
+    <value>アラーム：</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Actions" xml:space="preserve">
+    <value>アクション</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Options" xml:space="preserve">
+    <value>オプション</value>
+  </data>
+  <data name="EndDateOutOfView" xml:space="preserve">
+    <value>{0} まで</value>
+  </data>
+  <data name="StartDateOutOfView" xml:space="preserve">
+    <value>{0} から</value>
+  </data>
+  <data name="DLG_TimeZoneChooser_Literal_Message" xml:space="preserve">
+    <value>ローカル タイムゾーンを選択してください</value>
+  </data>
+  <data name="DLG_TimeZoneChooser_Literal_Selector" xml:space="preserve">
+    <value>タイムゾーン：</value>
+  </data>
+  <data name="DLG_Reminder_Literal_StartTimeDescription" xml:space="preserve">
+    <value>開始時刻：{0}</value>
+  </data>
+  <data name="DLG_Reminder_Literal_RemindersSelected" xml:space="preserve">
+    <value>{0} 個のアラームが選択されています</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Subject" xml:space="preserve">
+    <value>件名</value>
+  </data>
+  <data name="DLG_Reminder_Literal_DueIn" xml:space="preserve">
+    <value>期限：</value>
+  </data>
+  <data name="DLG_Reminder_Literal_DismissAll" xml:space="preserve">
+    <value>すべてのアラームを消す</value>
+  </data>
+  <data name="DLG_Reminder_Literal_OpenItem" xml:space="preserve">
+    <value>アイテムを開く</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Dismiss" xml:space="preserve">
+    <value>アラームを消す</value>
+  </data>
+  <data name="DLG_Reminder_Literal_SnoozePrompt" xml:space="preserve">
+    <value>[再通知] をクリックしてアラームを再表示します：</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Snooze" xml:space="preserve">
+    <value>再通知</value>
+  </data>
+  <data name="DLG_Reminder_Overdue" xml:space="preserve">
+    <value>期限切れ: {0}</value>
+    <comment>{0} 日期限を過ぎています</comment>
+  </data>
+  <data name="TimeSpan_Literal_OneMinute" xml:space="preserve">
+    <value>1 分間</value>
+  </data>
+  <data name="TimeSpan_Literal_Minutes" xml:space="preserve">
+    <value>{0} 分</value>
+  </data>
+  <data name="TimeSpan_Literal_OneHour" xml:space="preserve">
+    <value>1 時間</value>
+  </data>
+  <data name="TimeSpan_Literal_Hours" xml:space="preserve">
+    <value>{0} 時間</value>
+  </data>
+  <data name="TimeSpan_Literal_OneDay" xml:space="preserve">
+    <value>1 日</value>
+  </data>
+  <data name="TimeSpan_Literal_Days" xml:space="preserve">
+    <value>{0} 日間</value>
+  </data>
+  <data name="TimeSpan_Literal_OneWeek" xml:space="preserve">
+    <value>1 週間</value>
+  </data>
+  <data name="TimeSpan_Literal_Weeks" xml:space="preserve">
+    <value>{0} 週間</value>
+  </data>
+  <data name="DLG_Reminder_Title" xml:space="preserve">
+    <value>アラーム</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneMinute" xml:space="preserve">
+    <value>1 分</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Minutes" xml:space="preserve">
+    <value>{0} 分</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneHour" xml:space="preserve">
+    <value>1 時間</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Hours" xml:space="preserve">
+    <value>{0} 時間</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneDay" xml:space="preserve">
+    <value>1 日</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Days" xml:space="preserve">
+    <value>{0} 日</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneWeek" xml:space="preserve">
+    <value>1 週</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Weeks" xml:space="preserve">
+    <value>{0} 週</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Minute" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Hour" xml:space="preserve">
+    <value>字</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Day" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Week" xml:space="preserve">
+    <value>週</value>
+  </data>
+  <data name="ToolTipErrorLabel" xml:space="preserve">
+    <value>エラー：</value>
+  </data>
+  <data name="BlockingErrorLiteral" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Complex_ElementOrder" xml:space="preserve">
+    <value>5,4,1,2,3,6</value>
+    <comment>A comma separated list of numbers that refer to the elements in the complex section of the Monthly Recurrence Pattern.  
+		This list determines the order in which the elements are arranged	left to right.	
+	</comment>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField4" xml:space="preserve">
+    <value>か月ごとの</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField6" xml:space="preserve">
+    <value>に設定</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Complex_ElementOrder" xml:space="preserve">
+    <value>5,2,1,4,3,6</value>
+    <comment>A comma separated list of numbers that refer to the elements in the complex section of the Yearly Recurrence Pattern.
+			This list determines the order in which the elements are arranged	left to right.
+		</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField6" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DLG_TimeZoneChooser_Header" xml:space="preserve">
+    <value>ローカル タイムゾーンを指定する</value>
+  </data>
+  <data name="DLG_Recurrence_ShouldShowRecurrenceDescription" xml:space="preserve">
+    <value>false</value>
+    <comment>'true' for English translations, 'false' for other languages.  Once the Recurrence description has been made localizable, this string will be removed and appropriate localizable description part strings will be added.</comment>
+  </data>
+  <data name="MSG_TITLE_EditActivity" xml:space="preserve">
+    <value>アクティビティの編集</value>
+  </data>
+  <data name="MSG_TITLE_UpdateActivity" xml:space="preserve">
+    <value>アクティビティの更新</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_MinutesBeforeStart" xml:space="preserve">
+    <value>分後</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_SimpleTextField" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="TimeSpan_Literal_MinutesBeforeStart" xml:space="preserve">
+    <value>開始 {0} 分前</value>
+  </data>
+  <data name="LE_DateAlreadySelected" xml:space="preserve">
+    <value>指定した日付「{0}」が既に選択されています。</value>
+  </data>
+  <data name="LE_DateOutOfRange" xml:space="preserve">
+    <value>指定した日付「{0}」が利用可能な範囲外 ({1}-{2}) です。</value>
+  </data>
+  <data name="LE_MissingMappings" xml:space="preserve">
+    <value>{0} のプロパティ マッピングが指定されていません。</value>
+  </data>
+  <data name="LE_TZProviderMissing" xml:space="preserve">
+    <value>タイムゾーン情報プロバイダーが見つかりません。{0}.{1} プロパティを設定します。</value>
+  </data>
+  <data name="LE_NoTimeZones" xml:space="preserve">
+    <value>{0}.{1} に定義されているタイムゾーンはありません。</value>
+  </data>
+  <data name="LE_NoLOcalTimeZones" xml:space="preserve">
+    <value>ローカル タイムゾーンを確認できません。{0}.{1}.{2} を有効なタイムゾーン ID に設定します。</value>
+  </data>
+  <data name="LE_NoUTCTimeZone" xml:space="preserve">
+    <value>UTC タイムゾーン情報を確認できません。{2} が UTC ID に設定されている CustomTimeZoneInfoProvider に {0}.{1} を設定します。</value>
+  </data>
+  <data name="LE_DataMgrNotSet" xml:space="preserve">
+    <value>{0}.DataManager が設定されていません。</value>
+  </data>
+  <data name="LE_NoEndPointConfig" xml:space="preserve">
+    <value>WCF サービスに接続できません。エンドポイント構成またはリモート バインディングおよびアドレスを指定する必要があります。{0}.{1} を有効なエンドポイント構成に設定、あるいは {0}.{2} または {0}.{3} を有効なリモート バインディングおよびアドレスに設定する必要があります。</value>
+  </data>
+  <data name="LE_NotConnectedToService" xml:space="preserve">
+    <value>{0} が WCP サービスに接続されていません。</value>
+  </data>
+  <data name="LE_LinQSerializeFailure" xml:space="preserve">
+    <value>サービスの呼び出しに LINQ 構文をシリアル化できませんでした。</value>
+  </data>
+  <data name="LE_CantCreateObject" xml:space="preserve">
+    <value>'{0}' オブジェクトを作成することができません。パブリック パラメーター コンストラクターが必要です。また、型もパブリックである必要があります。</value>
+  </data>
+  <data name="LE_AddNotSupportedByList" xml:space="preserve">
+    <value>追加はリストでサポートされません。</value>
+  </data>
+  <data name="LE_AddNotSupportedByDataSource" xml:space="preserve">
+    <value>基本データソース {0} リストは、追加の操作をサポートしません。</value>
+  </data>
+  <data name="LE_UnknownAddError" xml:space="preserve">
+    <value>{0} リストに追加した際の不明なエラー。</value>
+  </data>
+  <data name="LE_IListNotImplemented" xml:space="preserve">
+    <value>{0} データ ソース リストは、IList&lt;T&gt; または追加をサポートするために必要な IList を実装しません。</value>
+  </data>
+  <data name="LE_AddOperationFailed" xml:space="preserve">
+    <value>{0} の基本データソース リストの追加操作に失敗しました。</value>
+  </data>
+  <data name="LE_MissingMapping" xml:space="preserve">
+    <value>{1} プロパティ マッピングは、{0} データソースに指定する必要があります。</value>
+  </data>
+  <data name="LE_NoDataItemForViewItem" xml:space="preserve">
+    <value>{0} ビューは基本データ項目がありませんので、データソースから削除できません。</value>
+  </data>
+  <data name="LE_MustImplementLinq" xml:space="preserve">
+    <value>{0} の派生リスト マネージャーは、CreateLinqStatement メソッドをオーバーライドする必要があります。</value>
+  </data>
+  <data name="LE_AlreadyDeleted" xml:space="preserve">
+    <value>実行は削除されています。</value>
+  </data>
+  <data name="LE_CanNotDelete" xml:space="preserve">
+    <value>既にに編集モードであるか編集できないために発生を削除できません。</value>
+  </data>
+  <data name="LE_RootActivityNotFound" xml:space="preserve">
+    <value>アクティビティのシリーズは見つかりませんでした。</value>
+  </data>
+  <data name="LE_RootActivityNotFound_Full" xml:space="preserve">
+    <value>バリアント アクティビティのルート アクティビティ参照が初期化されていません。ルート アクティビティの MaxOccurrenceDataTime がバリアント アクティビティの終了時間の変更を MaxOccurrenceDateTime 以上の値に反映するために更新されない場合に通常発生します。このエラーは、バリアント アクティビティの開始がのルート アクティビティの開始より前の値へ変更された場合に発生します。</value>
+  </data>
+  <data name="LE_CanNotUpdateSeries" xml:space="preserve">
+    <value>シリーズを更新できません。</value>
+  </data>
+  <data name="LE_CanNotUpdateSeries_Full" xml:space="preserve">
+    <value>バリアント アクティビティのルート アクティビティを更新できません。MaxOccurrenceDateTime プロパティは、バリアント アクティビティの新しい時間を反映するために更新する必要があります。MaxOccurrenceDateTime は、シリーズが発生する最大の終了時間以上の値です。</value>
+  </data>
+  <data name="LE_MustBeAfterSeries" xml:space="preserve">
+    <value>発生の開始時間をシリーズの開始時間よりも早い時間へ変更することはできません。</value>
+  </data>
+  <data name="LE_AppConfigError" xml:space="preserve">
+    <value>アプリケーション構成エラー。この機能はサポートされていません。</value>
+  </data>
+  <data name="LE_MissingMappingHeader" xml:space="preserve">
+    <value>{0} 項目には下記のプロパティ マッピングがありません：</value>
+  </data>
+  <data name="LE_RequiredMappingHeader" xml:space="preserve">
+    <value>マッピング コレクションで定義された下記のプロパティ マッピングが必要になります：
+明示的にマッピングされるプロパティ：
+{0} 
+必要なプロパティ：
+{1}</value>
+  </data>
+  <data name="LE_UnknownQueryType" xml:space="preserve">
+    <value>{0} のクエリの不明な型。</value>
+  </data>
+  <data name="LE_UnknownTargetType" xml:space="preserve">
+    <value>不明なターゲット型：{0}</value>
+  </data>
+  <data name="LE_InvalidDayOfWeekRule" xml:space="preserve">
+    <value>週のルールに関連付けられた無効な日を持ちます。月ごと、年ごと、間隔でのみ有効です。</value>
+  </data>
+  <data name="LE_ActivityBeingEdited" xml:space="preserve">
+    <value>アクティビティは既に編集されています。</value>
+  </data>
+  <data name="LE_InvalidTZId" xml:space="preserve">
+    <value>'{0}' タイムゾーン ID が無効です。指定した ID のタイムゾーンは存在しません。</value>
+  </data>
+  <data name="LE_ActivityHasInvalidTZ" xml:space="preserve">
+    <value>id '{0}' のアクティビティは、無効なタイムゾーン id 値である '{0}' があります。指定した ID のタイムゾーンは存在しません。</value>
+  </data>
+  <data name="LE_CanNotConvertValue" xml:space="preserve">
+    <value>{0} 値をターゲット型  {1} へ変換できません。</value>
+  </data>
+  <data name="LE_CancelEditFailed" xml:space="preserve">
+    <value>未指定のエラー。編集操作のキャンセルに失敗しました。</value>
+  </data>
+  <data name="LE_ActivityNotAClone" xml:space="preserve">
+    <value>指定したアクティビティは、BeginEditWithCopy からの呼び出しによって返されたクローン アクティビティではありません。</value>
+  </data>
+  <data name="LE_NoConnectorSpecifed" xml:space="preserve">
+    <value>{0}.DataConnector は設定されませんでした。表示するアクティビティまたは予定表はありません。</value>
+  </data>
+  <data name="LE_CurrentUserNotSet" xml:space="preserve">
+    <value>{0}.CurrentUserId が設定されていません。アラームを表示しません。</value>
+  </data>
+  <data name="LE_PropertyIsReadOnly" xml:space="preserve">
+    <value>プロパティは読み取り専用です。</value>
+  </data>
+  <data name="LE_ItemIsNotProperType" xml:space="preserve">
+    <value>項目は {0} インスタンスであることが必要です。</value>
+  </data>
+  <data name="LE_CanNotAddANullItem" xml:space="preserve">
+    <value>null 項目を追加できません。</value>
+  </data>
+  <data name="LE_BadDayOfWeekRule" xml:space="preserve">
+    <value>無効な曜日のルール: {0}</value>
+  </data>
+  <data name="LE_NoDataRange" xml:space="preserve">
+    <value>少なくとも日付範囲を 1 つ指定する必要があります。</value>
+  </data>
+  <data name="LE_QuerySealed" xml:space="preserve">
+    <value>ActivityQuery を実行した後に変更できません。</value>
+  </data>
+  <data name="LE_CanNotInitCancelledOp" xml:space="preserve">
+    <value>キャッシュされた操作の結果を初期化できません。</value>
+  </data>
+  <data name="LE_CanNotCancelCompletedOp" xml:space="preserve">
+    <value>完了した操作はキャンセルできません。</value>
+  </data>
+  <data name="LE_WorkingHoursSpanTooBige" xml:space="preserve">
+    <value>稼働時間は 24 時間以内にする必要があります。</value>
+  </data>
+  <data name="LE_BrushIdNotFound" xml:space="preserve">
+    <value>CalendarBrushId を見つけませんでした。</value>
+  </data>
+  <data name="LE_BeginUpdateBeforeEnd" xml:space="preserve">
+    <value>EndUpdate を呼び出す前に BeginUpdate を呼び出すことが必要です。</value>
+  </data>
+  <data name="LE_MustBeUnspecified" xml:space="preserve">
+    <value>型を未定義にする必要があります。</value>
+  </data>
+  <data name="LE_EndBeforeStart" xml:space="preserve">
+    <value>終了は開始の後にする必要があります。</value>
+  </data>
+  <data name="LE_InavlidDelta" xml:space="preserve">
+    <value>無効なデルタ</value>
+  </data>
+  <data name="LE_DeltaHasSeconds" xml:space="preserve">
+    <value>デルタに秒があります。</value>
+  </data>
+  <data name="LE_HasTimeOfDay" xml:space="preserve">
+    <value>日付に時間があります</value>
+  </data>
+  <data name="LE_AdjustRuleMustHave" xml:space="preserve">
+    <value>トランジション期間の調整には {0} が必要です。</value>
+  </data>
+  <data name="LE_TimeShouldHaveTicks" xml:space="preserve">
+    <value>時間に目盛が必要です。</value>
+  </data>
+  <data name="LE_TokenNotFound" xml:space="preserve">
+    <value>トークンが見つかりません。</value>
+  </data>
+  <data name="LE_TimeNotAmbiguous" xml:space="preserve">
+    <value>日時が明瞭です。</value>
+  </data>
+  <data name="LE_TokenNotFromProvier" xml:space="preserve">
+    <value>この TimeZoneInfoProvider はトークン {0} を作成しませんでした。</value>
+  </data>
+  <data name="LE_ThreadAccess" xml:space="preserve">
+    <value>別のスレッドのオブジェクトにアクセスできません。</value>
+  </data>
+  <data name="LE_InvalidReminderContext" xml:space="preserve">
+    <value>ReminderInfo コンテキストは ActivityBase ではありません。</value>
+  </data>
+  <data name="LE_MustBeOfType" xml:space="preserve">
+    <value>{0} は型 {1} でなければなりません。</value>
+  </data>
+  <data name="LE_MappingDoesNotExist" xml:space="preserve">
+    <value>プロパティ マッピングで指定された '{0}' は、{1} のデータ ソース リストの項目タイプのディレクト プロパティとしては存在しません。正しいテンプレート型のあるデータ ソース ジェネリック リストですか？</value>
+  </data>
+  <data name="LE_NoVisibleCalendars" xml:space="preserve">
+    <value>{0} に表示される予定表はありません。{0}.DataManager.CurrentUserID を PrimaryCalendar のある ResourceID へ設定するか、表示される ResourceCalendars を含む CalendarGroups を {0}.DataManager.CalendarGroups コレクションまたは {0}.CalendarGroupsOverride コレクションへ追加します。</value>
+  </data>
+  <data name="LE_RecurrenceParsing" xml:space="preserve">
+    <value>エラー解析パターン。コンテキスト：{0}</value>
+  </data>
+  <data name="LE_RecurrenceSerializing" xml:space="preserve">
+    <value>エラーシリアル化パターン：コンテキスト：{0}</value>
+  </data>
+  <data name="LE_CannotFindDataItemOnServer" xml:space="preserve">
+    <value>バックアップしたデータ項目はサーバーに存在しません。</value>
+  </data>
+  <data name="LE_ErrorDetailsHeader" xml:space="preserve">
+    <value>エラーの詳細：</value>
+  </data>
+  <data name="LE_InnerExceptionHeader" xml:space="preserve">
+    <value>InnerException：</value>
+  </data>
+  <data name="LE_InvalidRemoteAddressType" xml:space="preserve">
+    <value>{0}.{1} プロパティを文字列、Uri または EndpointAddress に設定する必要があります。</value>
+  </data>
+  <data name="MSG_TITLE_AddActivity" xml:space="preserve">
+    <value>アクティビティの追加</value>
+  </data>
+  <data name="MSG_TITLE_DragActivity" xml:space="preserve">
+    <value>アクティビティのドラッグ</value>
+  </data>
+  <data name="MSG_TITLE_ResizeActivity" xml:space="preserve">
+    <value>アクティビティのサイズ変更</value>
+  </data>
+  <data name="LE_MissingMappingEnd" xml:space="preserve">
+    <value>アクティビティの終了時間に対応するには End フィールドが必要です。</value>
+  </data>
+  <data name="LE_MissingMappingRecurrence" xml:space="preserve">
+    <value>定期的なアクティビティに対応するには、Recurrence フィールドが必要です。</value>
+  </data>
+  <data name="LE_MissingMappingReminder" xml:space="preserve">
+    <value>アラームに対応するには、下記のフィールドが必要です。</value>
+  </data>
+  <data name="LE_MissingMappingTimeZoneNeutral" xml:space="preserve">
+    <value>タイムゾーン ニュートラル アクティビティに対応するには、IsTimeZoneNeutral フィールドが必要です。</value>
+  </data>
+  <data name="LE_MissingMappingVariance" xml:space="preserve">
+    <value>バリアンス (定期的なアクティビティ発生の変更)  に対応するには、下記のフィールドが必要になります。</value>
+  </data>
+  <data name="LE_RemoteServiceCantBeReached" xml:space="preserve">
+    <value>リモート サービスにアクセスできません。</value>
+  </data>
+  <data name="LE_NoUTCTimeZone_OS" xml:space="preserve">
+    <value>UTC タイムゾーン情報を確認できません。TimeZoneInfo.Utc.Id は '{0}' 値を返しました。この値は TimeZoneInfo.GetSystemTimeZones() から返されたコレクションで見つかりませんでした。</value>
+  </data>
+  <data name="MSG_TITLE_EditTask" xml:space="preserve">
+    <value>タスクの編集</value>
+  </data>
+  <data name="MSG_TITLE_EditJournal" xml:space="preserve">
+    <value>ジャーナルの編集</value>
+  </data>
+  <data name="MSG_TITLE_UpdateTask" xml:space="preserve">
+    <value>タスクの更新</value>
+  </data>
+  <data name="MSG_TITLE_UpdateJournal" xml:space="preserve">
+    <value>ジャーナルの更新</value>
+  </data>
+  <data name="MSG_TITLE_AddJournal" xml:space="preserve">
+    <value>ジャーナルの追加</value>
+  </data>
+  <data name="MSG_TITLE_AddTask" xml:space="preserve">
+    <value>タスクの追加</value>
+  </data>
+  <data name="MSG_TITLE_DeleteJournal" xml:space="preserve">
+    <value>ジャーナルの削除</value>
+  </data>
+  <data name="MSG_TITLE_DeleteTask" xml:space="preserve">
+    <value>タスクの削除</value>
+  </data>
+  <data name="MSG_TEXT_DeleteJournalPrompt" xml:space="preserve">
+    <value>このジャーナルを削除しますか?</value>
+  </data>
+  <data name="MSG_TEXT_DeleteTaskPrompt" xml:space="preserve">
+    <value>このタスクを削除しますか?</value>
+  </data>
+  <data name="DLG_Task_Core_StartDate" xml:space="preserve">
+    <value>開始日:</value>
+  </data>
+  <data name="DLG_Task_Core_DueDate" xml:space="preserve">
+    <value>期日:</value>
+  </data>
+  <data name="DLG_Task_Core_PercentComplete" xml:space="preserve">
+    <value>達成率:</value>
+  </data>
+  <data name="DLG_Activity_Core_Reminder" xml:space="preserve">
+    <value>アラーム:</value>
+  </data>
+  <data name="DLG_Activity_Core_Owner" xml:space="preserve">
+    <value>オーナー: {0}</value>
+  </data>
+  <data name="DLG_Journal_Core_Duration" xml:space="preserve">
+    <value>期間:</value>
+  </data>
+  <data name="DLG_Activity_Core_DescriptionFormatOverwritePossible" xml:space="preserve">
+    <value>注：このアクティビティの説明には特別な書式が含まれている可能性があります。説明を変更してアクティビティ を保存すると書式は失われます。</value>
+  </data>
+  <data name="DLG_Activity_Core_DescriptionFormatOverwriteDefinite" xml:space="preserve">
+    <value>警告：このアクティビティの説明には特別な書式が含まれています。説明を変更してアクティビティを保存すると書式は失われます。</value>
+  </data>
+  <data name="MSG_TITLE_DescriptionFormatOverwriteMessage" xml:space="preserve">
+    <value>書式の警告の説明</value>
+  </data>
+  <data name="MSG_TEXT_DescriptionFormatOverwriteMessage" xml:space="preserve">
+    <value>アクティビティの説明が変更されています。元の説明はダイアログに保存できない特別な書式を含むため、アクティビティを保存すると元の書式は上書きされます。アクティビティを保存しますか?</value>
+  </data>
+  <data name="LE_ResourceBeingEdited" xml:space="preserve">
+    <value>リソースは既に編集されています。</value>
+  </data>
+  <data name="LE_MissingTemplatePart" xml:space="preserve">
+    <value>名前が '{0}' で '{1}' 型のテンプレート部分が '{2}' テンプレートに必要です。</value>
+  </data>
+  <data name="CalendarNavigateBackToolTip" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="CalendarNavigateForwardToolTip" xml:space="preserve">
+    <value>進む</value>
+  </data>
+  <data name="DLG_Activity_Core_ClearAllCategories" xml:space="preserve">
+    <value>すべてのカテゴリーをクリア</value>
+  </data>
+  <data name="DLG_Activity_Core_DisplayCategoriesDialog" xml:space="preserve">
+    <value>すべてのカテゴリー...</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Categorize" xml:space="preserve">
+    <value>分類する</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Tags" xml:space="preserve">
+    <value>タグ</value>
+  </data>
+  <data name="LE_ActivityCategoryHelper_1" xml:space="preserve">
+    <value>リソースの所有は異なります。アクティビティ リストのカテゴリーを管理するには、リストのすべてのアクティビティが同じ所有リソースに属す必要があります。</value>
+  </data>
+  <data name="LE_ActivityCategoryHelper_2" xml:space="preserve">
+    <value>アクティビティに所有リソースがありません。</value>
+  </data>
+  <data name="LE_ActivityCategoryCreationDialog_1" xml:space="preserve">
+    <value>リソースの更新エラー</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_DeleteRecurringTask" xml:space="preserve">
+    <value>定期的なタスクの削除</value>
+  </data>
+  <data name="DLG_Activity_Core_ClearCategory" xml:space="preserve">
+    <value>'{0}' をクリア</value>
+  </data>
+  <data name="MSG_TITLE_ErrorEditingCategories" xml:space="preserve">
+    <value>アクティビティ カテゴリーの編集エラー</value>
+  </data>
+  <data name="DLG_ActivityCategory_Caption" xml:space="preserve">
+    <value>色カテゴリー</value>
+  </data>
+  <data name="DLG_ActivityCategory_HelpText" xml:space="preserve">
+    <value>色カテゴリーを現在選択されている項目に割り当てるには、各カテゴリーの隣のチェックうボックスを使用します。カテゴリーを編集するには、カテゴリー名を選択し、右のコマンドを使用します。</value>
+  </data>
+  <data name="DLG_ActivityCategory_NameColumnHeader" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_New" xml:space="preserve">
+    <value>追加...</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_Rename" xml:space="preserve">
+    <value>名前の変更</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DLG_ActivityCategory_Literal_Color" xml:space="preserve">
+    <value>色:</value>
+  </data>
+  <data name="DLG_ActivityCategory_Literal_NotInMasterList" xml:space="preserve">
+    <value>{0} (Master Category List 以外)</value>
+  </data>
+  <data name="DLG_ActivityCategoryCreation_Title" xml:space="preserve">
+    <value>新規カテゴリーの追加</value>
+  </data>
+  <data name="MSG_TITLE_DuplicateCategoryName" xml:space="preserve">
+    <value>カテゴリー名の重複</value>
+  </data>
+  <data name="MSG_TEXT_DuplicateCategoryName" xml:space="preserve">
+    <value>カテゴリー名 '{0}' は既に作成されています。別のカテゴリー名を選んでください。</value>
+  </data>
+  <data name="MSG_TITLE_DeleteCategory" xml:space="preserve">
+    <value>アクティビティ カテゴリーの削除</value>
+  </data>
+  <data name="MSG_TEXT_DeleteCategory" xml:space="preserve">
+    <value>カテゴリー '{0}' を削除してもよろしいですか? このカテゴリーを削除するとカテゴリー リストから削除されますが、以前のカテゴリー項目には影響しません。</value>
+  </data>
+  <data name="MSG_TITLE_CantEditResource" xml:space="preserve">
+    <value>所有リソース</value>
+  </data>
+  <data name="MSG_TEXT_CantEditResource" xml:space="preserve">
+    <value>選択したアクティビティの所有リソースは編集できません。特定の機能が無効になります。</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeletingCurrentTaskMessage" xml:space="preserve">
+    <value>タスク '{0}' は定期的なタスクとして設定されます。今後のすべてのタスクの発生を削除しますか。それともこの発生のみを削除しますか？</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteCurrentTaskOccurrence" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteCurrentTaskSeries" xml:space="preserve">
+    <value>すべて削除</value>
+  </data>
+  <data name="ClickToAddJournalPrompt" xml:space="preserve">
+    <value>ジャーナルの追加</value>
+  </data>
+  <data name="ClickToAddTaskPrompt" xml:space="preserve">
+    <value>タスクの追加</value>
+  </data>
+  <data name="ClickToAddActivityPrompt" xml:space="preserve">
+    <value>アクティビティの追加</value>
+  </data>
+  <data name="DLG_Task_Core_DueToday" xml:space="preserve">
+    <value>期限：今日</value>
+  </data>
+  <data name="DLG_Task_Core_DueTomorrow" xml:space="preserve">
+    <value>期限：明日</value>
+  </data>
+  <data name="DLG_Task_Core_DueYesterday" xml:space="preserve">
+    <value>期限：昨日</value>
+  </data>
+  <data name="DLG_Task_Core_DueInDays" xml:space="preserve">
+    <value>期限：{0} 日</value>
+  </data>
+  <data name="DLG_Task_Core_OverdueByDays" xml:space="preserve">
+    <value>期限切れ：{0} 日</value>
+  </data>
+  <data name="DLG_ScheduleDialog_Btn_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="DLG_ScheduleDialog_Btn_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="MSG_TITLE_DismissAllReminders" xml:space="preserve">
+    <value>すべてのアラームを消す(&amp;A)</value>
+  </data>
+  <data name="MSG_TEXT_DismissAllReminders" xml:space="preserve">
+    <value>すべてのアラームを消してよろしいですか?</value>
+  </data>
+  <data name="TimeSpan_Literal_HoursBeforeStart" xml:space="preserve">
+    <value>開始 {0} 時間前</value>
+  </data>
+  <data name="CalendarHeaderCurrentUserDefaultCalendar" xml:space="preserve">
+    <value>{1}</value>
+  </data>
+  <data name="CalendarHeaderCurrentUserNonDefaultCalendar" xml:space="preserve">
+    <value>{1}</value>
+  </data>
+  <data name="CalendarHeaderOtherUserDefaultCalendar" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="CalendarHeaderOtherUserNonDefaultCalendar" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="DLG_ActivityType_Appointment" xml:space="preserve">
+    <value>予定</value>
+  </data>
+  <data name="DLG_ActivityType_Journal" xml:space="preserve">
+    <value>ジャーナル</value>
+  </data>
+  <data name="DLG_ActivityType_Task" xml:space="preserve">
+    <value>タスク</value>
+  </data>
+  <data name="DLG_ActivityTypeChooserDialog_Title_NewActivity" xml:space="preserve">
+    <value>新しいアクティビティ</value>
+  </data>
+  <data name="DLG_ActivityTypeChooser_NewActivityMessage" xml:space="preserve">
+    <value>作成するアクティビティのタイプ。</value>
+  </data>
+  <data name="LE_InvalidCategoryColor" xml:space="preserve">
+    <value>アクティビティ カテゴリ名 '{0}' の色はサポートされません。</value>
+  </data>
+  <data name="MSG_TEXT_RenameCategory" xml:space="preserve">
+    <value>カテゴリー名を '{0}' から '{1}' へ変更してもよろしいですか？
+
+このカテゴリーの名前を変更すると現在のアクティビティのマスター リストの名前も変更されます。ただし、すでに分類されている他のアクティビティがある場合、適用されている名前は変更されません。これらのアクティビティの名前は変更されずに色の関連付けもなくなります。</value>
+  </data>
+  <data name="MSG_TITLE_RenameCategory" xml:space="preserve">
+    <value>アクティビティ カテゴリー名の変更</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_B" xml:space="preserve">
+    <value>B:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_G" xml:space="preserve">
+    <value>G:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_R" xml:space="preserve">
+    <value>R:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_RGBValues" xml:space="preserve">
+    <value>RGB 値</value>
+  </data>
+  <data name="DLG_ActivityCategoryCreation_Name" xml:space="preserve">
+    <value>名前:</value>
+  </data>
+  <data name="MSG_TEXT_UpdateRecurrenceDurationConflict" xml:space="preserve">
+    <value>アクティビティの期間は反復回数より短くなければなりません。期間を短くするか、定期的なアクティビティのダイアログボックスから定期的な予定パターンを変更してください。</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Now" xml:space="preserve">
+    <value>今</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Simple_ElementOrder" xml:space="preserve">
+    <value>1,2,3</value>
+    <comment>A comma separated list of numbers that refer to the elements in the simple section of the Yearly Recurrence Pattern. This list determines the order in which the elements are arranged left to right.</comment>
+  </data>
+  <data name="LE_InvalidViewId" xml:space="preserve">
+    <value>{0} は、サポートされているビュー コレクションのメンバーではありません。</value>
+  </data>
+  <data name="TimeSpan_Literal_DaysAndHours" xml:space="preserve">
+    <value>{0} 日 {1} 時間</value>
+  </data>
+  <data name="TimeSpan_Literal_OneDayAndHours" xml:space="preserve">
+    <value>{0} 日 {1} 時間</value>
+  </data>
+  <data name="Magadan Standard Time" xml:space="preserve">
+    <value>(UTC+11:00) マダガン</value>
+  </data>
+</root>

@@ -1,0 +1,14 @@
+<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igThemes="clr-namespace:Infragistics.Windows.Themes"
+	>
+	<ResourceDictionary.MergedDictionaries>
+		<!--<igThemes:DockManagerGeneric />
+        <igThemes:DockManagerLunaNormal />
+        <igThemes:DockManagerLunaOliveBrushes />-->
+        <ResourceDictionary Source="DockManagerLunaNormal.xaml" />
+        <ResourceDictionary Source="../DockManagerBrushes/DockManagerLunaOlive_Brushes.xaml" />
+        <!--<ResourceDictionary Source="../DockManagerBrushes/DockManagerLunaOlive_Brushes.xaml" />-->
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

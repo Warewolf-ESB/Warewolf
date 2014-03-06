@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LE_ArgumentException_1" xml:space="preserve">
+    <value>ディメンションは Vector を指定しません。</value>
+  </data>
+  <data name="LE_ArgumentException_10" xml:space="preserve">
+    <value>複素数の文字列には 1 つ以下の算術演算子のみを設定できます。</value>
+  </data>
+  <data name="LE_ArgumentException_11" xml:space="preserve">
+    <value>配列は Complex 型に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_12" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_13" xml:space="preserve">
+    <value>ComplexMatrix は ComplexVector に変換することができません。</value>
+  </data>
+  <data name="LE_ArgumentException_14" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じ次元がある Matrix で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_15" xml:space="preserve">
+    <value>ディメンション数は 0 以上に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_16" xml:space="preserve">
+    <value>CumProduct は空ではない ComplexMatrix のみに計算できます。</value>
+  </data>
+  <data name="LE_ArgumentException_17" xml:space="preserve">
+    <value>下付き文字はインデックスの無効な数を含みます。</value>
+  </data>
+  <data name="LE_ArgumentException_18" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_19" xml:space="preserve">
+    <value>下付き文字は整数ではないインデックスを含みます。</value>
+  </data>
+  <data name="LE_ArgumentException_2" xml:space="preserve">
+    <value>要素の長さは指定したディメションと一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_20" xml:space="preserve">
+    <value>下付き文字 Vector は空です。</value>
+  </data>
+  <data name="LE_ArgumentException_21" xml:space="preserve">
+    <value>下付き文字は指定した値と一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_22" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じディメンションがある BooleanVector で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_23" xml:space="preserve">
+    <value>インデックスは空にできません。</value>
+  </data>
+  <data name="LE_ArgumentException_24" xml:space="preserve">
+    <value>lowerBound は upperBound より小さい値に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_25" xml:space="preserve">
+    <value>半径は 0 以上でなければなりません。</value>
+  </data>
+  <data name="LE_ArgumentException_26" xml:space="preserve">
+    <value>Vector 方向は一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_27" xml:space="preserve">
+    <value>Matrix ディメンションは一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_28" xml:space="preserve">
+    <value>Convolve を実行するには、同じ方向の Vector が必要です。</value>
+  </data>
+  <data name="LE_ArgumentException_29" xml:space="preserve">
+    <value>Difference は 1 より大きい長さのベクターでのみ実行できます。</value>
+  </data>
+  <data name="LE_ArgumentException_3" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じディメンションがある BooleanVector で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_30" xml:space="preserve">
+    <value>Difference は 1 より大きい長さのディメンションでのみ実行できます。</value>
+  </data>
+  <data name="LE_ArgumentException_31" xml:space="preserve">
+    <value>Vector インデックスは 0 以上でなければなりません。</value>
+  </data>
+  <data name="LE_ArgumentException_32" xml:space="preserve">
+    <value>循環インデックス間隔。</value>
+  </data>
+  <data name="LE_ArgumentException_33" xml:space="preserve">
+    <value>開始インデックスと終了インデックスが一致しない場合、インデックス スペースは 0 に設定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_34" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_35" xml:space="preserve">
+    <value>サイズの Vector は空にできません。</value>
+  </data>
+  <data name="LE_ArgumentException_36" xml:space="preserve">
+    <value>配列のインデックスは 0 ～ (Length - 1) に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_37" xml:space="preserve">
+    <value>無効な Vector サイズです。</value>
+  </data>
+  <data name="LE_ArgumentException_38" xml:space="preserve">
+    <value>無効なスペース制約です。</value>
+  </data>
+  <data name="LE_ArgumentException_39" xml:space="preserve">
+    <value>ベクターの長さは 0 より大きくする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_4" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じディメンションがある BooleanVector で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_40" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_41" xml:space="preserve">
+    <value>MinorMatrix は 2 次元の Matrix の入力が必要です。</value>
+  </data>
+  <data name="LE_ArgumentException_42" xml:space="preserve">
+    <value>無効なインデックス仕様です。</value>
+  </data>
+  <data name="LE_ArgumentException_43" xml:space="preserve">
+    <value>空の Matrix から行および列を削除することができません。</value>
+  </data>
+  <data name="LE_ArgumentException_44" xml:space="preserve">
+    <value>負の数の繰り返しを指定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_45" xml:space="preserve">
+    <value>ディメンション数が範囲外です。</value>
+  </data>
+  <data name="LE_ArgumentException_46" xml:space="preserve">
+    <value>下付き文字はディメンションと一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_47" xml:space="preserve">
+    <value>Vector の長さは正の数にする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_48" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_49" xml:space="preserve">
+    <value>Matrix のディメンションは正の数にする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_5" xml:space="preserve">
+    <value>インデックスは整数にする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_50" xml:space="preserve">
+    <value>相関 Matrix は 2 次元の Matrix のみに計算できます。</value>
+  </data>
+  <data name="LE_ArgumentException_51" xml:space="preserve">
+    <value>共変性 Matrix は 2 次元の Matrix のみに計算できます。</value>
+  </data>
+  <data name="LE_ArgumentException_52" xml:space="preserve">
+    <value>標準偏差は 0 以上でなければなりません。</value>
+  </data>
+  <data name="LE_ArgumentException_53" xml:space="preserve">
+    <value>空の Vector の平均を計算できません。</value>
+  </data>
+  <data name="LE_ArgumentException_54" xml:space="preserve">
+    <value>空の ComplexVector の平均を計算できません。</value>
+  </data>
+  <data name="LE_ArgumentException_55" xml:space="preserve">
+    <value>入力 Vector が一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_56" xml:space="preserve">
+    <value>要素の長さは指定したディメションと一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_57" xml:space="preserve">
+    <value>Array は double 型に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_58" xml:space="preserve">
+    <value>Matrix は Vector に変換することができません。</value>
+  </data>
+  <data name="LE_ArgumentException_59" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じ次元がある Matrix で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_6" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_60" xml:space="preserve">
+    <value>値域は 1 つ以下の要素で指定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_61" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_62" xml:space="preserve">
+    <value>値域は昇順の必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_63" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_64" xml:space="preserve">
+    <value>空ではない Matrix の長さは 0 より大きくする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_65" xml:space="preserve">
+    <value>Matrix を 1 つ以下のディメンションに設定できません。</value>
+  </data>
+  <data name="LE_ArgumentException_66" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_67" xml:space="preserve">
+    <value>Matrix のディメンションは正の数にする必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_68" xml:space="preserve">
+    <value>ソース リストは宛先リストより小さく必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_69" xml:space="preserve">
+    <value>要素の長さが指定したディメションと一致しません。</value>
+  </data>
+  <data name="LE_ArgumentException_7" xml:space="preserve">
+    <value>複素数の文字列の虚コンポーネントの書式設定は無効です。</value>
+  </data>
+  <data name="LE_ArgumentException_8" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentException_9" xml:space="preserve">
+    <value>複素数の文字列はリアル部分および虚部分を表す double 文字列が必要です。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_1" xml:space="preserve">
+    <value>空のベクターをインデックスできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_10" xml:space="preserve">
+    <value>下付き文字は Matrix の範囲外です。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_11" xml:space="preserve">
+    <value>空の Matrix をインデックスできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_12" xml:space="preserve">
+    <value>サイズの Vector は整数ではない要素があります。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_13" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_2" xml:space="preserve">
+    <value>指定した Vector インデックスは無効です。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_3" xml:space="preserve">
+    <value>1 つのベクター インデックスは 0 に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_4" xml:space="preserve">
+    <value>null 値のベクターをインデックスできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_5" xml:space="preserve">
+    <value>インデックスがベクターの範囲外です。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_6" xml:space="preserve">
+    <value>空のベクターをインデックスできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_7" xml:space="preserve">
+    <value>空の ComplexMatrix をインデックスできません。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_8" xml:space="preserve">
+    <value>インデックスは Matrix の範囲外です。</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_9" xml:space="preserve">
+    <value>インデックスが範囲外です。</value>
+  </data>
+  <data name="LE_ArithmeticException_1" xml:space="preserve">
+    <value>Max は空ではない Vector のみに計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_10" xml:space="preserve">
+    <value>MatrixProduct は 2 次元の Matrix の入力が必要です。</value>
+  </data>
+  <data name="LE_ArithmeticException_11" xml:space="preserve">
+    <value>x1 の第 2 次元は x2 の第 1 次元と同じサイズでなければなりません。</value>
+  </data>
+  <data name="LE_ArithmeticException_12" xml:space="preserve">
+    <value>MatrixProduct は 2 次元の ComplexMatrix の入力が必要です。</value>
+  </data>
+  <data name="LE_ArithmeticException_13" xml:space="preserve">
+    <value>Set 操作は同じ方向の Vector で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArithmeticException_14" xml:space="preserve">
+    <value>ドット プロダクト操作は同じ長さの Vector で実行する必要があります。</value>
+  </data>
+  <data name="LE_ArithmeticException_15" xml:space="preserve">
+    <value>計算 「If」関数は同じ長さを持つ BooleanVector である必要があります。</value>
+  </data>
+  <data name="LE_ArithmeticException_16" xml:space="preserve">
+    <value>計算 「If」関数は同じ方向を持つ BooleanVector である必要があります。</value>
+  </data>
+  <data name="LE_ArithmeticException_2" xml:space="preserve">
+    <value>Max は空でない ComplexVector のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_3" xml:space="preserve">
+    <value>Max は空ではない Matrix のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_4" xml:space="preserve">
+    <value>ディメンション数は 1 以上に設定する必要があります。</value>
+  </data>
+  <data name="LE_ArithmeticException_5" xml:space="preserve">
+    <value>Min は空ではない Vector のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_6" xml:space="preserve">
+    <value>Min は空ではない ComplexVector のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_7" xml:space="preserve">
+    <value>Min は空ではない Matrix のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_8" xml:space="preserve">
+    <value>Min は空ではない ComplexMatrix のみで計算できます。</value>
+  </data>
+  <data name="LE_ArithmeticException_9" xml:space="preserve">
+    <value>バイナリ点毎の算術演算は、同じディメンションがある Vector で実行する必要があります。</value>
+  </data>
+  <data name="LE_IndexOutOfRangeException_1" xml:space="preserve">
+    <value>ComparisonType で定義されません。</value>
+  </data>
+</root>

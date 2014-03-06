@@ -1,0 +1,793 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:igEditors="clr-namespace:Infragistics.Windows.Editors"
+	xmlns:luna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	xmlns:igThemes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    >
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="EditorsGeneric.xaml"/>
+        <ResourceDictionary Source="../EditorsBrushes/EditorsOffice2k7Blue_Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  _________________________ SpinButton Glyphs _______________________________________  -->
+    <DataTemplate x:Key="{x:Static igEditors:EditorsBrushKeys.IncreaseGlyphKey}">
+        <Path
+			Width="5"
+			Height="3"
+			Data="M 2,0 C2,0 2,1 2,1 2,1 1,1 1,1 1,1 1,2 1,2 1,2 0,2 0,2 0,2 0,3 0,3 0,3 5,3 5,3 5,3 5,2 5,2 5,2 4,2 4,2 4,2 4,1 4,1 4,1 3,1 3,1 3,1 3,0 3,0 3,0 2,0 2,0 z"
+			Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static igEditors:EditorsBrushKeys.DecreaseGlyphKey}">
+        <Path
+		Width="5"
+		Height="3"
+		Data="M 2,3 C2,3 2,2 2,2 2,2 1,2 1,2 1,2 1,1 1,1 1,1 0,1 0,1 0,1 0,0 0,0 0,0 5,0 5,0 5,0 5,1 5,1 5,1 4,1 4,1 4,1 4,2 4,2 4,2 3,2 3,2 3,2 3,3 3,3 3,3 2,3 2,3 z"
+		Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}"/>
+    </DataTemplate>
+
+    <!--  _________________________ XamMaskedEditor __________________________________________  -->
+    <Style TargetType="{x:Type igEditors:XamMaskedEditor}" BasedOn="{StaticResource XamMaskedEditorBaseStyle}">
+        <!-- AS 9/2/08
+             This style was almost an exact duplicate of that of the Generic save the
+             default background and using a custom hottrack background/border. I removed
+             all the common stuff and set a BasedOn style.
+        -->
+        <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalCenterFillKey}}"/>
+        <Setter Property="Padding" Value="0,2,0,2"/>
+        <Style.Triggers>
+            <!-- AS 9/2/08
+                 However, instead of having the IsMouseOver set the Background/BorderBrush
+                 and then have it overwritten by the IsInEditMode we should only set it if
+                 the mouse is over and we are not in edit mode.
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}" />
+            </Trigger>
+            <Trigger Property="IsInEditMode" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalCenterFillKey}}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}}" />
+            -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="IsInEditMode" Value="False"/>
+                    <Condition Property="IsEmbedded" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsInEditMode" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}" />
+            </Trigger>
+            <Trigger Property="IsEmbedded" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            </Trigger>
+            <!-- SSP/AS 12/8/11 TFS32567 TFS84941 TFS97036
+                Removed the setter here since it's not necessary as we have the style setter that does
+                this further below.
+            -->
+            <!--<MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEmbedded" Value="False"/>
+                    <Condition Property="IsInEditMode" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            </MultiTrigger>-->
+        </Style.Triggers>
+    </Style>
+
+    <!-- AS 9/3/08
+         We need to define these any time we restyle xammaskededitor or it will continue
+         to pick up the local style from generic. -->
+    <Style TargetType="{x:Type igEditors:XamNumericEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}"/>
+
+    <Style TargetType="{x:Type igEditors:XamCurrencyEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}"/>
+    <!-- AS 9/11/08
+         Moved down since we need to reference the combo dropdown button.
+    <Style TargetType="{x:Type igEditors:XamDateTimeEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}" />-->
+
+    <!--  _________________________ XamComboEditor __________________________________________  -->
+    <!-- NOTE: do not modify the key of this style unless you make a corresponding change to the
+             Infragistics.Windows.Themes.EditorsResourceSet<T>.XamComboEditor_DropDownButtonStyle property-->
+    <Style x:Key="ComboEditor_DropDownButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="ClickMode" Value="Press"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="ComboBoxButton"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid
+							x:Name="ComboEditorDropdown"
+							Visibility="Collapsed"
+							HorizontalAlignment="Right"
+							Background="Transparent"
+							Grid.Column="1"
+							Width="14"
+							Margin="0,-1,-1,-1">
+                            <Border SnapsToDevicePixels="True" x:Name="OuterBorder" Background="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalOuterBorderFillKey}}"/>
+                            <Border
+								SnapsToDevicePixels="True"
+								Margin="1,1,1,1"
+								x:Name="InnerBorder_Center"
+								Background="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalCenterFillKey}}"
+								BorderThickness="0,0,0,0"/>
+                        </Grid>
+                        <Grid
+							Grid.Column="1"
+							Width="14"
+							HorizontalAlignment="Right"
+							Margin="1,-1,-1,-1">
+                            <Path
+								x:Name="ArrowBackground"
+								Grid.Column="1"
+								SnapsToDevicePixels="True"
+								Margin="0,1,0,0"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								Width="Auto"
+								Height="3"
+								Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalBackgroundFillKey}}"
+								Stretch="None"
+								Data="M0,0L5,0 2.5,3z"/>
+                            <Path
+								x:Name="ArrowForeground"
+								Grid.Column="1"
+								SnapsToDevicePixels="True"
+								Margin="0,0,0,0"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								Width="Auto"
+								Height="3"
+								Fill="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}}"
+								Stretch="None"
+								Data="M0,0L5,0 2.5,3z"/>
+                        </Grid>
+                        <!--<luna:ScrollChrome x:Name="Chrome"
+										 ThemeColor="NormalColor"
+										 HasOuterBorder="False"
+										 RenderMouseOver="{TemplateBinding IsMouseOver}"
+										 RenderPressed="{TemplateBinding IsChecked}"
+										 Grid.Column="1"
+										 Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+										 ScrollGlyph="DownArrow"
+										 Padding="0,0,0,0" />-->
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="MouseOverControlTrue">
+                            <Setter Property="Visibility" TargetName="ComboEditorDropdown" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="ArrowForeground" Property="Fill" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Visibility" TargetName="ComboEditorDropdown" Value="Visible"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder_Center" Value="1,1,1,1"/>
+                            <Setter Property="Background" TargetName="OuterBorder" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedOuterBorderFillKey}}"/>
+                            <Setter Property="Background" TargetName="InnerBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedCenterFillKey}}"/>
+                            <Setter Property="BorderBrush" TargetName="InnerBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedInnerBorderFillKey}}"/>
+                            <Setter TargetName="ArrowForeground" Property="Fill" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackForegroundFillKey}}"/>
+                            <Setter TargetName="ArrowBackground" Property="Fill" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackBackgroundFillKey}}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="ComboEditorDropdown" Value="Visible"/>
+                            <Setter Property="Background" TargetName="OuterBorder" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackOuterBorderFillKey}}"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder_Center" Value="1,1,1,1"/>
+                            <Setter Property="Background" TargetName="InnerBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackCenterFillKey}}"/>
+                            <Setter Property="BorderBrush" TargetName="InnerBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackInnerBorderFillKey}}"/>
+                            <Setter TargetName="ArrowForeground" Property="Fill" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackForegroundFillKey}}"/>
+                            <Setter TargetName="ArrowBackground" Property="Fill" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackBackgroundFillKey}}"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ComboEditor_TextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <ScrollViewer
+						Name="PART_ContentHost"
+						Focusable="False"
+						HorizontalScrollBarVisibility="Hidden"
+						VerticalScrollBarVisibility="Hidden"
+						Background="Transparent"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ComboEditor_EditableComboBoxTemplate" TargetType="{x:Type ComboBox}">
+        <Grid Background="Transparent" SnapsToDevicePixels="True">
+            <Grid IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ComboBoxButton"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="{TemplateBinding Padding}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- SSP 4/28/11 TFS66509 - Added MaxLength binding below.-->
+                    <!-- SSP 6/24/11 TFS57835 Added InputMethod.PreferredImeState template binding. This property needs to be set
+                                                    on the element that ends up being focused in the editor's SetFocusToFocusSite.-->
+                    <!-- SSP 11/14/11 TFS95730 - Added InputMethod.IsInputMethodEnabled template binding. -->
+                    <TextBox
+					    Name="PART_EditableTextBox"
+					    Grid.Column="1"
+					    Padding="-1,0,0,0"
+					    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+					    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+					    IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
+					    Background="Transparent"
+					    BorderBrush="Transparent"
+					    BorderThickness="0,0,0,0"
+					    Style="{StaticResource ComboEditor_TextBoxStyle}"
+					    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                        MaxLength="{Binding Path=(igEditors:XamComboEditor.ComboEditor).ValueConstraint.MaxLength, RelativeSource={RelativeSource TemplatedParent}}"
+                        InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"
+                        InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}"
+                        />
+                    <!-- SSP 3/12/10 TFS27090 - Added support for displaying image (ComboBoxDataItem.Image).
+                        Added above Grid element and the following CardPanel element hierarchy.
+                    -->
+                    <igWindows:GrowOnlyDecorator x:Name="imageDecorator">
+                        <igWindows:CardPanel x:Name="imagePanel" Visibility="Collapsed" VerticalAlignment="Center" Margin="1,0,-1,0" >
+                            <!-- This text block is used to make sure the image height is as tall as text because that's how
+                                the image is displayed in the ComboBoxDataItem template.-->
+                            <TextBlock x:Name="textBlock" Visibility="Hidden" VerticalAlignment="Center" />
+                            <Image
+                                x:Name="image" Stretch="Uniform" StretchDirection="Both" VerticalAlignment="Center"
+                                Height="{Binding ElementName=textBlock, Path=ActualHeight, Mode=OneWay}"
+                            />
+                        </igWindows:CardPanel>
+                    </igWindows:GrowOnlyDecorator>
+                </Grid>
+                <!--SSP 11/9/10 TFS33587 - Added IsEnabled setter-->
+                <ToggleButton
+					x:Name="PART_DropDownButton"
+					Grid.Column="1"
+					Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+					Background="{x:Null}"
+					Style="{Binding Path=(igEditors:XamComboEditor.ComboEditor).DropDownButtonStyle, RelativeSource={RelativeSource TemplatedParent}}"
+					IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    IsEnabled="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource complementConverter}}"
+                    />
+            </Grid>
+            <Popup
+				x:Name="PART_Popup"
+				AllowsTransparency="True"
+				Placement="Bottom"
+				VerticalOffset="1"
+				HorizontalOffset="-1"
+				IsOpen="{TemplateBinding IsDropDownOpen}"
+				Focusable="False"
+				PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+				MaxHeight="{TemplateBinding MaxDropDownHeight}"
+				MinWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MinDropDownWidthResolved, RelativeSource={RelativeSource TemplatedParent}}"
+				MaxWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                <luna:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+                    <Border Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+                        <igWindows:PopupResizerDecorator ResizeMode="{Binding Path=(igEditors:XamComboEditor.ComboEditor).DropDownResizeMode, RelativeSource={RelativeSource TemplatedParent}}">
+                            <DockPanel>
+                                <!--JJD 07/06/10 - TFS32174-->
+                                <ContentPresenter DockPanel.Dock="Top" ContentTemplate="{Binding Path=PreDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                                <!--JJD 07/06/10 - TFS32174-->
+                                <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{Binding Path=PostDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                                <ScrollViewer x:Name="ScrollViewer">
+                                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </DockPanel>
+                        </igWindows:PopupResizerDecorator>
+                    </Border>
+                </luna:SystemDropShadowChrome>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=(igEditors:XamComboEditor.IsEditable), RelativeSource={x:Static RelativeSource.TemplatedParent}}" Value="True">
+                <Setter TargetName="PART_DropDownButton" Property="Tag" Value="MouseOverControlTrue"/>
+            </DataTrigger>
+            <Trigger Property="HasItems" Value="False">
+                <!--SSP 4/19/11 TFS72329 - Set the Height instead of MinHeight. Setting the MinHeight causes TFS72329
+                where the drop-down is sized to the height of the resizer bar and doesn't show any items when the
+                control is bound to items source.-->
+                <!--<Setter TargetName="PART_Popup" Property="MinHeight" Value="95" />-->
+                <Setter TargetName="PART_Popup" Property="Height" Value="95" />
+            </Trigger>
+            <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="True">
+                <Setter TargetName="Shdw" Property="Margin" Value="0,0,5,5"/>
+                <Setter TargetName="Shdw" Property="Color" Value="#71000000"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorBorderBrushKey}}"/>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CheckBoxNormalOuterBoxCenterFillKey}}" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorForegroundKey}}" />
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter TargetName="ScrollViewer" Property="CanContentScroll" Value="False"/>
+            </Trigger>
+            <!-- SSP 3/12/10 TFS27090 - Added support for displaying image (ComboBoxDataItem.Image).
+                Added the following MultiDataTrigger and the DataTrigger after that that sets the
+                ResetSize on the image decorator.
+            -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <!-- This condition checks to see if the SelectedItem is ComboBoxDataItem. -->
+                    <Condition Value="True" Binding="{Binding Path=SelectedItem, RelativeSource={x:Static RelativeSource.TemplatedParent}, Converter={StaticResource typeCheckConverter}, ConverterParameter={x:Type igEditors:ComboBoxDataItem}, Mode=OneWay}" />
+                    <!-- This condition checks to see if DisplayMemberPath is null or empty string. -->
+                    <Condition Value="False" Binding="{Binding Path=DisplayMemberPath, RelativeSource={x:Static RelativeSource.TemplatedParent}, Converter={StaticResource nullToFalseConverter}, Mode=OneWay}" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="image" Property="Source" Value="{Binding Path=SelectedItem.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}, Mode=OneWay}" />
+                <Setter TargetName="imagePanel" Property="Visibility" Value="Visible" />
+            </MultiDataTrigger>
+            <DataTrigger Value="False" Binding="{Binding Path=(igEditors:XamComboEditor.ComboEditor).IsInEditMode, RelativeSource={RelativeSource TemplatedParent}}">
+                <Setter TargetName="imageDecorator" Property="ResetSize" Value="True" />
+            </DataTrigger>
+            <!-- SSP 5/11/10 TFS21311 -->
+            <DataTrigger Value="True" Binding="{Binding Path=ContextMenu, RelativeSource={x:Static RelativeSource.TemplatedParent}, Converter={StaticResource nullToFalseConverter}}">
+                <Setter TargetName="PART_EditableTextBox" Property="ContextMenu" Value="{Binding Path=ContextMenu, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ComboEditor_NonEditableComboBoxTemplate" TargetType="{x:Type ComboBox}">
+        <Grid Background="Transparent" SnapsToDevicePixels="True">
+            <Grid IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ComboBoxButton"/>
+                </Grid.ColumnDefinitions>
+                <Border Name="SelectedItemBorder" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}">
+                    <ContentPresenter
+						Content="{TemplateBinding SelectionBoxItem}"
+						ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+						ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+						Margin="1,0"
+						VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+						HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <!--SSP 11/9/10 TFS33587 - Added IsEnabled setter-->
+                <ToggleButton
+					x:Name="PART_DropDownButton"
+					Grid.ColumnSpan="3"
+					Style="{Binding Path=(igEditors:XamComboEditor.ComboEditor).DropDownButtonStyle, RelativeSource={RelativeSource TemplatedParent}}"
+					IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    IsEnabled="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource complementConverter}}"
+                    />
+            </Grid>
+            <Popup
+				x:Name="PART_Popup"
+				AllowsTransparency="True"
+				Placement="Bottom"
+				IsOpen="{TemplateBinding IsDropDownOpen}"
+				VerticalOffset="1"
+				HorizontalOffset="-1"
+				Focusable="False"
+				PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+				MaxHeight="{TemplateBinding MaxDropDownHeight}"
+				MinWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MinDropDownWidthResolved, RelativeSource={RelativeSource TemplatedParent}}"
+				MaxWidth="{Binding Path=(igEditors:XamComboEditor.ComboEditor).MaxDropDownWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                <luna:SystemDropShadowChrome x:Name="Shdw" Color="Transparent">
+                    <Border Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+                        <igWindows:PopupResizerDecorator ResizeMode="{Binding Path=(igEditors:XamComboEditor.ComboEditor).DropDownResizeMode, RelativeSource={RelativeSource TemplatedParent}}">
+                            <DockPanel>
+                                <!--JJD 07/06/10 - TFS32174-->
+                                <ContentPresenter DockPanel.Dock="Top" ContentTemplate="{Binding Path=PreDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                                <!--JJD 07/06/10 - TFS32174-->
+                                <ContentPresenter DockPanel.Dock="Bottom" ContentTemplate="{Binding Path=PostDropDownAreaTemplate, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type igEditors:XamComboEditor}}}"/>
+                                <ScrollViewer x:Name="ScrollViewer">
+                                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </ScrollViewer>
+                            </DockPanel>
+                        </igWindows:PopupResizerDecorator>
+                    </Border>
+                </luna:SystemDropShadowChrome>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <!-- SSP 11/6/07 BR27195
+				 There is no need to check for IsDropDownOpen as IsSelectionBoxHighlighted already takes that into account.
+			-->
+            <!--<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="IsSelectionBoxHighlighted" Value="True" />
+					<Condition Property="IsDropDownOpen" Value="False" />
+				</MultiTrigger.Conditions>
+				<Setter Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" Property="Foreground" />
+			</MultiTrigger>-->
+            <Trigger Property="IsSelectionBoxHighlighted" Value="True">
+                <Setter TargetName="SelectedItemBorder" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Property="Background"/>
+                <Setter Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" Property="Foreground"/>
+            </Trigger>
+            <Trigger Property="HasItems" Value="False">
+                <!--SSP 4/19/11 TFS72329 - Set the Height instead of MinHeight. Setting the MinHeight causes TFS72329
+                where the drop-down is sized to the height of the resizer bar and doesn't show any items when the
+                control is bound to items source.-->
+                <!--<Setter TargetName="PART_Popup" Property="MinHeight" Value="95" />-->
+                <Setter TargetName="PART_Popup" Property="Height" Value="95" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorBorderBrushKey}}"/>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CheckBoxNormalOuterBoxCenterFillKey}}" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorForegroundKey}}" />
+            </Trigger>
+            <Trigger Property="IsGrouping" Value="True">
+                <Setter TargetName="ScrollViewer" Property="CanContentScroll" Value="False"/>
+            </Trigger>
+            <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="True">
+                <Setter TargetName="Shdw" Property="Margin" Value="0,0,5,5"/>
+                <Setter TargetName="Shdw" Property="Color" Value="#71000000"/>
+            </Trigger>
+            <!--SSP 11/9/10 TFS33587 - Disable auto-edit if the editor is read-only. Otherwise when characters are pressed,
+                the combobox will select matching entries and and cause the value of the editor to change.-->
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="IsTextSearchEnabled" Value="False" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Static igEditors:XamComboEditor.ComboEditorComboBoxStyleKey}" TargetType="{x:Type ComboBox}">
+        <Style.Triggers>
+            <Trigger Property="IsEditable" Value="True">
+                <Setter Property="IsTabStop" Value="False"/>
+                <Setter Property="Template" Value="{StaticResource ComboEditor_EditableComboBoxTemplate}"/>
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template" Value="{StaticResource ComboEditor_NonEditableComboBoxTemplate}"/>
+        <!-- SSP 1/7/08 BR27432  - set IsSynchronizedWithCurrentItem to False -->
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="False"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <igEditors:VirtualizingStackPanelEx/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--SSP 11/7/07 BR27220
+			In Non-Editable mode, we don't want to draw dashed focus rect which was happening when you toggle
+			through items with keyboard.
+			-->
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type igEditors:XamComboEditor}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalCenterFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0,2,0,2"/>
+
+        <!-- MD 4/26/11 - TFS73532 - This causes major slowdowns and doesn't provide much value so use a hard coded value instead. -->
+        <!--<Setter Property="Margin" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorMarginKey}}"/>-->
+        <Setter Property="Margin" Value="1"/>
+
+        <!--SSP 11/2/07 Now this is being done in code. See ComboBoxStyleKey property of the XamComboEditor-->
+        <!--<Setter Property="ComboBoxStyle" Value="{StaticResource ComboEditor_ComboBoxStyle}" />-->
+        <Setter Property="DropDownButtonStyle" Value="{StaticResource ComboEditor_DropDownButtonStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamComboEditor}">
+                    <Border
+						x:Name="MainBorder"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+                        <!-- SSP 10/3/07 BR25672 Took the Margin="{TemplateBinding Padding}" code out of Border element above.-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- SSP 3/10/09 Display Value Task
+															Added DisplayValue and DisplayValueSource properties on XamComboEditor. Use DisplayValue
+															instead of the DisplayText. This also means that we can't use TextBlock since DisplayValue
+															is an object type and can contain anything. Changed to use ContentPresenter instead of TextBlock.
+
+															Also enclosed the ContentPresenter in a Border element because the ContentPresenter doesn't
+															have Padding, which we were setting on the TextBlock previously.
+
+									<TextBlock
+										x:Name="PART_TextBlock"
+										Grid.Column="0"
+										Padding="{TemplateBinding Padding}"
+										Margin="1,0,0,0"
+										Text="{TemplateBinding DisplayText}"
+										HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										Foreground="{TemplateBinding Foreground}" />
+							-->
+                            <Border Grid.Column="0" Padding="{TemplateBinding Padding}" Margin="1,0,0,0" >
+                                <!-- SSP 3/12/10 TFS27090 - Changed Content="{TemplateBinding DisplayValue} to use Binding
+                                    to convert null DisplayValue to empty string because otherwise the content presenter
+                                    and thus the editor will be really small in height. -->
+                                <ContentPresenter
+										x:Name="PART_Content"
+										Content="{Binding Path=DisplayValue, RelativeSource={x:Static RelativeSource.TemplatedParent}, Converter={StaticResource nullToParameterConverter}, ConverterParameter={x:Static sys:String.Empty}, Mode=OneWay}"
+										HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+									/>
+                            </Border>
+                            <!--SSP 11/9/10 TFS33587 - Added IsEnabled setter-->
+                            <!--JM 06-24-11 TFS73970 - Added a Focusable setter -->
+                            <ToggleButton
+								x:Name="PART_DropDownButton"
+								Grid.Column="1"
+								Focusable="False"
+								Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+								IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsDropDownOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								ClickMode="Press"
+								Style="{TemplateBinding DropDownButtonStyle}"
+								Visibility="{TemplateBinding DropDownButtonVisibility}"
+                                IsEnabled="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource complementConverter}}"
+                                />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- SSP 3/12/10 TFS27090 - When DisplayValueSource is set to Value, we need to have the PART_Content use
+                            DisplayValueTemplateKey data template for the ComboBoxDataItem which displays ComboBoxDataItem's Value instead
+                            of DisplayText. Added the following DisplayValueSource trigger.
+                        -->
+                        <Trigger Property="DisplayValueSource" Value="Value">
+                            <Setter TargetName="PART_Content" Property="ContentTemplate" Value="{DynamicResource {x:Static igEditors:XamComboEditor.DisplayValueTemplateKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="PART_DropDownButton" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEmbedded" Value="False"/>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_DropDownButton" Property="Tag" Value="MouseOverControlTrue"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="EditTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igEditors:XamComboEditor}">
+                    <Border
+						x:Name="MainBorder"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}">
+                        <!-- SSP 10/3/07 BR25672 Took the Margin="{TemplateBinding Padding}" code out of Border element above
+								since the ComboBox below is already setting its Padding to that value. We don't want to
+								substract the Padding twice. -->
+                        <!-- SSP 6/24/11 TFS57835 Added InputMethod.PreferredImeState template binding. This property needs to be set
+                                                    on the element that is given focus in the editors SetFocusToFocusSite.-->
+                        <!-- SSP 11/14/11 TFS95730 - Added InputMethod.IsInputMethodEnabled template binding. -->
+                        <ComboBox
+							Name="PART_FocusSite"
+							Padding="{TemplateBinding Padding}"
+							HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+							IsReadOnly="{TemplateBinding ReadOnly}"
+							Background="Transparent"
+							BorderBrush="Transparent"
+							BorderThickness="0,0,0,0"
+							ContextMenu="{TemplateBinding ContextMenu}"
+							IsDropDownOpen="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsDropDownOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							Style="{TemplateBinding ComboBoxStyle}"
+							IsEditable="{TemplateBinding IsEditable}"
+							SelectedValuePath="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ItemsProvider.ValuePath}"
+							DisplayMemberPath="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ItemsProvider.DisplayMemberPath}"
+							MaxDropDownHeight="{TemplateBinding MaxDropDownHeight}"
+							igEditors:XamComboEditor.ComboEditor="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                            InputMethod.PreferredImeState="{TemplateBinding InputMethod.PreferredImeState}"
+                            InputMethod.IsInputMethodEnabled="{TemplateBinding InputMethod.IsInputMethodEnabled}"
+                            />
+                    </Border>
+                    <!--
+					SSP 6/6/07 BR23366
+					Added trigger that sets IsTabStop to False based on IsInEditMode setting.
+					We need this in order to make the Tab and Shift+Tab navigation work properly.
+					Apparently presense of nested textbox causes Shift+Tab to misbehave and cause
+					the framwork to give focus to the parent ContentPresenter if the editor
+					is inside a HeaderedContentControl. This is similar to what inbox ComboBox
+					does.
+					-->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsInEditMode" Value="True">
+                            <Setter Property="IsTabStop" Value="False"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEmbedded" Value="True"/>
+                    <Condition Property="IsInEditMode" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{x:Null}"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+            </MultiTrigger>
+            <!-- SSP 1/8/08 BR29482 - Added setter for setting Foreground.
+			 We were already setting the Background explicitly above. If we don't
+			 do this then the Foreground will be inherited but not the background.
+			 This causes a problem when the editor is inside an item of a ListBox
+			 and the item is selected. The item's back color turns blue and fore
+			 color turns white. However the editor inherits only the fore color
+			 and causes the contents to turn white, essentially disappear since
+			 the background is explicitly set to white above. Also TextBox
+			 explicitly sets both the Background and Foreground.
+			-->
+            <Trigger Property="IsEmbedded" Value="False">
+                <Setter Property="Foreground" Value="#000000"/>
+                <Setter Property="Padding" Value="4,2,4,2"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorBorderBrushKey}}"/>
+                <Setter Property="Background" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CheckBoxNormalOuterBoxCenterFillKey}}" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.TextEditorForegroundKey}}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate DataType="{x:Type igEditors:ComboBoxDataItem}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+				x:Name="TextBlock"
+				Text="{Binding Path=DisplayText}"
+				Grid.Column="1"
+				Grid.Row="0"/>
+            <Image
+				Height="{Binding ElementName=TextBlock, Path=ActualHeight}"
+				Stretch="Uniform"
+				StretchDirection="Both"
+				Source="{Binding Path=Image}"
+				Grid.Column="0"
+				Grid.Row="0"/>
+        </Grid>
+    </DataTemplate>
+
+    <Style TargetType="{x:Type igEditors:XamDateTimeEditor}" BasedOn="{StaticResource {x:Type igEditors:XamMaskedEditor}}">
+        <Setter Property="DropDownButtonStyle" Value="{StaticResource ComboEditor_DropDownButtonStyle}"/>
+        <Setter Property="Template" Value="{StaticResource MaskedEditorWithDropDownRenderTemplate}"/>
+        <Setter Property="EditTemplate" Value="{StaticResource MaskedEditorWithDropDownEditTemplate}"/>
+    </Style>
+
+    <!--  _________________________ XamMonthCalendar __________________________________________  -->
+
+    <!-- _________________________ XamMonthNaviButtons ______________________________________ -->
+    <Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey} }"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid Width="16" Height="14" Background="#00FFFFFF">
+                        <Path
+							Stretch="Fill"
+							Opacity="1"
+							Data="M 431,43 C431,43 427,46.5 427,46.5 427,46.5 431,50 431,50 431,50 431,43 431,43 z"
+							Fill="{TemplateBinding Foreground}"
+							Width="6"
+							Height="9"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey} }"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollNextRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey} }"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid Width="16" Height="14" Background="#00FFFFFF">
+                        <Path
+							Stretch="Fill"
+							Opacity="1"
+							Data="M437,43C437,43 441,46.5 441,46.5 441,46.5 437,50 437,50 437,50 437,43 437,43z"
+							Fill="{TemplateBinding Foreground}"
+							Width="6"
+							Height="9"
+							x:Name="path"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey} }"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- AS 9/12/08
+        The only difference in the today button template between office, luna & generic is
+        the corner radius of the today box which should be the same as what's used in the day
+        so we'll use a resource key for this.
+    -->
+    <CornerRadius x:Key="{x:Static igEditors:CalendarItem.CornerRadiusKey}">0
+    </CornerRadius>
+
+    <!-- _________________________ CalendarItem ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarItem}" BasedOn="{StaticResource CalendarItemBase}">
+        <Setter Property="Padding" Value="6,2,2,2"/>
+        <Setter Property="Template" Value="{StaticResource CalendarItemNoInner}"/>
+    </Style>
+
+    <!-- _________________________ CalendarDay ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarDay}" BasedOn="{StaticResource CalendarDayBase}">
+        <Setter Property="Padding" Value="6,2,2,2"/>
+        <Setter Property="Template" Value="{StaticResource CalendarItemNoInner}"/>
+    </Style>
+
+    <!-- _________________________ CalendarDayOfWeek ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarDayOfWeek}" BasedOn="{StaticResource CalendarDayOfWeekBase}">
+        <Setter Property="Margin" Value="0,2,0,2"/>
+    </Style>
+
+    <!-- _________________________ CalendarWeekNumber ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarWeekNumber}" BasedOn="{StaticResource CalendarWeekNumberBase}">
+        <Setter Property="Margin" Value="2,0,2,0"/>
+    </Style>
+
+    <!-- _________________________ CalendarItemGroupTitle ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarItemGroupTitle}" BasedOn="{StaticResource CalendarItemGroupTitleBase}">
+        <Setter Property="Padding" Value="6,4,6,4"/>
+    </Style>
+
+    <!-- _________________________ CalendarItemArea ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarItemArea}" BasedOn="{StaticResource CalendarItemAreaBase}"/>
+
+</ResourceDictionary>

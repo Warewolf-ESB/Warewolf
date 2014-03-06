@@ -1,0 +1,709 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Documents.Excel.Workbook" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="1.75" Width="2.75" />
+    <Members>
+      <Method Name="AddCustomXmlPart" Hidden="true" />
+      <Method Name="AddCustomXmlPropertiesPart" Hidden="true" />
+      <Method Name="AddFormula" Hidden="true" />
+      <Method Name="AddReference" Hidden="true" />
+      <Property Name="AreCalculationsSuspended" Hidden="true" />
+      <Method Name="CacheAdditionalStructuredStorageFiles" Hidden="true" />
+      <Property Name="CalcEngine" Hidden="true" />
+      <Property Name="CellFormats" Hidden="true" />
+      <Property Name="CharacterWidth256thsPerPixel" Hidden="true" />
+      <Method Name="CompileFormula" Hidden="true" />
+      <Method Name="CreateCalcEngine" Hidden="true" />
+      <Property Name="CurrentSerializationManager" Hidden="true" />
+      <Property Name="CustomXmlParts" Hidden="true" />
+      <Property Name="CustomXmlPropertiesParts" Hidden="true" />
+      <Property Name="DefaultFontVersion" Hidden="true" />
+      <Property Name="DrawingProperties1" Hidden="true" />
+      <Property Name="DrawingProperties3" Hidden="true" />
+      <Method Name="EnsureCalculated" Hidden="true" />
+      <Property Name="ExternalWorkbooks" Hidden="true" />
+      <Property Name="Fonts" Hidden="true" />
+      <Property Name="Formats" Hidden="true" />
+      <Method Name="GetMaxCellFormats" Hidden="true" />
+      <Method Name="GetMaxColumnCountInternal" Hidden="true" />
+      <Method Name="GetWorkbookOptions" Hidden="true" />
+      <Property Name="Has2003VBACode" Hidden="true" />
+      <Property Name="HasCustomViews" Hidden="true" />
+      <Property Name="HasFormats" Hidden="true" />
+      <Property Name="HasHiddenNamedReferences" Hidden="true" />
+      <Property Name="HasNamedReferences" Hidden="true" />
+      <Property Name="HasStyles" Hidden="true" />
+      <Property Name="HiddenNamedReferences" Hidden="true" />
+      <Property Name="IsLoading" Hidden="true" />
+      <Property Name="IWorksheetCellFormatProxyOwner.CanOwnStyleFormat" Hidden="true" />
+      <Method Name="IWorksheetCellFormatProxyOwner.OnCellFormatValueChanged" Hidden="true" />
+      <Property Name="IWorksheetCellFormatProxyOwner.Workbook" Hidden="true" />
+      <Method Name="LoadBIFF8File" Hidden="true" />
+      <Method Name="LoadHelper" Hidden="true" />
+      <Property Name="LoadingPath" Hidden="true" />
+      <Method Name="LoadXLSXFile" Hidden="true" />
+      <Property Name="MaxCellFormats" Hidden="true" />
+      <Property Name="MaxColumnCount" Hidden="true" />
+      <Property Name="MaxRowCount" Hidden="true" />
+      <Method Name="NotifyValueChanged" Hidden="true" />
+      <Method Name="OnAfterLoadGlobalSettings" Hidden="true" />
+      <Method Name="OnCurrentFormatChanged" Hidden="true" />
+      <Method Name="OnNamedReferenceRenamed" Hidden="true" />
+      <Method Name="OnSavedOrLoaded" Hidden="true" />
+      <Method Name="OnSavingOrLoading" Hidden="true" />
+      <Method Name="OnWorksheetAdded" Hidden="true" />
+      <Method Name="OnWorksheetRemoved" Hidden="true" />
+      <Method Name="OnWorksheetRemoving" Hidden="true" />
+      <Method Name="OnWorksheetRenamed" Hidden="true" />
+      <Property Name="Palette" Hidden="true" />
+      <Property Name="ParsedR1C1Formulas" Hidden="true" />
+      <Property Name="ReferencesRequiringFormulaCompilation" Hidden="true" />
+      <Property Name="RefreshAll" Hidden="true" />
+      <Method Name="RemoveFormula" Hidden="true" />
+      <Method Name="RemoveReference" Hidden="true" />
+      <Method Name="RemoveUsedColorIndicies" Hidden="true" />
+      <Method Name="ResetZeroCharacterWidth" Hidden="true" />
+      <Method Name="SaveBIFF8File" Hidden="true" />
+      <Method Name="SaveHelper" Hidden="true" />
+      <Method Name="SaveXLSXFile" Hidden="true" />
+      <Method Name="SetCurrentFormatInternal" Hidden="true" />
+      <Property Name="SharedStringTable" Hidden="true" />
+      <Method Name="SyncCalcEngineProperties" Hidden="true" />
+      <Method Name="UpdateCellFormatLimit" Hidden="true" />
+      <Property Name="VBAData2007" Hidden="true" />
+      <Property Name="VBAObjectName" Hidden="true" />
+      <Method Name="VerifyBeforeSave" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Method Name="VerifyWorksheetName" Hidden="true" />
+      <Property Name="ZeroCharacterWidth" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Worksheets" Type="Infragistics.Documents.Excel.WorksheetCollection" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.75" Y="7" />
+        <Point X="1.63" Y="7" />
+        <Point X="1.63" Y="8.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>05impva9tOYaGxjGNGEUDH7AOPouiXXDpatWYTrSNCs=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Workbook.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveWorksheet" />
+      <Property Name="CalculationMode" />
+      <Property Name="CellReferenceMode" />
+      <Property Name="CurrentFormat" />
+      <Property Name="CustomViews" />
+      <Property Name="DateSystem" />
+      <Property Name="DocumentProperties" />
+      <Property Name="NamedReferences" />
+      <Property Name="Precision" />
+      <Property Name="Styles" />
+      <Property Name="WindowOptions" />
+      <Property Name="Worksheets" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.Worksheet" BaseTypeListCollapsed="true">
+    <Position X="18" Y="1.5" Width="2.25" />
+    <Members>
+      <Method Name="AddCachedRegion" Hidden="true" />
+      <Method Name="AssignShapeId" Hidden="true" />
+      <Property Name="CachedRowHeightsWithWrappedText" Hidden="true" />
+      <Property Name="CellOwnedAssociatedMergedCellsRegions" Hidden="true" />
+      <Property Name="CellOwnedComments" Hidden="true" />
+      <Property Name="CellOwnedDataTableDependantCells" Hidden="true" />
+      <Property Name="CellReferenceMode" Hidden="true" />
+      <Property Name="CellValues" Hidden="true" />
+      <Method Name="CleanCachedRegions" Hidden="true" />
+      <Method Name="CleanupAfterSerialization" Hidden="true" />
+      <Property Name="CommentShapes" Hidden="true" />
+      <Property Name="CurrentFormat" Hidden="true" />
+      <Property Name="DefaultColumnWidthResolved" Hidden="true" />
+      <Property Name="DefaultMinimumCharsPerColumn" Hidden="true" />
+      <Property Name="DefaultRowHeightResolved" Hidden="true" />
+      <Property Name="DefaultRowHidden" Hidden="true" />
+      <Property Name="FirstColumn" Hidden="true" />
+      <Property Name="FirstColumnInUndefinedTail" Hidden="true" />
+      <Property Name="FirstRow" Hidden="true" />
+      <Property Name="FirstRowInUndefinedTail" Hidden="true" />
+      <Method Name="GetCachedRegion" Hidden="true" />
+      <Method Name="GetCellOrRegionHelper" Hidden="true" />
+      <Method Name="GetColumnWidthInPixels" Hidden="true" />
+      <Method Name="GetColumnWidthInTwips" Hidden="true" />
+      <Method Name="GetDefaultRowHeight" Hidden="true" />
+      <Method Name="GetDefaultRowHeightResolvedUnsafe" Hidden="true" />
+      <Method Name="GetRowHeightInPixels" Hidden="true" />
+      <Method Name="GetRowHeightInTwips" Hidden="true" />
+      <Method Name="GetShapeById" Hidden="true" />
+      <Method Name="GetSolverRecords" Hidden="true" />
+      <Property Name="HasCellOwnedAssociatedMergedCellsRegions" Hidden="true" />
+      <Property Name="HasCellOwnedComments" Hidden="true" />
+      <Property Name="HasCellOwnedDataTableDependantCells" Hidden="true" />
+      <Property Name="HasCellValues" Hidden="true" />
+      <Property Name="HasColumns" Hidden="true" />
+      <Property Name="HasCommentShapes" Hidden="true" />
+      <Property Name="HasDataTables" Hidden="true" />
+      <Property Name="HasDataValidationRules" Hidden="true" />
+      <Property Name="HasLoadedSheetView" Hidden="true" />
+      <Property Name="HasMergedCellRegions" Hidden="true" />
+      <Property Name="HasRows" Hidden="true" />
+      <Method Name="InitializeShapes" Hidden="true" />
+      <Method Name="InitializeShapesHelper" Hidden="true" />
+      <Method Name="InitSerializationCache" Hidden="true" />
+      <Method Name="InitShapesCollection" Hidden="true" />
+      <Method Name="IsColumnHidden" Hidden="true" />
+      <Property Name="IsLoading" Hidden="true" />
+      <Method Name="IsRowHidden" Hidden="true" />
+      <Property Name="IWorksheetShapeOwner.AreChildrenTopMost" Hidden="true" />
+      <Method Name="IWorksheetShapeOwner.OnChildShapeBoundsChanged" Hidden="true" />
+      <Method Name="IWorksheetShapeOwner.OnShapeAdded" Hidden="true" />
+      <Method Name="IWorksheetShapeOwner.OnShapeRemoved" Hidden="true" />
+      <Property Name="IWorksheetShapeOwner.Worksheet" Hidden="true" />
+      <Property Name="MaxAssignedShapeId" Hidden="true" />
+      <Property Name="MaxColumnOutlineLevel" Hidden="true" />
+      <Property Name="MaxRowOutlineLevel" Hidden="true" />
+      <Property Name="NumberOfShapes" Hidden="true" />
+      <Method Name="OnAfterWorksheetElementResized" Hidden="true" />
+      <Method Name="OnBeforeWorksheetElementResize" Hidden="true" />
+      <Method Name="OnCurrentFormatChanged" Hidden="true" />
+      <Method Name="OnRemovedFromCollection" Hidden="true" />
+      <Property Name="PatriarchShapeId" Hidden="true" />
+      <Property Name="PreferredImageBackgroundFormat" Hidden="true" />
+      <Method Name="RemoveUsedColorIndicies" Hidden="true" />
+      <Property Name="SheetId" Hidden="true" />
+      <Property Name="ShowExpansionIndicatorBelowGroup" Hidden="true" />
+      <Property Name="Type" Hidden="true" />
+      <Method Name="UnrootStringsInShapes" Hidden="true" />
+      <Property Name="VBAObjectName" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Method Name="VerifyNameIsValid" Hidden="true" />
+      <Method Name="Worksheet" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="DataTables" Type="Infragistics.Documents.Excel.WorksheetDataTableCollection" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18" Y="5.875" />
+        <Point X="16.451" Y="5.875" />
+        <Point X="16.451" Y="11.725" />
+        <Point X="15.5" Y="11.725" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>wxAkZBIguqIRSPGFb2XdAa1UuCMFQTkp76EzrHkkJSI=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Worksheet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Columns" />
+      <Property Name="Rows" />
+      <Property Name="DataTables" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetCell" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="4" Width="2.75" />
+    <Members>
+      <Property Name="ColumnIndexInternal" Hidden="true" />
+      <Method Name="GetCachedRegion" Hidden="true" />
+      <Method Name="IComparable&lt;WorksheetCell&gt;.CompareTo" Hidden="true" />
+      <Method Name="IFormattedStringOwner.OnUnformattedStringChanged" Hidden="true" />
+      <Property Name="Row" Hidden="true" />
+      <Method Name="WorksheetCell" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="AssociatedMergedCellsRegion" Type="Infragistics.Documents.Excel.WorksheetMergedCellsRegion" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="23.312" Y="8.507" />
+        <Point X="23.312" Y="10.344" />
+        <Point X="27.75" Y="10.344" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CellFormat" Type="Infragistics.Documents.Excel.IWorksheetCellFormat" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.5" Y="6.562" />
+        <Point X="21.125" Y="6.562" />
+        <Point X="21.125" Y="7.281" />
+        <Point X="19.5" Y="7.281" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Comment" Type="Infragistics.Documents.Excel.WorksheetCellComment" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="22.75" Y="8.507" />
+        <Point X="22.75" Y="13.25" />
+        <Point X="20" Y="13.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>SAgAAAQEFIAAAQEEgAAAgAADUgEAB4AQoAAgAAgAEiA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetCell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AssociatedDataTable" />
+      <Property Name="AssociatedMergedCellsRegion" />
+      <Property Name="CellFormat" />
+      <Property Name="Comment" />
+      <Property Name="DataValidationRule" />
+      <Property Name="Formula" />
+      <Property Name="Worksheet" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetDataTable">
+    <Position X="25.75" Y="1.75" Width="1.75" />
+    <Members>
+      <Property Name="CalculatedValues" Hidden="true" />
+      <Property Name="InteriorCells" Hidden="true" />
+      <Property Name="IWorksheetRegionBlockingValue.Region" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAQBAAIAAAAhEAAEICAgBAIAIIAAECAAABAgAAIg=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetDataTable.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellsInTable" />
+      <Property Name="ColumnInputCell" />
+      <Property Name="RowInputCell" />
+      <Property Name="Worksheet" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetMergedCellsRegion">
+    <Position X="27.75" Y="9.5" Width="2.25" />
+    <Members>
+      <Method Name="ApplyFormulaToRegion" Hidden="true" />
+      <Property Name="CellFormatInternal" Hidden="true" />
+      <Method Name="GetMergedCellBorderValues" Hidden="true" />
+      <Property Name="HasCellFormat" Hidden="true" />
+      <Property Name="IWorksheetCellFormatProxyOwner.CanOwnStyleFormat" Hidden="true" />
+      <Method Name="IWorksheetCellFormatProxyOwner.OnCellFormatValueChanged" Hidden="true" />
+      <Property Name="IWorksheetCellFormatProxyOwner.Workbook" Hidden="true" />
+      <Method Name="OnCellBorderValueChanged" Hidden="true" />
+      <Method Name="OnRemovedFromCollection" Hidden="true" />
+      <Method Name="ResolveHorizontalBorderValue" Hidden="true" />
+      <Method Name="ResolveVerticalBorderValue" Hidden="true" />
+      <Method Name="WorksheetMergedCellsRegion" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CACARCgEBAAAAAAAAAAAgAAAUAAABQAAQAEhBAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetMergedCellsRegion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetCellComment">
+    <Position X="17.25" Y="12.25" Width="2.75" />
+    <Members>
+      <Property Name="CanBeAddedToShapesCollection" Hidden="true" />
+      <Property Name="CanHaveOutline" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Property Name="IsTopMost" Hidden="true" />
+      <Property Name="NoteOptionFlags" Hidden="true" />
+      <Method Name="PopulateObjRecords" Hidden="true" />
+      <Method Name="PopuplateDrawingProperties" Hidden="true" />
+      <Property Name="Type2003" Hidden="true" />
+      <Property Name="Type2007" Hidden="true" />
+      <Method Name="VerifyPositioningMode" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAEIAIABUAAgABAAIkBAAICAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetCellComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.DataValidationRule">
+    <Position X="25.5" Y="4.25" Width="2.5" />
+    <Members>
+      <Property Name="AllowNullInternal" Hidden="true" />
+      <Method Name="DataValidationRule" Hidden="true" />
+      <Method Name="GetFormula1" Hidden="true" />
+      <Method Name="GetFormula2" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="OnAddedToCollection" Hidden="true" />
+      <Method Name="OnRemovedFromCollection" Hidden="true" />
+      <Property Name="OperatorType" Hidden="true" />
+      <Property Name="ParentCollection" Hidden="true" />
+      <Method Name="SetFormula1" Hidden="true" />
+      <Method Name="SetFormula2" Hidden="true" />
+      <Method Name="ValidateMessage" Hidden="true" />
+      <Property Name="ValidationType" Hidden="true" />
+      <Method Name="VerifyState" Hidden="true" />
+      <Property Name="Workbook" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABgBAAAAAIIAAICkCAkAAACAEAAUioAAFABFAABRQ=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\DataValidations\DataValidationRule.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.Formula">
+    <Position X="17.5" Y="9" Width="2" />
+    <Members>
+      <Method Name="ClearCache" Hidden="true" />
+      <Method Name="Clone" Hidden="true" />
+      <Method Name="CreateFormula" Hidden="true" />
+      <Method Name="Formula" Hidden="true" />
+      <Method Name="GetCalculatedValue" Hidden="true" />
+      <Method Name="GetFormulaTokens" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IWorksheetCellOwnedValue.SetOwningCell" Hidden="true" />
+      <Method Name="IWorksheetCellOwnedValue.VerifyNewOwner" Hidden="true" />
+      <Method Name="Load" Hidden="true" />
+      <Method Name="LoadFormulaData" Hidden="true" />
+      <Method Name="OnNamedReferenceRenamed" Hidden="true" />
+      <Method Name="OnWorksheetRemoved" Hidden="true" />
+      <Method Name="OnWorksheetRenamed" Hidden="true" />
+      <Method Name="Parse" Hidden="true" />
+      <Method Name="ResolveNamedReferences" Hidden="true" />
+      <Method Name="ResolveReferences" Hidden="true" />
+      <Method Name="Save" Hidden="true" />
+      <Method Name="SetCalculatedValue" Hidden="true" />
+      <Method Name="SetOwningCell" Hidden="true" />
+      <Method Name="ToStringHelper" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Method Name="VerifyNewOwner" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gIEhoIBEAAKUBAAMgAQEAIEEAEIBQACEAUAQKMILABA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Formula.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetRegion">
+    <Position X="29" Y="1.75" Width="2.5" />
+    <Members>
+      <Method Name="ApplyFormulaToRegion" Hidden="true" />
+      <Property Name="CalcReference" Hidden="true" />
+      <Method Name="Contains" Hidden="true" />
+      <Property Name="FirstColumnInternal" Hidden="true" />
+      <Property Name="Height" Hidden="true" />
+      <Method Name="IEnumerable&lt;WorksheetCell&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="IntersectsWith" Hidden="true" />
+      <Property Name="IsSingleCell" Hidden="true" />
+      <Property Name="LastColumnInternal" Hidden="true" />
+      <Property Name="LastRowInternal" Hidden="true" />
+      <Method Name="System.Collections.IEnumerable.GetEnumerator" Hidden="true" />
+      <Property Name="TopLeftCell" Hidden="true" />
+      <Property Name="TopRow" Hidden="true" />
+      <Method Name="VerifyColumnOrder" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Method Name="VerifyRowOrder" Hidden="true" />
+      <Property Name="Width" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Infragistics.Documents.Excel.WorksheetRegion.HorizontalSorter" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRegion.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Infragistics.Documents.Excel.WorksheetRegion.VerticalSorter" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRegion.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACEAICAABIBDAAAEhIUAAFIFAAIQAJBCAAIRABAREAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRegion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.CustomViewCollection">
+    <Position X="8.25" Y="1.75" Width="1.75" />
+    <Members>
+      <Method Name="CustomViewCollection" Hidden="true" />
+      <Method Name="ICollection&lt;CustomView&gt;.Add" Hidden="true" />
+      <Method Name="ICollection&lt;CustomView&gt;.Clear" Hidden="true" />
+      <Method Name="ICollection&lt;CustomView&gt;.Contains" Hidden="true" />
+      <Method Name="ICollection&lt;CustomView&gt;.CopyTo" Hidden="true" />
+      <Property Name="ICollection&lt;CustomView&gt;.Count" Hidden="true" />
+      <Property Name="ICollection&lt;CustomView&gt;.IsReadOnly" Hidden="true" />
+      <Method Name="ICollection&lt;CustomView&gt;.Remove" Hidden="true" />
+      <Method Name="IEnumerable&lt;CustomView&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="IList&lt;CustomView&gt;.IndexOf" Hidden="true" />
+      <Method Name="IList&lt;CustomView&gt;.Insert" Hidden="true" />
+      <Property Name="IList&lt;CustomView&gt;.this" Hidden="true" />
+      <Method Name="System.Collections.IEnumerable.GetEnumerator" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACMAAAAACAIAACAgCgAADAQAAEBAABAACgAACAhQAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\CustomViews.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.Int32]" />
+      <Property Name="this[System.Guid]" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.DocumentProperties">
+    <Position X="8.25" Y="6" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AASggIAEQAAAAEAAgIAAAICEAAAABAAAAAAIBAAAqAQ=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\DocumentProperties.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.NamedReferenceCollection">
+    <Position X="10.5" Y="5.5" Width="2.25" />
+    <Members>
+      <Method Name="ICollection&lt;NamedReference&gt;.Add" Hidden="true" />
+      <Method Name="ICollection&lt;NamedReference&gt;.Clear" Hidden="true" />
+      <Method Name="ICollection&lt;NamedReference&gt;.Contains" Hidden="true" />
+      <Method Name="ICollection&lt;NamedReference&gt;.CopyTo" Hidden="true" />
+      <Property Name="ICollection&lt;NamedReference&gt;.Count" Hidden="true" />
+      <Property Name="ICollection&lt;NamedReference&gt;.IsReadOnly" Hidden="true" />
+      <Method Name="ICollection&lt;NamedReference&gt;.Remove" Hidden="true" />
+      <Method Name="IEnumerable&lt;NamedReference&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="NamedReferenceCollection" Hidden="true" />
+      <Method Name="System.Collections.IEnumerable.GetEnumerator" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACIAIAAACAAAgAAACBAQBAQBAAAoABAICAEASABwAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\NamedReferences.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorkbookStyleCollection">
+    <Position X="7.5" Y="9.75" Width="2" />
+    <Members>
+      <Method Name="Add" Hidden="true" />
+      <Method Name="Clone" Hidden="true" />
+      <Method Name="ContainsBuiltInStyle" Hidden="true" />
+      <Method Name="ICollection&lt;WorkbookStyle&gt;.Add" Hidden="true" />
+      <Method Name="ICollection&lt;WorkbookStyle&gt;.Clear" Hidden="true" />
+      <Method Name="ICollection&lt;WorkbookStyle&gt;.Contains" Hidden="true" />
+      <Method Name="ICollection&lt;WorkbookStyle&gt;.CopyTo" Hidden="true" />
+      <Property Name="ICollection&lt;WorkbookStyle&gt;.Count" Hidden="true" />
+      <Property Name="ICollection&lt;WorkbookStyle&gt;.IsReadOnly" Hidden="true" />
+      <Method Name="ICollection&lt;WorkbookStyle&gt;.Remove" Hidden="true" />
+      <Method Name="IEnumerable.GetEnumerator" Hidden="true" />
+      <Method Name="IEnumerable&lt;WorkbookStyle&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="WorkbookStyleCollection" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAACIACAAABAQgAAAkAAAESCAgCQBQgBA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorkbookStyles.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorkbookWindowOptions">
+    <Position X="4.25" Y="9" Width="2" />
+    <Members>
+      <Property Name="AllowNullSelectedWorksheet" Hidden="true" />
+      <Method Name="GetDisplayOptionsForWorksheet" Hidden="true" />
+      <Property Name="SelectedWorksheetIndex" Hidden="true" />
+      <Method Name="WorkbookWindowOptions" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgACAAAACAAABAAAAAAAAAAACAAABAAAAAACBAAAAgQ=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorkbookWindowOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetCollection">
+    <Position X="0.5" Y="8.75" Width="1.75" />
+    <Members>
+      <Method Name="ICollection&lt;Worksheet&gt;.Add" Hidden="true" />
+      <Method Name="ICollection&lt;Worksheet&gt;.Clear" Hidden="true" />
+      <Method Name="ICollection&lt;Worksheet&gt;.Contains" Hidden="true" />
+      <Method Name="ICollection&lt;Worksheet&gt;.CopyTo" Hidden="true" />
+      <Property Name="ICollection&lt;Worksheet&gt;.Count" Hidden="true" />
+      <Property Name="ICollection&lt;Worksheet&gt;.IsReadOnly" Hidden="true" />
+      <Method Name="ICollection&lt;Worksheet&gt;.Remove" Hidden="true" />
+      <Method Name="IEnumerable.GetEnumerator" Hidden="true" />
+      <Method Name="IEnumerable&lt;Worksheet&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="IList&lt;Worksheet&gt;.Insert" Hidden="true" />
+      <Property Name="IList&lt;Worksheet&gt;.this" Hidden="true" />
+      <Method Name="InternalAdd" Hidden="true" />
+      <Method Name="MoveWorksheet" Hidden="true" />
+      <Property Name="this" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Property Name="Workbook" Hidden="true" />
+      <Method Name="WorksheetCollection" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEIAIAAAAAgAAQCAHgAABC4AAAAAAEAMCAAACAFQQEE=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Worksheets.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.CustomView">
+    <Position X="13" Y="1.75" Width="2.25" />
+    <Members>
+      <Method Name="CustomView" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Method Name="OnRemovedFromCollection" Hidden="true" />
+      <Method Name="OnWorksheetAdded" Hidden="true" />
+      <Method Name="OnWorksheetRemoved" Hidden="true" />
+      <Method Name="RemoveUsedColorIndicies" Hidden="true" />
+      <Method Name="SetPendingCustomViewDisplayOptions" Hidden="true" />
+      <Method Name="SetPendingPrintOptions" Hidden="true" />
+      <Method Name="SetSaveHiddenRowsAndColumns" Hidden="true" />
+      <Method Name="SetSavePrintOptions" Hidden="true" />
+      <Method Name="VerifyFormatLimits" Hidden="true" />
+      <Property Name="Workbook" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AKBCIACAAhAAAAAAAiEAIIQAAFAkgQKJAAAADIggEgQ=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\CustomView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetColumnCollection">
+    <Position X="13.25" Y="5.5" Width="2.75" />
+    <Members>
+      <Property Name="MaxCount" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Infragistics.Documents.Excel.WorksheetColumnCollection.ColumnBinaryTreeNode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetColumns.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Documents.Excel.WorksheetColumnCollection.ColumnsLoadOnDemandTree" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetColumns.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CQAAJAAAAgAAAAAAiBAAAIAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetColumns.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetRowCollection" Collapsed="true">
+    <Position X="22.25" Y="1.5" Width="2.75" />
+    <NestedTypes>
+      <Class Name="Infragistics.Documents.Excel.WorksheetRowCollection.RowBinaryTreeNode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRows.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Documents.Excel.WorksheetRowCollection.RowsLoadOnDemandTree" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRows.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CQAIJAAAAAAAABAAiAAAAIAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetRows.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Documents.Excel.WorksheetDataTableCollection">
+    <Position X="13.5" Y="9.75" Width="2" />
+    <Members>
+      <Method Name="ICollection&lt;WorksheetDataTable&gt;.Add" Hidden="true" />
+      <Method Name="ICollection&lt;WorksheetDataTable&gt;.Clear" Hidden="true" />
+      <Method Name="ICollection&lt;WorksheetDataTable&gt;.Contains" Hidden="true" />
+      <Method Name="ICollection&lt;WorksheetDataTable&gt;.CopyTo" Hidden="true" />
+      <Property Name="ICollection&lt;WorksheetDataTable&gt;.Count" Hidden="true" />
+      <Property Name="ICollection&lt;WorksheetDataTable&gt;.IsReadOnly" Hidden="true" />
+      <Method Name="ICollection&lt;WorksheetDataTable&gt;.Remove" Hidden="true" />
+      <Method Name="IEnumerable&lt;WorksheetDataTable&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="System.Collections.IEnumerable.GetEnumerator" Hidden="true" />
+      <Method Name="WorksheetDataTableCollection" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACIAEAAAADCAQAAAGAEABAQAQAAAAAAACAAAAABgBAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\WorksheetDataTables.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Infragistics.Documents.Excel.IWorksheetCellFormat" Collapsed="true">
+    <Position X="17.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QABIAAEgAAAEEYiAAiAAAIAAAgAAAMAACAAAAAgCEAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\IWorksheetCellFormat.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Infragistics.Documents.Excel.CalculationMode" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Documents.Excel.CellReferenceMode" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Documents.Excel.WorkbookFormat" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAABAABAAAAAAAAEAAAgCAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Documents.Excel.DateSystem" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Documents.Excel.Precision" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Documents\v02\Source\Excel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

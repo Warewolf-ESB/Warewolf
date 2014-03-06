@@ -1,0 +1,1234 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igwindows="http://infragistics.com/Windows"
+	xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:igOutlookBar="clr-namespace:Infragistics.Windows.OutlookBar">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="OutlookBarBase.xaml"/>
+    <ResourceDictionary Source="../OutlookBarBrushes/OutlookBarOffice2010Blue_Brushes.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- *********************************  ScrollBars  ********************************* -->
+  <Style x:Key="VerticalScrollBarButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Grid Background="{StaticResource Brush_2000}">
+            <Border Visibility="Collapsed" x:Name="ButtonBackground" Background="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnNormalBackgroundBrush}}" BorderBrush="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnBorderBrush}}" BorderThickness="1" CornerRadius="1">
+              <Rectangle x:Name="highlight" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnHoverHighlightBrush}}" Visibility="Collapsed"/>
+            </Border>
+            <ContentPresenter/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Visibility" TargetName="ButtonBackground" Value="Visible"/>
+              <Setter Property="Visibility" TargetName="highlight" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="HorizScrollBarButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Grid Background="{StaticResource Brush_2001}">
+            <Border Visibility="Collapsed" x:Name="ButtonBackground" Background="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizRepeatBtnNormalBackgroundBrush}}" BorderBrush="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnBorderBrush}}" BorderThickness="1" CornerRadius="1">
+              <Rectangle x:Name="highlight" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizRepeatBtnHoverHighlightBrush}}" Visibility="Collapsed"/>
+            </Border>
+            <ContentPresenter/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Visibility" TargetName="ButtonBackground" Value="Visible"/>
+              <Setter Property="Visibility" TargetName="highlight" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="VerticalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="Background" Value="{StaticResource Brush_2002}"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Rectangle Fill="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="HorizontalScrollBarThumb" TargetType="{x:Type Thumb}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Thumb}">
+          <Grid Width="Auto" Height="Auto">
+            <Rectangle x:Name="ThumbBackground" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnBorderBrush}}" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizRepeatBtnNormalBackgroundBrush}}" RadiusX="1" RadiusY="1" Margin="0"/>
+            <Path SnapsToDevicePixels="true" Width="7" Height="8" Data="M 0,6 C0,6 0,7 0,7 0,7 8,7 8,7 8,7 8,6 8,6 8,6 0,6 0,6 zM 0,4 C0,4 0,5 0,5 0,5 8,5 8,5 8,5 8,4 8,4 8,4 0,4 0,4 zM 0,2 C0,2 0,3 0,3 0,3 8,3 8,3 8,3 8,2 8,2 8,2 0,2 0,2 zM 0,0 C0,0 0,1 0,1 0,1 8,1 8,1 8,1 8,0 8,0 8,0 0,0 0,0 z" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarThumbGlyphDarkBrush}}" RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
+              <Path.RenderTransform>
+                <TransformGroup>
+                  <ScaleTransform/>
+                  <SkewTransform/>
+                  <RotateTransform Angle="90"/>
+                  <TranslateTransform/>
+                </TransformGroup>
+              </Path.RenderTransform>
+            </Path>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Fill" TargetName="ThumbBackground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizRepeatBtnHoverBackgroundBrush}}"/>
+            </Trigger>
+            <Trigger Property="IsDragging" Value="True">
+              <Setter Property="Fill" TargetName="ThumbBackground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizRepeatBtnHoverHighlightBrush}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="VerticalScrollBarThumb" TargetType="{x:Type Thumb}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Thumb}">
+          <Grid Width="Auto" Height="Auto">
+            <Rectangle x:Name="ThumbBackground" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnBorderBrush}}" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnNormalBackgroundBrush}}" RadiusX="1" RadiusY="1" Margin="0"/>
+            <Path SnapsToDevicePixels="true" Width="7" Height="8" Data="M 0,6 C0,6 0,7 0,7 0,7 8,7 8,7 8,7 8,6 8,6 8,6 0,6 0,6 zM 0,4 C0,4 0,5 0,5 0,5 8,5 8,5 8,5 8,4 8,4 8,4 0,4 0,4 zM 0,2 C0,2 0,3 0,3 0,3 8,3 8,3 8,3 8,2 8,2 8,2 0,2 0,2 zM 0,0 C0,0 0,1 0,1 0,1 8,1 8,1 8,1 8,0 8,0 8,0 0,0 0,0 z" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarThumbGlyphDarkBrush}}" RenderTransformOrigin="0.5,0.5" Stretch="Uniform"/>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Fill" TargetName="ThumbBackground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnHoverBackgroundBrush}}"/>
+            </Trigger>
+            <Trigger Property="IsDragging" Value="True">
+              <Setter Property="Fill" TargetName="ThumbBackground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=RepeatBtnPressedBackgroundBrush}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="HorizontalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="OverridesDefaultStyle" Value="true"/>
+    <Setter Property="Background" Value="{StaticResource Brush_2003}"/>
+    <Setter Property="Focusable" Value="false"/>
+    <Setter Property="IsTabStop" Value="false"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Rectangle Fill="{TemplateBinding Background}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="Office2010BlueScrollbar" TargetType="{x:Type ScrollBar}">
+    <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarTrackBrush}}"/>
+    <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+    <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    <Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    <Setter Property="MinWidth" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ScrollBar}">
+          <Grid x:Name="Bg" SnapsToDevicePixels="true">
+            <Grid.RowDefinitions>
+              <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+              <RowDefinition Height="0.00001*"/>
+              <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+            </Grid.RowDefinitions>
+            <Rectangle Grid.RowSpan="3" StrokeThickness="1" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarTrackBrush}}" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarTrackBorderBrush}}" Margin="0"/>
+            <RepeatButton Style="{StaticResource VerticalScrollBarButton}" IsEnabled="{TemplateBinding IsMouseOver}" Command="{x:Static ScrollBar.LineUpCommand}">
+              <Path Width="8" Height="4" Data="M 0,3 C0,3 0,4 0,4 0,4 8,4 8,4 8,4 8,3 8,3 8,3 7,3 7,3 7,3 7,2 7,2 7,2 6,2 6,2 6,2 6,1 6,1 6,1 5,1 5,1 5,1 5,0 5,0 5,0 3,0 3,0 3,0 3,1 3,1 3,1 2,1 2,1 2,1 2,2 2,2 2,2 1,2 1,2 1,2 1,3 1,3 1,3 0,3 0,3 z" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarGlyphFillBrush}}"/>
+            </RepeatButton>
+            <Track x:Name="PART_Track" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Row="1" IsDirectionReversed="true">
+              <Track.DecreaseRepeatButton>
+                <RepeatButton Style="{StaticResource VerticalScrollBarPageButton}" Command="{x:Static ScrollBar.PageUpCommand}"/>
+              </Track.DecreaseRepeatButton>
+              <Track.IncreaseRepeatButton>
+                <RepeatButton Style="{StaticResource VerticalScrollBarPageButton}" Command="{x:Static ScrollBar.PageDownCommand}"/>
+              </Track.IncreaseRepeatButton>
+              <Track.Thumb>
+                <Thumb Style="{StaticResource VerticalScrollBarThumb}"/>
+              </Track.Thumb>
+            </Track>
+            <RepeatButton Style="{StaticResource VerticalScrollBarButton}" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Row="2" Command="{x:Static ScrollBar.LineDownCommand}">
+              <Path Width="8" Height="4" Data="M 0,0 C0,0 0,1 0,1 0,1 1,1 1,1 1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 5,4 5,4 5,4 5,3 5,3 5,3 6,3 6,3 6,3 6,2 6,2 6,2 7,2 7,2 7,2 7,1 7,1 7,1 8,1 8,1 8,1 8,0 8,0 8,0 0,0 0,0 z" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarGlyphFillBrush}}"/>
+            </RepeatButton>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+              <Setter Property="Background" TargetName="Bg" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarDisabledBackground}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+        <Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizontalScrollBarTrackBrush}}"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ScrollBar}">
+              <Grid x:Name="Bg" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+                  <ColumnDefinition Width="0.00001*"/>
+                  <ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle StrokeThickness="1" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarTrackBrush}}" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarTrackBorderBrush}}" Margin="0" Grid.ColumnSpan="3"/>
+                <RepeatButton Style="{StaticResource HorizScrollBarButton}" IsEnabled="{TemplateBinding IsMouseOver}" Command="{x:Static ScrollBar.LineLeftCommand}">
+                  <Path Width="4" Height="8" Data="M 4,0 C4,0 3,0 3,0 3,0 3,1 3,1 3,1 2,1 2,1 2,1 2,2 2,2 2,2 1,2 1,2 1,2 1,3 1,3 1,3 0,3 0,3 0,3 0,5 0,5 0,5 1,5 1,5 1,5 1,6 1,6 1,6 2,6 2,6 2,6 2,7 2,7 2,7 3,7 3,7 3,7 3,8 3,8 3,8 4,8 4,8 4,8 4,0 4,0 z" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarGlyphFillBrush}}" Stretch="Fill"/>
+                </RepeatButton>
+                <Track x:Name="PART_Track" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Column="1">
+                  <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource HorizontalScrollBarPageButton}" Command="{x:Static ScrollBar.PageLeftCommand}"/>
+                  </Track.DecreaseRepeatButton>
+                  <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource HorizontalScrollBarPageButton}" Command="{x:Static ScrollBar.PageRightCommand}"/>
+                  </Track.IncreaseRepeatButton>
+                  <Track.Thumb>
+                    <Thumb Style="{StaticResource HorizontalScrollBarThumb}"/>
+                  </Track.Thumb>
+                </Track>
+                <RepeatButton Style="{StaticResource HorizScrollBarButton}" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Column="2" Command="{x:Static ScrollBar.LineRightCommand}">
+                  <Path Width="4" Height="8" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarGlyphFillBrush}}" Stretch="Fill" Data="M 0,0 C0,0 1,0 1,0 1,0 1,1 1,1 1,1 2,1 2,1 2,1 2,2 2,2 2,2 3,2 3,2 3,2 3,3 3,3 3,3 4,3 4,3 4,3 4,5 4,5 4,5 3,5 3,5 3,5 3,6 3,6 3,6 2,6 2,6 2,6 2,7 2,7 2,7 1,7 1,7 1,7 1,8 1,8 1,8 0,8 0,8 0,8 0,0 0,0 z"/>
+                </RepeatButton>
+              </Grid>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                  <Setter Property="Background" TargetName="Bg" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=ScrollBarDisabledBackground}}"/>
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- PopupResizerBar Style in SelectedGroupContent Popup                             -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igwindows:PopupResizerBar}">
+    <Setter Property="Background" Value="{StaticResource Brush_1000}"/>
+    <Setter Property="Foreground" Value="{StaticResource Brush_1001}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Brush_1002}"/>
+    <Setter Property="Height" Value="15"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igwindows:PopupResizerBar}">
+          <Border SnapsToDevicePixels="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <igwindows:CardPanel Margin="{TemplateBinding Padding}">
+              <igwindows:CardPanel x:Name="GlyphArea">
+                <!-- the thumb is transparent and needs to be placed after the glyphs so that it is on top with respect to z-order -->
+                <Path
+									Width="12"
+									Height="12"
+									HorizontalAlignment="Right"
+									VerticalAlignment="Bottom"
+									Data="M 8,12 C8,12 9,12 9,12 9,12 9,11 9,11 9,11 10,11 10,11 10,11 10,10 10,10 10,10 11,10 11,10 11,10 11,9 11,9 11,9 12,9 12,9 12,9 12,8 12,8 12,8 11,8 11,8 11,8 11,9 11,9 11,9 10,9 10,9 10,9 10,10 10,10 10,10 9,10 9,10 9,10 9,11 9,11 9,11 8,11 8,11 8,11 8,12 8,12 zM 4,12 C4,12 5,12 5,12 5,12 5,11 5,11 5,11 6,11 6,11 6,11 6,10 6,10 6,10 7,10 7,10 7,10 7,9 7,9 7,9 8,9 8,9 8,9 8,8 8,8 8,8 9,8 9,8 9,8 9,7 9,7 9,7 10,7 10,7 10,7 10,6 10,6 10,6 11,6 11,6 11,6 11,5 11,5 11,5 12,5 12,5 12,5 12,4 12,4 12,4 11,4 11,4 11,4 11,5 11,5 11,5 10,5 10,5 10,5 10,6 10,6 10,6 9,6 9,6 9,6 9,7 9,7 9,7 8,7 8,7 8,7 8,8 8,8 8,8 7,8 7,8 7,8 7,9 7,9 7,9 6,9 6,9 6,9 6,10 6,10 6,10 5,10 5,10 5,10 5,11 5,11 5,11 4,11 4,11 4,11 4,12 4,12 zM 0,11 C0,11 0,12 0,12 0,12 1,12 1,12 1,12 1,11 1,11 1,11 2,11 2,11 2,11 2,10 2,10 2,10 3,10 3,10 3,10 3,9 3,9 3,9 4,9 4,9 4,9 4,8 4,8 4,8 5,8 5,8 5,8 5,7 5,7 5,7 6,7 6,7 6,7 6,6 6,6 6,6 7,6 7,6 7,6 7,5 7,5 7,5 8,5 8,5 8,5 8,4 8,4 8,4 9,4 9,4 9,4 9,3 9,3 9,3 10,3 10,3 10,3 10,2 10,2 10,2 11,2 11,2 11,2 11,1 11,1 11,1 12,1 12,1 12,1 12,0 12,0 12,0 11,0 11,0 11,0 11,1 11,1 11,1 10,1 10,1 10,1 10,2 10,2 10,2 9,2 9,2 9,2 9,3 9,3 9,3 8,3 8,3 8,3 8,4 8,4 8,4 7,4 7,4 7,4 7,5 7,5 7,5 6,5 6,5 6,5 6,6 6,6 6,6 5,6 5,6 5,6 5,7 5,7 5,7 4,7 4,7 4,7 4,8 4,8 4,8 3,8 3,8 3,8 3,9 3,9 3,9 2,9 2,9 2,9 2,10 2,10 2,10 1,10 1,10 1,10 1,11 1,11 1,11 0,11 0,11 z"
+									Fill="{TemplateBinding Foreground}"
+									Stretch="Fill"/>
+                <Thumb x:Name="PART_Thumb" Background="{StaticResource Brush_1003}" Foreground="{StaticResource Brush_1004}" Opacity="0"/>
+              </igwindows:CardPanel>
+            </igwindows:CardPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Bottom"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+              <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Bottom"/>
+                <Condition Property="FlowDirection" Value="RightToLeft"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Top"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNESW"/>
+              <Setter TargetName="GlyphArea" Property="HorizontalAlignment" Value="Right"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="ResizeMode" Value="Both"/>
+                <Condition Property="Location" Value="Top"/>
+                <Condition Property="FlowDirection" Value="RightToLeft"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNWSE"/>
+            </MultiTrigger>
+
+            <Trigger Property="ResizeMode" Value="VerticalOnly">
+              <Setter TargetName="PART_Thumb" Property="Cursor" Value="SizeNS"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- MinimizeToggleButtonStyle: MinimizeToggleButtonStyleKey                         -->
+  <!-- =============================================================================== -->
+  <Style x:Key= "{x:Static igOutlookBar:XamOutlookBar.MinimizeToggleButtonStyleKey}" TargetType="ToggleButton">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="ToolTip"	Value="{x:Static igOutlookBar:Resources.MinimizeButtonMinimizeTooltip}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToggleButton">
+          <Grid x:Name="glyphArea"
+		                Width="17"
+		                Height="17"
+                          Margin="0,0,3,0"
+                          Background="{StaticResource Brush_1005}">
+            <Grid x:Name="glyph">
+              <Path
+								Width="5"
+								Height="7"
+								Data="M 0,3 C0,3 0,4 0,4 0,4 1,4 1,4 1,4 1,5 1,5 1,5 2,5 2,5 2,5 2,6 2,6 2,6 3,6 3,6 3,6 3,7 3,7 3,7 5,7 5,7 5,7 5,5 5,5 5,5 4,5 4,5 4,5 4,4 4,4 4,4 3,4 3,4 3,4 3,3 3,3 3,3 4,3 4,3 4,3 4,2 4,2 4,2 5,2 5,2 5,2 5,0 5,0 5,0 3,0 3,0 3,0 3,1 3,1 3,1 2,1 2,1 2,1 2,2 2,2 2,2 1,2 1,2 1,2 1,3 1,3 1,3 0,3 0,3 z"
+								Stretch="Fill"
+								Fill="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.GlyphThemeForegroundFillKey}}"
+								RenderTransformOrigin="0.5,0.5"/>
+            </Grid>
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter Property="LayoutTransform" TargetName="glyph">
+                <Setter.Value>
+                  <RotateTransform Angle="180" />
+                </Setter.Value>
+              </Setter>
+              <Setter Property="ToolTip"	Value="{x:Static igOutlookBar:Resources.MinimizeButtonExpandTooltip}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="glyphArea" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.ContentAreaDropdownHottrackCenterFillKey}}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="glyphArea" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.ContentAreaDropdownPressedCenterFillKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!--  Navigation Pane Toggle Button Style:NavigationPaneToggleButtonStyleKey         -->
+  <!-- =============================================================================== -->
+  <Style x:Key="{x:Static igOutlookBar:XamOutlookBar.NavigationPaneToggleButtonStyleKey}" TargetType="{x:Type ToggleButton}" BasedOn="{x:Null}">
+    <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneNormalFillKey}}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Brush_1006}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="ToolTip"	Value="{x:Static igOutlookBar:Resources.NavigationPaneMinimizedTooltip}"/>
+    <Setter Property="Content"	Value="{x:Static igOutlookBar:Resources.NavigationPaneMinimizedText}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="10,0"/>
+    <Setter Property="Margin" Value="0,3"/>
+    <!-- JM 01-13-12 TFS99281 - Add Setter for HorizontalContentAlignment-->
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ToggleButton}">
+          <Grid>
+            <Border x:Name="Border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"/>
+            <Rectangle x:Name="highlight" StrokeThickness="1" Margin="1"/>
+            <!-- JM 01-13-12 TFS99281 - Add TextBlock.TextAlignment="Center" -->
+            <ContentPresenter x:Name="header" TextElement.Foreground="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneNormalTextFillKey}}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" TextBlock.TextAlignment="Center"/>
+          </Grid>
+          <ControlTemplate.Triggers>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).IsMinimized, RelativeSource={RelativeSource Self}}" Value="True"/>
+                <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneHottrackFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+              <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupHoverHighlightFillKey}}"/>
+              <Setter TargetName="header" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneHottrackTextFillKey}}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).IsMinimized, RelativeSource={RelativeSource Self}}" Value="True"/>
+                <Condition Binding="{Binding Path=IsPressed, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPanePressedFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+              <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupPressedHighlightFillKey}}"/>
+              <Setter TargetName="header" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneHottrackTextFillKey}}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).IsMinimized, RelativeSource={RelativeSource Self}}" Value="True"/>
+                <Condition Binding="{Binding Path=IsChecked, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneIsSuspendedFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+              <Setter TargetName="highlight" Property="Stroke" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupPressedHighlightFillKey}}"/>
+              <Setter TargetName="header" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPaneHottrackTextFillKey}}"/>
+            </MultiDataTrigger>
+
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- MenuItem style for 'fixed' menu items: OverflowMenuItemStyleKey                 -->
+  <!-- =============================================================================== -->
+  <Style x:Key="{x:Static igOutlookBar:XamOutlookBar.OverflowMenuItemStyleKey}" TargetType="MenuItem">
+    <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+    <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCenterFillKey}}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuOuterBorderFillKey}}"/>
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemTextNormalFillKey}}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type MenuItem}">
+          <Border
+							x:Name="Border"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Margin="{TemplateBinding Margin}">
+            <Grid Visibility="Visible">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="MenuItemIconColumnGroup" MinWidth="17" Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                <ColumnDefinition Width="14"/>
+              </Grid.ColumnDefinitions>
+              <Border
+								x:Name="IconAreaBackground"
+								Background="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuIconGroupCenterFillKey}}"
+								BorderBrush="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuIconGroupOuterBorderFillKey}}"
+								BorderThickness="0,0,1,0"
+								Visibility="Collapsed"
+								Margin="0,1"/>
+              <!-- MenuItem Highlight -->
+              <Grid
+									HorizontalAlignment="Stretch"
+									Margin="1,1,1,1"
+									Width="Auto"
+									Grid.Column="0"
+									Grid.ColumnSpan="4"
+									x:Name="Highlight"
+									Visibility="Collapsed">
+                <Rectangle x:Name="HighlightFill" Fill="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackCenterFillKey}}" Stroke="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackOuterBorderFillKey}}" RadiusX="2" RadiusY="2"/>
+                <Rectangle x:Name="highlightInnerBd" StrokeThickness="1" Stroke="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackInnerBorderFillKey}}" Margin="1" RadiusX="1" RadiusY="1"/>
+              </Grid>
+              <Border
+									x:Name="checkedState"
+									Background="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCheckmarkBoxNormalCenterFillKey}}"
+									BorderBrush="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCheckmarkBoxNormalOuterBorderFillKey}}"
+									BorderThickness="1"
+									Visibility="Collapsed"
+									CornerRadius="2"
+									Margin="2"/>
+              <!-- ContentPresenter to show an Icon if needed -->
+              <ContentPresenter
+									x:Name="Icon"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center"
+									ContentSource="Icon"
+									MaxHeight="18"
+									MaxWidth="18"/>
+              <!-- Glyph is a checkmark if needed for a checkable menu -->
+              <Grid
+									Visibility="Collapsed"
+									Margin="1,0,0,0"
+									x:Name="GlyphPanel"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center">
+                <Path
+										x:Name="GlyphPanelpath"
+										VerticalAlignment="Center"
+										Fill="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.DarkBrushKey}}"
+										Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z"
+										FlowDirection="LeftToRight"/>
+              </Grid>
+              <!-- Content for the menu text etc -->
+              <ContentPresenter
+									Grid.Column="1"
+									x:Name="HeaderHost"
+									RecognizesAccessKey="True"
+									ContentSource="Header"
+									VerticalAlignment="Center"
+									Margin="0,4,0,4"/>
+              <!-- Arrow drawn path which points to the next level of the menu -->
+              <Grid
+									Grid.Column="3"
+									Margin="0,0,1,0"
+									x:Name="ArrowPanel"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center">
+                <Path
+										x:Name="ArrowPanelPath"
+										VerticalAlignment="Center"
+										Fill="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.DarkBrushKey}}"
+										Data="M0,0 L0,8 L4,4 z"/>
+              </Grid>
+              <!-- The Popup is the body of the menu which expands down or across depending on the level of the item -->
+              <Popup
+									IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+									Placement="Right"
+									x:Name="SubMenuPopup"
+									Focusable="false"
+									AllowsTransparency="true"
+									PopupAnimation="{x:Static SystemParameters.MenuPopupAnimation}"
+									VerticalOffset="-3">
+                <Grid x:Name="SubMenu">
+                  <Border
+											x:Name="SubMenuBorder"
+											Background="{TemplateBinding Background}"
+											BorderBrush="{TemplateBinding BorderBrush}"
+											BorderThickness="1"
+											CornerRadius="3">
+                    <ScrollViewer
+											x:Name="Popup_ScrollViewer"
+											HorizontalScrollBarVisibility="Disabled"
+											VerticalScrollBarVisibility="Auto"
+											Style="{StaticResource MenuScrollViewer}">
+                      <ItemsPresenter
+												Grid.IsSharedSizeScope="true"
+												KeyboardNavigation.TabNavigation="Cycle"
+												KeyboardNavigation.DirectionalNavigation="Cycle"
+												SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </ScrollViewer>
+                  </Border>
+                </Grid>
+              </Popup>
+            </Grid>
+          </Border>
+          <!-- These triggers re-configure the four arrangements of MenuItem to show different levels of menu via Role -->
+          <ControlTemplate.Triggers>
+            <!-- Role = TopLevelHeader : this is the root menu item in a menu; the Popup expands down -->
+            <Trigger Property="Role" Value="TopLevelHeader">
+              <Setter Property="Padding" Value="6,3,6,3"/>
+              <Setter Property="Grid.IsSharedSizeScope" Value="true"/>
+              <Setter Property="Placement" Value="Bottom" TargetName="SubMenuPopup"/>
+              <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+              <Setter Property="Foreground" Value="{StaticResource Brush_1001}"/>
+              <Setter TargetName="HighlightFill" Property="Fill" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackCenterFillKey}}"/>
+              <Setter TargetName="HighlightFill" Property="Stroke" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackOuterBorderFillKey}}"/>
+            </Trigger>
+            <!-- Role = TopLevelItem :  this is a child menu item from the top level without any child items-->
+            <Trigger Property="Role" Value="TopLevelItem">
+              <Setter Property="Padding" Value="6,3,6,3"/>
+              <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+              <Setter TargetName="IconAreaBackground" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="MenuItemIconColumnGroup" Property="MinWidth" Value="24"/>
+              <Setter TargetName="HeaderHost" Property="Margin" Value="8,5,0,6"/>
+            </Trigger>
+            <!-- Role = SubMenuHeader : this is a child menu item which does not have children -->
+            <Trigger Property="Role" Value="SubmenuHeader">
+              <Setter Property="DockPanel.Dock" Value="Top"/>
+              <Setter Property="Padding" Value="0,2,0,2"/>
+              <Setter Property="Grid.IsSharedSizeScope" Value="true"/>
+              <Setter TargetName="IconAreaBackground" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="MenuItemIconColumnGroup" Property="MinWidth" Value="24"/>
+              <Setter TargetName="HeaderHost" Property="Margin" Value="8,5,0,6"/>
+            </Trigger>
+            <!-- Role = SubMenuItem : this is a child menu item which has children-->
+            <Trigger Property="Role" Value="SubmenuItem">
+              <Setter Property="DockPanel.Dock" Value="Top"/>
+              <Setter Property="Padding" Value="0,2,0,2"/>
+              <Setter Property="Visibility" Value="Collapsed" TargetName="ArrowPanel"/>
+              <Setter TargetName="IconAreaBackground" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="MenuItemIconColumnGroup" Property="MinWidth" Value="24"/>
+              <Setter TargetName="HeaderHost" Property="Margin" Value="8,5,0,6"/>
+            </Trigger>
+            <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+              <Setter Property="PopupAnimation" Value="None" TargetName="SubMenuPopup"/>
+            </Trigger>
+            <!-- If no Icon is present then we collapse the Icon Content -->
+            <Trigger Property="Icon" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Collapsed" TargetName="Icon"/>
+            </Trigger>
+            <!-- The GlyphPanel contains the CheckMark -->
+            <Trigger Property="IsChecked" Value="true">
+              <Setter Property="Visibility" Value="Visible" TargetName="checkedState"/>
+            </Trigger>
+            <Trigger Property="AllowsTransparency" SourceName="SubMenuPopup" Value="true">
+              <Setter Property="Margin" Value="0,0,3,3" TargetName="SubMenu"/>
+              <Setter Property="SnapsToDevicePixels" Value="true" TargetName="SubMenu"/>
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="true">
+              <Setter Property="Visibility" TargetName="Highlight" Value="Visible"/>
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemTextHottrackFillKey}}"/>
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsChecked" Value="True"/>
+                <Condition Property="IsHighlighted" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter TargetName="checkedState" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCheckmarkBoxHottrackCenterFillKey}}"/>
+              <Setter TargetName="checkedState" Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCheckmarkBoxHottrackOuterBorderFillKey}}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="Role" Value="TopLevelHeader"/>
+                <Condition Property="IsHighlighted" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.DarkBrushKey}}"/>
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="false">
+              <Setter Property="Foreground" Value="{StaticResource Brush_1017}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- MenuItem style for the header of overflow menu: OverflowMenuButtonStyleKey      -->
+  <!-- =============================================================================== -->
+  <Style x:Key="{x:Static igOutlookBar:XamOutlookBar.OverflowMenuButtonStyleKey}" TargetType="MenuItem">
+    <Setter Property="BorderBrush" Value="{StaticResource Brush_1007}"/>
+    <Setter Property="Background" Value="{StaticResource Brush_1008}"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="MenuItem">
+          <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <Rectangle x:Name="highlight" Stroke="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupHoverHighlightFillKey}}" Visibility="Collapsed" StrokeThickness="1"/>
+              <ContentPresenter Margin="6,3" ContentSource="Header" RecognizesAccessKey="True"/>
+              <Popup
+								Name="Popup"
+								Placement="Right"
+								IsOpen="{TemplateBinding IsSubmenuOpen}"
+								AllowsTransparency="True"
+								Focusable="False"
+								PopupAnimation="Fade">
+                <Border
+									Name="SubmenuBorder"
+									SnapsToDevicePixels="True"
+									Background="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuCenterFillKey}}"
+									BorderBrush="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuOuterBorderFillKey}}"
+									BorderThickness="1"
+									CornerRadius="3">
+                  <ScrollViewer
+											x:Name="Popup_ScrollViewer"
+											HorizontalScrollBarVisibility="Disabled"
+											VerticalScrollBarVisibility="Auto"
+											Style="{StaticResource MenuScrollViewer}">
+                    <ItemsPresenter
+												Grid.IsSharedSizeScope="true"
+												KeyboardNavigation.TabNavigation="Cycle"
+												KeyboardNavigation.DirectionalNavigation="Cycle"
+												SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                  </ScrollViewer>
+                </Border>
+              </Popup>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSuspendingPopupAnimation" Value="true">
+              <Setter TargetName="Popup" Property="PopupAnimation" Value="None"/>
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="true">
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderHottrackCenterFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+              <Setter TargetName="highlight" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Foreground" Value="{StaticResource Brush_1018}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- SelectedGroupContent                                                            -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:SelectedGroupContent}">
+    <Setter Property="Background" Value="{StaticResource Brush_1009}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igOutlookBar:SelectedGroupContent}">
+          <Border
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Grid>
+              <ContentPresenter x:Name="PART_SelectedGroupContentPresenter"
+                                              Content="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContent, RelativeSource={RelativeSource Self}}"
+                                              ContentTemplate="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplate, RelativeSource={RelativeSource Self}}"
+                                              ContentTemplateSelector="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplateSelector, RelativeSource={RelativeSource Self}}"
+                                              />
+              <!-- Popup ================================================= -->
+              <Popup
+							x:Name="PART_Popup"
+							Grid.Row="1"
+							StaysOpen="False"
+							Placement="Right"
+							PlacementTarget="{Binding ElementName=PART_SelectedGroupContentPresenter}">
+                <Border BorderThickness="0,1,1,1" Background="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPopupFillKey}}" BorderBrush="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MinimizedNavigationPopupBorderFillKey}}">
+                  <Border Margin="4,3,3,3">
+                    <igwindows:PopupResizerDecorator x:Name="PART_PopupResizerDecorator" ResizeMode="Both">
+                      <ContentPresenter x:Name="SelectedContent"
+											 Content="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContent, RelativeSource={RelativeSource Self}}"
+											 ContentTemplate="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplate, RelativeSource={RelativeSource Self}}"
+											 ContentTemplateSelector="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplateSelector, RelativeSource={RelativeSource Self}}"
+                                                         />
+                    </igwindows:PopupResizerDecorator>
+                  </Border>
+                </Border>
+              </Popup>
+              <ToggleButton
+								x:Name="PART_ButtonShowPopup"
+    							Visibility="Collapsed"
+								Command="{x:Static igOutlookBar:OutlookBarCommands.ShowPopupCommand}"
+								TextElement.FontWeight="Bold"
+								Style="{DynamicResource {x:Static igOutlookBar:XamOutlookBar.NavigationPaneToggleButtonStyleKey}}"
+                                IsChecked="{Binding ElementName=PART_Popup, Path=IsOpen, UpdateSourceTrigger=Explicit}"
+                                >
+                <ToggleButton.LayoutTransform>
+                  <RotateTransform Angle="-90"/>
+                </ToggleButton.LayoutTransform>
+              </ToggleButton>
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=OutlookBar.IsMinimized, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+              <Setter TargetName="PART_ButtonShowPopup" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="PART_SelectedGroupContentPresenter" Property="Visibility" Value="Hidden"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=OutlookBar.IsMinimized, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+              <Setter TargetName="PART_SelectedGroupContentPresenter" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="PART_SelectedGroupContentPresenter" Property="Content" Value="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContent, RelativeSource={RelativeSource Self}}"/>
+              <Setter TargetName="PART_SelectedGroupContentPresenter" Property="ContentTemplate" Value="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplate, RelativeSource={RelativeSource Self}}"/>
+              <Setter TargetName="PART_SelectedGroupContentPresenter" Property="ContentTemplateSelector" Value="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).SelectedGroupContentTemplateSelector, RelativeSource={RelativeSource Self}}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=OutlookBar.VerticalSplitterLocation, RelativeSource={RelativeSource TemplatedParent}}" Value="Left">
+              <Setter TargetName="PART_Popup" Property="Placement" Value="Left"/>
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- OutlookBarGroup                                                                 -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:OutlookBarGroup}">
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="ToolTipService.IsEnabled" Value="False"/>
+    <Setter Property="Background" Value="{StaticResource Brush_1010}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Margin" Value="0,2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igOutlookBar:OutlookBarGroup}">
+          <Border
+						x:Name="Bd"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <!-- AS 4/1/11 TFS70779
+						<Border.BitmapEffect>
+							<DropShadowBitmapEffect Direction="270" Opacity="0.25" ShadowDepth="0" Softness="0.15"/>
+						</Border.BitmapEffect>-->
+            <Border x:Name="highlightBd" BorderThickness="1">
+              <Grid Margin="2">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition x:Name="ImageColumn" Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image
+									x:Name="PART_Image"
+									MaxHeight="24"
+									MaxWidth="24"
+									MinHeight="16"
+									MinWidth="16"
+									Grid.Column="0"
+									Margin="2,2,0,1"
+									Source="{TemplateBinding LargeImage}"
+									Stretch="Uniform"/>
+                <!-- Group Header(navigartion area/menu)-->
+                <ContentPresenter
+									x:Name="PART_Header"
+									Grid.Column="1"
+									Margin="4,0,0,1"
+									VerticalAlignment="Center"
+									Content="{TemplateBinding Header}"
+									ContentTemplate="{TemplateBinding HeaderTemplate}"
+									ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+									TextElement.FontWeight="Bold"/>
+              </Grid>
+            </Border>
+          </Border>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=LargeImage, RelativeSource={RelativeSource Self}}" Value="{x:Null}"/>
+                <Condition Binding="{Binding Path=Location, RelativeSource={RelativeSource Self}}" Value="NavigationGroupArea"/>
+                <Condition Binding="{Binding Path=OutlookBar.ReserveSpaceForLargeImage, RelativeSource={RelativeSource Self}}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="PART_Header" Property="Margin" Value="12,0,0,1"/>
+              <Setter TargetName="ImageColumn" Property="Width" Value="Auto"/>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=LargeImage, RelativeSource={RelativeSource Self}}" Value="{x:Null}"/>
+                <Condition Binding="{Binding Path=Location, RelativeSource={RelativeSource Self}}" Value="NavigationGroupArea"/>
+                <Condition Binding="{Binding Path=OutlookBar.ReserveSpaceForLargeImage, RelativeSource={RelativeSource Self}}" Value="False"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="ImageColumn" Property="Width" Value="0"/>
+            </MultiDataTrigger>
+            <Trigger Property="IsSelected" Value="False">
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderNormalTextFillKey}}"/>
+            </Trigger>
+            <Trigger Property="Location" Value="NavigationGroupArea">
+              <Setter TargetName="PART_Header" Property="Visibility" Value="Visible"/>
+              <Setter TargetName="PART_Image" Property="Source" Value="{Binding Path=LargeImage, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=OutlookBar.ShowGroupHeaderAsToolTip, RelativeSource={RelativeSource Self}}" Value="True">
+              <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Header}"/>
+            </DataTrigger>
+            <Trigger Property="Location" Value="OverflowContextMenu">
+              <Setter TargetName="PART_Image" Property="Source" Value="{Binding Path=SmallImageResolved, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+              <Setter TargetName="PART_Image" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="PART_Header" Property="TextElement.Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderActiveTextFillKey}}"/>
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=OutlookBar.IsMinimized, RelativeSource={RelativeSource Self}}" Value="True">
+              <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed"/>
+              <Setter TargetName="PART_Image" Property="Source" Value="{Binding Path=LargeImage, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+              <Setter Property="ToolTipService.IsEnabled" Value="{Binding Path=OutlookBar.ShowToolTips, RelativeSource={RelativeSource Self}}"/>
+            </DataTrigger>
+            <Trigger Property="Location" Value="OverflowArea">
+              <Setter TargetName="PART_Image" Property="Source" Value="{Binding Path=SmallImageResolved, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+              <Setter TargetName="PART_Header" Property="Visibility" Value="Collapsed"/>
+              <Setter TargetName="PART_Image" Property="Margin" Value="2,6,2,3"/>
+              <Setter TargetName="PART_Image" Property="MaxHeight" Value="16"/>
+              <Setter TargetName="PART_Image" Property="MaxWidth" Value="16"/>
+              <Setter Property="ToolTipService.IsEnabled" Value="{Binding Path=OutlookBar.ShowToolTips, RelativeSource={RelativeSource Self}}"/>
+            </Trigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True">
+              <Setter TargetName="highlightBd" Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupHoverHighlightFillKey}}"/>
+              <Setter TargetName="highlightBd" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupGlowFillKey}}"/>
+            </DataTrigger>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="highlightBd" Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.GroupInnerBorderFillKey}}"/>
+              <Setter TargetName="highlightBd" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupGlowFillKey}}"/>
+            </Trigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="highlightBd" Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupHoverHighlightFillKey}}"/>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseCaptured}" Value="True"/>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="highlightBd" Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupPressedHighlightFillKey}}"/>
+              <Setter TargetName="highlightBd" Property="Background" Value="{StaticResource Brush_1011}"/>
+            </MultiDataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsSelected" Value="True">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderNormalCenterFillKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderNormalTextFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+      </Trigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderHottrackCenterFillKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderHottrackTextFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+        <Setter Property="Tag" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderHottrackTextFillKey}}"/>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True"/>
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="True"/>
+        </MultiDataTrigger.Conditions>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderActiveHottrackCenterFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOverGroup}" Value="True"/>
+
+          <!-- JM 01-13-12 TFS96983 -->
+          <!--<Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseCaptured}" Value="True"/>-->
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseLeftButtonPressed}" Value="True"/>
+
+          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.NavigationGroupHeaderPressedCenterFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupNormalBorderFillKey}}"/>
+      </MultiDataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- SelectedGroupHeader                                                             -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:SelectedGroupHeader}">
+    <Setter Property="Background" Value="{StaticResource Brush_1012}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Brush_1013}"/>
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.HeaderDarkTextFillKey}}"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- GroupAreaSplitter                                                               -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:GroupAreaSplitter}">
+    <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.SplitterCenterFillKey}}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Height" Value="5"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Brush_1019}"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igOutlookBar:GroupAreaSplitter}">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <Thumb Visibility="Collapsed"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="true">
+              <Setter Property="Cursor" Value="SizeNS"></Setter>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- GroupOverflowArea                                                               -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:GroupOverflowArea}">
+    <Setter Property="Background" Value="{StaticResource Brush_1014}"/>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- VerticalSplitterStyleKey Thumb                                                  -->
+  <!-- =============================================================================== -->
+  <Style x:Key="{x:Static igOutlookBar:XamOutlookBar.VerticalSplitterStyleKey}" TargetType="{x:Type Thumb}">
+    <Setter Property="Background" Value="{StaticResource Brush_1015}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Thumb}">
+          <Rectangle Fill="{TemplateBinding Background}" Width="{Binding Path=(igOutlookBar:XamOutlookBar.OutlookBar).VerticalSplitterWidth, RelativeSource={RelativeSource Self}}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- =============================================================================== -->
+  <!-- NavigationPaneOptionsControl                                                    -->
+  <!-- =============================================================================== -->
+  <Style TargetType="{x:Type igOutlookBar:NavigationPaneOptionsControl}">
+    <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.XamOutlookBarBackgroundFillKey}}"/>
+    <Setter Property="Width" Value="314"/>
+    <Setter Property="Height" Value="181"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type igOutlookBar:NavigationPaneOptionsControl}">
+          <ControlTemplate.Resources>
+            <Style x:Key="labelRuler" TargetType="{x:Type Separator}">
+              <Setter Property="Height" Value="2"/>
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuOuterBorderFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+              <Setter Property="Focusable" Value="false"/>
+              <Setter Property="SnapsToDevicePixels" Value="True"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type Separator}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1"/>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+            <Style TargetType="{x:Type Button}">
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonNormalCenterFillKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonNormalOuterBorderFillKey}}"/>
+              <Setter Property="BorderThickness" Value="1"/>
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonNormalGlyphFillKey}}"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="Root">
+                      <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" SnapsToDevicePixels="True"/>
+                      </Border>
+                      <Border x:Name="innerStroke" Margin="1,1,1,1" BorderBrush="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.OutlookBarGroupGlowFillKey}}" BorderThickness="1" CornerRadius="2" SnapsToDevicePixels="True"/>
+                    </Grid>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonHottrackCenterFillKey}}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackOuterBorderFillKey}}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                  <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonPressedCenterFillKey}}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonPressedOuterBorderFillKey}}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey ResourceId=ButtonDisabledBackground, TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}}}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey ResourceId=ButtonDisabledBorderBrush, TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}}}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource {ComponentResourceKey ResourceId=ButtonDisabledForegroundBrush, TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}}}"/>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+            <Style x:Key="igScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                      </Grid.RowDefinitions>
+                      <Rectangle x:Name="Corner" Grid.Column="1" Grid.Row="1" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=HorizontalScrollBarTrackBrush}}"/>
+                      <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Column="0" Grid.Row="0" Margin="{TemplateBinding Padding}" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                      <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Grid.Row="0" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Style="{StaticResource Office2010BlueScrollbar}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                      <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="0" Grid.Row="1" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Style="{StaticResource Office2010BlueScrollbar}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                    </Grid>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+              <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                  <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+            <Style x:Key="igListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.HeaderDarkTextFillKey}}"/>
+              <Setter Property="Background" Value="{StaticResource TransparentBrush}"/>
+              <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+              <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+              <Setter Property="Padding" Value="4,1"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                      <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuItemHottrackOuterBorderFillKey}}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonHottrackCenterFillKey}}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonNormalGlyphFillKey}}"/>
+                      </Trigger>
+                      <Trigger Property="IsSelected" Value="true">
+                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonPressedOuterBorderFillKey}}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonPressedCenterFillKey}}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.MenuScrollViewerButtonNormalGlyphFillKey}}"/>
+                      </Trigger>
+                      <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                          <Condition Property="IsSelected" Value="true"/>
+                          <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.HeaderDarkTextFillKey}}"/>
+                      </MultiTrigger>
+                      <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                      </Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+            <Style x:Key="listbox" TargetType="{x:Type ListBox}">
+              <Setter Property="Background" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.LightBrushKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.XamOutlookBarOuterBorderFillKey}}"/>
+              <Setter Property="BorderThickness" Value="1"/>
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+              <Setter Property="VerticalContentAlignment" Value="Center"/>
+              <Setter Property="ItemContainerStyle" Value="{StaticResource igListBoxItemStyle}"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                      <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}" Style="{StaticResource igScrollViewerStyle}">
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                      </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsEnabled" Value="false">
+                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                      </Trigger>
+                      <Trigger Property="IsGrouping" Value="true">
+                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                      </Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+            <Style x:Key="EmptyCheckBoxFocusVisual">
+              <Setter Property="Control.Template">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Rectangle Margin="1" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeDashArray="1 2" StrokeThickness="1"/>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+            <Style x:Key="CheckRadioFocusVisual">
+              <Setter Property="Control.Template">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeDashArray="1 2" StrokeThickness="1"/>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}">
+              <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBackgroundBrush}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBorderBrush}}"/>
+              <Setter Property="Foreground" Value="Magenta"/>
+              <Setter Property="BorderThickness" Value="1"/>
+              <Setter Property="FocusVisualStyle" Value="{StaticResource EmptyCheckBoxFocusVisual}"/>
+              <Setter Property="VerticalContentAlignment" Value="Center"/>
+              <Setter Property="SnapsToDevicePixels" Value="True"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <Rectangle x:Name="CheckboxBackground" Width="13" Height="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+                      <Rectangle x:Name="CheckboxInnerStroke" Width="9" Height="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBackgroundBrush}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Stroke="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBorderBrush}}" StrokeThickness="1"/>
+                      <Path x:Name="checkBox" Width="9" Height="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Data="M103.10625,598.38019 C103.10625,598.38019 104.35281,597.37262 104.35281,597.37262 C104.35281,597.37262 106.69083,599.42383 106.69083,599.42383 C106.69083,599.42383 110.9969,593.85394 110.9969,593.85394 C110.9969,593.85394 112.8087,593.86188 112.8087,593.86188 C112.8087,593.86188 107.73771,601.85333 107.73771,601.85333 C107.73771,601.85333 106.1218,601.8479 106.1218,601.8479 C106.1218,601.8479 103.10625,598.38019 103.10625,598.38019 z" Fill="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.GlyphThemeForegroundFillKey}}" FlowDirection="LeftToRight" Opacity="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Stretch="Fill"/>
+                      <ContentPresenter Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="CheckboxBackground" Property="Fill" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBackgroundHoverBrush}}"/>
+                        <Setter TargetName="CheckboxBackground" Property="Stroke" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBorderHoverBrush}}"/>
+                        <Setter TargetName="CheckboxInnerStroke" Property="Fill" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBackgroundHoverBrush}}"/>
+                        <Setter TargetName="CheckboxInnerStroke" Property="Stroke" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBorderHoverBrush}}"/>
+                      </Trigger>
+                      <Trigger Property="IsPressed" Value="True">
+                        <Setter TargetName="CheckboxBackground" Property="Fill" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBackgroundPressedBrush}}"/>
+                        <Setter TargetName="CheckboxBackground" Property="Stroke" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxBorderPressedBrush}}"/>
+                        <Setter TargetName="CheckboxInnerStroke" Property="Fill" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBackgroundPressedBrush}}"/>
+                        <Setter TargetName="CheckboxInnerStroke" Property="Stroke" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}, ResourceId=CheckboxInnerBorderPressedBrush}}"/>
+                      </Trigger>
+                      <Trigger Property="IsChecked" Value="True">
+                        <Setter TargetName="checkBox" Property="Opacity" Value="1"/>
+                      </Trigger>
+                      <Trigger Property="HasContent" Value="true">
+                        <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckRadioFocusVisual}"/>
+                        <Setter Property="Padding" Value="4,0,0,0"/>
+                      </Trigger>
+                      <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="{DynamicResource {ComponentResourceKey ResourceId=ButtonDisabledForegroundBrush, TypeInTargetAssembly={x:Type igOutlookBar:XamOutlookBar}}}"/>
+                      </Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </ControlTemplate.Resources>
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <DockPanel Grid.ColumnSpan="2" Margin="0,2,7,0">
+                <Label Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlOrderLabel}" DockPanel.Dock="Left" Foreground="{DynamicResource {x:Static igOutlookBar:OutlookBarBrushKeys.HeaderDarkTextFillKey}}"/>
+                <Separator Style="{StaticResource labelRuler}"/>
+              </DockPanel>
+              <ListBox x:Name="PART_ListBox" Height="116" Grid.Row="1" Grid.RowSpan="3" Margin="15,2,0,8" Style="{StaticResource listbox}"/>
+              <Button x:Name="btnMoveUp" Width="75" Height="23" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="8,2,5,0" VerticalAlignment="Top" Command="{x:Static igOutlookBar:NavigationPaneOptionsControlCommands.MoveSelectedUpCommand}" Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlMoveUpButton}"/>
+              <Button x:Name="btnMoveDn" Width="75" Height="23" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Margin="8,0,5,9" VerticalAlignment="Top" Command="{x:Static igOutlookBar:NavigationPaneOptionsControlCommands.MoveSelectedDownCommand}" Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlMoveDownButton}"/>
+              <Button x:Name="btnReset" Width="75" Height="23" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Margin="8,0,5,27" VerticalAlignment="Top" Command="{x:Static igOutlookBar:NavigationPaneOptionsControlCommands.ResetGroupSequenceAndVisibilityCommand}" Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlResetButton}"/>
+              <Button x:Name="btnOK" Width="75" Height="23" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="0,0,0,8" Command="{x:Static igOutlookBar:NavigationPaneOptionsControlCommands.CommitChangesAndCloseCommand}" Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlOkButton}" IsDefault="True"/>
+              <Button x:Name="btnCancel" Width="75" Height="23" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="9,0,6,8" Content="{x:Static igOutlookBar:Resources.NavigationPaneOptionsControlCancelButton}" IsCancel="True"/>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

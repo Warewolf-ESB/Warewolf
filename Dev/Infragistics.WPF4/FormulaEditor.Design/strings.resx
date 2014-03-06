@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data xml:space="preserve" name="ToolboxTabName">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data xml:space="preserve" name="Resources_Customizer_Property">
+    <value>Returns the Infragistics.Shared.ResourceCustomizer for this assembly.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialogEventArgs_Dialog_Property">
+    <value>Gets the Infragistics.Controls.Interactions.FormulaEditorDialog which indicates the dialog that is displaying or closing.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_CaretPosition_Property">
+    <value>Gets the current position of the insertion point within the Infragistics.Controls.Interactions.SuggestionListDisplayingEventArgs.Formula.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_Formula_Property">
+    <value>Gets the formula currently being editing by the user.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_FunctionSuggestions_Property">
+    <value>Gets or sets the list of function names which will be suggested to the user.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_OperandSuggestions_Property">
+    <value>Gets or sets the list of operand names which will be suggested to the user.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_ShowFunctionSuggestons_Property">
+    <value>Gets or sets the value which indicates whether to show the function name suggestions.</value>
+  </data>
+  <data xml:space="preserve" name="SuggestionListDisplayingEventArgs_ShowOperandSuggestions_Property">
+    <value>Gets or sets the value which indicates whether to show the operand name suggestions.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorCommandSource_CommandType_Property">
+    <value>Gets or sets the FormulaEditorCommand which is to be executed by the command.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_Formula_Property">
+    <value>Gets or sets the formula being edited in the dialog.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_HasSyntaxError_Property">
+    <value>Gets the value which indicates whether the formula has a syntax error.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_ShowFunctionSuggestions_Property">
+    <value>Gets or sets the value which indicates whether function suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_ShowOperandSuggestions_Property">
+    <value>Gets or sets the value which indicates whether operand suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_SyntaxError_Property">
+    <value>Gets the syntax error for the formula in the dialog or null if the formula is valid.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_Target_Property">
+    <value>Gets or sets the object having its formula edited.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_Formula_Property">
+    <value>Gets or sets the formula being edited.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_Properties">
+    <value>XamFormulaEditor Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_HasSyntaxError_Property">
+    <value>Gets the value which indicates whether the formula being edited has a syntax error.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_ShowFunctionSuggestions_Property">
+    <value>Gets or sets the value which indicates whether function suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_ShowOperandSuggestions_Property">
+    <value>Gets or sets the value which indicates whether operand suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_SyntaxError_Property">
+    <value>Gets or sets the syntax error of the formula being edited or null if it is a valid formula.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_Target_Property">
+    <value>Gets or sets the object having its formula edited.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_FunctionCategories_Property">
+    <value>Gets the collection of function categories to display in the UI based on the current search criteria.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionCategory_Functions_Property">
+    <value>Gets the collection of functions in the category.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionCategory_IsExpanded_Property">
+    <value>Gets or sets the value indicating whether the category is expanded in the UI.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionCategory_Name_Property">
+    <value>Gets the name of the function category.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_Function_Property">
+    <value>Gets the function represented by the Infragistics.Controls.Interactions.Primitives.FunctionInfo.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_Signature_Property">
+    <value>Gets the signature of the function.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_FunctionSearchText_Property">
+    <value>Gets or sets the text on which to search through the functions.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_FunctionSearchType_Property">
+    <value>Gets or sets the type of search to perform on the list of functions.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_FunctionSearchTypes_Property">
+    <value>Gets the various function search types and their associated localized descriptions.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_Description_Property">
+    <value>Gets the description of the function.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_Name_Property">
+    <value>Gets the name of the function.</value>
+  </data>
+  <data xml:space="preserve" name="FilteredCollection`1_Count_Property">
+    <value>Gets the number of items in the filtered collection.</value>
+  </data>
+  <data xml:space="preserve" name="SearchTypeValue_Description_Property">
+    <value>Gets the localized description of the enumeration value.</value>
+  </data>
+  <data xml:space="preserve" name="SearchTypeValue_EnumMember_Property">
+    <value>Gets the enumeration value.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_LocalizedStrings_Property">
+    <value>Returns a dictionary of localized strings for use by the controls in the template.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_OperandsAndOwners_Property">
+    <value>Gets the collection of operands and/or their owners to display in the UI based on the current search criteria.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_Operators_Property">
+    <value>Gets the collection of operators displayed in the dialog.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_Dialog_Property">
+    <value>Gets the Infragistics.Controls.Interactions.FormulaEditorDialog in which the function is displayed.</value>
+  </data>
+  <data xml:space="preserve" name="FunctionInfo_NameUpper_Property">
+    <value>Gets the uppercase name of the function.</value>
+  </data>
+  <data xml:space="preserve" name="SearchTypeValue_EnumValue_Property">
+    <value>Gets the enumeration value.</value>
+  </data>
+  <data xml:space="preserve" name="OperandOrOwner_Dialog_Property">
+    <value>Gets the Infragistics.Controls.Interactions.FormulaEditorDialog in which the operand or owner is displayed.</value>
+  </data>
+  <data xml:space="preserve" name="OperandOrOwner_Children_Property">
+    <value>Gets the collection of operands or owners owned by this instance, if it is an owner.</value>
+  </data>
+  <data xml:space="preserve" name="OperandOrOwner_IsExpanded_Property">
+    <value>Gets or sets the value indicating whether the operand or owner is expanded in the UI.</value>
+  </data>
+  <data xml:space="preserve" name="OperandOrOwner_Name_Property">
+    <value>Gets the name of the operand or owner.</value>
+  </data>
+  <data xml:space="preserve" name="OperatorInfo_Dialog_Property">
+    <value>Gets the Infragistics.Controls.Interactions.FormulaEditorDialog in which the operator is displayed.</value>
+  </data>
+  <data xml:space="preserve" name="OperatorInfo_Value_Property">
+    <value>Gets the string representation of the operator.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_CanRedo_Property">
+    <value>Gets the value which indicates whether a redo operation can be performed.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_CanUndo_Property">
+    <value>Gets the value indicating whether an undo operation can be performed.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_ClearCommand_Property">
+    <value>Gets the command which performs a clear operation.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_RedoCommand_Property">
+    <value>Gets the command which performs a redo operation.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_UndoCommand_Property">
+    <value>Gets the command which performs an undo operation.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_CurrentSyntaxErrorInfo_Property">
+    <value>Gets information about the current syntax error being displayed in the dialog.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_HasMultipleSyntaxErrors_Property">
+    <value>Gets the value which indicates whether there are multiple errors in the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_MultipleSyntaxErrorsLabel_Property">
+    <value>Gets the label to display when there are multiple syntax errors.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_NextSyntaxErrorCommand_Property">
+    <value>Gets the command which shows the next syntax error of the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_OperandSearchType_Property">
+    <value>Gets or sets the type of search to perform on the list of operands.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_OperandSearchTypes_Property">
+    <value>Gets the various operand search types and their associated localized descriptions.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_PreviousSyntaxErrorCommand_Property">
+    <value>Gets the command which shows the previous syntax error of the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_SyntaxErrorInfos_Property">
+    <value>Gets the collection of syntax errors for the formula in the dialog or null if the formula is valid.</value>
+  </data>
+  <data xml:space="preserve" name="SyntaxErrorInfo_Exception_Property">
+    <value>Gets the exception which occurred when parsing the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_Operands_Property">
+    <value>Gets the collection of operands and/or their owners to display in the UI based on the current search criteria.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_OperandSearchText_Property">
+    <value>Gets or sets the text on which to search through the operands.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_Dialog_Property">
+    <value>Gets the Infragistics.Controls.Interactions.FormulaEditorDialog in which the operand or owner is displayed.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_Children_Property">
+    <value>Gets the collection of operands or owners owned by this instance, if it is an owner.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_IsExpanded_Property">
+    <value>Gets or sets the value indicating whether the operand or owner is expanded in the UI.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_Name_Property">
+    <value>Gets the name of the operand or owner.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorCommandSource_Key_Property">
+    <value>Gets or sets the key the command should be executed for when the event arguments are KeyEventArgs.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_IsDataReference_Property">
+    <value>Gets the value which indicates whether this operand can be the source or target for a formula.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_NodeType_Property">
+    <value>Gets the type of reference represented by the node.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_Signature_Property">
+    <value>Gets the signature of the operand when used in the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_CancelCommand_Property">
+    <value>Gets the command which cancels out of the Infragistics.Controls.Interactions.FormulaEditorDialog.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_CommitCommand_Property">
+    <value>Gets the command which commits the formula from the Infragistics.Controls.Interactions.FormulaEditorDialog to the target and closes the dialog.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_ShowDialogButtons_Property">
+    <value>Gets or sets the value indicating whether the OK and Cancel buttons should display.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorTextBox_IsUndoEnabled_Property">
+    <value>Gets or sets the value which indicates whether the text box support undo and redo operations.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_MaxLineCount_Property">
+    <value>Gets or sets the maximum number of lines to display, or zero or less to display as many lines as possible.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_MinLineCount_Property">
+    <value>Gets or sets the minimum number of lines to display, or zero or less to display a minimum of one line.</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_IsEnabled_Property">
+    <value>Gets the value which indicates whether this operand is enabled and can be used in the formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorTextBox_MaxLineCount_Property">
+    <value>Gets or sets the maximum number of lines to display, or zero to display as many lines as possible.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorTextBox_MinLineCount_Property">
+    <value>Gets or sets the minimum number of lines to display, or zero or less to display a minimum of one line.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_AutocompleteItems_Property">
+    <value>Gets the list of items to display in the auto-complete list.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorTextBox_Text_Property">
+    <value>Gets or sets the plain text from of the text box.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_CanRedo_Property">
+    <value>Gets the value which indicates whether a redo operation can be performed.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_CanUndo_Property">
+    <value>Gets the value indicating whether an undo operation can be performed.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_Formula_Property">
+    <value>Gets or sets the formula being edited in the dialog.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_HasSyntaxError_Property">
+    <value>Gets the value which indicates whether the formula has a syntax error.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_RedoCommand_Property">
+    <value>Gets the command which performs a redo operation.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_ShowFunctionSuggestions_Property">
+    <value>Gets or sets the value which indicates whether function suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_ShowOperandSuggestions_Property">
+    <value>Gets or sets the value which indicates whether operand suggestions should be shown in the suggestion list.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_SyntaxError_Property">
+    <value>Gets or sets the syntax error of the formula being edited or null if it is a valid formula.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_Target_Property">
+    <value>Gets or sets the object having its formula edited.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_UndoCommand_Property">
+    <value>Gets the command which performs an undo operation.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorBase_ShowContextualHelp_Property">
+    <value>Gets or sets the value indicating whether help should be shown to the user based on context while they are editing the formula.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditorAssetLibrary">
+    <value>Infragistics</value>
+  </data>
+  <data xml:space="preserve" name="OperandInfo_Reference_Property">
+    <value>Gets the Infragistics.Calculations.Engine.ICalculationReference representing the operand.</value>
+  </data>
+  <data xml:space="preserve" name="FormulaEditorDialog_UndoRedoButtonVisibility_Property">
+    <value>Gets the visibility of the undo and redo buttons.</value>
+  </data>
+  <data xml:space="preserve" name="OperatorInfo_DisplayText_Property">
+    <value>Gets the display text for the operator.</value>
+  </data>
+  <data xml:space="preserve" name="XamFormulaEditor_LocalizedStrings_Property">
+    <value>Returns a dictionary of localized strings for use by the controls in the template.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteList_MaxItemsToDisplay_Property">
+    <value>Gets or sets the maximum number of items that should display in the auto-complete list.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_CanHorizontallyScroll_Property">
+    <value>Gets or sets a value that indicates whether the panel can be scrolled horizontally.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_CanVerticallyScroll_Property">
+    <value>Gets or sets a value that indicates whether the panel can be scrolled vertically.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_ExtentHeight_Property">
+    <value>Gets the vertical size of the list, in units of items.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_ExtentWidth_Property">
+    <value>Gets the vertical size of the list, in Device Independent Pixels.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_HorizontalOffset_Property">
+    <value>Gets the current horizontal scroll offset, in Device Independent Pixels.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_ScrollOwner_Property">
+    <value>Gets or sets the ScrollViewer which is displaying this panel.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_VerticalOffset_Property">
+    <value>Gets the current vertical scroll offset, in units of items.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_ViewportHeight_Property">
+    <value>Gets the height of the currently visible portion of the list, in units of items.</value>
+  </data>
+  <data xml:space="preserve" name="AutoCompleteListStackPanel_ViewportWidth_Property">
+    <value>Gets the height of the currently visible portion of the list, in Device Independent Pixels.</value>
+  </data>
+</root>

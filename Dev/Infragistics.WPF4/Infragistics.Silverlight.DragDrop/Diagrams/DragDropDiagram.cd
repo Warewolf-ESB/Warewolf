@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.DragDrop.DragDropManager">
+    <Position X="7.5" Y="0.5" Width="3" />
+    <Members>
+      <Field Name="_currentCopyCursorTemplate" Hidden="true" />
+      <Field Name="_currentCursorTemplate" Hidden="true" />
+      <Field Name="_currentDropNotAllowedCursorTemplate" Hidden="true" />
+      <Field Name="_currentMoveCursorTemplate" Hidden="true" />
+      <Field Name="_cursorPopup" Hidden="true" />
+      <Field Name="_customCopyCursorTemplate" Hidden="true" />
+      <Field Name="_customCursorContentControl" Hidden="true" />
+      <Field Name="_customDropNotAllowedCursorTemplate" Hidden="true" />
+      <Field Name="_customMoveCursorTemplate" Hidden="true" />
+      <Field Name="_defaultCopyCursorTemplate" Hidden="true" />
+      <Field Name="_defaultDragTemplate" Hidden="true" />
+      <Field Name="_defaultDropNotAllowedCursorTemplate" Hidden="true" />
+      <Field Name="_defaultMoveCursorTemplate" Hidden="true" />
+      <Field Name="_dragContentControl" Hidden="true" />
+      <Field Name="_dragDropEventArgs" Hidden="true" />
+      <Field Name="_draggedElement" Hidden="true" />
+      <Field Name="_draggedOffset" Hidden="true" />
+      <Field Name="_dragging" Hidden="true" />
+      <Field Name="_dragObject" Hidden="true" />
+      <Field Name="_dragPopup" Hidden="true" />
+      <Field Name="_dragSource" Hidden="true" />
+      <Field Name="_dragSourceDragTemplate" Hidden="true" />
+      <Field Name="_dragSourceElement" Hidden="true" />
+      <Field Name="_dragSources" Hidden="true" />
+      <Field Name="_dropTargetElement" Hidden="true" />
+      <Field Name="_dropTargets" Hidden="true" />
+      <Field Name="_endDrag" Hidden="true" />
+      <Field Name="_gotCursor" Hidden="true" />
+      <Field Name="_initialMousePosition" Hidden="true" />
+      <Field Name="_instance" Hidden="true" />
+      <Field Name="_mouseCaptured" Hidden="true" />
+      <Field Name="_mouseEventArgs" Hidden="true" />
+      <Field Name="_mouseOffset" Hidden="true" />
+      <Field Name="_mousePosition" Hidden="true" />
+      <Field Name="_originalCursor" Hidden="true" />
+      <Field Name="_originalDragSourceElement" Hidden="true" />
+      <Field Name="_snapshotImage" Hidden="true" />
+      <Field Name="_targetMarkerPopup" Hidden="true" />
+      <Field Name="_trackedElement" Hidden="true" />
+      <Field Name="_waitDragStart" Hidden="true" />
+      <Method Name="ApplyCursorTemplate" Hidden="true" />
+      <Method Name="ApplyDragTemplate" Hidden="true" />
+      <Method Name="CaptureMouse" Hidden="true" />
+      <Method Name="CatchDragImage" Hidden="true" />
+      <Method Name="ChannelsMatch" Hidden="true" />
+      <Property Name="CursorPopup" Hidden="true" />
+      <Method Name="CursorPopupKeyDown" Hidden="true" />
+      <Method Name="CursorPopupKeyUp" Hidden="true" />
+      <Method Name="CursorPopupSizeChanged" Hidden="true" />
+      <Method Name="DragPopupSizeChanged" Hidden="true" />
+      <Field Name="DragSourceProperty" Hidden="true" />
+      <Field Name="DropTargetProperty" Hidden="true" />
+      <Method Name="FindTarget" Hidden="true" />
+      <Method Name="FindTargetInRoot" Hidden="true" />
+      <Method Name="GenerateTargetMarker" Hidden="true" />
+      <Method Name="GetDragDropEventArgs" Hidden="true" />
+      <Method Name="GetElementsInDropTarget" Hidden="true" />
+      <Method Name="GetElementWithMouseCapture" Hidden="true" />
+      <Method Name="IsPopupHosted" Hidden="true" />
+      <Method Name="LostMouseCapture" Hidden="true" />
+      <Method Name="OnDragCancel" Hidden="true" />
+      <Method Name="OnDragEnd" Hidden="true" />
+      <Method Name="OnDragEnter" Hidden="true" />
+      <Method Name="OnDragLeave" Hidden="true" />
+      <Method Name="OnDragOver" Hidden="true" />
+      <Method Name="OnDragSourceChanged" Hidden="true" />
+      <Method Name="OnDragStart" Hidden="true" />
+      <Method Name="OnDrop" Hidden="true" />
+      <Method Name="OnDropTargetChanged" Hidden="true" />
+      <Method Name="OnMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnMouseMove" Hidden="true" />
+      <Method Name="QueryContinueDrag" Hidden="true" />
+      <Method Name="RegisterDragSource" Hidden="true" />
+      <Method Name="RegisterDropTarget" Hidden="true" />
+      <Method Name="RemoveTargetMarker" Hidden="true" />
+      <Method Name="ResolveTrackedElement" Hidden="true" />
+      <Method Name="SetCursorPopupPosition" Hidden="true" />
+      <Method Name="SetCustomCursorTemplate" Hidden="true" />
+      <Method Name="SetCustomCursorTemplates" Hidden="true" />
+      <Method Name="SetDragPopupPosition" Hidden="true" />
+      <Method Name="ShowCursorPopup" Hidden="true" />
+      <Method Name="ShowDragPopup" Hidden="true" />
+      <Method Name="TrackedElementUnloaded" Hidden="true" />
+      <Method Name="TryHighlightDropTargets" Hidden="true" />
+      <Method Name="UnregisterDragSource" Hidden="true" />
+      <Method Name="UnregisterDropTarget" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IMBmAgwIKVBAOhAB0bhHNAPUI1FAADB6UZuWQqhSMOA=</HashCode>
+      <FileName>DragDropManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragObject">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>DragObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragSource">
+    <Position X="11.25" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="_associatedObjectWeakRef" Hidden="true" />
+      <Field Name="_draggingOffset" Hidden="true" />
+      <Field Name="CopyCursorTemplateProperty" Hidden="true" />
+      <Field Name="DataObjectProperty" Hidden="true" />
+      <Field Name="DragTemplateProperty" Hidden="true" />
+      <Field Name="DropNotAllowedCursorTemplateProperty" Hidden="true" />
+      <Field Name="IsDraggableProperty" Hidden="true" />
+      <Field Name="MoveCursorTemplateProperty" Hidden="true" />
+      <Method Name="OnDragCancel" Hidden="true" />
+      <Method Name="OnDragEnd" Hidden="true" />
+      <Method Name="OnDragEnter" Hidden="true" />
+      <Method Name="OnDraggableChanged" Hidden="true" />
+      <Method Name="OnDragLeave" Hidden="true" />
+      <Method Name="OnDragOver" Hidden="true" />
+      <Method Name="OnDragStart" Hidden="true" />
+      <Method Name="OnDrop" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIkCAAAgoFgQCAAKEEIABCACAQggQAAQBhAwAAAgEAA=</HashCode>
+      <FileName>DragSource.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FindDropTargetMode" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DropTarget">
+    <Position X="16.75" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="_associatedObjectWeakRef" Hidden="true" />
+      <Field Name="DropTargetMarkerBrushProperty" Hidden="true" />
+      <Field Name="DropTargetStyleProperty" Hidden="true" />
+      <Field Name="IsDropTargetProperty" Hidden="true" />
+      <Method Name="OnDropTargetChanged" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAIACIIAAAACCAAAAQACAAAAAAACCEgAAAwAAAA=</HashCode>
+      <FileName>DropTarget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragDropEventArgs">
+    <Position X="3.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAgAAAIAAAMAAgAABAAAAAAABAAAABAAAAgAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OperationType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragDropMoveEventArgs">
+    <Position X="1.75" Y="4" Width="2" />
+    <Members>
+      <Field Name="_mouseEventArgs" Hidden="true" />
+      <Method Name="DragDropMoveEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragDropCancelEventArgs">
+    <Position X="4.5" Y="4" Width="2" />
+    <Members>
+      <Method Name="DragDropCancelEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DragDropStartEventArgs">
+    <Position X="4.5" Y="6" Width="2" />
+    <Members>
+      <Method Name="DragDropStartEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.DragDrop.DropEventArgs">
+    <Position X="1.75" Y="6" Width="1.75" />
+    <Members>
+      <Method Name="DropEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Infragistics.DragDrop.OperationType">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.DragDrop.FindDropTargetMode">
+    <Position X="9.75" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

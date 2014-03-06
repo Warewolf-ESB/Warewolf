@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<!-- 
+            Microsoft ResX Schema 
+        
+            Version 1.3
+                
+            The primary goals of this format is to allow a simple XML format 
+            that is mostly human readable. The generation and parsing of the 
+            various data types are done through the TypeConverter classes 
+            associated with the data types.
+        
+            Example:
+        
+                ... ado.net/XML headers & schema ...
+                <resheader name="resmimetype">text/microsoft-resx</resheader>
+                <resheader name="version">1.3</resheader>
+                <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+                <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                <data name="Name1">this is my long string</data>
+                <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+                <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+                    [base64 mime encoded serialized .NET Framework object]
+                </data>
+                <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+                    [base64 mime encoded string representing a byte array form of the .NET Framework object]
+                </data>
+        
+            There are any number of "resheader" rows that contain simple 
+            name/value pairs.
+            
+            Each data row contains a name, and value. The row also contains a 
+            type or mimetype. Type corresponds to a .NET class that support 
+            text/value conversion through the TypeConverter architecture. 
+            Classes that don't support this are serialized and stored with the 
+            mimetype set.
+                     
+            The mimetype is used for serialized objects, and tells the 
+            ResXResourceReader how to depersist the object. This is currently not 
+            extensible. For a given mimetype the value must be set accordingly:
+        
+            Note - application/x-microsoft.net.object.binary.base64 is the format 
+                   that the ResXResourceWriter will generate, however the reader can 
+                   read any of the formats listed below.
+        
+            mimetype: application/x-microsoft.net.object.binary.base64
+            value   : The object must be serialized with 
+                    : System.Serialization.Formatters.Binary.BinaryFormatter
+                    : and then encoded with base64 encoding.
+        
+            mimetype: application/x-microsoft.net.object.soap.base64
+            value   : The object must be serialized with 
+                    : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+                    : and then encoded with base64 encoding.
+            mimetype: application/x-microsoft.net.object.bytearray.base64
+            value   : The object must be serialized into a byte array 
+                    : using a System.ComponentModel.TypeConverter
+                    : and then encoded with base64 encoding.
+        -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="LER_Exception_MergedRegionsOverlap">
+		<value>Merged cell regions can't overlap.</value>
+	</data>
+	<data name="LER_ArgumentOutOfRangeException_OutlineLevel">
+		<value>Outline level must be between 0 and 7.</value>
+	</data>
+	<data name="LER_Exception_KeyNotFound">
+		<value>Key not found.</value>
+	</data>
+	<data name="LE_InvalidOperationException_MaxColors">
+		<value>The maximum number of colors in an excel workbook is: {0}</value>
+	</data>
+	<data name="LE_InvalidOperationException_MaxRows">
+		<value>The maximum number of rows in an excel worksheet with the current format is: {0}</value>
+	</data>
+	<data name="LE_InvalidOperationException_MaxColumns">
+		<value>The maximum number of columns in an excel worksheet with the current format is: {0}</value>
+	</data>
+	<data name="LE_InvalidOperationException_MaxCellFormats">
+		<value>The maximum number of distinct cell formats in excel file is: {0}</value>
+	</data>
+	<data name="LE_NotSupportedException_CellType">
+		<value>{0} is not a supported cell value type.</value>
+	</data>
+	<data name="LE_ArgumentException_ArrayFormulaMustHaveSingleRegion">
+		<value>An array formula can only be applied to one cell region.</value>
+	</data>
+	<data name="LE_InvalidOperationException_ArrayFormulaAlreadyApplied">
+		<value>The array formula is already applied to a cell range. Clear the existing cell range first.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantChangeArrayFormula">
+		<value>The cells of an array formula cannot be changed.</value>
+	</data>
+	<data name="LE_InvalidOperationException_ArrayFormulaInMergedCell">
+		<value>Array formulas are not valid in merged cells.</value>
+	</data>
+	<data name="LE_ArgumentNullException_Workbook">
+		<value>The workbook cannot be null.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantApplyRemovedCustomView">
+		<value>The custom view cannot be applied if it has been removed from the workbook's custom view collection.</value>
+	</data>
+	<data name="LE_ArgumentNullException_CustomViewName">
+		<value>The custom view name cannot be null or empty.</value>
+	</data>
+	<data name="LE_ArgumentException_CustomViewNameAlreadyExists">
+		<value>A custom view with the name "{0}" already exists.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_MagnificationLevel">
+		<value>View magnification levels must be between 10 and 400.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_CollectionIndex">
+		<value>Index was out of range. It must be non-negative and less than the size of the collection.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddCustomView">
+		<value>Custom views cannot be added directly to the collection.</value>
+	</data>
+	<data name="LE_ArgumentException_TopLeftWindowBounds">
+		<value>The left and top of the window bounds must be between -32768 and 32767.</value>
+	</data>
+	<data name="LE_ArgumentException_WidthHeightWindowBounds">
+		<value>The width and height of the window bounds must be between 0 and 65535.</value>
+	</data>
+	<data name="LE_InvalidOperationException_FormattedStringAlreadyOwned">
+		<value>The formatted string is already the value of another cell or comment. Clone it first and apply the clone to the new cell or shape.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_NegativeStartIndex">
+		<value>The start index cannot be negative.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_LengthMustBePositive">
+		<value>The length must be greater than or equal to one.</value>
+	</data>
+	<data name="LE_ArgumentNullException_UnformattedString">
+		<value>The unformatted string cannot be null.</value>
+	</data>
+	<data name="LE_ArgumentNullException_SourceFont">
+		<value>The source font cannot be null.</value>
+	</data>
+	<data name="LE_InvalidOperationException_FormattedStringNotOwned">
+		<value>The font properties cannot be accessed while the formatted string or text is not applied to a cell or shape.</value>
+	</data>
+	<data name="LE_InvalidOperationException_InvalidCharacterRange">
+		<value>The range of characters covered by the font no longer exists in the formatted string.</value>
+	</data>
+	<data name="LE_FormulaParseException_Message_PortionWithError">
+		<value>Portion with error: {0}</value>
+	</data>
+	<data name="LE_FormulaParseException_NoEqualsSign">
+		<value>The formula must start with an equals sign.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoExpressions">
+		<value>The formula has no valid expressions after the equal sign.</value>
+	</data>
+	<data name="LE_FormulaParseException_ExtraExpressions">
+		<value>The formula has extra expressions after the end of it.</value>
+	</data>
+	<data name="LE_FormulaParseException_UnknownError">
+		<value>There was an error parsing the formula.</value>
+	</data>
+	<data name="LE_FormulaParseException_InvalidArguments">
+		<value>An operator or function in the formula has invalid arguments.</value>
+	</data>
+	<data name="LE_FormulaParseException_NamedReferenceRefsNeedSheetName">
+		<value>All cell references in a named reference formula must identify the worksheet.</value>
+	</data>
+	<data name="LE_FormulaParseException_MissingArgumentBeforeBinary">
+		<value>A binary operator in the formula is missing an operand before it.</value>
+	</data>
+	<data name="LE_FormulaParseException_MissingArgumentAfterBinary">
+		<value>A binary operator in the formula is missing an operand after it.</value>
+	</data>
+	<data name="LE_FormulaParseException_MissingArgumentAfterUnary">
+		<value>A unary operator in the formula was not followed by a valid expression.</value>
+	</data>
+	<data name="LE_FormulaParseException_UnmatchedOpenParen">
+		<value>An open parenthesis in the formula does not have a matching closing parenthesis.</value>
+	</data>
+	<data name="LE_FormulaParseException_MissingArgumentAfterParen">
+		<value>There is no expression following an open parenthesis.</value>
+	</data>
+	<data name="LE_FormulaParseException_ArrayContainsConstants">
+		<value>A array can only contain constant expressions.</value>
+	</data>
+	<data name="LE_FormulaParseException_UnmatchedOpenBracket">
+		<value>A constant array in the formula does not have a closing bracket.</value>
+	</data>
+	<data name="LE_FormulaParseException_ArrayHasEmptyFirstRow">
+		<value>A constant array in the formula has no items in the first row.</value>
+	</data>
+	<data name="LE_FormulaParseException_ArrayHasMisalignedRows">
+		<value>A constant array in the formula has misaligned rows. Each row in an array must have the same number of columns.</value>
+	</data>
+	<data name="LE_FormulaParseException_InvalidErrorValue">
+		<value>The error type specified is not valid.  It must be one of the following values: "#NULL!", "#DIV/0!", "#VALUE!", "#REF!", "#NAME?", "#NUM!", or "#N/A".</value>
+	</data>
+	<data name="LE_FormulaParseException_InvalidFileNameInBrackets">
+		<value>A file name between square brackets was invalid.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoFileNameAfterBracket">
+		<value>A valid file name was expected after the open square bracket.</value>
+	</data>
+	<data name="LE_FormulaParseException_UnmatchedOpenSquareBracket">
+		<value>A closing square bracket was expected after the workbook file name.</value>
+	</data>
+	<data name="LE_FormulaParseException_FunctionMissingClosingParen">
+		<value>A function in the formula has no closing parenthesis.</value>
+	</data>
+	<data name="LE_FormulaParseException_FunctionNestingTooDeep">
+		<value>A function in the formula is nested too deeply in other functions.</value>
+	</data>
+	<data name="LE_FormulaParseException_UnknownFunction">
+		<value>A function in the formula does not have a valid function name.</value>
+	</data>
+	<data name="LE_FormulaParseException_IncorrectNumberOfArguments">
+		<value>A function in the formula has not been given the correct number of arguments.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoElementAfterArraySerapator">
+		<value>There is no array element after an element separator in the formula.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoValidTermAfterWorksheetName">
+		<value>A worksheet reference must be followed by a cell or named reference.</value>
+	</data>
+	<data name="LE_FormulaParseException_CellReferenceAfterWorkbookName">
+		<value>An external workbook reference must be followed by a named reference, not a cell reference.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoValidTermAfterWorkbookName">
+		<value>An external workbook reference must be followed by a named reference.</value>
+	</data>
+	<data name="LE_FormulaParseException_InvalidWorkbookName">
+		<value>The workbook reference in quotes is not a valid workbook file name.</value>
+	</data>
+	<data name="LE_FormulaParseException_WorkbookNameMissingEndQuote">
+		<value>The workbook reference has no ending quote.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoExclamationAfterWorkbookName">
+		<value>The workbook reference must be followed by an exclamation point.</value>
+	</data>
+	<data name="LE_FormulaParseException_InvalidWorksheetName">
+		<value>The worksheet name is invalid.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoExclamationAfterWorksheetName">
+		<value>The worksheet reference must be followed by an exclamation point.</value>
+	</data>
+	<data name="LE_FormulaParseException_NoWorksheetAfterWorkbookName">
+		<value>A workbook file name in square brackets must be followed by a worksheet name.</value>
+	</data>
+	<data name="LE_ArgumentNullException_HiddenColumn">
+		<value>A null column cannot be added to the collection.</value>
+	</data>
+	<data name="LE_ArgumentException_ColumnFromDifferentWorksheet">
+		<value>The column does not belong to the same worksheet as this collection.</value>
+	</data>
+	<data name="LE_ArgumentNullException_HiddenRow">
+		<value>A null row cannot be added to the collection.</value>
+	</data>
+	<data name="LE_ArgumentException_RowFromDifferentWorksheet">
+		<value>The row does not belong to the same worksheet as this collection.</value>
+	</data>
+	<data name="LE_InvalidOperationException_NamedReferenceNameAlreadyExists">
+		<value>The name "{0}" is used by a table or named reference in the workbook with the same scope.</value>
+	</data>
+	<data name="LE_ArgumentNullException_FormulaCantBeNull">
+		<value>The formula for a named reference cannot be null or empty.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidFormula">
+		<value>The specified formula was invalid.</value>
+	</data>
+	<data name="LE_ArgumentException_CommentTooLong">
+		<value>The comment length must be less than 255 characters.</value>
+	</data>
+	<data name="LE_ArgumentNullException_NamedReferenceNameCantBeNull">
+		<value>The name for a named reference cannot be null or empty.</value>
+	</data>
+	<data name="LE_ArgumentException_NamedReferenceNameTooLong">
+		<value>The name of the named reference cannot be more than 255 characters.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidNamedReferenceName">
+		<value>The name is not a valid named reference name.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddNamedReference">
+		<value>Named references cannot be added directly.</value>
+	</data>
+	<data name="LE_ArgumentNullException_WorksheetScope">
+		<value>The worksheet scope cannot be null.</value>
+	</data>
+	<data name="LE_ArgumentException_WorksheetScopeFromOtherWorkbook">
+		<value>The worksheet does not belong to the same workbook as this collection.</value>
+	</data>
+	<data name="LE_ArgumentNullException_FindNamedReference">
+		<value>The name to find cannot be null or empty.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_Margins">
+		<value>The margins must be between 0 and 100.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_MaxPagesHorizontally">
+		<value>The maximum pages horizontally must be between 0 and 32767.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_MaxPagesVertically">
+		<value>The maximum pages vertically must be between 0 and 32767.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_NumberOfCopies">
+		<value>The number of copies must be between 1 and 65535.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_Resolution">
+		<value>The resolution must be between 0 and 65535.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_ScalingFactor">
+		<value>The scaling factor must be between 10 and 400.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_StartPageNumber">
+		<value>The starting page number must be between -32765 and 32767.</value>
+	</data>
+	<data name="LE_InvalidOperationException_UnknownBIFFFormat">
+		<value>The workbook file was in an unknown BIFF format.</value>
+	</data>
+	<data name="LE_InvalidOperationException_UnsupportedBIFFFormat">
+		<value>The workbook file was saved in {0}, a format which is not supported.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_LeftPaneWidth">
+		<value>The pane width specified is outside the valid range of {0} and {1}.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_TopPaneHeight">
+		<value>The pane height specified is outside the valid range of {0} and {1}.</value>
+	</data>
+	<data name="LE_InvalidOperationException_ClearUnknownShapeData">
+		<value>All data for this shape is unknown, remove the shape from its collection instead.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_InvalidColumnCount">
+		<value>{0} is not a valid column count in the current format. The value must be between {1} and {2}.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_InvalidColumnIndex">
+		<value>{0} is not a valid column index in the current format. The value must be between {1} and {2}.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_InvalidRowCount">
+		<value>{0} is not a valid row count in the current format. The value must be between {1} and {2}.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_InvalidRowIndex">
+		<value>{0} is not a valid row index in the current format. The value must be between {1} and {2}.</value>
+	</data>
+	<data name="LE_ArgumentNullException_SelectedWorksheet">
+		<value>The workbook must have a valid selected worksheet.</value>
+	</data>
+	<data name="LE_ArgumentException_SelectedWorksheetFromOtherWorkbook">
+		<value>The worksheet does not belong to the workbook associated with these window options."</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_TabBarWidth">
+		<value>The tab bar width must be between 0 and 1000.</value>
+	</data>
+	<data name="LE_ArgumentNullException_SaveStream">
+		<value>Cannot save the workbook to a null stream.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantSaveWithNoWorksheets">
+		<value>A workbook with no worksheets cannot be saved</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantSaveWithNoVisibleWorksheets">
+		<value>At least one worksheet in the workbook must be visible.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CustomViewNoVisibleWorksheets">
+		<value>At least one worksheet in the custom view named "{0}" must be visible.</value>
+	</data>
+	<data name="LE_ArgumentException_WorksheetNameAlreadyExists">
+		<value>A worksheet with the name "{0}" already exists in the workbook.</value>
+	</data>
+	<data name="LE_ArgumentException_FileDoesntContainsWorkbookStream">
+		<value>The specified stream or file does not contain a valid workbook.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_DefaultFontHeight">
+		<value>The default font height must be between 20 and 8180.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_MaxRecursionIterations">
+		<value>The maximum recursion iterations must be between 1 and 32767.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_FontHeight">
+		<value>The font height must be between 20 and 8180.</value>
+	</data>
+	<data name="LE_ArgumentNullException_StyleName">
+		<value>The style name cannot be null or empty.</value>
+	</data>
+	<data name="LE_ArgumentException_StyleNameAlreadyExists">
+		<value>A style with the name "{0}" already exists in the workbook.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_FirstVisibleTabIndex">
+		<value>The first visible tab index must be greater than or equal to zero.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_DefaultColumnWidth">
+		<value>The default column width must be between 0 and 65535.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_DefaultRowHeight">
+		<value>The default row height must be between -1 and 8192.</value>
+	</data>
+	<data name="LE_ArgumentNullException_WorksheetName">
+		<value>The worksheet name cannot be null or empty.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantSetFormulaDirectly">
+		<value>Formulas cannot be set on a cell directly, use the ApplyFormula method or one of the ApplyTo methods of the formula instance instead.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantSetDataTableDirectly">
+		<value>Data tables cannot be set as the value on a cell.</value>
+	</data>
+	<data name="LE_ArgumentNullException_SourceFormatting">
+		<value>The source formatting cannot be null.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_Indent">
+		<value>The indent level must be between 0 and 15.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_ColumnWidth">
+		<value>The column width must be between 0 and 65535.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantChangeDataTable">
+		<value>The interior cells of a data table cannot be changed.</value>
+	</data>
+	<data name="LE_InvalidOperationException_DataTableInMergedCell">
+		<value>The interior cells of a data table cannot be part of a merged cell region.</value>
+	</data>
+	<data name="LE_InvalidOperationException_DataTableRemoved">
+		<value>The row and column input cells cannot be set after the data table has been removed from the worksheet.</value>
+	</data>
+	<data name="LE_ArgumentException_CellsInTableFromOtherWorksheet">
+		<value>The region specified is not from the same worksheet as the data table.</value>
+	</data>
+	<data name="LE_ArgumentException_ColumnInputCellFromOtherWorksheet">
+		<value>The specified column input cell does not exist on the same worksheet as the data table.</value>
+	</data>
+	<data name="LE_ArgumentException_RowInputCellFromOtherWorksheet">
+		<value>The specified row input cell does not exist on the same worksheet as the data table.</value>
+	</data>
+	<data name="LE_InvalidOperationException_InputCellsBothNull">
+		<value>The column input and row input cells cannot both be null.</value>
+	</data>
+	<data name="LE_InvalidOperationException_InputCellsSame">
+		<value>The column input and row input cells cannot be the same cell.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CellsInTableMinSize">
+		<value>The region of cells in a data table must have at least two cells in each dimension.</value>
+	</data>
+	<data name="LE_InvalidOperationException_MergedCellCrossesDataTableLeftColumn">
+		<value>The left-most column of cells specified for the data table contains a merged cell region which extends outside the area of those cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_MergedCellCrossesDataTableTopRow">
+		<value>The top row of cells specified for the data table contains a merged cell region which extends outside the area of those cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_MergedCellCrossesDataTableTopLeftCell">
+		<value>The top-left cell of the cells specified for the data table is part of a merged cell which extends outside the area of those cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_InputCellsInTable">
+		<value>The input cells can not be within the data table cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddDataTable">
+		<value>Data tables cannot be added directly.</value>
+	</data>
+	<data name="LE_ArgumentNullException_Image">
+		<value>The image cannot be null.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_IndexNegative">
+		<value>The index must be non-negative.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddDataTable">
+		<value>Data tables cannot be added directly.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddMergedRegion">
+		<value>Merged cells regions cannot be added directly.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantOverlapDataTableInterior">
+		<value>A merged cell region cannot overlap the cells in a data table if it extends outside the top row or left-most column of those cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantOverlapArrayFormula">
+		<value>A merged cell region cannot overlap an array formula region.</value>
+	</data>
+	<data name="LE_InvalidOperationException_LastColumnBeforeFirst">
+		<value>The last column in the region should be greater than or equal to the first column.</value>
+	</data>
+	<data name="LE_InvalidOperationException_LastRowBeforeFirst">
+		<value>The last row in the region should be greater than the first row.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_RowHeight">
+		<value>The row height must be between 0 and 8192.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantAddWorksheet">
+		<value>Worksheets cannot be added directly to this collection.</value>
+	</data>
+	<data name="LE_ArgumentNullException_WorksheetName">
+		<value>The worksheet name cannot be null or empty.</value>
+	</data>
+	<data name="LE_InvalidOperationException_GetBoundsBeforeAnchorsSet">
+		<value>The shape does not have bounds before the anchor cells have been set.</value>
+	</data>
+	<data name="LE_InvalidOperationException_ShapeInAnotherCollection">
+		<value>The shape already exists on another worksheet or shape group.</value>
+	</data>
+	<data name="LE_InvalidOperationException_AnchorShapeBeforeAddingToCollection">
+		<value>The shape must have both the TopLeftCornerCell and BottomRightCornerCell set before it is added to a worksheet or group.</value>
+	</data>
+	<data name="LE_InvalidOperationException_TopLeftAnchorFromOtherWorksheet">
+		<value>Adding the shape to this collection will place it on a different worksheet than its TopLeftCornerCell.</value>
+	</data>
+	<data name="LE_InvalidOperationException_BottomRightAnchorFromOtherWorksheet">
+		<value>Adding the shape to this collection will place it on a different worksheet than its BottomRightCornerCell.</value>
+	</data>
+	<data name="LE_ArgumentNullException_AnchorCell">
+		<value>The cell cannot be null when the shape exists on a worksheet or group.</value>
+	</data>
+	<data name="LE_ArgumentException_AnchorCellFromOtherWorksheet">
+		<value>The cell specified does not exist on the same worksheet as the shape.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_AnchorPosition">
+    <value>One of the percentages in the specified location is less than 0.</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_GroupAddedToSelf">
+		<value>A group cannot be added to its own collection of shapes.</value>
+	</data>
+	<data name="LE_ArgumentNullException_Shape">
+		<value>A null shape cannot be added to the collection.</value>
+	</data>
+	<data name="LE_ArgumentException_NoRegionsInArray">
+		<value>The specified array has no regions.</value>
+	</data>
+	<data name="LE_ArgumentException_RegionsFromMixedWorksheets">
+		<value>All regions specified in the array must be from the same worksheet.</value>
+	</data>
+	<data name="LE_InvalidOperationException_FormulaAlreadyOwned">
+		<value>The formula is already applied to another cell.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantModifyCollection">
+		<value>The collection cannot be modified.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidCommentPositioningMode">
+		<value>Only the DontMoveOrSizeWithCells and MoveAndSizeWithCells ShapePositioningModes can be applied to a comment shape.</value>
+	</data>
+	<data name="LE_ArgumentException_ShapeCannotBeAdded">
+		<value>The specified shape cannot be added to a shapes collection.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidWorksheetName">
+		<value>The worksheet name cannot contain any of the following characters:
+		: \ / ? * [ ]</value>
+	</data>
+	<data name="LE_ArgumentException_CellValueStringLength">
+		<value>String values assigned to a cell cannot have a length greater than {0}.</value>
+	</data>
+  <data name="LE_FormulaParseException_TooLong">
+    <value>The maximum length of a formula cannot exceed {0} for the specified workbook format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidForWorkbookFormat">
+    <value>Formula is not valid for specified format.</value>
+  </data>
+  <data name="LE_FormulaParseException_StringConstantLengthTooLong">
+    <value>The specified formula cannot contain a string longer than {0} characters.</value>
+  </data>
+  <!--BF 7/10/08  Open Packaging Convention conformance verification (BEGIN)-->
+  <data name="LE_OpenPackagingNonConformanceException_XmlContainsDocumentTypeDefinition">
+    <value>A IPackagePart contained a DTD (Document Type Definition) declaration. Open Packaging Convention rules prohibit the use of XML content with DTD declarations.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_CorePropertiesRelationshipAlreadyProcessed">
+    <value>The IPackagePart is the core properties relationship, but one has already been processed for the associated IPackage.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_UsesMarkupCompatibilityNamespace">
+    <value>The IPackagePart is the core properties relationship, and uses the Markup Compatibility Namespace.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_ContainsDublinCoreRefinements">
+    <value>The IPackagePart is the core properties relationship, and contains refinements to Dublin Core elements other than 'dcterms:created' and 'dcterms:modified'.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_ContainsXmlLanguageAttribute">
+    <value>The IPackagePart is the core properties relationship, and contains elements which contain the 'xml:lang' attribute.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_XsiTypeAttributeInvalid">
+    <value>The IPackagePart is the core properties relationship, and contains elements which contain the 'xsi:type' attribute, or contains elements which are required to and do not contain the 'xsi:type' attribute.</value>
+  </data>
+  <data name="LE_OpenPackagingNonConformanceException_DuplicatePartName">
+    <value>A IPackagePart with the same name already belongs to this IPackage. A IPackage cannot contain parts with identical names. Note that the check for duplicate values is case-insensitive.</value>
+  </data>
+  <!--BF 7/10/08  Open Packaging Convention conformance verification (END)-->
+  <data name="LE_InvalidOperationException_CollectionLongerThanMaxValue">
+    <value>The collection contains more entries than the specified maximum value allows.</value>
+  </data>
+  <data name="LE_FormatLimitError_Indent">
+    <value>The Indent exceeds the maximum value of {0} provided by the current format.</value>
+  </data>
+  <data name="LE_FormatLimitError_MaxColumnIndex">
+    <value>The column index of {0} is greater than the {1} maximum supported by the specified format.</value>
+  </data>
+  <data name="LE_FormatLimitError_MaxRowIndex">
+    <value>The row index of {0} exceeds the {1} maximum supported by this format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_MaxFonts">
+    <value>The number of fonts in a workbook cannot exceed {0}.</value>
+  </data>
+  <!--BF 8/29/08  Excel2007 WorksheetShape serialization (BEGIN)-->
+  <data name="WorksheetShapeSerialization_ImageName">
+    <value>Image</value>
+  </data>
+  <data name="WorksheetShapeSerialization_GroupName">
+    <value>Group</value>
+  </data>
+  <data name="WorksheetShapeSerialization_ShapeName">
+    <value>Shape</value>
+  </data>
+  <!--BF 8/29/08  Excel2007 WorksheetShape serialization (END)-->
+  <data name="LE_ArgumentException_TextLengthGreaterThanMax">
+    <value>The length of text in a shape or comment cannot be greater than {0}.</value>
+  </data>
+	<data name="LE_InvalidOperationException_FormulaReferencesInvalidCells">
+		<value>The formula references cells which are not supported in the workbook's current file format.</value>
+	</data>
+	<data name="LE_ArgumentException_FormulaReferencesInvalidCells">
+		<value>The specified formula references cells which are not supported in the workbook's current file format.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidFileFormat">
+		<value>Invalid or unrecognized file format.</value>
+	</data>
+	<data name="LE_InvalidOperationException_WorkbookDataViolatesFormatLimits">
+		<value>The workbook contains data which would exceed the limits imposed by the specified format.</value>
+	</data>
+	<data name="LE_InvalidOperationException_ExtensionDoesntMatchCurrentFormat">
+		<value>The file name to which to save the file has an extension which doesn't match the current format of the workbook.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidCellAddress">
+		<value>The address specified is not a valid cell address.</value>
+	</data>
+	<data name="LE_ArgumentException_InvalidRegionAddress">
+		<value>The address specified is not a valid region address.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CannotMoveDisconnectedWorksheet">
+		<value>The worksheet cannot be moved because it does not belong to a workbook.</value>
+	</data>
+	<data name="LE_InvalidOperationException_RelativeR1C1AddressNeedsOriginCell">
+		<value>To parse a relative R1C1 address, an origin cell must be specified.</value>
+	</data>
+	<data name="LE_InvalidOperationException_CantSetCircularityErrorDirectly">
+		<value>The circularity error value cannot be applied directly to cells.</value>
+	</data>
+	<data name="LE_InvalidOperationException_AnchorCommentBeforeApplyingToCell">
+		<value>The comment must have both the TopLeftCornerCell and BottomRightCornerCell set or they must be both null before it is applied to a cell.</value>
+	</data>
+	<data name="LE_NotSupportedException_NoPackageFactory">
+		<value>packageFactory cannot be null. When loading from Excel2007 workbook format and using the Infragistics2.Documents.Excel assembly, you must provide an IPackageFactory to handle the packaging of data. If you are using the DotNet Framework 3.0 or higher, use the Infragistics3.Documents.Excel assembly instead, and the packaging will be handled by the WindowsBase class.</value>
+	</data>
+	<data name="LE_InvalidOperationException_HiddenWorksheetCannotBeSelected">
+		<value>A hidden worksheet cannot be selected.</value>
+	</data>
+	<data name="LE_FormatLimitError_MacroWorkbook">
+		<value>The workbook has VBA code and cannot be saved as a macro-enabled workbook.</value>
+	</data>
+	<data name="LE_ArgumentException_WorksheetNameTooLong">
+		<value>The worksheet name must be between 1 and 31 characters in length.</value>
+	</data>
+	<data name="LE_ArgumentException_Interval" xml:space="preserve">
+	<value>Interval parameter should be one of the values in DateInterval enumeration</value>
+	</data>
+	<data name="LE_ArgumentException_IntervalStr" xml:space="preserve">
+	<value>Interval parameter couldn't be converted to one of the values in DateInterval enumeration</value>
+	</data>
+	<data name="LE_ArgumentException_NPer" xml:space="preserve">
+	<value>nPer could not be 0</value>
+	</data>
+	<data name="LE_ArgumentException_NPerFunction" xml:space="preserve">
+	<value>Wrong combination of parameters for NPer function</value>
+	</data>
+	<data name="LE_ArgumentException_Pmt" xml:space="preserve">
+	<value>Pmt could not be 0</value>
+	</data>
+	<data name="LE_ArgumentException_WeekdayFirst" xml:space="preserve">
+	<value>WeekdayFirst parameter should be between  FirstDayOfWeek.System and FirstDayOfWeek.Saturday</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_Per" xml:space="preserve">
+	<value>per value should be between 0 and nPer + 1</value>
+	</data>
+	<data name="LE_ArgumentOutOfRangeException_Rate" xml:space="preserve">
+	<value>Rate should be greater than -1</value>
+	</data>
+	<data name="LE_ArgumentException_NotEnum" xml:space="preserve">
+	<value>Type '{0}' is not an enum</value>
+	</data>
+	<data name="LE_ArgumentException_NotSupportedCodePage" xml:space="preserve">
+	<value>Not supported code page</value>
+	</data>
+  <data name="LE_InvalidOperationException_SystemColorsAccessedFromWrongThread" xml:space="preserve">
+	<value>Cannot access SystemColors from a background thread.</value>
+	</data>
+  <data name="LE_ArgumentNullException_Encoder" xml:space="preserve">
+    <value>The image encoder cannot be null.</value>
+  </data>
+  <data name="LE_InvalidOperationException_MaxFormattedStrings">
+    <value>The number of unique strings in a workbook cannot exceed {0}.</value>
+  </data>
+  <data name="LE_ArgumentException_ArrayTooSmall">
+    <value>The array is not big enough to copy all values to it.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CollectionModifiedWhileEnumerating">
+    <value>The collection was modified while it was being enumerated.</value>
+  </data>
+  <data name="LE_ArgumentException_HashSetFull">
+    <value>There are too many items in the hash set.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_InvalidMessageLength">
+    <value>The {0} cannot be more than {1} characters.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ReferencesAlreadyContainDVs">
+    <value>The specified references already contain one or more data validation rules.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_CellFromOtherWorksheet">
+    <value>The cell does not belong to the same worksheet as the collection of data validation rules.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ReferencesFromOtherWorksheet">
+    <value>The references collection does not belong to the same worksheet as the collection of data validation rules.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_RegionFromOtherWorksheet">
+    <value>The region does not belong to the same worksheet as the collection of data validation rules.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_RuleAppliedOnOtherWorksheet">
+    <value>The data validation rule is applied to another worksheet already.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_FormulaCannotBeNull">
+    <value>The {0} cannot be set to null while the data validation rule is applied to a worksheet.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ArrayFormulaCannotBeUsed">
+    <value>An ArrayFormula cannot be applied as the {0}.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_FormulaCannotReferenceOtherWorkbook">
+    <value>The {0} cannot contain a reference to an external Workbook.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_FormulaCannotFindWorksheetReference">
+    <value>The {0} contains a reference on a worksheet that does not exist in the Workbook.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_FormulaCannotFindNamedReference">
+    <value>The {0} contains a named reference that does not exist in the Workbook.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ListFormulaMustBeStringOrReference">
+    <value>The ValuesFormula must be set to a string constant or a reference to a single cell or region in the same Workbook.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ListFormulaCannotHaveEmptyString">
+    <value>The string constant in the ValuesFormula cannot be an empty string.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ListFormulaReferenceMustBeOneDimensional">
+    <value>The ValuesFormula contains a region reference that has multiple rows and columns. The region must contain one row or one column.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_LowerGreaterThanUpperContraint">
+    <value>The value of the lower constraint must be less than or equal to the upper constraint.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_UpperLessThanLowerContraint">
+    <value>The value of the upper constraint must be greater than or equal to the lower constraint.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_ConstraintFormulaMustBeNumberOrReference">
+    <value>The {0} must be set to a number, a numeric expression, or a reference to a single cell.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_MustHaveOneAcceptedValue">
+    <value>At least one value must be specified as an accepted value.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_CantInsertBreakAtIndex">
+    <value>This collection does not support inserting items at an index.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_CantSetBreakAtIndex">
+    <value>This collection does not support setting items at an index.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PageBreaksCannotOverlap">
+    <value>The page break cannot overlap with other page breaks on the worksheet.</value>
+  </data>
+  <data name="LE_ArgumentException_CellMustBeOnSameWorksheetAsReferencesCollection">
+    <value>The cell must be from the same worksheet as the reference collection.</value>
+  </data>
+  <data name="LE_ArgumentException_RegionMustBeOnSameWorksheetAsReferencesCollection">
+    <value>The region must be from the same worksheet as the reference collection.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidReferencesString">
+    <value>The references value is not correctly formatted.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_InvalidExcelDate">
+    <value>The specified date cannot be represented in Excel.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_InvalidAddress">
+    <value>The specified address is not a valid cell or regions address.</value>
+  </data>
+  <data name="LE_ArgumentException_DV_FormulaInvalidForWorkbookFormat">
+    <value>The {0} references cells that are not valid in the {1} workbook format.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_MustBeWithinPrintArea">
+    <value>The page break must be within the print area.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PrintAreaMustBeOnSameWorksheet">
+    <value>The page break is in a print area which is not on the same worksheet as the page breaks collection.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PrintAreaMustBeInPrintAreas">
+    <value>The page break is in a print area which is not in the PrintAreas collection.</value>
+  </data>
+  <data name="LE_ArgumentException_PA_PrintAreasCannotOverlap">
+    <value>The specified print area overlaps with one of the existing print areas.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PageBreakCantBeA1Cell">
+    <value>Cannot insert a page break at the top-left of the worksheet.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PageBreakCantBeBeforeLeftColumn">
+    <value>Cannot insert a page break at the left of the worksheet.</value>
+  </data>
+  <data name="LE_ArgumentException_PB_PageBreakCantBeBeforeTopRow">
+    <value>Cannot insert a page break at the top of the worksheet.</value>
+  </data>
+  <data name="LE_ColumnsToRepeatAtLeftAreOutsideAvailableRange">
+    <value>The print options have columns that repeat at the left which are outside the range of available columns in the new format.</value>
+  </data>
+  <data name="LE_RowsToRepeatAtTopAreOutsideAvailableRange">
+    <value>The print options have rows that repeat at the top which are outside the range of available rows in the new format.</value>
+  </data>
+  <data name="LE_ArgumentException_ColumnsToRepeatAtLeftOutsideRange">
+    <value>The range is outside the range of available columns in the worksheet.</value>
+  </data>
+  <data name="LE_ArgumentException_StartIndexLessThanZero">
+    <value>The start of the range must be greater than or equal to zero.</value>
+  </data>
+  <data name="LE_ArgumentException_EndIndexLessThanZero">
+    <value>The end of the range must be greater than or equal to zero.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ShapeCantChangeOrientation">
+    <value>This shape cannot be rotated or flipped.</value>
+  </data>
+  <data name="LE_InvalidOperationException_NoWorksheetContextToSetShapeBounds">
+    <value>This overload of Add cannot be called when the shapes collection is not associated with a Worksheet. Call the overload of Add which takes a Worksheet instance.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotAddParagraphDirectly">
+    <value>Paragraphs cannot be added directly.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_BadInsertIndex">
+    <value>The specified index must be greater than or equal to zero and less than or equal to the number of existing paragraphs.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_BadRemoveAtIndex">
+    <value>The index must be greater than zero and less than the number of paragraphs in the formatted string.</value>
+  </data>
+  <data name="LE_InvalidOperationException_FormattedTextAlreadyOwned">
+    <value>The formatted string is already the value of another shape. Clone it first and apply the clone to the new cell or shape.</value>
+  </data>
+  <data name="LE_IndexOutOfRangeException_ArrayBounds">
+    <value>Index was outside the bounds of the array.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidWorksheetNameStartingQuote">
+    <value>The worksheet name cannot start with a single quote.</value>
+  </data>
+  <data name="LE_ArgumentException_InfiniteColumnWidth">
+    <value>The column width cannot be infinity.</value>
+  </data>
+  <data name="LE_ArgumentException_NaNDefaultColumnWidth">
+    <value>NaN cannot be used as the default column width.</value>
+  </data>
+  <data name="LE_ArgumentException_RegionsShiftedOffWorksheet">
+    <value>One or more regions specified have been shifted off the worksheet and no longer represent a valid range of cells.</value>
+  </data>
+  <data name="LE_ArgumentException_RegionShiftedOffWorksheet">
+    <value>The region has been shifted off the worksheet and no longer represents a valid range of cells.</value>
+  </data>
+  <data name="LE_ArgumentException_CellShiftedOffWorksheet">
+    <value>The cell has been deleted or shifted off the worksheet and no longer represents a worksheet position.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ArrayFormulaAppliedInTable">
+    <value>Array formulas cannot be applied to an area where a table is present.</value>
+  </data>
+  <data name="LE_InvalidOperationException_DataTableAppliedInTable">
+    <value>A data table cannot be in an area where a table is present.</value>
+  </data>
+  <data name="LE_InvalidOperationException_MergedCellsAppliedInTable">
+    <value>Cells within a table cannot be merged.</value>
+  </data>
+  <data name="LE_InvalidEnumArgumentException_DefaultPatternCannotBeUsed">
+    <value>The Default FillPatternStyle cannot be used to create a CellFillPattern.</value>
+  </data>
+  <data name="LE_ArgumentException_LessThanTwoGradientStops">
+    <value>There must be at least two gradient stops specified.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidRelativeRectangleValueForGradient">
+    <value>The values for the inner rectangle of the rectangular gradient must be between 0.0 and 1.0.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidGradientStopColor">
+    <value>Automatic and system colors cannot be used in gradient stops.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidGradientStopOffset">
+    <value>The gradient stop offset must be between 0.0 and 1.0.</value>
+  </data>
+  <data name="WorkbookColorInfo_Description">
+    <value>ColorInfo: {0}</value>
+  </data>
+  <data name="WorkbookColorInfo_WithTint_Description">
+    <value>ColorInfo: {0}, Tint: {1}</value>
+  </data>
+  <data name="WorkbookColorInfo_Automatic_Description">
+    <value>Automatic</value>
+  </data>
+  <data name="LE_ArgumentNullException_WorkbookRequiredToResolveThemeColor">
+    <value>A workbook must be specified to resolve a themed color.</value>
+  </data>
+  <data name="LE_ArgumentException_CannotCreateEmptyColorInfo">
+    <value>The empty color cannot be used to create a WorkbookColorInfo instance.</value>
+  </data>
+  <data name="LE_ArgumentException_CannotCreateNonOpaqueColorInfo">
+    <value>The color used to create a WorkbookColorInfo instance must be opaque.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidColorInfoTint">
+    <value>The tint value must be between -1.0 and 1.0.</value>
+  </data>
+  <data name="LE_ArgumentException_CannotApplyDVRuleToTotalCell">
+    <value>One or more cells in the specified reference are total cells in a table and cannot have a data validation rule applied.</value>
+  </data>
+  <data name="LE_InvalidOperationException_FixedValuesFilterMustAcceptAValue">
+    <value>Cannot have a FixedValuesFilter which allows no values.</value>
+  </data>
+  <data name="LE_ArgumentException_DuplicateDisplayValue">
+    <value>The specified display value is already in the collection.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidCustomFilterOperandNumber">
+    <value>The value cannot be infinity or NaN.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidExcelDate">
+    <value>The value cannot be expressed as a date in Excel.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidCustomFilterOperator">
+    <value>When the comparison value is not a string, the comparison operator cannot be BeginsWith, DoesNotBeginWith, Contains, DoesNotContain, EndsWith, or DoesNotEndWith.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidDatePeriodFilterValue">
+    <value>The value is not within range. For a filter type of Month, it must be 1-12. For a filter type of Quarter, it must be 1-4.</value>
+  </data>
+  <data name="LE_ArgumentException_DuplicateFixedDateGroup">
+    <value>The specified FixedDateGroup is already in the collection.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidTopOrBottomFilterValue">
+    <value>The value must be between 1 and 500.</value>
+  </data>
+  <data name="LE_FormulaParseException_InvalidStructuredTableReference">
+    <value>The structured table reference is incorrect.</value>
+  </data>
+  <data name="LE_ArgumentException_PrintAreaShiftedOffWorksheet">
+    <value>The page break is in a print area which has been shifted off the worksheet and no longer represent a valid range of cells.</value>
+  </data>
+  <data name="LE_ArgumentException_EmptyCustomList">
+    <value>There must be at least one string in the list.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidRemoveAtIndex_SortConditions">
+    <value>The index at which to remove the sort condition is out of range.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_DuplicateItemSorted">
+    <value>The specified item already has a sort condition applied.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_MaxSortConditions">
+    <value>There cannot be more than {0} sort conditions in the collection.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotModifyKeysCollection">
+    <value>The Keys collection cannot be modified.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotModifyValuesCollection">
+    <value>The Values collection cannot be modified.</value>
+  </data>
+  <data name="LE_ArgumentException_CannotAddStandardTableStyle">
+    <value>A standard table style cannot be added to the CustomTableStyleCollection.</value>
+  </data>
+  <data name="LE_ArgumentException_DuplicateTableStyle">
+    <value>The specified style is already in a CustomTableStyleCollection.</value>
+  </data>
+  <data name="LE_ArgumentException_DuplicateTableStyleName_New">
+    <value>The specified style has a name which matches another style in the collection.</value>
+  </data>
+  <data name="LE_ArgumentException_DuplicateTableStyleName_Existing">
+    <value>The specified name which matches that of another style in the collection.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidFormatOptionsInWholeTableArea">
+    <value>The specified FormatOptions format value is invalid on the WholeTable table area.</value>
+  </data>
+  <data name="GenerateTableColumnName">
+    <value>Column</value>
+  </data>
+  <data name="GenerateTableName">
+    <value>Table</value>
+  </data>
+  <data name="DefaultTotalLabel">
+    <value>Total</value>
+  </data>
+  <data name="LE_InvalidOperationException_TotalsRowCannotBeShownInLastRow">
+    <value>The totals row cannot be shown when the table occupies the last row in the worksheet.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidWholeTableAreaFormatProperty">
+    <value>Only the edge border values can be set on the WholeTable table area format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidHeaderRowAreaFormatProperty">
+    <value>The top border values cannot be set on the HeaderRow table area format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidTotalsRowAreaFormatProperty">
+    <value>The bottom border values cannot be set on the TotalsRow table area format.</value>
+  </data>
+  <data name="TableHeaderRowDescription">
+    <value>header row</value>
+  </data>
+  <data name="TableInsertRowDescription">
+    <value>insert row</value>
+  </data>
+  <data name="TableTotalsRowDescription">
+    <value>totals row</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_TableOnBottomOfWorksheet">
+    <value>The {0} cannot be inserted because the table is on the bottom of the worksheet.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_LossOfData">
+    <value>The {0} cannot be inserted because it would shift data off the bottom of the worksheet.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_LossOfObject">
+    <value>The {0} cannot be inserted because it would shift a shape or comment off the bottom of the worksheet.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_SplitTable">
+    <value>The {0} cannot be inserted because it would shift cells in another table.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_SplitMergedRegion">
+    <value>The {0} cannot be inserted because it would shift cells in a merged region.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotInsertTableRow_SplitBlockingValue">
+    <value>The {0} cannot be inserted because it would shift cells in a array formula or data table.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ShowFilterUIWhileHeaderRowHidden">
+    <value>The filter UI cannot be shown while the header row is hidden.</value>
+  </data>
+  <data name="LE_ArgumentException_TableStyleFromOtherWorkbook">
+    <value>The specified WorksheetTableStyle does not belong to the same workbook as the table.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotAddTableToRemovedWorksheet">
+    <value>Tables cannot be added to a worksheet which has been removed from its owning workbook.</value>
+  </data>
+  <data name="LE_InvalidOperationException_OverlappingTable">
+    <value>There in another table in the specified region.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotAddTableDirectly">
+    <value>WorksheetTable instances cannot be directly inserted into the collection. Use the Add method.</value>
+  </data>
+  <data name="LE_ArgumentException_ColumnFormulaAlreadyAppliedToCell">
+    <value>The formula is applied to a cell already. Clone it to use it as the column formula.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidHeaderCellColumnAreaFormatProperty">
+    <value>The top border values cannot be set on the HeaderCell table column area format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidTotalsCellColumnAreaFormatProperty">
+    <value>The bottom border values cannot be set on the TotalCell table column area format.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotApplyFilterWhileUIIsHidden">
+    <value>A filter cannot be applied while the filter UI is hidden.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotApplyFilterWhileHeaderRowIsHidden">
+    <value>A filter cannot be applied while the table header row is hidden.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidTableStyleAreaFormatOptions">
+    <value>The specified FormatOptions format value is invalid on table style areas.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotModifyStandardTableStyle">
+    <value>Standard table styles cannot be modified.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidTableStyleAreaFormatProperty">
+    <value>The {0} format value cannot be set on table style areas.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidTableStyleAreaFontProperty">
+    <value>The {0} font value cannot be set on table style areas.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidTableStyleAreaStripeExtent">
+    <value>The {0} must be between 1 and 9, inclusive.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_InvalidCollectionIndex">
+    <value>The specified index is is not valid in the collection.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CurrentTableRowAddressNeedsOriginCell">
+    <value>To parse a structured table reference using the current row, an origin cell must be specified.</value>
+  </data>
+  <data name="LE_InvalidOperationException_TableReferenceMustBeUsedFromInsideTable">
+    <value>The formula has a structured table reference which can only be used from inside a table.</value>
+  </data>
+  <data name="LE_InvalidOperationException_TableReferenceToMissingTable">
+    <value>The formula has a reference to a table which doesn't exist.</value>
+  </data>
+  <data name="LE_InvalidOperationException_TableReferenceToMissingTableColumn">
+    <value>The formula has a reference to a table column which doesn't exist.</value>
+  </data>
+  <data name="LE_ArgumentException_DefaultTableStyleNotInWorkbook">
+    <value>The specified table style is not in the CustomTableStyles or StandardTableStyles collections.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotAddColorsToPaletteDirectly">
+    <value>Colors cannot be added to the WorkbookColorPalette. Use the indexer to set a color at a specific index.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotRemoveColorsToPaletteDirectly">
+    <value>Colors cannot be removed from the WorkbookColorPalette. Use the Reset method to clear all custom colors.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidPaletteColor_EmptyOrSystem">
+    <value>Empty or system colors cannot be added to the palette.</value>
+  </data>
+  <data name="LE_ArgumentException_InvalidPaletteColor_NonOpaque">
+    <value>Only opaque colors can be added to the palette.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ReadOnlyFont">
+    <value>The font object is read-only and cannot be changed.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ReadOnlyFormat">
+    <value>The format object is read-only and cannot be changed.</value>
+  </data>
+  <data name="LE_InvalidOperationException_ResolvedFormatCannotBeModified">
+    <value>The resolved cell format is read-only and cannot be changed.</value>
+  </data>
+  <data name="LE_InvalidOperationException_BuiltInStyleNameCannotBeChanged">
+    <value>The name of a built in style cannot be changed.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotRemoveNormalStyle">
+    <value>The Normal style cannot be removed.</value>
+  </data>
+  <data name="LE_ArgumentException_StyleNameTooLong">
+    <value>The style name cannot be more than 255 characters.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidFormatString">
+    <value>The specified format string is invalid.</value>
+  </data>
+  <data name="LE_InvalidOperationException_InvalidFormatString_GetTextCall">
+    <value>The cell's format string is invalid. To be notified of this when the FormatString is set, set Workbook.ValidateFormatStrings to True.</value>
+  </data>
+  <data name="LE_InvalidOperationException_DeprecatedFillColorSetWithGradientFill">
+    <value>A fill pattern color cannot be set while a gradient is set on the cell.</value>
+  </data>
+  <data name="LE_InvalidOperationException_CannotSetParentStyleOnStyle">
+    <value>The style cannot be set on a format which belongs to another style.</value>
+  </data>
+  <data name="LE_ArgumentException_ParentStyleFromOtherWorkbook">
+    <value>The specified style is not from the same workbook as the cell format.</value>
+  </data>
+  <data name="LE_FormulaParseException_WorksheetRangeMissingEndingName">
+    <value>The worksheet range does not specify a second worksheet name.</value>
+  </data>
+</root>

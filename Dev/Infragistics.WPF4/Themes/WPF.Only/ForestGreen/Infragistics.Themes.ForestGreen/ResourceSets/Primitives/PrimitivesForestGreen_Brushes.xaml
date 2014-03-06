@@ -1,0 +1,97 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:igWindows="http://infragistics.com/Windows"
+		xmlns:igThemes="http://infragistics.com/Themes"
+    >
+	<!--<ResourceDictionary.MergedDictionaries>
+		<igThemes:PrimitivesGeneric/>
+	</ResourceDictionary.MergedDictionaries>-->
+	
+	<!-- ____________________________________________________________________________ -->
+	<!--                                                                              -->
+	<!--                             Brushes                                          -->
+	<!-- ____________________________________________________________________________ -->
+
+	<!-- ************************** -->
+	<!-- * Expansion Indicator    * -->
+	<!-- ************************** -->
+	<!-- Moved to setters
+	<LinearGradientBrush x:Key="ExpansionIndicatorBackground" StartPoint="0,0" EndPoint="1,1">
+		<GradientStop Color="sc#1, 0.57900393, 0.57900393, 0.57900393" Offset="1"/>
+		<GradientStop Color="#FFFFFFFF" Offset="0.36153846153846259"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="ExpansionIndicatorBorderBrush" Color="#FF999999" />
+	<SolidColorBrush x:Key="ExpansionIndicatorForeground" Color="#FF000000" />-->
+
+
+	<!-- ************************** -->
+	<!-- * CarouselPanelNavigator     * -->
+	<!-- ************************** -->
+	<!-- Not used
+	<SolidColorBrush x:Key="pathNavHoverBrush" Color="#FF000000"/>
+	<SolidColorBrush x:Key="pathNavPressedBrush" Color="sc#1, 0.344888121, 0.344888121, 0.344888121"/>
+	<SolidColorBrush x:Key="pathNavUpBrush" Color="#FF686868"/>
+	<SolidColorBrush x:Key="pageButtonFill" Color="sc#1, 0.211962909, 0.261227727, 0.3532715"/>-->
+
+	<!-- ************************** -->
+	<!-- * ExpanderBar            * -->
+	<!-- ************************** -->
+	<!-- Moved to setters
+	<LinearGradientBrush x:Key="ExpanderBarBackground" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Offset="0" Color="#FFFFFFFF"/>
+		<GradientStop Offset=".06" Color="#FFFFFFFF"/>
+		<GradientStop Offset=".37" Color="#FFD0D0D0"/>
+		<GradientStop Offset=".61" Color="#FFCCCCCC"/>
+		<GradientStop Offset=".63" Color="#FFBDBDBD"/>
+		<GradientStop Offset=".71" Color="#FFBDBDBD"/>
+		<GradientStop Offset=".74" Color="#FFD0D0D0"/>
+		<GradientStop Offset="1" Color="#FFCECECE"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="ExpanderBarBorderBrush" Color="#FF898C95" />
+	<LinearGradientBrush x:Key="ExpanderBarBackgroundHover" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Offset="0" Color="#FFFFFFFF"/>
+		<GradientStop Offset=".06" Color="#FFFFFFFF"/>
+		<GradientStop Offset=".37" Color="#FFC7DCE4"/>
+		<GradientStop Offset=".61" Color="#FF8DB3C3"/>
+		<GradientStop Offset=".63" Color="#FFB1CDD8"/>
+		<GradientStop Offset=".71" Color="#FFB1CDD8"/>
+		<GradientStop Offset=".74" Color="#FFC7DCE4"/>
+		<GradientStop Offset="1" Color="#FFC4DAE2"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="ExpanderBarBorderHoverBrush" Color="#FF7FD4F7" />-->
+
+	<!-- ************************** -->
+	<!-- * SortIndicator          * -->
+	<!-- ************************** -->
+	<!-- All theme values same as generic so this isn't needed
+	<SolidColorBrush x:Key="SortIndicatorBackground" Color="#FFDDDDDD" />
+	<SolidColorBrush x:Key="SortIndicatorBackgroundHover" Color="#FFFFFFFF" />-->
+
+	<LinearGradientBrush x:Key="{ComponentResourceKey {x:Type igWindows:IGControlBase}, CarouselItemSelected}" StartPoint="0,0" EndPoint="0,1">
+		<GradientStop Color="#FFF6FFDC" Offset="0.995"/>
+		<GradientStop Color="#FFFFFFFF" Offset="0"/>
+	</LinearGradientBrush>
+    
+    <LinearGradientBrush
+        x:Key="{x:Static igWindows:PrimitivesBrushKeys.DropIndicatorFillKey}"
+			StartPoint="0.5,0"
+			EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop
+						Color="#FF95CD3D"
+						Offset="0" />
+                <GradientStop
+						Color="#FF344E0E"
+						Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.DropTargetStrokeKey}" Color="#3F000000"/>
+	
+	<!-- ____________________________________________________________________________ -->
+	<!--                                                                              -->
+	<!--                             End of Brushes                                   -->
+	<!-- ____________________________________________________________________________ -->
+</ResourceDictionary>

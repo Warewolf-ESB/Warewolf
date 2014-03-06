@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.DockManager.XamDockManager">
+    <Position X="4.5" Y="0.5" Width="2.75" />
+    <Members>
+      <Field Name="_activePaneManager" Hidden="true" />
+      <Field Name="_commands" Hidden="true" />
+      <Field Name="_dockPanel" Hidden="true" />
+      <Field Name="_dragHelper" Hidden="true" />
+      <Field Name="_dragManager" Hidden="true" />
+      <Field Name="_forcingFocus" Hidden="true" />
+      <Field Name="_hasHwndHost" Hidden="true" />
+      <Field Name="_isLoadingLayout" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_logicalChildren" Hidden="true" />
+      <Field Name="_panes" Hidden="true" />
+      <Field Name="_readOnlyWindows" Hidden="true" />
+      <Field Name="_rootPaneList" Hidden="true" />
+      <Field Name="_suspendShowFlyoutCount" Hidden="true" />
+      <Field Name="_tabAreaInfos" Hidden="true" />
+      <Field Name="_toolWindows" Hidden="true" />
+      <Field Name="_transferCanExecuteCommand" Hidden="true" />
+      <Field Name="_transferExecuteCommand" Hidden="true" />
+      <Field Name="ActivePaneChangedEvent" Hidden="true" />
+      <Property Name="ActivePaneManager" Hidden="true" />
+      <Field Name="ActivePaneProperty" Hidden="true" />
+      <Method Name="AddLogicalChildInternal" Hidden="true" />
+      <Property Name="AllowToolWindowLoaded" Hidden="true" />
+      <Method Name="BringToolWindowsToFront" Hidden="true" />
+      <Method Name="CanMoveToNewGroup" Hidden="true" />
+      <Method Name="CanMoveToNextPreviousGroup" Hidden="true" />
+      <Method Name="CloseAllButThis" Hidden="true" />
+      <Field Name="CloseBehaviorProperty" Hidden="true" />
+      <Method Name="ClosePane" Hidden="true" />
+      <Method Name="ClosePaneHelper" Hidden="true" />
+      <Method Name="ClosePanes" Hidden="true" />
+      <Property Name="Commands" Hidden="true" />
+      <Field Name="ContextMenuStyleKey" Hidden="true" />
+      <Method Name="DestroyPaneElement" Hidden="true" />
+      <Method Name="DirtyHasHwndHosts" Hidden="true" />
+      <Field Name="DockManagerProperty" Hidden="true" />
+      <Field Name="DockManagerPropertyKey" Hidden="true" />
+      <Property Name="DockPanel" Hidden="true" />
+      <Property Name="DocumentContentHost" Hidden="true" />
+      <Property Name="DragFullWindows" Hidden="true" />
+      <Property Name="DragHelper" Hidden="true" />
+      <Property Name="DragManager" Hidden="true" />
+      <Field Name="DropPreviewStyleKey" Hidden="true" />
+      <Field Name="DropPreviewTabLocationProperty" Hidden="true" />
+      <Field Name="DropPreviewTabLocationPropertyKey" Hidden="true" />
+      <Method Name="EnsureIsFocusedElement" Hidden="true" />
+      <Method Name="ExecuteCommandImpl" Hidden="true" />
+      <Field Name="ExecutedCommandEvent" Hidden="true" />
+      <Field Name="ExecutingCommandEvent" Hidden="true" />
+      <Field Name="FloatingLocationProperty" Hidden="true" />
+      <Field Name="FloatingSizeProperty" Hidden="true" />
+      <Field Name="FloatingWindowDragModeProperty" Hidden="true" />
+      <Field Name="FloatingWindowPreviewStyleKey" Hidden="true" />
+      <Field Name="FlyoutAnimationProperty" Hidden="true" />
+      <Property Name="FlyoutState" Hidden="true" />
+      <Method Name="ForceFocus" Hidden="true" />
+      <Method Name="GetDockedSide" Hidden="true" />
+      <Method Name="GetNextPreviousGroup" Hidden="true" />
+      <Method Name="GetPaneForCommand" Hidden="true" />
+      <Method Name="GetPanesToProcess" Hidden="true" />
+      <Method Name="GetUnpinnedTabArea" Hidden="true" />
+      <Method Name="GetUnpinnedTabAreaInfo" Hidden="true" />
+      <Field Name="HasDocumentContentHostProperty" Hidden="true" />
+      <Field Name="HasDocumentContentHostPropertyKey" Hidden="true" />
+      <Property Name="HasHwndHost" Hidden="true" />
+      <Method Name="HideFlyout" Hidden="true" />
+      <Method Name="ICommandHost.CanExecute" Hidden="true" />
+      <Property Name="ICommandHost.CurrentState" Hidden="true" />
+      <Method Name="ICommandHost.Execute" Hidden="true" />
+      <Method Name="IHwndHostContainer.GetHosts" Hidden="true" />
+      <Property Name="IHwndHostContainer.HasHwndHost" Hidden="true" />
+      <Field Name="InitializePaneContentEvent" Hidden="true" />
+      <Field Name="InitialLocationProperty" Hidden="true" />
+      <Property Name="IPaneContainer.CanBeRemoved" Hidden="true" />
+      <Property Name="IPaneContainer.Panes" Hidden="true" />
+      <Method Name="IPaneContainer.RemovePane" Hidden="true" />
+      <Property Name="IsLoadingLayout" Hidden="true" />
+      <Property Name="IsShowFlyoutSuspended" Hidden="true" />
+      <Field Name="MenuItemSeparatorStyleKey" Hidden="true" />
+      <Field Name="MenuItemStyleKey" Hidden="true" />
+      <Method Name="MoveToNewGroup" Hidden="true" />
+      <Method Name="MoveToNextGroup" Hidden="true" />
+      <Field Name="NavigationOrderProperty" Hidden="true" />
+      <Method Name="OnAfterLoadLayout" Hidden="true" />
+      <Method Name="OnBeforeLoadLayout" Hidden="true" />
+      <Method Name="OnDockManagerChanged" Hidden="true" />
+      <Method Name="OnDockManagerLoaded" Hidden="true" />
+      <Method Name="OnDockManagerUnloaded" Hidden="true" />
+      <Method Name="OnFloatingPaneAdded" Hidden="true" />
+      <Method Name="OnFloatingPaneRemoved" Hidden="true" />
+      <Method Name="OnFlyoutAnimationChanged" Hidden="true" />
+      <Method Name="OnInitialLocationChanged" Hidden="true" />
+      <Method Name="OnIsInDesignModeChanged" Hidden="true" />
+      <Method Name="OnPaneLocationChanged" Hidden="true" />
+      <Method Name="OnThemeChanged" Hidden="true" />
+      <Method Name="OnTransferBindingCanExecute" Hidden="true" />
+      <Method Name="OnTransferBindingExecute" Hidden="true" />
+      <Method Name="OnTransferCanExecuteCommand" Hidden="true" />
+      <Method Name="OnTransferExecuteCommand" Hidden="true" />
+      <Field Name="PaneDragEndedEvent" Hidden="true" />
+      <Field Name="PaneDragOverEvent" Hidden="true" />
+      <Field Name="PaneDragStartingEvent" Hidden="true" />
+      <Field Name="PaneLocationProperty" Hidden="true" />
+      <Field Name="PaneLocationPropertyKey" Hidden="true" />
+      <Field Name="PaneNavigatorButtonDisplayModeProperty" Hidden="true" />
+      <Field Name="PinBehaviorProperty" Hidden="true" />
+      <Method Name="ProcessKeyDown" Hidden="true" />
+      <Method Name="ProcessKeyUp" Hidden="true" />
+      <Method Name="ProcessPaneHeaderDoubleClick" Hidden="true" />
+      <Method Name="ProcessPinnedState" Hidden="true" />
+      <Method Name="RaiseActivePaneChanged" Hidden="true" />
+      <Method Name="RaiseExecutedCommand" Hidden="true" />
+      <Method Name="RaiseExecutingCommand" Hidden="true" />
+      <Method Name="RaiseInitializePaneContent" Hidden="true" />
+      <Method Name="RaisePaneDragEnded" Hidden="true" />
+      <Method Name="RaisePaneDragOver" Hidden="true" />
+      <Method Name="RaisePaneDragStarting" Hidden="true" />
+      <Method Name="RaiseToolWindowLoaded" Hidden="true" />
+      <Method Name="RaiseToolWindowUnloaded" Hidden="true" />
+      <Method Name="RemoveLogicalChildInternal" Hidden="true" />
+      <Method Name="ResumeShowFlyout" Hidden="true" />
+      <Method Name="SetIsWindowLoaded" Hidden="true" />
+      <Method Name="ShowAndHideFlyout" Hidden="true" />
+      <Method Name="ShowFlyout" Hidden="true" />
+      <Property Name="ShowFlyoutInToolWindow" Hidden="true" />
+      <Property Name="ShowSplitterInPopup" Hidden="true" />
+      <Property Name="ShowToolWindowsInPopup" Hidden="true" />
+      <Field Name="SubMenuItemTemplateKey" Hidden="true" />
+      <Method Name="SuspendShowFlyout" Hidden="true" />
+      <Field Name="ThemeChangedEvent" Hidden="true" />
+      <Field Name="ThemeProperty" Hidden="true" />
+      <Method Name="ToggleDockedState" Hidden="true" />
+      <Method Name="ToggleDockedStateImpl" Hidden="true" />
+      <Field Name="ToolTipStyleKey" Hidden="true" />
+      <Field Name="ToolWindowLoadedEvent" Hidden="true" />
+      <Property Name="ToolWindows" Hidden="true" />
+      <Field Name="ToolWindowUnloadedEvent" Hidden="true" />
+      <Method Name="TransferCanExecute" Hidden="true" />
+      <Method Name="TransferExecute" Hidden="true" />
+      <Method Name="UnpinPane" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DockManager.XamDockManager.FocusHelper" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>XamDockManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+      <Class Name="Infragistics.Windows.DockManager.XamDockManager.PanesCollection" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>XamDockManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DockManager.XamDockManager.RootPaneList" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>XamDockManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>y7DfQuWtc2rljQr7tFT+JG3XIi8Xde11nhFcl3TkdzE=</HashCode>
+      <FileName>XamDockManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActivePane" />
+      <Property Name="CloseBehavior" />
+      <Property Name="CurrentFlyoutPane" />
+      <Property Name="FlyoutAnimation" />
+      <Property Name="NavigationOrder" />
+      <Property Name="PinBehavior" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DockManager.ContentPane">
+    <Position X="8.75" Y="0.5" Width="3" />
+    <Members>
+      <Field Name="_commands" Hidden="true" />
+      <Field Name="_isActivating" Hidden="true" />
+      <Field Name="_lastActivatedTime" Hidden="true" />
+      <Field Name="_lastFloatingLocation" Hidden="true" />
+      <Field Name="_lastFloatingSize" Hidden="true" />
+      <Field Name="_lastFloatingWindowRect" Hidden="true" />
+      <Field Name="_mouseDownFocusWatcher" Hidden="true" />
+      <Field Name="_placementInfo" Hidden="true" />
+      <Field Name="_suppressFlyoutDuringActivate" Hidden="true" />
+      <Method Name="ActivateInternal" Hidden="true" />
+      <Method Name="ActivateInternalImpl" Hidden="true" />
+      <Method Name="AddMenuItem" Hidden="true" />
+      <Property Name="AllowAnimations" Hidden="true" />
+      <Field Name="AllowCloseProperty" Hidden="true" />
+      <Field Name="AllowDockingBottomProperty" Hidden="true" />
+      <Field Name="AllowDockingFloatingProperty" Hidden="true" />
+      <Field Name="AllowDockingInTabGroupProperty" Hidden="true" />
+      <Field Name="AllowDockingLeftProperty" Hidden="true" />
+      <Field Name="AllowDockingProperty" Hidden="true" />
+      <Field Name="AllowDockingRightProperty" Hidden="true" />
+      <Field Name="AllowDockingTopProperty" Hidden="true" />
+      <Property Name="AllowedDropLocations" Hidden="true" />
+      <Field Name="AllowFloatingOnlyProperty" Hidden="true" />
+      <Field Name="AllowInDocumentHostProperty" Hidden="true" />
+      <Field Name="AllowPinningProperty" Hidden="true" />
+      <Property Name="CanActivate" Hidden="true" />
+      <Property Name="CanCloseAllButThis" Hidden="true" />
+      <Property Name="CanShowInPopup" Hidden="true" />
+      <Property Name="CanToggleDockedState" Hidden="true" />
+      <Property Name="CanTogglePinnedState" Hidden="true" />
+      <Method Name="ChangeToDockable" Hidden="true" />
+      <Method Name="ChangeToDocument" Hidden="true" />
+      <Method Name="ChangeToFloatingOnly" Hidden="true" />
+      <Field Name="CloseActionProperty" Hidden="true" />
+      <Field Name="ClosedEvent" Hidden="true" />
+      <Field Name="ClosingEvent" Hidden="true" />
+      <Property Name="Commands" Hidden="true" />
+      <Field Name="ContentVisibilityProperty" Hidden="true" />
+      <Field Name="ContentVisibilityPropertyKey" Hidden="true" />
+      <Method Name="CreateMenuItem" Hidden="true" />
+      <Method Name="DisposeMouseDownFocusWatcher" Hidden="true" />
+      <Property Name="DockableAreas" Hidden="true" />
+      <Method Name="ExecuteCommandImpl" Hidden="true" />
+      <Field Name="ExecutedCommandEvent" Hidden="true" />
+      <Field Name="ExecutingCommandEvent" Hidden="true" />
+      <Method Name="GetFocusedHwndHost" Hidden="true" />
+      <Method Name="GetSizeForFloating" Hidden="true" />
+      <Method Name="HasFocusInHwndHost" Hidden="true" />
+      <Property Name="HasHwndHost" Hidden="true" />
+      <Field Name="HasImageProperty" Hidden="true" />
+      <Field Name="HasImagePropertyKey" Hidden="true" />
+      <Field Name="HeaderVisibilityProperty" Hidden="true" />
+      <Field Name="HeaderVisibilityPropertyKey" Hidden="true" />
+      <Method Name="HideAllHwndHosts" Hidden="true" />
+      <Method Name="ICommandHost.CanExecute" Hidden="true" />
+      <Property Name="ICommandHost.CurrentState" Hidden="true" />
+      <Method Name="ICommandHost.Execute" Hidden="true" />
+      <Method Name="IHwndHostInfoOwner.OnHasHostsChanged" Hidden="true" />
+      <Field Name="ImageProperty" Hidden="true" />
+      <Method Name="InitializeMenu" Hidden="true" />
+      <Method Name="InsertMenuItem" Hidden="true" />
+      <Field Name="IsActiveDocumentProperty" Hidden="true" />
+      <Field Name="IsActivePaneProperty" Hidden="true" />
+      <Property Name="IsCurrentFlyoutPane" Hidden="true" />
+      <Property Name="IsDockable" Hidden="true" />
+      <Method Name="IsDockingAllowed" Hidden="true" />
+      <Property Name="IsDocument" Hidden="true" />
+      <Property Name="IsInUnpinnedArea" Hidden="true" />
+      <Property Name="IsKeyboardFocusWithinEx" Hidden="true" />
+      <Field Name="IsPinnedProperty" Hidden="true" />
+      <Property Name="LastActivatedTime" Hidden="true" />
+      <Property Name="LastFloatingLocation" Hidden="true" />
+      <Property Name="LastFloatingSize" Hidden="true" />
+      <Property Name="LastFloatingWindowRect" Hidden="true" />
+      <Field Name="NavigatorDescriptionProperty" Hidden="true" />
+      <Field Name="NavigatorDescriptionTemplateProperty" Hidden="true" />
+      <Field Name="NavigatorDescriptionTemplateSelectorProperty" Hidden="true" />
+      <Field Name="NavigatorTitleProperty" Hidden="true" />
+      <Field Name="NavigatorTitleTemplateProperty" Hidden="true" />
+      <Field Name="NavigatorTitleTemplateSelectorProperty" Hidden="true" />
+      <Method Name="OnAllowCloseChanged" Hidden="true" />
+      <Method Name="OnImageChanged" Hidden="true" />
+      <Method Name="OnIsPinnedChanged" Hidden="true" />
+      <Method Name="OnMouseDown" Hidden="true" />
+      <Method Name="OnMouseDownFocusChanged" Hidden="true" />
+      <Method Name="OnPaneContextMenuOpening" Hidden="true" />
+      <Method Name="OnPreviewMouseDown" Hidden="true" />
+      <Method Name="OnPreviousLostKeyboardFocus" Hidden="true" />
+      <Method Name="OnVisibilityChanged" Hidden="true" />
+      <Field Name="OptionsMenuOpeningEvent" Hidden="true" />
+      <Field Name="PaneLocationProperty" Hidden="true" />
+      <Property Name="PlacementInfo" Hidden="true" />
+      <Method Name="RaiseClosed" Hidden="true" />
+      <Method Name="RaiseClosing" Hidden="true" />
+      <Method Name="RaiseExecutedCommand" Hidden="true" />
+      <Method Name="RaiseExecutingCommand" Hidden="true" />
+      <Method Name="RaiseOptionsMenuOpening" Hidden="true" />
+      <Field Name="SaveInLayoutProperty" Hidden="true" />
+      <Field Name="SerializationIdProperty" Hidden="true" />
+      <Method Name="ShouldIncludeMenuItem" Hidden="true" />
+      <Property Name="SuppressFlyoutDuringActivate" Hidden="true" />
+      <Field Name="TabHeaderProperty" Hidden="true" />
+      <Field Name="TabHeaderTemplateProperty" Hidden="true" />
+      <Field Name="TabHeaderTemplateSelectorProperty" Hidden="true" />
+      <Method Name="VerifyContentVisibility" Hidden="true" />
+      <Method Name="VerifyHeaderVisibility" Hidden="true" />
+      <Method Name="VerifyIsPinnedState" Hidden="true" />
+      <Method Name="VerifyIsPinnedStateSynchronous" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DockManager.ContentPane.ContentPaneTemplateSelector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ContentPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Infragistics.Windows.DockManager.ContentPane.PanePlacementInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ContentPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>a4MjRkipx0kHV57JxNx18C84HLLXLDDhoCDIzjuyMzA=</HashCode>
+      <FileName>ContentPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DockManager.DocumentContentHost">
+    <Position X="13" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="_logicalChildren" Hidden="true" />
+      <Field Name="_panel" Hidden="true" />
+      <Field Name="_panes" Hidden="true" />
+      <Field Name="ActiveDocumentChangedEvent" Hidden="true" />
+      <Field Name="ActiveDocumentProperty" Hidden="true" />
+      <Method Name="DocumentContentHost" Hidden="true" />
+      <Method Name="GetContainerForPane" Hidden="true" />
+      <Method Name="GetFirstLeafTabGroup" Hidden="true" />
+      <Method Name="IAddChild.AddChild" Hidden="true" />
+      <Method Name="IAddChild.AddText" Hidden="true" />
+      <Property Name="IPaneContainer.CanBeRemoved" Hidden="true" />
+      <Property Name="IPaneContainer.Panes" Hidden="true" />
+      <Method Name="IPaneContainer.RemovePane" Hidden="true" />
+      <Method Name="OnApplyTemplateImpl" Hidden="true" />
+      <Method Name="OnPanesCollectionChanged" Hidden="true" />
+      <Property Name="Panel" Hidden="true" />
+      <Method Name="RaiseActiveDocumentChanged" Hidden="true" />
+      <Property Name="RootSplitterOrientation" Hidden="true" />
+      <Field Name="RootSplitterOrientationProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABBACCCAAgBAAAAggAACAAgBAQQQAAABJAVAAAAAgMA=</HashCode>
+      <FileName>DocumentContentHost.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveDocument" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DockManager.TabGroupPane">
+    <Position X="12.75" Y="3.25" Width="3.25" />
+    <Members>
+      <Field Name="_filesMenuItem" Hidden="true" />
+      <Field Name="_headerArea" Hidden="true" />
+      <Field Name="_hiddenMenuItem" Hidden="true" />
+      <Field Name="_initializingSelection" Hidden="true" />
+      <Field Name="_isMovingItem" Hidden="true" />
+      <Field Name="_itemsSnapshot" Hidden="true" />
+      <Field Name="_navigationModeVersion" Hidden="true" />
+      <Method Name="ClearItemsSnapshot" Hidden="true" />
+      <Field Name="CloseSelectedItemCommand" Hidden="true" />
+      <Method Name="CoerceVisibility" Hidden="true" />
+      <Property Name="CurrentItemsCollection" Hidden="true" />
+      <Field Name="DockableTabGroupTemplateKey" Hidden="true" />
+      <Field Name="DocumentCloseButtonStyleKey" Hidden="true" />
+      <Field Name="DocumentFilesMenuItemStyleKey" Hidden="true" />
+      <Field Name="DocumentPaneNavigatorButtonStyleKey" Hidden="true" />
+      <Field Name="DocumentTabGroupTemplateKey" Hidden="true" />
+      <Method Name="GetSelectedTabItem" Hidden="true" />
+      <Property Name="HeaderArea" Hidden="true" />
+      <Property Name="HiddenMenuItem" Hidden="true" />
+      <Property Name="IContentPaneContainer.ContainerElement" Hidden="true" />
+      <Method Name="IContentPaneContainer.GetAllPanesForPaneAction" Hidden="true" />
+      <Method Name="IContentPaneContainer.GetVisiblePanes" Hidden="true" />
+      <Method Name="IContentPaneContainer.InsertContentPane" Hidden="true" />
+      <Property Name="IContentPaneContainer.PaneLocation" Hidden="true" />
+      <Method Name="IContentPaneContainer.RemoveContentPane" Hidden="true" />
+      <Property Name="IPaneContainer.CanBeRemoved" Hidden="true" />
+      <Property Name="IPaneContainer.Panes" Hidden="true" />
+      <Method Name="IPaneContainer.RemovePane" Hidden="true" />
+      <Property Name="IsMovingItem" Hidden="true" />
+      <Field Name="IsTabItemAreaVisibleProperty" Hidden="true" />
+      <Field Name="IsTabItemAreaVisiblePropertyKey" Hidden="true" />
+      <Method Name="MoveItemToFront" Hidden="true" />
+      <Method Name="OnCanExecuteCommand" Hidden="true" />
+      <Method Name="OnChildVisibilityChanged" Hidden="true" />
+      <Method Name="OnExecuteCommand" Hidden="true" />
+      <Method Name="OnGeneratorStatusChanged" Hidden="true" />
+      <Method Name="OnPaneLocationChanged" Hidden="true" />
+      <Method Name="OnRequestBringIntoView" Hidden="true" />
+      <Method Name="OnSubmenuOpened" Hidden="true" />
+      <Method Name="OnVisibilityChanged" Hidden="true" />
+      <Method Name="SelectTabItem" Hidden="true" />
+      <Method Name="VerifyItemsSnapshot" Hidden="true" />
+      <Method Name="VerifyNotUsingSnapshot" Hidden="true" />
+      <Method Name="VerifySelectedContent" Hidden="true" />
+      <Method Name="VerifySelectedItem" Hidden="true" />
+      <Method Name="VerifyTabAreaVisibility" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DockManager.TabGroupPane.TabHeaderComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TabGroupPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IFBqDgggJjB4BAAAAAQAYAUwRAMIAAUACFOGsJQiACA=</HashCode>
+      <FileName>TabGroupPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DockManager.SplitPane">
+    <Position X="0.5" Y="5.5" Width="3.25" />
+    <Members>
+      <Field Name="_isMeasuringChild" Hidden="true" />
+      <Field Name="_paneInfos" Hidden="true" />
+      <Field Name="_panes" Hidden="true" />
+      <Method Name="CoerceVisibility" Hidden="true" />
+      <Field Name="DefaultSplitterSize" Hidden="true" />
+      <Property Name="IContentPaneContainer.ContainerElement" Hidden="true" />
+      <Method Name="IContentPaneContainer.GetAllPanesForPaneAction" Hidden="true" />
+      <Method Name="IContentPaneContainer.GetVisiblePanes" Hidden="true" />
+      <Method Name="IContentPaneContainer.InsertContentPane" Hidden="true" />
+      <Property Name="IContentPaneContainer.PaneLocation" Hidden="true" />
+      <Method Name="IContentPaneContainer.RemoveContentPane" Hidden="true" />
+      <Property Name="IncludePanesAsLogicalChildren" Hidden="true" />
+      <Property Name="IPaneContainer.CanBeRemoved" Hidden="true" />
+      <Property Name="IPaneContainer.Panes" Hidden="true" />
+      <Method Name="IPaneContainer.RemovePane" Hidden="true" />
+      <Property Name="IsDockedLeftRight" Hidden="true" />
+      <Property Name="IsDockedTopBottom" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.CreateSplitter" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.OnElementAdded" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.OnElementAdding" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.OnElementRemoved" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.OnSplitterAdded" Hidden="true" />
+      <Method Name="ISplitElementCollectionOwner.OnSplitterRemoved" Hidden="true" />
+      <Method Name="OnChildrenCollectionChanged" Hidden="true" />
+      <Method Name="OnChildVisibilityChanged" Hidden="true" />
+      <Method Name="OnPaneLocationChanged" Hidden="true" />
+      <Method Name="OnVisibilityChanged" Hidden="true" />
+      <Method Name="PredictDrop" Hidden="true" />
+      <Method Name="PredictDropNewSplit" Hidden="true" />
+      <Method Name="PrepareForArrange" Hidden="true" />
+      <Field Name="RelativeSizeProperty" Hidden="true" />
+      <Field Name="SplitterOrientationProperty" Hidden="true" />
+      <Method Name="ValidateRelativeSize" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Class Name="Infragistics.Windows.DockManager.SplitPane.PaneInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SplitPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BVAMgQggokBEBBAgAgAgQIEwEIQRAAEEGAEFAAgjQCA=</HashCode>
+      <FileName>SplitPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="Infragistics.Windows.DockManager.PaneFlyoutAnimation">
+    <Position X="0.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DockManager.PaneActionBehavior">
+    <Position X="0.5" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DockManager.PaneNavigationOrder">
+    <Position X="0.5" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

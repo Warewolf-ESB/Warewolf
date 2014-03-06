@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedColorShadePicker_AlphaCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Alpha スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Alpha_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の Alpha チャネル値を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_BlackCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.K スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_BlueCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Blue スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Blue_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の Blue チャネル値を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CancelCaption_Property" xml:space="preserve">
+    <value>「キャンセル」のテキストのために使用される文字列を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CurrentColor_Property" xml:space="preserve">
+    <value>エディターによってビルドされている System.Windows.Media.Color を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CyanCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.C スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_C_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の C チャネル値を取得または設定します。 これは CMYK 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_GreenCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Green スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Green_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の Green チャネル値を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_HueCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.H スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_H_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の H チャネル値を取得または設定します。これは HSL 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_K_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の K チャネル値を取得または設定します。これは CMYK 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_LightnessCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.L スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_L_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の L チャネル値を取得または設定します。これは HSL 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_MagentaCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.M スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_M_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の M チャネル値を取得または設定します。これは CMYK 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_OKCaption_Property" xml:space="preserve">
+    <value>「OK」のテキストのために使用される文字列を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_RedCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Red スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Red_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の Red チャネル値を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_SaturationCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.S スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_SelectedColor_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker の値を取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_S_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の S チャネル値を取得または設定します。これは HSL 色スペースからの色値です。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_YellowCaption_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Y スライダーのキャプションを取得または設定します。</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Y_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor の Y チャネル値を取得または設定します。これは CMYK 色スペースからの色値です。</value>
+  </data>
+  <data name="ByteSlider_MaxValue_Property" xml:space="preserve">
+    <value>MaxValue プロパティの値を取得または設定します。</value>
+  </data>
+  <data name="ByteSlider_MinValue_Property" xml:space="preserve">
+    <value>最小値を取得または設定します。</value>
+  </data>
+  <data name="ColorItemBox_ColorItemBrush_Property" xml:space="preserve">
+    <value>設定された Infragistics.Controls.Editors.Primitives.ColorItemBox.ColorItem からこのコントロールのために生成した System.Windows.Media.Brush を取得または設定します。</value>
+  </data>
+  <data name="ColorItemBox_ColorItem_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.Primitives.ColorItemBox に関連付けられた Infragistics.Controls.Editors.Primitives.ColorItemBox.ColorItem を取得または設定します。</value>
+  </data>
+  <data name="ColorItem_Color_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.Primitives.ColorItem によって表せる Infragistics.Controls.Editors.Primitives.ColorItem.Color を取得または設定します。</value>
+  </data>
+  <data name="ColorItem_Parent_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.Primitives.ColorItem に属す Infragistics.Controls.Editors.Primitives.ColorStrip を取得します。</value>
+  </data>
+  <data name="ColorPalette_Colors_Property" xml:space="preserve">
+    <value>このパレットで表示される色を含む Infragistics.Controls.Editors.ColorPatchCollection を取得または設定します。</value>
+  </data>
+  <data name="ColorPalette_DefaultColor_Property" xml:space="preserve">
+    <value>明示的に設定されていない項目の塗りつぶしのために使用される System.Windows.Media.Color を取得または設定します。</value>
+  </data>
+  <data name="ColorPalette_MaximumColorCount_Property" xml:space="preserve">
+    <value>パレットの色の最大数を取得または設定します。null に設定した場合、制限はありません。</value>
+  </data>
+  <data name="ColorPatch_Color_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ColorPatch によって表される Infragistics.Controls.Editors.ColorPatch.Color を取得します。</value>
+  </data>
+  <data name="ColorPickerDialogCommandSource_CommandType_Property" xml:space="preserve">
+    <value>実行されるコマンドのタイプ。</value>
+  </data>
+  <data name="ColorPickerDialog_ColorPicker_Property" xml:space="preserve">
+    <value>このコントロールに関連する Infragistics.Control.Editors.XamColorPicker を取得または設定します。</value>
+  </data>
+  <data name="ColorPickerDialog_IsOpen_Property" xml:space="preserve">
+    <value>ColumnChooserDialog が開いているかどうかを取得または設定します。</value>
+  </data>
+  <data name="ColorStripManager_ColorStrips_Property" xml:space="preserve">
+    <value>このマネージャーによって処理される Infragistics.Controls.Editors.Primitives.ColorStrip オブジェクトのコレクションを取得または設定します。</value>
+  </data>
+  <data name="ColorStripsCommandSource_CommandType_Property" xml:space="preserve">
+    <value>実行されるコマンドのタイプ。</value>
+  </data>
+  <data name="ColorStrip_ColorPalette_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.Primitives.ColorStrip で表示される Infragistics.Controls.Editors.Primitives.ColorStrip.ColorPalette を取得または設定します。</value>
+  </data>
+  <data name="ColorStrip_DarknessShift_Property" xml:space="preserve">
+    <value>Infragistics.Silverlight.Controls.Primitives.FilterRow が計算される方法を取得または設定します。</value>
+  </data>
+  <data name="ColorStrip_SelectedColorItem_Property" xml:space="preserve">
+    <value>選択として表示される Infragistics.Controls.Editors.Primitives.ColorItem を取得または設定します。</value>
+  </data>
+  <data name="ColorStrip_VisibleItemCount_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.ColorStrip で表示される Infragistics.Controls.Editors.Primitives.ColorItemBox オブジェクトの数を取得または設定します。</value>
+  </data>
+  <data name="SelectedColorChangedEventArgs_NewColor_Property" xml:space="preserve">
+    <value>新しい System.Windows.Media.Color オブジェクトを取得します。</value>
+  </data>
+  <data name="SelectedColorChangedEventArgs_OriginalColor_Property" xml:space="preserve">
+    <value>元の System.Windows.Media.Color オブジェクトを取得します。</value>
+  </data>
+  <data name="SelectedColorItemChangedEventArgs_NewColorItem_Property" xml:space="preserve">
+    <value>新しい Infragistics.Controls.Editors.Primitives.ColorItem オブジェクトを取得します。</value>
+  </data>
+  <data name="SelectedColorItemChangedEventArgs_OriginalColorItem_Property" xml:space="preserve">
+    <value>元の Infragistics.Controls.Editors.Primitives.ColorItem オブジェクトを取得します。</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="XamColorPicker_AdvancedButtonCaption_Property" xml:space="preserve">
+    <value>「詳細」ボタンのキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_AdvancedEditor_Property" xml:space="preserve">
+    <value>詳細な色の編集に使用される Infragistics.Controls.Editors.ISupportColorPickerAdvancedEditing オブジェクトを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_ColorPalettes_Property" xml:space="preserve">
+    <value>現在に選択可能な Infragistics.Controls.Editors.ColorPaletteCollection を取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_CurrentColorCaption_Property" xml:space="preserve">
+    <value>現在の色領域のキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_CurrentPaletteCaption_Property" xml:space="preserve">
+    <value>現在のパレットのキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_CurrentPalette_Property" xml:space="preserve">
+    <value>現在アクティブな Infragistics.Controls.Editors.ColorPalette オブジェクトを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_DerivedColorPalettesCaption_Property" xml:space="preserve">
+    <value>現在のパレットのキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_DerivedPalettesCount_Property" xml:space="preserve">
+    <value>作成される派生パレットの数を取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_IsDropDownOpen_Property" xml:space="preserve">
+    <value>ドロップダウンが開いているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_PreviouslySelectedColor_Property" xml:space="preserve">
+    <value>ドロップダウンが開いたときに選択された色を取得または設定します。編集がキャンセルされた場合はリセットされます。</value>
+  </data>
+  <data name="XamColorPicker_Properties" xml:space="preserve">
+    <value>XamColorPicker プロパティ</value>
+  </data>
+  <data name="XamColorPicker_RecentColorPaletteCaption_Property" xml:space="preserve">
+    <value>最近の使用した色パレットのキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_SelectedColorBrush_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamColorPicker.SelectedColor によって設定される System.Windows.Media.Brush を取得します。</value>
+  </data>
+  <data name="XamColorPicker_SelectedColor_Property" xml:space="preserve">
+    <value>コントロールで現在選択されている System.Windows.Media.Color を取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_ShowAdvancedEditorButton_Property" xml:space="preserve">
+    <value>AdvancedEditorButton が表示されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_ShowDerivedColorPalettes_Property" xml:space="preserve">
+    <value>派生パレットが表示されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_ShowRecentColorsPalette_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamColorPicker.RecentColorPalette が表示されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamPickerCommandSource_CommandType_Property" xml:space="preserve">
+    <value>実行されるコマンドのタイプ。</value>
+  </data>
+  <data name="XamPickerCommandSource_Properties" xml:space="preserve">
+    <value>XamPickerCommandSource プロパティ</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_ExpandCollapseState_Property" xml:space="preserve">
+    <value>コントロールの状態 (展開または縮小) を取得します。</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_IsReadOnly_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamColorPicker が読み取り専用かどうかを取得します。</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_Properties" xml:space="preserve">
+    <value>XamColorPickerAutomationPeer プロパティ</value>
+  </data>
+  <data name="ColorPickerDialog_DialogCaption_Property" xml:space="preserve">
+    <value>ダイアログの上に表示されるキャプションを取得または設定します。</value>
+  </data>
+  <data name="XamColorPickerAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="ColorPalette_Properties" xml:space="preserve">
+    <value>ColorPalette プロパティ</value>
+  </data>
+  <data name="ColorPatch_Properties" xml:space="preserve">
+    <value>ColorPatch プロパティ</value>
+  </data>
+  <data name="ColorStrip_ColorItemBoxStyle_Property" xml:space="preserve">
+    <value>このコントロールの Infragistics.Controls.Editors.Primitives.ColorItemBox オブジェクトに適用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="XamColorPicker_DerivedPaletteColorItemBoxStyle_Property" xml:space="preserve">
+    <value>派生パレットの Infragistics.Controls.Editors.Primitives.ColorItemBox オブジェクトに適用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="TransparencyBackgroundControl_Color1_Property" xml:space="preserve">
+    <value>原色</value>
+  </data>
+  <data name="TransparencyBackgroundControl_Color2_Property" xml:space="preserve">
+    <value>二次色</value>
+  </data>
+  <data name="TransparencyBackgroundControl_SquareSize_Property" xml:space="preserve">
+    <value>正方形のサイズを取得または設定します</value>
+  </data>
+</root>

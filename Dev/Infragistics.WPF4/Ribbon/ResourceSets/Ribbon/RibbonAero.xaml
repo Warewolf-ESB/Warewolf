@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:igEditors="http://infragistics.com/Editors"	
+	xmlns:igThemes="http://infragistics.com/Themes"	
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:igRibbon="clr-namespace:Infragistics.Windows.Ribbon"
+	 >
+	 <ResourceDictionary.MergedDictionaries>
+		<!--<themes:RibbonGeneric />-->
+        <ResourceDictionary Source="RibbonGeneric.xaml" />
+    </ResourceDictionary.MergedDictionaries>	
+</ResourceDictionary>

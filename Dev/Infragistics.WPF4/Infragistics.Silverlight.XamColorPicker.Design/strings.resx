@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="ColorPickerDialog_IsOpen_Property" xml:space="preserve">
+    <value>Gets/Sets whether the Infragistics.Controls.Editors.Primitives.ColorPickerDialog is open.</value>
+  </data>
+  <data name="ColorPickerDialog_ColorPicker_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.XamColorPicker associated with this control.</value>
+  </data>
+  <data name="ColorStripsCommandSource_CommandType_Property" xml:space="preserve">
+    <value>The type of command that will be executed.</value>
+  </data>
+  <data name="XamPickerCommandSource_CommandType_Property" xml:space="preserve">
+    <value>The type of command that will be executed.</value>
+  </data>
+  <data name="XamPickerCommandSource_Properties" xml:space="preserve">
+    <value>XamPickerCommandSource Properties</value>
+  </data>
+  <data name="ColorPalette_Colors_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.ColorPatchCollection which contains the colors which will be shown by this palette.</value>
+  </data>
+  <data name="ColorPalette_MaximumColorCount_Property" xml:space="preserve">
+    <value>Gets / sets the maximum number of colors which will be allowed in the palette. This is set to null if there is to be no limit.</value>
+  </data>
+  <data name="ColorPalette_DefaultColor_Property" xml:space="preserve">
+    <value>Gets / sets the System.Windows.Media.Color which will be used to fill for items which are not explictly set.</value>
+  </data>
+  <data name="ColorPatch_Color_Property" xml:space="preserve">
+    <value>Gets the Infragistics.Controls.Editors.ColorPatch.Color represented by this Infragistics.Controls.Editors.ColorPatch.</value>
+  </data>
+  <data name="ColorPickerDialogCommandSource_CommandType_Property" xml:space="preserve">
+    <value>The type of command that will be executed.</value>
+  </data>
+  <data name="XamColorPicker_PreviouslySelectedColor_Property" xml:space="preserve">
+    <value>Gets / sets the color that was selected when the drop down was opened which can be reset if the
+ editing is cancelled.</value>
+  </data>
+  <data name="XamColorPicker_Properties" xml:space="preserve">
+    <value>XamColorPicker Properties</value>
+  </data>
+  <data name="XamColorPicker_SelectedColor_Property" xml:space="preserve">
+    <value>Gets / sets the System.Windows.Media.Color which is currently selected in the control.</value>
+  </data>
+  <data name="XamColorPicker_SelectedColorBrush_Property" xml:space="preserve">
+    <value>Gets a System.Windows.Media.Brush populated by the Infragistics.Controls.Editors.XamColorPicker.SelectedColor.</value>
+  </data>
+  <data name="XamColorPicker_DerivedPalettesCount_Property" xml:space="preserve">
+    <value>Gets / sets how many derived palettes will be created.</value>
+  </data>
+  <data name="XamColorPicker_AdvancedEditor_Property" xml:space="preserve">
+    <value>Gets / sets an Infragistics.Controls.Editors.ISupportColorPickerAdvancedEditing object which will be used for advanced color editing.</value>
+  </data>
+  <data name="XamColorPicker_CurrentPalette_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.ColorPalette object which is currently seen as active.</value>
+  </data>
+  <data name="XamColorPicker_ColorPalettes_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.ColorPaletteCollection which are currently available for selection.</value>
+  </data>
+  <data name="XamColorPicker_IsDropDownOpen_Property" xml:space="preserve">
+    <value>Gets / sets if the dropdown is open.</value>
+  </data>
+  <data name="XamColorPicker_ShowAdvancedEditorButton_Property" xml:space="preserve">
+    <value>Gets / sets if the AdvancedEditorButton is displayed.</value>
+  </data>
+  <data name="XamColorPicker_ShowRecentColorsPalette_Property" xml:space="preserve">
+    <value>Gets / sets if the Infragistics.Controls.Editors.XamColorPicker.RecentColorPalette is displayed.</value>
+  </data>
+  <data name="XamColorPicker_ShowDerivedColorPalettes_Property" xml:space="preserve">
+    <value>Gets / sets if the Derived Palettes are displayed.</value>
+  </data>
+  <data name="XamColorPicker_CurrentPaletteCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the current palette.</value>
+  </data>
+  <data name="XamColorPicker_RecentColorPaletteCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the recent color palette.</value>
+  </data>
+  <data name="XamColorPicker_DerivedColorPalettesCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the current palette.</value>
+  </data>
+  <data name="XamColorPicker_AdvancedButtonCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the advanced button.</value>
+  </data>
+  <data name="XamColorPicker_CurrentColorCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the current color area.</value>
+  </data>
+  <data name="ColorStripManager_ColorStrips_Property" xml:space="preserve">
+    <value>Gets / sets the collection of Infragistics.Controls.Editors.Primitives.ColorStrip objects which are managed by this manager.</value>
+  </data>
+  <data name="ColorItem_Parent_Property" xml:space="preserve">
+    <value>Gets the Infragistics.Controls.Editors.Primitives.ColorStrip which this Infragistics.Controls.Editors.Primitives.ColorItem is part of.</value>
+  </data>
+  <data name="ColorItem_Color_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.Primitives.ColorItem.Color which is represented by this Infragistics.Controls.Editors.Primitives.ColorItem.</value>
+  </data>
+  <data name="ColorStrip_VisibleItemCount_Property" xml:space="preserve">
+    <value>Gets / sets how many Infragistics.Controls.Editors.Primitives.ColorItemBox objects will be visible on the Infragistics.Controls.Editors.Primitives.ColorStrip.</value>
+  </data>
+  <data name="ColorStrip_ColorPalette_Property" xml:space="preserve">
+    <value>Get / set the Infragistics.Controls.Editors.Primitives.ColorStrip.ColorPalette which will be displayed by this Infragistics.Controls.Editors.Primitives.ColorStrip.</value>
+  </data>
+  <data name="ColorStrip_SelectedColorItem_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.Primitives.ColorItem that will be seen as selected.</value>
+  </data>
+  <data name="ColorStrip_DarknessShift_Property" xml:space="preserve">
+    <value>Gets / sets how the Infragistics.Controls.Editors.Primitives.ColorStrip.ColorPalette will be calculated.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CurrentColor_Property" xml:space="preserve">
+    <value>Gets / sets the System.Windows.Media.Color which is currently being built in the editor.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_SelectedColor_Property" xml:space="preserve">
+    <value>Gets / sets the value of the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Alpha_Property" xml:space="preserve">
+    <value>Gets / sets the Alpha channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Red_Property" xml:space="preserve">
+    <value>Gets / sets the Red channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Blue_Property" xml:space="preserve">
+    <value>Gets / sets the Blue channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Green_Property" xml:space="preserve">
+    <value>Gets / sets the Green channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_H_Property" xml:space="preserve">
+    <value>Gets / sets the H channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the HSL color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_S_Property" xml:space="preserve">
+    <value>Gets / sets the S channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the HSL color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_L_Property" xml:space="preserve">
+    <value>Gets / sets the L channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the HSL color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_C_Property" xml:space="preserve">
+    <value>Gets / sets the C channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the CMYK color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_M_Property" xml:space="preserve">
+    <value>Gets / sets the M channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the CMYK color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_Y_Property" xml:space="preserve">
+    <value>Gets / sets the Y channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the CMYK color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_K_Property" xml:space="preserve">
+    <value>Gets / sets the K channel value for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.CurrentColor. This is from the CMYK color space.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_AlphaCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Alpha slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_RedCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Red slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_BlueCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Blue slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_GreenCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Green slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_HueCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.H slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_SaturationCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.S slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_LightnessCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.L slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CyanCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.C slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_YellowCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.Y slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_MagentaCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.M slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_BlackCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption for the Infragistics.Controls.Editors.Primitives.AdvancedColorShadePicker.K slider.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_OKCaption_Property" xml:space="preserve">
+    <value>Gets / sets a string that can be used for acceptance text.</value>
+  </data>
+  <data name="AdvancedColorShadePicker_CancelCaption_Property" xml:space="preserve">
+    <value>Gets / sets a string that can be used for cancel text.</value>
+  </data>
+  <data name="ColorItemBox_ColorItemBrush_Property" xml:space="preserve">
+    <value>Gets / sets the System.Windows.Media.Brush which is generated for this control from the set Infragistics.Controls.Editors.Primitives.ColorItemBox.ColorItem.</value>
+  </data>
+  <data name="ColorItemBox_ColorItem_Property" xml:space="preserve">
+    <value>Gets / sets the Infragistics.Controls.Editors.Primitives.ColorItemBox.ColorItem associated with this Infragistics.Controls.Editors.Primitives.ColorItemBox.</value>
+  </data>
+  <data name="ByteSlider_MaxValue_Property" xml:space="preserve">
+    <value>Gets or sets the value of the MaxValue property.</value>
+  </data>
+  <data name="ByteSlider_MinValue_Property" xml:space="preserve">
+    <value>Gets or sets the min value.</value>
+  </data>
+  <data name="SelectedColorItemChangedEventArgs_OriginalColorItem_Property" xml:space="preserve">
+    <value>Gets the orignial Infragistics.Controls.Editors.Primitives.ColorItem object.</value>
+  </data>
+  <data name="SelectedColorItemChangedEventArgs_NewColorItem_Property" xml:space="preserve">
+    <value>Gets the new Infragistics.Controls.Editors.Primitives.ColorItem object.</value>
+  </data>
+  <data name="SelectedColorChangedEventArgs_OriginalColor_Property" xml:space="preserve">
+    <value>Gets the orignial System.Windows.Media.Color object.</value>
+  </data>
+  <data name="SelectedColorChangedEventArgs_NewColor_Property" xml:space="preserve">
+    <value>Gets the new System.Windows.Media.Color object.</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_ExpandCollapseState_Property" xml:space="preserve">
+    <value>Gets the state (expanded or collapsed) of the control.</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_Properties" xml:space="preserve">
+    <value>XamColorPickerAutomationPeer Properties</value>
+  </data>
+  <data name="XamColorPickerAutomationPeer_IsReadOnly_Property" xml:space="preserve">
+    <value>Gets if the Infragistics.Controls.Editors.XamColorPicker is read only.</value>
+  </data>
+  <data name="ColorPickerDialog_DialogCaption_Property" xml:space="preserve">
+    <value>Gets / sets the caption seen at the top of the dialog.</value>
+  </data>
+  <data name="XamColorPickerAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamColorPicker_DerivedPaletteColorItemBoxStyle_Property" xml:space="preserve">
+    <value>Gets / sets the style applied to the Infragistics.Controls.Editors.Primitives.ColorItemBox objects on the derived palettes.</value>
+  </data>
+  <data name="ColorStrip_ColorItemBoxStyle_Property" xml:space="preserve">
+    <value>Gets / sets a style that will be applied to the Infragistics.Controls.Editors.Primitives.ColorItemBox objects in this control.</value>
+  </data>
+  <data name="ColorPalette_Properties" xml:space="preserve">
+    <value>ColorPalette Properties</value>
+  </data>
+  <data name="ColorPatch_Properties" xml:space="preserve">
+    <value>ColorPatch Properties</value>
+  </data>
+  <data xml:space="preserve" name="TransparencyBackgroundControl_Color1_Property">
+    <value>Primary color</value>
+  </data>
+  <data xml:space="preserve" name="TransparencyBackgroundControl_Color2_Property">
+    <value>Secondary color</value>
+  </data>
+  <data xml:space="preserve" name="TransparencyBackgroundControl_SquareSize_Property">
+    <value>Gets or sets the size of the square.</value>
+  </data>
+</root>

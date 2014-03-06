@@ -1,0 +1,12 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+    xmlns:themesWin="http://infragistics.com/Themes"
+    >
+	<ResourceDictionary.MergedDictionaries>
+		<!--<themes:DataPresenterLunaOlive/>-->
+        <themesWin:ResourceSetLoader Locator="{x:Static themes:DataPresenterLunaOlive.Location}"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

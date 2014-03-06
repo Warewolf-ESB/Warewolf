@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DateTimeSliderTickMarks_FrequencyType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.FrequencyType 列挙型から Infragistics.Controls.Editors.DateTimeSliderTickMarks.FrequencyType のタイプを取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarksBase_HorizontalTickMarksTemplate_Property" xml:space="preserve">
+    <value>水平目盛の DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarksBase_IncludeSliderEnds_Property" xml:space="preserve">
+    <value>スライダーに終了目盛があるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarksBase_NumberOfTickMarks_Property" xml:space="preserve">
+    <value>指定された Infragistics.Controls.Editors.SliderTickMarksBase インスタンスの目盛数を取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarksBase_UseFrequency_Property" xml:space="preserve">
+    <value>目盛の配置はその頻度に基づいて設定されるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarksBase_VerticalTickMarksTemplate_Property" xml:space="preserve">
+    <value>スライダーの方向が垂直な場合の目盛の DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarks`1_Owner_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderBase`1 オーナーを取得または設定します。</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarksFrequency_Property" xml:space="preserve">
+    <value>目盛の間隔を取得または設定します。隣接する 2 つの目盛の差異の 2 倍に等しくなります。</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarksValues_Property" xml:space="preserve">
+    <value>スライダーの設定に使用される T 型の Tick Mark Values のコレクションを取得します。</value>
+  </data>
+  <data name="SliderTickMarks`1_TickMarks_Property" xml:space="preserve">
+    <value>スライダーの目盛のコレクションを取得または設定します。</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_NewValue_Property" xml:space="preserve">
+    <value>つまみの新しい値を取得します。</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_OldValue_Property" xml:space="preserve">
+    <value>つまみの古い値を取得します。</value>
+  </data>
+  <data name="ThumbValueChangedEventArgs`1_Thumb_Property" xml:space="preserve">
+    <value>プロパティが変更されたつまみを取得します。</value>
+  </data>
+  <data name="TickMarksPanel`1_Owner_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderBase`1 オーナーを取得または設定します。</value>
+  </data>
+  <data name="TrackClickEventArgs`1_Value_Property" xml:space="preserve">
+    <value>トラックでクリックされた位置の値を取得します。</value>
+  </data>
+  <data name="TrackClickRoutedEventArgs`1_Value_Property" xml:space="preserve">
+    <value>トラックがクリックされた位置の値を取得します。</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_LargeChangeType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.FrequencyType 列挙型から Infragistics.Controls.Editors.XamDateTimeRangeSlider.LargeChangeType の型を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_SmallChangeType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.FrequencyType 列挙型から Infragistics.Controls.Editors.XamDateTimeRangeSlider.SmallChangeType の型を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeSlider_LargeChangeType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.FrequencyType 列挙型から Infragistics.Controls.Editors.XamDateTimeSlider.LargeChangeType の型を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeSlider_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamDateTimeSlider_SmallChangeType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.FrequencyType 列挙型から Infragistics.Controls.Editors.XamDateTimeSlider.SmallChangeType の型を取得または設定します。</value>
+  </data>
+  <data name="XamRangeSlider`1_ActiveThumb_Property" xml:space="preserve">
+    <value>アクティブつまみを取得または設定します。
+スライダーのつまみコレクションの現在アクティブなつまみを指定します。</value>
+  </data>
+  <data name="XamRangeSlider`1_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value>このインスタンスを選択範囲内で有効にするかどうかを示す値を取得または設定します。
+ 選択範囲が有効なときに、トラックの塗りつぶしをドラッグすると最も近いつまみも同じ距離ドラッグされます。</value>
+  </data>
+  <data name="XamRangeSlider`1_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamRangeSlider`1_Thumbs_Property" xml:space="preserve">
+    <value>つまみを取得します。これは Infragistics.Controls.Editors.XamSliderThumb`1 インスタンスのコレクションです。</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Thumb_Property" xml:space="preserve">
+    <value>つまみを取得します。</value>
+  </data>
+  <data name="XamSimpleSliderBase`1_Value_Property" xml:space="preserve">
+    <value>値を取得または設定します。
+ActiveThumb (シンプルなスライダーの Thumb) の現在の値です。</value>
+  </data>
+  <data name="XamSliderAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamSliderBaseCommandSource_CommandType_Property" xml:space="preserve">
+    <value>コマンドで実行する XamSliderBaseCommand を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBaseCommandSource_Properties" xml:space="preserve">
+    <value>XamSliderBaseCommandSource プロパティ</value>
+  </data>
+  <data name="XamSliderBase_DecreaseButtonVisibility_Property" xml:space="preserve">
+    <value>減らすボタンの表示状態を取得または設定します。
+デフォルト テンプレートでボタンの Visibility を指定します。ボタンをクリックすると、ActiveThumb の値を SmallChange で減らします。</value>
+  </data>
+  <data name="XamSliderBase_EnableKeyboardNavigation_Property" xml:space="preserve">
+    <value>キーボード ナビゲーションを有効にするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_HorizontalTickMarksTemplate_Property" xml:space="preserve">
+    <value>水平の Infragistics.Controls.Editors.SliderTickMarks`1 の DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_IncreaseButtonVisibility_Property" xml:space="preserve">
+    <value>増やすボタンの表示状態を取得または設定します。
+ デフォルト テンプレートでボタンの Visibility を指定します。ボタンをクリックすると、ActiveThumb の値を SmallChange で増加します。</value>
+  </data>
+  <data name="XamSliderBase_IsDirectionReversed_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.XamSliderBase インスタンスの MinValue から MaxValue までの方向を逆にするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_IsMouseWheelEnabled_Property" xml:space="preserve">
+    <value>このインスタンスをマウス ホイールで有効にするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_Orientation_Property" xml:space="preserve">
+    <value>System.Windows.Controls.Orientation で方向を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamSliderBase_ThumbStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderBase の Style プロパティを取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_TrackClickAction_Property" xml:space="preserve">
+    <value>スライダー トラックの上にクリックすると起動するアクションを取得または設定します。
+アクションを起動しないか、ActiveThumb 値を LargeChange プロパティで変更するか、または ActiveThumb をマウスの位置に移動する可能性があります。</value>
+  </data>
+  <data name="XamSliderBase_TrackFillBrush_Property" xml:space="preserve">
+    <value>他のスタイルがつまみの trackfill に明示的に設定されていない場合、すべてのつまみの trackfill の Brush を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_TrackFillStyle_Property" xml:space="preserve">
+    <value>他のスタイルがつまみに明示的に設定されていない場合、すべてのつまみの Style を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase_VerticalTickMarksTemplate_Property" xml:space="preserve">
+    <value>垂直の Infragistics.Controls.Editors.SliderTickMarks`1 の DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase`1_LargeChange_Property" xml:space="preserve">
+    <value>LargeChange プロパティの値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase`1_MaxValue_Property" xml:space="preserve">
+    <value>このスライダーの最大値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase`1_MinValue_Property" xml:space="preserve">
+    <value>このスライダーの最小値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase`1_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamSliderBase`1_SmallChange_Property" xml:space="preserve">
+    <value>SmallChange プロパティの値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderBase`1_TickMarks_Property" xml:space="preserve">
+    <value>目盛のコレクションを取得します。目盛は Infragistics.Controls.Editors.SliderTickMarks`1 インスタンスです。</value>
+  </data>
+  <data name="XamSliderSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamSlider</value>
+  </data>
+  <data name="XamSliderThumbBase_InteractionMode_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderThumbBase の操作モードを取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumbBase_IsActive_Property" xml:space="preserve">
+    <value>このインスタンスがアクティブ状態にあるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumbBase_IsDragEnabled_Property" xml:space="preserve">
+    <value>このインスタンスがドラッグ可能かどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumbBase_Owner_Property" xml:space="preserve">
+    <value>つまみのオーナーである Infragistics.Controls.Editors.XamSliderBase を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumbBase_Properties" xml:space="preserve">
+    <value>XamSliderThumb プロパティ</value>
+  </data>
+  <data name="XamSliderThumbBase_ToolTipTemplate_Property" xml:space="preserve">
+    <value>ToolTip の ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumbBase_ToolTipVisibility_Property" xml:space="preserve">
+    <value>ToolTip の Visibility を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumb`1_IsSnapToTickEnabled_Property" xml:space="preserve">
+    <value>このつまみのインスタンスの目盛にスナップする機能を有効にするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumb`1_IsTrackFillVisible_Property" xml:space="preserve">
+    <value>つまみの TrackFill が表示されるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumb`1_Properties" xml:space="preserve">
+    <value>XamSliderThumb プロパティ</value>
+  </data>
+  <data name="XamSliderThumb`1_TrackFillBrush_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderThumb`1 に割り当てられた、 Infragistics.Controls.Editors.XamSliderThumb`1.TrackFill インスタンスの背景で使用する Brush を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumb`1_TrackFillStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamSliderThumb`1 に割り当てられた、 Infragistics.Controls.Editors.XamSliderThumb`1.TrackFill インスタンスの背景で使用する Style を取得または設定します。</value>
+  </data>
+  <data name="XamSliderThumb`1_Value_Property" xml:space="preserve">
+    <value>Value プロパティの一般的な値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderDateTimeThumb_Value_Property" xml:space="preserve">
+    <value>Value プロパティの DateTime  値を取得または設定します。</value>
+  </data>
+  <data name="XamSliderDateTimeThumb_Properties" xml:space="preserve">
+    <value>XamSliderDateTimeThumb プロパティ</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_MaxValue_Property" xml:space="preserve">
+    <value>このスライダーの最大値を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_MinValue_Property" xml:space="preserve">
+    <value>このスライダーの最小値を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeSlider_MaxValue_Property" xml:space="preserve">
+    <value>このスライダーの最大値を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeSlider_MinValue_Property" xml:space="preserve">
+    <value>このスライダーの最小値を取得または設定します。</value>
+  </data>
+  <data name="XamDateTimeSlider_Value_Property" xml:space="preserve">
+    <value>値を取得または設定します。
+ActiveThumb (シンプルなスライダーの Thumb) の現在の値です。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_CanSelectMultiple_Property" xml:space="preserve">
+    <value>UI オートメーション プロバイダーによって 2 つ以上の子要素を同時に選択できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Properties" xml:space="preserve">
+    <value>XamSliderBaseAutomationPeer`1 プロパティ</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_IsSelectionRequired_Property" xml:space="preserve">
+    <value>UI オートメーション プロバイダーによって最低 1 つの子要素を選択する必要があるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_IsReadOnly_Property" xml:space="preserve">
+    <value>コントロールの値が読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_LargeChange_Property" xml:space="preserve">
+    <value>大きな変更が行ったときに (たとえば Page Down キーで) System.Windows.Automation.Provider.IRangeValueProvider.Value プロパティを上げたり下げたりする値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Maximum_Property" xml:space="preserve">
+    <value>コントロールにサポートされる最大の範囲値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Minimum_Property" xml:space="preserve">
+    <value>コントロールにサポートされる最小の範囲値を取得します</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_SmallChange_Property" xml:space="preserve">
+    <value>細かい変更をしたときに (矢印など) System.Windows.Automation.Provider.IRangeValueProvider.Value プロパティに追加または差し引く値を取得します。</value>
+  </data>
+  <data name="XamSliderBaseAutomationPeer`1_Value_Property" xml:space="preserve">
+    <value>コントロールの値を取得します。</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_IsSelected_Property" xml:space="preserve">
+    <value>項目が選択されているかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_Properties" xml:space="preserve">
+    <value>XamSliderThumbAutomationPeer`1 プロパティ</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_SelectionContainer_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.ISelectionProvider を実装し、呼び出しオブジェクトのコンテナーとして動作する UI オートメーション プロバイダーを取得します。</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_IsReadOnly_Property" xml:space="preserve">
+    <value>コントロールの値が読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamNumericSlider_MaxValue_Property" xml:space="preserve">
+    <value>スライダー範囲の最大値を取得または設定します。</value>
+  </data>
+  <data name="XamNumericSlider_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamNumericSlider_MinValue_Property" xml:space="preserve">
+    <value>スライダー範囲の最小値を取得または設定します。</value>
+  </data>
+  <data name="XamNumericSlider_Value_Property" xml:space="preserve">
+    <value>値を取得または設定します。ActiveThumb (シンプルなスライダーの Thumb) の現在の値です。</value>
+  </data>
+  <data name="XamNumericSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericSlider_TickMarks_Property" xml:space="preserve">
+    <value>メモリのコレクションを取得します。</value>
+  </data>
+  <data name="XamNumericSlider_Thumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeSlider_TickMarks_Property" xml:space="preserve">
+    <value>目盛のコレクションを取得します。</value>
+  </data>
+  <data name="XamDateTimeSlider_Thumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_ActiveThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_Properties" xml:space="preserve">
+    <value>XamSlider プロパティ</value>
+  </data>
+  <data name="XamNumericRangeSlider_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_TickMarks_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_Thumbs_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_MaxValue_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_MinValue_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamNumericRangeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_LargeChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_SmallChange_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_TickMarks_Property" xml:space="preserve">
+    <value>目盛のコレクションを取得します。</value>
+  </data>
+  <data name="XamDateTimeRangeSlider_Thumbs_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_ActiveThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamDateTimeRangeSlider_IsSelectionRangeEnabled_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamSliderThumbAutomationPeer`1_Value_Property" xml:space="preserve">
+    <value>XamSlider の値を取得します。</value>
+  </data>
+  <data name="SliderTickMarks_TickMarksValues_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DateTimeSliderTickMarks_TickMarksValues_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamSliderNumericThumb_Value_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamSliderNumericThumb_Properties" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TrackFillChangedEventArgs`1_LesserThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TrackFillChangedEventArgs`1_GreaterThumb_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamSliderBase_TouchTargetAreaWidth_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamSliderBase_TouchTargetAreaHeight_Property" xml:space="preserve">
+    <value />
+  </data>
+</root>

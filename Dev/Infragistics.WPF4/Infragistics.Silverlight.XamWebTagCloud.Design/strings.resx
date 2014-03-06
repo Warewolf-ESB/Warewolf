@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ScaleBreak_StartWeight_Property" xml:space="preserve">
+    <value>Defines the low end of the weight range that this Infragistics.Controls.Menus.ScaleBreak will affect.</value>
+  </data>
+  <data name="ScaleBreak_EndWeight_Property" xml:space="preserve">
+    <value>Defines the high end of the weight range that this Infragistics.Controls.Menus.ScaleBreak will affect.</value>
+  </data>
+  <data name="ScaleBreak_Weight_Property" xml:space="preserve">
+    <value>Weight to apply to all items that fall whithin this range.</value>
+  </data>
+  <data name="XamTagCloudAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamTagCloudSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamTagCloud</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_MaxScale_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.MaxScale property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_Properties">
+    <value>XamTagCloud Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_MinScale_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.MinScale property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_ItemSpacing_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.ItemSpacing property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_ItemsContainerStyle_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.ItemsContainerStyle property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_WeightMemberPath_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.WeightMemberPath.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_TargetName_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.TargetName property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_UseSmoothScaling_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloud.UseSmoothScaling property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_NavigateUriMemberPath_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloud.NavigateUriMemberPath property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloud_ScaleBreaks_Property">
+    <value>A collection of Infragistics.Controls.Menus.ScaleBreak's which are used to define explicit scale values for a given range of scale values.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItem_Owner_Property">
+    <value>Gets or sets a reference to the Infragistics.Controls.Menus.XamTagCloud that this Infragistics.Controls.Menus.XamTagCloudItem belongs to.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItem_Properties">
+    <value>XamTagCloudItem Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItem_Weight_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloudItem.Weight property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItemEventArgs_XamWebTagCloudItem_Property">
+    <value>Get the Infragistics.Controls.Menus.XamTagCloudItem that was clicked.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItemEventArgs_Properties">
+    <value>XamTagCloudItemEventArgs Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudClippedEventArgs_CloudClipped_Property">
+    <value>The value of this argument will be true if any of the tag cloud items are clipped or not completely displayed.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudClippedEventArgs_Properties">
+    <value>XamTagCloudClippedEventArgs Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_UseSmoothScaling_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloudPanel.UseSmoothScaling property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_Properties">
+    <value>XamTagCloudPanel Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_MaxScale_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloudPanel.MaxScale property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_MinScale_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloudPanel.MinScale property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_ItemSpacing_Property">
+    <value>Gets or sets the Infragistics.Controls.Menus.XamTagCloudPanel.ItemSpacing property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_ScaleBreaks_Property">
+    <value>A collection of Infragistics.Controls.Menus.ScaleBreak's which are used to define explicit scale values for a given range of scale values.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_HorizontalContentAlignment_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloudPanel.HorizontalContentAlignment property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudPanel_VerticalContentAlignment_Property">
+    <value>Gets and sets the Infragistics.Controls.Menus.XamTagCloudPanel.VerticalContentAlignment property.</value>
+  </data>
+  <data xml:space="preserve" name="XamTagCloudItemEventArgs_XamTagCloudItem_Property">
+    <value>Get the Infragistics.Controls.Menus.XamTagCloudItemEventArgs.XamTagCloudItem that was clicked.</value>
+  </data>
+  <data xml:space="preserve" name="HyperlinkButton_NavigateUri_Property">
+    <value>Gets or sets the URI to navigate to when the Infragistics.Controls.Menus.Primitives.HyperlinkButton is clicked.</value>
+  </data>
+  <data xml:space="preserve" name="HyperlinkButton_TargetName_Property">
+    <value>Gets or sets the name of the target to navigate to.</value>
+  </data>
+</root>

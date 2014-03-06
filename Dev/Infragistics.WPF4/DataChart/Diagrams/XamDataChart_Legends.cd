@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Charts.LegendBase">
+    <Position X="2.25" Y="1" Width="3.25" />
+    <Members>
+      <Method Name="AddChildInOrder" Hidden="true" />
+      <Property Name="ChartOwner" Hidden="true" />
+      <Field Name="contentPresenter" Hidden="true" />
+      <Field Name="ContentPresenterName" Hidden="true" />
+      <Method Name="CreateLegendItems" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="LegendBase" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnLegendItemMouseEnter" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeave" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnLegendItemMouseMove" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Owner" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Property Name="SeriesOwner" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EBCAEACCIADQBAAAIAuEAAAAigABAAAAAAQAAIAIAAI=</HashCode>
+      <FileName>Legend\LegendBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.ItemLegend">
+    <Position X="1" Y="5.25" Width="1.5" />
+    <Members>
+      <Method Name="AddChildInOrder" Hidden="true" />
+      <Method Name="ClearLegendItems" Hidden="true" />
+      <Property Name="ColorAxis" Hidden="true" />
+      <Method Name="ContainsContext" Hidden="true" />
+      <Method Name="CreateLegendItems" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="FillColumn" Hidden="true" />
+      <Property Name="ItemView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="RenderLegend" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAEAEAIAAAAAAAAIEAABAACAAQAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Legend\ItemLegend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Legend">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <Members>
+      <Method Name="AddChildInOrder" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Property Name="LegendView" Hidden="true" />
+      <Method Name="OnCreateAutomationPeer" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAEAACAQGAAAAAAAEAAABAiAAAAAEAAAAAAAAAICQ=</HashCode>
+      <FileName>Legend\Legend.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Orientation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.ScaleLegend">
+    <Position X="5.5" Y="5.25" Width="2.25" />
+    <Members>
+      <Field Name="_series" Hidden="true" />
+      <Property Name="Brushes" Hidden="true" />
+      <Property Name="BrushScale" Hidden="true" />
+      <Property Name="BrushValueColumn" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="GetBrush" Hidden="true" />
+      <Method Name="GetFirstColor" Hidden="true" />
+      <Method Name="GetTemplateElement" Hidden="true" />
+      <Method Name="InitializeLegend" Hidden="true" />
+      <Property Name="MaximumValue" Hidden="true" />
+      <Property Name="MinimumValue" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="ParentVisibility" Hidden="true" />
+      <Field Name="ParentVisibilityProperty" Hidden="true" />
+      <Field Name="ParentVisibilityPropertyName" Hidden="true" />
+      <Method Name="RenderLegend" Hidden="true" />
+      <Method Name="RestoreOriginalState" Hidden="true" />
+      <Method Name="ScaleLegend" Hidden="true" />
+      <Property Name="ScaleView" Hidden="true" />
+      <Property Name="Series" Hidden="true" />
+      <Property Name="SeriesMarkerBrush" Hidden="true" />
+      <Field Name="SeriesMarkerBrushProperty" Hidden="true" />
+      <Field Name="SeriesMarkerBrushPropertyName" Hidden="true" />
+      <Property Name="SizeValueColumn" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAgQAQkACFAAAkAAAEEAAACISAAAAAjAAABgEAAAAkE=</HashCode>
+      <FileName>Legend\ScaleLegend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="System.Windows.Controls.Orientation">
+    <Position X="3.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

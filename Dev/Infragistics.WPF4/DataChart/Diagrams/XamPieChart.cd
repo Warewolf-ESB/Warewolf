@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Charts.XamPieChart">
+    <Position X="7.25" Y="9.25" Width="1.5" />
+    <Members>
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="PieChartView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAECAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PieChart\XamPieChart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.PieChartBase">
+    <Position X="7.25" Y="2.25" Width="2.25" />
+    <Members>
+      <Property Name="ActualExplodedRadius" Hidden="true" />
+      <Property Name="ActualRadiusFactor" Hidden="true" />
+      <Property Name="ActualStartAngle" Hidden="true" />
+      <Property Name="ChartInnerExtent" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="DataUpdatedOverride" Hidden="true" />
+      <Method Name="ExplodeSlice" Hidden="true" />
+      <Property Name="FastItemsSource" Hidden="true" />
+      <Method Name="FindAngle" Hidden="true" />
+      <Method Name="FitsInsideBounds" Hidden="true" />
+      <Method Name="GetLabel" Hidden="true" />
+      <Method Name="GetSliceInnerBounds" Hidden="true" />
+      <Method Name="IsCircle" Hidden="true" />
+      <Method Name="ItemEntered" Hidden="true" />
+      <Method Name="ItemMouseLeft" Hidden="true" />
+      <Method Name="ItemMouseMoved" Hidden="true" />
+      <Property Name="LabelColumn" Hidden="true" />
+      <Property Name="LegendItems" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnSizeUpdated" Hidden="true" />
+      <Method Name="OnSliceClick" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Others" Hidden="true" />
+      <Property Name="OthersTotal" Hidden="true" />
+      <Property Name="OthersValueIndices" Hidden="true" />
+      <Method Name="PieChartBase" Hidden="true" />
+      <Method Name="PrepareData" Hidden="true" />
+      <Method Name="PrepareLabels" Hidden="true" />
+      <Method Name="PrepareSlices" Hidden="true" />
+      <Method Name="PropertyUpdatedOverride" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Method Name="RenderChart" Hidden="true" />
+      <Method Name="RenderLabels" Hidden="true" />
+      <Method Name="RenderLegendItems" Hidden="true" />
+      <Method Name="RenderSlices" Hidden="true" />
+      <Method Name="ResolveCollisions" Hidden="true" />
+      <Method Name="RoundAngle" Hidden="true" />
+      <Method Name="SelectSlice" Hidden="true" />
+      <Method Name="SetSliceAppearance" Hidden="true" />
+      <Method Name="SliceClicked" Hidden="true" />
+      <Method Name="SortLabels" Hidden="true" />
+      <Property Name="ToolTipManager" Hidden="true" />
+      <Property Name="Total" Hidden="true" />
+      <Property Name="ValueColumn" Hidden="true" />
+      <Property Name="ValueIndices" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+      <Property Name="Viewport" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="SelectedSlices" Type="Infragistics.Controls.Charts.IndexCollection">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.152" Y="-0.575" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BtgJwMBrd+PvMCBCPQnyjhARj5WzSzbUaDAhQaPUuuY=</HashCode>
+      <FileName>PieChart\PieChartBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LabelsPosition" />
+      <Property Name="OthersCategoryType" />
+      <Property Name="ExplodedSlices" />
+      <Property Name="Legend" />
+      <Property Name="SweepDirection" />
+      <Property Name="SelectedSlices" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.Slice">
+    <Position X="10.25" Y="2.25" Width="1.5" />
+    <Members>
+      <Property Name="Bounds" Hidden="true" />
+      <Property Name="CorrectedExplodedBounds" Hidden="true" />
+      <Property Name="CorrectedExplodedOrigin" Hidden="true" />
+      <Method Name="CreateShape" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="EllipsePointAlternate" Hidden="true" />
+      <Field Name="EndAngleProperty" Hidden="true" />
+      <Field Name="EndAnglePropertyName" Hidden="true" />
+      <Field Name="ExplodedOriginProperty" Hidden="true" />
+      <Field Name="ExplodedOriginPropertyName" Hidden="true" />
+      <Field Name="ExplodedRadiusProperty" Hidden="true" />
+      <Field Name="ExplodedRadiusPropertyName" Hidden="true" />
+      <Method Name="GetBounds" Hidden="true" />
+      <Method Name="GetSliceBounds" Hidden="true" />
+      <Method Name="GetSliceOrigin" Hidden="true" />
+      <Property Name="HasCorrecttedBounds" Hidden="true" />
+      <Field Name="IndexProperty" Hidden="true" />
+      <Field Name="IndexPropertyName" Hidden="true" />
+      <Field Name="InnerExtentEndProperty" Hidden="true" />
+      <Field Name="InnerExtentEndPropertyName" Hidden="true" />
+      <Field Name="InnerExtentStartProperty" Hidden="true" />
+      <Field Name="InnerExtentStartPropertyName" Hidden="true" />
+      <Field Name="IsExplodedProperty" Hidden="true" />
+      <Field Name="IsExplodedPropertyName" Hidden="true" />
+      <Field Name="IsOtherSliceProperty" Hidden="true" />
+      <Field Name="IsOtherSlicePropertyName" Hidden="true" />
+      <Field Name="IsSelectedProperty" Hidden="true" />
+      <Field Name="IsSelectedPropertyName" Hidden="true" />
+      <Property Name="Label" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Field Name="OriginProperty" Hidden="true" />
+      <Field Name="OriginPropertyName" Hidden="true" />
+      <Property Name="Owner" Hidden="true" />
+      <Field Name="RadiusProperty" Hidden="true" />
+      <Field Name="RadiusPropertyName" Hidden="true" />
+      <Method Name="Slice" Hidden="true" />
+      <Field Name="StartAngleProperty" Hidden="true" />
+      <Field Name="StartAnglePropertyName" Hidden="true" />
+      <Field Name="StrokeThicknessProperty" Hidden="true" />
+      <Field Name="StrokeThicknessPropertyName" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AjApgxSI0ihANBAACQOAQASAiAABAIAAAgEYyLgDAhA=</HashCode>
+      <FileName>PieChart\Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Media.Brush" Collapsed="true">
+    <Position X="3.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.IndexCollection" Collapsed="true">
+    <Position X="11.25" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PieChart\PieChartBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Charts.LegendBase">
+    <Position X="3.5" Y="8.25" Width="2.5" />
+    <Members>
+      <Method Name="AddChildInOrder" Hidden="true" />
+      <Property Name="ChartOwner" Hidden="true" />
+      <Method Name="CreateLegendItems" Hidden="true" />
+      <Method Name="CreateView" Hidden="true" />
+      <Method Name="OnLegendItemMouseEnter" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeave" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonDown" Hidden="true" />
+      <Method Name="OnLegendItemMouseLeftButtonUp" Hidden="true" />
+      <Method Name="OnLegendItemMouseMove" Hidden="true" />
+      <Method Name="OnViewCreated" Hidden="true" />
+      <Property Name="Owner" Hidden="true" />
+      <Method Name="RaisePropertyChanged" Hidden="true" />
+      <Property Name="SeriesOwner" Hidden="true" />
+      <Property Name="View" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EBCAEACCIADQBAAAIAuEAAAAigABAAAAAAQAAIAIAAI=</HashCode>
+      <FileName>Legend\LegendBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="Infragistics.Controls.Charts.LabelsPosition">
+    <Position X="1.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAADAAAAAAAAAAAAAAAAEIAAA=</HashCode>
+      <FileName>Enumerations\LabelsPosition.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.OthersCategoryType">
+    <Position X="3.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Enumerations\OthersCategoryType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="System.Windows.Media.SweepDirection">
+    <Position X="3.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

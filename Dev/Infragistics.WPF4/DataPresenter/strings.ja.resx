@@ -1,0 +1,1010 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LE_ArgumentException_1" xml:space="preserve">
+    <value>セル値を変更できません。</value>
+  </data>
+  <data name="LE_ArgumentException_10" xml:space="preserve">
+    <value>ActiveRecord は、この DataPresenterBase からの必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_11" xml:space="preserve">
+    <value>オブジェクトで渡されるのは、セルやレコードの必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_13" xml:space="preserve">
+    <value>他の DataPresenterBase と関連しているレコードを使用できません。</value>
+  </data>
+  <data name="LE_ArgumentException_14" xml:space="preserve">
+    <value>キーがみつかりませんでした。</value>
+  </data>
+  <data name="LE_ArgumentException_15" xml:space="preserve">
+    <value>このフィールドは、オーナーであるフィールド コレクションに含まれていない限り、'PrimaryField' にできません。</value>
+  </data>
+  <data name="LE_ArgumentException_16" xml:space="preserve">
+    <value>このフィールドは、オーナーであるフィールド コレクションに含まれていない限り、'ScrollTipField' にできません。</value>
+  </data>
+  <data name="LE_ArgumentException_2" xml:space="preserve">
+    <value>ErrorText を Null 値にはできません。</value>
+  </data>
+  <data name="LE_ArgumentException_20" xml:space="preserve">
+    <value>FieldSettings.EditorType は、ValueEditor に基づくタイプに設定される必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_22" xml:space="preserve">
+    <value>FieldSortDescription が、いったんコレクションに追加されると変更することはできません。</value>
+  </data>
+  <data name="LE_ArgumentException_23" xml:space="preserve">
+    <value>キーが見つかりませんでした。</value>
+  </data>
+  <data name="LE_ArgumentException_24" xml:space="preserve">
+    <value>キーが見つかりませんでした。</value>
+  </data>
+  <data name="LE_ArgumentException_25" xml:space="preserve">
+    <value>フィールドは、同じフィールド レイアウトからである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_26" xml:space="preserve">
+    <value>このフィールドの FieldSortDescription は、すでにコレクションにあります。</value>
+  </data>
+  <data name="LE_ArgumentException_27" xml:space="preserve">
+    <value>指定したフィールド レイアウトは、リスト オブジェクトと互換性がありません。</value>
+  </data>
+  <data name="LE_ArgumentException_28" xml:space="preserve">
+    <value>フィールドは、レコードとして同じフィールド レイアウトからである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_29" xml:space="preserve">
+    <value>異なるタイプのオブジェクトを比較することはできません。</value>
+  </data>
+  <data name="LE_ArgumentException_3" xml:space="preserve">
+    <value>DefaultFieldLayout は、フィールド レイアウト コレクションに含まれる FieldLayout のみに設定できます。</value>
+  </data>
+  <data name="LE_ArgumentException_30" xml:space="preserve">
+    <value>レコードは、同じフィールド レイアウトからである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_31" xml:space="preserve">
+    <value>レコードは、同じ dataPresenter の表示レイアウトからの有効なレコードである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_32" xml:space="preserve">
+    <value>セルは、同じフィールド レイアウトからである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_33" xml:space="preserve">
+    <value>セルは、同じ dataPresenter のフィールド レイアウトからの有効なセルである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_34" xml:space="preserve">
+    <value>フィールドは、同じフィールド レイアウトからである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_35" xml:space="preserve">
+    <value>フィールドは、同じ dataPresenter の表示レイアウトからの有効なフィールドである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_36" xml:space="preserve">
+    <value>フィールドを選択できません。SelectionType の設定が無効です。</value>
+  </data>
+  <data name="LE_ArgumentException_4" xml:space="preserve">
+    <value>このセルは、正しくk初期化されていません。</value>
+  </data>
+  <data name="LE_ArgumentException_5" xml:space="preserve">
+    <value>セルは、このコントロールと関連付けされていません。</value>
+  </data>
+  <data name="LE_ArgumentException_6" xml:space="preserve">
+    <value>レコードは、このコントロールと関連付けされていません。</value>
+  </data>
+  <data name="LE_ArgumentException_7" xml:space="preserve">
+    <value>DataRecord は、同じ DataPresenterBase からである必要があります。</value>
+  </data>
+  <data name="LE_ArgumentException_8" xml:space="preserve">
+    <value>表示によって提供される ItemsPanelType が、パネルに基づいていません。</value>
+  </data>
+  <data name="LE_ArgumentException_9" xml:space="preserve">
+    <value>ActiveCell は、この DataPresenterBase からの必要があります。</value>
+  </data>
+  <data name="LE_ArgumentNullException_1" xml:space="preserve">
+    <value>CarouselBreadcrumb が null です。</value>
+  </data>
+  <data name="LE_ArgumentNullException_2" xml:space="preserve">
+    <value>RangeSelectionEvaluator のコンストラクタ。</value>
+  </data>
+  <data name="LE_ArgumentNullException_3" xml:space="preserve">
+    <value>{0} は null にできません。</value>
+  </data>
+  <data name="LE_ArgumentNullException_4" xml:space="preserve">
+    <value>ExpandableFieldRecord ctor 内のフィールド</value>
+  </data>
+  <data name="LE_ArgumentNullException_5" xml:space="preserve">
+    <value>RecordListControl コンストラクタ内の dataPresenter</value>
+  </data>
+  <data name="LE_InvalidOperationException_1" xml:space="preserve">
+    <value>セルがアクティブ化されていません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_10" xml:space="preserve">
+    <value>FieldLayout は、他の DataPresenterBase へ移動できません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_11" xml:space="preserve">
+    <value>GridViewPanel の RecordListControl は見つかりませんでした。</value>
+  </data>
+  <data name="LE_InvalidOperationException_12" xml:space="preserve">
+    <value>GroupByArea.StyleVersionNumber PropertyInvalidatedCallback 内で無効なターゲットです。</value>
+  </data>
+  <data name="LE_InvalidOperationException_13" xml:space="preserve">
+    <value>OnToggleExpandedState 内での無効なターゲット。</value>
+  </data>
+  <data name="LE_InvalidOperationException_14" xml:space="preserve">
+    <value>レコードの固定状態を変更できません。 {0}</value>
+  </data>
+  <data name="LE_InvalidOperationException_15" xml:space="preserve">
+    <value>表示の GetContainerForRecordPresenter メソッドは、無効なコンテナを返しました。コンテナは、ContentControl または、implement IRecordPresenterContainer のどちらかに基づいている必要があります。</value>
+  </data>
+  <data name="LE_InvalidOperationException_16" xml:space="preserve">
+    <value>RecordPresenterContainer.RecordPresenter の RecordPresenter コンテナの実装は、RecordPresenter を返しませんでした。カスタムビューを実装する場合は、View's GetContainerForRecordPresenter によって返されるコンテナが、派生されていることを確認してください。 </value>
+  </data>
+  <data name="LE_InvalidOperationException_17" xml:space="preserve">
+    <value>レコードを選択できません。SelectionType の設定が無効です。</value>
+  </data>
+  <data name="LE_InvalidOperationException_18" xml:space="preserve">
+    <value>SelectionType が Single または SingleAutoDrag に設定されている場合、1 つ以上の行を選択することはできません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_19" xml:space="preserve">
+    <value>列を選択できません。SelectionType がありません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_2" xml:space="preserve">
+    <value>セルは、編集モードにできません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_20" xml:space="preserve">
+    <value>列を選択できません。SelectionType の設定が無効です。</value>
+  </data>
+  <data name="LE_InvalidOperationException_21" xml:space="preserve">
+    <value>SelectionType が Single または SingleAutoDrag に設定されている場合、1 つ以上のセルを選択することはできません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_22" xml:space="preserve">
+    <value>セルを選択できません。SelectionType がありません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_23" xml:space="preserve">
+    <value>SelectionType が Single または SingleAutoDrag に設定されている場合、1 つ以上の行を選択することはできません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_24" xml:space="preserve">
+    <value>フィールドを選択できません。SelectionType がありません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_25" xml:space="preserve">
+    <value>列挙体は、スタートしていません</value>
+  </data>
+  <data name="LE_InvalidOperationException_26" xml:space="preserve">
+    <value>列挙体は、終了しました。</value>
+  </data>
+  <data name="LE_InvalidOperationException_3" xml:space="preserve">
+    <value>'{0}' は、表示へスクロールできません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_4" xml:space="preserve">
+    <value>SelectionStrategy が null です。</value>
+  </data>
+  <data name="LE_InvalidOperationException_5" xml:space="preserve">
+    <value>DataPresenterBase は、初期化されていません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_6" xml:space="preserve">
+    <value>UnboundField: {0} の CellValuePresenter の Value プロパティをバインドする際に例外が発生しました。</value>
+  </data>
+  <data name="LE_InvalidOperationException_7" xml:space="preserve">
+    <value>DataItems コレクションを介して、明示的に追加された項目のある DataPresenter で DataSource を設定できません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_8" xml:space="preserve">
+    <value>DataSource にバウンドされた DataPresenter 項目を追加できません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_9" xml:space="preserve">
+    <value>フィールドは、他のコレクションへ移動できません。</value>
+  </data>
+  <data name="LE_NotSupportedException_1" xml:space="preserve">
+    <value>メソッドはサポートされていません。このコレクションは読み取り専用です。</value>
+  </data>
+  <data name="LE_NotSupportedException_10" xml:space="preserve">
+    <value>このメソッドまたは操作は、サポートされていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_11" xml:space="preserve">
+    <value>AllocateNewRecord はサポートされていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_12" xml:space="preserve">
+    <value>GroupByRecords は、このコレクションでサポートされていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_13" xml:space="preserve">
+    <value>クリア操作はサポートされていません。</value>
+  </data>
+  <data name="LE_NotSupportedException_2" xml:space="preserve">
+    <value>CellPresenter.IsFieldSelected を設定できません。</value>
+  </data>
+  <data name="LE_NotSupportedException_3" xml:space="preserve">
+    <value>CellValuePresenter.IsFieldSelected を設定できません。</value>
+  </data>
+  <data name="LE_NotSupportedException_4" xml:space="preserve">
+    <value>{2} の名前は {0} '{1}' だけで、{3} にはできません。</value>
+  </data>
+  <data name="LE_NotSupportedException_5" xml:space="preserve">
+    <value>強制的に編集モードの終了をキャンセルできません。</value>
+  </data>
+  <data name="LE_NotSupportedException_6" xml:space="preserve">
+    <value>ISparseArrayItem.GetOwnerData を呼び出すことができません。</value>
+  </data>
+  <data name="LE_NotSupportedException_7" xml:space="preserve">
+    <value>ISparseArrayItem.GetOwnerData を呼び出すことができません。</value>
+  </data>
+  <data name="LE_NotSupportedException_8" xml:space="preserve">
+    <value>フィールド名 {0} が、データソースに見つかりませんでした。 {1}</value>
+  </data>
+  <data name="LE_NotSupportedException_9" xml:space="preserve">
+    <value>DataRecordCellAreaGridTemplate は、視覚的ツリーとしてグリッドが必要です。</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_BeyondNextMonth" xml:space="preserve">
+    <value>翌月以降</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextMonth" xml:space="preserve">
+    <value>翌月</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LaterThisMonth" xml:space="preserve">
+    <value>今月下旬</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAway" xml:space="preserve">
+    <value>3 週間後</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAway" xml:space="preserve">
+    <value>2 週間後</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_NextWeek" xml:space="preserve">
+    <value>翌週</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Today" xml:space="preserve">
+    <value>今日</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Yesterday" xml:space="preserve">
+    <value>昨日</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_DayOfWeekFormatString" xml:space="preserve">
+    <value>{0:dddd}</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastWeek" xml:space="preserve">
+    <value>先週</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_TwoWeeksAgo" xml:space="preserve">
+    <value>2 週間前</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_ThreeWeeksAgo" xml:space="preserve">
+    <value>3 週間前</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_EarlierThisMonth" xml:space="preserve">
+    <value>今月上旬</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_LastMonth" xml:space="preserve">
+    <value>先月</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_Older" xml:space="preserve">
+    <value>以前</value>
+  </data>
+  <data name="Outlook_GroupByMode_Description_None" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="GroupByDescription_NullValue_Literal" xml:space="preserve">
+    <value>[null]</value>
+  </data>
+  <data name="GroupByDescription_Format_OneChild" xml:space="preserve">
+    <value>{0} ({1} 項目)</value>
+  </data>
+  <data name="GroupByDescription_Format_NotOneChild" xml:space="preserve">
+    <value>{0} ({1:n0} 項目)</value>
+  </data>
+  <data name="GroupByArea_Prompt1" xml:space="preserve">
+    <value>エリア毎のグループ</value>
+  </data>
+  <data name="GroupByArea_Prompt2" xml:space="preserve">
+    <value>フィールド毎にグループ分けするときは、ここにフィールドをドラッグします。</value>
+  </data>
+  <data name="DataErrorMessageTitle" xml:space="preserve">
+    <value>データ エラー</value>
+  </data>
+  <data name="DeleteSingleRecordMessageTitle" xml:space="preserve">
+    <value>レコードの削除</value>
+  </data>
+  <data name="DeleteRecordsMessageTitle" xml:space="preserve">
+    <value>レコードの削除</value>
+  </data>
+  <data name="DeleteMultipleRecordsPrompt" xml:space="preserve">
+    <value>削除対象として {0} 行を選択しました。[はい] を選択すると行が削除され、[いいえ] を選択すると終了します。</value>
+  </data>
+  <data name="DeleteSingleRecordPrompt" xml:space="preserve">
+    <value>削除対象として 1 レコードを選択しました。[はい] を選択すると行が削除され、[いいえ] を選択すると終了します。</value>
+  </data>
+  <data name="DataErrorDeleteRecordUnableToDelete" xml:space="preserve">
+    <value>レコードを削除できません: {0}</value>
+  </data>
+  <data name="DataError_GetCellValue" xml:space="preserve">
+    <value>セル値を取得できません。</value>
+  </data>
+  <data name="DataError_UpdateCellValue" xml:space="preserve">
+    <value>セル値を取得できません。</value>
+  </data>
+  <data name="DataError_UpdateRecord" xml:space="preserve">
+    <value>レコードを更新できません。</value>
+  </data>
+  <data name="SummaryCalculator_Average_Description" xml:space="preserve">
+    <value>平均を計算します。</value>
+  </data>
+  <data name="SummaryCalculator_Average_Name" xml:space="preserve">
+    <value>平均値</value>
+  </data>
+  <data name="SummaryCalculator_Count_Description" xml:space="preserve">
+    <value>空でない値の数を計算します。</value>
+  </data>
+  <data name="SummaryCalculator_Count_Name" xml:space="preserve">
+    <value>カウント</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Description" xml:space="preserve">
+    <value>最大値を計算します</value>
+  </data>
+  <data name="SummaryCalculator_Maximum_Name" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Description" xml:space="preserve">
+    <value>最小値を計算します</value>
+  </data>
+  <data name="SummaryCalculator_Minimum_Name" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Description" xml:space="preserve">
+    <value>合計を計算します</value>
+  </data>
+  <data name="SummaryCalculator_Sum_Name" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AddConditionLabelProperty" xml:space="preserve">
+    <value>条件の追加</value>
+  </data>
+  <data name="CustomFilterSelectionControl_AndGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>「And」 グループ</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelButtonLabelProperty" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTextProperty" xml:space="preserve">
+    <value>1 つ以上のフィルターが変更されました。変更を破棄して終了してもよろしいですか？</value>
+  </data>
+  <data name="CustomFilterSelectionControl_CancelMessageTitleProperty" xml:space="preserve">
+    <value>カスタム フィルターの変更をキャンセルする</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTextProperty" xml:space="preserve">
+    <value>1 つ以上の条件は検証エラーを含みます。 継続する前に、エラーを修正してください</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionErrorMessageTitleProperty" xml:space="preserve">
+    <value>条件エラー</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionError_Empty" xml:space="preserve">
+    <value>条件が空です。</value>
+  </data>
+  <data name="CustomFilterSelectionControl_FieldDescriptionProperty" xml:space="preserve">
+    <value>フィールド '{0}'</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsAndGroupLabelProperty" xml:space="preserve">
+    <value>「And」 グループ</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedConditionsAsOrGroupLabelProperty" xml:space="preserve">
+    <value>「Or」 グループ</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OkButtonLabelProperty" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperandFieldLabel" xml:space="preserve">
+    <value>オペランド</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OperatorFieldLabel" xml:space="preserve">
+    <value>演算子</value>
+  </data>
+  <data name="CustomFilterSelectionControl_OrGroupLegendDescriptionProperty" xml:space="preserve">
+    <value>「Or」 グループ</value>
+  </data>
+  <data name="CustomFilterSelectionControl_RemoveSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>条件の削除</value>
+  </data>
+  <data name="CustomFilterSelectionControl_TitleDescriptionProperty" xml:space="preserve">
+    <value>カスタム フィルターの選択</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ToggleOperatorOfSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>切り替え</value>
+  </data>
+  <data name="CustomFilterSelectionControl_UngroupSelectedConditionsLabelProperty" xml:space="preserve">
+    <value>グループ化を解除</value>
+  </data>
+  <data name="FixedFieldButton_FixToFarEdgePromptProperty" xml:space="preserve">
+    <value>遠い端に固定する</value>
+  </data>
+  <data name="FixedFieldButton_FixToNearEdgePromptProperty" xml:space="preserve">
+    <value>近い端に固定する</value>
+  </data>
+  <data name="FixedFieldButton_UnfixPromptProperty" xml:space="preserve">
+    <value>固定化を解除</value>
+  </data>
+  <data name="LE_ArgumentException_37" xml:space="preserve">
+    <value>RecordFilter は Null 値にできません</value>
+  </data>
+  <data name="LE_ArgumentException_38" xml:space="preserve">
+    <value>RecordManager は Null 値にできません。</value>
+  </data>
+  <data name="LE_ArgumentNullException_6" xml:space="preserve">
+    <value>CustomFilterSelectionControl の ExecuteCommandImpl メソッドのコマンド</value>
+  </data>
+  <data name="LE_NotSupportedException_14" xml:space="preserve">
+    <value>XamDataGrid は、その Dispatcher スレッド以外のスレッドから DataSource の (ListChangedType.ItemChange 以外の) 変更をサポートしません。</value>
+  </data>
+  <data name="LE_NotSupportedInExpress" xml:space="preserve">
+    <value>{0} は、Express バージョンでサポートされていません。</value>
+  </data>
+  <data name="SR_FilterDropDownItem_All" xml:space="preserve">
+    <value>(すべて)</value>
+  </data>
+  <data name="SR_FilterDropDownItem_Custom" xml:space="preserve">
+    <value>(カスタム)</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_And" xml:space="preserve">
+    <value>クリックしてこのグループの LogicalOperator を 「And」 に変更します。</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ChangeGroupLogicalOperatorTo_Or" xml:space="preserve">
+    <value>クリックしてこのグループの LogicalOperator を 「Or」 に変更します。</value>
+  </data>
+  <data name="LE_InvalidOperationException_27" xml:space="preserve">
+    <value>1 つの RecordFilter オブジェクトを複数の RecordFilterCollection に追加できません。</value>
+  </data>
+  <data name="LE_InvalidOperationException_28" xml:space="preserve">
+    <value>ルート レコード マネージャーの RecordFilter は廃止されました。代わりに FieldLayout の RecordFilter を使用してください。</value>
+  </data>
+  <data name="CustomFilterSelectionControl_GroupSelectedLabelProperty" xml:space="preserve">
+    <value>選択されたグループ:</value>
+  </data>
+  <data name="LE_DuplicateSummaryDefinitionKey" xml:space="preserve">
+    <value>指定されたキー '{0}' を持つ集計はコレクションで既に存在します。</value>
+  </data>
+  <data name="LE_InvalidCustomizationRootElement" xml:space="preserve">
+    <value>LoadCustomizations で無効なルート要素があります。</value>
+  </data>
+  <data name="LE_InvalidMoveToPagePosition" xml:space="preserve">
+    <value>TabularReportViewPanel の MoveToPosition メソッドで無効な PagePosition '{0}' があります。</value>
+  </data>
+  <data name="LE_LoadCustomizationInProgress" xml:space="preserve">
+    <value>カスタマイズを読み込んでいます。</value>
+  </data>
+  <data name="LE_MismatchedFieldInRecordFilter" xml:space="preserve">
+    <value>ShowCustomFilterSelectionControl メソッドに渡された RecordFilter は別の FieldLayout にある Field ({0}) を参照します。</value>
+  </data>
+  <data name="LE_MissingField" xml:space="preserve">
+    <value>Field '{0}' はフィールド コレクションに存在しません。</value>
+  </data>
+  <data name="LE_SummaryDefinitionAlreadyInCollection" xml:space="preserve">
+    <value>SummaryDefinition '{0}' は既に SummaryDefinitionCollection に属しています。SummaryDefinition を複数 SummaryDefinitionCollection に追加できません。</value>
+  </data>
+  <data name="LE_ValueCannotBeNegative" xml:space="preserve">
+    <value>値は 0 以上に設定する必要があります。 現在の値 = {0}</value>
+  </data>
+  <data name="LE_ValueMustBePositive" xml:space="preserve">
+    <value>値は 0 よりも大きい値に設定する必要があります。現在の値 = {0}</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Text" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="SummarySelectionControl_None_Entry_Tooltip" xml:space="preserve">
+    <value>既存の計算を削除します。</value>
+  </data>
+  <data name="ClipboardError_ClearContentsTitle" xml:space="preserve">
+    <value>コンテンツ エラーをクリア</value>
+  </data>
+  <data name="ClipboardError_ConversionErrorMessage" xml:space="preserve">
+    <value>{0} フィールドの値をターゲット タイプに変換できません。 追加情報:
+{1}
+
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="ClipboardError_CopyTitle" xml:space="preserve">
+    <value>コピー エラー</value>
+  </data>
+  <data name="ClipboardError_CutTitle" xml:space="preserve">
+    <value>切り取りエラー</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCanContinue" xml:space="preserve">
+    <value>操作を実行できません。追加情報:
+{0}
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="ClipboardError_ExceptionMessageCannotContinue" xml:space="preserve">
+    <value>操作を実行できません。 追加情報:
+{0}</value>
+  </data>
+  <data name="ClipboardError_InsertRecordErrorMessage" xml:space="preserve">
+    <value>新しいレコードを挿入するときにエラーが発生しました。</value>
+  </data>
+  <data name="ClipboardError_MixedSelectionMessage" xml:space="preserve">
+    <value>コマンドは複数の選択項目では実行できません。</value>
+  </data>
+  <data name="ClipboardError_NonRectangularSelectionMessage" xml:space="preserve">
+    <value>選択は矩形である必要があります。単一セルの範囲を選択してください。または、選択項目を含むすべてのレコードで同じフィールドが選択されたことを確認してください。</value>
+  </data>
+  <data name="ClipboardError_NotEnoughColumnsMessage" xml:space="preserve">
+    <value>クリップボード情報を貼り付けようとしている領域の列数が不足しています。続行すると使用可能なセルに情報を貼り付けますが、失われるデータがあります。
+この操作を続行しますか？</value>
+  </data>
+  <data name="ClipboardError_NotEnoughRowsMessage" xml:space="preserve">
+    <value>クリップボード情報を貼り付けようとしている領域の行数が不足しています。続行すると使用可能なセルに情報を貼り付けますが、失われるデータがあります。
+この操作を続行しますか？</value>
+  </data>
+  <data name="ClipboardError_PasteTitle" xml:space="preserve">
+    <value>貼り付けエラー</value>
+  </data>
+  <data name="ClipboardError_ReadOnlyCellMessage" xml:space="preserve">
+    <value>{0} セルは読み取り専用です。
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="ClipboardError_SetCellValueErrorMessage" xml:space="preserve">
+    <value>セルを変更したときにエラーが発生しました。追加情報:
+{0}
+
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="ClipboardError_UpdateRecordErrorMessage" xml:space="preserve">
+    <value>変更をレコードにコミットするときにエラーが発生しました。
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="ClipboardError_ValidationErrorMessage" xml:space="preserve">
+    <value>セルの値を検証するときにエラーが発生しました。追加情報:
+{0}
+
+残りのセルで続行しますか?</value>
+  </data>
+  <data name="FieldChooser_Title" xml:space="preserve">
+    <value>フィールドの選択</value>
+  </data>
+  <data name="FixedRecordButton_FixToBottomPromptProperty" xml:space="preserve">
+    <value>下に固定</value>
+  </data>
+  <data name="FixedRecordButton_FixToTopPromptProperty" xml:space="preserve">
+    <value>上に固定</value>
+  </data>
+  <data name="FixedRecordButton_UnfixPromptProperty" xml:space="preserve">
+    <value>固定の解除</value>
+  </data>
+  <data name="LE_NotInFieldLayoutFields" xml:space="preserve">
+    <value>フィールドを FieldLayout の Field コレクションに追加する必要があります。</value>
+  </data>
+  <data name="LE_SetDataSourceDuringExport" xml:space="preserve">
+    <value>DataSource プロパティは、エクスポートに使用されるクローン DataPresenter に割り当てられません。</value>
+  </data>
+  <data name="LE_ValueProperty_InvalidIndex" xml:space="preserve">
+    <value>セル値を更新できません。項目が含むリストに既存しません。</value>
+  </data>
+  <data name="LE_ValueProperty_ListIsReadOnly" xml:space="preserve">
+    <value>セル値を更新できません。含むリストが読み取り専用です</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseCardToolTip" xml:space="preserve">
+    <value>カードを縮小</value>
+  </data>
+  <data name="CardHeaderPresenter_CollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>空のセルを縮小</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseCardToolTip" xml:space="preserve">
+    <value>カードを復元</value>
+  </data>
+  <data name="CardHeaderPresenter_UnCollapseEmptyCellsToolTip" xml:space="preserve">
+    <value>空のセルを復元</value>
+  </data>
+  <data name="Card_AddNewRecordTitle" xml:space="preserve">
+    <value>新規レコードを追加</value>
+  </data>
+  <data name="LE_CannotPerformAutomationOperation" xml:space="preserve">
+    <value>この操作を実行できません。</value>
+  </data>
+  <data name="Card_FilterRecordTitle" xml:space="preserve">
+    <value>フィルター条件</value>
+  </data>
+  <data name="LE_EditorStyleTargetTypeMissingOrInvalid" xml:space="preserve">
+    <value>FieldSettings.EditorStyle プロパティに設定された Style の不明または無効な TargetType。</value>
+  </data>
+  <data name="LE_InvalidOperationException_26B" xml:space="preserve">
+    <value>UnboundField の Binding と {0} プロパティは相互に排他的です。両方の設定は指定できません。</value>
+  </data>
+  <data name="FilterDropDownLoadingIndicator" xml:space="preserve">
+    <value>読み込んでいます...</value>
+  </data>
+  <data name="FilterDropDown_AsynchLoadingIndicator" xml:space="preserve">
+    <value>値を読み込んでいます...</value>
+  </data>
+  <data name="Export_CannotExportMultipleTimes" xml:space="preserve">
+    <value>他の操作が保留中または処理中であるため、エクスポート操作を初期化できません。</value>
+  </data>
+  <data name="RecordExportStatus_Message_Pending" xml:space="preserve">
+    <value>'{0}' へエクスポート - 保留中</value>
+  </data>
+  <data name="RecordExportStatus_Message_Initializing" xml:space="preserve">
+    <value>'{0}' へエクスポート - 初期化中</value>
+  </data>
+  <data name="RecordExportStatus_Message_Exporting" xml:space="preserve">
+    <value>'{0}' へエクスポート - {1} レコードが処理されました</value>
+  </data>
+  <data name="RecordExportStatus_CancelExportToolTip" xml:space="preserve">
+    <value>エクスポートをキャンセルします。</value>
+  </data>
+  <data name="ExportOperationDisabled_Title" xml:space="preserve">
+    <value>操作はキャンセルされません。</value>
+  </data>
+  <data name="ExportOperationDisabled_Message" xml:space="preserve">
+    <value>'{0}' はエクスポート処理中に許可されません。</value>
+  </data>
+  <data name="UIOperation_ClearCellContents" xml:space="preserve">
+    <value>セル コンテンツを削除しています</value>
+  </data>
+  <data name="UIOperation_Edit" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="UIOperation_FieldMoving" xml:space="preserve">
+    <value>フィールドの移動</value>
+  </data>
+  <data name="UIOperation_FieldFixing" xml:space="preserve">
+    <value>フィールドの固定/固定解除</value>
+  </data>
+  <data name="UIOperation_FieldGrouping" xml:space="preserve">
+    <value>グループ化/グループ化解除</value>
+  </data>
+  <data name="UIOperation_FieldVisibility" xml:space="preserve">
+    <value>フィールドの表示/非表示</value>
+  </data>
+  <data name="UIOperation_FieldResizing" xml:space="preserve">
+    <value>サイズ変更</value>
+  </data>
+  <data name="UIOperation_FieldAutoSizing" xml:space="preserve">
+    <value>サイズ変更</value>
+  </data>
+  <data name="UIOperation_FieldSorting" xml:space="preserve">
+    <value>並べ替え</value>
+  </data>
+  <data name="UIOperation_Paste" xml:space="preserve">
+    <value>貼り付け</value>
+  </data>
+  <data name="UIOperation_FieldSummaries" xml:space="preserve">
+    <value>集計の変更</value>
+  </data>
+  <data name="UIOperation_RecordResizing" xml:space="preserve">
+    <value>サイズ変更</value>
+  </data>
+  <data name="UIOperation_RecordFixing" xml:space="preserve">
+    <value>レコードの固定/固定解除</value>
+  </data>
+  <data name="UIOperation_RecordFiltering" xml:space="preserve">
+    <value>フィルターの変更</value>
+  </data>
+  <data name="UIOperation_RecordExpandCollapse" xml:space="preserve">
+    <value>展開/縮小</value>
+  </data>
+  <data name="UIOperation_DeleteRecord" xml:space="preserve">
+    <value>レコードを削除しています</value>
+  </data>
+  <data name="UIOperation_Undo" xml:space="preserve">
+    <value>元に戻す/やり直し</value>
+  </data>
+  <data name="CalculationAdapter_InvalidValue" xml:space="preserve">
+    <value>CalculationAdapter は、DataPresenterCalculationAdapter" のインスタンスのみに設定できます。</value>
+  </data>
+  <data name="CalculationAdapter_NotMultiUse" xml:space="preserve">
+    <value>CalculationAdapter は DataPresenterBase の他のインスタンスに設定されています</value>
+  </data>
+  <data name="UnknownTypeName" xml:space="preserve">
+    <value>{1} で TreatAsTypeName '{0}' を解決できません</value>
+  </data>
+  <data name="CustomFilterSelectionControl_ConditionError_IncompatibleOperator" xml:space="preserve">
+    <value>互換性のない演算子。</value>
+  </data>
+  <data name="RecordFilterTreeSearchTextPrompt" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="RecordFilterTreeSearchTextPromptScoped" xml:space="preserve">
+    <value>{0} の検索</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_All" xml:space="preserve">
+    <value>(すべて)</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Year" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Month" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Day" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Hour" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Minute" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="RecordFilterTreeSearchScope_Second" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="RecordFilterTreeNoSearchMatches" xml:space="preserve">
+    <value>一致する項目はありませんでした。</value>
+  </data>
+  <data name="RecordFilterTreeItem_SelectAll" xml:space="preserve">
+    <value>(すべて選択)</value>
+  </data>
+  <data name="RecordFilterTreeItem_SelectAllSearch" xml:space="preserve">
+    <value>(検索結果をすべて選択)</value>
+  </data>
+  <data name="RecordFilterTreeItem_AddToFilter" xml:space="preserve">
+    <value>現在の選択をフィルターに追加</value>
+  </data>
+  <data name="FilterMenuCaption_Tomorrow_Operand" xml:space="preserve">
+    <value>明日(_T)</value>
+  </data>
+  <data name="FilterMenuCaption_Today_Operand" xml:space="preserve">
+    <value>今日(_O)</value>
+  </data>
+  <data name="FilterMenuCaption_Yesterday_Operand" xml:space="preserve">
+    <value>昨日(_D)</value>
+  </data>
+  <data name="FilterMenuCaption_NextWeek_Operand" xml:space="preserve">
+    <value>来週(_K)</value>
+  </data>
+  <data name="FilterMenuCaption_ThisWeek_Operand" xml:space="preserve">
+    <value>今週(_H)</value>
+  </data>
+  <data name="FilterMenuCaption_LastWeek_Operand" xml:space="preserve">
+    <value>先週(_L)</value>
+  </data>
+  <data name="FilterMenuCaption_NextMonth_Operand" xml:space="preserve">
+    <value>来月(_M)</value>
+  </data>
+  <data name="FilterMenuCaption_ThisMonth_Operand" xml:space="preserve">
+    <value>今月(_M)</value>
+  </data>
+  <data name="FilterMenuCaption_LastMonth_Operand" xml:space="preserve">
+    <value>先月(_N)</value>
+  </data>
+  <data name="FilterMenuCaption_NextQuarter_Operand" xml:space="preserve">
+    <value>来四半期(_Q)</value>
+  </data>
+  <data name="FilterMenuCaption_ThisQuarter_Operand" xml:space="preserve">
+    <value>今四半期(_U)</value>
+  </data>
+  <data name="FilterMenuCaption_LastQuarter_Operand" xml:space="preserve">
+    <value>前四半期(_Q)</value>
+  </data>
+  <data name="FilterMenuCaption_NextYear_Operand" xml:space="preserve">
+    <value>来年(_X)</value>
+  </data>
+  <data name="FilterMenuCaption_ThisYear_Operand" xml:space="preserve">
+    <value>今年(_I)</value>
+  </data>
+  <data name="FilterMenuCaption_LastYear_Operand" xml:space="preserve">
+    <value>昨年(_Y)</value>
+  </data>
+  <data name="FilterMenuCaption_YearToDate_Operand" xml:space="preserve">
+    <value>今年の初めから今日まで(_A)</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter1_Operand" xml:space="preserve">
+    <value>第一四半期</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter2_Operand" xml:space="preserve">
+    <value>第二四半期</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter3_Operand" xml:space="preserve">
+    <value>第三四半期</value>
+  </data>
+  <data name="FilterMenuCaption_Quarter4_Operand" xml:space="preserve">
+    <value>第四四半期</value>
+  </data>
+  <data name="FilterMenuCaption_January_Operand" xml:space="preserve">
+    <value>1 月(_J)</value>
+  </data>
+  <data name="FilterMenuCaption_February_Operand" xml:space="preserve">
+    <value>2 月(_F)</value>
+  </data>
+  <data name="FilterMenuCaption_March_Operand" xml:space="preserve">
+    <value>3 月(_M)</value>
+  </data>
+  <data name="FilterMenuCaption_April_Operand" xml:space="preserve">
+    <value>４月 (_A)</value>
+  </data>
+  <data name="FilterMenuCaption_May_Operand" xml:space="preserve">
+    <value>5 月(_Y)</value>
+  </data>
+  <data name="FilterMenuCaption_June_Operand" xml:space="preserve">
+    <value>6 月(_U)</value>
+  </data>
+  <data name="FilterMenuCaption_July_Operand" xml:space="preserve">
+    <value>7 月(_L)</value>
+  </data>
+  <data name="FilterMenuCaption_August_Operand" xml:space="preserve">
+    <value>8 月 (_T)</value>
+  </data>
+  <data name="FilterMenuCaption_September_Operand" xml:space="preserve">
+    <value>9 月(_S)</value>
+  </data>
+  <data name="FilterMenuCaption_October_Operand" xml:space="preserve">
+    <value>10 月(_O)</value>
+  </data>
+  <data name="FilterMenuCaption_November_Operand" xml:space="preserve">
+    <value>11 月(_N)</value>
+  </data>
+  <data name="FilterMenuCaption_December_Operand" xml:space="preserve">
+    <value>12 月(_D)</value>
+  </data>
+  <data name="FilterMenuCaption_AboveAverage_Operand" xml:space="preserve">
+    <value>平均より上(_A)</value>
+  </data>
+  <data name="FilterMenuCaption_BelowAverage_Operand" xml:space="preserve">
+    <value>平均より下(_O)</value>
+  </data>
+  <data name="FilterMenuCaption_DateFilters" xml:space="preserve">
+    <value>日付フィルタ(_F)</value>
+  </data>
+  <data name="FilterMenuCaption_NumberFilters" xml:space="preserve">
+    <value>数値フィルター</value>
+  </data>
+  <data name="FilterMenuCaption_TextFilters" xml:space="preserve">
+    <value>テキスト フィルター</value>
+  </data>
+  <data name="FilterMenuCaption_AllDates" xml:space="preserve">
+    <value>期間内の全日付(_P)...</value>
+  </data>
+  <data name="FilterMenuCaption_Before" xml:space="preserve">
+    <value>指定の値より前(_B)...</value>
+  </data>
+  <data name="FilterMenuCaption_After" xml:space="preserve">
+    <value>指定の値より後(_A)...</value>
+  </data>
+  <data name="FilterMenuCaption_Between" xml:space="preserve">
+    <value>指定の範囲内(_W)...</value>
+  </data>
+  <data name="FilterMenuCaption_Equals" xml:space="preserve">
+    <value>指定の値に等しい(_E)...</value>
+  </data>
+  <data name="FilterMenuCaption_NotEquals" xml:space="preserve">
+    <value>指定の値に等しくない(_N)...</value>
+  </data>
+  <data name="FilterMenuCaption_CustomFilter" xml:space="preserve">
+    <value>ユーザー設定フィルタ(_F)...</value>
+  </data>
+  <data name="FilterMenuCaption_BeginsWith" xml:space="preserve">
+    <value>で始まる</value>
+  </data>
+  <data name="FilterMenuCaption_EndsWith" xml:space="preserve">
+    <value>で終わる</value>
+  </data>
+  <data name="FilterMenuCaption_Contains" xml:space="preserve">
+    <value>含む</value>
+  </data>
+  <data name="FilterMenuCaption_NotContains" xml:space="preserve">
+    <value>を含まない</value>
+  </data>
+  <data name="FilterMenuCaption_Top10" xml:space="preserve">
+    <value>トップテン(_T)...</value>
+  </data>
+  <data name="FilterMenuCaption_GreaterThan" xml:space="preserve">
+    <value>指定の値より大きい(_G)...</value>
+  </data>
+  <data name="FilterMenuCaption_GreaterThanOrEqual" xml:space="preserve">
+    <value>指定の値以上(_O)...</value>
+  </data>
+  <data name="FilterMenuCaption_LessThan" xml:space="preserve">
+    <value>指定の値より小さい(_L)...</value>
+  </data>
+  <data name="FilterMenuCaption_LessThanOrEqual" xml:space="preserve">
+    <value>指定の値以上(_O)...</value>
+  </data>
+  <data name="FilterMenuCaption_ClearFieldFilter" xml:space="preserve">
+    <value>"{0}" からフィルタをクリア</value>
+  </data>
+  <data name="DataErrorUnableToCreateInstance" xml:space="preserve">
+    <value>{0} 型のインスタンスを作成できませんでした。
+{1}</value>
+  </data>
+</root>

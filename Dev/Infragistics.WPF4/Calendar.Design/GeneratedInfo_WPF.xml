@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarDay" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsWorkday" CategoryKey="Calendar_Properties" DisplayName="IsWorkday" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItem" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ComputedBackground" CategoryKey="Calendar_Properties" DisplayName="ComputedBackground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ComputedBorderBrush" CategoryKey="Calendar_Properties" DisplayName="ComputedBorderBrush" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ComputedForeground" CategoryKey="Calendar_Properties" DisplayName="ComputedForeground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ComputedInnerBorderBrush" CategoryKey="Calendar_Properties" DisplayName="ComputedInnerBorderBrush" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ContainsSelectedDates" CategoryKey="Calendar_Properties" DisplayName="ContainsSelectedDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ContainsToday" CategoryKey="Calendar_Properties" DisplayName="ContainsToday" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EndDate" CategoryKey="Calendar_Properties" DisplayName="EndDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsActive" CategoryKey="Calendar_Properties" DisplayName="IsActive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsHighlighted" CategoryKey="Calendar_Properties" DisplayName="IsHighlighted" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsLeadingOrTrailingItem" CategoryKey="Calendar_Properties" DisplayName="IsLeadingOrTrailingItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsSelected" CategoryKey="Calendar_Properties" DisplayName="IsSelected" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsSelectionActive" CategoryKey="Calendar_Properties" DisplayName="IsSelectionActive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsToday" CategoryKey="Calendar_Properties" DisplayName="IsToday" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="StartDate" CategoryKey="Calendar_Properties" DisplayName="StartDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItemGroup" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CurrentMode" CategoryKey="Calendar_Properties" DisplayName="CurrentMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FirstDateOfGroup" CategoryKey="Calendar_Properties" DisplayName="FirstDateOfGroup" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsLeadingGroup" CategoryKey="Calendar_Properties" DisplayName="IsLeadingGroup" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsTrailingGroup" CategoryKey="Calendar_Properties" DisplayName="IsTrailingGroup" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LastDateOfGroup" CategoryKey="Calendar_Properties" DisplayName="LastDateOfGroup" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceGroupOffset" CategoryKey="Calendar_Properties" DisplayName="ReferenceGroupOffset" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowLeadingDates" CategoryKey="Calendar_Properties" DisplayName="ShowLeadingDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollNextButtonVisibility" CategoryKey="Calendar_Properties" DisplayName="ScrollNextButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollPreviousButtonVisibility" CategoryKey="Calendar_Properties" DisplayName="ScrollPreviousButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowTrailingDates" CategoryKey="Calendar_Properties" DisplayName="ShowTrailingDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Title" CategoryKey="Calendar_Properties" DisplayName="Title" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarDayOfWeek" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DayOfWeek" CategoryKey="Calendar_Properties" DisplayName="DayOfWeek" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayText" CategoryKey="Calendar_Properties" DisplayName="DisplayText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.XamCalendar" HideFromToolbox="false" ToolBoxCategoryKey="XamCalendarAssetLibrary" ImageResource="">
+    <PropertyInformation Name="DisabledDates" CategoryKey="Calendar_Properties" DisplayName="DisabledDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisabledDaysOfWeek" CategoryKey="Calendar_Properties" DisplayName="DisabledDaysOfWeek" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisabledDaysOfWeekVisibility" CategoryKey="Calendar_Properties" DisplayName="DisabledDaysOfWeekVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxDate" CategoryKey="Calendar_Properties" DisplayName="MaxDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxSelectedDates" CategoryKey="Calendar_Properties" DisplayName="MaxSelectedDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinCalendarMode" CategoryKey="Calendar_Properties" DisplayName="MinCalendarMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinDate" CategoryKey="Calendar_Properties" DisplayName="MinDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FirstDayOfWeek" CategoryKey="Calendar_Properties" DisplayName="FirstDayOfWeek" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectionMode" CategoryKey="Calendar_Properties" DisplayName="SelectionMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TodayButtonVisibility" CategoryKey="Calendar_Properties" DisplayName="TodayButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WeekRule" CategoryKey="Calendar_Properties" DisplayName="WeekRule" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Workdays" CategoryKey="Calendar_Properties" DisplayName="Workdays" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.CalendarBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ActiveDate" CategoryKey="Calendar_Properties" DisplayName="ActiveDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowLeadingAndTrailingGroupActivation" CategoryKey="Calendar_Properties" DisplayName="AllowLeadingAndTrailingGroupActivation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AutoAdjustDimensions" CategoryKey="Calendar_Properties" DisplayName="AutoAdjustDimensions" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CalendarDayStyle" CategoryKey="Calendar_Properties" DisplayName="CalendarDayStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CalendarItemStyle" CategoryKey="Calendar_Properties" DisplayName="CalendarItemStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentMode" CategoryKey="Calendar_Properties" DisplayName="CurrentMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DayOfWeekHeaderFormat" CategoryKey="Calendar_Properties" DisplayName="DayOfWeekHeaderFormat" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DayOfWeekHeaderVisibility" CategoryKey="Calendar_Properties" DisplayName="DayOfWeekHeaderVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Dimensions" CategoryKey="Calendar_Properties" DisplayName="Dimensions" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsSelectionActive" CategoryKey="Calendar_Properties" DisplayName="IsSelectionActive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LeadingAndTrailingDatesVisibility" CategoryKey="Calendar_Properties" DisplayName="LeadingAndTrailingDatesVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxDateResolved" CategoryKey="Calendar_Properties" DisplayName="MaxDateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinCalendarModeResolved" CategoryKey="Calendar_Properties" DisplayName="MinCalendarModeResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinDateResolved" CategoryKey="Calendar_Properties" DisplayName="MinDateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ReferenceDate" CategoryKey="Calendar_Properties" DisplayName="ReferenceDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ResourceProvider" CategoryKey="Calendar_Properties" DisplayName="ResourceProvider" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ResourceProviderResolved" CategoryKey="Calendar_Properties" DisplayName="ResourceProviderResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollButtonVisibility" CategoryKey="Calendar_Properties" DisplayName="ScrollButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollNextRepeatButtonStyle" CategoryKey="Calendar_Properties" DisplayName="ScrollNextRepeatButtonStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollNextRepeatButtonStyleResolved" CategoryKey="Calendar_Properties" DisplayName="ScrollNextRepeatButtonStyleResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollPreviousRepeatButtonStyle" CategoryKey="Calendar_Properties" DisplayName="ScrollPreviousRepeatButtonStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollPreviousRepeatButtonStyleResolved" CategoryKey="Calendar_Properties" DisplayName="ScrollPreviousRepeatButtonStyleResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedDate" CategoryKey="Calendar_Properties" DisplayName="SelectedDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedDates" CategoryKey="Calendar_Properties" DisplayName="SelectedDates" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TodayButtonCaption" CategoryKey="Calendar_Properties" DisplayName="TodayButtonCaption" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TodayButtonStyle" CategoryKey="Calendar_Properties" DisplayName="TodayButtonStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TodayButtonStyleResolved" CategoryKey="Calendar_Properties" DisplayName="TodayButtonStyleResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WeekNumberVisibility" CategoryKey="Calendar_Properties" DisplayName="WeekNumberVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Today" CategoryKey="Calendar_Properties" DisplayName="Today" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarDateRangeCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarWeekNumberPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.CalendarItemGroupAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarDayOfWeekPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandType" DisplayName="CommandType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarWeekNumber" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ComputedBackground" CategoryKey="Calendar_Properties" DisplayName="ComputedBackground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsSelected" CategoryKey="Calendar_Properties" DisplayName="IsSelected" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItemArea" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ComputedItemsBorderThickness" CategoryKey="Calendar_Properties" DisplayName="ComputedItemsBorderThickness" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DayOfWeekHeaderVisibility" CategoryKey="Calendar_Properties" DisplayName="DayOfWeekHeaderVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Items" CategoryKey="Calendar_Properties" DisplayName="Items" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FirstItemColumnOffset" CategoryKey="Calendar_Properties" DisplayName="FirstItemColumnOffset" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FirstItemRowOffset" CategoryKey="Calendar_Properties" DisplayName="FirstItemRowOffset" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemColumns" CategoryKey="Calendar_Properties" DisplayName="ItemColumns" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemRows" CategoryKey="Calendar_Properties" DisplayName="ItemRows" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WeekNumberVisibility" CategoryKey="Calendar_Properties" DisplayName="WeekNumberVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.CalendarResourceProvider" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ResourceSet" CategoryKey="Calendar_Properties" DisplayName="ResourceSet" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.SelectedDatesChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="RemovedDates" CategoryKey="Calendar_Properties" DisplayName="RemovedDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AddedDates" CategoryKey="Calendar_Properties" DisplayName="AddedDates" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItemGroupPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AutoAdjustDimensions" CategoryKey="Calendar_Properties" DisplayName="AutoAdjustDimensions" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Dimensions" CategoryKey="Calendar_Properties" DisplayName="Dimensions" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalContentAlignment" CategoryKey="Calendar_Properties" DisplayName="HorizontalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="GroupHeight" CategoryKey="Calendar_Properties" DisplayName="GroupHeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="GroupWidth" CategoryKey="Calendar_Properties" DisplayName="GroupWidth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="LeadingAndTrailingDatesVisibility" CategoryKey="Calendar_Properties" DisplayName="LeadingAndTrailingDatesVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxGroups" CategoryKey="Calendar_Properties" DisplayName="MaxGroups" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScrollButtonVisibility" CategoryKey="Calendar_Properties" DisplayName="ScrollButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalContentAlignment" CategoryKey="Calendar_Properties" DisplayName="VerticalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.AutomationPeers.CalendarItemAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.HorizontalToTextAlignmentConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarResourceString" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarDimensionsConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItemGroupTitle" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ComputedBackground" DisplayName="ComputedBackground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ComputedForeground" DisplayName="ComputedForeground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Group" DisplayName="Group" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.CalendarItemAreaPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.CalendarBaseAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+</root>

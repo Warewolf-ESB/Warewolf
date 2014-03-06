@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Editors.SectionsCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.SectionBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Sections" DisplayName="Sections" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayChars" DisplayName="DisplayChars" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviousSection" DisplayName="PreviousSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviousLiteralSection" DisplayName="PreviousLiteralSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NextSection" DisplayName="NextSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PreviousEditSection" DisplayName="PreviousEditSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NextEditSection" DisplayName="NextEditSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NextLiteralSection" DisplayName="NextLiteralSection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.LiteralSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.EditSectionBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Orientation" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.DisplayCharsEditSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Orientation" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.NumberSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="MinValue" DisplayName="MinValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxValue" DisplayName="MaxValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Orientation" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.MonthSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.DaySection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.YearSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.HourSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.AMPMSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.InputCharBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsEditable" DisplayName="IsEditable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Char" DisplayName="Char" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.DisplayCharBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IncludeMethod" DisplayName="IncludeMethod" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DrawString" DisplayName="DrawString" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEditable" DisplayName="IsEditable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Char" DisplayName="Char" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.MinuteSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.SecondSection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.FractionPart" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NumberOfDigits" DisplayName="NumberOfDigits" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Orientation" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.FractionPartContinuous" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Orientation" DisplayName="Orientation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.DigitChar" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.AlphaChar" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.AlphanumericChar" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.CharacterSet" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.HexDigitChar" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.ParsedMask" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Mask" DisplayName="Mask" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PromptCharacter" DisplayName="PromptCharacter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PadCharacter" DisplayName="PadCharacter" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ValueConstraint" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Enumeration" CategoryKey="XamMaskedInput_Properties" DisplayName="Enumeration" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasEnumeration" CategoryKey="XamMaskedInput_Properties" DisplayName="HasEnumeration" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FixedValue" CategoryKey="XamMaskedInput_Properties" DisplayName="FixedValue" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HasFixedValue" CategoryKey="XamMaskedInput_Properties" DisplayName="HasFixedValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxExclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="MaxExclusive" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HasMaxExclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMaxExclusive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxInclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="MaxInclusive" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HasMaxInclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMaxInclusive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxLength" CategoryKey="XamMaskedInput_Properties" DisplayName="MaxLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasMaxLength" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMaxLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinExclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="MinExclusive" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HasMinExclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMinExclusive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinInclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="MinInclusive" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HasMinInclusive" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMinInclusive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinLength" CategoryKey="XamMaskedInput_Properties" DisplayName="MinLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasMinLength" CategoryKey="XamMaskedInput_Properties" DisplayName="HasMinLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Nullable" CategoryKey="XamMaskedInput_Properties" DisplayName="Nullable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasNullable" CategoryKey="XamMaskedInput_Properties" DisplayName="HasNullable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RegexPattern" CategoryKey="XamMaskedInput_Properties" DisplayName="RegexPattern" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasRegexPattern" CategoryKey="XamMaskedInput_Properties" DisplayName="HasRegexPattern" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValidateAsType" CategoryKey="XamMaskedInput_Properties" DisplayName="ValidateAsType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasAnyConstraints" CategoryKey="XamMaskedInput_Properties" DisplayName="HasAnyConstraints" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ValidationErrorInfo" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ErrorMessage" DisplayName="ErrorMessage" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Exception" DisplayName="Exception" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.HorizontalToTextAlignmentConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.DisplayCharsCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Section" DisplayName="Section" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.MaskedInputCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandId" DisplayName="CommandId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.MaskedInputCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandId" DisplayName="CommandId" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.XamMaskedInput" HideFromToolbox="false" ToolBoxCategoryKey="XamMaskedInputAssetLibrary" ImageResource="">
+    <PropertyInformation Name="SpinButtonDisplayMode" CategoryKey="XamMaskedInput_Properties" DisplayName="SpinButtonDisplayMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SpinButtonStyle" CategoryKey="XamMaskedInput_Properties" DisplayName="SpinButtonStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SpinButtonVisibilityResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="SpinButtonVisibilityResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SpinIncrement" CategoryKey="XamMaskedInput_Properties" DisplayName="SpinIncrement" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="SpinWrap" CategoryKey="XamMaskedInput_Properties" DisplayName="SpinWrap" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Sections" CategoryKey="XamMaskedInput_Properties" DisplayName="Sections" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayChars" CategoryKey="XamMaskedInput_Properties" DisplayName="DisplayChars" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InsertMode" CategoryKey="XamMaskedInput_Properties" DisplayName="InsertMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Mask" CategoryKey="XamMaskedInput_Properties" DisplayName="Mask" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DataMode" CategoryKey="XamMaskedInput_Properties" DisplayName="DataMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ClipMode" CategoryKey="XamMaskedInput_Properties" DisplayName="ClipMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayMode" CategoryKey="XamMaskedInput_Properties" DisplayName="DisplayMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PadChar" CategoryKey="XamMaskedInput_Properties" DisplayName="PadChar" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="PromptChar" CategoryKey="XamMaskedInput_Properties" DisplayName="PromptChar" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SectionTabNavigation" CategoryKey="XamMaskedInput_Properties" DisplayName="SectionTabNavigation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowShiftingAcrossSections" CategoryKey="XamMaskedInput_Properties" DisplayName="AllowShiftingAcrossSections" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectionStart" CategoryKey="XamMaskedInput_Properties" DisplayName="SelectionStart" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectionLength" CategoryKey="XamMaskedInput_Properties" DisplayName="SelectionLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedText" CategoryKey="XamMaskedInput_Properties" DisplayName="SelectedText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TextLength" CategoryKey="XamMaskedInput_Properties" DisplayName="TextLength" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectAllBehavior" CategoryKey="XamMaskedInput_Properties" DisplayName="SelectAllBehavior" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AutoFillDate" CategoryKey="XamMaskedInput_Properties" DisplayName="AutoFillDate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TrimFractionalZeros" CategoryKey="XamMaskedInput_Properties" DisplayName="TrimFractionalZeros" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.MaskedInputTextBox" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.XamCurrencyInput" HideFromToolbox="false" ToolBoxCategoryKey="XamMaskedInputAssetLibrary" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.XamNumericInput" HideFromToolbox="false" ToolBoxCategoryKey="XamMaskedInputAssetLibrary" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Editors.TextInputBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DisplayText" CategoryKey="XamMaskedInput_Properties" DisplayName="DisplayText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NullText" CategoryKey="XamMaskedInput_Properties" DisplayName="NullText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueToDisplayTextConverter" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueToDisplayTextConverter" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueToDisplayTextConverterResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueToDisplayTextConverterResolved" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.ValueInput" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AlwaysValidateResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="AlwaysValidateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FormatProviderResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="FormatProviderResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueToTextConverterResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueToTextConverterResolved" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AlwaysValidate" CategoryKey="XamMaskedInput_Properties" DisplayName="AlwaysValidate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Value" CategoryKey="XamMaskedInput_Properties" DisplayName="Value" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="Text" CategoryKey="XamMaskedInput_Properties" DisplayName="Text" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueType" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueTypeName" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueTypeName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueTypeResolved" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueTypeResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueConstraint" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueConstraint" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InvalidValueBehavior" CategoryKey="XamMaskedInput_Properties" DisplayName="InvalidValueBehavior" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ValueToTextConverter" CategoryKey="XamMaskedInput_Properties" DisplayName="ValueToTextConverter" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsValueValid" CategoryKey="XamMaskedInput_Properties" DisplayName="IsValueValid" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasValueChanged" CategoryKey="XamMaskedInput_Properties" DisplayName="HasValueChanged" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InvalidValueErrorInfo" CategoryKey="XamMaskedInput_Properties" DisplayName="InvalidValueErrorInfo" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsReadOnly" CategoryKey="XamMaskedInput_Properties" DisplayName="IsReadOnly" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="OriginalValue" CategoryKey="XamMaskedInput_Properties" DisplayName="OriginalValue" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="FormatProvider" CategoryKey="XamMaskedInput_Properties" DisplayName="FormatProvider" IsVisible="false" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Format" CategoryKey="XamMaskedInput_Properties" DisplayName="Format" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.EditModeValidationErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Editor" DisplayName="Editor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InvalidValueBehavior" DisplayName="InvalidValueBehavior" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ErrorMessage" DisplayName="ErrorMessage" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Exception" DisplayName="Exception" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.InvalidCharEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Char" DisplayName="Char" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayChar" DisplayName="DisplayChar" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Beep" DisplayName="Beep" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Editors.Primitives.MaskCharConverter" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.ValueInputAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.XamMaskedInputAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+</root>

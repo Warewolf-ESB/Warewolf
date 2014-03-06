@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutDialogLink2Header" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody2" xml:space="preserve">
+    <value>pour personnaliser tous les aspects du rendu d'un composant</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody3" xml:space="preserve">
+    <value>pour un contrôle complet de la gestion des frappes</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsBody1" xml:space="preserve">
+    <value>pour un contrôle complet du look &amp; feel d'un composant</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionBeta" xml:space="preserve">
+    <value>CTP</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionUnknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
+  <data name="AboutDialogVisitUsAtHeader" xml:space="preserve">
+    <value>Visitez notre site à l'adresse</value>
+  </data>
+  <data name="UltraPropertyPageDialogButtonCancel" xml:space="preserve">
+    <value>&amp;Annuler</value>
+  </data>
+  <data name="UltraPropertyPageDialogButtonOk" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="LicenseExceptionUnlicensed" xml:space="preserve">
+    <value>Le produit n'est pas sous licence</value>
+  </data>
+  <data name="LicenseExceptionBetaExpired" xml:space="preserve">
+    <value>La CTP {0} arrive à expiration le {1}</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsSummary" xml:space="preserve">
+    <value>Les commandes WebForms d'Infragistics offrent la meilleure sélection de composants et de fonctionnalités pour la création de sites Web performants et attrayants.</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle" xml:space="preserve">
+    <value>Tous les composants WinForms d'Infragistics comprennent :</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle2" xml:space="preserve">
+    <value>DrawFilters</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle3" xml:space="preserve">
+    <value>KeyboardMappings</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsTitle1" xml:space="preserve">
+    <value>Apparences</value>
+  </data>
+  <data name="UltraComponentDesignerVerbAbout" xml:space="preserve">
+    <value>À propos de</value>
+  </data>
+  <data name="AboutDialogLink2URL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LicenseExceptionGracePeriodExpired" xml:space="preserve">
+    <value>{0} {1} Vous devez activer ce produit avec l'Assistant Activation du produit.</value>
+  </data>
+  <data name="AboutDialogProductInformationHeader" xml:space="preserve">
+    <value>Informations sur le produit</value>
+  </data>
+  <data name="LicensedProductTrialPeriodPrompt" xml:space="preserve">
+    <value>Cette version d'essai de {2} expirera après {0} jour(s) d'utilisation ou {1} semaine(s) de calendrier, selon ce qui survient en premier.</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle2" xml:space="preserve">
+    <value>Feuilles de style en cascade</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle3" xml:space="preserve">
+    <value>Puissants modèles d'objet</value>
+  </data>
+  <data name="LDR_About_InGrace" xml:space="preserve">
+    <value>Sous licence - En période de grâce de l'activation</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle1" xml:space="preserve">
+    <value>DHTML</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration1" xml:space="preserve">
+    <value>Période de grâce de l'activation expirée</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration6" xml:space="preserve">
+    <value>Informations de licence non valides</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration7" xml:space="preserve">
+    <value>Informations de licence incomplètes</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration4" xml:space="preserve">
+    <value>{0} jours d'utilisation / {1} semaines de calendrier</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration5" xml:space="preserve">
+    <value>N.d.</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration8" xml:space="preserve">
+    <value>{Erreur}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration9" xml:space="preserve">
+    <value>Le produit n'est pas installé correctement</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody3" xml:space="preserve">
+    <value>pour une programmabilité rapide et simple</value>
+  </data>
+  <data name="LDR_About_GraceExpired" xml:space="preserve">
+    <value>Sous licence - Période de grâce de l'activation expirée</value>
+  </data>
+  <data name="AboutDialogStatusHeader" xml:space="preserve">
+    <value>ÉTAT</value>
+  </data>
+  <data name="AboutDialogWinFormsCommentsSummary" xml:space="preserve">
+    <value>Les composants WinForms d'Infragistics sont construits  en utilisant le Presentation Layer Framework d'Infragistics qui fournit un modèle d'objet robuste et cohérent pour tous les composants.</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration3" xml:space="preserve">
+    <value>Période CTP expirée</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionTrialExpired" xml:space="preserve">
+    <value>Période d'essai expirée</value>
+  </data>
+  <data name="LicenseExceptionIncomplete" xml:space="preserve">
+    <value>Informations de licence incomplètes</value>
+  </data>
+  <data name="LicenseExceptionTrialExpired" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="AboutDialogProductKeyHeader" xml:space="preserve">
+    <value>CLÉ DE PRODUIT</value>
+  </data>
+  <data name="AboutDialogDialogTitle" xml:space="preserve">
+    <value>À propos de {0}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration10" xml:space="preserve">
+    <value>Autorisations de sécurité insuffisantes</value>
+  </data>
+  <data name="LicenseExceptionInformationNotFound" xml:space="preserve">
+    <value>Aucune information de licence n'a été trouvée</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionTrial" xml:space="preserve">
+    <value>Essai</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsTitle" xml:space="preserve">
+    <value>Toutes les commandes WebForms d'Infragistics prennent en charge:</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionLicensed" xml:space="preserve">
+    <value>Sous licence</value>
+  </data>
+  <data name="LicenseExceptionInvalidCDKey" xml:space="preserve">
+    <value>Informations de licence non valides</value>
+  </data>
+  <data name="AboutDialogExpirationHeader" xml:space="preserve">
+    <value>EXPIRATION</value>
+  </data>
+  <data name="LicensedProductActivationGracePrompt" xml:space="preserve">
+    <value>La durée d'utilisation non activée pour {2} expirera après {0} jour(s) d'utilisation ou {1} semaine(s) de calendrier, selon ce qui survient en premier.  Vous devez activer ce produit avec l'Assistant Activation du produit.</value>
+  </data>
+  <data name="AboutDialogOkCaption" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="AboutDialogVersionHeader" xml:space="preserve">
+    <value>VERSION</value>
+  </data>
+  <data name="AboutDialogRegisteredToHeader" xml:space="preserve">
+    <value>UTILISATEUR ENREGISTRÉ</value>
+  </data>
+  <data name="LicensedProductPromptDialogTitle" xml:space="preserve">
+    <value>Infragistics {0}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration2" xml:space="preserve">
+    <value>Période d'essai expirée</value>
+  </data>
+  <data name="AboutDialogLicenseDescriptionBetaExpired" xml:space="preserve">
+    <value>CTP expirée</value>
+  </data>
+  <data name="LicenseExceptionSecurityPermission" xml:space="preserve">
+    <value>Autorisations de sécurité insuffisantes pour déterminer l'état de la licence.</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody2" xml:space="preserve">
+    <value>prise en charge complète et extensible pour la création de n'importe quel look &amp; feel</value>
+  </data>
+  <data name="AboutDialogWebFormsCommentsBody1" xml:space="preserve">
+    <value>pour des fonctionnalités et comportements avancés côté client</value>
+  </data>
+  <data name="AboutDialogLink2URLDisplayText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LicenseExceptionUnlicensedProgram" xml:space="preserve">
+    <value>Ce programme a été créé en utilisant une copie sans licence (de démonstration) de {0}. Veuillez contacter l'auteur / le fournisseur de l'application.</value>
+  </data>
+  <data name="DesignTime_SampleData_String" xml:space="preserve">
+    <value>Texte</value>
+  </data>
+  <data name="CloseButtonToolTip" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="ComparisonOperator_Equals" xml:space="preserve">
+    <value>Est égal à</value>
+  </data>
+  <data name="ComparisonOperator_NotEquals" xml:space="preserve">
+    <value>N'est pas égal à</value>
+  </data>
+  <data name="ComparisonOperator_LessThan" xml:space="preserve">
+    <value>Est inférieur à</value>
+  </data>
+  <data name="ComparisonOperator_LessThanOrEqualTo" xml:space="preserve">
+    <value>Est inférieur ou égal à</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThan" xml:space="preserve">
+    <value>Est supérieur à</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>Est supérieur ou égal à</value>
+  </data>
+  <data name="ComparisonOperator_Contains" xml:space="preserve">
+    <value>Contient</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotContain" xml:space="preserve">
+    <value>Ne contient pas</value>
+  </data>
+  <data name="ComparisonOperator_Like" xml:space="preserve">
+    <value>Like (caractères génériques)</value>
+  </data>
+  <data name="ComparisonOperator_NotLike" xml:space="preserve">
+    <value>Not like (caractères génériques)</value>
+  </data>
+  <data name="ComparisonOperator_Match" xml:space="preserve">
+    <value>Correspond à (expression régulière)</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotMatch" xml:space="preserve">
+    <value>Ne correspond pas à (expression régulière)</value>
+  </data>
+  <data name="ComparisonOperator_StartsWith" xml:space="preserve">
+    <value>Commence par</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotStartWith" xml:space="preserve">
+    <value>Ne commence pas par</value>
+  </data>
+  <data name="ComparisonOperator_EndsWith" xml:space="preserve">
+    <value>Finit par</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotEndWith" xml:space="preserve">
+    <value>Ne finit pas par</value>
+  </data>
+  <data name="ComparisonOperator_Top" xml:space="preserve">
+    <value>Haut</value>
+  </data>
+  <data name="ComparisonOperator_Bottom" xml:space="preserve">
+    <value>Bas</value>
+  </data>
+  <data name="ComparisonOperator_TopPercentile" xml:space="preserve">
+    <value>Centile haut</value>
+  </data>
+  <data name="ComparisonOperator_BottomPercentile" xml:space="preserve">
+    <value>Centile bas</value>
+  </data>
+  <data name="ComparisonCondition_Equals" xml:space="preserve">
+    <value>= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_NotEquals" xml:space="preserve">
+    <value>!= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThan" xml:space="preserve">
+    <value>&lt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThanOrEqualTo" xml:space="preserve">
+    <value>&lt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThan" xml:space="preserve">
+    <value>&gt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>&gt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Contains" xml:space="preserve">
+    <value>Contient '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotContain" xml:space="preserve">
+    <value>Ne contient pas '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Like" xml:space="preserve">
+    <value>Like '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_NotLike" xml:space="preserve">
+    <value>Not like '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Match" xml:space="preserve">
+    <value>Correspond à '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotMatch" xml:space="preserve">
+    <value>Ne correspond pas à '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_StartsWith" xml:space="preserve">
+    <value>Commence par '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotStartWith" xml:space="preserve">
+    <value>Ne commence pas par '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_EndsWith" xml:space="preserve">
+    <value>Finit par '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotEndWith" xml:space="preserve">
+    <value>Ne finit pas par '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Top" xml:space="preserve">
+    <value>Haut {0}</value>
+  </data>
+  <data name="ComparisonCondition_Bottom" xml:space="preserve">
+    <value>Bas {0}</value>
+  </data>
+  <data name="ComparisonCondition_TopPercentile" xml:space="preserve">
+    <value>Haut {0}%</value>
+  </data>
+  <data name="ComparisonCondition_BottomPercentile" xml:space="preserve">
+    <value>Bas {0}%</value>
+  </data>
+  <data name="ConditionGroup_Description" xml:space="preserve">
+    <value>(Personnalisé)</value>
+  </data>
+  <data name="ConditionGroup_Group" xml:space="preserve">
+    <value>({0})</value>
+  </data>
+  <data name="ConditionGroup_Logical_AND" xml:space="preserve">
+    <value>{0} AND {1}</value>
+  </data>
+  <data name="ConditionGroup_Logical_OR" xml:space="preserve">
+    <value>{0} OR {1}</value>
+  </data>
+  <data name="ComplementCondition" xml:space="preserve">
+    <value>Not {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_DisplayContent" xml:space="preserve">
+    <value>Haut {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_Description" xml:space="preserve">
+    <value>{0} éléments hauts selon la valeur.</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_DisplayContent" xml:space="preserve">
+    <value>{0} centile haut</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_Description" xml:space="preserve">
+    <value>{0} centile haut d'éléments selon la valeur.</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_DisplayContent" xml:space="preserve">
+    <value>Bas {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_Description" xml:space="preserve">
+    <value>{0} éléments bas selon la valeur.</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_DisplayContent" xml:space="preserve">
+    <value>{0} centile bas</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_Description" xml:space="preserve">
+    <value>{0} centile bas d'éléments selon la valeur.</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_DisplayContent" xml:space="preserve">
+    <value>Demain</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_Description" xml:space="preserve">
+    <value>La date de demain</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_DisplayContent" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_Description" xml:space="preserve">
+    <value>La date d'aujourd'hui</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_DisplayContent" xml:space="preserve">
+    <value>Hier</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_Description" xml:space="preserve">
+    <value>La date d'hier</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_DisplayContent" xml:space="preserve">
+    <value>La semaine prochaine</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_Description" xml:space="preserve">
+    <value>Une date durant la semaine prochaine</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_DisplayContent" xml:space="preserve">
+    <value>Cette semaine</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_Description" xml:space="preserve">
+    <value>Une date durant cette semaine</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_DisplayContent" xml:space="preserve">
+    <value>La semaine dernière</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_Description" xml:space="preserve">
+    <value>Une date durant la semaine dernière</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_DisplayContent" xml:space="preserve">
+    <value>Le mois prochain</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_Description" xml:space="preserve">
+    <value>Une date durant le mois prochain</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_DisplayContent" xml:space="preserve">
+    <value>Ce mois</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_Description" xml:space="preserve">
+    <value>Une date durant ce mois</value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_DisplayContent" xml:space="preserve">
+    <value>Le mois dernier </value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_Description" xml:space="preserve">
+    <value>Une date durant le mois dernier</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_DisplayContent" xml:space="preserve">
+    <value>Le trimestre prochain</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_Description" xml:space="preserve">
+    <value>Une date durant le trimestre prochain</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_DisplayContent" xml:space="preserve">
+    <value>Ce trimestre</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_Description" xml:space="preserve">
+    <value>Une date durant ce trimestre</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_DisplayContent" xml:space="preserve">
+    <value>Le trimestre dernier</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_Description" xml:space="preserve">
+    <value>Une date durant le trimestre dernier</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_DisplayContent" xml:space="preserve">
+    <value>L'année prochaine</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_Description" xml:space="preserve">
+    <value>Une date durant l'année prochaine</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_DisplayContent" xml:space="preserve">
+    <value>Cette année</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_Description" xml:space="preserve">
+    <value>Une date durant cette année</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_DisplayContent" xml:space="preserve">
+    <value>L'année dernière</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_Description" xml:space="preserve">
+    <value>Une date durant l'année dernière</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_DisplayContent" xml:space="preserve">
+    <value>L'année à ce jour</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_Description" xml:space="preserve">
+    <value>Une date durant cette année jusqu'à aujourd'hui</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_DisplayContent" xml:space="preserve">
+    <value>Trimestre {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_Description" xml:space="preserve">
+    <value>Une date durant le trimestre {0} de n'importe quelle année</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_DisplayContent" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_Description" xml:space="preserve">
+    <value>Une date durant {0} de n'importe quelle année</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_DisplayContent" xml:space="preserve">
+    <value>Au-dessus de la moyenne</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_Description" xml:space="preserve">
+    <value>Une valeur supérieure à la moyenne</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_DisplayContent" xml:space="preserve">
+    <value>En dessous de la moyenne</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_Description" xml:space="preserve">
+    <value>Une valeur inférieure à la moyenne</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_DisplayContent" xml:space="preserve">
+    <value>(Vides)</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_Description" xml:space="preserve">
+    <value>Une valeur vide</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_DisplayContent" xml:space="preserve">
+    <value>(Non vides)</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_Description" xml:space="preserve">
+    <value>Toute valeur non vide</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_NaN" xml:space="preserve">
+    <value>La valeur ne peut pas être NaN.</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_LessThanZero" xml:space="preserve">
+    <value>La valeur ne peut pas être inférieure à 0.</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_GreaterThan100Percent" xml:space="preserve">
+    <value>La valeur ne peut pas être supérieure à 100 pour cent.</value>
+  </data>
+  <data name="Filter_WildCard_Empty" xml:space="preserve">
+    <value>Modèle de caractère générique non valide. Le modèle de caractère générique ne peut pas être vide.</value>
+  </data>
+  <data name="Filter_WildCard_InvalidCharClass" xml:space="preserve">
+    <value>Modèle de caractère générique non valide. Il contient une classe de caractères non valide.</value>
+  </data>
+  <data name="Filter_Regex_InvalidPattern" xml:space="preserve">
+    <value>Modèle d'expression régulière non valide.</value>
+  </data>
+  <data name="Filter_IncompatibleOperand" xml:space="preserve">
+    <value>L'opérande spécifié n'est pas compatible avec l'opérateur de comparaison.</value>
+  </data>
+  <data name="Provider_InvalidResource" xml:space="preserve">
+    <value>La ressource avec une clé de {0} lors de la vérification du ResourceDictionary de {1} n'est pas valide. Elle doit être autre que {2}.</value>
+  </data>
+  <data name="Provider_MissingResource" xml:space="preserve">
+    <value>Aucune ressource n'a été trouvée pour la clé: {0}.</value>
+  </data>
+  <data name="Provider_TypeNotEnum" xml:space="preserve">
+    <value>T doit être un type enum, la classe ne prend pas en charge le type: {0}.</value>
+  </data>
+  <data name="Provider_EnumEmpty" xml:space="preserve">
+    <value>Type: {0} doit avoir au moins une valeur.</value>
+  </data>
+  <data name="Provider_SparseEnumValues" xml:space="preserve">
+    <value>Type: {0} valeurs enum doivent être consécutives en commençant par 0.</value>
+  </data>
+  <data name="Provider_KeyNotFound" xml:space="preserve">
+    <value>Type: {0} ne contient pas la valeur de: {1}.</value>
+  </data>
+  <data name="TrialKey_AboutDialogLabel" xml:space="preserve">
+    <value>{Essai}</value>
+  </data>
+  <data name="SampleData_XML" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;SampleData&gt; &lt;users&gt; &lt;user&gt; &lt;name&gt;John Smith&lt;/name&gt; &lt;department&gt;Ressources Humaines&lt;/department&gt; &lt;salary&gt;52 500&lt;/salary&gt; &lt;email&gt;john@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Mary Hernandez&lt;/name&gt; &lt;department&gt;Ventes&lt;/department&gt; &lt;salary&gt;65 100&lt;/salary&gt; &lt;email&gt;MaryH@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Barbara Bailey&lt;/name&gt; &lt;department&gt;Administration&lt;/department&gt; &lt;salary&gt;35 750&lt;/salary&gt; &lt;email&gt;BB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Margaret Jones&lt;/name&gt; &lt;department&gt;Administration&lt;/department&gt; &lt;salary&gt;37 750&lt;/salary&gt; &lt;email&gt;MargeJ@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Bobby Jones&lt;/name&gt; &lt;department&gt;Comptabilité&lt;/department&gt; &lt;salary&gt;53 250&lt;/salary&gt; &lt;email&gt;BobbyJ@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Jonathan Barclay&lt;/name&gt; &lt;department&gt;Conseil d'administration&lt;/department&gt; &lt;salary&gt;123 000&lt;/salary&gt; &lt;email&gt;JonathanB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Martha Beckinsale&lt;/name&gt; &lt;department&gt;Ventes&lt;/department&gt; &lt;salary&gt;99 700&lt;/salary&gt; &lt;email&gt;MarthaB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Kate Shannon&lt;/name&gt; &lt;department&gt;Ventes&lt;/department&gt; &lt;salary&gt;69 000&lt;/salary&gt; &lt;email&gt;KateS@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;/users&gt; &lt;/SampleData&gt;
+</value>
+  </data>
+  <data name="MaximizeButtonToolTip" xml:space="preserve">
+    <value>Agrandir</value>
+  </data>
+  <data name="MinimizeButtonToolTip" xml:space="preserve">
+    <value>Réduire</value>
+  </data>
+  <data name="RestoreDownButtonToolTip" xml:space="preserve">
+    <value>Restaurer vers le bas</value>
+  </data>
+  <data name="RestoreUpButtonToolTip" xml:space="preserve">
+    <value>Restaurer vers le haut</value>
+  </data>
+  <data name="ConditionGroup_Equals" xml:space="preserve">
+    <value>Est égal à «{0}»</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Day_Description" xml:space="preserve">
+    <value>Toute heure le {0:d}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Day_DisplayContent" xml:space="preserve">
+    <value>{0:d}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Hour_Description" xml:space="preserve">
+    <value>Toute heure comprise dans {0:d} {0:hh tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Hour_DisplayContent" xml:space="preserve">
+    <value>{0:d} {0:hh tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Minute_Description" xml:space="preserve">
+    <value>Toute heure comprise dans {0:d} {0:hh:mm tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Minute_DisplayContent" xml:space="preserve">
+    <value>{0:d} {0:hh:mm tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Month_Description" xml:space="preserve">
+    <value>Toutes les dates dans {0:Y}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Month_DisplayContent" xml:space="preserve">
+    <value>{0:Y}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Second_Description" xml:space="preserve">
+    <value>{0:G}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Second_DisplayContent" xml:space="preserve">
+    <value>{0:G}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_Description" xml:space="preserve">
+    <value>Toutes les dates dans {0:yyyy}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_DisplayContent" xml:space="preserve">
+    <value>Tout {0:yyyy}</value>
+  </data>
+</root>

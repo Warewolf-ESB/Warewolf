@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.Controls.XamCarouselListBox">
+    <Position X="0.5" Y="0.75" Width="2.5" />
+    <Members>
+      <Field Name="_carouselPanel" Hidden="true" />
+      <Field Name="_containerCache" Hidden="true" />
+      <Field Name="_isSynchronizedWithCurrentItemPrivate" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_updateSelectedIndex" Hidden="true" />
+      <Field Name="_updateSelectedItem" Hidden="true" />
+      <Field Name="_viewSettings" Hidden="true" />
+      <Method Name="BindCarouselPanelViewSettings" Hidden="true" />
+      <Field Name="CONTAINER_CACHE_SIZE" Hidden="true" />
+      <Method Name="ContainerFromIndex" Hidden="true" />
+      <Method Name="DeactivateContainer" Hidden="true" />
+      <Method Name="GetChildIndexFromItemIndex" Hidden="true" />
+      <Method Name="GetGeneratorPositionFromItemIndex" Hidden="true" />
+      <Property Name="ICarouselPanelSelectionHost.SelectedItemIndex" Hidden="true" />
+      <Field Name="IsSelectedProperty" Hidden="true" />
+      <Field Name="IsSelectionActiveProperty" Hidden="true" />
+      <Field Name="IsSelectionActivePropertyKey" Hidden="true" />
+      <Field Name="IsSynchronizedWithCurrentItemProperty" Hidden="true" />
+      <Method Name="IsXmlNode" Hidden="true" />
+      <Method Name="OnCoerceSelectedIndex" Hidden="true" />
+      <Method Name="OnCoerceViewSettings" Hidden="true" />
+      <Method Name="OnIsSelectedChanged" Hidden="true" />
+      <Method Name="OnIsSynchronizedWithCurrentItemChanged" Hidden="true" />
+      <Method Name="OnItemsCurrentChanged" Hidden="true" />
+      <Method Name="OnSelectedIndexChanged" Hidden="true" />
+      <Method Name="OnSelectedItemChanged" Hidden="true" />
+      <Method Name="OnSelectedValueInternalChanged" Hidden="true" />
+      <Method Name="OnSelectedValuePathChanged" Hidden="true" />
+      <Method Name="OnValidateSelectedIndex" Hidden="true" />
+      <Method Name="RaiseSelectionChanged" Hidden="true" />
+      <Method Name="ReactivateContainer" Hidden="true" />
+      <Method Name="ReuseContainerForNewItem" Hidden="true" />
+      <Field Name="SelectedIndexProperty" Hidden="true" />
+      <Field Name="SelectedItemProperty" Hidden="true" />
+      <Property Name="SelectedValueInternal" Hidden="true" />
+      <Field Name="SelectedValueInternalProperty" Hidden="true" />
+      <Field Name="SelectedValuePathProperty" Hidden="true" />
+      <Field Name="SelectedValueProperty" Hidden="true" />
+      <Field Name="SelectedValuePropertyKey" Hidden="true" />
+      <Field Name="SelectionChangedEvent" Hidden="true" />
+      <Method Name="SetCurrentToSelected" Hidden="true" />
+      <Method Name="SetSelectedToCurrent" Hidden="true" />
+      <Method Name="SetSynchronizationWithCurrentItem" Hidden="true" />
+      <Method Name="UpdateSelectedValueBinding" Hidden="true" />
+      <Field Name="ViewSettingsProperty" Hidden="true" />
+      <Method Name="XamCarouselListBox" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ADIlFBJySAlgEACUqACBADNCBJNBCEhBqZIUUEQGCCQ=</HashCode>
+      <FileName>XamCarouselListBox.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ViewSettings" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.Controls.CarouselViewSettings">
+    <Position X="4.5" Y="0.75" Width="3.25" />
+    <Members>
+      <Field Name="AutoScaleItemContentsToFitProperty" Hidden="true" />
+      <Field Name="CarouselPanelNavigatorStyleProperty" Hidden="true" />
+      <Field Name="DEFAULT_HEIGHT_IN_INFINITE_CONTAINERS" Hidden="true" />
+      <Field Name="DEFAULT_ITEM_SIZE" Hidden="true" />
+      <Field Name="DEFAULT_ITEMS_PER_PAGE" Hidden="true" />
+      <Field Name="DEFAULT_PATH_PREFIX_PCT" Hidden="true" />
+      <Field Name="DEFAULT_PATH_SUFFIX_PCT" Hidden="true" />
+      <Field Name="DEFAULT_WIDTH_IN_INFINITE_CONTAINERS" Hidden="true" />
+      <Method Name="EnumeratePropertiesWithNonDefaultValues" Hidden="true" />
+      <Field Name="HeightInInfiniteContainersProperty" Hidden="true" />
+      <Field Name="IsListContinuousProperty" Hidden="true" />
+      <Field Name="IsNavigatorVisibleProperty" Hidden="true" />
+      <Field Name="ItemHorizontalScrollBarVisibilityProperty" Hidden="true" />
+      <Field Name="ItemPathAutoPadProperty" Hidden="true" />
+      <Field Name="ItemPathHorizontalAlignmentProperty" Hidden="true" />
+      <Field Name="ItemPathPaddingProperty" Hidden="true" />
+      <Field Name="ItemPathPrefixPercentProperty" Hidden="true" />
+      <Field Name="ItemPathProperty" Hidden="true" />
+      <Field Name="ItemPathRenderBrushProperty" Hidden="true" />
+      <Field Name="ItemPathRenderPenProperty" Hidden="true" />
+      <Field Name="ItemPathStretchProperty" Hidden="true" />
+      <Field Name="ItemPathSuffixPercentProperty" Hidden="true" />
+      <Field Name="ItemPathVerticalAlignmentProperty" Hidden="true" />
+      <Field Name="ItemSizeProperty" Hidden="true" />
+      <Field Name="ItemsPerPageProperty" Hidden="true" />
+      <Field Name="ItemTransitionStyleProperty" Hidden="true" />
+      <Field Name="ItemVerticalScrollBarVisibilityProperty" Hidden="true" />
+      <Method Name="OnCoerceItemPathPrefixPercent" Hidden="true" />
+      <Method Name="OnCoerceItemPathSuffixPercent" Hidden="true" />
+      <Method Name="OnCoerceItemsPerPage" Hidden="true" />
+      <Method Name="OnControlInitialized" Hidden="true" />
+      <Method Name="OnOpacityEffectsChanged" Hidden="true" />
+      <Method Name="OnOpacityEffectStopsCollectionChanged" Hidden="true" />
+      <Method Name="OnScalingEffectsChanged" Hidden="true" />
+      <Method Name="OnScalingEffectStopsCollectionChanged" Hidden="true" />
+      <Method Name="OnSkewAngleXEffectsChanged" Hidden="true" />
+      <Method Name="OnSkewAngleXEffectStopsCollectionChanged" Hidden="true" />
+      <Method Name="OnSkewAngleYEffectsChanged" Hidden="true" />
+      <Method Name="OnSkewAngleYEffectStopsCollectionChanged" Hidden="true" />
+      <Method Name="OnValidateItemHorizontalScrollBarVisibility" Hidden="true" />
+      <Method Name="OnValidateItemTransitionStyle" Hidden="true" />
+      <Method Name="OnValidateItemVerticalScrollBarVisibility" Hidden="true" />
+      <Method Name="OnValidateOpacityEffectStopDirection" Hidden="true" />
+      <Method Name="OnValidateScalingEffectStopDirection" Hidden="true" />
+      <Method Name="OnValidateSkewAngleXEffectStopDirection" Hidden="true" />
+      <Method Name="OnValidateSkewAngleYEffectStopDirection" Hidden="true" />
+      <Method Name="OnValidateZOrderEffectStopDirection" Hidden="true" />
+      <Method Name="OnZOrderEffectsChanged" Hidden="true" />
+      <Method Name="OnZOrderEffectStopsCollectionChanged" Hidden="true" />
+      <Field Name="OpacityEffectStopDirectionProperty" Hidden="true" />
+      <Field Name="OpacityEffectStopsProperty" Hidden="true" />
+      <Field Name="ReserveSpaceForReflectionsProperty" Hidden="true" />
+      <Field Name="RotateItemsWithPathTangentProperty" Hidden="true" />
+      <Field Name="ScalingEffectStopDirectionProperty" Hidden="true" />
+      <Field Name="ScalingEffectStopsProperty" Hidden="true" />
+      <Field Name="ShouldAnimateItemsOnListChangeProperty" Hidden="true" />
+      <Field Name="ShouldScrollItemsIntoInitialPositionProperty" Hidden="true" />
+      <Field Name="SkewAngleXEffectStopDirectionProperty" Hidden="true" />
+      <Field Name="SkewAngleXEffectStopsProperty" Hidden="true" />
+      <Field Name="SkewAngleYEffectStopDirectionProperty" Hidden="true" />
+      <Field Name="SkewAngleYEffectStopsProperty" Hidden="true" />
+      <Field Name="UseOpacityProperty" Hidden="true" />
+      <Field Name="UseScalingProperty" Hidden="true" />
+      <Field Name="UseSkewingProperty" Hidden="true" />
+      <Field Name="UseZOrderProperty" Hidden="true" />
+      <Method Name="ValidatePositiveDouble" Hidden="true" />
+      <Property Name="Version" Hidden="true" />
+      <Field Name="VersionProperty" Hidden="true" />
+      <Field Name="VersionPropertyKey" Hidden="true" />
+      <Field Name="WidthInInfiniteContainersProperty" Hidden="true" />
+      <Field Name="ZOrderEffectStopDirectionProperty" Hidden="true" />
+      <Field Name="ZOrderEffectStopsProperty" Hidden="true" />
+    </Members>
+    <AssociationLine Name="ZOrderEffectStopDirection" Type="Infragistics.Windows.Controls.EffectStopDirection" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="1.531" />
+        <Point X="10" Y="1.531" />
+        <Point X="10" Y="2" />
+        <Point X="10.688" Y="2" />
+        <Point X="10.688" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.529" Y="0.297" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>+9Zw+H+4EheKh0ELp5Xauk9FyWlYpxVSxsmpnNxcUmA=</HashCode>
+      <FileName>CarouselViewSettings.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ItemTransitionStyle" />
+      <Property Name="OpacityEffectStopDirection" />
+      <Property Name="ScalingEffectStopDirection" />
+      <Property Name="SkewAngleXEffectStopDirection" />
+      <Property Name="SkewAngleYEffectStopDirection" />
+      <Property Name="ZOrderEffectStopDirection" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Infragistics.Windows.Controls.PathItemTransitionStyle">
+    <Position X="10.25" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.Controls.EffectStopDirection">
+    <Position X="10.5" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABEAAAAAAAAIAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -1,0 +1,60 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+	<!-- Resource dictionary entries should be defined here. -->
+	<LinearGradientBrush x:Key="StartPaletteBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="#CCF2F6FA" Offset="0"/>
+		<GradientStop Color="#CCBCD2E3" Offset="1"/>
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="EndPaletteBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+		<GradientStop Color="#CC6798C6" Offset="0"/>
+		<GradientStop Color="#CC2F567A" Offset="1"/>
+	</LinearGradientBrush>
+  <LinearGradientBrush x:Key="ChartBackgroundBrush" EndPoint="0,1" StartPoint="0,0">
+    <GradientStop Color="#FFDEE9F1" Offset="0"/>
+    <GradientStop Color="#FFFFFFFF" Offset="1"/>
+  </LinearGradientBrush>
+  <SolidColorBrush x:Key="ChartBorderBrush" Color="#FF9DBAD3"/>
+  <!--  Axes Brushes -->
+  <SolidColorBrush x:Key="AxisPrimaryXStrokeBrush" Color="#FF699BC9"/>
+  <SolidColorBrush x:Key="AxisPrimaryYStrokeBrush" Color="#FF699BC9"/>
+  <SolidColorBrush x:Key="AxisPrimaryZStrokeBrush" Color="#0000C4FF"/>
+  <SolidColorBrush x:Key="LabelXBrush" Color="#CC699BC9"/>
+  <SolidColorBrush x:Key="LabelYBrush" Color="#CC699BC9"/>
+  <!-- Caption Brushes -->
+  <SolidColorBrush x:Key="CaptionForegroundBrush" Color="#FF2B5275"/>
+  <!--  GridArea Brushes -->
+  <LinearGradientBrush x:Key="GridAreaBackgroundBrush" EndPoint="0,1" StartPoint="0,0">
+		<GradientStop Color="#FFFFFFFF" Offset="1"/>
+		<GradientStop Color="#FFE4F3FF" Offset="0"/>
+  </LinearGradientBrush>
+  <SolidColorBrush x:Key="GridlineXMajorBrush" Color="#FFDDE9F3"/>
+	<SolidColorBrush x:Key="GridlineXMinorBrush" Color="#00D7D7D7"/>
+  <SolidColorBrush x:Key="GridlineYMajorBrush" Color="#00A6C4D6"/>
+  <SolidColorBrush x:Key="GridlineYMinorBrush" Color="#0091FF00"/>
+  <SolidColorBrush x:Key="GridlineZMajorBrush" Color="#00A6C4D6"/>
+  <SolidColorBrush x:Key="GridlineZMinorBrush" Color="#0091FF00"/>
+  <SolidColorBrush x:Key="TickXBrush" Color="#00699BC9"/>
+  <SolidColorBrush x:Key="TickYBrush" Color="#00699BC9"/>  
+  <!-- Legend Brushes-->
+	<LinearGradientBrush x:Key="LegendBackgroundBrush" EndPoint="0,1" StartPoint="0,0">
+			<GradientStop Color="#FFFFFFFF" Offset="0"/>
+    				<GradientStop Color="#FFBCD2E3" Offset="1"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="LegendBorderBrush" Color="#FFDDE9F3"/>
+	<LinearGradientBrush x:Key="LegendBorderSecondaryBrush" EndPoint="0.481,0.993" StartPoint="0.481,-0.015">
+		<GradientStop Color="#00FFFFFF" Offset="1"/>
+		<GradientStop Color="#00FFFFFF" Offset="0"/>
+	</LinearGradientBrush>
+  <SolidColorBrush x:Key="LegendItemForegroundBrush" Color="#FF364A6D"/>
+	<SolidColorBrush x:Key="SceneBackgroundBrush" Color="#00000000"/>
+	<SolidColorBrush x:Key="Scene3DBrush" Color="#FFE7EFF5"/>
+	<SolidColorBrush x:Key="SeriesStrokeBrush" Color="#FFDBDFE4"/>
+	<SolidColorBrush x:Key="MarkerFillBrush" Color="#FFFF6500"/>
+  <SolidColorBrush x:Key="MarkerForegroundBrush" Color="#FF000000"/>
+  <SolidColorBrush x:Key="MarkerStrokeBrush" Color="#00939393"/>
+	<SolidColorBrush x:Key="StripeFillBrush" Color="#FFF2F7FB"/>
+  <SolidColorBrush x:Key="StripeStrokeBrush" Color="#00DDE9F3"/>
+</ResourceDictionary>
+  

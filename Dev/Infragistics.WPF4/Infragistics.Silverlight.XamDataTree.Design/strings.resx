@@ -1,0 +1,647 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="XamDataTreeAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamDataTreeSupportingControlsLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="ToolboxTabName">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ItemsSource_Property">
+    <value>Gets/sets the System.Collections.IEnumerable for the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_Properties">
+    <value>XamDataTree Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_MaxDepth_Property">
+    <value>Gets/sets the maximum allowed depth of the hierarchy of the Infragistics.Controls.Menus.XamDataTree.
+ This property is useful for when the data source provided as an infinite recursion.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_GlobalNodeLayouts_Property">
+    <value>Gets a Collection of Infragistics.Controls.Menus.NodeLayout objects that will be used throughout all Levels of the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_NodeLayouts_Property">
+    <value>Gets a Collection of Infragistics.Controls.Menus.NodeLayout objects that will be used only for the root level of the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_Nodes_Property">
+    <value>Gets the nodes on the root level of the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ItemTemplate_Property">
+    <value>Gets/Sets the System.Windows.DataTemplate that will be used to create the VisualTree for every Infragistics.Controls.Menus.XamDataTreeNode for every Infragistics.Controls.Menus.NodeLayout in the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="NodesManager_Nodes_Property">
+    <value>Gets the collection of child nodes that belongs to the Infragistics.Controls.Menus.NodesManager.</value>
+  </data>
+  <data xml:space="preserve" name="NodesManager_ItemsSource_Property">
+    <value>Gets the data source for the Infragistics.Controls.Menus.NodesManager.</value>
+  </data>
+  <data xml:space="preserve" name="NodesManager_ParentNode_Property">
+    <value>The Infragistics.Controls.Menus.NodesManager.ParentNode that owns this Infragistics.Controls.Menus.NodesManager.</value>
+  </data>
+  <data xml:space="preserve" name="NodesManager_NodeLayout_Property">
+    <value>Gets the Infragistics.Controls.Menus.NodesManager.NodeLayout object that is associated with the Infragistics.Controls.Menus.NodesManager.</value>
+  </data>
+  <data xml:space="preserve" name="NodesManager_Level_Property">
+    <value>Gets the level in the hierarchy of the Infragistics.Controls.Menus.NodesManager.</value>
+  </data>
+  <data xml:space="preserve" name="NodesPanel_VisibleNodes_Property">
+    <value>Gets the nodes that are currently visible in the Viewport.</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettingsOverride_AllowEditing_Property">
+    <value>Gets/Sets if Editing is enabled, and if so, what mode it should be in for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettingsOverride_AllowEditingResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.EditingSettingsOverride.AllowEditing property for a particular ColumnLayout</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_Tree_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTree that the Infragistics.Controls.Menus.NodeLayout belongs to.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_TargetTypeName_Property">
+    <value>Get/Sets the System.Type.Name or System.Type.FullName that this Infragistics.Controls.Menus.NodeLayout object should represent.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_Visibility_Property">
+    <value>Gets/Sets the Visibility of the Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_NodeLayouts_Property">
+    <value>Gets a Collection of Infragistics.Controls.Menus.NodeLayout objects that will be used only for the root level of the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_ItemTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be used to create the VisualTree for every Infragistics.Controls.Menus.XamDataTreeNode for this particular Infragistics.Controls.Menus.NodeLayout in the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_ItemTemplateResolved_Property">
+    <value>Gets the actual System.Windows.DataTemplate that will be used to create the VisualTree for every Infragistics.Controls.Menus.XamDataTreeNode for this particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_EditingSettings_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.TreeEditingSettingsOverride object that controls all the properties for editing on this Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettings_AllowEditing_Property">
+    <value>Gets/Sets if Editing is enabled, and if so, what mode it should be in for all ColumnLayout objects in the XamGrid</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettings_IsF2EditingEnabled_Property">
+    <value>Gets/Sets if pressing the F2 key will cause the ActiveCell to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettings_IsEnterKeyEditingEnabled_Property">
+    <value>Gets/Sets if pressing the Enter key will cause the ActiveCell to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettings_IsMouseActionEditingEnabled_Property">
+    <value>Gets/Sets the Infragistics.Controls.Menus.MouseEditingAction that can cause a Cell to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="EditingSettings_IsOnNodeActiveEditingEnabled_Property">
+    <value>Gets/Sets if a Cell will enter edit mode when it becomes active.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeControl_Node_Property">
+    <value>The Infragistics.Controls.Menus.XamDataTreeNode that owns the Infragistics.Controls.Menus.XamDataTreeNodeControl.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeControl_Properties">
+    <value>XamDataTreeNodeControl Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsExpanded_Property">
+    <value>Gets/sets whether the Infragistics.Controls.Menus.XamDataTreeNode is expanded or collapsed.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Properties">
+    <value>XamDataTreeNode Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Data_Property">
+    <value>Gets the underlying data associated with the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Index_Property">
+    <value>Gets the currentIndex index of the Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Manager_Property">
+    <value>The Infragistics.Controls.Menus.NodesManager that owns this particular node.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Control_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNodeControl that is attached to the Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsMouseOver_Property">
+    <value>Gets whether or not the Mouse is currently over the Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_NodeLayout_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout that is associated with the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_HasChildren_Property">
+    <value>Gets whether or not Infragistics.Controls.Menus.XamDataTreeNode has any children.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Nodes_Property">
+    <value>Gets child nodes of the current Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsHeader_Property">
+    <value>Gets whether or not a particular Infragistics.Controls.Menus.XamDataTreeNode is a an actual Data Node, or a Node representing the property of an IEnumerable.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsSelected_Property">
+    <value>Gets/Sets whether an item is currently selected.</value>
+  </data>
+  <data xml:space="preserve" name="SelectedCollectionBase`1_Tree_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.XamDataTree that this collection belongs to.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutEventArgs_NodeLayout_Property">
+    <value>The Infragistics.Controls.Menus.NodeLayoutEventArgs.NodeLayout that was modified.</value>
+  </data>
+  <data xml:space="preserve" name="NodeEventArgs_Node_Property">
+    <value>The Infragistics.Controls.Menus.XamDataTreeNode that was modified.</value>
+  </data>
+  <data xml:space="preserve" name="CancellableNodeExpansionChangedEventArgs_Node_Property">
+    <value>The Infragistics.Controls.Menus.XamDataTreeNode who has been expanded or collapsed.</value>
+  </data>
+  <data xml:space="preserve" name="NodeExpansionChangedEventArgs_Node_Property">
+    <value>The Infragistics.Controls.Menus.XamDataTreeNode who has been expanded or collapsed.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_DisplayMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the text of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_CheckBoxMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the System.Windows.Controls.CheckBox of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_Indentation_Property">
+    <value>Gets / sets how much each Infragistics.Controls.Menus.XamDataTreeNode is indented from it's parent.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_EditingSettings_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.TreeEditingSettings object that controls all the properties for editing on all Infragistics.Controls.Menus.NodeLayouts of a Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_CheckBoxSettings_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.XamDataTree.CheckBoxSettings object that controls all the properties for System.Windows.Controls.CheckBoxs on all Infragistics.Controls.Menus.NodeLayouts of a Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_DisplayMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the text of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_DisplayMemberPathResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.DisplayMemberPath property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_CheckBoxMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the System.Windows.Controls.CheckBox of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_CheckBoxMemberPathResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.CheckBoxMemberPath property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_Indentation_Property">
+    <value>Gets / sets how much each Infragistics.Controls.Menus.XamDataTreeNode is indented from it's parent.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IndentationResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.Indentation property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_HeaderText_Property">
+    <value>Gets / sets the text that will appear for Infragistics.Controls.Menus.XamDataTreeNode objects acting as header nodes.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_HeaderTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate which will appear on header nodes.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_HeaderContentResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.HeaderTemplate property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_EditorTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be displayed when the Infragistics.Controls.Menus.XamDataTreeNode object goes into edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_CheckBoxSettings_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.CheckBoxSettingsOverride object that controls all the properties for System.Windows.Controls.CheckBoxes on this Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsDraggable_Property">
+    <value>Gets / sets whether or not Infragistics.Controls.Menus.XamDataTreeNode objects associated with the Infragistics.Controls.Menus.NodeLayout are draggable.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsDraggableResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.IsDraggable property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsDropTarget_Property">
+    <value>Gets / sets whether or not Infragistics.Controls.Menus.XamDataTreeNode objects can be dropped on this Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsDropTargetResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.IsDropTarget property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_NodeStyleResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.NodeStyle property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_NodeStyle_Property">
+    <value>Gets / sets the System.Windows.Style which will be assigned to Infragistics.Controls.Menus.XamDataTreeNode objects associcated with this Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutAssignedEventArgs_NodeLayout_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.NodeLayoutAssignedEventArgs.NodeLayout which will be assinged to this Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutAssignedEventArgs_Level_Property">
+    <value>Gets the depth on the Infragistics.Controls.Menus.XamDataTree that Infragistics.Controls.Menus.XamDataTreeNode will appear.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutAssignedEventArgs_Key_Property">
+    <value>Gets the Infragistics.Controls.Menus.NodeLayoutBase.Key of the Infragistics.Controls.Menus.NodeLayoutAssignedEventArgs.NodeLayout which will be applied.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutAssignedEventArgs_DataType_Property">
+    <value>Gets the System.Type which the Infragistics.Controls.Menus.XamDataTreeNode is bound to.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayoutBase_Key_Property">
+    <value>Gets / sets the unique string which can be used to identify this Infragistics.Controls.Menus.NodeLayoutBase.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLinePanel_Node_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTreeNode which is associated with this Infragistics.Controls.Menus.Primitives.NodeLineControl.</value>
+  </data>
+  <data xml:space="preserve" name="CancellableNodeEventArgs_Node_Property">
+    <value>The Infragistics.Controls.Menus.XamDataTreeNode that was modified.</value>
+  </data>
+  <data xml:space="preserve" name="ActiveNodeChangedEventArgs_OriginalActiveTreeNode_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode which was originally active.</value>
+  </data>
+  <data xml:space="preserve" name="ActiveNodeChangedEventArgs_NewActiveTreeNode_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode which is currently active.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingNodeEventArgs_Editor_Property">
+    <value>Gets the editor that is being displayed in the Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="TreeExitEditingEventArgs_NewValue_Property">
+    <value>Gets the new value that was entered into the editor.</value>
+  </data>
+  <data xml:space="preserve" name="TreeExitEditingEventArgs_EditingCanceled_Property">
+    <value>Gets if the editing was canceled by the user.</value>
+  </data>
+  <data xml:space="preserve" name="TreeExitEditingEventArgs_Editor_Property">
+    <value>Gets the editor that is being displayed in the Infragistics.Controls.Menus.XamDataTreeNode</value>
+  </data>
+  <data xml:space="preserve" name="NodeValidationErrorEventArgs_ValidationErrorEventArgs_Property">
+    <value>The actual Infragistics.Controls.Menus.NodeValidationErrorEventArgs.ValidationErrorEventArgs.</value>
+  </data>
+  <data xml:space="preserve" name="NodeValidationErrorEventArgs_Handled_Property">
+    <value>Gets/sets whether the event is handled. If true, then the Infragistics.Controls.Menus.XamDataTreeNode will treat the validation as if it had passed.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeDataContext_Data_Property">
+    <value>Gets the data object that is associated with the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeDataContext_Properties">
+    <value>XamDataTreeNodeDataContext Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeDataContext_Node_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode associated with the Infragistics.Controls.Menus.XamDataTreeNodeControl.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_AllowEditing_Property">
+    <value>Gets/Sets if Editing is enabled, and if so, what mode it should be in for all Infragistics.Controls.Menus.NodeLayout objects in the Infragistics.Controls.Menus.XamDataTree</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_IsF2EditingEnabled_Property">
+    <value>Gets/Sets if pressing the F2 key will cause the ActiveCell to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_IsEnterKeyEditingEnabled_Property">
+    <value>Gets/Sets if pressing the Enter key will cause the ActiveCell to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_IsMouseActionEditingEnabled_Property">
+    <value>Gets/Sets the Infragistics.Controls.Menus.TreeMouseEditingAction that can cause a Infragistics.Controls.Menus.XamDataTreeNode to enter edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_IsOnNodeActiveEditingEnabled_Property">
+    <value>Gets/Sets if a Infragistics.Controls.Menus.XamDataTreeNode will enter edit mode when it becomes active.</value>
+  </data>
+  <data xml:space="preserve" name="SelectionSettings_NodeSelection_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.TreeSelectionType which will be applied to all Infragistics.Controls.Menus.NodeLayouts.</value>
+  </data>
+  <data xml:space="preserve" name="SelectionSettings_SelectedNodes_Property">
+    <value>A collection of Infragistics.Controls.Menus.XamDataTreeNode objects which are currently selected.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettings_CheckBoxStyle_Property">
+    <value>Gets / sets a System.Windows.Style which will be applied to the System.Windows.Controls.CheckBox controls which are available on the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettings_CheckBoxVisibility_Property">
+    <value>Gets / sets if a System.Windows.Controls.CheckBox will be made available on the Infragistics.Controls.Menus.XamDataTreeNode object.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettings_IsCheckBoxThreeState_Property">
+    <value>Gets / sets if the System.Windows.Controls.CheckBox controls will allow for three state click through when the Infragistics.Controls.Menus.CheckBoxSettings.CheckBoxMode is set to Infragistics.Controls.Menus.TreeCheckBoxMode.Manual. This property will have no effect when set to Infragistics.Controls.Menus.TreeCheckBoxMode.Auto.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettings_CheckBoxMode_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.TreeCheckBoxMode which will govern what will happen to the Infragistics.Controls.Menus.XamDataTreeNode.IsChecked property of parent and child Infragistics.Controls.Menus.XamDataTreeNode objects when controlling Infragistics.Controls.Menus.XamDataTreeNode is checked.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLineTerminator_Node_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTreeNode which is associated with this Infragistics.Controls.Menus.Primitives.NodeLineTerminator.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLineTerminator_NodeLineEnd_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.NodeLineTemination value that will determine which state will be displayed.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLineControl_Node_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTreeNode which is associated with this Infragistics.Controls.Menus.Primitives.NodeLineControl.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLineControl_VerticalLine_Property">
+    <value>Gets / sets the System.Windows.DataTemplate which will be used to display connections between sibling Infragistics.Controls.Menus.XamDataTreeNodes.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLineControl_HorizontalLine_Property">
+    <value>Gets / sets the System.Windows.DataTemplate which will be used to display connections between Infragistics.Controls.Menus.XamDataTreeNodes and their horizontal line.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_AllowEditing_Property">
+    <value>Gets/Sets if Editing is enabled, and if so, what mode it should be in for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_AllowEditingResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.AllowEditing property for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsF2EditingEnabled_Property">
+    <value>Gets/Sets if pressing the F2 key will cause the ActiveCell to enter edit mode, on a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsF2EditingEnabledResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsF2EditingEnabled property for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsEnterKeyEditingEnabled_Property">
+    <value>Gets/Sets if pressing the Enter ke will cause the ActiveCell to enter edit mode on a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsEnterKeyEditingEnabledResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsEnterKeyEditingEnabled property for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsMouseActionEditingEnabled_Property">
+    <value>Gets/Sets the Infragistics.Controls.Menus.TreeMouseEditingAction that can cause a Infragistics.Controls.Menus.XamDataTreeNode to enter edit mode, on a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsMouseActionEditingEnabledResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsMouseActionEditingEnabled property for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsOnNodeActiveEditingEnabled_Property">
+    <value>Gets/Sets if a Infragistics.Controls.Menus.XamDataTreeNode will enter edit mode when it becomes active, on a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_IsOnNodeActiveEditingEnabledResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsOnNodeActiveEditingEnabled property for a particular Infragistics.Controls.Menus.NodeLayout</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettingsOverride_CheckBoxVisibility_Property">
+    <value>Gets / sets if a System.Windows.Controls.CheckBox will be made available on the Infragistics.Controls.Menus.XamDataTreeNode object.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettingsOverride_CheckBoxVisibilityResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.CheckBoxSettingsOverride.CheckBoxVisibility property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettingsOverride_CheckBoxStyle_Property">
+    <value>Gets / sets a System.Windows.Style which will be applied to the System.Windows.Controls.CheckBox controls which are available on the Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettingsOverride_CheckBoxStyleResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.CheckBoxSettingsOverride.CheckBoxStyle property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeSelectionSettings_NodeSelection_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.TreeSelectionType which will be applied to all Infragistics.Controls.Menus.NodeLayouts.</value>
+  </data>
+  <data xml:space="preserve" name="TreeSelectionSettings_SelectedNodes_Property">
+    <value>A collection of Infragistics.Controls.Menus.XamDataTreeNode objects which are currently selected.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsChecked_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTreeNode is checked.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsActive_Property">
+    <value>Gets / set if the Infragistics.Controls.Menus.XamDataTreeNode is currently the Infragistics.Controls.Menus.XamDataTree.ActiveNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsEditing_Property">
+    <value>Gets if the Infragistics.Controls.Menus.XamDataTreeNode is currently in edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsDraggable_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTreeNode can be dragged from it's current position.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsDropTarget_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTreeNode can act as a drop target for nodes.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsDraggableResolved_Property">
+    <value>Gets whether a Infragistics.Controls.Menus.XamDataTreeNode is draggable after taking account values from the Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout level.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsDropTargetResolved_Property">
+    <value>Gets whether a Infragistics.Controls.Menus.XamDataTreeNode is a drop target after taking account values from the Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout level.</value>
+  </data>
+  <data xml:space="preserve" name="NodesPanel_Tree_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTree which this Infragistics.Controls.Menus.NodeLayout will apply to.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_Style_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTreeNode.Style which should be applied to this Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ExpandedIconTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be displayed on nodes that are currently expanded on all Infragistics.Controls.Menus.NodeLayouts of the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_CollapsedIconTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be displayed on nodes that are currently collapsed on all Infragistics.Controls.Menus.NodeLayouts of the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_ExpandedIconTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be displayed on nodes that are currently expanded.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_CollapsedIconTemplate_Property">
+    <value>Gets / sets the System.Windows.DataTemplate that will be displayed on nodes that are currently collapsed on the .</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_ExpandedIconTemplateResolved_Property">
+    <value>Get the System.Windows.DataTemplate which will be used for the Infragistics.Controls.Menus.XamDataTreeNode's on this Infragistics.Controls.Menus.NodeLayout when they have children and they are expanded.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_CollapsedIconTemplateResolved_Property">
+    <value>Get the System.Windows.DataTemplate which will be used for the Infragistics.Controls.Menus.XamDataTreeNode's on this Infragistics.Controls.Menus.NodeLayout when they have children and they are collapsed.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_ExpandedIconTemplate_Property">
+    <value>Gets / sets the expanded System.Windows.DataTemplate that will be displayed on this node.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_CollapsedIconTemplate_Property">
+    <value>Gets / sets the collapsed System.Windows.DataTemplate that will be displayed on this node.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_ExpandedIconTemplateResolved_Property">
+    <value>Gets / sets the expanded System.Windows.DataTemplate that will be displayed on this node.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_CollapsedIconTemplateResolved_Property">
+    <value>Gets the collapsed System.Windows.DataTemplate that will be displayed on this node.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettings_AllowDeletion_Property">
+    <value>Gets / sets if the user will be allowed to delete nodes by using the delete key across all Infragistics.Controls.Menus.NodeLayouts in the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_AllowDeletion_Property">
+    <value>Gets / sets if deleting records is allowed on this Infragistics.Controls.Menus.NodeLayout of the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="TreeEditingSettingsOverride_AllowDeletionResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.TreeEditingSettingsOverride.AllowDeletion property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ActiveNode_Property">
+    <value>Gets / sets the Infragistics.Controls.Menus.XamDataTreeNode which is considered active by the Infragistics.Controls.Menus.XamDataTree. This
+ node will respond to keyboard input.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ShowActiveNodeIndicator_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTree will show an indictator around the currently active Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_ActiveNodeIndicatorStyle_Property">
+    <value>Gets / sets the System.Windows.Style that will be applied to the Infragistics.Controls.Menus.Primitives.ActiveNodeIndicator which will be visible on the Infragistics.Controls.Menus.XamDataTree.ActiveNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_NodeStyle_Property">
+    <value>Get / set the System.Windows.Style which will be applied to all Infragistics.Controls.Menus.XamDataTreeNodes of the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_IsDraggable_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTree can participate in drag and drop. This property controls if the Infragistics.Controls.Menus.XamDataTree will allow for dragging to begin on it.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_IsDropTarget_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTree can participate in drag and drop. This property controls if the Infragistics.Controls.Menus.XamDataTree will allow for dragging to end on it.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_NodeLineVisibility_Property">
+    <value>Gets / sets if NodeLines will be visible on the Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_SelectionSettings_Property">
+    <value>Gets a reference to the Infragistics.Controls.Menus.TreeSelectionSettings object that controls all the properties for selection on all Infragistics.Controls.Menus.NodeLayouts of a Infragistics.Controls.Menus.XamDataTree.</value>
+  </data>
+  <data xml:space="preserve" name="CheckBoxSettingsOverride_IsCheckBoxThreeStateResolved_Property">
+    <value>Gets if the Infragistics.Controls.Menus.XamDataTreeNode's System.Windows.Controls.CheckBoxes are set to three state.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsExpandedBinding_Property">
+    <value>A System.Windows.Data.Binding object set up to access a property on the data object which will link to the Infragistics.Controls.Menus.XamDataTreeNode's Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded property.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_IsExpandedMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsExpandedMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsExpandedMemberPathResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.IsExpandedMemberPath property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDataObjectCreationEventArgs_NewObject_Property">
+    <value>Gets / sets an object of the Infragistics.Controls.Menus.TreeDataObjectCreationEventArgs.ObjectType which will be used as the newly created object.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDataObjectCreationEventArgs_ObjectType_Property">
+    <value>Gets the System.Type of object that the DataManager expects to be created.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDataObjectCreationEventArgs_ParentNode_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode object which is the parent for this object.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDataObjectCreationEventArgs_CollectionType_Property">
+    <value>Gets the System.Type which is contained in the underlying collection.</value>
+  </data>
+  <data xml:space="preserve" name="NodeSelectionEventArgs_OriginalSelectedNodes_Property">
+    <value>Gets the Infragistics.Controls.Menus.SelectedNodesCollection of nodes that were previously selected.</value>
+  </data>
+  <data xml:space="preserve" name="NodeSelectionEventArgs_CurrentSelectedNodes_Property">
+    <value>Gets the Infragistics.Controls.Menus.SelectedNodesCollection of nodes that are selected.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDropEventArgs_DragDropEventArgs_Property">
+    <value>Gets the Infragistics.DragDrop.DragDropEventArgs object which were generated for this event.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNode_IsEnabled_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTreeNodeControl should be enabled.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_IsEnabledMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the Infragistics.Controls.Menus.XamDataTreeNode.IsEnabled of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_EnsureNodeExpansion_Property">
+    <value>Gets / sets if the Infragistics.Controls.Menus.XamDataTree should process all nodes in the tree and register child nodes accordingly.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_AllowDragDropCopy_Property">
+    <value>Gets / sets if holding the control key will designate the drag action as a copy rather then a move action.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsEnabledMemberPath_Property">
+    <value>Gets / sets the path to the property on the Infragistics.Controls.Menus.XamDataTreeNode.Data object to populate the Infragistics.Controls.Menus.XamDataTreeNode.IsEnabled of the Infragistics.Controls.Menus.XamDataTreeNode.</value>
+  </data>
+  <data xml:space="preserve" name="NodeLayout_IsEnabledMemberPathResolved_Property">
+    <value>Resolves the Infragistics.Controls.Menus.NodeLayout.IsEnabledMemberPath property for a particular Infragistics.Controls.Menus.NodeLayout.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTreeNodeControl_CheckBoxStyle_Property">
+    <value>Gets / sets a System.Windows.Style that will be applied to the checkboxs of the Infragistics.Controls.Menus.XamDataTreeNodeControl.</value>
+  </data>
+  <data xml:space="preserve" name="ActiveNodeChangedEventArgs_Cancel_Property">
+    <value>This property is not used in this event.</value>
+  </data>
+  <data xml:space="preserve" name="TreeDropEventArgs_DropDestination_Property">
+    <value>Gets the Infragistics.Controls.Menus.TreeDropDestination value which determines where the drop is perceived when a Infragistics.Controls.Menus.XamDataTreeNode is dropped in relation to it's drop target.</value>
+  </data>
+  <data xml:space="preserve" name="ActiveNodeChangingEventArgs_OriginalActiveTreeNode_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode which was originally active.</value>
+  </data>
+  <data xml:space="preserve" name="ActiveNodeChangingEventArgs_NewActiveTreeNode_Property">
+    <value>Gets the Infragistics.Controls.Menus.XamDataTreeNode which is currently active.</value>
+  </data>
+  <data xml:space="preserve" name="XamDataTree_IsTouchSupportEnabled_Property">
+    <value>Returns or sets whether touch support is enabled for this control</value>
+  </data>
+</root>

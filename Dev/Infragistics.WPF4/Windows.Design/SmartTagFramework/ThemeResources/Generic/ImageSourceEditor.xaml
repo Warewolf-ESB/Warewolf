@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="Infragistics.Windows.Design.SmartTagFramework.ImageSourceEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"    
+    xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+    xmlns:stf="clr-namespace:Infragistics.Windows.Design.SmartTagFramework"
+    >
+    <UserControl.Resources>
+
+        <stf:ImageSourceValueConverter x:Key="imageSourceValueConverter" />
+        <stf:TreeItemTemplateSelector x:Key="treeItemTemplateSelector" />
+
+        <DataTemplate x:Key="lbTreeItemsItemTemplate">
+            <Border x:Name="border" BorderThickness="1" Margin="-2,0,0,0" >
+                <ContentControl VerticalAlignment="Center" Content="{Binding}" ContentTemplateSelector="{StaticResource treeItemTemplateSelector}" />
+            </Border>
+            <DataTemplate.Triggers>
+                <Trigger  Property="ToggleButton.IsMouseOver" Value="True">
+                    <Setter  Property="Control.Cursor" Value="Hand" />
+                    <Setter TargetName="border"  Property="BorderBrush" Value="#FF3399FF" />
+                    <Setter TargetName="border"  Property="Background" Value="#FFC1E0E1" />
+                </Trigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <StackPanel x:Name="spBase" Orientation="Horizontal">
+        <TextBox x:Name="tbImageSource" Height="1" MaxWidth="1" Foreground="Transparent" IsReadOnly="False" VerticalAlignment="Center" TextChanged="tbImageSource_TextChanged">
+            <TextBox.Text>
+                <Binding Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" Path="Value" Converter="{StaticResource imageSourceValueConverter}" >
+					<Binding.ValidationRules>
+						<ExceptionValidationRule />
+					</Binding.ValidationRules>
+				</Binding>
+            </TextBox.Text>
+        </TextBox>
+
+		<ToggleButton Margin="5" Width="45" Height="27" x:Name="btnPopUp" Click="btnPopUp_Click"  >
+            <ToggleButton.Template>
+                <ControlTemplate>
+                    <Border x:Name="border" BorderThickness="1" BorderBrush="#FFF0F0F0" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="PART_SelectedImage" Width="25" Height="25" IsHitTestVisible="True"
+                               Source="{Binding ElementName=tbImageSource, Path=Text, Mode=OneWay, Converter={StaticResource imageSourceValueConverter}}" />
+                            <Path x:Name="arrow" 
+                                                SnapsToDevicePixels="True"
+                                                IsHitTestVisible="True"                                                
+                                                Margin="5,0,0,0"
+                                                Fill="#FF3C3C3C"
+                                                RenderTransformOrigin="0.5,0.5"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Data="M 0 0 L 0 8 L 5 4 Z"
+                                                Stroke="#FF3C3C3C"
+                                                StrokeThickness="0.5">
+                                <Path.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </Path.RenderTransform>
+                            </Path>
+                            <Popup x:Name="PART_Popup" AllowsTransparency="True" StaysOpen="True" Closed="popUp_Closed" Placement="Right" PopupAnimation="Fade" >
+                                <StackPanel Background="White">
+                                    <Grid x:Name="grid" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" MinWidth="250" />
+                                            <ColumnDefinition Width="Auto"   />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" MinHeight="23" MaxHeight="23"/>
+                                            <RowDefinition Height="Auto" MinHeight="22" />
+                                            <RowDefinition Height="Auto" MinHeight="22" />
+											<RowDefinition Height="Auto" MinHeight="22" />
+										</Grid.RowDefinitions>
+                                        <Border BorderBrush="#FF878787" BorderThickness="0.5" Grid.ColumnSpan="2" Grid.RowSpan="4" Canvas.ZIndex="1" CornerRadius="2"></Border>
+                                        <Rectangle Grid.Row="0" Grid.ColumnSpan="2" Fill="#FFF0F0F0" ></Rectangle>
+                                        <Label Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,0,0" Name="lblTitle" FontWeight="Bold" FontSize="12" VerticalAlignment="Center" Foreground="Black" Content="{x:Static stf:DesignResources.LST_SmartTagFramework_ImageSourceEditor_lblTitleContent}" ></Label>
+                                        <Button Name="btnClose" Grid.Column="2" Background="Transparent"  Click="btnClose_Click"  BorderBrush="#FFF0F0F0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" ToolTip="{x:Static stf:DesignResources.LST_SmartTagFramework_GenericAdorner_btnCloseToolTip}"  >
+                                            <Button.Content>
+                                                <Image Stretch="UniformToFill" Source="{x:Static stf:ContentLocators.ImageSourceCloseButtonGif}" ></Image>
+                                            </Button.Content>
+                                        </Button>
+                                        <StackPanel Background="White" x:Name="PART_StackPanelBreadCrumb" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5,0,5,0"/>
+										<Border Grid.Row="2" Grid.ColumnSpan="2" Margin="8" CornerRadius="6,6,0,0">
+											<Border.Background>
+												<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+													<GradientStop Color="#22808080" Offset="0"/>
+													<GradientStop Color="#22808080" Offset=".5"/>
+													<GradientStop Color="#33808080" Offset=".51"/>
+													<GradientStop Color="#AA808080" Offset="1.0"/>
+												</LinearGradientBrush>
+											</Border.Background>
+											<TextBlock Text="{x:Static stf:DesignResources.LST_SmartTagFramework_ImageSourceEditor_ImageResourcesDefinedInProject}" TextAlignment="Center" Margin="3" Foreground="Black"/>
+										</Border>
+										<TextBlock Text="{x:Static stf:DesignResources.LST_SmartTagFramework_ImageSourceEditor_NoResourcesFound}" TextAlignment="Center" Margin="0,10,0,10" Foreground="Black" Grid.Row="3" Grid.ColumnSpan="2"/>
+										<ScrollViewer x:Name="PART_ListBoxTreeItemsScrollViewer" 
+                                                      Grid.Row="3" Grid.ColumnSpan="2" Margin="8,0,8,5"
+                                                      MaxWidth="300" MaxHeight="500"
+                                             HorizontalScrollBarVisibility="Auto"  
+                                             VerticalScrollBarVisibility="Auto" 
+                                             HorizontalContentAlignment="Stretch" >
+                                            <ListBox x:Name="PART_ListBoxTreeItems" 
+                                                 ItemTemplate="{StaticResource lbTreeItemsItemTemplate}"
+                                                 SelectionChanged="lbTreeItems_SelectionChanged" HorizontalContentAlignment="Stretch" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </StackPanel>
+                            </Popup>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger  Property="IsMouseOver" Value="True">
+                            <Setter  Property="Control.Cursor" Value="Hand" />
+                            <Setter TargetName="border"  Property="BorderBrush" Value="#FF3399FF" />
+                            <Setter TargetName="border"  Property="Background" Value="#FFC1E0E1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+
+		<Button x:Name="btnReset" Margin="5,0,0,0" Height="27" Content="{x:Static stf:DesignResources.LST_SmartTagFramework_ImageSourceEditor_btnResetText}" ToolTip="{x:Static stf:DesignResources.LST_SmartTagFramework_ImageSourceEditor_btnResetToolTip}" Click="btnReset_Click" IsEnabled="False" Foreground="Black">
+			<Button.Template>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="border" BorderThickness="1" BorderBrush="Black" CornerRadius="5" VerticalAlignment="Center">
+						<TextBlock x:Name="txtContent" Margin="5,0,5,0"  Text="{TemplateBinding Content}"/>
+					</Border>
+					
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="txtContent" Property="Foreground" Value="Gray"/>
+							<Setter TargetName="border" Property="BorderBrush" Value="Gray"/>
+						</Trigger>	
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+	</StackPanel>
+</UserControl>

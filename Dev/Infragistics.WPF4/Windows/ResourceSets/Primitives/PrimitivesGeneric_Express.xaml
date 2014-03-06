@@ -1,0 +1,911 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ig="clr-namespace:Infragistics.Windows"
+	xmlns:controls="clr-namespace:Infragistics.Windows.Controls"
+  xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:luna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:igPrim="clr-namespace:Infragistics.Controls.Primitives"
+	mc:Ignorable="d"
+	xmlns:shared="clr-namespace:Infragistics.Shared"
+	>
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="PrimitivesGeneric_Brushes.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+  <!-- _________________________ DynamicResourceString __________________________________________ -->
+	<DataTemplate DataType="{x:Type shared:DynamicResourceString}">
+		<TextBlock Text="{Binding Path=Value}" />
+	</DataTemplate>
+	
+	<!-- _________________________ SortIndicator __________________________________________ -->
+	<Style TargetType="{x:Type controls:SortIndicator}">
+    <!-- JJD 11/29/10 - TFS59556 - By default this class if not hit test visible -->
+    <!--<Setter Property="Cursor" Value="Hand" />-->
+		<Setter Property="MinHeight" Value="3.5" />
+		<Setter Property="MinWidth" Value="7" />
+		<Setter Property="Visibility" Value="Hidden"/>
+		<Setter Property="Background" Value="{DynamicResource {ComponentResourceKey {x:Type controls:SortIndicator}, SortIndicatorBackground}}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:SortIndicator}">
+					<Polygon Name="Arrow" 
+								  Fill="{TemplateBinding Background}" 
+								  Points="0,0 7,0 3.5,3.5" 	
+								  StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" />
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="SortStatus" Value="Descending">
+							<Setter Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="SortStatus" Value="Ascending">
+							<Setter TargetName="Arrow" Property="Points" 
+											   Value="0,3.5 7,3.5 3.5,0" />
+							<Setter Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter TargetName="Arrow" Property="Polygon.Fill" Value="{DynamicResource {ComponentResourceKey {x:Type controls:SortIndicator}, SortIndicatorBackgroundHover}}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- _________________________ ExpanderBar __________________________________________ -->
+	<Style TargetType="{x:Type controls:ExpanderBar}">
+		<Setter Property="Background">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Offset="0" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".06" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".37" Color="#FFD0D0D0"/>
+					<GradientStop Offset=".61" Color="#FFCCCCCC"/>
+					<GradientStop Offset=".63" Color="#FFBDBDBD"/>
+					<GradientStop Offset=".71" Color="#FFBDBDBD"/>
+					<GradientStop Offset=".74" Color="#FFD0D0D0"/>
+					<GradientStop Offset="1" Color="#FFCECECE"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="BackgroundHover">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Offset="0" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".06" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".37" Color="#FFBED9EC"/>
+					<GradientStop Offset=".61" Color="#FFC3DBED"/>
+					<GradientStop Offset=".63" Color="#FFA4CDE9"/>
+					<GradientStop Offset=".71" Color="#FF9DCAE9"/>
+					<GradientStop Offset=".74" Color="#FFAED4ED"/>
+					<GradientStop Offset="1" Color="#FFBADAF2"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="BorderBrush" Value="#FF898C95" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderHoverBrush" Value="#FF4DA2E4" />
+		<Setter Property="MinHeight" Value="10" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:ExpanderBar}">
+					<!--<Grid Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height}">-->
+					<Grid>
+						<Rectangle x:Name="bgRect" 
+							Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"
+							Fill="{TemplateBinding Background}" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOver" Value="true" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="bgRect" Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BackgroundHover}" />
+							<Setter TargetName="bgRect" Property="Stroke" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderHoverBrush}" />
+						</MultiTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- _________________________ ExpansionIndicator __________________________________________ -->
+	<Style TargetType="{x:Type controls:ExpansionIndicator}">
+		<Setter Property="Background">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+					<GradientStop Color="sc#1, 0.57900393, 0.57900393, 0.57900393" Offset="1"/>
+					<GradientStop Color="#FFFFFFFF" Offset="0.36153846153846259"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="BorderBrush" Value="#FF999999" />
+		<Setter Property="Foreground" Value="#FF000000" />
+		<Setter Property="Cursor" Value="Hand" />
+		<Setter Property="ClipToBounds" Value="False" />
+		<Setter Property="Margin" Value="5,0,3,0" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:ExpansionIndicator}">
+					<Grid Background="#00FFFFFF">
+						<Grid Width="9" Height="9" x:Name="grdExpansionIndicatorClosed" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Border Background="{TemplateBinding BorderBrush}" x:Name="outerBorder" RenderTransformOrigin="0.5,0.5" CornerRadius="2,2,2,2"/>
+							<Border 
+							  x:Name="innerFill" 
+							  Margin="1,1,1,1" Width="Auto" Height="Auto" 									
+							  RenderTransformOrigin="0.5,0.5" 
+							  CornerRadius="1.5,1.5,1.5,1.5"
+							  Background="{TemplateBinding Background}"
+									/>
+							<Rectangle Fill="{TemplateBinding Foreground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,4,2,4" Width="Auto" Height="1" x:Name="plusHorizontal" RenderTransformOrigin="0.5,0.5"/>
+							<Rectangle Fill="{TemplateBinding Foreground}" Margin="4,2,4,2" Width="1" Height="Auto" x:Name="plusVert" RenderTransformOrigin="0.5,0.5"/>
+						</Grid>
+					</Grid>
+
+					<ControlTemplate.Triggers>
+						<!-- Checked -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="true" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="plusVert" Property="Visibility" Value="Collapsed" />
+						</MultiTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- ==================== -->
+	<!--     NA 2007 Vol 2    -->
+	<!-- ==================== -->
+	<!-- _________________________ Mouse Panning Images __________________________________________ -->
+	<GeometryDrawing PresentationOptions:Freeze="true" x:Key="MousePanningCircle" Brush="White">
+		<GeometryDrawing.Pen>
+			<Pen Brush="Black" Thickness="1"/>
+		</GeometryDrawing.Pen>
+		<GeometryDrawing.Geometry>
+			<GeometryGroup>
+				<EllipseGeometry RadiusX="12.5" RadiusY="12.5" Center="12.5,12.5" />
+			</GeometryGroup>
+		</GeometryDrawing.Geometry>
+	</GeometryDrawing>
+	<Pen PresentationOptions:Freeze="true" x:Key="WhitePen" Brush="White" Thickness="1" />
+	<PathGeometry PresentationOptions:Freeze="true" x:Key="MousePanningCenterMark" Figures="M 9,10  L 10,10  10,9 13,9 13,10 14,10 14,13 13,13 13,14 10,14 10,13 9,13 Z" />
+	<TranslateTransform PresentationOptions:Freeze="true" x:Key="TranslateTransform1by1" X="1" Y="1" />
+
+	<!-- _________________________ Mouse Panning Image - All __________________________________________ -->
+	<DrawingImage PresentationOptions:Freeze="true" x:Key="{x:Static controls:MousePanningDecorator.ScrollAllImageKey}">
+		<DrawingImage.Drawing>
+			<DrawingGroup>
+				<StaticResource ResourceKey="MousePanningCircle" />
+				<GeometryDrawing Brush="Black" Pen="{StaticResource WhitePen}">
+					<GeometryDrawing.Geometry>
+						<GeometryGroup Transform="{StaticResource TranslateTransform1by1}">
+							<PathGeometry Figures="M 11, 0 L 12,0  17,6  6,6 Z" />
+							<PathGeometry Figures="M 11,23 L 12,23 17,17 6,17  Z" />
+							<PathGeometry Figures="M 17, 6 L 23,11 23,12 17,17 Z" />
+							<PathGeometry Figures="M 0,11  L 0,12  6,17  6,6 Z" />
+							<StaticResource ResourceKey="MousePanningCenterMark" />
+						</GeometryGroup>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+
+	<!-- _________________________ Mouse Panning Image - NS __________________________________________ -->
+	<DrawingImage PresentationOptions:Freeze="true" x:Key="{x:Static controls:MousePanningDecorator.ScrollNSImageKey}">
+		<DrawingImage.Drawing>
+			<DrawingGroup>
+				<StaticResource ResourceKey="MousePanningCircle" />
+				<GeometryDrawing Brush="Black" Pen="{StaticResource WhitePen}">
+					<GeometryDrawing.Geometry>
+						<GeometryGroup Transform="{StaticResource TranslateTransform1by1}">
+							<PathGeometry Figures="M 11, 0 L 12,0  19,8  4,8 Z" />
+							<PathGeometry Figures="M 11,23 L 12,23 19,15 4,15  Z" />
+							<StaticResource ResourceKey="MousePanningCenterMark" />
+						</GeometryGroup>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+
+	<!-- _________________________ Mouse Panning Image - EW __________________________________________ -->
+	<DrawingImage PresentationOptions:Freeze="true" x:Key="{x:Static controls:MousePanningDecorator.ScrollEWImageKey}">
+		<DrawingImage.Drawing>
+			<DrawingGroup>
+				<StaticResource ResourceKey="MousePanningCircle" />
+				<GeometryDrawing Brush="Black" Pen="{StaticResource WhitePen}">
+					<GeometryDrawing.Geometry>
+						<GeometryGroup Transform="{StaticResource TranslateTransform1by1}">
+							<PathGeometry Figures="M 15,4 L 23,11 23,12 15,19 Z" />
+							<PathGeometry Figures="M 0,11 L 0,12  8,19  8,4 Z" />
+							<StaticResource ResourceKey="MousePanningCenterMark" />
+						</GeometryGroup>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+
+	<!-- _________________________ XamPager Resources __________________________________________ -->
+	<!-- ************************************************** -->
+	<!-- XamPager Resources -->
+	<!-- ************************************************** -->
+	<Style TargetType="{x:Type RepeatButton}" x:Key="PagerScrollBtnBase">
+		<!--<Setter Property="ClickMode" Value="Hover"/>-->
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Background" Value="#CCCCCC" />
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="Black" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="3" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Border BorderBrush="{TemplateBinding BorderBrush}" 
+                  BorderThickness="{TemplateBinding BorderThickness}" 
+                  Background="{TemplateBinding Background}" 
+                  CornerRadius="3">
+						<Path Margin="{TemplateBinding Padding}" 
+                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                  Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+                  Fill="{TemplateBinding Foreground}"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Foreground" Value="White" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="Pager_ScrollLeftButtonStyle">
+		<Setter Property="Content" Value="M 4,0 L 4,8 0,4 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="Pager_ScrollUpButtonStyle">
+		<Setter Property="Content" Value="M 0,4 L 8,4 4,0 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="Pager_ScrollRightButtonStyle">
+		<Setter Property="Content" Value="M 0,0 L 0,8 4,4 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="Pager_ScrollDownButtonStyle">
+		<Setter Property="Content" Value="M 0,0 L 8,0 4,4 Z"/>
+	</Style>
+	<!-- ************************************************** -->
+	<!-- End XamPager Resources -->
+	<!-- ************************************************** -->
+
+	<!-- _________________________ XamPager __________________________________________ -->
+	<Style TargetType="{x:Type controls:XamPager}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+		<Setter Property="ScrollLeftButtonStyle" Value="{StaticResource Pager_ScrollLeftButtonStyle}"/>
+		<Setter Property="ScrollRightButtonStyle" Value="{StaticResource Pager_ScrollRightButtonStyle}"/>
+		<Setter Property="ScrollUpButtonStyle" Value="{StaticResource Pager_ScrollUpButtonStyle}"/>
+		<Setter Property="ScrollDownButtonStyle" Value="{StaticResource Pager_ScrollDownButtonStyle}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type controls:XamPager}">
+					<Grid Background="{TemplateBinding Background}">
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="gridRow0" Height="Auto"/>
+							<RowDefinition x:Name="gridRow1" Height="*"/>
+							<RowDefinition x:Name="gridRow2" Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="gridCol0" Width="Auto"/>
+							<ColumnDefinition x:Name="gridCol1" Width="*"/>
+							<ColumnDefinition x:Name="gridCol2" Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<RepeatButton x:Name="PART_ScrollLeft"
+							Grid.Column="0" Grid.Row="1" 
+							Panel.ZIndex="1" 
+							Style="{TemplateBinding ScrollLeftButtonStyle}"  
+							Visibility="{TemplateBinding ScrollLeftVisibility}"
+							Command="{x:Static ScrollBar.LineLeftCommand}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+						<RepeatButton x:Name="PART_ScrollUp" 
+							Grid.Column="1" Grid.Row="0" 
+							Panel.ZIndex="1" 
+							Style="{TemplateBinding ScrollUpButtonStyle}"  
+							Visibility="{TemplateBinding ScrollUpVisibility}" 
+							Command="{x:Static ScrollBar.LineUpCommand}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+						<RepeatButton x:Name="PART_ScrollRight"
+							Grid.Row="1" Grid.Column="2" 
+							Panel.ZIndex="1" 
+							Style="{TemplateBinding ScrollRightButtonStyle}"  
+							Visibility="{TemplateBinding ScrollRightVisibility}" 
+							Command="{x:Static ScrollBar.LineRightCommand}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+						<RepeatButton x:Name="PART_ScrollDown"
+							Grid.Column="1" Grid.Row="2" 
+							Panel.ZIndex="1" 
+							Style="{TemplateBinding ScrollDownButtonStyle}"  
+							Visibility="{TemplateBinding ScrollDownVisibility}" 
+							Command="{x:Static ScrollBar.LineDownCommand}"
+							CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" />
+						<controls:PagerContentPresenter x:Name="PART_PagerContentPresenter"
+							Panel.ZIndex="0" 
+							CanContentScroll="{TemplateBinding CanContentScroll}" 
+							Margin="{TemplateBinding Padding}" 
+							Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="HorizontalScrollBarVisibility" Value="Visible">
+							<Setter Property="Grid.Column" TargetName="PART_PagerContentPresenter" Value="1" />
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="1" />
+						</Trigger>
+						<Trigger Property="VerticalScrollBarVisibility" Value="Visible">
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1" />
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="1" />
+						</Trigger>
+						<Trigger Property="ComputedVerticalScrollBarVisibility" Value="Collapsed">
+							<Setter TargetName="gridRow0" Property="Height" Value="0"/>
+							<Setter TargetName="gridRow2" Property="Height" Value="0"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1" />
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="1" />
+						</Trigger>
+						<Trigger Property="ComputedHorizontalScrollBarVisibility" Value="Collapsed">
+							<Setter TargetName="gridCol0" Property="Width" Value="0"/>
+							<Setter TargetName="gridCol2" Property="Width" Value="0"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1" />
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="1" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--SSP 8/10/08 Moveable Fields Feature -->
+	<!-- _________________________ DropIndicator ______________________________________ -->
+    <Style TargetType="{x:Type controls:DropIndicator}" BasedOn="{x:Null}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.DropIndicatorFillKey}}"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:DropIndicator}">
+                    <ControlTemplate.Resources>
+
+                        <Storyboard x:Key="ArrowTL">
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TL1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-4.669"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TL2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-4.669"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TL2" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TL1" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BR1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="5"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BR2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="5"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BR1" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BR2" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+
+                    </ControlTemplate.Resources>
+                    <StackPanel x:Name="mainPanel" Orientation="Vertical" >
+                        <Grid x:Name="ArrowTL" Width="12" Height="25" >
+                            <Path
+		x:Name="TL2"
+		Margin="0,0,0,5"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Bottom"
+		Width="8"
+		Stretch="Fill"
+		Opacity="1"
+		Data="M 5,10 C5,10 0,5 0,5 0,5 0,0 0,0 0,0 5,5 5,5 5,5 10,0 10,0 10,0 10,5 10,5 10,5 5,10 5,10 z" Stroke="#4CFFFFFF" 
+                Fill="{TemplateBinding Background}" 
+                RenderTransformOrigin="0.5,0.5" Height="6">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        <SkewTransform AngleX="0" AngleY="0"/>
+                        <RotateTransform Angle="0"/>
+                        <TranslateTransform X="0" Y="0"/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+            <Path
+		x:Name="TL1"
+			Stretch="Fill"
+			Opacity="1"
+			Data="M 5,10 C5,10 0,5 0,5 0,5 0,0 0,0 0,0 5,5 5,5 5,5 10,0 10,0 10,0 10,5 10,5 10,5 5,10 5,10 z" 
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Center"
+                Width="8" 
+                Height="6" 
+                Stroke="#4CFFFFFF" 
+                Fill="{TemplateBinding Background}"
+                RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                        <!--Location of element is used to properly align the drop indicator with the drop target field-->
+                        <Rectangle x:Name="PART_Offset"
+												 Width="1" Height="1"
+												 HorizontalAlignment="Center"
+												 VerticalAlignment="Center"
+												 Visibility="Hidden" />
+                        <Rectangle
+								x:Name="spaceRect"
+								Width="{TemplateBinding DropTargetWidth}"
+								Height="{TemplateBinding DropTargetHeight}"
+								Visibility="Hidden"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								Stroke="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.DropTargetStrokeKey}}"
+								StrokeThickness="2"
+								RadiusX="3"
+								RadiusY="3"
+							/>
+                        <Grid Width="12" Height="25" x:Name="ArrowBR">
+                            <Path x:Name="BR1"
+				Stretch="Fill"
+				Opacity="1"
+				Data="M 5,0 C5,0 0,5 0,5 0,5 0,10 0,10 0,10 5,5 5,5 5,5 10,10 10,10 10,10 10,5 10,5 10,5 5,0 5,0 z"
+                                  Fill="{TemplateBinding Background}"
+                                  Width="8" Height="6" 
+                                  VerticalAlignment="Top" 
+                                  Stroke="#4CFFFFFF" 
+                                  RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                            <Path x:Name="BR2"
+				Stretch="Fill"
+				Opacity="1"
+				Data="M 5,0 C5,0 0,5 0,5 0,5 0,10 0,10 0,10 5,5 5,5 5,5 10,10 10,10 10,10 10,5 10,5 10,5 5,0 5,0 z" 
+                                  Fill="{TemplateBinding Background}"
+                                  VerticalAlignment="Top" Width="8" Height="6" Stroke="#4CFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="0,5,0,0">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                        <SkewTransform AngleX="0" AngleY="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform X="0" Y="0"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="spaceRect" Property="Height" Value="1" />
+                            <Setter TargetName="mainPanel" Property="Orientation" Value="Horizontal" />
+                            <Setter TargetName="ArrowTL" Property="LayoutTransform" >
+                                <Setter.Value>
+                                    <RotateTransform CenterX="15" CenterY="50" Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="ArrowBR" Property="LayoutTransform" >
+                                <Setter.Value>
+                                    <RotateTransform CenterX="15" CenterY="0" Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="spaceRect" Property="Width" Value="1" />
+                        </Trigger>
+
+                        <!-- JJD 9/18/09
+                             Use event triggers below instead of property triggers which can root the element 
+                             in certain situations due to a bug in the WPF framework
+                        
+                        <Trigger Property="DropLocation" Value="{x:Null}">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource ArrowTL}" x:Name="ArrowTL_SB"/>
+                                <StopStoryboard BeginStoryboardName="ArrowTL_SB"/>
+                            </Trigger.EnterActions>
+                        </Trigger>
+
+                        
+                        <Trigger Property="DropLocation" Value="LeftOfTarget">
+                            <Trigger.EnterActions>
+                                <SeekStoryboard BeginStoryboardName="ArrowTL_SB" Offset="0:0:0" Origin="BeginTime" />
+                                <ResumeStoryboard BeginStoryboardName="ArrowTL_SB" />
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="DropLocation" Value="RightOfTarget">
+                            <Trigger.EnterActions>
+                                <SeekStoryboard BeginStoryboardName="ArrowTL_SB" Offset="0:0:0" Origin="BeginTime" />
+                                <ResumeStoryboard BeginStoryboardName="ArrowTL_SB" />
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="DropLocation" Value="AboveTarget">
+                            <Trigger.EnterActions>
+                                <SeekStoryboard BeginStoryboardName="ArrowTL_SB" Offset="0:0:0" Origin="BeginTime" />
+                                <ResumeStoryboard BeginStoryboardName="ArrowTL_SB" />
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="DropLocation" Value="BelowTarget">
+                            <Trigger.EnterActions>
+                                <SeekStoryboard BeginStoryboardName="ArrowTL_SB" Offset="0:0:0" Origin="BeginTime" />
+                                <ResumeStoryboard BeginStoryboardName="ArrowTL_SB" />
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        -->
+
+                        <Trigger Property="DropLocation" Value="OverTarget">
+                            <!-- JJD 9/18/09 - Use event rtiggers below instead to prevent rooting
+                            <Trigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="ArrowTL_SB"/>
+                            </Trigger.ExitActions>-->
+                            <Setter TargetName="spaceRect" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="ArrowTL" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="ArrowBR" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_Offset" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="PART_Offset" Property="VerticalAlignment" Value="Top" />
+                        </Trigger>
+
+                        <EventTrigger RoutedEvent="controls:DropIndicator.DropTargetInitialize">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard Storyboard="{StaticResource ArrowTL}" x:Name="ArrowTL_SB"/>
+                                <StopStoryboard BeginStoryboardName="ArrowTL_SB"/>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="controls:DropIndicator.DropTargetEnter">
+                            <EventTrigger.Actions>
+                                <SeekStoryboard BeginStoryboardName="ArrowTL_SB" Offset="0:0:0" Origin="BeginTime" />
+                                <ResumeStoryboard BeginStoryboardName="ArrowTL_SB" />
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+
+                        <EventTrigger RoutedEvent="controls:DropIndicator.DropTargetLeave">
+                            <EventTrigger.Actions>
+                                <StopStoryboard BeginStoryboardName="ArrowTL_SB"/>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                        
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+	<!-- ==================== -->
+	<!--     NA 2009 Vol 1    -->
+	<!-- ==================== -->
+
+  <!-- =============================================================================== -->
+  <!-- ComparisonOperatorSelector operator images                                                        -->
+  <!-- =============================================================================== -->
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorEqualsImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Equals.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorNotEqualsImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_NotEquals.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorLessThanImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_LessThan.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorLessThanOrEqualToImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_LessThanOrEqualTo.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorGreaterThanImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_GreaterThan.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorGreaterThanOrEqualToImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_GreaterThanOrEqualTo.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorContainsImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Contains.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotContainImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_DoesNotContain.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorLikeImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Like.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorNotLikeImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_NotLike.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorMatchImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Match.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotMatchImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_DoesNotMatch.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorStartsWithImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_StartsWith.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotStartWithImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_DoesNotStartWith.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorEndsWithImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_EndsWith.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotEndWithImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_DoesNotEndWith.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorTopImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Top.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorBottomImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_Bottom.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorTopPercentileImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_TopPercentile.png"/>
+	<BitmapImage PresentationOptions:Freeze="true" x:Key="{x:Static igWindows:ComparisonOperatorSelector.OperatorBottomPercentileImageKey}"
+			ig:Utilities.SnapElementToDevicePixels="True"
+			DecodePixelWidth="16" DecodePixelHeight="16" UriSource="..\..\images\FilterOp_BottomPercentile.png"/>
+
+
+	<!-- _________________________ ComparisonOperatorListItem __________________________________________ -->
+  <DataTemplate DataType="{x:Type igWindows:ComparisonOperatorListItem}" >
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock x:Name="TextBlock" Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" />
+        <Border Margin="4,0,4,0">
+            <!--<Image Height="{Binding ElementName=TextBlock, Path=ActualHeight}"-->
+            <Image 
+             ig:Utilities.SnapElementToDevicePixels="True"
+             Stretch="Uniform" StretchDirection="Both" 
+             Source="{Binding Path=Image}" Grid.Column="0" Grid.Row="0" />
+        </Border>
+    </Grid>
+  </DataTemplate>
+
+
+  <!-- _________________________ ComparisonOperatorSelector.DropDownButtonStyleKey __________________________________________ -->
+  <Style x:Key="{x:Static igWindows:ComparisonOperatorSelector.DropDownButtonStyleKey}" 
+         TargetType="{x:Type ToggleButton}">
+    <Setter Property="OverridesDefaultStyle" Value="True" />
+    <Setter Property="MinWidth" Value="0" />
+    <Setter Property="MinHeight" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Padding" Value="2" />
+    <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ComparisonOperatorSelector}, 1}, Path=SelectedOperatorInfo.Description}"/>
+        <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Border 
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                 ig:Utilities.SnapElementToDevicePixels="True">
+                <igWindows:AutoDisabledImage Margin="{TemplateBinding Padding}" 
+                                             MinHeight="14" MinWidth="14" 
+                                             Stretch="None" 
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"
+                                             Source="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ComparisonOperatorSelector}, 1}, Path=SelectedOperatorInfo.Image}"/>
+           </Border>
+          <ControlTemplate.Triggers>
+
+              
+            <!--<Trigger Property="Tag" Value="MouseOverControlTrue">
+              <Setter Property="BorderBrush" TargetName="InnerBorder" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackInnerBorderFillKey}}"/>
+              <Setter Property="Background" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackCenterFillKey}}"/>
+              <Setter Property="BorderBrush" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackOuterBorderFillKey}}"/>
+            </Trigger>
+
+            <Trigger Property="IsChecked" Value="True">
+              <Setter Property="BorderBrush" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedOuterBorderFillKey}}"/>
+              <Setter Property="Background" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedCenterFillKey}}"/>
+              <Setter Property="BorderBrush" TargetName="InnerBorder" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedInnerBorderFillKey}}"/>
+            </Trigger>
+
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsChecked" Value="False"/>
+                <Condition Property="IsMouseOver" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter Property="BorderBrush" TargetName="InnerBorder" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackInnerBorderFillKey}}"/>
+              <Setter Property="Background" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackCenterFillKey}}"/>
+              <Setter Property="BorderBrush" TargetName="OuterBorder_Center" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackOuterBorderFillKey}}"/>
+            </MultiTrigger>-->
+
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- _________________________ ComparisonOperatorSelectorComboBoxStyle __________________________________________ -->
+  <Style x:Key="ComparisonOperatorSelectorComboBoxStyle" 
+         TargetType="{x:Type ComboBox}">
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FocusVisualStyle">
+      <Setter.Value>
+        <Style />
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template" >
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ComboBox}">
+          <Grid>
+            <Border
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+             >
+              <ToggleButton
+                 x:Name="PART_DropDownButton"
+                 Style="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:ComparisonOperatorSelector}, 1}, Path=DropDownButtonStyle}"
+                 IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+							/>
+            </Border>
+            <Popup x:Name="PART_Popup"
+             AllowsTransparency="True"
+             Placement="Bottom"
+             IsOpen="{TemplateBinding IsDropDownOpen}"
+             VerticalOffset="1"
+             HorizontalOffset="-1"
+             Focusable="False"
+             PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+             MaxHeight="{TemplateBinding MaxDropDownHeight}"
+					 >
+              <luna:SystemDropShadowChrome
+                x:Name="Shdw"
+                Color="Transparent"
+							>
+                <Border Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+				  <!-- JM 02-08-10 TFS 27163 -->
+				  <!--<ScrollViewer x:Name="ScrollViewer">-->
+				  <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                  </ScrollViewer>
+                </Border>
+              </luna:SystemDropShadowChrome>
+            </Popup>
+          </Grid>
+          
+          <ControlTemplate.Triggers>
+            <Trigger Property="HasItems" Value="False">
+              <Setter TargetName="PART_Popup" Property="MinHeight" Value="95" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Property="Foreground" />
+            </Trigger>
+            <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="True">
+              <Setter TargetName="Shdw" Property="Margin" Value="0,0,5,5" />
+              <Setter TargetName="Shdw" Property="Color" Value="#71000000" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+    <!-- _________________________ ComparisonOperatorSelector __________________________________________ -->
+    <Style TargetType="{x:Type igWindows:ComparisonOperatorSelector}" >
+        <Setter Property="DropDownButtonStyle" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.DropDownButtonStyleKey}}"/>
+        <Setter Property="OperatorEqualsImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorEqualsImageKey}}"/>
+        <Setter Property="OperatorNotEqualsImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorNotEqualsImageKey}}"/>
+        <Setter Property="OperatorLessThanImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorLessThanImageKey}}"/>
+        <Setter Property="OperatorLessThanOrEqualToImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorLessThanOrEqualToImageKey}}"/>
+        <Setter Property="OperatorGreaterThanImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorGreaterThanImageKey}}"/>
+        <Setter Property="OperatorGreaterThanOrEqualToImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorGreaterThanOrEqualToImageKey}}"/>
+        <Setter Property="OperatorContainsImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorContainsImageKey}}"/>
+        <Setter Property="OperatorDoesNotContainImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotContainImageKey}}"/>
+        <Setter Property="OperatorLikeImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorLikeImageKey}}"/>
+        <Setter Property="OperatorNotLikeImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorNotLikeImageKey}}"/>
+        <Setter Property="OperatorMatchImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorMatchImageKey}}"/>
+        <Setter Property="OperatorDoesNotMatchImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotMatchImageKey}}"/>
+        <Setter Property="OperatorStartsWithImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorStartsWithImageKey}}"/>
+        <Setter Property="OperatorDoesNotStartWithImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotStartWithImageKey}}"/>
+        <Setter Property="OperatorEndsWithImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorEndsWithImageKey}}"/>
+        <Setter Property="OperatorDoesNotEndWithImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorDoesNotEndWithImageKey}}"/>
+        <Setter Property="OperatorTopImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorTopImageKey}}"/>
+        <Setter Property="OperatorBottomImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorBottomImageKey}}"/>
+        <Setter Property="OperatorTopPercentileImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorTopPercentileImageKey}}"/>
+        <Setter Property="OperatorBottomPercentileImage" Value="{DynamicResource {x:Static igWindows:ComparisonOperatorSelector.OperatorBottomPercentileImageKey}}"/>
+        <Setter Property="Template" >
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igWindows:ComparisonOperatorSelector}">
+                    <ComboBox x:Name="PART_ComboBox"
+                        ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Items}"
+                        SelectedIndex="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedIndex, Mode=TwoWay}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Style="{StaticResource ComparisonOperatorSelectorComboBoxStyle}"
+                        IsDropDownOpen="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsDropDownOpen, Mode=TwoWay}"
+                        />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+	<Style x:Key="simpleScrollViewer" TargetType="ScrollViewer">
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="{x:Null}" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Margin" Value="0" />
+	</Style>
+
+	<Style TargetType="igPrim:EmbeddedTextBox">
+		<Setter Property="Background" Value="Transparent" />
+		<!-- Don't set the foreground so it can be inherited
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+		-->
+		<Setter Property="BorderBrush" Value="{x:Null}" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="igPrim:EmbeddedTextBox">
+					<Border BorderBrush="{TemplateBinding BorderBrush}"
+									BorderThickness="{TemplateBinding BorderThickness}"
+									Background="{TemplateBinding Background}"
+									Padding="{TemplateBinding Padding}"
+									SnapsToDevicePixels="True">
+						<ScrollViewer
+							x:Name="PART_ContentHost"
+							Style="{StaticResource simpleScrollViewer}"
+							Focusable="False"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

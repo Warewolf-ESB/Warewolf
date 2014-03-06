@@ -1,0 +1,843 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 11.2 Silverlight</value>
+  </data>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="RegExpException_Message_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParseException_Message_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParserCreationException_Message_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParserLogException_Message_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OneBasedArgumentNumberingAttribute_ArgumentIndex_Property" xml:space="preserve">
+    <value>Infragistics 内部使用のみ。</value>
+  </data>
+  <data name="CalculationFunction_IsAlwaysDirty_Property" xml:space="preserve">
+    <value>関数の結果が常にダーティかどうかを示します。</value>
+  </data>
+  <data name="CalculationFunction_Name_Property" xml:space="preserve">
+    <value>数式内で関数を参照するときに使用される関数名</value>
+  </data>
+  <data name="CalculationFunction_MinArgs_Property" xml:space="preserve">
+    <value>関数に必要な引数の最小数</value>
+  </data>
+  <data name="CalculationFunction_MaxArgs_Property" xml:space="preserve">
+    <value>関数に必要な引数の最大数。</value>
+  </data>
+  <data name="CalculationFunction_Description_Property" xml:space="preserve">
+    <value>数式作成ツールに表示される関数の要約説明。</value>
+  </data>
+  <data name="CalculationFunction_Category_Property" xml:space="preserve">
+    <value>数式作成ツールに表示される関数の、カテゴリの説明。</value>
+  </data>
+  <data name="CalculationFunction_ArgList_Property" xml:space="preserve">
+    <value>引数名の配列リスト。</value>
+  </data>
+  <data name="CalculationFunction_ArgDescriptors_Property" xml:space="preserve">
+    <value>引数記述子の配列リスト。</value>
+  </data>
+  <data name="CalculationFunction_HelpURL_Property" xml:space="preserve">
+    <value>ヘルプトピックのURL。</value>
+  </data>
+  <data name="UltraCalcReferenceCollection_IsSynchronized_Property" xml:space="preserve">
+    <value>コレクションがスレッドセーフかどうかを表します。</value>
+  </data>
+  <data name="UltraCalcReferenceCollection_Count_Property" xml:space="preserve">
+    <value>コレクションに含まれる要素の数を返します。</value>
+  </data>
+  <data name="UltraCalcReferenceCollection_SyncRoot_Property" xml:space="preserve">
+    <value>コレクションへのアクセスの同期化に使用できるオブジェクトを返します。</value>
+  </data>
+  <data name="CalculationErrorValue_Code_Property" xml:space="preserve">
+    <value>このクラス インスタンスのエラーコードを取得します。</value>
+  </data>
+  <data name="CalculationErrorValue_Message_Property" xml:space="preserve">
+    <value>このクラス インスタンスのエラーメッセージを取得します。このプロパティを設定するとき、メッセージはローカライズされているものと想定されます。</value>
+  </data>
+  <data name="CalculationErrorValue_ErrorValue_Property" xml:space="preserve">
+    <value>このクラス インスタンスのエラー オブジェクトを取得します。</value>
+  </data>
+  <data name="CalculationReferenceError_Message_Property" xml:space="preserve">
+    <value>参照エラーメッセージを取得します。</value>
+  </data>
+  <data name="CalculationValue_IsReference_Property" xml:space="preserve">
+    <value>このクラス インスタンスが Infragistics.Calculations.Engine.ICalculationReference 値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsError_Property" xml:space="preserve">
+    <value>このクラス インスタンスがエラー値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsNull_Property" xml:space="preserve">
+    <value>このクラス インスタンスが null 値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsDBNull_Property" xml:space="preserve">
+    <value>このクラス インスタンスが DBNull 値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsString_Property" xml:space="preserve">
+    <value>このクラス インスタンスが文字列値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsBoolean_Property" xml:space="preserve">
+    <value>このクラス インスタンスがブール値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_IsDateTime_Property" xml:space="preserve">
+    <value>このクラス インスタンスが DateTime 値を含むかどうかを返します。</value>
+  </data>
+  <data name="CalculationValue_Value_Property" xml:space="preserve">
+    <value>基になる値を返します。</value>
+  </data>
+  <data name="CalculationValue_UseExcelFormulaCompatibility_Property" xml:space="preserve">
+    <value>Infragistics 内部使用のみ。</value>
+  </data>
+  <data name="RefBase_Context_Property" xml:space="preserve">
+    <value>参照のコンテキストを返します。</value>
+  </data>
+  <data name="RefBase_BaseParent_Property" xml:space="preserve">
+    <value>製品タイプを表す列挙体。要素階層をナビゲートするために使用します。この被参照要素がルート要素の場合、&lt;b&gt;BaseParent&lt;/b&gt; は　null を返します。読み取り専用。</value>
+  </data>
+  <data name="RefBase_IsAnchored_Property" xml:space="preserve">
+    <value>指定した参照がこの参照の兄弟である場合はTrue。アンカー参照は要素への直接参照です。 
+ アンカーされない参照は間接参照です。間接参照は、参照の作成に使用する 相対名などのコンテキスト依存のプロパティを格納します。読み取り専用。</value>
+  </data>
+  <data name="RefBase_IsRange_Property" xml:space="preserve">
+    <value>この参照に対して相対的な参照を解決します。読み取り専用。</value>
+  </data>
+  <data name="RefBase_WrappedReference_Property" xml:space="preserve">
+    <value>UCReferenceがメソッドの実行前と異なる参照を表すように変更された場合、Trueを返します。解決する参照。</value>
+  </data>
+  <data name="RefBase_ParsedReference_Property" xml:space="preserve">
+    <value>オブジェクトがGetHashCodeおよびEqualsメソッドを利用すると、そのオブジェクトはデータ構造体に追加されます。これは絶対参照名を返します。アンカーされない場合、&lt;b&gt;RelativeReference&lt;/b&gt; を使用しこの参照を作成するために使用する文字列の解析表現を取得します。</value>
+  </data>
+  <data name="RefBase_RelativeReference_Property" xml:space="preserve">
+    <value>これは、このインスタンスの生存期間中に、標準化された絶対名を変更してはならないことを意味します。&lt;b&gt;AbsoluteReference&lt;/b&gt; を使用し、アンカー参照の解析された表現を取得します。</value>
+  </data>
+  <data name="RefBase_AbsoluteName_Property" xml:space="preserve">
+    <value>被参照要素の一意の完全修飾名。読み取り専用。</value>
+  </data>
+  <data name="RefBase_NormalizedAbsoluteName_Property" xml:space="preserve">
+    <value>標準化された絶対名を返します。計算エンジンは参照の標準化された絶対名を使用して、２ つの参照の比較や参照の検索を行います。
+ このプロパティは、絶対名の大文字小文字が区別されない部分を小文字に変換した文字列を返します。</value>
+  </data>
+  <data name="RefBase_ElementName_Property" xml:space="preserve">
+    <value>この参照要素の非修飾名。&lt;b&gt;AbsoluteName&lt;/b&gt; メソッドによって完全修飾名を構築するために使用します。読み取り専用。</value>
+  </data>
+  <data name="RefBase_Value_Property" xml:space="preserve">
+    <value>この参照に関連付けられている場合、Infragistics.Calculations.Engine.ICalculationFormula。この参照が値を含まない場合、Infragistics.Calculations.Engine.CalculationErrorValue が返されます。</value>
+  </data>
+  <data name="RefBase_Formula_Property" xml:space="preserve">
+    <value>この参照に関連付けられている場合、Infragistics.Calculations.Engine.ICalculationFormula。この参照に数式が含まれない場合は、null が返されます。</value>
+  </data>
+  <data name="RefBase_RecalcDeferred_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するために計算エンジンによって使用されるフラグ。
+ 参照が表示されることを意味します。</value>
+  </data>
+  <data name="RefBase_RecalcVisible_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するために計算エンジンによって使用されるフラグ。
+参照が表示されることを意味します。</value>
+  </data>
+  <data name="RefBase_HasRelativeIndex_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。</value>
+  </data>
+  <data name="RefBase_HasAbsoluteIndex_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。</value>
+  </data>
+  <data name="RefBase_HasScopeAll_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。</value>
+  </data>
+  <data name="RefBase_References_Property" xml:space="preserve">
+    <value>この参照が列挙可能の場合、参照のコレクションを返します。この参照が列挙不可能な場合、例外がスローされます。</value>
+  </data>
+  <data name="RefBase_IsEnumerable_Property" xml:space="preserve">
+    <value>この参照が列挙可能な場合trueを返します。</value>
+  </data>
+  <data name="RefBase_Parent_Property" xml:space="preserve">
+    <value>製品タイプを表す列挙体。要素階層をナビゲートするために使用します。この被参照要素がルート要素の場合、&lt;b&gt;BaseParent&lt;/b&gt; は　null を返します。読み取り専用。</value>
+  </data>
+  <data name="RefBase_IsDataReference_Property" xml:space="preserve">
+    <value>有効な CDKey が見つかりました。データ参照は、グリッドセルまたはグリッドの SummaryValueなどの値を含みます。多くの被参照要素（グリッド列またはグリッドバンドなど）は 値を参照しません。
+ 読み取り専用。</value>
+  </data>
+  <data name="RefBase_IsDisposedReference_Property" xml:space="preserve">
+    <value>有効期限に関する記述を返します。読み取り専用。</value>
+  </data>
+  <data name="RefRange_FromBase_Property" xml:space="preserve">
+    <value>From参照をRefbaseとして返します。</value>
+  </data>
+  <data name="RefRange_NormalizedFromBase_Property" xml:space="preserve">
+    <value>標準化されたFrom参照をRefbaseとして返します。</value>
+  </data>
+  <data name="RefRange_FromRef_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.ICalculationReference として From 参照を返します。</value>
+  </data>
+  <data name="RefRange_NormalizedFromRef_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.ICalculationReference として正規化した From 参照を返します。</value>
+  </data>
+  <data name="RefRange_ToBase_Property" xml:space="preserve">
+    <value>To参照をRefbaseとして返します。</value>
+  </data>
+  <data name="RefRange_NormalizedToBase_Property" xml:space="preserve">
+    <value>標準化された To 参照を IUltraCalcReference として返します。</value>
+  </data>
+  <data name="RefRange_ToRef_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.ICalculationReference として To 参照を返します。</value>
+  </data>
+  <data name="RefRange_NormalizedToRef_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.ICalculationReference として正規化した To 参照を返します。</value>
+  </data>
+  <data name="RefRange_IsRange_Property" xml:space="preserve">
+    <value>True を返します。この参照が範囲参照です。読み取り専用。</value>
+  </data>
+  <data name="RefRange_ElementName_Property" xml:space="preserve">
+    <value>この参照要素の非修飾名。&lt;b&gt;AbsoluteName&lt;/b&gt; メソッドによって完全修飾名を構築するために使用します。読み取り専用。
+ &lt;p&gt;Range の ElementName は、from.ElementName + ":" + to.ElementName です。&lt;/p&gt;</value>
+  </data>
+  <data name="RefRange_BaseParent_Property" xml:space="preserve">
+    <value>タプルの型（読み取り専用）。要素階層をナビゲートするために使用します。この被参照要素がルート要素の場合、 &lt;b&gt;Parent&lt;/b&gt; はnullを返します。読み取り専用。
+  &lt;p&gt;Range の Parent は this.from です。</value>
+  </data>
+  <data name="RefRange_IsDataReference_Property" xml:space="preserve">
+    <value>有効な CDKey が見つかりました。データ参照は、グリッドセルまたはグリッドの SummaryValueなどの値を含みます。多くの被参照要素（グリッド列またはグリッドバンドなど）は 値を参照しません。
+ 読み取り専用。 
+ Range は常に Data Reference です。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefRange_AbsoluteName_Property" xml:space="preserve">
+    <value>被参照要素の一意の完全修飾名。読み取り専用。
+ &lt;p&gt;Range の AbsoluteName は、from.AbsoluteName + ":" + to.AbsoluteName です。&lt;/p&gt;</value>
+  </data>
+  <data name="RefRange_NormalizedAbsoluteName_Property" xml:space="preserve">
+    <value>標準化された絶対名を返します。計算エンジンは参照の標準化された絶対名を使用し、2 つの参照の比較や参照の検索を行います。
+ このプロパティは、絶対名の大文字小文字が区別されない部分を小文字に変換した文字列を返します。</value>
+  </data>
+  <data name="RefRange_HasRelativeIndex_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。
+ 範囲の HasRelativeIndex は、from.HasRelativeIndex です。</value>
+  </data>
+  <data name="RefRange_References_Property" xml:space="preserve">
+    <value>この参照が列挙可能の場合、参照のコレクションを返します。この参照が列挙不可能な場合、例外がスローされます。
+ &lt;p&gt;Range は RefRangeCollection を返します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefRange_IsEnumerable_Property" xml:space="preserve">
+    <value>True を返します。パス要素の区切り文字として使用する文字。</value>
+  </data>
+  <data name="RefTuple_Type_Property" xml:space="preserve">
+    <value>タプル型。読み取り専用。</value>
+  </data>
+  <data name="RefTuple_Scope_Property" xml:space="preserve">
+    <value>タプルスコープ。読み取り専用。</value>
+  </data>
+  <data name="RefTuple_Name_Property" xml:space="preserve">
+    <value>入力RefParserがこのRefParserの真のサブセットの場合、Trueを返します。読み取り専用。</value>
+  </data>
+  <data name="RefTuple_Marked_Property" xml:space="preserve">
+    <value>このタプルがMarkedであることを表すインジケーター。</value>
+  </data>
+  <data name="RefTuple_Last_Property" xml:space="preserve">
+    <value>このタプルがRefParserタプルパスの最後のタプルかどうかを示します。</value>
+  </data>
+  <data name="RefTuple_NextToLast_Property" xml:space="preserve">
+    <value>このタプルがRefParserタプルパスの最後から２番目のタプルかどうかを示します。</value>
+  </data>
+  <data name="RefTuple_ScopeID_Property" xml:space="preserve">
+    <value>解析済み参照の文字列表現を返します。読み取り専用。</value>
+  </data>
+  <data name="RefTuple_ScopeIndex_Property" xml:space="preserve">
+    <value>スコープ型IndexまたはRelativeIndexのタプルスコープインデックス。読み取り専用。</value>
+  </data>
+  <data name="RefTuple_IsAbsolute_Property" xml:space="preserve">
+    <value>タプルはRelativeIndex以外のスコープ型を持つID型である場合、Absoluteです。</value>
+  </data>
+  <data name="RefParser_TupleCount_Property" xml:space="preserve">
+    <value>タプル数を返します。読み取り専用。</value>
+  </data>
+  <data name="RefParser_LastTuple_Property" xml:space="preserve">
+    <value>最後のタプルを返します。使用できるタプルがない場合はnull。読み取り専用。</value>
+  </data>
+  <data name="RefParser_NextToLastTuple_Property" xml:space="preserve">
+    <value>データ参照にはGrid CellやGrid SummaryValueなどの値が含まれます。読み取り専用。</value>
+  </data>
+  <data name="RefParser_IsFullyQualified_Property" xml:space="preserve">
+    <value>RefUnAnchored はこれを基本参照に送ります。読み取り専用。
+ たとえば //MyGrid/Something。</value>
+  </data>
+  <data name="RefParser_IsRoot_Property" xml:space="preserve">
+    <value>この参照の解析済み表現を取得または設定します。読み取り専用。
+ たとえば /something。</value>
+  </data>
+  <data name="RefParser_IsRelative_Property" xml:space="preserve">
+    <value>RefUnAnchored は、相対参照を基本参照にマージして作成された参照を返します。読み取り専用。
+ たとえば total。</value>
+  </data>
+  <data name="RefParser_HasRelativeIndex_Property" xml:space="preserve">
+    <value>参照が相対インデックスを持つ１つ以上のRefTupleを持つ場合trueを返します。読み取り専用。
+ たとえば Total(-1)。</value>
+  </data>
+  <data name="RefParser_HasScopeAll_Property" xml:space="preserve">
+    <value>参照が All スコープを持つ １ つ以上の RefTuple を持つ場合 True を返します。読み取り専用。
+ たとえば Total(*)。</value>
+  </data>
+  <data name="RefParser_HasAbsoluteIndex_Property" xml:space="preserve">
+    <value>参照に関する意味のあるオブジェクトコンテキストを返します。読み取り専用。
+ たとえば Total(0)。</value>
+  </data>
+  <data name="RefParser_HasSummaryScope_Property" xml:space="preserve">
+    <value>参照がサマリースコープを持つ場合trueを返します。読み取り専用。
+ たとえば Total()。</value>
+  </data>
+  <data name="RefUnAnchored_IsUnQualifiedReference_Property" xml:space="preserve">
+    <value>たとえば、この参照が行への参照で、inReferenceが列への参照である場合は、この行と入力列の交差部分であるセル参照に解決されます。読み取り専用。</value>
+  </data>
+  <data name="RefUnAnchored_ElementName_Property" xml:space="preserve">
+    <value>この参照要素の非修飾名。&lt;b&gt;AbsoluteName&lt;/b&gt; メソッドによって完全修飾名を構築するために使用します。読み取り専用。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_BaseParent_Property" xml:space="preserve">
+    <value>製品タイプを表す列挙体。要素階層をナビゲートするために使用します。この被参照要素がルート要素の場合、&lt;b&gt;BaseParent&lt;/b&gt; は　null を返します。読み取り専用。</value>
+  </data>
+  <data name="RefUnAnchored_IsRange_Property" xml:space="preserve">
+    <value>この参照に対して相対的な参照を解決します。読み取り専用。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。</value>
+  </data>
+  <data name="RefUnAnchored_IsAnchored_Property" xml:space="preserve">
+    <value>指定した参照がこの参照の兄弟である場合はTrue。アンカー参照は要素への直接参照です。 
+ アンカーされない参照は間接参照です。間接参照は、参照の作成に使用する 相対名などのコンテキスト依存のプロパティを格納します。読み取り専用。
+ &lt;p&gt;RefUnAnchored は常に false を返します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_IsDataReference_Property" xml:space="preserve">
+    <value>有効な CDKey が見つかりました。データ参照は、グリッドセルまたはグリッドの SummaryValueなどの値を含みます。多くの被参照要素（グリッド列またはグリッドバンドなど）は 値を参照しません。
+ 読み取り専用。 
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_WrappedReference_Property" xml:space="preserve">
+    <value>UCReferenceがメソッドの実行前と異なる参照を表すように変更された場合、Trueを返します。解決する参照。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_ParsedReference_Property" xml:space="preserve">
+    <value>オブジェクトがGetHashCodeおよびEqualsメソッドを利用すると、そのオブジェクトはデータ構造体に追加されます。これは絶対参照名を返します。アンカーされない場合、&lt;b&gt;RelativeReference&lt;/b&gt; を使用しこの参照を作成するために使用する文字列の解析表現を取得します。
+ &lt;p&gt;RefUnAnchored は、相対参照を基本参照にマージして 構築される参照を返します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_AbsoluteName_Property" xml:space="preserve">
+    <value>被参照要素の一意の完全修飾名。読み取り専用。</value>
+  </data>
+  <data name="RefUnAnchored_RelativeReference_Property" xml:space="preserve">
+    <value>これは、このインスタンスの生存期間中に、標準化された絶対名を変更してはならないことを意味します。&lt;b&gt;AbsoluteReference&lt;/b&gt; を使用し、アンカー参照の解析された表現を取得します。
+ &lt;p&gt;RefUnAnchored は相対参照を返します。相対参照を設定するとき、マージ参照は相対参照を基本参照にマージして構築されます。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_Context_Property" xml:space="preserve">
+    <value>参照のコンテキストを返します。</value>
+  </data>
+  <data name="RefUnAnchored_Value_Property" xml:space="preserve">
+    <value>この参照に関連付けられている場合、この参照が値を含まない場合、Infragistics.Calculations.Engine.CalculationErrorValue が返されます。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_Formula_Property" xml:space="preserve">
+    <value>この参照に関連付けられている場合、Infragistics.Calculations.Engine.ICalculationFormula。この参照に数式が含まれない場合は、null が返されます。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_RecalcVisible_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するために計算エンジンによって使用されているフラグ。
+参照が表示されることを意味します。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_RecalcDeferred_Property" xml:space="preserve">
+    <value>Trueの場合、数式が表示されるまで参照の数式の再計算が保留されることを示します。</value>
+  </data>
+  <data name="RefUnAnchored_HasRelativeIndex_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。
+ &lt;p&gt;RefUnAnchored は相対 RP を使用します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_HasScopeAll_Property" xml:space="preserve">
+    <value>再計算ネットワークを管理するためにUltraCalcEngineによって使用されるフラグ。読み取り専用。</value>
+  </data>
+  <data name="RefUnAnchored_HasAbsoluteIndex_Property" xml:space="preserve">
+    <value>この参照が列挙可能な場合、参照のコレクションを返します。読み取り専用。
+ &lt;p&gt;RefUnAnchored は相対 RP を使用します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_References_Property" xml:space="preserve">
+    <value>この参照が列挙可能の場合、参照のコレクションを返します。この参照が列挙不可能な場合、例外がスローされます。
+ &lt;p&gt;RefUnAnchored は、マージ参照にスコープされた baseRef の列挙を返します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_IsEnumerable_Property" xml:space="preserve">
+    <value>この参照が列挙可能な場合 true を返します。
+ &lt;p&gt;RefUnAnchored はこれを基本参照に転送します。
+ &lt;/p&gt;</value>
+  </data>
+  <data name="RefUnAnchored_IsDisposedReference_Property" xml:space="preserve">
+    <value>有効期限に関する記述を返します。読み取り専用。</value>
+  </data>
+  <data name="CalculationResult_CalculationValue_Property" xml:space="preserve">
+    <value>計算結果の値。基になる数式が再計算されるため、このプロパティは新しい結果を反映します。</value>
+  </data>
+  <data name="CalculationResult_Value_Property" xml:space="preserve">
+    <value>このプロパティは、Infragistics.Calculations.CalculationResult.CalculationValue プロパティによって返されたオブジェクトの Infragistics.Calculations.Engine.CalculationValue.Value プロパティの値を返します。</value>
+  </data>
+  <data name="FormulaErrorEventArgsBase_Context_Property" xml:space="preserve">
+    <value>数式エラーのコンテキストを取得します。</value>
+  </data>
+  <data name="FormulaErrorEventArgsBase_ErrorDisplayText_Property" xml:space="preserve">
+    <value>表示するエラーメッセージを返すか設定します。</value>
+  </data>
+  <data name="FormulaCalculationErrorEventArgs_ErrorValue_Property" xml:space="preserve">
+    <value>エラーの値を取得します。</value>
+  </data>
+  <data name="FormulaCalculationErrorEventArgs_ErrorInfo_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.CalculationErrorValue を取得します。</value>
+  </data>
+  <data name="ValueDirtiedEventArgs_Context_Property" xml:space="preserve">
+    <value>Contextを取得します。</value>
+  </data>
+  <data name="ValueDirtiedEventArgs_Action_Property" xml:space="preserve">
+    <value>実行されたアクションを取得します。</value>
+  </data>
+  <data name="FormulaCircularityErrorEventArgs_DisplayErrorMessage_Property" xml:space="preserve">
+    <value>エラーメッセージをエンドユーザーに表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="ListCalculatorElement_List_Property" xml:space="preserve">
+    <value>使用する項目のリストを返すか、設定します。</value>
+  </data>
+  <data name="ItemCalculatorElement_Item_Property" xml:space="preserve">
+    <value>Returns or sets the Infragistics.Calculations.ItemCalculator.</value>
+  </data>
+  <data name="ListCalculator_List_Property" xml:space="preserve">
+    <value>計算が処理される項目の List。</value>
+  </data>
+  <data name="ListCalculator_CalculationManager_Property" xml:space="preserve">
+    <value>CalculationManager は計算の処理に使用されます。</value>
+  </data>
+  <data name="ListCalculator_ItemCalculations_Property" xml:space="preserve">
+    <value>項目の計算。これらの計算は、A と B が Infragistics.Calculations.ListCalculator.Items コレクションのデータ項目のプロパティである "[A] + [B]" などの単一項目で行われます。ReferenceIds を使用して他の項目の参照または List 計算できます。
+たとえば、'Total' ReferenceId を使用した計算がある場合、"[A] / [Total]" などの数式を持つことが可能です。</value>
+  </data>
+  <data name="ListCalculator_ListCalculations_Property" xml:space="preserve">
+    <value>List 計算。これらの計算は、A が Infragistics.Calculations.ListCalculator.Items コレクションのデータ項目のプロパティである "sum([A])" など、すべての項目で行われます。ReferenceIds を使用して他の項目の参照または List 計算できます。</value>
+  </data>
+  <data name="CalculationReferenceNode_Reference_Property" xml:space="preserve">
+    <value>ノードが表す参照を取得または設定します。</value>
+  </data>
+  <data name="CalculationReferenceNode_ChildReferences_Property" xml:space="preserve">
+    <value>このノードによって所有される子を取得または設定します。</value>
+  </data>
+  <data name="CalculationReferenceNode_IsDataReference_Property" xml:space="preserve">
+    <value>この参照が数式の一部となることができるかどうかを示します。たとえば、グリッドやバンドは値を表わさないため数式の一部にできません。ただし、列は数式の一部にできます。</value>
+  </data>
+  <data name="CalculationReferenceNode_DisplayName_Property" xml:space="preserve">
+    <value>この参照の表示に使用する名前を返します。</value>
+  </data>
+  <data name="ItemCalculation_TargetProperty_Property" xml:space="preserve">
+    <value>Target プロパティはオプションです。指定した場合、計算の結果はこのプロパティに設定されます。</value>
+  </data>
+  <data name="ItemCalculator_Item_Property" xml:space="preserve">
+    <value>プロパティが計算の元の値を提供する項目を指定します。項目のプロパティは数式の計算のターゲットにもできます。</value>
+  </data>
+  <data name="ItemCalculator_Calculations_Property" xml:space="preserve">
+    <value>項目に実行される計算のコレクション。計算の元の値は項目のプロパティまたは他の計算にできます (ReferenceIds を介して参照)。</value>
+  </data>
+  <data name="XamCalculationManager_AsynchronousCalculationDuration_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.XamCalculationManager.AsynchronousCalculationInterval が渡すたびに計算を実行するために XamCalculationManage が使用する時間の長さ (ミリ秒)。デフォルト値は 50 です。</value>
+  </data>
+  <data name="XamCalculationManager_Properties" xml:space="preserve">
+    <value>XamCalculationManager プロパティ</value>
+  </data>
+  <data name="XamCalculationManager_AsynchronousCalculationInterval_Property" xml:space="preserve">
+    <value>XamCalculationManager が計算を実行する時間間隔 (ミリ秒)。デフォルト値は 10 です。</value>
+  </data>
+  <data name="XamCalculationManager_CalculationFrequency_Property" xml:space="preserve">
+    <value>表示オブジェクトの計算を最適化するために一部の計算を遅延できるかどうかを取得または設定します。 デフォルト値は &lt;b&gt;True&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamCalculationManager_DeferredCalculationsEnabled_Property" xml:space="preserve">
+    <value>表示オブジェクトの計算を最適化するために一部の計算を遅延できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamCalculationManager_IsCalculationsSuspended_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.XamCalculationManager.SuspendCalculations メソッドを介して、計算が中断されているかどうかを示します。</value>
+  </data>
+  <data name="NamedReference_Category_Property" xml:space="preserve">
+    <value>名前付き参照を分類するための数式エディター UI によって使用される NamedReference のカテゴリを指定します。</value>
+  </data>
+  <data name="NamedReference_Formula_Property" xml:space="preserve">
+    <value>名前付き参照の数式を指定します。</value>
+  </data>
+  <data name="NamedReference_Name_Property" xml:space="preserve">
+    <value>参照の名前を指定します。</value>
+  </data>
+  <data name="NamedReference_Result_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.Engine.CalculationValue オブジェクトとして Infragistics.Calculations.NamedReference.Formula 計算の結果を返します。</value>
+  </data>
+  <data name="NamedReference_Value_Property" xml:space="preserve">
+    <value>名前付き参照の値を指定します。Infragistics.Calculations.NamedReference.Formula が設定される場合、これは数式の計算結果を返します。</value>
+  </data>
+  <data name="XamCalculationManager_NamedReferences_Property" xml:space="preserve">
+    <value>名前付き参照のコレクションを指定します。</value>
+  </data>
+  <data name="CustomCalculationFunction_ArgDescriptors_Property" xml:space="preserve">
+    <value>関数に各引数の説明を取得または設定します。</value>
+  </data>
+  <data name="CustomCalculationFunction_ArgList_Property" xml:space="preserve">
+    <value>関数に各引数の名前を取得または設定します。</value>
+  </data>
+  <data name="CustomCalculationFunction_Category_Property" xml:space="preserve">
+    <value>関数のカテゴリを取得または設定します。関数を分類するために数式エディター UI で使用されます。</value>
+  </data>
+  <data name="CustomCalculationFunction_Description_Property" xml:space="preserve">
+    <value>関数の説明を取得または設定します。数式エディター UI に使用されます。</value>
+  </data>
+  <data name="CustomCalculationFunction_MaxArgs_Property" xml:space="preserve">
+    <value>最大引数。</value>
+  </data>
+  <data name="CustomCalculationFunction_MinArgs_Property" xml:space="preserve">
+    <value>引数の最小値。</value>
+  </data>
+  <data name="CustomCalculationFunction_Name_Property" xml:space="preserve">
+    <value>数式内で関数を参照するときに使用される関数名。</value>
+  </data>
+  <data name="CalculationReferenceNode_DisplayNameResolved_Property" xml:space="preserve">
+    <value>この参照の表示に使用するために解決した名前を返します。</value>
+  </data>
+  <data name="CalculationReferenceNode_NodeType_Property" xml:space="preserve">
+    <value>ノードによって表される参照型を取得します。</value>
+  </data>
+  <data name="ItemCalculation_ReferenceId_Property" xml:space="preserve">
+    <value>ReferenceId または TargetProperty を指定する必要があります。ReferenceId が指定されずに TargetProperty が指定されると ReferenceId は TargetProperty になります。</value>
+  </data>
+  <data name="ListCalculation_ReferenceId_Property" xml:space="preserve">
+    <value>この計算の識別子を指定します。 
+ReferenceId は、ListCalculator の Infragistics.Calculations.ListCalculator.ListResults property and Infragistics.Calculations.ListCalculator.GetItemCalculationResult (System.Object,System.String) メソッド同様に他の数式からこの計算を参照するために使用されます。</value>
+  </data>
+  <data name="ItemCalculator_CalculationManager_Property" xml:space="preserve">
+    <value>CalculationManager は計算の処理に使用されます。</value>
+  </data>
+  <data name="ListCalculation_Formula_Property" xml:space="preserve">
+    <value>リストの各項目に値を返すために使用される数式を指定する文字列を取得または設定します。</value>
+  </data>
+  <data name="CalculatorElementBase_CalculationManager_Property" xml:space="preserve">
+    <value>計算の実行に使用される CalculationManager を返すか設定します。</value>
+  </data>
+  <data name="CalculatorElementBase_Results_Property" xml:space="preserve">
+    <value>計算の結果を含むディクショナリを返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemCalculation_Formula_Property" xml:space="preserve">
+    <value>項目の値を計算するために使用される数式を指定する文字列を取得または設定します。</value>
+  </data>
+  <data name="ItemCalculatorElement_Engine_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.ItemCalculator を取得または設定します。</value>
+  </data>
+  <data name="ListCalculatorElement_Engine_Property" xml:space="preserve">
+    <value> Infragistics.Calculations.ListCalculator を取得または設定します。</value>
+  </data>
+  <data name="ControlCalculationSettings_Binding_Property" xml:space="preserve">
+    <value>コントロールの値の取得に使用されるバインドを指定、またはコントロールの数式計算の結果を設定します。</value>
+  </data>
+  <data name="ControlCalculationSettings_Formula_Property" xml:space="preserve">
+    <value>数式を指定します。</value>
+  </data>
+  <data name="ControlCalculationSettings_Property_Property" xml:space="preserve">
+    <value>数式がこのコントロールを参照するときに計算にソース値を提供するコントロールのプロパティを識別します。コントロールが数式のターゲットである場合、このプロパティは数式の計算の結果として設定されます。</value>
+  </data>
+  <data name="ControlCalculationSettings_ReferenceId_Property" xml:space="preserve">
+    <value>オブジェクトを識別します。ReferenceId は、他の数式で関連オブジェクトの値を参照するために使用されます。</value>
+  </data>
+  <data name="ControlCalculationSettings_TreatAsType_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型を指定します。TextBox に関連する Infragistics.Calculations.ControlCalculationSettings の場合、Text プロパティは文字列型です。ただし、数式の計算に calc エンジンに 値を提供する場合は double として扱うほうがよい場合があります。</value>
+  </data>
+  <data name="ControlCalculationSettings_ValueConverter_Property" xml:space="preserve">
+    <value>ソース オブジェクトの基になる値と計算に使用される値の変換に使用するためのコンバーターを指定します。</value>
+  </data>
+  <data name="XamCalculationManagerAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="TypeWrapper_Type_Property" xml:space="preserve">
+    <value>返すか、設定します</value>
+  </data>
+  <data name="TypeWrapper_TypeName_Property" xml:space="preserve">
+    <value>返すか、設定します</value>
+  </data>
+  <data name="TypeWrapper_TypeResolved_Property" xml:space="preserve">
+    <value>返します</value>
+  </data>
+  <data name="TypeResolver_Type_Property" xml:space="preserve">
+    <value>返すか、設定します</value>
+  </data>
+  <data name="TypeResolver_TypeName_Property" xml:space="preserve">
+    <value>返すか、設定します</value>
+  </data>
+  <data name="ControlCalculationSettings_TreatAsTypeName_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型名を指定します。TextBox に関連する Infragistics.Calculations.ControlCalculationSettings の場合、Text プロパティは文字列型です。ただし、数式の計算に calc エンジンに 値を提供する場合は double として扱うほうがよい場合があります。</value>
+  </data>
+  <data name="ControlCalculationSettings_TreatAsTypeResolved_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型を決定します (読み取り専用)。</value>
+  </data>
+  <data name="ItemCalculatorElement_Results_Property" xml:space="preserve">
+    <value>計算の結果を含むディクショナリを返します (読み取り専用)。</value>
+  </data>
+  <data name="ListCalculator_ListResults_Property" xml:space="preserve">
+    <value>リストを計算した結果を含むディクショナリを返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemCalculator_Results_Property" xml:space="preserve">
+    <value>項目を計算した結果を含むディクショナリを返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemCalculatorElement_Calculator_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.ItemCalculator を返すか、設定します。</value>
+  </data>
+  <data name="ListCalculatorElement_Calculator_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.ListCalculator を返すか、設定します。</value>
+  </data>
+  <data name="CalculatorBase_CalculationManager_Property" xml:space="preserve">
+    <value>CalculationManager は計算の処理に使用されます。</value>
+  </data>
+  <data name="CalculatorBase_ReferenceId_Property" xml:space="preserve">
+    <value>計算ネットワークの計算を識別します。</value>
+  </data>
+  <data name="CalculatorBase_ValueConverter_Property" xml:space="preserve">
+    <value>ソース項目の基になる値と計算に使用される値の変換に使用するためのコンバーターを指定します。</value>
+  </data>
+  <data name="CalculatorCalculationBase_Formula_Property" xml:space="preserve">
+    <value>項目の値を計算するために使用される数式を指定する文字列を取得または設定します。</value>
+  </data>
+  <data name="CalculatorCalculationBase_ReferenceId_Property" xml:space="preserve">
+    <value>ReferenceId または TargetProperty を指定する必要があります。ReferenceId が指定されずに TargetProperty が指定されると ReferenceId は TargetProperty になります。</value>
+  </data>
+  <data name="PropertyValueTracker_CallAsynchronously_Property" xml:space="preserve">
+    <value>Dispatcher.BeginInvoke を使用して非同期にハンドラーを呼び出すかどうかを指定します。</value>
+  </data>
+  <data name="PropertyValueTracker_Tag_Property" xml:space="preserve">
+    <value>タグを取得または設定します。</value>
+  </data>
+  <data name="PropertyValueTracker_ThrottleTime_Property" xml:space="preserve">
+    <value>ミリ秒単位のスロットル時間。デフォルトは 0 でスロットルがないことを意味します。</value>
+  </data>
+  <data name="CalculatorBase_PropertiesToExclude_Property" xml:space="preserve">
+    <value>計算ネットーワークから項目を除外するために、大文字と小文字を区別するコンマ区切りのリストで、プロパティを識別します。</value>
+  </data>
+  <data name="CalculatorBase_PropertiesToInclude_Property" xml:space="preserve">
+    <value>計算ネットーワークへ項目を公開するために、大文字と小文字を区別するコンマ区切りのリストで、プロパティを識別します。</value>
+  </data>
+  <data name="ItemCalculatorBase_CalculationManager_Property" xml:space="preserve">
+    <value>CalculationManager は計算の処理に使用されます。</value>
+  </data>
+  <data name="ItemCalculatorBase_PropertiesToExclude_Property" xml:space="preserve">
+    <value>計算ネットーワークから項目を除外するために、大文字と小文字を区別するコンマ区切りのリストで、プロパティを識別します。</value>
+  </data>
+  <data name="ItemCalculatorBase_PropertiesToInclude_Property" xml:space="preserve">
+    <value>計算ネットーワークへ項目を公開するために、大文字と小文字を区別するコンマ区切りのリストで、プロパティを識別します。</value>
+  </data>
+  <data name="ItemCalculatorBase_ReferenceId_Property" xml:space="preserve">
+    <value>計算ネットワークの計算を識別します。</value>
+  </data>
+  <data name="ItemCalculatorBase_ValueConverter_Property" xml:space="preserve">
+    <value>ソース項目の基になる値と計算に使用される値の変換に使用するためのコンバーターを指定します。</value>
+  </data>
+  <data name="ItemCalculatorElementBase_CalculationManager_Property" xml:space="preserve">
+    <value>計算の実行に使用される CalculationManager を返すか設定します。</value>
+  </data>
+  <data name="ItemCalculationBase_Formula_Property" xml:space="preserve">
+    <value>項目の値を計算するために使用される数式を指定する文字列を取得または設定します。</value>
+  </data>
+  <data name="ItemCalculationBase_ReferenceId_Property" xml:space="preserve">
+    <value>ReferenceId または TargetProperty を指定する必要があります。ReferenceId が指定されずに TargetProperty が指定されると ReferenceId は TargetProperty になります。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_Exception_Property" xml:space="preserve">
+    <value>スローされた例外を返します (読み取り専用)。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_ErrorMessage_Property" xml:space="preserve">
+    <value>エラー メッセージを返すか、設定します。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_Item_Property" xml:space="preserve">
+    <value>取得または設定が試行された項目を取得します (読み取り専用)。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_Property_Property" xml:space="preserve">
+    <value>プロパティの名前を返します (読み取り専用)。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_ThrownDuringSet_Property" xml:space="preserve">
+    <value>例外が 'set' 処理中にスローされたかどうかを返します (読み取り専用)。</value>
+  </data>
+  <data name="DataAccessErrorEventArgs_Value_Property" xml:space="preserve">
+    <value>プロパティに設定が試行された値を返します (読み取り専用)。</value>
+  </data>
+  <data name="CalculationResult_ErrorText_Property" xml:space="preserve">
+    <value>計算結果がエラーの場合、エラー テキストを返します。そうでなければ null を返します。</value>
+  </data>
+  <data name="CalculationResult_IsError_Property" xml:space="preserve">
+    <value>計算の結果がエラーかどうかを示します。</value>
+  </data>
+  <data name="ListCalculator_Items_Property" xml:space="preserve">
+    <value>計算が実行される項目のコレクション。</value>
+  </data>
+  <data name="ListCalculator_ItemsSource_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.ListCalculator.Items コレクションを生成するために使用される列挙子を返すか設定します。</value>
+  </data>
+  <data name="ListCalculatorElement_ItemsSource_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.ListCalculator.Items コレクションを生成するために使用される列挙子を返すか設定します。</value>
+  </data>
+  <data name="CalculationReferenceNode_IsExpanded_Property" xml:space="preserve">
+    <value>ツリーで表示するときに子を持つノードを展開するかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="CalculationReferenceNode_SortPriority_Property" xml:space="preserve">
+    <value>親内のノード並べ替えの優先度を取得または設定します。</value>
+  </data>
+  <data name="CustomCalculationFunctionBase_ArgDescriptors_Property" xml:space="preserve">
+    <value>関数に各引数の説明を取得します。</value>
+  </data>
+  <data name="CustomCalculationFunctionBase_ArgList_Property" xml:space="preserve">
+    <value>関数に各引数の名前を取得します。</value>
+  </data>
+  <data name="CustomCalculationFunctionBase_Category_Property" xml:space="preserve">
+    <value>機能のカテゴリーを取得します。関数を分類するための数式エディター UI で使用されます。</value>
+  </data>
+  <data name="CustomCalculationFunctionBase_Description_Property" xml:space="preserve">
+    <value>機能の説明を取得します。数式エディター UI に使用されます。</value>
+  </data>
+  <data name="CustomCalculationFunctionBase_Name_Property" xml:space="preserve">
+    <value>数式内で関数を参照するときに使用される関数名。</value>
+  </data>
+  <data name="ItemCalculation_TreatAsTypeName_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型を指定します。Infragistics.Calculations.ItemCalculation.TargetProperty が文字列型で日付値設定の文字列形式を含む場合、このプロパティを datetime" または "datetime に設定します。</value>
+  </data>
+  <data name="ItemCalculation_TreatAsTypeResolved_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型を決定します (読み取り専用)。</value>
+  </data>
+  <data name="ItemCalculation_TreatAsType_Property" xml:space="preserve">
+    <value>関連オブジェクトの値として扱うための型を指定します。 たとえば、Infragistics.Calculations.ItemCalculation.TargetProperty が文字列型で日付値設定の文字列形式を含む場合、このプロパティを System.DateTime に設定します。</value>
+  </data>
+  <data name="NamedReference_ReferenceId_Property" xml:space="preserve">
+    <value>参照 id を指定します。</value>
+  </data>
+  <data name="XamCalculationManager_AreCalculationsSuspended_Property" xml:space="preserve">
+    <value>Infragistics.Calculations.XamCalculationManager.SuspendCalculations メソッドを介して、計算が中断されているかどうかを示します。</value>
+  </data>
+</root>

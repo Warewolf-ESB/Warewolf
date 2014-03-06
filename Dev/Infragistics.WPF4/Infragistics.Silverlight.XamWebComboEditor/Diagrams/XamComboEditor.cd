@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Editors.XamComboEditor">
+    <Position X="3.25" Y="1.5" Width="2.5" />
+    <Members>
+      <Method Name="AllowMultipleSelectionChanged" Hidden="true" />
+      <Method Name="ApplyItemSource" Hidden="true" />
+      <Property Name="CachedRows" Hidden="true" />
+      <Method Name="ChangeType" Hidden="true" />
+      <Method Name="CheckDisplayMemberPath" Hidden="true" />
+      <Method Name="ClearFilters" Hidden="true" />
+      <Method Name="CommitTextAsSelected" Hidden="true" />
+      <Method Name="CreateItem" Hidden="true" />
+      <Method Name="CustomItemsFilterChanged" Hidden="true" />
+      <Method Name="CustomValueEnteredActionChanged" Hidden="true" />
+      <Property Name="DataCount" Hidden="true" />
+      <Property Name="DataManager" Hidden="true" />
+      <Method Name="DataManager_CollectionChanged" Hidden="true" />
+      <Method Name="DataManager_DataUpdated" Hidden="true" />
+      <Method Name="DataManager_NewObjectGeneration" Hidden="true" />
+      <Method Name="DelayTracker_Tick" Hidden="true" />
+      <Property Name="DropDownHeight" Hidden="true" />
+      <Property Name="Editor" Hidden="true" />
+      <Method Name="Editor_GotFocus" Hidden="true" />
+      <Method Name="Editor_KeyDown" Hidden="true" />
+      <Method Name="Editor_LostFocus" Hidden="true" />
+      <Method Name="Editor_TextChanged" Hidden="true" />
+      <Method Name="EmptyTextChanged" Hidden="true" />
+      <Method Name="EnsureVisualStates" Hidden="true" />
+      <Property Name="EqualsDataManager" Hidden="true" />
+      <Property Name="HorizontalScrollBar" Hidden="true" />
+      <Method Name="HorizontalScrollBar_ValueChanged" Hidden="true" />
+      <Method Name="InvalidateDropDownPosition" Hidden="true" />
+      <Method Name="InvalidateItems" Hidden="true" />
+      <Method Name="InvalidateScrollPanel" Hidden="true" />
+      <Method Name="InvalidateSelectedContent" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.AddItem" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.CreateItem" Hidden="true" />
+      <Property Name="IProvideDataItems&lt;ComboEditorItem&gt;.DataCount" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.GetDataItem" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.InsertItem" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.RemoveItem" Hidden="true" />
+      <Method Name="IProvideDataItems&lt;ComboEditorItem&gt;.RemoveRange" Hidden="true" />
+      <Method Name="IProvidePropertyPersistenceSettings.FinishedLoadingPersistence" Hidden="true" />
+      <Property Name="IProvidePropertyPersistenceSettings.PriorityProperties" Hidden="true" />
+      <Property Name="IProvidePropertyPersistenceSettings.PropertiesToIgnore" Hidden="true" />
+      <Method Name="IsEditableChanged" Hidden="true" />
+      <Property Name="IsEditorTextValidInItemSource" Hidden="true" />
+      <Property Name="IsInDesignMode" Hidden="true" />
+      <Method Name="ItemContainerStyleChanged" Hidden="true" />
+      <Method Name="ItemsSource_CollectionChanged" Hidden="true" />
+      <Method Name="ItemTemplateChanged" Hidden="true" />
+      <Method Name="MaxDropDownHeightChanged" Hidden="true" />
+      <Property Name="MultiSelectPanel" Hidden="true" />
+      <Method Name="MultiSelectValueDelimiterChanged" Hidden="true" />
+      <Method Name="NavigateAutoCompleteOptions" Hidden="true" />
+      <Method Name="OnAutoCompleteDelayChanged" Hidden="true" />
+      <Method Name="OnDisplayMemberPathChanged" Hidden="true" />
+      <Method Name="OnIsDropDownOpenChanged" Hidden="true" />
+      <Method Name="OnItemsSourceChanged" Hidden="true" />
+      <Property Name="Panel" Hidden="true" />
+      <Property Name="PriorityProperties" Hidden="true" />
+      <Method Name="ProccessEditorText" Hidden="true" />
+      <Property Name="PropertiesToIgnore" Hidden="true" />
+      <Method Name="ResolveText" Hidden="true" />
+      <Method Name="ResolveType" Hidden="true" />
+      <Method Name="RootPoupElement_MouseEnter" Hidden="true" />
+      <Method Name="RootPoupElement_MouseLeave" Hidden="true" />
+      <Method Name="RootPoupElement_MouseWheel" Hidden="true" />
+      <Method Name="RootVisual_MouseLeftButtonDown" Hidden="true" />
+      <Method Name="SearchAndFilterItemsByText" Hidden="true" />
+      <Method Name="SelectedIndexChanged" Hidden="true" />
+      <Method Name="SelectedItemChanged" Hidden="true" />
+      <Method Name="SelectedItems_CollectionChanged" Hidden="true" />
+      <Method Name="SelectItem" Hidden="true" />
+      <Method Name="SetEditorText" Hidden="true" />
+      <Method Name="SetFocusedItem" Hidden="true" />
+      <Method Name="SetItemText" Hidden="true" />
+      <Method Name="SetupDataManager" Hidden="true" />
+      <Property Name="StartsWithItems" Hidden="true" />
+      <Property Name="TextEditor" Hidden="true" />
+      <Method Name="TimeoutTracker_Tick" Hidden="true" />
+      <Method Name="UnhookDataManager" Hidden="true" />
+      <Method Name="UnselectItem" Hidden="true" />
+      <Method Name="UpdateDropDownPosition" Hidden="true" />
+      <Method Name="ValidateSelection" Hidden="true" />
+      <Property Name="VerticalScrollBar" Hidden="true" />
+      <Method Name="VerticalScrollBar_ValueChanged" Hidden="true" />
+      <Method Name="XamWebComboEditor_IsEnabledChanged" Hidden="true" />
+      <Method Name="XamWebComboEditor_KeyDown" Hidden="true" />
+      <Method Name="XamWebComboEditor_Loaded" Hidden="true" />
+      <Method Name="XamWebComboEditor_MouseLeftButtonDown" Hidden="true" />
+      <Method Name="XamWebComboEditor_SizeChanged" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="SelectedItems" Type="System.Object" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.438" />
+        <Point X="6.125" Y="2.438" />
+        <Point X="6.125" Y="1.505" />
+        <Point X="7.75" Y="1.505" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>tGJT9CBFXflT+XgCfdUmJte+j1QRnSFXEtdTxoOWlq4=</HashCode>
+      <FileName>XamComboEditor.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CustomItemsFilter" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+      <Property Name="SelectedItems" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.ComboEditorItem">
+    <Position X="7.25" Y="6.75" Width="2.75" />
+    <Members>
+      <Method Name="ComboEditor_PropertyChanged" Hidden="true" />
+      <Method Name="ComboEditorItem" Hidden="true" />
+      <Property Name="IBindableItem.IsDataBound" Hidden="true" />
+      <Property Name="IsDataBound" Hidden="true" />
+      <Method Name="SetSelected" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAoEBEAQIAAEAAAiAAAAAABAABIACACAAAIg=</HashCode>
+      <FileName>ComboEditorItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.ItemsFilter">
+    <Position X="7.25" Y="2.5" Width="2.75" />
+    <Members>
+      <Method Name="Conditions_CollectionChanged" Hidden="true" />
+      <Method Name="Conditions_CollectionItemChanged" Hidden="true" />
+      <Method Name="Conditions_PropertyChanged" Hidden="true" />
+      <Method Name="IExpressConditions.GetCurrentExpression" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAABACCEAECACIBAAAAAAgACCAAAAAoAASAAAAAA=</HashCode>
+      <FileName>Filtering\ItemsFilter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Conditions" />
+      <Property Name="IRecordFilter.Conditions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="7.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.ComboEditorItemControl">
+    <Position X="11.5" Y="6.5" Width="2.25" />
+    <Members>
+      <Method Name="ComboEditorItemControl_Loaded" Hidden="true" />
+      <Method Name="EnsureVisualStates" Hidden="true" />
+      <Method Name="GoToState" Hidden="true" />
+      <Property Name="IRecyclableElement.DelayRecycling" Hidden="true" />
+      <Property Name="IRecyclableElement.OwnerPanel" Hidden="true" />
+      <Method Name="Item_PropertyChanged" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnAttached" Hidden="true" />
+      <Method Name="OnReleased" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAIAIEIEABAAAgAIIBAAABEgAAAAEAACAAAQACBACA=</HashCode>
+      <FileName>ComboEditorItemControl.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Item" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.AutomationPeers.XamComboEditorAutomationPeer">
+    <Position X="14.5" Y="1.5" Width="2.75" />
+    <Members>
+      <Property Name="OwningComboEditor" Hidden="true" />
+      <Method Name="OwningComboEditor_DropDownClosed" Hidden="true" />
+      <Method Name="OwningComboEditor_DropDownOpened" Hidden="true" />
+      <Method Name="RaiseExpandCollapseStatePropertyChangedEvent" Hidden="true" />
+      <Method Name="RaiseSelectionPropertyChangedEvent" Hidden="true" />
+      <Method Name="SelectedItems_CollectionChanged" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQAAgAAAICAEAjAQEAAABAAAEAQAAAAAEABgAICAAAA=</HashCode>
+      <FileName>AutomationPeers\XamComboEditorAutomationPeer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Infragistics.IFilterCondition">
+    <Position X="12" Y="2.75" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

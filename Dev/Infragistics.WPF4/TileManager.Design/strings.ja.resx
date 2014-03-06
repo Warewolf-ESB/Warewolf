@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 11.2 Silverlight</value>
+  </data>
+  <data name="XamTileManagerAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="XamTileManager_ItemsSource_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTileManager.Items コレクションを生成するために使用される列挙子を返すか設定します。</value>
+  </data>
+  <data name="XamTileManager_Properties" xml:space="preserve">
+    <value>XamTileManager プロパティ</value>
+  </data>
+  <data name="MaximizedModeSettings_InterTileAreaSpacing_Property" xml:space="preserve">
+    <value>最大化モードで最大化したタイルの領域と最小化したタイルの領域間のスペース量を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_InterTileSpacingXMaximized_Property" xml:space="preserve">
+    <value>最大化したタイル間の水平方向のスペースを取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_InterTileSpacingXMinimized_Property" xml:space="preserve">
+    <value>最小化されたタイルの間に水平スペースの量を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_InterTileSpacingYMaximized_Property" xml:space="preserve">
+    <value>最大化されたタイルの間に垂直スペースの量を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_InterTileSpacingYMinimized_Property" xml:space="preserve">
+    <value>最小化したタイルの間に垂直スペースの量を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MaximizedTileLocation_Property" xml:space="preserve">
+    <value>最大化されたタイルに配置する位置を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MaximizedTileLayoutOrder_Property" xml:space="preserve">
+    <value>最大化されたタイルを複数配置する方法を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MaximizedTileConstraints_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.State が Maximized のときのタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MinimizedTileConstraints_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.State が Maximized のときのタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MinimizedTileExpandButtonVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile のヘッダーの展開ボタンのデフォルトの表示状態を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MinimizedExpandedTileConstraints_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.State が MinimizedExpanded のときのタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_MinimizedTileExpansionMode_Property" xml:space="preserve">
+    <value>展開可能な最小化したタイルの最大数を取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_ShowAllMinimizedTiles_Property" xml:space="preserve">
+    <value>画面ですべての最小化したタイルを配置するかどうかを取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_ShowTileAreaSplitter_Property" xml:space="preserve">
+    <value>領域の相対サイズを制御するために、最大化したタイルの領域と最小化したタイル領域の間にスプリッターを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="ModeSettingsBase_AllowTileDragging_Property" xml:space="preserve">
+    <value>再配置するために、ユーザーがタイルをドラッグできるかどうかを取得または設定します。</value>
+  </data>
+  <data name="ModeSettingsBase_HorizontalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロールのすべての表示タイルの水平方向の配置を決定します。</value>
+  </data>
+  <data name="ModeSettingsBase_RepositionAnimationProperty_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.ModeSettingsBase.RepositionAnimation dependency プロパティを識別します</value>
+  </data>
+  <data name="ModeSettingsBase_RepositionAnimation_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile の移動をアニメーション化する方法を決定します。</value>
+  </data>
+  <data name="ModeSettingsBase_ResizeAnimationProperty_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.ModeSettingsBase.ResizeAnimation 依存プロパティを識別します</value>
+  </data>
+  <data name="ModeSettingsBase_ResizeAnimation_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile のサイズ変更をアニメーション化する方法を決定します。</value>
+  </data>
+  <data name="ModeSettingsBase_ShouldAnimate_Property" xml:space="preserve">
+    <value>タイルの位置とサイズを変更するときにアニメーションを生成するかどうかを取得または設定します。</value>
+  </data>
+  <data name="ModeSettingsBase_VerticalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロール内の表示されるタイルの完全ブロックの垂直方向の配置を決定します。</value>
+  </data>
+  <data name="NormalModeSettings_AllowTileSizing_Property" xml:space="preserve">
+    <value>ユーザーがタイルのサイズを変更できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_ExplicitLayoutTileSizeBehavior_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.NormalModeSettings.TileLayoutOrder は UseExplicitRowColumnOnTile に設定される場合に、タイルの高さは列で同期化して、タイルの幅は行で同期化されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_MaxColumns_Property" xml:space="preserve">
+    <value>Normal モードでタイルを配置するときに使用可能な列の最大数を取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_MaxRows_Property" xml:space="preserve">
+    <value>Normal モードでタイルを配置するときに使用可能な行の最大数を取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_MinColumns_Property" xml:space="preserve">
+    <value>Normal モードでタイルを配置するときに使用可能な列の最小数を取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_MinRows_Property" xml:space="preserve">
+    <value>Normal モードでタイルを配置するときに使用可能な行の最小数を取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_ShowAllTiles_Property" xml:space="preserve">
+    <value>すべてのタイルを表示できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_TileConstraints_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.State が Normal 状態のタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="NormalModeSettings_TileLayoutOrder_Property" xml:space="preserve">
+    <value>パネルがタイルを配置する方法を取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_HorizontalAlignment_Property" xml:space="preserve">
+    <value>指定したスロットでタイルの水平方向の配置を取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_Margin_Property" xml:space="preserve">
+    <value>タイルの周囲のマージンを取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_MaxHeight_Property" xml:space="preserve">
+    <value>タイルの最大の高さを取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_MaxWidth_Property" xml:space="preserve">
+    <value>タイルの最大幅を取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_MinHeight_Property" xml:space="preserve">
+    <value>タイルの最小の高さを取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_MinWidth_Property" xml:space="preserve">
+    <value>タイルの最小幅を取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_PreferredHeight_Property" xml:space="preserve">
+    <value>タイルの最適な高さを取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_PreferredWidth_Property" xml:space="preserve">
+    <value>タイルの最適な幅を取得または設定します。</value>
+  </data>
+  <data name="TileConstraints_VerticalAlignment_Property" xml:space="preserve">
+    <value>指定したスロットでタイルの垂直方向の配置を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_HeaderPath_Property" xml:space="preserve">
+    <value>各 Infragistics.Controls.Layouts.XamTile の Header の初期化に使用されるソース オブジェクトの値を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_InterTileAreaSpacingResolved_Property" xml:space="preserve">
+    <value>最大化モードでは、最大化されたタイル領域と最小化したタイル領域の間のスペースを設定するために使用される解決した値を返します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingX_Property" xml:space="preserve">
+    <value>タイル間の水平方向スペースを取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingXMaximizedResolved_Property" xml:space="preserve">
+    <value>最大化されたタイルの水平スペースの量を設定するために使用される解決した値を返します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingXMinimizedResolved_Property" xml:space="preserve">
+    <value>最小化したタイルの水平スペースの量を設定するために使用される解決した値を返します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingY_Property" xml:space="preserve">
+    <value>タイル間の垂直スペースの量を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingYMaximizedResolved_Property" xml:space="preserve">
+    <value>最大化されたタイルの垂直スペースの量を設定するために使用される解決した値を返します。</value>
+  </data>
+  <data name="XamTileManager_InterTileSpacingYMinimizedResolved_Property" xml:space="preserve">
+    <value>最小化したタイルの垂直スペースの量を設定するために使用される解決した値を返します。</value>
+  </data>
+  <data name="XamTileManager_IsAnimationInProgress_Property" xml:space="preserve">
+    <value>タイル アニメーションが処理中の場合に true を返します。</value>
+  </data>
+  <data name="XamTileManager_IsInMaximizedMode_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.State が Maximized の Infragistics.Controls.Layouts.XamTile が少なくとも 1 つ存在する場合、True を返します。（読み取り専用）</value>
+  </data>
+  <data name="XamTileManager_ItemHeaderTemplate_Property" xml:space="preserve">
+    <value>項目のタイルに設定する HeaderTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_ItemTemplateMaximized_Property" xml:space="preserve">
+    <value>Tile の State が Maximized に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_ItemTemplateMinimized_Property" xml:space="preserve">
+    <value>Tile の State が Minimized に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_ItemTemplateMinimizedExpanded_Property" xml:space="preserve">
+    <value>Tile の State が MinimizedExpanded に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_MaximizedModeSettings_Property" xml:space="preserve">
+    <value>最大化モード以外で Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_MaximizedItems_Property" xml:space="preserve">
+    <value>最大化されている項目の読み取り専用のコレクションを返します。</value>
+  </data>
+  <data name="XamTileManager_MaximizedTileLimit_Property" xml:space="preserve">
+    <value>許可される Maximized タイルの最大数を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_NormalModeSettings_Property" xml:space="preserve">
+    <value>最大化モード以外で Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_SerializationIdPath_Property" xml:space="preserve">
+    <value>各 Infragistics.Controls.Layouts.XamTile の Infragistics.Controls.Layouts.XamTileManager.SerializationIdProperty の初期化に使用されるソース オブジェクトの値を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_TileAreaPadding_Property" xml:space="preserve">
+    <value>XamTileManager とタイルを配置する領域の間にあるスペースの量を取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_TileCloseAction_Property" xml:space="preserve">
+    <value>ユーザーが Tiles を閉じるかどうかを取得または設定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_HorizontalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロールのすべての表示タイルの水平方向の配置を決定します。</value>
+  </data>
+  <data name="MaximizedModeSettings_VerticalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロール内の表示されるタイルの完全ブロックの垂直方向の配置を決定します。</value>
+  </data>
+  <data name="NormalModeSettings_HorizontalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロールのすべての表示タイルの水平方向の配置を決定します。</value>
+  </data>
+  <data name="NormalModeSettings_VerticalTileAreaAlignment_Property" xml:space="preserve">
+    <value>コントロール内の表示されるタイルの完全ブロックの垂直方向の配置を決定します。</value>
+  </data>
+  <data name="LoadingItemMappingEventArgs_Item_Property" xml:space="preserve">
+    <value>情報が逆シリアル化された項目を取得または設定します。</value>
+  </data>
+  <data name="LoadingItemMappingEventArgs_SerializationId_Property" xml:space="preserve">
+    <value>項目を識別するためにシリアル化する文字列を表します。（読み取り専用）。</value>
+  </data>
+  <data name="SavingItemMappingEventArgs_Item_Property" xml:space="preserve">
+    <value>情報のシリアル化が行われる項目を返します。（読み取り専用）。</value>
+  </data>
+  <data name="SavingItemMappingEventArgs_SerializationId_Property" xml:space="preserve">
+    <value>項目を識別するためにシリアル化する文字列を表します。</value>
+  </data>
+  <data name="CancelableTileEventArgs_Cancel_Property" xml:space="preserve">
+    <value>このアクションがキャンセルされるかどうかを取得または設定します。</value>
+  </data>
+  <data name="CancelableTileEventArgs_Item_Property" xml:space="preserve">
+    <value>影響を受ける項目を返します (読み取り専用)。</value>
+  </data>
+  <data name="CancelableTileEventArgs_Tile_Property" xml:space="preserve">
+    <value>影響を受ける Infragistics.Controls.Layouts.XamTile を返します (読み取り専用)。</value>
+  </data>
+  <data name="TileEventArgs_Tile_Property" xml:space="preserve">
+    <value>影響を受ける Infragistics.Controls.Layouts.XamTile を返します (読み取り専用)。</value>
+  </data>
+  <data name="TileEventArgs_Item_Property" xml:space="preserve">
+    <value>影響を受ける項目を返します (読み取り専用)。</value>
+  </data>
+  <data name="TileStateChangingEventArgs_NewState_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile の変更後の状態。</value>
+  </data>
+  <data name="TileStateChangedEventArgs_NewState_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile の新しい状態。</value>
+  </data>
+  <data name="TileStateChangedEventArgs_OldState_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile の古い状態。</value>
+  </data>
+  <data name="TileSwappingEventArgs_TargetItem_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.TileSwappingEventArgs.TargetTile の関連項目を返します (読み取り専用)。</value>
+  </data>
+  <data name="TileSwappingEventArgs_TargetTile_Property" xml:space="preserve">
+    <value>スワップのターゲットを返します (読み取り専用)。</value>
+  </data>
+  <data name="TileSwappedEventArgs_TargetItem_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.TileSwappedEventArgs.TargetTile の関連項目を返します (読み取り専用)。</value>
+  </data>
+  <data name="TileSwappedEventArgs_TargetTile_Property" xml:space="preserve">
+    <value>スワップのターゲットを返します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_State_Property" xml:space="preserve">
+    <value>コントロールの現在の状態を取得します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_Properties" xml:space="preserve">
+    <value>XamTile プロパティ</value>
+  </data>
+  <data name="ObservableItemCollection_IsFixedSize_Property" xml:space="preserve">
+    <value>コレクションが固定サイズかどうか示す値を取得します。</value>
+  </data>
+  <data name="ObservableItemCollection_IsReadOnly_Property" xml:space="preserve">
+    <value>コレクションが読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="ObservableItemCollection_Count_Property" xml:space="preserve">
+    <value>コレクションに含まれている要素の数を取得します。</value>
+  </data>
+  <data name="ObservableItemCollection_IsSynchronized_Property" xml:space="preserve">
+    <value>コレクションへのアクセスが同期化されている (スレッドセーフ) かどうかを示す値を取得します。</value>
+  </data>
+  <data name="ObservableItemCollection_SyncRoot_Property" xml:space="preserve">
+    <value>コレクションへのアクセスの同期化に使用できるオブジェクトを取得します。</value>
+  </data>
+  <data name="XamTileManager_Items_Property" xml:space="preserve">
+    <value>項目のコレクションを返します。</value>
+  </data>
+  <data name="XamTile_AllowMaximize_Property" xml:space="preserve">
+    <value>ユーザーがこのタイルを最大化できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamTile_AllowMaximizeResolved_Property" xml:space="preserve">
+    <value>このタイルが最大化できるかどうかの解決した値を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_ContentTemplateMaximized_Property" xml:space="preserve">
+    <value>Tile の State が Maximized に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTile_ContentTemplateMinimized_Property" xml:space="preserve">
+    <value>Tile の State が Minimized に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTile_ContentTemplateMinimizedExpanded_Property" xml:space="preserve">
+    <value>Tile の State が MinimizedExpanded に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamTile_ContentTemplateResolved_Property" xml:space="preserve">
+    <value>タイルの現在の Infragistics.Controls.Layouts.XamTile.State に基づいて、使用する ContentTemplate を返します。</value>
+  </data>
+  <data name="XamTile_ContentVisibility_Property" xml:space="preserve">
+    <value>コンテンツの Visibility を取得します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_CloseAction_Property" xml:space="preserve">
+    <value>このタイルを閉じるときの動作を取得または設定します。</value>
+  </data>
+  <data name="XamTile_CloseActionResolved_Property" xml:space="preserve">
+    <value>このタイルを閉じたときの動作に関する解決済みの値を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_CloseButtonVisibility_Property" xml:space="preserve">
+    <value>ヘッダー領域内の閉じるボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="XamTile_CloseButtonVisibilityResolved_Property" xml:space="preserve">
+    <value>TileHeaderPresenter (読み取り専用) 内の閉じるボタンの表示状態を決定します。</value>
+  </data>
+  <data name="XamTile_ExpandButtonVisibility_Property" xml:space="preserve">
+    <value>ヘッダー領域内の展開トグル ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="XamTile_ExpandButtonVisibilityResolved_Property" xml:space="preserve">
+    <value>TileHeaderPresenter の展開ボタンの表示状態を決定します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_HasImage_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.Image プロパティが設定されているかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="XamTile_HasHeader_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTile.Header プロパティが設定されているかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="XamTile_Header_Property" xml:space="preserve">
+    <value>このタイルのヘッダーに表示されるオブジェクトを取得または設定します。</value>
+  </data>
+  <data name="XamTile_HeaderTemplate_Property" xml:space="preserve">
+    <value>タイル ヘッダーのコンテンツを表示するために使用するテンプレートを取得または設定します。</value>
+  </data>
+  <data name="XamTile_Image_Property" xml:space="preserve">
+    <value>タイルのヘッダーに使用される画像/&amp;gt;。</value>
+  </data>
+  <data name="XamTile_IsExpandedWhenMinimized_Property" xml:space="preserve">
+    <value>このタイルが最小化したときに展開されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamTile_MaximizeButtonVisibility_Property" xml:space="preserve">
+    <value>ヘッダー領域内の最大化トグル ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="XamTile_MaximizeButtonVisibilityResolved_Property" xml:space="preserve">
+    <value>TileHeaderPresenter の最大化ボタンの表示状態を決定します (読み取り専用)。</value>
+  </data>
+  <data name="XamTile_SaveInLayout_Property" xml:space="preserve">
+    <value>そのタイルをレイアウトの保存データに含めるかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="TileAreaSplitter_IsDragging_Property" xml:space="preserve">
+    <value>返すか設定します。</value>
+  </data>
+  <data name="TileAreaSplitter_Orientation_Property" xml:space="preserve">
+    <value>スプリッター バーの方向を取得または設定します。</value>
+  </data>
+  <data name="TileAreaSplitter_PreviewStyle_Property" xml:space="preserve">
+    <value>スプリッターが配置される場所のプレビューを表すためにドラッグ操作の間に使用される System.Windows.Controls.Control instance の System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="TileAreaSplitter_ShowsPreview_Property" xml:space="preserve">
+    <value>スプリッターのドラッグ中にプレビューを表示するかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="ItemTileInfo_Index_Property" xml:space="preserve">
+    <value>Items コレクションに含まれる項目のインデックスを返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemTileInfo_Item_Property" xml:space="preserve">
+    <value>関連付けられた項目を返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemTileInfo_LogicalIndex_Property" xml:space="preserve">
+    <value>項目の論理インデックスを返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemTileInfo_OccupiesScrollPosition_Property" xml:space="preserve">
+    <value>この項目がスクロール位置を占有する場合 True を返します (読み取り専用)。</value>
+  </data>
+  <data name="ItemTileInfo_ScrollPosition_Property" xml:space="preserve">
+    <value>この項目スクロール全体の位置を取得します (読み取り専用)。</value>
+  </data>
+  <data name="TileCommandSource_CommandType_Property" xml:space="preserve">
+    <value>コマンドで実行する TileCommand を取得または設定します。</value>
+  </data>
+  <data name="TileHeaderPresenter_Tile_Property" xml:space="preserve">
+    <value>ヘッダーが表す関連のタイルを取得または設定します。</value>
+  </data>
+  <data name="TileAreaPanel_IsAnimationInProgress_Property" xml:space="preserve">
+    <value>アニメーションのサイズを変更するために移動をしている場合は True を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamTileManager_ItemContainerStyle_Property" xml:space="preserve">
+    <value>各項目に生成される Infragistics.Controls.Layouts.XamTile コンテナーに使用するスタイルを返すか設定します。</value>
+  </data>
+  <data name="XamTileManager_ItemTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTileManager.Items コレクションで各項目に使用するデータ テンプレートを返すか設定します。</value>
+  </data>
+  <data name="XamTile_IsMaximized_Property" xml:space="preserve">
+    <value>このタイルの Infragistics.Controls.Layouts.XamTile.State が最大化されているかどうかを返すか設定します。</value>
+  </data>
+  <data name="XamTile_IsClosed_Property" xml:space="preserve">
+    <value>このタイルが閉じられているかどうかを返すか設定します。</value>
+  </data>
+  <data name="ItemTileInfo_IsClosed_Property" xml:space="preserve">
+    <value>この項目が閉じられるかどうかを取得または設定します。</value>
+  </data>
+  <data name="ItemTileInfo_IsExpandedWhenMinimized_Property" xml:space="preserve">
+    <value>この項目が最小化されている状態から展開されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="ItemTileInfo_IsExpandedWhenMinimizedResolved_Property" xml:space="preserve">
+    <value>この項目が最小化されている状態から展開されるかどうかを取得します (読み取り専用)。</value>
+  </data>
+  <data name="ItemTileInfo_IsMaximized_Property" xml:space="preserve">
+    <value>この項目の状態が Maximized であるかどうかを取得または設定します。</value>
+  </data>
+  <data name="ItemTileInfo_SizeOverride_Property" xml:space="preserve">
+    <value>この項目の最適サイズとして返される明示的なサイズを取得または設定します。</value>
+  </data>
+  <data name="TileDragIndicator_Container_Property" xml:space="preserve">
+    <value>ドラッグされている項目を含む FrameworkElement を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_IsExplicitLayout_Property" xml:space="preserve">
+    <value>明示的なレイアウトが使用されているかどうかをシリアル化します。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_Properties" xml:space="preserve">
+    <value>XamTileManagerPersistenceInfo プロパティ</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_Items_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTileManager の項目のコレクションを表します。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_MinimizedAreaExtentX_Property" xml:space="preserve">
+    <value>最大化された領域が右または左にあるときにユーザーによって明示的にサイズ変更された場合、X ディメンションの最小化された領域の範囲をシリアル化します。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_MinimizedAreaExtentY_Property" xml:space="preserve">
+    <value>最大化された領域が上または下にあるときにユーザーによって明示的にサイズ変更された場合、Y ディメンションの最小化された領域の範囲をシリアル化します。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_SynchoronizedTileWidth_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.NormalModeSettings.AllowTileSizing が Synchronized に設定されているときに、ユーザーがタイルをサイズ変更した後にすべてのタイルの同期された幅をシリアル化します。</value>
+  </data>
+  <data name="XamTileManagerPersistenceInfo_SynchoronizedTileHeight_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.NormalModeSettings.AllowTileSizing が Synchronized に設定されているときに、ユーザーがタイルをサイズ変更した後にすべてのタイルの同期された高さをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_Column_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する Infragistics.Controls.Layouts.XamTile 列数をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_ColumnSpan_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する Infragistics.Controls.Layouts.XamTile 列範囲をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_ColumnWeight_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する Infragistics.Controls.Layouts.XamTile 列幅をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_IsClosed_Property" xml:space="preserve">
+    <value>項目の関連する Infragistics.Controls.Layouts.XamTile が閉じられるかどうかをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_IsExpandedWhenMinimized_Property" xml:space="preserve">
+    <value>最小化されるときに項目の関連する Infragistics.Controls.Layouts.XamTile が展開されるかどうかをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_IsMaximized_Property" xml:space="preserve">
+    <value>項目の関連する Infragistics.Controls.Layouts.XamTile が最大化されるかどうかをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_LogicalIndex_Property" xml:space="preserve">
+    <value>項目の論理インデックスをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_MaximizedIndex_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Layouts.XamTileManager の Infragistics.Controls.Layouts.XamTileManager.MaximizedItems コレクションで項目インデックスをシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_PreferredHeightOverride_Property" xml:space="preserve">
+    <value>項目の最適な高さのオーバーライドをシリアル化します。Infragistics.Controls.Layouts.NormalModeSettings.AllowTileSizing が Individual に設定されている場合、ユーザーのサイズ変更操作の結果である場合があります。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_PreferredWidthOverride_Property" xml:space="preserve">
+    <value>項目の最適な幅のオーバーライドをシリアル化します。Infragistics.Controls.Layouts.NormalModeSettings.AllowTileSizing が Individual に設定されている場合、ユーザーのサイズ変更操作の結果である場合があります。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_Row_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する  Infragistics.Controls.Layouts.XamTile Row の数をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_RowSpan_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する  Infragistics.Controls.Layouts.XamTile Row の範囲をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_RowWeight_Property" xml:space="preserve">
+    <value>明示的なレイアウトの場合、項目の関連する  Infragistics.Controls.Layouts.XamTile Row の幅をシリアル化します。</value>
+  </data>
+  <data name="TileItemPersistenceInfo_SerializationId_Property" xml:space="preserve">
+    <value>非シリアル化で項目の一致に使用される文字列識別子をシリアル化します。</value>
+  </data>
+  <data name="TileItemAutomationPeer_ItemInfo_Property" xml:space="preserve">
+    <value>関連する Infragistics.Controls.Layouts.ItemTileInfo オブジェクトを返します (読み取り専用)。</value>
+  </data>
+  <data name="TileSwappingEventArgs_SwapIsExpandedWhenMinimized_Property" xml:space="preserve">
+    <value>IsExpandedWhenMinimized の設定が TargetTile の設定と交換されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamTileManager_IsTouchSupportEnabled_Property" xml:space="preserve">
+    <value>Returns or sets whether touch support is enabled for this control</value>
+    <comment>To translate</comment>
+  </data>
+</root>

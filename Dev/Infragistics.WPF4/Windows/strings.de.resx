@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UltraPropertyPageDialogButtonCancel" xml:space="preserve">
+    <value>&amp;Abbrechen</value>
+  </data>
+  <data name="UltraPropertyPageDialogButtonOk" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="LicenseExceptionUnlicensed" xml:space="preserve">
+    <value>Produkt ist nicht lizenziert</value>
+  </data>
+  <data name="LicenseExceptionBetaExpired" xml:space="preserve">
+    <value>{0} CTP abgelaufen am {1}</value>
+  </data>
+  <data name="UltraComponentDesignerVerbAbout" xml:space="preserve">
+    <value>Info über</value>
+  </data>
+  <data name="LicenseExceptionGracePeriodExpired" xml:space="preserve">
+    <value>{0} {1} Das Produkt muss mit dem Produktaktivierungs-Assistenten aktiviert werden.</value>
+  </data>
+  <data name="LicensedProductTrialPeriodPrompt" xml:space="preserve">
+    <value>Diese Testversion von {2} läuft nach {0} Nutzungstagen oder {1} Kalenderwochen ab, je nachdem, was zuerst der Fall ist.</value>
+  </data>
+  <data name="LDR_About_InGrace" xml:space="preserve">
+    <value>Lizenziert - Im Kulanzzeitraum für die Aktivierung</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration1" xml:space="preserve">
+    <value>Der Kulanzzeitraum für die Aktivierung ist abgelaufen</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration6" xml:space="preserve">
+    <value>Ungültige Lizenzinformationen</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration7" xml:space="preserve">
+    <value>Unvollständige Lizenzinfo</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration4" xml:space="preserve">
+    <value>{0} Nutzungstage / {1} Kalenderwochen</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration5" xml:space="preserve">
+    <value>n.v.</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration8" xml:space="preserve">
+    <value>{Fehler}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration9" xml:space="preserve">
+    <value>Das Produkt wurde nicht richtig installiert</value>
+  </data>
+  <data name="LDR_About_GraceExpired" xml:space="preserve">
+    <value>Lizenziert - Kulanzzeitraum für die Aktivierung abgelaufen</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration3" xml:space="preserve">
+    <value>CTP-Zeitraum abgelaufen</value>
+  </data>
+  <data name="LicenseExceptionIncomplete" xml:space="preserve">
+    <value>Unvollständige Lizenzinformationen</value>
+  </data>
+  <data name="LicenseExceptionTrialExpired" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration10" xml:space="preserve">
+    <value>Keine ausreichenden Sicherheitsberechtigungen</value>
+  </data>
+  <data name="LicenseExceptionInformationNotFound" xml:space="preserve">
+    <value>Es wurden keine gültigen Lizenzinformationen gefunden</value>
+  </data>
+  <data name="LicenseExceptionInvalidCDKey" xml:space="preserve">
+    <value>Ungültige Lizenzinformationen</value>
+  </data>
+  <data name="LicensedProductActivationGracePrompt" xml:space="preserve">
+    <value>Die nicht aktivierte Nutzungsperiode für {2} läuft nach {0} Nutzungstagen oder {1} Kalenderwochen ab, je nachdem, was zuerst der Fall ist.  Das Produkt muss mit dem Produktaktivierungs-Assistenten aktiviert werden.</value>
+  </data>
+  <data name="LicensedProductPromptDialogTitle" xml:space="preserve">
+    <value>Infragistics {0}</value>
+  </data>
+  <data name="LDR_UltraProdInfo_Expiration2" xml:space="preserve">
+    <value>Testperiode abgelaufen</value>
+  </data>
+  <data name="LicenseExceptionSecurityPermission" xml:space="preserve">
+    <value>Keine ausreichenden Sicherheitsberechtigungen zur Bestimmung des Lizenzstatus</value>
+  </data>
+  <data name="LicenseExceptionUnlicensedProgram" xml:space="preserve">
+    <value>Dieses Programm wurde mit einer nicht lizenzierten (Demo-) Kopie von {0} erstellt. Wenden Sie sich an den Autor/Hersteller der Anwendung.</value>
+  </data>
+  <data name="DesignTime_SampleData_String" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="CloseButtonToolTip" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="ComparisonOperator_Equals" xml:space="preserve">
+    <value>Ist gleich</value>
+  </data>
+  <data name="ComparisonOperator_NotEquals" xml:space="preserve">
+    <value>Nicht gleich</value>
+  </data>
+  <data name="ComparisonOperator_LessThan" xml:space="preserve">
+    <value>Kleiner als</value>
+  </data>
+  <data name="ComparisonOperator_LessThanOrEqualTo" xml:space="preserve">
+    <value>Kleiner oder gleich</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThan" xml:space="preserve">
+    <value>Größer als</value>
+  </data>
+  <data name="ComparisonOperator_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>Größer oder gleich</value>
+  </data>
+  <data name="ComparisonOperator_Contains" xml:space="preserve">
+    <value>Enthält</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotContain" xml:space="preserve">
+    <value>Enthält nicht</value>
+  </data>
+  <data name="ComparisonOperator_Like" xml:space="preserve">
+    <value>Like (Platzhalter)</value>
+  </data>
+  <data name="ComparisonOperator_NotLike" xml:space="preserve">
+    <value>Not like (Platzhalter)</value>
+  </data>
+  <data name="ComparisonOperator_Match" xml:space="preserve">
+    <value>Stimmt überein (regulärer Ausdruck)</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotMatch" xml:space="preserve">
+    <value>Stimmt nicht überein (regulärer Ausdruck)</value>
+  </data>
+  <data name="ComparisonOperator_StartsWith" xml:space="preserve">
+    <value>Beginnt mit</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotStartWith" xml:space="preserve">
+    <value>Beginnt nicht mit</value>
+  </data>
+  <data name="ComparisonOperator_EndsWith" xml:space="preserve">
+    <value>Endet mit</value>
+  </data>
+  <data name="ComparisonOperator_DoesNotEndWith" xml:space="preserve">
+    <value>Endet nicht mit</value>
+  </data>
+  <data name="ComparisonOperator_Top" xml:space="preserve">
+    <value>Oben</value>
+  </data>
+  <data name="ComparisonOperator_Bottom" xml:space="preserve">
+    <value>Unten</value>
+  </data>
+  <data name="ComparisonOperator_TopPercentile" xml:space="preserve">
+    <value>Oberes Quantil</value>
+  </data>
+  <data name="ComparisonOperator_BottomPercentile" xml:space="preserve">
+    <value>Unteres Quantil</value>
+  </data>
+  <data name="ComparisonCondition_Equals" xml:space="preserve">
+    <value>= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_NotEquals" xml:space="preserve">
+    <value>!= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThan" xml:space="preserve">
+    <value>&lt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_LessThanOrEqualTo" xml:space="preserve">
+    <value>&lt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThan" xml:space="preserve">
+    <value>&gt; '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_GreaterThanOrEqualTo" xml:space="preserve">
+    <value>&gt;= '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Contains" xml:space="preserve">
+    <value>Enthält '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotContain" xml:space="preserve">
+    <value>Enthält nicht '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Like" xml:space="preserve">
+    <value>Like '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_NotLike" xml:space="preserve">
+    <value>Not like '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Match" xml:space="preserve">
+    <value>Stimmt überein '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotMatch" xml:space="preserve">
+    <value>Stimmt nicht überein '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_StartsWith" xml:space="preserve">
+    <value>Beginnt mit '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotStartWith" xml:space="preserve">
+    <value>Beginnt nicht mit '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_EndsWith" xml:space="preserve">
+    <value>Endet mit '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_DoesNotEndWith" xml:space="preserve">
+    <value>Endet nicht mit '{0}'</value>
+  </data>
+  <data name="ComparisonCondition_Top" xml:space="preserve">
+    <value>Oben {0}</value>
+  </data>
+  <data name="ComparisonCondition_Bottom" xml:space="preserve">
+    <value>Unten {0}</value>
+  </data>
+  <data name="ComparisonCondition_TopPercentile" xml:space="preserve">
+    <value>Oben {0}%</value>
+  </data>
+  <data name="ComparisonCondition_BottomPercentile" xml:space="preserve">
+    <value>Unten {0}%</value>
+  </data>
+  <data name="ConditionGroup_Description" xml:space="preserve">
+    <value>(Benutzerdefiniert)</value>
+  </data>
+  <data name="ConditionGroup_Group" xml:space="preserve">
+    <value>({0})</value>
+  </data>
+  <data name="ConditionGroup_Logical_AND" xml:space="preserve">
+    <value>{0} AND {1}</value>
+  </data>
+  <data name="ConditionGroup_Logical_OR" xml:space="preserve">
+    <value>{0} OR {1}</value>
+  </data>
+  <data name="ComplementCondition" xml:space="preserve">
+    <value>Not {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_DisplayContent" xml:space="preserve">
+    <value>Oben {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Top_Description" xml:space="preserve">
+    <value>Obere {0} wertbasierte Elemente.</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_DisplayContent" xml:space="preserve">
+    <value>Oberes {0} Quantil</value>
+  </data>
+  <data name="SpecialFilterOperand_TopPercentile_Description" xml:space="preserve">
+    <value>Oberes {0} Quantil wertbasierter Elemente</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_DisplayContent" xml:space="preserve">
+    <value>Unten {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Bottom_Description" xml:space="preserve">
+    <value>Untere {0} wertbasierte Elemente.</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_DisplayContent" xml:space="preserve">
+    <value>Unteres {0} Quantil</value>
+  </data>
+  <data name="SpecialFilterOperand_BottomPercentile_Description" xml:space="preserve">
+    <value>Unteres {0} Quantil wertbasierter Elemente</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_DisplayContent" xml:space="preserve">
+    <value>Morgen</value>
+  </data>
+  <data name="SpecialFilterOperand_Tomorrow_Description" xml:space="preserve">
+    <value>Morgiges Datum</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_DisplayContent" xml:space="preserve">
+    <value>Heute</value>
+  </data>
+  <data name="SpecialFilterOperand_Today_Description" xml:space="preserve">
+    <value>Heutiges Datum</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_DisplayContent" xml:space="preserve">
+    <value>Gestern</value>
+  </data>
+  <data name="SpecialFilterOperand_Yesterday_Description" xml:space="preserve">
+    <value>Gestriges Datum</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_DisplayContent" xml:space="preserve">
+    <value>Nächste Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_NextWeek_Description" xml:space="preserve">
+    <value>Ein Datum in der nächsten Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_DisplayContent" xml:space="preserve">
+    <value>Diese Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisWeek_Description" xml:space="preserve">
+    <value>Ein Datum in dieser Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_DisplayContent" xml:space="preserve">
+    <value>Letzte Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_LastWeek_Description" xml:space="preserve">
+    <value>Ein Datum in der letzten Woche</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_DisplayContent" xml:space="preserve">
+    <value>Nächsten Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_NextMonth_Description" xml:space="preserve">
+    <value>Ein Datum im nächsten Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_DisplayContent" xml:space="preserve">
+    <value>Dieser Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisMonth_Description" xml:space="preserve">
+    <value>Ein Datum in diesem Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_DisplayContent" xml:space="preserve">
+    <value>Letzten Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_LastMonth_Description" xml:space="preserve">
+    <value>Ein Datum im letzten Monat</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_DisplayContent" xml:space="preserve">
+    <value>Nächstes Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_NextQuarter_Description" xml:space="preserve">
+    <value>Ein Datum im nächsten Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_DisplayContent" xml:space="preserve">
+    <value>Dieses Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisQuarter_Description" xml:space="preserve">
+    <value>Ein Datum in diesem Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_DisplayContent" xml:space="preserve">
+    <value>Letztes Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_LastQuarter_Description" xml:space="preserve">
+    <value>Ein Datum im letzten Quartal</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_DisplayContent" xml:space="preserve">
+    <value>Nächstes Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_NextYear_Description" xml:space="preserve">
+    <value>Ein Datum im nächsten Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_DisplayContent" xml:space="preserve">
+    <value>Dieses Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_ThisYear_Description" xml:space="preserve">
+    <value>Ein Datum in diesem Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_DisplayContent" xml:space="preserve">
+    <value>Letztes Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_LastYear_Description" xml:space="preserve">
+    <value>Ein Datum im letzten Jahr</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_DisplayContent" xml:space="preserve">
+    <value>Bis zum aktuellen Datum</value>
+  </data>
+  <data name="SpecialFilterOperand_YearToDate_Description" xml:space="preserve">
+    <value>Ein Datum dieses Jahres bis heute</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_DisplayContent" xml:space="preserve">
+    <value>Quartal {0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Quarter_Description" xml:space="preserve">
+    <value>Ein Datum in Quartal {0} eines beliebigen Jahres</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_DisplayContent" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SpecialFilterOperand_Month_Description" xml:space="preserve">
+    <value>Ein Datum in {0} eines beliebigen Jahres</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_DisplayContent" xml:space="preserve">
+    <value>Über dem Durchschnitt</value>
+  </data>
+  <data name="SpecialFilterOperand_AboveAverage_Description" xml:space="preserve">
+    <value>Ein überdurchschnittlicher Wert</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_DisplayContent" xml:space="preserve">
+    <value>Unter dem Durchschnitt</value>
+  </data>
+  <data name="SpecialFilterOperand_BelowAverage_Description" xml:space="preserve">
+    <value>Ein unterdurchschnittlicher Wert</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_DisplayContent" xml:space="preserve">
+    <value>(Leere)</value>
+  </data>
+  <data name="SpecialFilterOperand_Blanks_Description" xml:space="preserve">
+    <value>Ein leerer Wert</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_DisplayContent" xml:space="preserve">
+    <value>(Nicht leere)</value>
+  </data>
+  <data name="SpecialFilterOperand_NonBlanks_Description" xml:space="preserve">
+    <value>Ein beliebiger nicht leerer Wert</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_NaN" xml:space="preserve">
+    <value>Der Wert darf nicht 'NaN' sein.</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_LessThanZero" xml:space="preserve">
+    <value>Der Wert kann nicht kleiner als 0 sein.</value>
+  </data>
+  <data name="Filter_TopOperand_InvalidValue_GreaterThan100Percent" xml:space="preserve">
+    <value>Der Wert kann nicht größer als 100 Prozent sein.</value>
+  </data>
+  <data name="Filter_WildCard_Empty" xml:space="preserve">
+    <value>Ungültiges Platzhaltermuster Das Platzhaltermuster darf nicht leer sein.</value>
+  </data>
+  <data name="Filter_WildCard_InvalidCharClass" xml:space="preserve">
+    <value>Ungültiges Platzhaltermuster Es enthält eine ungültige Zeichenklasse.</value>
+  </data>
+  <data name="Filter_Regex_InvalidPattern" xml:space="preserve">
+    <value>Ungültiges Muster für reguläre Ausdrücke.</value>
+  </data>
+  <data name="Filter_IncompatibleOperand" xml:space="preserve">
+    <value>Der angegebene Operand ist nicht mit dem Vergleichsoperator kompatibel.</value>
+  </data>
+  <data name="TrialKey_AboutDialogLabel" xml:space="preserve">
+    <value>{Test}</value>
+  </data>
+  <data name="SampleData_XML" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;SampleData&gt; &lt;users&gt; &lt;user&gt; &lt;name&gt;Jens Mander&lt;/name&gt; &lt;department&gt;Personalabteilung&lt;/department&gt; &lt;salary&gt;52.500&lt;/salary&gt; &lt;email&gt;jens@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Andrea Büchner&lt;/name&gt; &lt;department&gt;Vertrieb&lt;/department&gt; &lt;salary&gt;65.100&lt;/salary&gt; &lt;email&gt;AndreaB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Barbara Bayer&lt;/name&gt; &lt;department&gt;Verwaltung&lt;/department&gt; &lt;salary&gt;35.750&lt;/salary&gt; &lt;email&gt;BB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Monika Schweiger&lt;/name&gt; &lt;department&gt;Verwaltung&lt;/department&gt; &lt;salary&gt;37.750&lt;/salary&gt; &lt;email&gt;MonikaS@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Robert Schweiger&lt;/name&gt; &lt;department&gt;Buchhaltung&lt;/department&gt; &lt;salary&gt;53.250&lt;/salary&gt; &lt;email&gt;RobertS@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Olaf Müller&lt;/name&gt; &lt;department&gt;Vorstand&lt;/department&gt; &lt;salary&gt;123.000&lt;/salary&gt; &lt;email&gt;OlafM@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Marta Becker&lt;/name&gt; &lt;department&gt;Vertrieb&lt;/department&gt; &lt;salary&gt;99.700&lt;/salary&gt; &lt;email&gt;MartaB@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;user&gt; &lt;name&gt;Katia Schulz&lt;/name&gt; &lt;department&gt;Vertrieb&lt;/department&gt; &lt;salary&gt;69.000&lt;/salary&gt; &lt;email&gt;KatiaS@hotmail.com&lt;/email&gt; &lt;/user&gt; &lt;/users&gt; &lt;/SampleData&gt;
+</value>
+  </data>
+  <data name="MaximizeButtonToolTip" xml:space="preserve">
+    <value>Maximieren</value>
+  </data>
+  <data name="MinimizeButtonToolTip" xml:space="preserve">
+    <value>Minimieren</value>
+  </data>
+  <data name="RestoreDownButtonToolTip" xml:space="preserve">
+    <value>Verkleinern</value>
+  </data>
+  <data name="RestoreUpButtonToolTip" xml:space="preserve">
+    <value>Vergrößern</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Day_Description" xml:space="preserve">
+    <value>Jede Zeit am {0:d}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Hour_Description" xml:space="preserve">
+    <value>Jede Zeit innerhalb {0:d} {0:hh tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Minute_Description" xml:space="preserve">
+    <value>Jede Zeit innerhalb {0:d} {0:hh:mm tt}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Month_Description" xml:space="preserve">
+    <value>Alle Daten in {0:Y}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_Description" xml:space="preserve">
+    <value>Alle Datumswerte in {0:yyyy}</value>
+  </data>
+  <data name="SpecialFilterOperand_DateRange_Year_DisplayContent" xml:space="preserve">
+    <value>Alle von {0:yyyy}</value>
+  </data>
+</root>

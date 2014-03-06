@@ -1,0 +1,397 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	  xmlns:igThemes="http://infragistics.com/Themes"
+	  xmlns:igWindow="http://infragistics.com/Windows"
+	  xmlns:igRibbon="clr-namespace:Infragistics.Windows.Ribbon"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+  >
+  
+  <ResourceDictionary.MergedDictionaries>
+	<!--<themes:RibbonGeneric />-->
+    <igThemes:ResourceSetLoader Locator="{x:Static themes:RibbonGeneric.Location}"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- Identify the OS theme as not classic-->
+  <sys:Boolean x:Key="{ComponentResourceKey ResourceId=IsClassicOSTheme_Identifier, TypeInTargetAssembly=igRibbon:XamRibbon}">False</sys:Boolean>
+  
+
+
+	<!-- Scenic Ribbon Brushes -->
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicStatusBarTextForegroundFillKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF000000" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicStatusBarFillKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFF1EDED" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicStatusBarBorderFillKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF919191" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicStatusBarSeparatorGradientLeftKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFD7D7D7" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicStatusBarSeparatorGradientRightKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFFFFFFF" />
+  
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionAreaFillKey}" igThemes:ResourceWasher.WashGroup="Caption" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FF98b4d0"/>
+                <GradientStop Offset="1" Color="#FFb9d1ea"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionAreaBorderKey}" igThemes:ResourceWasher.WashGroup="Caption" Color="#FFB9D1EA" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionAreaInactiveFillKey}" igThemes:ResourceWasher.WashGroup="Caption" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFbfcddb"/>
+                <GradientStop Offset="1" Color="#FFd7e4f2"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionAreaInactiveBorderKey}" igThemes:ResourceWasher.WashGroup="Caption" Color="#FFD7E4F2" />
+    
+    
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderOuterBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF343434" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderOuterShadowBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF343434" />
+    
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner1BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner1ShadowBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF3FCEF2" />
+
+
+
+
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner2BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+                <GradientStopCollection>
+                    <GradientStop Offset="0" Color="#FFb9d1ea"/>
+                    <GradientStop Offset="0.01" Color="#FFb9d1ea"/>
+                    <GradientStop Offset="0.135" Color="#FFdbe7f4"/>
+                    <GradientStop Offset="0.135" Color="#FFbad2ea"/>
+                    <GradientStop Offset="1" Color="#FFb9d1ea"/>
+                </GradientStopCollection>
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+
+        <!--<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner1ShadowBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFE9EFED" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner2BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#3F99CCDD" />-->
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicActiveWindowBorderInner3BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFb9d1ea"/>
+                <GradientStop Offset="0.01" Color="#FFb9d1ea"/>
+                <GradientStop Offset="0.135" Color="#FFdbe7f4"/>
+                <GradientStop Offset="0.135" Color="#FFbad2ea"/>
+                <GradientStop Offset="1" Color="#FFb9d1ea"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderOuterBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF343434" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderOuterShadowBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FF343434" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderInner1BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderInner1ShadowBrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFE9ECF3" />
+
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderInner2BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFD7E4F2" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicWindowBorderInner3BrushKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFD7E4F2" />
+    
+    
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicResizeGrippersBackgroundFillKey}" igThemes:ResourceWasher.WashGroup="BaseColor" Color="#FFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicResizeGrippersForegroundFillKey}" igThemes:ResourceWasher.WashGroup="BaseColor" StartPoint="0,0" EndPoint="0.9,0.9">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFffffff" Offset="0"/>
+                <GradientStop Color="#FFafafaf" Offset="1"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+
+    <!-- =================================================== CAPTION BUTTON BRUSHES =================================================== -->
+
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBorderFillKey}" Color="#FF535666" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+    <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFfcfcfc"/>
+                <GradientStop Offset="0.43" Color="#FFfcfcfc"/>
+                <GradientStop Offset="0.44" Color="#FFe9e9e9"/>
+                <GradientStop Offset="1" Color="#FFd7d7d7"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalBorderFillKey}" Color="#FF5D6F88" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+    <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFc3d4e7"/>
+                <GradientStop Offset="0.43" Color="#FFbed3e8"/>
+                <GradientStop Offset="0.44" Color="#FF98b1cc"/>
+                <GradientStop Offset="0.89" Color="#FFb7d0e9"/>
+                <GradientStop Offset="1" Color="#FFb7d0e9"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalInnerBorderFillKey}" Color="#7FFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+    <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFaad5f3"/>
+                <GradientStop Offset="0.43" Color="#FF81c0ea"/>
+                <GradientStop Offset="0.44" Color="#FF2d73a3"/>
+                <GradientStop Offset="0.56" Color="#FF2c78ab"/>
+                <GradientStop Offset="0.89" Color="#FF24c6eb"/>
+                <GradientStop Offset="1" Color="#FF24c6eb"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverBorderFillKey}" Color="#FF5D6976" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover"/>
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverInnerBorderFillKey}" Color="#7FFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover"/>
+    <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FF7f9aac"/>
+                <GradientStop Offset="0.43" Color="#FF5d778c"/>
+                <GradientStop Offset="0.44" Color="#FF203b52"/>
+                <GradientStop Offset="0.56" Color="#FF1f4158"/>
+                <GradientStop Offset="0.86" Color="#FF27c9c8"/>
+                <GradientStop Offset="1" Color="#FF27c9c8"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedBorderFillKey}" Color="#FF5D6976" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed"/>
+    <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedInnerBorderFillKey}" Color="#4CFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed"/>
+
+
+                            <!-- ScenicCaption CloseBtn Brushes -->
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnNormalBorderFillKey}" Color="#FF431422" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+                            <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnNormalBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Offset="0" Color="#FFe9a99c"/>
+                                        <GradientStop Offset="0.43" Color="#FFe09487"/>
+                                        <GradientStop Offset="0.44" Color="#FFb8432c"/>
+                                        <GradientStop Offset="0.89" Color="#FFd27e6e"/>
+                                        <GradientStop Offset="1" Color="#FFd27e6e"/>
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnNormalInnerBorderFillKey}" Color="#7FFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+                            <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnHoverBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Offset="0" Color="#FFfcc8bf"/>
+                                        <GradientStop Offset="0.43" Color="#FFfaa89a"/>
+                                        <GradientStop Offset="0.44" Color="#FFd22302"/>
+                                        <GradientStop Offset="0.56" Color="#FFd84116"/>
+                                        <GradientStop Offset="0.89" Color="#FFe5934e"/>
+                                        <GradientStop Offset="1" Color="#FFe5934e"/>
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnHoverBorderFillKey}" Color="#FF431422" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover"/>
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnHoverInnerBorderFillKey}" Color="#7FFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Hover"/>
+                            <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnPressedBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Offset="0" Color="#FFcfa38b"/>
+                                        <GradientStop Offset="0.43" Color="#FFc1856c"/>
+                                        <GradientStop Offset="0.44" Color="#FF831800"/>
+                                        <GradientStop Offset="0.56" Color="#FF802901"/>
+                                        <GradientStop Offset="0.80" Color="#FFc4954c"/>
+                                        <GradientStop Offset="0.95" Color="#FFf5ec6a"/>
+                                        <GradientStop Offset="1" Color="#FFf5ec6a"/>
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnPressedBorderFillKey}" Color="#FF431422" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed"/>
+                            <SolidColorBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnPressedInnerBorderFillKey}" Color="#4CFFFFFF" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="Pressed"/>
+
+    <LinearGradientBrush x:Key="{x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnDisabledBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" igThemes:ResourceWasher.WashGroup="BaseColor">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFbdcbda"/>
+                <GradientStop Offset="1" Color="#FFcedceb"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    
+    
+    
+    <!--  Button Glyphs  -->
+	<Rectangle x:Key="MinimizeGlyph" x:Shared="false" Fill="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBackgroundFillKey}}" Stroke="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBorderFillKey}}" StrokeThickness="1" RadiusX="1" RadiusY="1" Width="11" Height="5" SnapsToDevicePixels="True" />
+
+	<Grid x:Key="MaximizeGlyph" x:Shared="False" Width="11" Height="9">
+        <Rectangle Stroke="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBorderFillKey}}" StrokeThickness="4" RadiusX="0.05" RadiusY="0.05" SnapsToDevicePixels="True"/>
+        <Rectangle Margin="1" Stroke="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBackgroundFillKey}}" StrokeThickness="2" SnapsToDevicePixels="True"/>
+	</Grid>
+
+	<Grid x:Key="RestoreGlyph" x:Shared="False" Width="12" Height="11">
+		<Path
+			Width="12"
+			Height="11"
+			Data="M 3,7 C3,7 5,7 5,7 5,7 5,8 5,8 5,8 3,8 3,8 3,8 3,7 3,7 zM 8,4 C8,4 9,4 9,4 9,4 9,5 9,5 9,5 8,5 8,5 8,5 8,4 8,4 zM 1.40,3 C0.62,3 0,3.62 0,4.39 0,4.39 0,9.60 0,9.60 0,10.37 0.62,11 1.40,11 1.40,11 6.59,11 6.59,11 7.37,11 8,10.37 8,9.60 8,9.60 8,8 8,8 8,8 10.59,8 10.59,8 11.37,8 12,7.37 12,6.60 12,6.60 12,1.40 12,1.40 12,0.62 11.37,0 10.59,0 10.59,0 5.40,0 5.40,0 4.62,0 4,0.62 4,1.40 4,1.40 4,3 4,3 4,3 1.40,3 1.40,3 z"
+			Fill="#535666"
+			Stretch="Fill"
+             SnapsToDevicePixels="True"/>
+		<Path
+			Width="10"
+			Height="9"
+			Data="M 1,5 C1,5 5,5 5,5 5,5 5,8 5,8 5,8 1,8 1,8 1,8 1,5 1,5 zM 0,3 C0,3 0,9 0,9 0,9 6,9 6,9 6,9 6,3 6,3 6,3 0,3 0,3 zM 4,0 C4,0 4,2 4,2 4,2 9,2 9,2 9,2 9,5 9,5 9,5 7,5 7,5 7,5 7,6 7,6 7,6 10,6 10,6 10,6 10,0 10,0 10,0 4,0 4,0 z"
+			Stretch="Fill"
+             SnapsToDevicePixels="True">
+			<Path.Fill>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection>
+							<GradientStop Offset="0" Color="#FFffffff"/>
+							<GradientStop Offset="0.10" Color="#FFffffff"/>
+							<GradientStop Offset="1" Color="#FFd7d7d7"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Path.Fill>
+		</Path>
+	</Grid>
+
+	<Grid x:Key="CloseGlyph" x:Shared="False">
+		<Path
+			Width="11"
+			Height="9"
+			Data="M 1,0 C1,0 1,1 1,1 1,1 0,1 0,1 0,1 0,2 0,2 0,2 1,2 1,2 1,2 1,3 1,3 1,3 2,3 2,3 2,3 2,4 2,4 2,4 3,4 3,4 3,4 3,5 3,5 3,5 2,5 2,5 2,5 2,6 2,6 2,6 1,6 1,6 1,6 1,7 1,7 1,7 0,7 0,7 0,7 0,8 0,8 0,8 1,8 1,8 1,8 1,9 1,9 1,9 4,9 4,9 4,9 4,8 4,8 4,8 5,8 5,8 5,8 5,7 5,7 5,7 6,7 6,7 6,7 6,8 6,8 6,8 7,8 7,8 7,8 7,9 7,9 7,9 9,9 9,9 9,9 10,9 10,9 10,9 10,8 10,8 10,8 11,8 11,8 11,8 11,7 11,7 11,7 10,7 10,7 10,7 10,6 10,6 10,6 9,6 9,6 9,6 9,5 9,5 9,5 8,5 8,5 8,5 8,4 8,4 8,4 9,4 9,4 9,4 9,3 9,3 9,3 10,3 10,3 10,3 10,2 10,2 10,2 11,2 11,2 11,2 11,1 11,1 11,1 10,1 10,1 10,1 10,0 10,0 10,0 7,0 7,0 7,0 7,1 7,1 7,1 6,1 6,1 6,1 6,2 6,2 6,2 5,2 5,2 5,2 5,1 5,1 5,1 4,1 4,1 4,1 4,0 4,0 4,0 1,0 1,0 z"
+			Fill="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBorderFillKey}}"
+             SnapsToDevicePixels="True"/>
+		<Path
+  			Width="9"
+  			Height="7"
+  			Data="M 1,1 C1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 4,4 4,4 4,4 4,5 4,5 4,5 3,5 3,5 3,5 3,6 3,6 3,6 2,6 2,6 2,6 2,7 2,7 2,7 1,7 1,7 1,7 1,8 1,8 1,8 2,8 2,8 2,8 3,8 3,8 3,8 4,8 4,8 4,8 4,7 4,7 4,7 5,7 5,7 5,7 5,6 5,6 5,6 6,6 6,6 6,6 6,7 6,7 6,7 7,7 7,7 7,7 7,8 7,8 7,8 8,8 8,8 8,8 9,8 9,8 9,8 10,8 10,8 10,8 10,7 10,7 10,7 9,7 9,7 9,7 9,6 9,6 9,6 8,6 8,6 8,6 8,5 8,5 8,5 7,5 7,5 7,5 7,4 7,4 7,4 8,4 8,4 8,4 8,3 8,3 8,3 9,3 9,3 9,3 9,2 9,2 9,2 10,2 10,2 10,2 10,1 10,1 10,1 7,1 7,1 7,1 7,2 7,2 7,2 6,2 6,2 6,2 6,3 6,3 6,3 5,3 5,3 5,3 5,2 5,2 5,2 4,2 4,2 4,2 4,1 4,1 4,1 1,1 1,1 z"
+  			Fill="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnGlyphBackgroundFillKey}}"
+  			Stretch="Fill"
+             SnapsToDevicePixels="True"/>
+	</Grid>
+	
+	
+    
+
+
+
+    <!-- ========== Scenic Caption Button Styles ========== -->
+
+    <!--ScenicMinimizeButtonStyleKey-->
+    <Style x:Key="{x:Static igRibbon:RibbonWindowContentHost.ScenicMinimizeButtonStyleKey}" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalBackgroundFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalBorderFillKey}}"/>
+        <Setter Property="MinWidth" Value="31"/>
+        <Setter Property="MaxHeight" Value="17"/>
+        <Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Content" Value="{StaticResource MinimizeGlyph}"/>
+		<Setter Property="VerticalContentAlignment" Value="Bottom"/>
+        <Setter Property="Padding" Value="0,0,0,2"/>
+        <Setter Property="Margin" Value="1,3,1,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Bd"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="2"
+                             SnapsToDevicePixels="True">
+                        <Border x:Name="innerBd" BorderBrush="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnNormalInnerBorderFillKey}}" BorderThickness="1" SnapsToDevicePixels="True">
+                            <Grid>
+                                <ContentPresenter
+										HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										Margin="{TemplateBinding Padding}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										RecognizesAccessKey="True"
+										SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" TargetName="innerBd" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverInnerBorderFillKey}}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderBrush" TargetName="innerBd" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedInnerBorderFillKey}}"/>
+                        </Trigger>
+
+						<!-- AS 11/4/11 TFS91009 -->
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Opacity" Value="0.5"/>
+						</Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverBackgroundFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnHoverBorderFillKey}}"/>
+            </Trigger>
+
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedBorderFillKey}}"/>
+                <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnPressedBackgroundFillKey}}"/>
+            </Trigger>
+
+			<!-- AS 11/4/11 TFS91009 -->
+			<MultiDataTrigger>
+				<MultiDataTrigger.Conditions>
+					<Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="False" />
+					<Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False" />
+				</MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnDisabledBackgroundFillKey}}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ScenicMaximizeRestoreButtonStyleKey-->
+    <Style x:Key="{x:Static igRibbon:RibbonWindowContentHost.ScenicMaximizeRestoreButtonStyleKey}" BasedOn="{StaticResource {x:Static igRibbon:RibbonWindowContentHost.ScenicMinimizeButtonStyleKey}}"  TargetType="{x:Type Button}">
+		<Setter Property="Content" Value="{StaticResource MaximizeGlyph}"/>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding Path=WindowState, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="Maximized">
+				<Setter Property="Content" Value="{StaticResource RestoreGlyph}"/>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+    <!-- ScenicCloseWindowButtonStyleKey -->
+    <Style x:Key="{x:Static igRibbon:RibbonWindowContentHost.ScenicCloseWindowButtonStyleKey}" BasedOn="{StaticResource {x:Static igRibbon:RibbonWindowContentHost.ScenicMinimizeButtonStyleKey}}" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnNormalBackgroundFillKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnNormalBorderFillKey}}"/>
+        <Setter Property="Margin" Value="1,3,3,0"/>
+		<Setter Property="Content" Value="{StaticResource CloseGlyph}"/>
+		<Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnHoverBackgroundFillKey}}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnHoverBorderFillKey}}"/>
+            </Trigger>
+
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnPressedBorderFillKey}}"/>
+                <Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionCloseBtnPressedBackgroundFillKey}}"/>
+            </Trigger>
+
+			<!-- AS 11/4/11 TFS91009 -->
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnDisabledBackgroundFillKey}}"/>
+			</Trigger>
+
+			<!-- AS 11/4/11 TFS91009 -->
+			<MultiDataTrigger>
+				<MultiDataTrigger.Conditions>
+					<Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource FindAncestor, {x:Type Window}, 1}}" Value="False" />
+					<Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False" />
+				</MultiDataTrigger.Conditions>
+				<Setter Property="Background" Value="{StaticResource {x:Static igRibbon:RibbonBrushKeys.ScenicCaptionBtnDisabledBackgroundFillKey}}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+
+
+    
+</ResourceDictionary>

@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Infragistics.Windows.Design.OutlookBar.SmartButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="20" Width="20"
+    xmlns:local="clr-namespace:Infragistics.Windows.Design.OutlookBar" >
+    
+    <Button x:FieldModifier="public" x:Name="btnSmart" Click="btnSmart_Click" BorderThickness="0" BorderBrush="Transparent" 
+            Background="Transparent" ToolTip="{x:Static local:DesignResources.LST_OutlookBar_SmartButton_btnSmartToolTip}" >
+        <Image Stretch="Uniform" Source="Images/Arrow.png" />
+    </Button>
+    
+
+</UserControl>

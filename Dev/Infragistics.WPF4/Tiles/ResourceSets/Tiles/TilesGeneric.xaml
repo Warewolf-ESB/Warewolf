@@ -1,0 +1,455 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:igTiles="clr-namespace:Infragistics.Windows.Tiles"
+	xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../TilesBrushes/TilesGeneric_Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ========== Converters ========== -->
+    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+
+    <!-- ========== XamTilesControl.ToolTipStyleKey ========== -->
+    <Style x:Key="{x:Static igTiles:XamTilesControl.ToolTipStyleKey}" TargetType="{x:Type ToolTip}">
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.ToolTipOuterBorderFillKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.ToolTipCenterFillKey}}" />
+    </Style>
+
+    <!-- ========== ToolTips ========== -->
+    <!-- AS 2/13/09 TFS14003 - Added x:Shared="false" so each element has its 
+        own reference. otherwise the shared tooltip (or the deferredresourcereference 
+        that wpf uses) causes the elements that used it to be rooted -->
+    <ToolTip x:Key="closeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igTiles:XamTilesControl.ToolTipStyleKey}}" Content="{Binding Path=Value, Source={x:Static igTiles:Resources.CloseButtonToolTip}}"/>
+    <ToolTip x:Key="maximizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igTiles:XamTilesControl.ToolTipStyleKey}}" Content="{Binding Path=Value, Source={x:Static igTiles:Resources.MaximizeButtonToolTip}}"/>
+    <ToolTip x:Key="minimizeToolTip" x:Shared="false" Style="{DynamicResource {x:Static igTiles:XamTilesControl.ToolTipStyleKey}}" Content="{Binding Path=Value, Source={x:Static igTiles:Resources.MinimizeButtonToolTip}}"/>
+    <ToolTip x:Key="expandToolTip" x:Shared="false" Style="{DynamicResource {x:Static igTiles:XamTilesControl.ToolTipStyleKey}}" Content="{Binding Path=Value, Source={x:Static igTiles:Resources.ExpandButtonToolTip}}"/>
+    <ToolTip x:Key="collapseToolTip" x:Shared="false" Style="{DynamicResource {x:Static igTiles:XamTilesControl.ToolTipStyleKey}}" Content="{Binding Path=Value, Source={x:Static igTiles:Resources.CollapseButtonToolTip}}"/>
+
+
+    <!-- ========== SimpleContentControl ========== -->
+    <!-- Basic control template for buttons in the dockmanager -->
+    <ControlTemplate x:Key="SimpleContentControlTemplate" TargetType="{x:Type ContentControl}">
+        <Border Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding Border.CornerRadius}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True" >
+            <Path Data="{Binding Path=Content, RelativeSource={x:Static RelativeSource.TemplatedParent}}" 
+                    Fill="{TemplateBinding Foreground}" 
+                    Stretch="Uniform"
+                    Margin="{TemplateBinding Padding}"
+		            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+		            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                  SnapsToDevicePixels="True"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.GrayTextBrushKey}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- ========== ButtonStyleBase ========== -->
+    <!-- Base style for the buttons in the PaneHeaderPresenter and document TabGroupPane -->
+    <Style x:Key="ButtonStyleBase" TargetType="{x:Type ButtonBase}">
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Template" Value="{StaticResource SimpleContentControlTemplate}" />
+    </Style>
+
+    <!-- ========== CaptionButtonStyleBase ========== -->
+    <!-- Base style for the buttons in the TileHeaderPresenter -->
+    <Style x:Key="CaptionButtonStyleBase" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource ButtonStyleBase}">
+		<Setter Property="Width" Value="14" />
+		<Setter Property="Height" Value="13" />
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnGlyphFillKey}}"/>
+		<Setter Property="Cursor" Value="Hand"/>
+		<Setter Property="Border.CornerRadius" Value="1"/>
+		<Style.Triggers>
+
+			<!-- HotTracked Visual in an Active ContentTile -->
+			<DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+				<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackBackgroundFillKey}}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackBorderFillKey}}"/>
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackGlyphFillKey}}"/>
+			</DataTrigger>
+
+			<!-- IsPressed Visual -->
+			<Trigger Property="IsPressed" Value="True">
+				<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedBackgroundFillKey}}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedBorderFillKey}}"/>
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedGlyphFillKey}}"/>
+			</Trigger>
+
+			<!-- IsEnabled Visual -->
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+			</Trigger>
+
+		</Style.Triggers>
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.CloseButtonStyleKey ========== -->
+    <Style x:Key="{x:Static igTiles:TileHeaderPresenter.CloseButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="ToolTip" Value="{StaticResource closeToolTip}" />
+		<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}"
+						 CornerRadius="{TemplateBinding Border.CornerRadius}"
+						 BorderBrush="{TemplateBinding BorderBrush}"
+						 BorderThickness="{TemplateBinding BorderThickness}"
+						 SnapsToDevicePixels="True"
+						 Padding="{TemplateBinding Padding}">
+							<Path
+								x:Name="CloseGlyphForeground"
+								Width="8"
+								Height="7"
+								Data="M 1,1 C1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 2,4 2,4 2,4 2,5 2,5 2,5 1,5 1,5 1,5 1,6 1,6 1,6 0,6 0,6 0,6 0,7 0,7 0,7 2,7 2,7 2,7 2,6 2,6 2,6 3,6 3,6 3,6 3,5 3,5 3,5 4,5 4,5 4,5 5,5 5,5 5,5 5,6 5,6 5,6 6,6 6,6 6,6 6,7 6,7 6,7 8,7 8,7 8,7 8,6 8,6 8,6 7,6 7,6 7,6 7,5 7,5 7,5 6,5 6,5 6,5 6,4 6,4 6,4 5,4 5,4 5,4 5,3 5,3 5,3 6,3 6,3 6,3 6,2 6,2 6,2 7,2 7,2 7,2 7,1 7,1 7,1 8,1 8,1 8,1 8,0 8,0 8,0 6,0 6,0 6,0 6,1 6,1 6,1 5,1 5,1 5,1 5,2 5,2 5,2 4,2 4,2 4,2 3,2 3,2 3,2 3,1 3,1 3,1 2,1 2,1 2,1 2,0 2,0 2,0 0,0 0,0 0,0 0,1 0,1 0,1 1,1 1,1 z"
+								Fill="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.ExpandButtonStyleKey ========== -->
+    <Style x:Key="{x:Static igTiles:TileHeaderPresenter.ExpandButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="ToolTip" Value="{StaticResource maximizeToolTip}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}"
+					 CornerRadius="{TemplateBinding Border.CornerRadius}"
+					 BorderBrush="{TemplateBinding BorderBrush}"
+					 BorderThickness="{TemplateBinding BorderThickness}"
+					 SnapsToDevicePixels="True"
+					 Padding="{TemplateBinding Padding}">
+                        <igWindows:CardPanel>
+                            <Path
+								x:Name="CollapsedImage"
+								Width="7"
+								Height="8"
+								Data="M 0,4 C0,4 0,5 0,5 0,5 1,5 1,5 1,5 1,6 1,6 1,6 2,6 2,6 2,6 2,7 2,7 2,7 3,7 3,7 3,7 3,8 3,8 3,8 4,8 4,8 4,8 4,7 4,7 4,7 5,7 5,7 5,7 5,6 5,6 5,6 6,6 6,6 6,6 6,5 6,5 6,5 7,5 7,5 7,5 7,4 7,4 7,4 5,4 5,4 5,4 5,5 5,5 5,5 4,5 4,5 4,5 4,6 4,6 4,6 3,6 3,6 3,6 3,5 3,5 3,5 2,5 2,5 2,5 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,1 0,1 0,1 1,1 1,1 1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 4,4 4,4 4,4 4,3 4,3 4,3 5,3 5,3 5,3 5,2 5,2 5,2 6,2 6,2 6,2 6,1 6,1 6,1 7,1 7,1 7,1 7,0 7,0 7,0 5,0 5,0 5,0 5,1 5,1 5,1 4,1 4,1 4,1 4,2 4,2 4,2 3,2 3,2 3,2 3,1 3,1 3,1 2,1 2,1 2,1 2,0 2,0 2,0 0,0 0,0 z"
+								Fill="{TemplateBinding Foreground}"
+								Stretch="Fill"
+								Visibility="Collapsed"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"/>
+                            <Path
+								x:Name="NotCollapsedImage"
+								Width="7"
+								Height="8"
+								Data="M 0,4 C0,4 0,3 0,3 0,3 1,3 1,3 1,3 1,2 1,2 1,2 2,2 2,2 2,2 2,1 2,1 2,1 3,1 3,1 3,1 3,0 3,0 3,0 4,0 4,0 4,0 4,1 4,1 4,1 5,1 5,1 5,1 5,2 5,2 5,2 6,2 6,2 6,2 6,3 6,3 6,3 7,3 7,3 7,3 7,4 7,4 7,4 5,4 5,4 5,4 5,3 5,3 5,3 4,3 4,3 4,3 4,2 4,2 4,2 3,2 3,2 3,2 3,3 3,3 3,3 2,3 2,3 2,3 2,4 2,4 2,4 0,4 0,4 zM 0,8 C0,8 0,7 0,7 0,7 1,7 1,7 1,7 1,6 1,6 1,6 2,6 2,6 2,6 2,5 2,5 2,5 3,5 3,5 3,5 3,4 3,4 3,4 4,4 4,4 4,4 4,5 4,5 4,5 5,5 5,5 5,5 5,6 5,6 5,6 6,6 6,6 6,6 6,7 6,7 6,7 7,7 7,7 7,7 7,8 7,8 7,8 5,8 5,8 5,8 5,7 5,7 5,7 4,7 4,7 4,7 4,6 4,6 4,6 3,6 3,6 3,6 3,7 3,7 3,7 2,7 2,7 2,7 2,8 2,8 2,8 0,8 0,8 z"
+								Fill="{TemplateBinding Foreground}"
+								Stretch="Fill"
+								HorizontalAlignment="Center"
+								Visibility="Collapsed"
+								VerticalAlignment="Center"/>
+                        </igWindows:CardPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Tag.State, RelativeSource={RelativeSource Self}}" Value="Minimized">
+                            <Setter TargetName="CollapsedImage" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="NotCollapsedImage" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="ToolTip" Value="{StaticResource expandToolTip}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Tag.State, RelativeSource={RelativeSource Self}}" Value="MinimizedExpanded">
+                            <Setter TargetName="CollapsedImage" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="NotCollapsedImage" Property="Visibility" Value="Visible" />
+                            <Setter Property="ToolTip" Value="{StaticResource collapseToolTip}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.MaximizeButtonStyleKey ========== -->
+    <Style x:Key="{x:Static igTiles:TileHeaderPresenter.MaximizeButtonStyleKey}" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="ToolTip" Value="{StaticResource maximizeToolTip}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}"
+					 CornerRadius="{TemplateBinding Border.CornerRadius}"
+					 BorderBrush="{TemplateBinding BorderBrush}"
+					 BorderThickness="{TemplateBinding BorderThickness}"
+					 SnapsToDevicePixels="True"
+					 Padding="{TemplateBinding Padding}">
+                        <Grid>
+						<Path
+							x:Name="MaximizeGlyph"
+							Width="8"
+							Height="7"
+							Data="M 1,3 C1,3 7,3 7,3 7,3 7,6 7,6 7,6 1,6 1,6 1,6 1,3 1,3 zM 0,1 C0,1 0,7 0,7 0,7 8,7 8,7 8,7 8,1 8,1 8,1 8,0.87 8,0.87 8,0.39 7.60,0 7.12,0 7.12,0 0.87,0 0.87,0 0.39,0 0,0.39 0,0.87 0,0.87 0,1 0,1 z"
+							Fill="{TemplateBinding Foreground}" />
+						<Path
+							x:Name="RestoreGlyph"
+							Width="8"
+							Height="8"
+							Visibility="Collapsed"
+							Data="M 1,5 C1,5 2,5 2,5 2,5 5,5 5,5 5,5 5,7 5,7 5,7 1,7 1,7 1,7 1,5 1,5 zM 6,4 C6,4 6,3.87 6,3.87 6,3.39 5.60,3 5.12,3 5.12,3 3,3 3,3 3,3 3,2 3,2 3,2 7,2 7,2 7,2 7,4 7,4 7,4 6,4 6,4 zM 0,4 C0,4 0,8 0,8 0,8 6,8 6,8 6,8 6,5 6,5 6,5 8,5 8,5 8,5 8,1 8,1 8,1 8,0.87 8,0.87 8,0.39 7.60,0 7.12,0 7.12,0 2.87,0 2.87,0 2.39,0 2,0.39 2,0.87 2,0.87 2,1 2,1 2,1 2,3 2,3 2,3 0.87,3 0.87,3 0.39,3 0,3.39 0,3.87 0,3.87 0,4 0,4 z"
+							Fill="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Tag.State, RelativeSource={RelativeSource Self}}" Value="Maximized">
+                            <Setter TargetName="RestoreGlyph" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="MaximizeGlyph" Property="Visibility" Value="Collapsed" />
+                            <Setter Property="ToolTip" Value="{StaticResource minimizeToolTip}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- ================================ -->
+    <!--       TileHeaderPresenter        -->
+    <!-- ================================ -->
+    <Style TargetType="{x:Type igTiles:TileHeaderPresenter}">
+	<Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.SmallCaptionHeightKey}}" />
+	<Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis" />
+	<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionFillKey}}" />
+	<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileCaptionInnerBorderFillKey}}"/>
+	<Setter Property="Padding" Value="4,0,2,0" />
+	<Setter Property="BorderThickness" Value="0,1"/>
+	<Setter Property="Template">
+	  <Setter.Value>
+		 <ControlTemplate TargetType="{x:Type igTiles:TileHeaderPresenter}">
+				<Grid>
+			    <Border Background="{TemplateBinding Background}" CornerRadius="1">
+			    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1">
+					   <DockPanel Margin="{TemplateBinding Padding}">
+						  <Button x:Name="closeBtn"
+					        Focusable="False"
+						    DockPanel.Dock="Right"
+						    Visibility="{Binding Path=Tile.CloseButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+						    Command="{x:Static igTiles:Tile.CloseCommand}"
+						    CommandParameter="{TemplateBinding Tile}"
+						    Style="{DynamicResource {x:Static igTiles:TileHeaderPresenter.CloseButtonStyleKey}}" 
+						    Opacity="1"
+						    />
+						  <Button x:Name="maximizeBtn" 
+					        Focusable="False"
+						    DockPanel.Dock="Right"
+						    ClickMode="Release"
+						    Visibility="{Binding Path=Tile.MaximizeButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+						    Command="{x:Static igTiles:Tile.ToggleMaximizedCommand}"
+						    CommandParameter="{TemplateBinding Tile}"
+						    Style="{DynamicResource {x:Static igTiles:TileHeaderPresenter.MaximizeButtonStyleKey}}" 
+						    Opacity="1"
+					        Tag="{TemplateBinding Tile}"            
+						    />						  
+                           <Button x:Name="expandBtn"
+					        Focusable="False"
+						    DockPanel.Dock="Right"
+						    Visibility="{Binding Path=Tile.ExpandButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+						    Command="{x:Static igTiles:Tile.ToggleMinimizedExpansionCommand}"
+						    CommandParameter="{TemplateBinding Tile}"
+						    Style="{DynamicResource {x:Static igTiles:TileHeaderPresenter.ExpandButtonStyleKey}}" 
+						    Opacity="1"
+					        Tag="{TemplateBinding Tile}"            
+						    />
+						  <Image x:Name="image" 
+							    DockPanel.Dock="Left"
+							    Source="{Binding Path=Tile.Image, RelativeSource={RelativeSource TemplatedParent}}"
+						    Stretch="None"
+							    Visibility="{Binding Path=Tile.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
+						  <ContentPresenter 
+							HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              TextElement.Foreground="{DynamicResource {x:Static igTiles:TileBrushKeys.TileHeaderTextFillKey}}"
+							/>
+					   </DockPanel>
+				   </Border>
+			    </Border>
+			</Grid>
+			<!--<ControlTemplate.Triggers>
+				<DataTrigger Binding="{Binding Path=Tile.IsMouseOver, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+					<DataTrigger.EnterActions>
+						<BeginStoryboard x:Name="BtnFadeIn_BeginStoryboard" Storyboard="{StaticResource BtnFadeIn}"/>
+					</DataTrigger.EnterActions>
+					<DataTrigger.ExitActions>
+						<StopStoryboard BeginStoryboardName="BtnFadeIn_BeginStoryboard"/>
+					</DataTrigger.ExitActions>
+				</DataTrigger>
+			</ControlTemplate.Triggers>-->
+		 </ControlTemplate>
+	  </Setter.Value>
+	</Setter>
+    </Style>
+
+    <!-- ========== TileAreaSplitter.PreviewStyleKey ========== -->
+    <Style x:Key="{x:Static igTiles:TileAreaSplitter.PreviewStyleKey}" TargetType="{x:Type Control}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Control}">
+                    <Rectangle Fill="#7F000000" SnapsToDevicePixels="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================ -->
+    <!--           TileAreaSplitter       -->
+    <!-- ================================ -->
+	<Style TargetType="{x:Type igTiles:TileAreaSplitter}">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterGlyphForegroundFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterBackgroundFillKey}}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterBorderBrushFillKey}}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Margin" Value="1"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igTiles:TileAreaSplitter}">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1">
+						<Grid>
+							<Grid x:Name="verticalGlyphs">
+								<Path
+									Width="2"
+									Height="14"
+									Margin="1,2,0,0"
+									Data="M 0,12 C0,12 0,14 0,14 0,14 2,14 2,14 2,14 2,12 2,12 2,12 0,12 0,12 zM 0,8 C0,8 0,10 0,10 0,10 2,10 2,10 2,10 2,8 2,8 2,8 0,8 0,8 zM 0,4 C0,4 0,6 0,6 0,6 2,6 2,6 2,6 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 2,0 0,0 0,0 z"
+									Fill="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterGlyphBackgroundFillKey}}"
+									Opacity="1"
+									Stretch="Fill"/>
+								<Path
+									Width="2"
+									Height="14"
+									Data="M 0,12 C0,12 0,14 0,14 0,14 2,14 2,14 2,14 2,12 2,12 2,12 0,12 0,12 zM 0,8 C0,8 0,10 0,10 0,10 2,10 2,10 2,10 2,8 2,8 2,8 0,8 0,8 zM 0,4 C0,4 0,6 0,6 0,6 2,6 2,6 2,6 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 2,0 0,0 0,0 z"
+									Fill="{TemplateBinding Foreground}"
+									Opacity="1"
+									Stretch="Fill"/>
+							</Grid>
+							<Grid x:Name="horizontalGlyphs" Visibility="Collapsed">
+								<Path
+									Width="14"
+									Height="2"
+									Margin="2,2,0,0"
+									Data="M 2,0 C2,0 0,0 0,0 0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 zM 6,0 C6,0 4,0 4,0 4,0 4,2 4,2 4,2 6,2 6,2 6,2 6,0 6,0 zM 10,0 C10,0 8,0 8,0 8,0 8,2 8,2 8,2 10,2 10,2 10,2 10,0 10,0 zM 14,0 C14,0 12,0 12,0 12,0 12,2 12,2 12,2 14,2 14,2 14,2 14,0 14,0 z"
+									Fill="{DynamicResource {x:Static igTiles:TileBrushKeys.TileAreaSplitterGlyphBackgroundFillKey}}"
+									Stretch="Fill"/>
+								<Path
+									Width="14"
+									Height="2"
+									Margin="0,0,0,0"
+									Data="M 2,0 C2,0 0,0 0,0 0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 zM 6,0 C6,0 4,0 4,0 4,0 4,2 4,2 4,2 6,2 6,2 6,2 6,0 6,0 zM 10,0 C10,0 8,0 8,0 8,0 8,2 8,2 8,2 10,2 10,2 10,2 10,0 10,0 zM 14,0 C14,0 12,0 12,0 12,0 12,2 12,2 12,2 14,2 14,2 14,2 14,0 14,0 z"
+									Fill="{TemplateBinding Foreground}"
+									Stretch="Fill"/>
+							</Grid>
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Orientation" Value="Horizontal">
+							<Setter TargetName="verticalGlyphs" Property="Visibility" Value="Collapsed"/>
+							<Setter TargetName="horizontalGlyphs" Property="Visibility" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="Orientation" Value="Vertical">
+				<Setter Property="MinWidth" Value="6"/>
+				<Setter Property="Cursor" Value="{x:Static igTiles:TileAreaSplitter.VerticalSplitterCursor}"/>
+			</Trigger>
+			<Trigger Property="Orientation" Value="Horizontal">
+				<Setter Property="MinHeight" Value="6"/>
+				<Setter Property="Cursor" Value="{x:Static igTiles:TileAreaSplitter.HorizontalSplitterCursor}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- ================================ -->
+    <!--          Tile				      -->
+    <!-- ================================ -->
+    <Style TargetType="{x:Type igTiles:Tile}">
+		<Setter Property="Background" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileContentBackgroundFillKey}}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileBorderBrushFillKey}}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igTiles:Tile}">
+                  <AdornerDecorator>
+                    <Border Name="Border"
+					                   BorderBrush="{TemplateBinding BorderBrush}"
+					                   BorderThickness="{TemplateBinding BorderThickness}"
+					                   Background="{TemplateBinding Background}"
+					                   CornerRadius="2,2,1,1">
+                      <igWindows:CardPanel>
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                          <!-- Header area-->
+                          <igTiles:TileHeaderPresenter
+                                  x:Name="TileHeader"
+                                  AutomationProperties.AutomationId="TileHeader"
+                                  DockPanel.Dock="Top"
+                                  Content="{TemplateBinding Header}"
+                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                  ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                  Tile="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+                                       />
+                          <!-- Content area-->
+                          <ContentPresenter Visibility="{TemplateBinding ContentVisibility}"/>
+                        </DockPanel>
+                        <Rectangle x:Name="Overlay"/>
+
+                      </igWindows:CardPanel>
+                    </Border>
+                  </AdornerDecorator>
+                    <ControlTemplate.Triggers>
+					<Trigger Property="IsDragging" Value="True">
+						<Setter TargetName="Border" Property="Opacity" Value="0.75"/>
+					</Trigger>
+                        <Trigger Property="IsSwapTarget" Value="True">
+                            <Setter TargetName="Overlay" Property="Fill" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TileSwapTargetBgBrushFillKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+	<!-- ================================ -->
+    <!--          XamTilesControl		  -->
+    <!-- ================================ -->
+    <Style x:Key="{x:Type igTiles:XamTilesControl}" TargetType="{x:Type igTiles:XamTilesControl}">
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igTiles:TileBrushKeys.TilesControlBorderBrushFillKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type igTiles:XamTilesControl}">
+                    <Border Name="Bd"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            SnapsToDevicePixels="true" 
+                            Padding="{TemplateBinding Padding}"
+                            >
+                        <ScrollViewer Focusable="false" Margin="0" BorderThickness="0" Padding="0">
+                            <igTiles:TilesPanel IsItemsHost="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igwindows="http://infragistics.com/Windows"
+	xmlns:editors="clr-namespace:Infragistics.Windows.Editors"
+	xmlns:themesEd="clr-namespace:Infragistics.Windows.Themes"
+    >
+
+  <!--  _________________________ MaskedEditor __________________________________________  --><!--
+  <Style TargetType="{x:Type editors:xamMaskedEditor}"
+         BasedOn="{x:Static themesEd:EditorsGeneric.MaskedEditor}"/>
+
+  --><!--  _________________________ MaskDisplayArea __________________________________________  --><!--
+  <Style TargetType="{x:Type editors:MaskDisplayArea}"
+         BasedOn="{x:Static themesEd:EditorsGeneric.MaskDisplayArea}"/>
+
+  --><!--  _________________________ SectionBase __________________________________________  --><!--
+  <Style TargetType="{x:Type editors:SectionBase}"
+         BasedOn="{x:Static themesEd:EditorsGeneric.SectionBase}"/>
+
+  --><!--  _________________________ DisplayCharacterBase __________________________________________  --><!--
+  <Style TargetType="{x:Type editors:DisplayCharacterBase}"
+         BasedOn="{x:Static themesEd:EditorsGeneric.DisplayCharacterBase}"/>-->
+
+
+</ResourceDictionary>

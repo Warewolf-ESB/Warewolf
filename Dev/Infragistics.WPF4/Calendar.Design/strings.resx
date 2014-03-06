@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data xml:space="preserve" name="ToolboxTabName">
+    <value>NetAdvantage 11.2 Silverlight</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendarAssetLibrary">
+    <value>Infragistics</value>
+  </data>
+  <data xml:space="preserve" name="CalendarDay_IsWorkday_Property">
+    <value>Returns a boolean indicating whether the day is considered a work day as set in the Infragistics.Controls.Editors.XamCalendar.Workdays</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ComputedBackground_Property">
+    <value>Returns the brush to use for the background based on the element's state.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ComputedBorderBrush_Property">
+    <value>Returns the brush to use for the BorderBrush based on the element's state</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ComputedForeground_Property">
+    <value>Returns the brush to use for the Foreground based on the element's state</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ComputedInnerBorderBrush_Property">
+    <value>Returns the brush to use for the InnerBorderBrush based on the element's state</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ContainsSelectedDates_Property">
+    <value>Returns a boolean indicating whether the date contains at least one selected date.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_ContainsToday_Property">
+    <value>Returns a boolean indicating if the item contains the current date.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_EndDate_Property">
+    <value>Returns the ending date for the calendar item.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsActive_Property">
+    <value>Returns a boolean indicating if the day represents the Infragistics.Controls.Editors.CalendarBase.ActiveDate</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsHighlighted_Property">
+    <value>Returns true if this day should be highlighted (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsLeadingOrTrailingItem_Property">
+    <value>Returns a boolean indicating if the CalendarItem is a leading or trailing date in the containing Infragistics.Controls.Editors.Primitives.CalendarItemGroup</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsSelected_Property">
+    <value>Returns a boolean indicating if the date is selected.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsSelectionActive_Property">
+    <value>Returns a boolean indicating indicating whether the containing CalendarBase has keyboard focus.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_IsToday_Property">
+    <value>Returns a boolean indicating whether the element is an item in the Infragistics.Controls.Editors.XamCalendar.MinCalendarMode and represents the current date.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItem_StartDate_Property">
+    <value>Returns the starting date for the calendar item.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_CurrentMode_Property">
+    <value>Returns the current calendar mode.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_FirstDateOfGroup_Property">
+    <value>Returns a System.Nullable`1 that represents the first item of the group. Note, this will not be the first item displayed within the group if the group displays leading dates.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_IsLeadingGroup_Property">
+    <value>Returns or sets a boolean indicating if the group is considering a leading group.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_IsTrailingGroup_Property">
+    <value>Returns or sets a boolean indicating if the group is considering a leading group.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_LastDateOfGroup_Property">
+    <value>Returns a System.Nullable`1 that represents the last date of the group. Note, this will not be the last date displayed within the group if the group displays trailing days.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_ReferenceGroupOffset_Property">
+    <value>Returns or sets an integer that is used to calculate the dates displayed within the group based on the Infragistics.Controls.Editors.CalendarBase.ReferenceDate of the containing Infragistics.Controls.Editors.CalendarBase.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_ShowLeadingDates_Property">
+    <value>Returns or sets a boolean indicating whether the group should display dates from the previous range of dates.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_ScrollNextButtonVisibility_Property">
+    <value>Returns or sets the visibility of the button that scrolls its contents to display the next set of dates.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_ScrollPreviousButtonVisibility_Property">
+    <value>Returns or sets the visibility of the button that scrolls its contents to display the previous set of dates.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_ShowTrailingDates_Property">
+    <value>Returns or sets a boolean indicating whether the group should display dates from the next range of dates.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroup_Title_Property">
+    <value>Returns the title of the group (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarDayOfWeek_DayOfWeek_Property">
+    <value>Returns an enumeration for this day of week (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarDayOfWeek_DisplayText_Property">
+    <value>Returns the string to display for this day of week (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_DisabledDates_Property">
+    <value>Returns a modifiable collection of Infragistics.DateRange instances that indicates the items that should be considered disabled.</value>
+  </data>
+  <data xml:space="preserve" name="Calendar_Properties">
+    <value>Calendar Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_DisabledDaysOfWeek_Property">
+    <value>Returns or sets a flagged enumeration indicating which days of the week are always disabled.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_DisabledDaysOfWeekVisibility_Property">
+    <value>Returns or sets a boolean indicating whether days of the week disabled using the Infragistics.Controls.Editors.XamCalendar.DisabledDaysOfWeek should be displayed in the calendar.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_MaxDate_Property">
+    <value>Returns or sets the preferred maximum date that can be selected or activated for the control.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_MaxSelectedDates_Property">
+    <value>Returns or sets the maximum number of days that can be selected at any time.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_MinCalendarMode_Property">
+    <value>Returns or sets an enumeration that indicates the minimum calendar item type that can be selected within the control.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_MinDate_Property">
+    <value>Returns or sets the preferred minimum date that can be selected or activated for the control.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_FirstDayOfWeek_Property">
+    <value>Gets or sets the System.DayOfWeek that represents the first day of the week or null to use the value from the current System.Globalization.CultureInfo.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_SelectionMode_Property">
+    <value>Determines how many items can be selected.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_TodayButtonVisibility_Property">
+    <value>Returns or sets a boolean that indicates whether the today button should be displayed.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_WeekRule_Property">
+    <value>Returns or sets the rule used to determine the first week of the year.</value>
+  </data>
+  <data xml:space="preserve" name="XamCalendar_Workdays_Property">
+    <value>Returns or sets a flagged enumeration indicating which days of the week represent working days.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ActiveDate_Property">
+    <value>Returns or sets the date of the active day.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_AllowLeadingAndTrailingGroupActivation_Property">
+    <value>Returns or sets a boolean that indicates if items within a CalendarItemGroup whose IsLeadingGroup or IsTrailingGroup is true can be activated.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_AutoAdjustDimensions_Property">
+    <value>Returns or sets whether the control should automatically calculate and change the calendar dimensions based on the size used to arrange the CalendarBase.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_CalendarDayStyle_Property">
+    <value>Returns or sets the default style to use for Infragistics.Controls.Editors.Primitives.CalendarDay instances within the control.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_CalendarItemStyle_Property">
+    <value>Returns or sets the default style to use for Infragistics.Controls.Editors.Primitives.CalendarItem instances within the control.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_CurrentMode_Property">
+    <value>Returns or sets which types of calendar items will be displayed to the end user.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_DayOfWeekHeaderFormat_Property">
+    <value>Returns or sets the format for the header of the days of the week.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_DayOfWeekHeaderVisibility_Property">
+    <value>Returns or sets a value indicating whether the day of week headers should be displayed.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_Dimensions_Property">
+    <value>Returns or sets a value indicating the preferred rows and columns of groups to be displayed within the control.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_IsSelectionActive_Property">
+    <value>Returns true if keyboard focus is within the control (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_LeadingAndTrailingDatesVisibility_Property">
+    <value>Returns or sets a boolean indicating whether to show days from the month before/after the first/last visible month.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_MaxDateResolved_Property">
+    <value>Returns the maximum allowed date (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_MinCalendarModeResolved_Property">
+    <value>Returns the minimum Infragistics.Controls.Editors.CalendarZoomMode that is supported</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_MinDateResolved_Property">
+    <value>Returns the minimum allowed date (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ReferenceDate_Property">
+    <value>Returns or sets a date that is used to determine the dates that should be displayed within the control.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ResourceProvider_Property">
+    <value>Returns or sets an object that provides resources for use by elements in the visual tree.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ResourceProviderResolved_Property">
+    <value>Returns the resource provider to use.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ScrollButtonVisibility_Property">
+    <value>Returns or sets the visibility of the scroll buttons with the Infragistics.Controls.Editors.Primitives.CalendarItemGroup instances.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ScrollNextRepeatButtonStyle_Property">
+    <value>Returns or sets the style for the 'ScrollNext' RepeatButton.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ScrollNextRepeatButtonStyleResolved_Property">
+    <value>Returns the style to use for the 'ScrollNext' RepeatButton (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ScrollPreviousRepeatButtonStyle_Property">
+    <value>Returns or sets the style for the 'ScrollPrevious' RepeatButton.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_ScrollPreviousRepeatButtonStyleResolved_Property">
+    <value>Returns the style to use for the 'ScrollPrevious' RepeatButton (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_SelectedDate_Property">
+    <value>Returns or sets the date of the Infragistics.Controls.Editors.Primitives.CalendarItem that should be selected or null if no item is selected.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_SelectedDates_Property">
+    <value>Returns a collection of System.DateTime instances that represents the currently selected dates of the items in the Infragistics.Controls.Editors.XamCalendar.MinCalendarMode.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_TodayButtonCaption_Property">
+    <value>Returns the caption to use for the 'Today' Button (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_TodayButtonStyle_Property">
+    <value>Returns or sets the style for the 'Today' Button.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_TodayButtonStyleResolved_Property">
+    <value>Returns the style to use for the 'Today' Button (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_WeekNumberVisibility_Property">
+    <value>Returns or sets a boolean that indicates whether week numbers should be displayed.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarBase_Today_Property">
+    <value>Returns a DateTime that represents today's date.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarCommandSource_CommandType_Property">
+    <value>Gets or sets the CalendarCommand which is to be executed by the command.</value>
+  </data>
+  <data xml:space="preserve" name="Resources_Customizer_Property">
+    <value>Returns the Infragistics.Shared.ResourceCustomizer for this assembly.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarWeekNumber_ComputedBackground_Property">
+    <value>Returns the brush to use for the background based on the element's state.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarWeekNumber_IsSelected_Property">
+    <value>Returns whether all the days in the week are selected (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_ComputedItemsBorderThickness_Property">
+    <value>Returns the border thickness around the items (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_DayOfWeekHeaderVisibility_Property">
+    <value>Returns a value indicating the visibility of the day of week headers (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_Items_Property">
+    <value>Returns a collection of Infragistics.Controls.Editors.Primitives.CalendarItem instances that are displayed within the group.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_FirstItemColumnOffset_Property">
+    <value>Returns an integer that represents the number of items between the first date in the Infragistics.Controls.Editors.Primitives.CalendarItemArea.Items collection and the first column.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_FirstItemRowOffset_Property">
+    <value>Returns an integer that represents the number of items between the first date in the Infragistics.Controls.Editors.Primitives.CalendarItemArea.Items collection and the first row.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_ItemColumns_Property">
+    <value>Returns the number of columns that should be displayed in the group.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_ItemRows_Property">
+    <value>Returns the number of item rows that should be displayed in the group.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemArea_WeekNumberVisibility_Property">
+    <value>Returns a value indicating whether week numbers should be displayed (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="CalendarResourceProvider_ResourceSet_Property">
+    <value>Returns or sets an enumeration that determines which resource set to use.</value>
+  </data>
+  <data xml:space="preserve" name="SelectedDatesChangedEventArgs_RemovedDates_Property">
+    <value>Returns a list of the dates that were unselected.</value>
+  </data>
+  <data xml:space="preserve" name="SelectedDatesChangedEventArgs_AddedDates_Property">
+    <value>Returns a list of the dates that were selected.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_AutoAdjustDimensions_Property">
+    <value>For internal use</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_Dimensions_Property">
+    <value>For internal use</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_HorizontalContentAlignment_Property">
+    <value>Returns or sets the alignment of the items within the element.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_GroupHeight_Property">
+    <value>Returns or sets the height of the CalendarItemGroups within the panel.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_GroupWidth_Property">
+    <value>Returns or sets the width of the CalendarItemGroups within the panel.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_LeadingAndTrailingDatesVisibility_Property">
+    <value>For internal use</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_MaxGroups_Property">
+    <value>Returns or sets the maximum number of groups that the element may generate.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_ScrollButtonVisibility_Property">
+    <value>For internal use</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupPanel_VerticalContentAlignment_Property">
+    <value>Returns or sets the vertical alignment of the items within the element.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupTitle_ComputedBackground_Property">
+    <value>Returns the brush to use for the background based on the element's state.</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupTitle_ComputedForeground_Property">
+    <value>Returns the brush to use for the Foreground based on the element's state</value>
+  </data>
+  <data xml:space="preserve" name="CalendarItemGroupTitle_Group_Property">
+    <value>Returns the associated Infragistics.Controls.Editors.Primitives.CalendarItemGroup (read-only)</value>
+  </data>
+</root>

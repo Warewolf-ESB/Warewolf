@@ -1,0 +1,30 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	  xmlns:igWindows="http://infragistics.com/Windows"
+	  xmlns:igEditors="http://infragistics.com/Editors"
+	  xmlns:igThemes="http://infragistics.com/Themes"
+	  xmlns:igRibbon="clr-namespace:Infragistics.Windows.Ribbon"
+	  xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	 >
+	<ResourceDictionary.MergedDictionaries>
+		<!--<themes:RibbonOffice2k7Silver />-->
+        <ResourceDictionary Source="RibbonOffice2k7Silver.xaml" />
+	<!-- Note:
+      1. AutoWash MUST be set to false so the resources are not cloned until the they are being used.
+      2. The WashMode property default to "SoftLightBlend" but can be set to "HueSaturationReplacement"
+      3. If WashCiolor is not set or is left to its default value of "Transparent" then the resources are not washed, 
+         they are simply copied over. 
+      -->
+		<!-- TODO this was not doing a wash - was it supposed to?
+        <igThemes:ResourceWasher AutoWash="False" WashMode="HueSaturationReplacement" >
+			<igThemes:ResourceWasher.SourceDictionary>
+				<themes:RibbonOffice2k7BlueBrushes/>
+			</igThemes:ResourceWasher.SourceDictionary>
+		</igThemes:ResourceWasher>-->
+        <ResourceDictionary Source="../RibbonBrushes/RibbonOffice2k7Brushes_Blue.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

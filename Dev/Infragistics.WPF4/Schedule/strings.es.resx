@@ -1,0 +1,1134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MSG_TITLE_EditAppointment" xml:space="preserve">
+    <value>Editar cita</value>
+  </data>
+  <data name="MSG_TITLE_EditTask" xml:space="preserve">
+    <value>Editar tarea</value>
+  </data>
+  <data name="MSG_TITLE_EditJournal" xml:space="preserve">
+    <value>Editar diario</value>
+  </data>
+  <data name="MSG_TITLE_EditActivity" xml:space="preserve">
+    <value>Editar actividad</value>
+  </data>
+  <data name="MSG_TITLE_UpdateAppointment" xml:space="preserve">
+    <value>Actualizar cita</value>
+  </data>
+  <data name="MSG_TITLE_UpdateTask" xml:space="preserve">
+    <value>Actualizar tarea</value>
+  </data>
+  <data name="MSG_TITLE_UpdateJournal" xml:space="preserve">
+    <value>Actuar diario</value>
+  </data>
+  <data name="MSG_TITLE_UpdateActivity" xml:space="preserve">
+    <value>Actualizar actividad</value>
+  </data>
+  <data name="MSG_TITLE_AddAppointment" xml:space="preserve">
+    <value>Agregar cita</value>
+  </data>
+  <data name="MSG_TITLE_AddJournal" xml:space="preserve">
+    <value>Agregar diario</value>
+  </data>
+  <data name="MSG_TITLE_AddTask" xml:space="preserve">
+    <value>Agregar tarea</value>
+  </data>
+  <data name="MSG_TEXT_SavePrompt" xml:space="preserve">
+    <value>¿Desea guardar los cambios?</value>
+  </data>
+  <data name="LD_TimePicker_Minutes" xml:space="preserve">
+    <value>minutos</value>
+  </data>
+  <data name="LD_TimePicker_Hours" xml:space="preserve">
+    <value>horas</value>
+  </data>
+  <data name="MSG_TITLE_DeleteAppointment" xml:space="preserve">
+    <value>Eliminar cita</value>
+  </data>
+  <data name="MSG_TITLE_DeleteJournal" xml:space="preserve">
+    <value>Eliminar diario</value>
+  </data>
+  <data name="MSG_TITLE_DeleteTask" xml:space="preserve">
+    <value>Eliminar tarea</value>
+  </data>
+  <data name="MSG_TEXT_DeleteAppointmentPrompt" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar esta cita?</value>
+  </data>
+  <data name="MSG_TEXT_DeleteJournalPrompt" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar este diario?</value>
+  </data>
+  <data name="MSG_TEXT_DeleteTaskPrompt" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar esta tarea?</value>
+  </data>
+  <data name="MSG_TITLE_AppointmentDateConflict" xml:space="preserve">
+    <value>Conflicto de fechas de citas</value>
+  </data>
+  <data name="MSG_TEXT_AppointmentDateConflict" xml:space="preserve">
+    <value>La fecha de finalización introducida es anterior a la fecha de inicio.</value>
+  </data>
+  <data name="MSG_TITLE_UpdateRecurrence" xml:space="preserve">
+    <value>Actualizar periodicidad</value>
+  </data>
+  <data name="MSG_TEXT_UpdateRecurrenceInvalidPattern" xml:space="preserve">
+    <value>Al patrón de periodicidad no es válido.</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_Open" xml:space="preserve">
+    <value>Abrir elemento periódico</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_Delete" xml:space="preserve">
+    <value>Confirmar eliminación</value>
+  </data>
+  <data name="CalendarCloseButtonToolTip" xml:space="preserve">
+    <value>Cerrar calendario</value>
+  </data>
+  <data name="EndDateOutOfView" xml:space="preserve">
+    <value>Hasta {0}</value>
+  </data>
+  <data name="StartDateOutOfView" xml:space="preserve">
+    <value>Desde {0}</value>
+  </data>
+  <data name="OverlayButtonIsInOverlayModeToolTip" xml:space="preserve">
+    <value>Ver en modo paralelo</value>
+  </data>
+  <data name="OverlayButtonIsNotInOverlayModeToolTip" xml:space="preserve">
+    <value>Ver en modo de superposición</value>
+  </data>
+  <data name="DLG_Appointment_Core_Subject" xml:space="preserve">
+    <value>Asunto:</value>
+  </data>
+  <data name="DLG_Appointment_Core_Location" xml:space="preserve">
+    <value>Ubicación:</value>
+  </data>
+  <data name="DLG_Appointment_Core_StartTime" xml:space="preserve">
+    <value>Comienzo:</value>
+  </data>
+  <data name="DLG_Appointment_Core_EndTime" xml:space="preserve">
+    <value>Finalización:</value>
+  </data>
+  <data name="DLG_Appointment_Core_AllDayEvent" xml:space="preserve">
+    <value>Todo el día</value>
+  </data>
+  <data name="DLG_Appointment_Core_RecurrenceRootLabel" xml:space="preserve">
+    <value>Periodicidad:</value>
+  </data>
+  <data name="DLG_Appointment_Core_RecurrenceRootDescription" xml:space="preserve">
+    <value>Se produce varias veces basándose en las reglas de periodicidad</value>
+  </data>
+  <data name="DLG_Appointment_Core_OccurrenceDescription" xml:space="preserve">
+    <value>Se produce varias veces basándose en las reglas de periodicidad</value>
+  </data>
+  <data name="MSGBOX_Yes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="MSGBOX_Ok" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="MSGBOX_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MSGBOX_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DLG_Appointment_Core_AdjacentAppointmentConflictMessage" xml:space="preserve">
+    <value>La cita es adyacente a otra cita del calendario.</value>
+  </data>
+  <data name="DLG_Appointment_Core_AppointmentConflictMessage" xml:space="preserve">
+    <value>Actividad en conflicto con otra cita del calendario.</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Actions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_SaveClose" xml:space="preserve">
+    <value>Guardar y cerrar</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Options" xml:space="preserve">
+    <value>Opciones</value>
+  </data>
+  <data name="DLG_Appointment_Core_ComboTool_Reminder" xml:space="preserve">
+    <value>Aviso:</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_TimeZones" xml:space="preserve">
+    <value>Zonas horarias</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Recurrence" xml:space="preserve">
+    <value>Periodicidad</value>
+  </data>
+  <data name="ClickToAddAppointmentPrompt" xml:space="preserve">
+    <value>Haga clic aquí para agregar una cita.</value>
+  </data>
+  <data name="ClickToAddEventPrompt" xml:space="preserve">
+    <value>Haga clic aquí para agregar un evento.</value>
+  </data>
+  <data name="DLG_Task_Core_StartDate" xml:space="preserve">
+    <value>Fecha de inicio:</value>
+  </data>
+  <data name="DLG_Task_Core_DueDate" xml:space="preserve">
+    <value>Fecha de vencimiento:</value>
+  </data>
+  <data name="DLG_Task_Core_PercentComplete" xml:space="preserve">
+    <value>Porcentaje completado:</value>
+  </data>
+  <data name="DLG_Activity_Core_Reminder" xml:space="preserve">
+    <value>Aviso:</value>
+  </data>
+  <data name="DLG_Activity_Core_Owner" xml:space="preserve">
+    <value>Propietario: {0}</value>
+  </data>
+  <data name="DLG_Journal_Core_Duration" xml:space="preserve">
+    <value>Duración:</value>
+  </data>
+  <data name="MSG_TITLE_DescriptionFormatOverwriteMessage" xml:space="preserve">
+    <value>Advertencia del formato de descripción</value>
+  </data>
+  <data name="Morocco Standard Time" xml:space="preserve">
+    <value>(UTC) Casablanca</value>
+  </data>
+  <data name="UTC" xml:space="preserve">
+    <value>(UTC) Tiempo universal coordinado</value>
+  </data>
+  <data name="GMT Standard Time" xml:space="preserve">
+    <value>(UTC) Dublín, Edimburgo, Lisboa, Londres</value>
+  </data>
+  <data name="Greenwich Standard Time" xml:space="preserve">
+    <value>(UTC) Monrovia, Reikiavik</value>
+  </data>
+  <data name="W. Europe Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) Ámsterdam, Berlín, Berna, Roma, Estocolmo, Viena</value>
+  </data>
+  <data name="Central Europe Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) Belgrado, Bratislava, Budapest, Liubliana, Praga</value>
+  </data>
+  <data name="Romance Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) Bruselas, Copenhague, Madrid, París</value>
+  </data>
+  <data name="Central European Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) Sarajevo, Skopie, Varsovia, Zagreb</value>
+  </data>
+  <data name="W. Central Africa Standard Time" xml:space="preserve">
+    <value>(UTC+01:00) África centro-occidental</value>
+  </data>
+  <data name="Jordan Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Ammán</value>
+  </data>
+  <data name="GTB Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Atenas, Bucarest, Estambul</value>
+  </data>
+  <data name="Middle East Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Beirut</value>
+  </data>
+  <data name="Egypt Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) El Cairo</value>
+  </data>
+  <data name="Syria Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Damasco</value>
+  </data>
+  <data name="South Africa Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Harare, Pretoria</value>
+  </data>
+  <data name="FLE Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Helsinki, Kiev, Riga, Sofía, Tallin, Vilna</value>
+  </data>
+  <data name="Israel Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Jerusalén</value>
+  </data>
+  <data name="E. Europe Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Minsk</value>
+  </data>
+  <data name="Namibia Standard Time" xml:space="preserve">
+    <value>(UTC+02:00) Windhoek</value>
+  </data>
+  <data name="Arabic Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) Bagdad</value>
+  </data>
+  <data name="Arab Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) Kuwait, Riad</value>
+  </data>
+  <data name="Russian Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) Moscú, San Petersburgo, Volgogrado</value>
+  </data>
+  <data name="E. Africa Standard Time" xml:space="preserve">
+    <value>(UTC+03:00) Nairobi</value>
+  </data>
+  <data name="Iran Standard Time" xml:space="preserve">
+    <value>(UTC+03:30) Teherán</value>
+  </data>
+  <data name="Arabian Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) Abu Dabi, Mascate</value>
+  </data>
+  <data name="Azerbaijan Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) Bakú</value>
+  </data>
+  <data name="Mauritius Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) Port Louis</value>
+  </data>
+  <data name="Georgian Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) Tiflis</value>
+  </data>
+  <data name="Caucasus Standard Time" xml:space="preserve">
+    <value>(UTC+04:00) Ereván</value>
+  </data>
+  <data name="Afghanistan Standard Time" xml:space="preserve">
+    <value>(UTC+04:30) Kabul</value>
+  </data>
+  <data name="Ekaterinburg Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) Ekaterimburgo</value>
+  </data>
+  <data name="Pakistan Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) Islamabad, Karachi</value>
+  </data>
+  <data name="West Asia Standard Time" xml:space="preserve">
+    <value>(UTC+05:00) Taskent</value>
+  </data>
+  <data name="India Standard Time" xml:space="preserve">
+    <value>(UTC+05:30) Chennai, Calcuta, Bombay, Nueva Delhi</value>
+  </data>
+  <data name="Sri Lanka Standard Time" xml:space="preserve">
+    <value>(UTC+05:30) Sri Jayawardenepura</value>
+  </data>
+  <data name="Nepal Standard Time" xml:space="preserve">
+    <value>(UTC+05:45) Katmandú</value>
+  </data>
+  <data name="Central Asia Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) Astana</value>
+  </data>
+  <data name="Bangladesh Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) Dacca</value>
+  </data>
+  <data name="N. Central Asia Standard Time" xml:space="preserve">
+    <value>(UTC+06:00) Novosibirsk</value>
+  </data>
+  <data name="Myanmar Standard Time" xml:space="preserve">
+    <value>(UTC+06:30) Yangón (Rangún)</value>
+  </data>
+  <data name="SE Asia Standard Time" xml:space="preserve">
+    <value>(UTC+07:00) Bangkok, Hanói, Yakarta</value>
+  </data>
+  <data name="North Asia Standard Time" xml:space="preserve">
+    <value>(UTC+07:00) Krasnoiarsk</value>
+  </data>
+  <data name="China Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Pekín, Chongqing, Hong Kong, Ürümqi</value>
+  </data>
+  <data name="North Asia East Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Irkutsk</value>
+  </data>
+  <data name="Singapore Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Kuala Lumpur, Singapur</value>
+  </data>
+  <data name="W. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Perth</value>
+  </data>
+  <data name="Taipei Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Taipéi</value>
+  </data>
+  <data name="Ulaanbaatar Standard Time" xml:space="preserve">
+    <value>(UTC+08:00) Ulán Bator</value>
+  </data>
+  <data name="Tokyo Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) Osaka, Sapporo, Tokio</value>
+  </data>
+  <data name="Korea Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) Seúl</value>
+  </data>
+  <data name="Yakutsk Standard Time" xml:space="preserve">
+    <value>(UTC+09:00) Yakutsk</value>
+  </data>
+  <data name="Cen. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+09:30) Adelaida</value>
+  </data>
+  <data name="AUS Central Standard Time" xml:space="preserve">
+    <value>(UTC+09:30) Darwin</value>
+  </data>
+  <data name="E. Australia Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) Brisbane</value>
+  </data>
+  <data name="AUS Eastern Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) Camberra, Melbourne, Sídney</value>
+  </data>
+  <data name="West Pacific Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) Guam, Port Moresby</value>
+  </data>
+  <data name="Tasmania Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) Hobart</value>
+  </data>
+  <data name="Vladivostok Standard Time" xml:space="preserve">
+    <value>(UTC+10:00) Vladivostok</value>
+  </data>
+  <data name="Central Pacific Standard Time" xml:space="preserve">
+    <value>(UTC+11:00) Magadán, Islas Salomón, Nueva Caledonia</value>
+  </data>
+  <data name="New Zealand Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) Oakland, Wellington</value>
+  </data>
+  <data name="UTC+12" xml:space="preserve">
+    <value>(UTC+12:00) Tiempo universal coordinado +12</value>
+  </data>
+  <data name="Fiji Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) Fiyi</value>
+  </data>
+  <data name="Kamchatka Standard Time" xml:space="preserve">
+    <value>(UTC+12:00) Petropavlovsk-Kamchatsky</value>
+  </data>
+  <data name="Tonga Standard Time" xml:space="preserve">
+    <value>(UTC+13:00) Nuku'alofa</value>
+  </data>
+  <data name="Azores Standard Time" xml:space="preserve">
+    <value>(UTC-01:00) Azores</value>
+  </data>
+  <data name="Cape Verde Standard Time" xml:space="preserve">
+    <value>(UTC-01:00) Islas de Cabo Verde</value>
+  </data>
+  <data name="UTC-02" xml:space="preserve">
+    <value>(UTC-02:00) Tiempo universal coordinado-02</value>
+  </data>
+  <data name="Mid-Atlantic Standard Time" xml:space="preserve">
+    <value>(UTC-02:00) Atlántico Medio</value>
+  </data>
+  <data name="E. South America Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) Brasilia</value>
+  </data>
+  <data name="Argentina Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) Buenos Aires</value>
+  </data>
+  <data name="SA Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) Cayena, Fortaleza</value>
+  </data>
+  <data name="Greenland Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) Groenlandia</value>
+  </data>
+  <data name="Montevideo Standard Time" xml:space="preserve">
+    <value>(UTC-03:00) Montevideo</value>
+  </data>
+  <data name="Newfoundland Standard Time" xml:space="preserve">
+    <value>(UTC-03:30) Terranova</value>
+  </data>
+  <data name="Paraguay Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) Asunción</value>
+  </data>
+  <data name="Atlantic Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) Tiempo del Atlántico (Canadá)</value>
+  </data>
+  <data name="Central Brazilian Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) Cuiabá</value>
+  </data>
+  <data name="SA Western Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) Georgetown, La Paz, Manaos, San Juan</value>
+  </data>
+  <data name="Pacific SA Standard Time" xml:space="preserve">
+    <value>(UTC-04:00) Santiago</value>
+  </data>
+  <data name="Venezuela Standard Time" xml:space="preserve">
+    <value>(UTC-04:30) Caracas</value>
+  </data>
+  <data name="SA Pacific Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) Bogotá, Lima, Quito</value>
+  </data>
+  <data name="Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) Tiempo estándar del este (Estados Unidos y Canadá)</value>
+  </data>
+  <data name="US Eastern Standard Time" xml:space="preserve">
+    <value>(UTC-05:00) Indiana (oriental)</value>
+  </data>
+  <data name="Central America Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) Centroamérica</value>
+  </data>
+  <data name="Central Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) Tiempo estándar del centro (Estados Unidos y Canadá)</value>
+  </data>
+  <data name="Central Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-06:00) Guadalajara, Ciudad de Méjico, Monterrey</value>
+  </data>
+  <data name="Canada Central Standard Time" xml:space="preserve">
+    <value>(UTC-06:00) Saskatchewan</value>
+  </data>
+  <data name="US Mountain Standard Time" xml:space="preserve">
+    <value>(UTC-07:00) Arizona</value>
+  </data>
+  <data name="Mountain Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-07:00) Chihuahua, La Paz, Mazatlán</value>
+  </data>
+  <data name="Mountain Standard Time" xml:space="preserve">
+    <value>(UTC-07:00) Tiempo estándar de la montaña (Estados Unidos y Canadá)</value>
+  </data>
+  <data name="Pacific Standard Time (Mexico)" xml:space="preserve">
+    <value>(UTC-08:00) Baja California</value>
+  </data>
+  <data name="Pacific Standard Time" xml:space="preserve">
+    <value>(UTC-08:00) Tiempo estándar del Pacífico (Estados Unidos y Canadá)</value>
+  </data>
+  <data name="Alaskan Standard Time" xml:space="preserve">
+    <value>(UTC-09:00) Alaska</value>
+  </data>
+  <data name="Hawaiian Standard Time" xml:space="preserve">
+    <value>(UTC-10:00) Hawái</value>
+  </data>
+  <data name="UTC-11" xml:space="preserve">
+    <value>(UTC-11:00) Tiempo universal coordinado-11</value>
+  </data>
+  <data name="Samoa Standard Time" xml:space="preserve">
+    <value>(UTC-11:00) Samoa</value>
+  </data>
+  <data name="Dateline Standard Time" xml:space="preserve">
+    <value>(UTC-12:00) Línea internacional de cambio de fecha occidental</value>
+  </data>
+  <data name="DLG_Recurrence_Core_ActivityRecurrenceTitle" xml:space="preserve">
+    <value>Repetir actividad</value>
+  </data>
+  <data name="DLG_Recurrence_Core_ActivityTime" xml:space="preserve">
+    <value>Hora de la actividad</value>
+  </data>
+  <data name="DLG_Recurrence_Core_Start" xml:space="preserve">
+    <value>Inicio:</value>
+  </data>
+  <data name="DLG_Recurrence_Core_End" xml:space="preserve">
+    <value>Fin:</value>
+  </data>
+  <data name="DLG_Recurrence_Core_Duration" xml:space="preserve">
+    <value>Duración:</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RecurrencePattern" xml:space="preserve">
+    <value>Frecuencia</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RecurrenceRange" xml:space="preserve">
+    <value>Intervalo de repetición</value>
+  </data>
+  <data name="DLG_Recurrence_Core_OK" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="DLG_Recurrence_Core_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DLG_Recurrence_Core_RemoveRecurrence" xml:space="preserve">
+    <value>Quitar repetición</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneMinute" xml:space="preserve">
+    <value>1 minuto</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Minutes" xml:space="preserve">
+    <value>{0} minutos</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneHour" xml:space="preserve">
+    <value>1 hora</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Hours" xml:space="preserve">
+    <value>{0} horas</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneDay" xml:space="preserve">
+    <value>1 día</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Days" xml:space="preserve">
+    <value>{0} días</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_OneWeek" xml:space="preserve">
+    <value>1 semana</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Weeks" xml:space="preserve">
+    <value>{0} semanas</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_None" xml:space="preserve">
+    <value>Ninguna</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Minute" xml:space="preserve">
+    <value>Minuto</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_MinutesBeforeStart" xml:space="preserve">
+    <value>minutos antes del inicio</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Hour" xml:space="preserve">
+    <value>Hora</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Day" xml:space="preserve">
+    <value>Día</value>
+  </data>
+  <data name="DLG_Recurrence_Duration_Literal_Week" xml:space="preserve">
+    <value>Semana</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Daily" xml:space="preserve">
+    <value>Diaria</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Weekly" xml:space="preserve">
+    <value>Semanal</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Monthly" xml:space="preserve">
+    <value>Mensual</value>
+  </data>
+  <data name="DLG_Recurrence_Pattern_Literal_Yearly" xml:space="preserve">
+    <value>Anual</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_Every" xml:space="preserve">
+    <value>Cada</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_Days" xml:space="preserve">
+    <value>día(s)</value>
+  </data>
+  <data name="DLG_Recurrence_DailyPattern_Literal_EveryWeekday" xml:space="preserve">
+    <value>Todos los días laborables</value>
+  </data>
+  <data name="DLG_Recurrence_WeeklyPattern_Literal_RecurEvery" xml:space="preserve">
+    <value>Repetir cada</value>
+  </data>
+  <data name="DLG_Recurrence_WeeklyPattern_Literal_WeeksOn" xml:space="preserve">
+    <value>semana(s) el:</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_First" xml:space="preserve">
+    <value>primer</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Second" xml:space="preserve">
+    <value>segundo</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Third" xml:space="preserve">
+    <value>tercer</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Fourth" xml:space="preserve">
+    <value>cuarto</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Ordinal_Last" xml:space="preserve">
+    <value>último</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_Day" xml:space="preserve">
+    <value>día</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_WeekDay" xml:space="preserve">
+    <value>día laborable</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_WeekendDay" xml:space="preserve">
+    <value>día del fin semana</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_DayCapitalized" xml:space="preserve">
+    <value>Día</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField2" xml:space="preserve">
+    <value />
+    <comment>Unused in english</comment>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField4" xml:space="preserve">
+    <value>cada</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_ComplexTextField6" xml:space="preserve">
+    <value>mes(es)</value>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Complex_ElementOrder" xml:space="preserve">
+    <value>1,2,3,4,5,6</value>
+    <comment>A comma separated list of numbers that refer to the elements in the complex section of the Monthly Recurrence Pattern.  
+		This list determines the order in which the elements are arranged	left to right.	
+	</comment>
+  </data>
+  <data name="DLG_Recurrence_MonthlyPattern_Literal_The" xml:space="preserve">
+    <value>El</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_RecurEvery" xml:space="preserve">
+    <value>Repetir cada</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_Years" xml:space="preserve">
+    <value>año(s)</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_On" xml:space="preserve">
+    <value>En:</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_OnThe" xml:space="preserve">
+    <value>El:</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_SimpleTextField" xml:space="preserve">
+    <value />
+    <comment>Unused in english</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Simple_ElementOrder" xml:space="preserve">
+    <value>1,2,3</value>
+    <comment>
+			A comma separated list of numbers that refer to the elements in the simple section of the Yearly Recurrence Pattern.
+			This list determines the order in which the elements are arranged	left to right.
+		</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField2" xml:space="preserve">
+    <value />
+    <comment>Unused in english</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField4" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Literal_ComplexTextField6" xml:space="preserve">
+    <value />
+    <comment>Unused in english</comment>
+  </data>
+  <data name="DLG_Recurrence_YearlyPattern_Complex_ElementOrder" xml:space="preserve">
+    <value>1,2,3,4,5,6</value>
+    <comment>
+			A comma separated list of numbers that refer to the elements in the complex section of the Yearly Recurrence Pattern.
+			This list determines the order in which the elements are arranged	left to right.
+		</comment>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_Start" xml:space="preserve">
+    <value>Comienzo:</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_NoEndDate" xml:space="preserve">
+    <value>Sin fecha de finalización</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_EndAfter" xml:space="preserve">
+    <value>Finalizar después de:</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_Occurrences" xml:space="preserve">
+    <value>repeticiones</value>
+  </data>
+  <data name="DLG_Recurrence_Range_Literal_EndBy" xml:space="preserve">
+    <value>Finalizar el:</value>
+  </data>
+  <data name="DLG_Recurrence_ShouldShowRecurrenceDescription" xml:space="preserve">
+    <value>false</value>
+    <comment>
+			'true' for English translations, 'false' for other languages.  Once the Recurrence description has
+			been made localizable, this string will be removed and appropriate localizable description part strings will be added.
+		</comment>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpeningMessage" xml:space="preserve">
+    <value>'{0}' es una actividad periódica.  ¿Desea abrir sólo esta repetición o toda la serie?</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeletingMessage" xml:space="preserve">
+    <value>¿Desea eliminar todas las repeticiones de la actividad periódica '{0}' o sólo ésta?</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteOccurrence" xml:space="preserve">
+    <value>Eliminar esta repetición.</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteSeries" xml:space="preserve">
+    <value>Eliminar la serie.</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpenOccurrence" xml:space="preserve">
+    <value>Abrir esta repetición.</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_OpenSeries" xml:space="preserve">
+    <value>Abrir la serie.</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_OK" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DLG_TimeZoneChooser_Header" xml:space="preserve">
+    <value>Especificar la zona horaria local</value>
+  </data>
+  <data name="DLG_TimeZoneChooser_Literal_Message" xml:space="preserve">
+    <value>Seleccione una zona horaria local</value>
+  </data>
+  <data name="DLG_TimeZoneChooser_Literal_Selector" xml:space="preserve">
+    <value>Zona horaria: </value>
+  </data>
+  <data name="DLG_TimeZoneChooser_OK" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="DLG_Reminder_Literal_StartTimeDescription" xml:space="preserve">
+    <value>Hora de inicio: {0}</value>
+  </data>
+  <data name="DLG_Reminder_Literal_RemindersSelected" xml:space="preserve">
+    <value>Se han seleccionado {0} avisos.</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Subject" xml:space="preserve">
+    <value>Asunto</value>
+  </data>
+  <data name="DLG_Reminder_Literal_DueIn" xml:space="preserve">
+    <value>Vence en</value>
+  </data>
+  <data name="DLG_Reminder_Literal_DismissAll" xml:space="preserve">
+    <value>Descartar todo</value>
+  </data>
+  <data name="DLG_Reminder_Literal_OpenItem" xml:space="preserve">
+    <value>Abrir elemento</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Dismiss" xml:space="preserve">
+    <value>Descartar</value>
+  </data>
+  <data name="DLG_Reminder_Literal_SnoozePrompt" xml:space="preserve">
+    <value>Haga clic en Posponer para recibir el aviso de nuevo:</value>
+  </data>
+  <data name="DLG_Reminder_Literal_Snooze" xml:space="preserve">
+    <value>Posponer</value>
+  </data>
+  <data name="DLG_Reminder_Overdue" xml:space="preserve">
+    <value>{0} de retraso</value>
+  </data>
+  <data name="TimeSpan_Literal_OneMinute" xml:space="preserve">
+    <value>1 minuto</value>
+  </data>
+  <data name="TimeSpan_Literal_Minutes" xml:space="preserve">
+    <value>{0} minutos</value>
+  </data>
+  <data name="TimeSpan_Literal_MinutesBeforeStart" xml:space="preserve">
+    <value>{0} minutos antes del inicio</value>
+  </data>
+  <data name="TimeSpan_Literal_OneHour" xml:space="preserve">
+    <value>1 hora</value>
+  </data>
+  <data name="TimeSpan_Literal_Hours" xml:space="preserve">
+    <value>{0} horas</value>
+  </data>
+  <data name="TimeSpan_Literal_OneDay" xml:space="preserve">
+    <value>1 día</value>
+  </data>
+  <data name="TimeSpan_Literal_Days" xml:space="preserve">
+    <value>{0} días</value>
+  </data>
+  <data name="TimeSpan_Literal_OneDayAndHours" xml:space="preserve">
+    <value>{0} día {1} horas</value>
+  </data>
+  <data name="TimeSpan_Literal_DaysAndHours" xml:space="preserve">
+    <value>{0} días {1} horas</value>
+  </data>
+  <data name="TimeSpan_Literal_OneWeek" xml:space="preserve">
+    <value>1 semana</value>
+  </data>
+  <data name="TimeSpan_Literal_Weeks" xml:space="preserve">
+    <value>{0} semanas</value>
+  </data>
+  <data name="DLG_Reminder_Title" xml:space="preserve">
+    <value>Avisos</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneMinute" xml:space="preserve">
+    <value>1 minuto</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Minutes" xml:space="preserve">
+    <value>{0} minutos</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneHour" xml:space="preserve">
+    <value>1 hora</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Hours" xml:space="preserve">
+    <value>{0} horas</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneDay" xml:space="preserve">
+    <value>1 día</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Days" xml:space="preserve">
+    <value>{0} días</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_OneWeek" xml:space="preserve">
+    <value>1 semana</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Weeks" xml:space="preserve">
+    <value>{0} semanas</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Minute" xml:space="preserve">
+    <value>Minuto</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Hour" xml:space="preserve">
+    <value>Hora</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Day" xml:space="preserve">
+    <value>Día</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Week" xml:space="preserve">
+    <value>Semana</value>
+  </data>
+  <data name="DLG_Appointment_Reminder_Literal_Now" xml:space="preserve">
+    <value>Ahora</value>
+  </data>
+  <data name="ToolTipErrorLabel" xml:space="preserve">
+    <value>Error:</value>
+  </data>
+  <data name="BlockingErrorLiteral" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MSG_TITLE_DragActivity" xml:space="preserve">
+    <value>Arrastrar actividad</value>
+  </data>
+  <data name="MSG_TITLE_AddActivity" xml:space="preserve">
+    <value>Agregar actividad</value>
+  </data>
+  <data name="MSG_TITLE_ResizeActivity" xml:space="preserve">
+    <value>Cambiar tamaño de la actividad</value>
+  </data>
+  <data name="CalendarNavigateBackToolTip" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="CalendarNavigateForwardToolTip" xml:space="preserve">
+    <value>Adelante</value>
+  </data>
+  <data name="ClickToAddActivityPrompt" xml:space="preserve">
+    <value>Haga clic aquí para agregar una actividad.</value>
+  </data>
+  <data name="ClickToAddJournalPrompt" xml:space="preserve">
+    <value>Haga clic aquí para agregar un diario.</value>
+  </data>
+  <data name="ClickToAddTaskPrompt" xml:space="preserve">
+    <value>Haga clic aquí para agregar una tarea.</value>
+  </data>
+  <data name="DLG_ActivityCategoryCreation_Title" xml:space="preserve">
+    <value>Agregar nueva categoría</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_New" xml:space="preserve">
+    <value>Nueva...</value>
+  </data>
+  <data name="DLG_ActivityCategory_Btn_Rename" xml:space="preserve">
+    <value>Renombrar</value>
+  </data>
+  <data name="DLG_ActivityCategory_Caption" xml:space="preserve">
+    <value>Categorías de color</value>
+  </data>
+  <data name="DLG_ActivityCategory_HelpText" xml:space="preserve">
+    <value>Para asignar categorías de color a los elementos seleccionados en la actualidad, utilice las casillas de verificación que aparecen junto a cada categoría.  Para editar una categoría, seleccione el nombre de categoría y utilice los comandos que aparecen a la derecha.</value>
+  </data>
+  <data name="DLG_ActivityCategory_Literal_Color" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="DLG_ActivityCategory_Literal_NotInMasterList" xml:space="preserve">
+    <value>{0} (no en la lista de categorías maestras)</value>
+  </data>
+  <data name="DLG_ActivityCategory_NameColumnHeader" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="DLG_ActivityTypeChooserDialog_Title_NewActivity" xml:space="preserve">
+    <value>Nueva actividad</value>
+  </data>
+  <data name="DLG_ActivityTypeChooser_NewActivityMessage" xml:space="preserve">
+    <value>Elija el tipo de actividad que desee crear.</value>
+  </data>
+  <data name="DLG_ActivityType_Appointment" xml:space="preserve">
+    <value>Cita</value>
+  </data>
+  <data name="DLG_ActivityType_Journal" xml:space="preserve">
+    <value>Diario</value>
+  </data>
+  <data name="DLG_ActivityType_Task" xml:space="preserve">
+    <value>Tarea</value>
+  </data>
+  <data name="DLG_Activity_Core_ClearAllCategories" xml:space="preserve">
+    <value>Borrar todas las categorías</value>
+  </data>
+  <data name="DLG_Activity_Core_ClearCategory" xml:space="preserve">
+    <value>Borrar '{0}'</value>
+  </data>
+  <data name="DLG_Activity_Core_DescriptionFormatOverwriteDefinite" xml:space="preserve">
+    <value>ADVERTENCIA: La descripción de esta actividad contiene un formato especial que se perderá si la descripción se modifica y la actividad se guarda.</value>
+  </data>
+  <data name="DLG_Activity_Core_DescriptionFormatOverwritePossible" xml:space="preserve">
+    <value>NOTA: La descripción de esta actividad puede contener un formato especial que se perderá si la descripción se modifica y la actividad se guarda.Detectando formato especial...</value>
+  </data>
+  <data name="DLG_Activity_Core_DisplayCategoriesDialog" xml:space="preserve">
+    <value>Todas las categorías...</value>
+  </data>
+  <data name="DLG_Appointment_Core_ButtonTool_Categorize" xml:space="preserve">
+    <value>Asignar categorías</value>
+  </data>
+  <data name="DLG_Appointment_Core_RibbonGroup_Tags" xml:space="preserve">
+    <value>Etiquetas</value>
+  </data>
+  <data name="DLG_RecurrenceChooserDialog_Title_DeleteRecurringTask" xml:space="preserve">
+    <value>Borrar tarea repetitiva</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteCurrentTaskOccurrence" xml:space="preserve">
+    <value>Borrar esta</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeleteCurrentTaskSeries" xml:space="preserve">
+    <value>Borrar todo</value>
+  </data>
+  <data name="DLG_RecurrenceChooser_Literal_DeletingCurrentTaskMessage" xml:space="preserve">
+    <value>La tarea "{0}" se ha configurado para repetirse en el futuro. ¿Desea eliminar todas las repeticiones futuras de esta tarea o sólo esta repetición?</value>
+  </data>
+  <data name="DLG_ScheduleDialog_Btn_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="DLG_ScheduleDialog_Btn_Ok" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="DLG_Task_Core_DueInDays" xml:space="preserve">
+    <value>Vence en {0} días.</value>
+  </data>
+  <data name="DLG_Task_Core_DueToday" xml:space="preserve">
+    <value>Vence hoy.</value>
+  </data>
+  <data name="DLG_Task_Core_DueTomorrow" xml:space="preserve">
+    <value>Vence mañana.</value>
+  </data>
+  <data name="DLG_Task_Core_DueYesterday" xml:space="preserve">
+    <value>Venció ayer.</value>
+  </data>
+  <data name="DLG_Task_Core_OverdueByDays" xml:space="preserve">
+    <value>Retraso de {0} días.</value>
+  </data>
+  <data name="MSG_TEXT_CantEditResource" xml:space="preserve">
+    <value>El recurso de propiedad para las actividades seleccionadas no puede editarse en este momento.  Algunas funciones se desactivarán.</value>
+  </data>
+  <data name="MSG_TEXT_DeleteCategory" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar la categoría "{0}"?  Si elimina esta categoría, la quitará de la lista de categorías, pero esto no afectará a los elementos a los que se les haya asignado una categoría con anterioridad.</value>
+  </data>
+  <data name="MSG_TEXT_DescriptionFormatOverwriteMessage" xml:space="preserve">
+    <value>La descripción de esta actividad se ha modificado.  Como la descripción original contenía formato especial que el cuadro de diálogo no puede mantener, al guardar la actividad puede sobrescribirse el formato original.  ¿Está seguro de que desea guardar la actividad?</value>
+  </data>
+  <data name="MSG_TEXT_DismissAllReminders" xml:space="preserve">
+    <value>¿Está seguro de que desea descartar todos estos recordatorios?</value>
+  </data>
+  <data name="MSG_TEXT_DuplicateCategoryName" xml:space="preserve">
+    <value>Ya ha creado una categoría llamada "{0}".  Seleccione otro nombre de categoría.</value>
+  </data>
+  <data name="MSG_TITLE_CantEditResource" xml:space="preserve">
+    <value>Recurso de propiedad</value>
+  </data>
+  <data name="MSG_TITLE_DeleteCategory" xml:space="preserve">
+    <value>Eliminar categoría de actividad</value>
+  </data>
+  <data name="MSG_TITLE_DismissAllReminders" xml:space="preserve">
+    <value>Descartar todos los recordatorios</value>
+  </data>
+  <data name="MSG_TITLE_DuplicateCategoryName" xml:space="preserve">
+    <value>Duplicar nombre de categoría</value>
+  </data>
+  <data name="MSG_TITLE_ErrorEditingCategories" xml:space="preserve">
+    <value>Error al editar la(s) categoría(s) para la actividad</value>
+  </data>
+  <data name="TimeSpan_Literal_HoursBeforeStart" xml:space="preserve">
+    <value>{0} horas antes del inicio</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_B" xml:space="preserve">
+    <value>B:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_G" xml:space="preserve">
+    <value>G:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_None" xml:space="preserve">
+    <value>Ninguno</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_R" xml:space="preserve">
+    <value>R:</value>
+  </data>
+  <data name="CTL_ActivityCategoryColorPicker_RGBValues" xml:space="preserve">
+    <value>Valores RGB</value>
+  </data>
+  <data name="DLG_ActivityCategoryCreation_Name" xml:space="preserve">
+    <value>Nombre:</value>
+  </data>
+  <data name="MSG_TEXT_RenameCategory" xml:space="preserve">
+    <value>Está seguro de que quiere renombrar la categoría '{0}' como '{1}'?  
+
+Renombrando esta categoría se cambia su nombre en la lista general así como en la actividad actual, pero no se cambia el nombre asignado a otras actividades (si las hubiera) previamente categorizadas.  Dichas actividades mantendrán el nombre antiguo y perderán la asociación de colores.</value>
+  </data>
+  <data name="MSG_TEXT_UpdateRecurrenceDurationConflict" xml:space="preserve">
+    <value>La duración de la actividad debe ser inferior a su frecuencia.  Acortar la duración o cambiar el patrón de periodicidad en el cuadro de diálogo Periodicidad Actividad.</value>
+  </data>
+  <data name="MSG_TITLE_RenameCategory" xml:space="preserve">
+    <value>Renombrar la Categoría de Actividad</value>
+  </data>
+</root>

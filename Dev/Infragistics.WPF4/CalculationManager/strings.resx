@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CalcSettingsPropertyName_Not_Set" xml:space="preserve">
+    <value>PropertyName not set or property could not be found on CalcSettings.</value>
+  </data>
+  <data name="FormulaCircularityError_Default_Message" xml:space="preserve">
+    <value>A Formula Circularity has been detected in the formula for [{0}]. The Formula is: {1}. No calculations can be performed by the CalcEngine while a Circularity exists.</value>
+  </data>
+  <data name="FormulaCircularityError_Message_Title" xml:space="preserve">
+    <value>Circularity Error</value>
+  </data>
+  <data name="FormulaSyntaxError_Default_Message" xml:space="preserve">
+    <value>A syntax error occured while compiling a formula for: {0}.
+
+The error is:
+{1}</value>
+  </data>
+  <data name="FormulaSyntaxError_Message_Title" xml:space="preserve">
+    <value>Syntax Error</value>
+  </data>
+  <data name="LC_Behavior" xml:space="preserve">
+    <value>Behavior</value>
+  </data>
+  <data name="LC_Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="LC_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LER_Calc_InvalidReference" xml:space="preserve">
+    <value>Invalid reference: {0}.</value>
+  </data>
+  <data name="LER_Exception_34" xml:space="preserve">
+    <value>Formula syntax error. Unable to compile the formula: {0}</value>
+  </data>
+  <data name="LE_Exception_0" xml:space="preserve">
+    <value>The property name specified does not exist on the control.</value>
+  </data>
+  <data name="LE_Exception_1" xml:space="preserve">
+    <value>Cannot add a NamedReference that is already assigned to a NamedReferences collection.</value>
+  </data>
+  <data name="LE_Exception_10" xml:space="preserve">
+    <value>Participant RootReference cannot be null.</value>
+  </data>
+  <data name="LE_Exception_11" xml:space="preserve">
+    <value>participant</value>
+  </data>
+  <data name="LE_Exception_14" xml:space="preserve">
+    <value>Participant not found.</value>
+  </data>
+  <data name="LE_Exception_15" xml:space="preserve">
+    <value>participant.RootReference</value>
+  </data>
+  <data name="LE_Exception_16" xml:space="preserve">
+    <value>participant.RootReference is not a Root Reference</value>
+  </data>
+  <data name="LE_Exception_2" xml:space="preserve">
+    <value>AsynchronousCalcDuration</value>
+  </data>
+  <data name="LE_Exception_20" xml:space="preserve">
+    <value>calcManager</value>
+  </data>
+  <data name="LE_Exception_3" xml:space="preserve">
+    <value>AsynchronousCalcDuration cannot be less than 0.</value>
+  </data>
+  <data name="LE_Exception_32" xml:space="preserve">
+    <value>The millis argument to ReCalc() must be greater than or equal to -1.</value>
+  </data>
+  <data name="LE_Exception_33" xml:space="preserve">
+    <value>The millis argument to ReCalc() must be convertible to clock ticks without overflowing the range of the Int64 data type; this value exceeds that upper bound.</value>
+  </data>
+  <data name="LE_Exception_34" xml:space="preserve">
+    <value>column</value>
+  </data>
+  <data name="LE_Exception_35" xml:space="preserve">
+    <value>dataGridView</value>
+  </data>
+  <data name="LE_Exception_4" xml:space="preserve">
+    <value>AsynchronousCalcInterval</value>
+  </data>
+  <data name="LE_Exception_5" xml:space="preserve">
+    <value>CalcInterval cannot be less than 1.</value>
+  </data>
+  <data name="LE_Exception_6" xml:space="preserve">
+    <value>millis</value>
+  </data>
+  <data name="LE_Exception_7" xml:space="preserve">
+    <value>The specified control could not be found in the Calc Network.</value>
+  </data>
+  <data name="LE_Exception_8" xml:space="preserve">
+    <value>control</value>
+  </data>
+  <data name="LE_InvalidOperationException_1" xml:space="preserve">
+    <value>Can't set the Value if there's a formula is assigned to the object.</value>
+  </data>
+  <data name="LE_InvalidOperationException_2" xml:space="preserve">
+    <value>A named reference with the ReferenceId {0} already exists in the collection</value>
+  </data>
+  <data name="LE_InvalidOperationException_3" xml:space="preserve">
+    <value>Can't add a NamedReference without a ReferenceId.</value>
+  </data>
+  <data name="LE_InvalidOperationException_4" xml:space="preserve">
+    <value>Can't set the Formula if there's a Value is assigned to the object.</value>
+  </data>
+  <data name="LE_InvalidReferenceName" xml:space="preserve">
+    <value>Invalid reference name.
+		
+The following characters are not valid in the name of a Reference:
+{0}</value>
+  </data>
+  <data name="LE_NotSupported_1" xml:space="preserve">
+    <value>Dictionary is read-only.</value>
+  </data>
+  <data name="FindReferenceError" xml:space="preserve">
+    <value>Reference not found.</value>
+  </data>
+  <data name="TargetPropertyNotFound" xml:space="preserve">
+    <value>TargetProperty {0} was not found on {1}.</value>
+  </data>
+  <data name="PropertyGetFailed" xml:space="preserve">
+    <value>Failed to get Property {0} on {1}.</value>
+  </data>
+  <data name="PropertySetFailed" xml:space="preserve">
+    <value>Failed to set Property {0} on {1} with value: {2}.</value>
+  </data>
+  <data name="ItemCalculation_Desc" xml:space="preserve">
+    <value>ItemCalculation: ReferenceId = '{0}', Formula = '{1}', TargetProperty = '{2}'</value>
+  </data>
+  <data name="ListCalculation_Desc" xml:space="preserve">
+    <value>ListCalculation: ReferenceId = '{0}', Formula = '{1}'</value>
+  </data>
+  <data name="ItemCalculator_Desc" xml:space="preserve">
+    <value>ItemCalculator: ReferenceId = '{0}', Item = '{1}'</value>
+  </data>
+  <data name="ListCalculator_Desc" xml:space="preserve">
+    <value>ListCalculator: ReferenceId = '{0}'</value>
+  </data>
+  <data name="ItemCalculation_RefID_Warning" xml:space="preserve">
+    <value>Can't reference formula result since no ReferenceId or TargetProperty was specified for {0}.</value>
+  </data>
+  <data name="ListCalculation_RefID_Warning" xml:space="preserve">
+    <value>Can't reference formula result since no ReferenceId was specified for {0}.</value>
+  </data>
+  <data name="ResultKeyNotFound" xml:space="preserve">
+    <value>Result key: '{0}' was not found.</value>
+  </data>
+  <data name="NamedReference_Category_All" xml:space="preserve">
+    <value>(All)</value>
+  </data>
+  <data name="NamedReference_Category_Unassigned" xml:space="preserve">
+    <value>(Unassigned)</value>
+  </data>
+  <data name="Operand_Category_Controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
+  <data name="Operand_Category_NamedReferences" xml:space="preserve">
+    <value>Named References</value>
+  </data>
+  <data name="UnknownTypeName" xml:space="preserve">
+    <value>Could not resolve TreatAsTypeName '{0}' on {1}</value>
+  </data>
+  <data name="CellIndexOutOfRange" xml:space="preserve">
+    <value>Index '{0}' on '{1}' is out of range.</value>
+  </data>
+  <data name="CalculationUsedMoreThanOnce" xml:space="preserve">
+    <value>Can't use the same {0} instance on multiple calculators.</value>
+  </data>
+  <data name="ListCalculationsTreeNode" xml:space="preserve">
+    <value>List Calculations</value>
+  </data>
+  <data name="ParticipantUsedMoreThanOnce" xml:space="preserve">
+    <value>A participant named '{0}' already exists in the collection.</value>
+  </data>
+  <data name="NamedReferencUsedMoreThanOnce" xml:space="preserve">
+    <value>Can't use the same NamedReferenceCollection instance with multiple XamCalculationManagers.</value>
+  </data>
+  <data name="DuplicateReferenceId" xml:space="preserve">
+    <value>ReferneceId: '{0}' has already been used for another ItemCalculation or ListCalculation on '{1}'.</value>
+  </data>
+  <data name="SourceItemNotSpecified" xml:space="preserve">
+    <value>Source item not specified.</value>
+  </data>
+  <data name="TargetPropertyNotValue" xml:space="preserve">
+    <value>TargetProperty {0} was not found. Type '{1}' exposes a single read-only property named 'Value' that returns the item itself.</value>
+  </data>
+  <data name="ValuePropertyIsReadOnly" xml:space="preserve">
+    <value>Type '{0}' exposes a single read-only property named 'Value' that returns the item itself. Therefore the 'Value' property can't be the target of a formula.</value>
+  </data>
+  <data name="FormulaSyntaxError" xml:space="preserve">
+    <value>Syntax error on Formula '{0}', error: '{1}'</value>
+  </data>
+</root>

@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ig="clr-namespace:Infragistics.Windows"
+	xmlns:controls="clr-namespace:Infragistics.Windows.Controls"
+    xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+	xmlns:looks="clr-namespace:Infragistics.Windows.Looks"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	>
+
+	<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="PrimitivesGeneric_Express.xaml"/>
+        <ResourceDictionary Source="PrimitivesAero_Brushes.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+	
+	<!-- _________________________ ExpanderBar __________________________________________ -->
+	<Style TargetType="{x:Type controls:ExpanderBar}" BasedOn="{x:Static themes:PrimitivesGeneric.ExpanderBar}">
+		<Setter Property="Background">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Offset="0" Color="#FFF3F3F3"/>
+					<GradientStop Offset=".5" Color="#FFE8E8E9"/>
+					<GradientStop Offset=".5" Color="#FFD6D6D8"/>
+					<GradientStop Offset="1" Color="#FFBCBDC0"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="BackgroundHover">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Color="#FF83ACC0" Offset="0"/>
+					<GradientStop Color="#FF3E7E9D" Offset="0.5"/>
+					<GradientStop Color="#FF095276" Offset="0.5"/>
+					<GradientStop Color="#FF4E96AA" Offset="1"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

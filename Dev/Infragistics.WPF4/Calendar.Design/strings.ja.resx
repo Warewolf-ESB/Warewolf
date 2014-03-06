@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 11.2 Silverlight</value>
+  </data>
+  <data name="CalendarDay_IsWorkday_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamCalendar.Workdays の設定によって日が就業日と見なされるかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarItem_ComputedBackground_Property" xml:space="preserve">
+    <value>要素の状態に基づいて背景で使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItem_ComputedBorderBrush_Property" xml:space="preserve">
+    <value>要素の状態に基づいて BorderBrush に使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItem_ComputedForeground_Property" xml:space="preserve">
+    <value>要素の状態に基づいて Foreground に使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItem_ComputedInnerBorderBrush_Property" xml:space="preserve">
+    <value>要素の状態に基づいて InnerBorderBrush に使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItem_ContainsSelectedDates_Property" xml:space="preserve">
+    <value>この日付が選択された日付を少なくとも 1 つ含むかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_ContainsToday_Property" xml:space="preserve">
+    <value>この項目が現在の日付を含むかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_EndDate_Property" xml:space="preserve">
+    <value>カレンダー項目の終了日を返します。</value>
+  </data>
+  <data name="CalendarItem_IsActive_Property" xml:space="preserve">
+    <value>日が Infragistics.Controls.Editors.CalendarBase.ActiveDate を表すかどうかを示すブール値を返します</value>
+  </data>
+  <data name="CalendarItem_IsHighlighted_Property" xml:space="preserve">
+    <value>日が強調表示される場合 true を返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarItem_IsLeadingOrTrailingItem_Property" xml:space="preserve">
+    <value>CalendarItem が Infragistics.Controls.Editors.Primitives.CalendarItemGroup を含む先頭日または後続日かどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_IsSelected_Property" xml:space="preserve">
+    <value>日付が選択されたかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_IsSelectionActive_Property" xml:space="preserve">
+    <value>含まれている CalendarBase がキーボード フォーカスを持つかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_IsToday_Property" xml:space="preserve">
+    <value>要素が Infragistics.Controls.Editors.XamCalendar.MinCalendarMode の項目で、現在の日付を表すかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="CalendarItem_StartDate_Property" xml:space="preserve">
+    <value>カレンダー項目の開始日を返します。</value>
+  </data>
+  <data name="CalendarItemGroup_CurrentMode_Property" xml:space="preserve">
+    <value>現在のカレンダー モードを返します。</value>
+  </data>
+  <data name="CalendarItemGroup_FirstDateOfGroup_Property" xml:space="preserve">
+    <value>グループの最初の項目を示す System.Nullable`1 を返します。グループが先頭日を表示する場合、これはグループで最初に表示される項目にならないことに注意してください。</value>
+  </data>
+  <data name="CalendarItemGroup_IsLeadingGroup_Property" xml:space="preserve">
+    <value>グループが先頭グループかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_IsTrailingGroup_Property" xml:space="preserve">
+    <value>グループが先頭グループかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_LastDateOfGroup_Property" xml:space="preserve">
+    <value>グループの最後の項目を示す System.Nullable`1 を返します。グループが後続日を表示する場合、これはグループで最後表示される日付にならないことを注意してください。</value>
+  </data>
+  <data name="CalendarItemGroup_ReferenceGroupOffset_Property" xml:space="preserve">
+    <value>含まれる Infragistics.Controls.Editors.CalendarBase の Infragistics.Controls.Editors.CalendarBase.ReferenceDate に基づいてグループ内で表示される日付を計算に使用される整数を返すか、設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_ShowLeadingDates_Property" xml:space="preserve">
+    <value>グループは前の日付範囲を表示するかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_ScrollNextButtonVisibility_Property" xml:space="preserve">
+    <value>次の日付けのセットを表示するスクロール ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_ScrollPreviousButtonVisibility_Property" xml:space="preserve">
+    <value>前の日付けのセットを表示するスクロール ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_ShowTrailingDates_Property" xml:space="preserve">
+    <value>グループは次の日付範囲を表示するかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroup_Title_Property" xml:space="preserve">
+    <value>グループのタイトルを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarDayOfWeek_DayOfWeek_Property" xml:space="preserve">
+    <value>この曜日の列挙型を返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarDayOfWeek_DisplayText_Property" xml:space="preserve">
+    <value>この曜日を表示するための文字列を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamCalendar_DisabledDates_Property" xml:space="preserve">
+    <value>無効と見なされる項目を示す Infragistics.DateRange インスタンスの変更可能なコレクションを返します。</value>
+  </data>
+  <data name="Calendar_Properties" xml:space="preserve">
+    <value>Calendar プロパティ</value>
+  </data>
+  <data name="XamCalendar_DisabledDaysOfWeek_Property" xml:space="preserve">
+    <value>どの曜日を常に無効にするかを示すフラグ付き列挙型を取得または設定します。</value>
+  </data>
+  <data name="XamCalendar_DisabledDaysOfWeekVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamCalendar.DisabledDaysOfWeek を使用して無効にされた曜日が予定表に表示されるかどうかを示すブール値を返すか、設定します。</value>
+  </data>
+  <data name="XamCalendar_MaxDate_Property" xml:space="preserve">
+    <value>コントロールに選択またはアクティブ化できる優先日付の最大値を取得または設定します。</value>
+  </data>
+  <data name="XamCalendar_MaxSelectedDates_Property" xml:space="preserve">
+    <value>一度に選択可能な最大日数を返すまたは設定します。</value>
+  </data>
+  <data name="XamCalendar_MinCalendarMode_Property" xml:space="preserve">
+    <value>コントロール内で選択できる最小カレンダー項目タイプを示す列挙体を取得または設定します。</value>
+  </data>
+  <data name="XamCalendar_MinDate_Property" xml:space="preserve">
+    <value>コントロールの選択またはアクティブ化できる優先日付の最小値を取得または設定します。</value>
+  </data>
+  <data name="XamCalendar_FirstDayOfWeek_Property" xml:space="preserve">
+    <value>最初の曜日を表す System.DayOfWeek を取得または設定します。現在の System.Globalization.CultureInfo からの値を使用する場合 null。</value>
+  </data>
+  <data name="XamCalendar_SelectionMode_Property" xml:space="preserve">
+    <value>選択できる項目の数を決定します。</value>
+  </data>
+  <data name="XamCalendar_TodayButtonVisibility_Property" xml:space="preserve">
+    <value>今日ボタンが表示されるかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="XamCalendar_WeekRule_Property" xml:space="preserve">
+    <value>年初めの第1週を決定されるルールを返すまたは設定します。</value>
+  </data>
+  <data name="XamCalendar_Workdays_Property" xml:space="preserve">
+    <value>就業日を示すフラグ付き列挙体を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_ActiveDate_Property" xml:space="preserve">
+    <value>アクティブ日の日付を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_AllowLeadingAndTrailingGroupActivation_Property" xml:space="preserve">
+    <value>IsLeadingGroup または IsTrailingGroup プロパティが True の CalendarItemGroup の項をアクティブにできるどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_AutoAdjustDimensions_Property" xml:space="preserve">
+    <value>CalendarBase を整列するために使用されたサイズに基づいて、コントロールが自動的にカレンダーのサイズを計算し、変更するかどうかを取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_CalendarDayStyle_Property" xml:space="preserve">
+    <value>コントロール内の Infragistics.Controls.Editors.Primitives.CalendarDay インスタンスを使用するデフォルト スタイルを取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_CalendarItemStyle_Property" xml:space="preserve">
+    <value>コントロール内の Infragistics.Controls.Editors.Primitives.CalendarItem インスタンスに使用するデフォルト スタイルを取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_CurrentMode_Property" xml:space="preserve">
+    <value>エンド ユーザーに表示するカレンダー項目のタイプを取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_DayOfWeekHeaderFormat_Property" xml:space="preserve">
+    <value>曜日のヘッダーの書式を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_DayOfWeekHeaderVisibility_Property" xml:space="preserve">
+    <value>曜日のヘッダーを表示するかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_Dimensions_Property" xml:space="preserve">
+    <value>コントロールで表示する優先された行および列を示す値を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_IsSelectionActive_Property" xml:space="preserve">
+    <value>キーボード フォーカスがコントロール内にある場合、true を返します。</value>
+  </data>
+  <data name="CalendarBase_LeadingAndTrailingDatesVisibility_Property" xml:space="preserve">
+    <value>表示可能な最初/最後の月の前/後の月の日を表示するかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_MaxDateResolved_Property" xml:space="preserve">
+    <value>設定可能な最大の日付を返します。</value>
+  </data>
+  <data name="CalendarBase_MinCalendarModeResolved_Property" xml:space="preserve">
+    <value>サポートされる最小の Infragistics.Controls.Editors.CalendarZoomMode を返します。</value>
+  </data>
+  <data name="CalendarBase_MinDateResolved_Property" xml:space="preserve">
+    <value>設定可能な最小の日付を返します。</value>
+  </data>
+  <data name="CalendarBase_ReferenceDate_Property" xml:space="preserve">
+    <value>コントロールで表示する日付を決定する日付を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_ResourceProvider_Property" xml:space="preserve">
+    <value>ビジュアル ツリーの要素によって使用されるリソースを提供するオブジェクトを返すか、設定します。</value>
+  </data>
+  <data name="CalendarBase_ResourceProviderResolved_Property" xml:space="preserve">
+    <value>使用するリソース プロバイダーを返します。</value>
+  </data>
+  <data name="CalendarBase_ScrollButtonVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.CalendarItemGroup インスタンスのスクロール ボタンの表示状態を返すか、設定します。</value>
+  </data>
+  <data name="CalendarBase_ScrollNextRepeatButtonStyle_Property" xml:space="preserve">
+    <value>'ScrollNext' RepeatButton のスタイルを返すか、設定します。</value>
+  </data>
+  <data name="CalendarBase_ScrollNextRepeatButtonStyleResolved_Property" xml:space="preserve">
+    <value>'ScrollNext' RepeatButton に使用するスタイルを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarBase_ScrollPreviousRepeatButtonStyle_Property" xml:space="preserve">
+    <value>'ScrollPrevious' RepeatButton のスタイルを返すか、設定します。</value>
+  </data>
+  <data name="CalendarBase_ScrollPreviousRepeatButtonStyleResolved_Property" xml:space="preserve">
+    <value>'ScrollNext' RepeatButton に使用するスタイルを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarBase_SelectedDate_Property" xml:space="preserve">
+    <value>選択される Infragistics.Controls.Editors.Primitives.CalendarItem の日付を返すか、設定します。選択された項目がない場合 null。</value>
+  </data>
+  <data name="CalendarBase_SelectedDates_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamCalendar.MinCalendarMode 内の項目で現在選択されている日付を表す System.DateTime インスタンスのコレクションを返します。</value>
+  </data>
+  <data name="CalendarBase_TodayButtonCaption_Property" xml:space="preserve">
+    <value>'Today' ボタンに使用するキャプションを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarBase_TodayButtonStyle_Property" xml:space="preserve">
+    <value>'Today' ボタンのスタイルを返すか、設定します。</value>
+  </data>
+  <data name="CalendarBase_TodayButtonStyleResolved_Property" xml:space="preserve">
+    <value>'Today' ボタンに使用するスタイルを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarBase_WeekNumberVisibility_Property" xml:space="preserve">
+    <value>週番号が表示されるかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="CalendarBase_Today_Property" xml:space="preserve">
+    <value>今日の日付を表す DateTime を返します。</value>
+  </data>
+  <data name="CalendarCommandSource_CommandType_Property" xml:space="preserve">
+    <value>コマンドで実行する CalendarCommand を取得または設定します。</value>
+  </data>
+  <data name="CalendarWeekNumber_ComputedBackground_Property" xml:space="preserve">
+    <value>要素の状態に基づいて背景で使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarWeekNumber_IsSelected_Property" xml:space="preserve">
+    <value>週のすべての日が選択された状態かどうかを返します。</value>
+  </data>
+  <data name="CalendarItemArea_ComputedItemsBorderThickness_Property" xml:space="preserve">
+    <value>項目を囲む境界線の太さを返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarItemArea_DayOfWeekHeaderVisibility_Property" xml:space="preserve">
+    <value>曜日ヘッダーの表示状態を示す値を返します (読み取り専用)。</value>
+  </data>
+  <data name="CalendarItemArea_Items_Property" xml:space="preserve">
+    <value>グループ内に表示される Infragistics.Controls.Editors.Primitives.CalendarItem インスタンスのコレクションを返します。</value>
+  </data>
+  <data name="CalendarItemArea_FirstItemColumnOffset_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.CalendarItemArea.Items コレクションの初日と最初の列の間にある項目数を表す整数を返します。</value>
+  </data>
+  <data name="CalendarItemArea_FirstItemRowOffset_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.CalendarItemArea.Items コレクションの初日と最初の行の間にある項目数を表す整数を返します。</value>
+  </data>
+  <data name="CalendarItemArea_ItemColumns_Property" xml:space="preserve">
+    <value>グループで表示される列数を返します。</value>
+  </data>
+  <data name="CalendarItemArea_ItemRows_Property" xml:space="preserve">
+    <value>グループで表示される項目行の数を返します。</value>
+  </data>
+  <data name="CalendarItemArea_WeekNumberVisibility_Property" xml:space="preserve">
+    <value>週数が表示されるかどうかを示す値を返します (読み取り専用)。</value>
+  </data>
+  <data name="SelectedDatesChangedEventArgs_RemovedDates_Property" xml:space="preserve">
+    <value>選択解除の日付のリストを返します。</value>
+  </data>
+  <data name="SelectedDatesChangedEventArgs_AddedDates_Property" xml:space="preserve">
+    <value>選択された日付のリストを返します。</value>
+  </data>
+  <data name="CalendarResourceProvider_ResourceSet_Property" xml:space="preserve">
+    <value>使用するリソース セットを決定する列挙体を返すか設定します。</value>
+  </data>
+  <data name="CalendarItemGroupPanel_AutoAdjustDimensions_Property" xml:space="preserve">
+    <value>内部使用</value>
+  </data>
+  <data name="CalendarItemGroupPanel_Dimensions_Property" xml:space="preserve">
+    <value>内部使用</value>
+  </data>
+  <data name="CalendarItemGroupPanel_HorizontalContentAlignment_Property" xml:space="preserve">
+    <value>要素内の項目の方向の配置を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroupPanel_GroupHeight_Property" xml:space="preserve">
+    <value>パネルで CalendarItemGroups の高さを取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroupPanel_GroupWidth_Property" xml:space="preserve">
+    <value>パネルで CalendarItemGroups の幅を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroupPanel_LeadingAndTrailingDatesVisibility_Property" xml:space="preserve">
+    <value>内部使用</value>
+  </data>
+  <data name="CalendarItemGroupPanel_MaxGroups_Property" xml:space="preserve">
+    <value>要素が生成できるグループの最大数を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroupPanel_ScrollButtonVisibility_Property" xml:space="preserve">
+    <value>内部使用</value>
+  </data>
+  <data name="CalendarItemGroupPanel_VerticalContentAlignment_Property" xml:space="preserve">
+    <value>要素内の項目の垂直方向の配置を取得または設定します。</value>
+  </data>
+  <data name="CalendarItemGroupTitle_ComputedBackground_Property" xml:space="preserve">
+    <value>要素の状態に基づいて背景で使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItemGroupTitle_ComputedForeground_Property" xml:space="preserve">
+    <value>要素の状態に基づいて Foreground に使用するブラシを返します。</value>
+  </data>
+  <data name="CalendarItemGroupTitle_Group_Property" xml:space="preserve">
+    <value>関連する Infragistics.Controls.Editors.Primitives.CalendarItemGroup を返します (読み取り専用)。</value>
+  </data>
+  <data name="XamCalendarAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+</root>

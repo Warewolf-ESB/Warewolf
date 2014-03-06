@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="XamDataTreeAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamDataTreeSupportingControlsLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamDataTree</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="XamDataTree_ItemsSource_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree の System.Collections.IEnumerable を取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_Properties" xml:space="preserve">
+    <value>XamDataTree プロパティ</value>
+  </data>
+  <data name="XamDataTree_MaxDepth_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree の階層の最大の深さを取得または設定します。
+ このプロパティは、データ ソースが無限再帰として提供された場合に便利です。</value>
+  </data>
+  <data name="XamDataTree_GlobalNodeLayouts_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべてのレベルで使用する Infragistics.Controls.Menus.NodeLayout オブジェクトのコレクションを取得します。</value>
+  </data>
+  <data name="XamDataTree_NodeLayouts_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のルート レベルに対してのみ使用する Infragistics.Controls.Menus.NodeLayout オブジェクトのコレクションを取得します。</value>
+  </data>
+  <data name="XamDataTree_Nodes_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のルート レベルにあるノードを取得します。</value>
+  </data>
+  <data name="XamDataTree_ItemTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree 内のすべての Infragistics.Controls.Menus.NodeLayout のすべての Infragistics.Controls.Menus.XamDataTreeNode の VisualTree を作成するために使用する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodesManager_Nodes_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodesManager に属する子ノードのコレクションを取得します。</value>
+  </data>
+  <data name="NodesManager_ItemsSource_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodesManager のデータ ソースを取得します。</value>
+  </data>
+  <data name="NodesManager_ParentNode_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodesManager を所有する Infragistics.Controls.Menus.NodesManager.ParentNode。</value>
+  </data>
+  <data name="NodesManager_NodeLayout_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodesManager に関連付けられた Infragistics.Controls.Menus.NodesManager.NodeLayout オブジェクトを取得します。</value>
+  </data>
+  <data name="NodesManager_Level_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodesManager の階層レベルを取得します。</value>
+  </data>
+  <data name="NodesPanel_VisibleNodes_Property" xml:space="preserve">
+    <value>Viewport で現在表示されているノードを取得します。</value>
+  </data>
+  <data name="EditingSettingsOverride_AllowEditing_Property" xml:space="preserve">
+    <value>Editing が有効かどうか、そして有効な場合、特定の Infragistics.Controls.Menus.NodeLayout のモードを取得または設定します。</value>
+  </data>
+  <data name="EditingSettingsOverride_AllowEditingResolved_Property" xml:space="preserve">
+    <value>特定の ColumnLayout に Infragistics.Controls.Menus.EditingSettingsOverride.AllowEditing プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_Tree_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodeLayout が属する Infragistics.Controls.Menus.XamDataTree を取得します。</value>
+  </data>
+  <data name="NodeLayout_TargetTypeName_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayout オブジェクトが表す System.Type.Name または System.Type.FullName を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_Visibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodeLayout の表示を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_NodeLayouts_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のルート レベルに対してのみ使用する Infragistics.Controls.Menus.NodeLayout オブジェクトのコレクションを取得します。</value>
+  </data>
+  <data name="NodeLayout_ItemTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree 内の特定の Infragistics.Controls.Menus.NodeLayout のすべての Infragistics.Controls.Menus.XamDataTreeNode の VisualTree を作成するために使用する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_ItemTemplateResolved_Property" xml:space="preserve">
+    <value>この特定の Infragistics.Controls.Menus.NodeLayout のすべての Infragistics.Controls.Menus.XamDataTreeNode の VisualTree を作成するために使用する実際の System.Windows.DataTemplate を取得します。</value>
+  </data>
+  <data name="NodeLayout_EditingSettings_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayout を編集するすべてのプロパティを制御する Infragistics.Controls.Menus.TreeEditingSettingsOverride オブジェクトへの参照を取得します。</value>
+  </data>
+  <data name="EditingSettings_AllowEditing_Property" xml:space="preserve">
+    <value>Editing が有効かどうか、そして有効な場合、XamGrid ですべての ColumnLayout オブジェクトのモードを取得または設定します。</value>
+  </data>
+  <data name="EditingSettings_IsF2EditingEnabled_Property" xml:space="preserve">
+    <value>F2 キーを押すと ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="EditingSettings_IsEnterKeyEditingEnabled_Property" xml:space="preserve">
+    <value>Enter キーを押すと ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="EditingSettings_IsMouseActionEditingEnabled_Property" xml:space="preserve">
+    <value>Cell を編集モードにするために Infragistics.Controls.Menus.MouseEditingAction を取得または設定します。</value>
+  </data>
+  <data name="EditingSettings_IsOnNodeActiveEditingEnabled_Property" xml:space="preserve">
+    <value>アクティブになった時に Cell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNodeControl_Node_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.XamDataTreeNodeControl を所有する Infragistics.Controls.Menus.XamDataTreeNode。</value>
+  </data>
+  <data name="XamDataTreeNodeControl_Properties" xml:space="preserve">
+    <value>XamDataTreeNodeControl プロパティ</value>
+  </data>
+  <data name="XamDataTreeNode_IsExpanded_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode が展開または縮小されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_Properties" xml:space="preserve">
+    <value>XamDataTreeNode プロパティ</value>
+  </data>
+  <data name="XamDataTreeNode_Data_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode と関連付けられた基本データを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_Index_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の currentIndex インデックスを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_Manager_Property" xml:space="preserve">
+    <value>この特定のノードを所有する Infragistics.Controls.Menus.NodesManager。</value>
+  </data>
+  <data name="XamDataTreeNode_Control_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode にアタッチされた Infragistics.Controls.Menus.XamDataTreeNodeControl を取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsMouseOver_Property" xml:space="preserve">
+    <value>マウスが Infragistics.Controls.Menus.XamDataTreeNode の上にあるかどうかを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_NodeLayout_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode に関連付けられている  Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout を取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_HasChildren_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode に子があるかどうかを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_Nodes_Property" xml:space="preserve">
+    <value>現在の Infragistics.Controls.Menus.XamDataTreeNode の子ノードを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsHeader_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.XamDataTreeNode が実際のデータ ノードまたは IEnumerable のプロパティを表すノードかどうかを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsSelected_Property" xml:space="preserve">
+    <value>項目が現在選択されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="SelectedCollectionBase`1_Tree_Property" xml:space="preserve">
+    <value>このコレクションが属する Infragistics.Controls.Menus.XamDataTree への参照を取得します。</value>
+  </data>
+  <data name="NodeLayoutEventArgs_NodeLayout_Property" xml:space="preserve">
+    <value>変更された Infragistics.Controls.Menus.NodeLayoutEventArgs.NodeLayout。</value>
+  </data>
+  <data name="NodeEventArgs_Node_Property" xml:space="preserve">
+    <value>変更された Infragistics.Controls.Menus.XamDataTreeNode。</value>
+  </data>
+  <data name="CancellableNodeExpansionChangedEventArgs_Node_Property" xml:space="preserve">
+    <value>展開または縮小された Infragistics.Controls.Menus.XamDataTreeNode です。</value>
+  </data>
+  <data name="NodeExpansionChangedEventArgs_Node_Property" xml:space="preserve">
+    <value>展開または縮小された Infragistics.Controls.Menus.XamDataTreeNode です。</value>
+  </data>
+  <data name="XamDataTree_DisplayMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode のテキストを生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_CheckBoxMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の System.Windows.Controls.CheckBox を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_Indentation_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がそれぞれその親からどの程度インデントされているかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_EditingSettings_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で編集するためのすべてのプロパティを制御する Infragistics.Controls.Menus.TreeEditingSettings オブジェクトへの参照を取得します。</value>
+  </data>
+  <data name="XamDataTree_CheckBoxSettings_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で System.Windows.Controls.CheckBox のすべてのプロパティを制御する Infragistics.Controls.Menus.XamDataTree.CheckBoxSettings オブジェクトへの参照を取得します。</value>
+  </data>
+  <data name="NodeLayout_DisplayMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode のテキストを生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_DisplayMemberPathResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.DisplayMemberPath プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_CheckBoxMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の System.Windows.Controls.CheckBox を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_CheckBoxMemberPathResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.CheckBoxMemberPath プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_Indentation_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がそれぞれその親からどの程度インデントされているかを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IndentationResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.Indentation プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_HeaderText_Property" xml:space="preserve">
+    <value>ヘッダー ノードとして動作する Infragistics.Controls.Menus.XamDataTreeNode オブジェクトに表示されるテキストを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_HeaderTemplate_Property" xml:space="preserve">
+    <value>ヘッダー ノードに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_HeaderContentResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.HeaderTemplate プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_EditorTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode オブジェクトが編集モードを開始するときに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_CheckBoxSettings_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayout で System.Windows.Controls.CheckBoxes のすべてのプロパティを制御する Infragistics.Controls.Menus.CheckBoxSettingsOverride オブジェクトへの参照を取得します。</value>
+  </data>
+  <data name="NodeLayout_IsDraggable_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodeLayout に関連付けられた Infragistics.Controls.Menus.XamDataTreeNode オブジェクトがドラッグ可能かどうかを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsDraggableResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.IsDraggable プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_IsDropTarget_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode オブジェクトがこの Infragistics.Controls.Menus.NodeLayout にドロップできるかどうかを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsDropTargetResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.IsDropTarget プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_NodeStyleResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.NodeStyle プロパティを解決します。</value>
+  </data>
+  <data name="NodeLayout_NodeStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayout に関連付けられた Infragistics.Controls.Menus.XamDataTreeNode オブジェクトに割り当てられている System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="NodeLayoutAssignedEventArgs_NodeLayout_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.XamDataTreeNode に割り当てられた Infragistics.Controls.Menus.NodeLayoutAssignedEventArgs.NodeLayout を取得または設定します。</value>
+  </data>
+  <data name="NodeLayoutAssignedEventArgs_Level_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode が表示される Infragistics.Controls.Menus.XamDataTree の深さを取得します。</value>
+  </data>
+  <data name="NodeLayoutAssignedEventArgs_Key_Property" xml:space="preserve">
+    <value>適用される Infragistics.Controls.Menus.NodeLayoutAssignedEventArgs.NodeLayout の Infragistics.Controls.Menus.NodeLayoutBase.Key を取得します。</value>
+  </data>
+  <data name="NodeLayoutAssignedEventArgs_DataType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がバインドされる System.Type を取得します。</value>
+  </data>
+  <data name="NodeLayoutBase_Key_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayoutBase を識別するために使用できる固有の文字列を取得または設定します。</value>
+  </data>
+  <data name="NodeLinePanel_Node_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.Primitives.NodeLineControl と関連付けられている Infragistics.Controls.Menus.XamDataTreeNode を取得または設定します。</value>
+  </data>
+  <data name="CancellableNodeEventArgs_Node_Property" xml:space="preserve">
+    <value>変更された Infragistics.Controls.Menus.XamDataTreeNode。</value>
+  </data>
+  <data name="ActiveNodeChangedEventArgs_OriginalActiveTreeNode_Property" xml:space="preserve">
+    <value>以前アクティブだった Infragistics.Controls.Menus.XamDataTreeNode を取得します。</value>
+  </data>
+  <data name="ActiveNodeChangedEventArgs_NewActiveTreeNode_Property" xml:space="preserve">
+    <value>現在アクティブな Infragistics.Controls.Menus.XamDataTreeNode を取得します。</value>
+  </data>
+  <data name="TreeEditingNodeEventArgs_Editor_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode で表示されているエディターを取得します。</value>
+  </data>
+  <data name="TreeExitEditingEventArgs_NewValue_Property" xml:space="preserve">
+    <value>エディターに入力された新しい値を取得します。</value>
+  </data>
+  <data name="TreeExitEditingEventArgs_EditingCanceled_Property" xml:space="preserve">
+    <value>編集がユーザーによりキャンセルされたかどうかを取得します。</value>
+  </data>
+  <data name="TreeExitEditingEventArgs_Editor_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode で表示されているエディターを取得します。</value>
+  </data>
+  <data name="NodeValidationErrorEventArgs_ValidationErrorEventArgs_Property" xml:space="preserve">
+    <value>実際の Infragistics.Controls.Menus.NodeValidationErrorEventArgs.ValidationErrorEventArgs。</value>
+  </data>
+  <data name="NodeValidationErrorEventArgs_Handled_Property" xml:space="preserve">
+    <value>イベントが処理されるかどうかを取得または設定します。True の場合、Infragistics.Controls.Menus.XamDataTreeNode は検証を成功として処理します。</value>
+  </data>
+  <data name="XamDataTreeNodeDataContext_Data_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode に関連付けられたデータ オブジェクトを取得します。</value>
+  </data>
+  <data name="XamDataTreeNodeDataContext_Properties" xml:space="preserve">
+    <value>XamDataTreeNodeDataContext プロパティ</value>
+  </data>
+  <data name="XamDataTreeNodeDataContext_Node_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNodeControl に関連付けられた Infragistics.Controls.Menus.XamDataTreeNode を取得します。</value>
+  </data>
+  <data name="TreeEditingSettings_AllowEditing_Property" xml:space="preserve">
+    <value>Editing が有効かどうか、そして有効な場合、Infragistics.Controls.Menus.XamDataTree ですべての Infragistics.Controls.Menus.NodeLayout オブジェクトのモードを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettings_IsF2EditingEnabled_Property" xml:space="preserve">
+    <value>F2 キーを押すと ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettings_IsEnterKeyEditingEnabled_Property" xml:space="preserve">
+    <value>Enter キーを押すと ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettings_IsMouseActionEditingEnabled_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode を編集モードにするために Infragistics.Controls.Menus.TreeMouseEditingAction を取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettings_IsOnNodeActiveEditingEnabled_Property" xml:space="preserve">
+    <value>アクティブになった時に Infragistics.Controls.Menus.XamDataTreeNode が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="SelectionSettings_NodeSelection_Property" xml:space="preserve">
+    <value>すべての Infragistics.Controls.Menus.NodeLayouts に適用される Infragistics.Controls.Menus.TreeSelectionType を取得または設定します。</value>
+  </data>
+  <data name="SelectionSettings_SelectedNodes_Property" xml:space="preserve">
+    <value>現在選択されている Infragistics.Controls.Menus.XamDataTreeNode オブジェクトのコレクションです。</value>
+  </data>
+  <data name="CheckBoxSettings_CheckBoxStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode で使用できる System.Windows.Controls.CheckBox コントロールに適用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="CheckBoxSettings_CheckBoxVisibility_Property" xml:space="preserve">
+    <value>System.Windows.Controls.CheckBox が Infragistics.Controls.Menus.XamDataTreeNode オブジェクトで使用できるようになるかどうかを取得または設定します。</value>
+  </data>
+  <data name="CheckBoxSettings_IsCheckBoxThreeState_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.CheckBoxSettings.CheckBoxMode が Infragistics.Controls.Menus.TreeCheckBoxMode.Manual に設定されている場合、System.Windows.Controls.CheckBox コントロールで 3 つの状態をクリックできるかどうかを取得または設定します。Infragistics.Controls.Menus.TreeCheckBoxMode.Auto に設定されている場合、このプロパティの効果はありません。</value>
+  </data>
+  <data name="CheckBoxSettings_CheckBoxMode_Property" xml:space="preserve">
+    <value>制御されている Infragistics.Controls.Menus.XamDataTreeNode をチェックするときに親および子の Infragistics.Controls.Menus.XamDataTreeNode オブジェクトの Infragistics.Controls.Menus.XamDataTreeNode.IsChecked プロパティに発生する内容を管理する Infragistics.Controls.Menus.TreeCheckBoxMode を取得または設定します。</value>
+  </data>
+  <data name="NodeLineTerminator_Node_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.Primitives.NodeLineTerminator と関連付けられている Infragistics.Controls.Menus.XamDataTreeNode を取得または設定します。</value>
+  </data>
+  <data name="NodeLineTerminator_NodeLineEnd_Property" xml:space="preserve">
+    <value>どの状態を表示するか決定する Infragistics.Controls.Menus.NodeLineTemination 値を取得または設定します。</value>
+  </data>
+  <data name="NodeLineControl_Node_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.Primitives.NodeLineControl と関連付けられている Infragistics.Controls.Menus.XamDataTreeNode を取得または設定します。</value>
+  </data>
+  <data name="NodeLineControl_VerticalLine_Property" xml:space="preserve">
+    <value>兄弟 Infragistics.Controls.Menus.XamDataTreeNodes の間の接続を表示するために使用する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLineControl_HorizontalLine_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNodes とその水平線の間の接続を表示するために使用する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_AllowEditing_Property" xml:space="preserve">
+    <value>Editing が有効かどうか、そして有効な場合、特定の Infragistics.Controls.Menus.NodeLayout のモードを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_AllowEditingResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.AllowEditing プロパティを解決します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsF2EditingEnabled_Property" xml:space="preserve">
+    <value>F2 を押すと特定の Infragistics.Controls.Menus.NodeLayout で ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsF2EditingEnabledResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsF2EditingEnabled プロパティを解決します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsEnterKeyEditingEnabled_Property" xml:space="preserve">
+    <value>Enter キーを押すと特定の Infragistics.Controls.Menus.NodeLayout で ActiveCell が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsEnterKeyEditingEnabledResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsEnterKeyEditingEnabled プロパティを解決します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsMouseActionEditingEnabled_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout で Infragistics.Controls.Menus.XamDataTreeNode を編集モードにするために Infragistics.Controls.Menus.TreeMouseEditingAction を取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsMouseActionEditingEnabledResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsMouseActionEditingEnabled プロパティを解決します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsOnNodeActiveEditingEnabled_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout でアクティブになった時に Infragistics.Controls.Menus.XamDataTreeNode が編集モードに入るかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_IsOnNodeActiveEditingEnabledResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.IsOnNodeActiveEditingEnabled プロパティを解決します。</value>
+  </data>
+  <data name="CheckBoxSettingsOverride_CheckBoxVisibility_Property" xml:space="preserve">
+    <value>System.Windows.Controls.CheckBox が Infragistics.Controls.Menus.XamDataTreeNode オブジェクトで使用できるようになるかどうかを取得または設定します。</value>
+  </data>
+  <data name="CheckBoxSettingsOverride_CheckBoxVisibilityResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.CheckBoxSettingsOverride.CheckBoxVisibility プロパティを解決します。</value>
+  </data>
+  <data name="CheckBoxSettingsOverride_CheckBoxStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.NodeLayout で使用できる System.Windows.Controls.CheckBox コントロールに適用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="CheckBoxSettingsOverride_CheckBoxStyleResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.CheckBoxSettingsOverride.CheckBoxStyle プロパティを解決します。</value>
+  </data>
+  <data name="TreeSelectionSettings_NodeSelection_Property" xml:space="preserve">
+    <value>すべての Infragistics.Controls.Menus.NodeLayouts に適用される Infragistics.Controls.Menus.TreeSelectionType を取得または設定します。</value>
+  </data>
+  <data name="TreeSelectionSettings_SelectedNodes_Property" xml:space="preserve">
+    <value>現在選択されている Infragistics.Controls.Menus.XamDataTreeNode オブジェクトのコレクションです。</value>
+  </data>
+  <data name="XamDataTreeNode_IsChecked_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がチェックされているかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsActive_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode が現在 Infragistics.Controls.Menus.XamDataTree.ActiveNode かどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsEditing_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode が現在編集モードかどうかを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsDraggable_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode をその現在位置からドラッグできるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsDropTarget_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がノードのドロップ ターゲットとして動作できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsDraggableResolved_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout レベルからアカウント値を取得した後、Infragistics.Controls.Menus.XamDataTreeNode がドラッグできるかどうかを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsDropTargetResolved_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode.NodeLayout レベルからアカウント値を取得した後、Infragistics.Controls.Menus.XamDataTreeNode がドロップ ターゲットかどうかを取得します。</value>
+  </data>
+  <data name="NodesPanel_Tree_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.NodeLayout が適用する Infragistics.Controls.Menus.XamDataTree を取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_Style_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Menus.XamDataTreeNode に適用する必要がある Infragistics.Controls.Menus.XamDataTreeNode.Style を取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_ExpandedIconTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で現在展開されているノードに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_CollapsedIconTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で現在縮小されているノードに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_ExpandedIconTemplate_Property" xml:space="preserve">
+    <value>現在展開されているノードに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_CollapsedIconTemplate_Property" xml:space="preserve">
+    <value>現在縮小されているノードに表示される System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_ExpandedIconTemplateResolved_Property" xml:space="preserve">
+    <value>子があり、展開されている場合に、この Infragistics.Controls.Menus.NodeLayout の Infragistics.Controls.Menus.XamDataTreeNode に使用する System.Windows.DataTemplate を取得します。</value>
+  </data>
+  <data name="NodeLayout_CollapsedIconTemplateResolved_Property" xml:space="preserve">
+    <value>子があり、縮小されている場合に、この Infragistics.Controls.Menus.NodeLayout の Infragistics.Controls.Menus.XamDataTreeNode に使用する System.Windows.DataTemplate を取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_ExpandedIconTemplate_Property" xml:space="preserve">
+    <value>このノードで表示される展開された System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_CollapsedIconTemplate_Property" xml:space="preserve">
+    <value>このノードで表示される縮小された System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_ExpandedIconTemplateResolved_Property" xml:space="preserve">
+    <value>このノードで表示される展開された System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDataTreeNode_CollapsedIconTemplateResolved_Property" xml:space="preserve">
+    <value>このノードで表示される縮小された System.Windows.DataTemplate を取得します。</value>
+  </data>
+  <data name="TreeEditingSettings_AllowDeletion_Property" xml:space="preserve">
+    <value>ユーザーが Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で Delete キーを使用してノードを削除できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_AllowDeletion_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のこの Infragistics.Controls.Menus.NodeLayout でレコードを削除できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="TreeEditingSettingsOverride_AllowDeletionResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.TreeEditingSettingsOverride.AllowDeletion プロパティを解決します。</value>
+  </data>
+  <data name="XamDataTree_ActiveNode_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree によりアクティブと認識されている Infragistics.Controls.Menus.XamDataTreeNode を取得または設定します。このノードはキーボード入力に応答します。</value>
+  </data>
+  <data name="XamDataTree_ShowActiveNodeIndicator_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree が現在アクティブな Infragistics.Controls.Menus.XamDataTreeNode の周囲にインジケーターを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_ActiveNodeIndicatorStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree.ActiveNode で表示可能になる Infragistics.Controls.Menus.Primitives.ActiveNodeIndicator に適用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_NodeStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.XamDataTreeNodes に適用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_IsDraggable_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree がドラッグ アンド ドロップ操作に参加できるかどうかを取得または設定します。このプロパティは Infragistics.Controls.Menus.XamDataTree によりドラッグ操作がそこから開始できるかどうかを制御します。</value>
+  </data>
+  <data name="XamDataTree_IsDropTarget_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree がドラッグ アンド ドロップ操作に参加できるかどうかを取得または設定します。このプロパティは Infragistics.Controls.Menus.XamDataTree によりドラッグ操作がそこから終了できるかどうか制御します。</value>
+  </data>
+  <data name="XamDataTree_NodeLineVisibility_Property" xml:space="preserve">
+    <value>NodeLines が Infragistics.Controls.Menus.XamDataTree で表示可能かどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_SelectionSettings_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree のすべての Infragistics.Controls.Menus.NodeLayouts で選択するためのすべてのプロパティを制御する Infragistics.Controls.Menus.TreeSelectionSettings オブジェクトへの参照を取得します。</value>
+  </data>
+  <data name="CheckBoxSettingsOverride_IsCheckBoxThreeStateResolved_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の System.Windows.Controls.CheckBoxes が 3 つの状態に設定されているかどうかを取得します。</value>
+  </data>
+  <data name="NodeLayout_IsExpandedBinding_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded プロパティにリンクするデータ オブジェクトのプロパティにアクセスするために設定される System.Windows.Data.Binding オブジェクト。</value>
+  </data>
+  <data name="XamDataTree_IsExpandedMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsExpandedMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の Infragistics.Controls.Menus.XamDataTreeNode.IsExpanded を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティへのパスを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsExpandedMemberPathResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout に Infragistics.Controls.Menus.NodeLayout.IsExpandedMemberPath プロパティを解決します。</value>
+  </data>
+  <data name="TreeDataObjectCreationEventArgs_NewObject_Property" xml:space="preserve">
+    <value>新しく作成されたオブジェクトとして使用する Infragistics.Controls.Menus.TreeDataObjectCreationEventArgs.ObjectType のオブジェクトを取得または設定します。</value>
+  </data>
+  <data name="TreeDataObjectCreationEventArgs_ObjectType_Property" xml:space="preserve">
+    <value>DataManager で作成する必要があるオブジェクトの System.Type を取得します。</value>
+  </data>
+  <data name="TreeDataObjectCreationEventArgs_ParentNode_Property" xml:space="preserve">
+    <value>このオブジェクトの親である Infragistics.Controls.Menus.XamDataTreeNode オブジェクトを取得します。</value>
+  </data>
+  <data name="TreeDataObjectCreationEventArgs_CollectionType_Property" xml:space="preserve">
+    <value>基本コレクションで含む System.Type を取得します。</value>
+  </data>
+  <data name="NodeSelectionEventArgs_OriginalSelectedNodes_Property" xml:space="preserve">
+    <value>以前選択されたノードの Infragistics.Controls.Menus.SelectedNodesCollection を取得します。</value>
+  </data>
+  <data name="NodeSelectionEventArgs_CurrentSelectedNodes_Property" xml:space="preserve">
+    <value>選択されているノードの Infragistics.Controls.Menus.SelectedNodesCollection を取得します。</value>
+  </data>
+  <data name="TreeDropEventArgs_DragDropEventArgs_Property" xml:space="preserve">
+    <value>このイベントによって生成された Infragistics.DragDrop.DragDropEventArgs オブジェクトを取得します。</value>
+  </data>
+  <data name="XamDataTreeNode_IsEnabled_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNodeControl を有効にするかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_IsEnabledMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の Infragistics.Controls.Menus.XamDataTreeNode.IsEnabled を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティのパスを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_EnsureNodeExpansion_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTree がツリーのすべてのノードを処理して子ノードを登録するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDataTree_AllowDragDropCopy_Property" xml:space="preserve">
+    <value>コントロール キーを押下すると移動操作でなくコピー操作としてドラッグ アクションを指定するかどうかを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsEnabledMemberPath_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode の Infragistics.Controls.Menus.XamDataTreeNode.IsEnabled を生成するために Infragistics.Controls.Menus.XamDataTreeNode.Data オブジェクトのプロパティのパスを取得または設定します。</value>
+  </data>
+  <data name="NodeLayout_IsEnabledMemberPathResolved_Property" xml:space="preserve">
+    <value>特定の Infragistics.Controls.Menus.NodeLayout の Infragistics.Controls.Menus.NodeLayout.IsExpandedMemberPath プロパティを解決します。</value>
+  </data>
+  <data name="XamDataTreeNodeControl_CheckBoxStyle_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNodeControl のチェックボックスに適用する System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="ActiveNodeChangedEventArgs_Cancel_Property" xml:space="preserve">
+    <value>このプロパティはこのイベントで使用されません。</value>
+  </data>
+  <data name="TreeDropEventArgs_DropDestination_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Menus.XamDataTreeNode がドロップ ターゲットに対してドロップ ターゲットのときにドロップがどこで認識されるかを決定する Infragistics.Controls.Menus.TreeDropDestination 値を取得します。</value>
+  </data>
+  <data name="ActiveNodeChangingEventArgs_OriginalActiveTreeNode_Property" xml:space="preserve">
+    <value>以前アクティブだった Infragistics.Controls.Menus.XamDataTreeNode を取得します。</value>
+  </data>
+  <data name="ActiveNodeChangingEventArgs_NewActiveTreeNode_Property" xml:space="preserve">
+    <value>現在アクティブな Infragistics.Controls.Menus.XamDataTreeNode を取得します。</value>
+  </data>
+  <data name="XamDataTree_IsTouchSupportEnabled_Property" xml:space="preserve">
+    <value>タッチ サポートがこのコントロールで有効かどうかを返すか、設定します。</value>
+  </data>
+</root>

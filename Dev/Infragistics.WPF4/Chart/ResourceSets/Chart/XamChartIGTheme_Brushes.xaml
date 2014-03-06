@@ -1,0 +1,162 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+    <!-- Resource dictionary entries should be defined here. -->
+    <!--ChartControl Brushes-->
+    
+    <Color x:Key="Color_000">#ff4eb7e2</Color>
+	<Color x:Key="Color_001">#ff2381a9</Color>
+	<Color x:Key="Color_002">#ff494949</Color>
+	<Color x:Key="Color_004">#FFFFFFFF</Color>
+	<Color x:Key="Color_005">#FFF9F9F9</Color>
+	<Color x:Key="Color_006">#FF535353</Color>
+	<Color x:Key="Color_007">#FFB1B1B1</Color>
+	<Color x:Key="Color_008">#FF333333</Color>
+	<Color x:Key="Color_011">#ffb1b1b1</Color>
+	<Color x:Key="Color_012">#FFF3F3F3</Color>
+	<Color x:Key="Color_013">#FFCCCCCC</Color>
+	<Color x:Key="Color_014">#4CFFFFFF</Color>
+	<Color x:Key="Color_015">#42000000</Color>
+	
+	<Color x:Key="Color_1000">#F2FFFFFF</Color>
+	<Color x:Key="Color_1001">#CCFFFFFF</Color>
+	<Color x:Key="Color_1002">#FF000000</Color>
+	<Color x:Key="Color_1003">#FFffffff</Color>
+	<Color x:Key="Color_1004">#8CFFFFFF</Color>
+	<Color x:Key="Color_1005">#A5FFFFFF</Color>
+	<Color x:Key="Color_1006">#7FFFFFFF</Color>
+	<Color x:Key="Color_1007">#26FFFFFF</Color>
+	<Color x:Key="Color_1008">#00FFFFFF</Color>
+	<Color x:Key="Color_1009">#59FFFFFF</Color>
+	<Color x:Key="Color_1010">#72FFFFFF</Color>
+	<Color x:Key="Color_1011">#0CFFFFFF</Color>
+	<Color x:Key="Color_1012">#4CFFFFFF</Color>
+	<Color x:Key="Color_1013">#19FFFFFF</Color>
+	
+	<!--  BEGINS BRUSHES extracted from XamChartIGTheme.xaml  -->
+<LinearGradientBrush x:Key="NewBrush1" EndPoint="0,1" StartPoint="0,0">
+              <GradientStop Color="{StaticResource Color_1009}" Offset="0.29"/>
+              <GradientStop Color="{StaticResource Color_1007}" Offset="0.995"/>
+            </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="NewBrush2" EndPoint="0.39,0" StartPoint="0.39,1.15">
+              <GradientStop Color="{StaticResource Color_1010}" Offset="0.29"/>
+              <GradientStop Color="{StaticResource Color_1008}" Offset="1"/>
+            </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="NewBrush3" EndPoint="1.13,0.5" StartPoint="0.059,0.5">
+              <GradientStop Color="{StaticResource Color_1000}" Offset="0"/>
+              <GradientStop Color="{StaticResource Color_1011}" Offset="0.995"/>
+            </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="NewBrush4" EndPoint="1,0.5" StartPoint="0,0.5">
+              <GradientStop Color="{StaticResource Color_1008}" Offset="0.652"/>
+              <GradientStop Color="{StaticResource Color_1012}" Offset="1"/>
+            </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="NewBrush7" StartPoint="0.499,1.163" EndPoint="0.531,0.655">
+                    <GradientStop Color="{StaticResource Color_1003}" Offset="0" />
+                    <GradientStop Color="{StaticResource Color_1008}" Offset="1" />
+              </LinearGradientBrush>
+
+<RadialGradientBrush x:Key="NewBrush6" >
+                <GradientStop Color="{StaticResource Color_1008}" Offset="0.835"/>
+                <GradientStop Color="{StaticResource Color_1002}" Offset="1"/>
+              </RadialGradientBrush>
+
+<RadialGradientBrush x:Key="NewBrush8" GradientOrigin="0.333,0.256">
+                <RadialGradientBrush.RelativeTransform>
+                  <TransformGroup>
+                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.146" ScaleY="1.146"/>
+                    <SkewTransform AngleX="0" AngleY="0" CenterX="0.5" CenterY="0.5"/>
+                    <RotateTransform Angle="0" CenterX="0.5" CenterY="0.5"/>
+                    <TranslateTransform X="-0.136" Y="-0.098"/>
+                  </TransformGroup>
+                </RadialGradientBrush.RelativeTransform>
+                <GradientStop Color="{StaticResource Color_1001}" Offset="0"/>
+                <GradientStop Color="{StaticResource Color_1007}" Offset="1"/>
+              </RadialGradientBrush>
+<SolidColorBrush x:Key="Brush_1004" Color="{StaticResource Color_1008}"/>
+    
+  <!--  BEGINS BRUSHES extracted with XAML Colors Extractor  -->
+<LinearGradientBrush x:Key="StartPaletteBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_000}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_001}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="EndPaletteBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_002}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_008}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="ChartBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_004}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_005}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="GridAreaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_004}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_005}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="LegendBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_004}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_012}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="LegendBorderSecondaryBrush"/>
+    <SolidColorBrush x:Key="LegendItemForegroundBrush" Color="{StaticResource Color_008}"/>
+    <!-- Scene Brushes -->
+    <LinearGradientBrush x:Key="SceneBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_004}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_005}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="Scene3DBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="{StaticResource Color_004}"/>
+                <GradientStop Offset="1" Color="{StaticResource Color_005}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush x:Key="SeriesStrokeBrush" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="{StaticResource Color_014}" Offset="0"/>
+        <GradientStop Color="{StaticResource Color_014}" Offset="1"/>
+    </LinearGradientBrush>
+
+<RadialGradientBrush x:Key="ShadowBrushLeft" Center="1,0.5"	GradientOrigin="1,0.5" RadiusX="0.5" RadiusY="0.5">
+        <GradientStop Color="{StaticResource Color_015}"/>
+        <GradientStop Offset="1" />
+    </RadialGradientBrush>
+
+<RadialGradientBrush x:Key="ShadowBrushRight" Center="0,0.5" GradientOrigin="0,0.5" RadiusX="0.5" RadiusY="0.5">
+        <GradientStop Color="{StaticResource Color_015}"/>
+        <GradientStop Offset="0.996"/>
+    </RadialGradientBrush>
+
+<SolidColorBrush x:Key="ChartBorderBrush" Color="{StaticResource Color_006}"/>
+<SolidColorBrush x:Key="AxisPrimaryXStrokeBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="AxisPrimaryYStrokeBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="AxisPrimaryZStrokeBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="LabelXBrush" Color="{StaticResource Color_008}"/>
+<SolidColorBrush x:Key="LabelYBrush" Color="{StaticResource Color_008}"/>
+<SolidColorBrush x:Key="CaptionForegroundBrush" Color="{StaticResource Color_008}"/>
+<SolidColorBrush x:Key="GridlineXMajorBrush" Color="{StaticResource Color_006}"/>
+<SolidColorBrush x:Key="GridlineXMinorBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="GridlineYMajorBrush" Color="{StaticResource Color_006}"/>
+<SolidColorBrush x:Key="GridlineYMinorBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="GridlineZMajorBrush" Color="{StaticResource Color_006}"/>
+<SolidColorBrush x:Key="GridlineZMinorBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="TickXBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="TickYBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="LegendBorderBrush" Color="{StaticResource Color_011}"/>
+<SolidColorBrush x:Key="MarkerFillBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="MarkerForegroundBrush" Color="{StaticResource Color_008}"/>
+<SolidColorBrush x:Key="MarkerStrokeBrush" Color="{StaticResource Color_007}"/>
+<SolidColorBrush x:Key="StripeFillBrush" Color="{StaticResource Color_012}"/>
+<SolidColorBrush x:Key="StripeStrokeBrush" Color="{StaticResource Color_013}"/>
+
+
+    
+    
+</ResourceDictionary>
+  

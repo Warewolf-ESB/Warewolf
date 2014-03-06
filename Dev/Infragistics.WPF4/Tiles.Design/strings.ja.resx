@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LC_TilesControl Properties" xml:space="preserve">
+    <value>TilesControl プロパティ</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_AllowTileDragging" xml:space="preserve">
+    <value>再配置するために、ユーザーがタイルをドラッグできるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_HorizontalTileAreaAlignment" xml:space="preserve">
+    <value>コントロールのすべての表示タイルの水平方向の配置を決定します。</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_RepositionAnimation" xml:space="preserve">
+    <value>タイルを移動するときのアニメーションを決定します。</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_ResizeAnimation" xml:space="preserve">
+    <value>タイルのサイズを変更するときのアニメーションを決定します。</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_ShouldAnimate" xml:space="preserve">
+    <value>タイルの位置とサイズを変更するときにアニメーションを生成するかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_ModeSettingsBase_P_VerticalTileAreaAlignment" xml:space="preserve">
+    <value>コントロールのすべての表示タイルの垂直方向の配置を決定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_InterTileAreaSpacing" xml:space="preserve">
+    <value>最大化モードで最大化したタイルの領域と最小化したタイルの領域間のスペース量を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_InterTileSpacingXMaximized" xml:space="preserve">
+    <value>最大化したタイル間の水平方向のスペースを取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_InterTileSpacingXMinimized" xml:space="preserve">
+    <value>最小化したタイル間の水平方向のスペースを取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_InterTileSpacingYMaximized" xml:space="preserve">
+    <value>最大化したタイル間の垂直方向のスペースを取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_InterTileSpacingYMinimized" xml:space="preserve">
+    <value>最小化したタイル間の垂直方向のスペースを取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MaximizedTileLocation" xml:space="preserve">
+    <value>最大化したタイルを配置する位置を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MaximizedTileLayoutOrder" xml:space="preserve">
+    <value>最大化した複数のタイルを相対配置する方法を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MaximizedTileConstraints" xml:space="preserve">
+    <value>「Maximized」状態でタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MinimizedTileConstraints" xml:space="preserve">
+    <value>「Minimized」状態のときのタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="LC_Behavior" xml:space="preserve">
+    <value>動作</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MinimizedTileExpandButtonVisibility" xml:space="preserve">
+    <value>タイル ヘッダーの展開ボタンのデフォルトの表示状態を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MinimizedExpandedTileConstraints" xml:space="preserve">
+    <value>「MinimizedExpanded」状態でタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_MinimizedTileExpansionMode" xml:space="preserve">
+    <value>展開可能な最小化したタイルの最大数を取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_ShowAllMinimizedTiles" xml:space="preserve">
+    <value>画面ですべての最小化したタイルを配置するかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_MaximizedModeSettings_P_ShowTileAreaSplitter" xml:space="preserve">
+    <value>領域の相対サイズを制御するために、最大化したタイルの領域と最小化したタイル領域の間にスプリッターを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_AllowTileSizing" xml:space="preserve">
+    <value>ユーザーがタイルのサイズを変更できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_MaxColumns" xml:space="preserve">
+    <value>「Normal」モードでタイルを配置するときに使用可能な列の最大数を取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_MaxRows" xml:space="preserve">
+    <value>「Normal」モードでタイルを配置するときに使用可能な行の最大数を取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_MinColumns" xml:space="preserve">
+    <value>「Normal」モードでタイルを配置するときに使用可能な列の最小数を取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_MinRows" xml:space="preserve">
+    <value>「Normal」モードでタイルを配置するときに使用可能な行の最小数を取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_ShowAllTiles" xml:space="preserve">
+    <value>すべてのタイルを表示できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_TileConstraints" xml:space="preserve">
+    <value>「Normal」状態のタイルのサイズ変更の制約を取得または設定します。</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_TileLayoutOrder" xml:space="preserve">
+    <value>パネルがタイルを配置する方法を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile" xml:space="preserve">
+    <value>XamTilesControl 内のタイルを表す ContentControl 派生要素。</value>
+  </data>
+  <data name="LD_Tile_P_AllowMaximize" xml:space="preserve">
+    <value>ユーザーがこのタイルを最大化できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_Column" xml:space="preserve">
+    <value>列の値を取得または設定します。-1 に設定した場合、タイルはパネルの以前のタイルに関連して配置されることを示します。</value>
+  </data>
+  <data name="LD_Tile_P_ColumnSpan" xml:space="preserve">
+    <value>ColumnSpan の値を取得または設定します。0 に設定した場合、タイルが論理列の残りの領域を占有することを示します。</value>
+  </data>
+  <data name="LD_Tile_P_ColumnWeight" xml:space="preserve">
+    <value>余分な幅をタイル内で分配する方法を取得または設定します。デフォルト値は 1 です。</value>
+  </data>
+  <data name="LD_Tile_P_Constraints" xml:space="preserve">
+    <value>「Normal」状態のタイルのサイズ制約を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ConstraintsMaximized" xml:space="preserve">
+    <value>「Maximized」状態のタイルのサイズ制約を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ConstraintsMinimized" xml:space="preserve">
+    <value>「Minimized」状態のタイルのサイズ制約を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ConstraintsMinimizedExpanded" xml:space="preserve">
+    <value>「MinimizedExpanded」状態のタイルのサイズ制約を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ContentTemplateMaximized" xml:space="preserve">
+    <value>Tile の State が「Maximized」に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ContentTemplateMinimized" xml:space="preserve">
+    <value>Tile の State が「Minimized」に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ContentTemplateMinimizedExpanded" xml:space="preserve">
+    <value>Tile の State が「MinimizedExpanded」に設定された場合、使用する ContentTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_CloseAction" xml:space="preserve">
+    <value>このタイルを閉じるときの動作を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_CloseButtonVisibility" xml:space="preserve">
+    <value>ヘッダー領域内の閉じるボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_ExpandButtonVisibility" xml:space="preserve">
+    <value>ヘッダー領域の展開トグル ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_HasImage" xml:space="preserve">
+    <value>Image プロパティが設定されているかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_Tile_P_HasHeader" xml:space="preserve">
+    <value>Header プロパティが設定されているかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LC_Content" xml:space="preserve">
+    <value>コンテンツ</value>
+  </data>
+  <data name="LD_Tile_P_Header" xml:space="preserve">
+    <value>このタイルのヘッダーに表示するオブジェクトを取得または設定します。</value>
+  </data>
+  <data name="LC_Control" xml:space="preserve">
+    <value>コントロール</value>
+  </data>
+  <data name="LD_Tile_P_HeaderStringFormat" xml:space="preserve">
+    <value>タイル ヘッダーの書式を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_HeaderTemplate" xml:space="preserve">
+    <value>タイルのヘッダー コンテンツを表示するために使用するテンプレートを取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_HeaderTemplateSelector" xml:space="preserve">
+    <value>開発者が各タイルにヘッダー テンプレートを指定できるセレクターを取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_Image" xml:space="preserve">
+    <value>タイル ヘッダーに使用する画像。</value>
+  </data>
+  <data name="LD_Tile_P_IsClosed" xml:space="preserve">
+    <value>このタイルが閉じられているかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_IsExpandedWhenMinimized" xml:space="preserve">
+    <value>このタイルが最小化したときに展開されているかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_MaximizeButtonVisibility" xml:space="preserve">
+    <value>ヘッダー領域内の最大化トグル ボタンの表示状態を取得または設定します。</value>
+  </data>
+  <data name="LD_Tile_P_Row" xml:space="preserve">
+    <value>行の値を取得または設定します。-1 に設定した場合、タイルはパネルの以前のタイルに関連して配置されることを示します。</value>
+  </data>
+  <data name="LD_Tile_P_RowSpan" xml:space="preserve">
+    <value>RowSpan の値を取得または設定します。0 に設定した場合、タイルが論理行の残りの領域を占有することを示します。</value>
+  </data>
+  <data name="LD_Tile_P_RowWeight" xml:space="preserve">
+    <value>余分な高さをタイル内で分配する方法を取得または設定します。デフォルト値は 1 です。</value>
+  </data>
+  <data name="LD_Tile_P_SaveInLayout" xml:space="preserve">
+    <value>タイルが保存済みレイアウトに含まれる必要があるかどうかを示します。</value>
+  </data>
+  <data name="LD_Tile_P_SerializationId" xml:space="preserve">
+    <value>レイアウトが保存されるときにタイルと一緒に保存される文字列。</value>
+  </data>
+  <data name="LD_Tile_P_State" xml:space="preserve">
+    <value>タイルの状態を取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_HorizontalAlignment" xml:space="preserve">
+    <value>指定したスロットでタイルの水平方向の配置を取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_Margin" xml:space="preserve">
+    <value>タイルの周囲のマージンを取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_MaxHeight" xml:space="preserve">
+    <value>タイルの最大の高さを取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_MaxWidth" xml:space="preserve">
+    <value>タイルの最大幅を取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_MinHeight" xml:space="preserve">
+    <value>タイルの最小の高さを取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_MinWidth" xml:space="preserve">
+    <value>タイルの最小幅を取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_PreferredHeight" xml:space="preserve">
+    <value>タイルの最適な高さを取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_PreferredWidth" xml:space="preserve">
+    <value>タイルの最適な幅を取得または設定します。</value>
+  </data>
+  <data name="LD_TileConstraints_P_VerticalAlignment" xml:space="preserve">
+    <value>指定したスロットでタイルの垂直方向の配置を取得または設定します。</value>
+  </data>
+  <data name="LD_TileHeaderPresenter" xml:space="preserve">
+    <value>タイルのキャプション/ヘッダー領域を表すために使用される要素。</value>
+  </data>
+  <data name="LD_XamTilesControl" xml:space="preserve">
+    <value>これらの項目をスクロールおよび仮想化するネイティブ サポートで、子要素をタイルとして配置して整理および表示する ItemControl コントロール派生要素。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_HeaderPath" xml:space="preserve">
+    <value>各タイルのヘッダーを初期化するために使用されるソース オブジェクトの値へのパスを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_InterTileSpacingX" xml:space="preserve">
+    <value>タイル間の水平方向スペースを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_InterTileSpacingY" xml:space="preserve">
+    <value>タイル間の垂直方向スペースを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_ItemHeaderTemplate" xml:space="preserve">
+    <value>項目のタイルに設定する HeaderTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_ItemHeaderTemplateSelector" xml:space="preserve">
+    <value>項目のタイルに設定する HeaderTemplateSelector を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_ItemTemplateMaximized" xml:space="preserve">
+    <value>Tile の State が「Maximized」に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_ItemTemplateMinimized" xml:space="preserve">
+    <value>Tile の State が「Minimized」に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_ItemTemplateMinimizedExpanded" xml:space="preserve">
+    <value>Tile の State が「MinimizedExpanded」に設定された場合、使用する ItemTemplate を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_MaximizedModeSettings" xml:space="preserve">
+    <value>最大化モード以外で Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_MaximizedTileLimit" xml:space="preserve">
+    <value>「Maximized」タイルの最大数を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_NormalModeSettings" xml:space="preserve">
+    <value>最大化モード以外で Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_SerializationIdPath" xml:space="preserve">
+    <value>各タイルの SerializationId を初期化するために使用されるソース オブジェクトの値へのパスを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_Theme" xml:space="preserve">
+    <value>コントロールのデフォルトの外観を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_TileAreaPadding" xml:space="preserve">
+    <value>TilesPanel とタイルを配置する領域間にあるスペースを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTilesControl_P_TileCloseAction" xml:space="preserve">
+    <value>タイルを閉じるときの操作を取得または設定します</value>
+  </data>
+  <data name="LC_TilesControl Events" xml:space="preserve">
+    <value>TilesControl イベント</value>
+  </data>
+  <data name="LD_XamTilesControl_E_LoadingItemMapping" xml:space="preserve">
+    <value>「LoadLayout」を呼び出すときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_SavingItemMapping" xml:space="preserve">
+    <value>「SaveLayout」を呼び出すときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileClosed" xml:space="preserve">
+    <value>タイルが閉じられた後に発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileClosing" xml:space="preserve">
+    <value>タイルが展開されるときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileDragging" xml:space="preserve">
+    <value>タイルがドラッグされるするときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileStateChanged" xml:space="preserve">
+    <value>タイルの状態が変更された後に発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileStateChanging" xml:space="preserve">
+    <value>タイルの状態が変更されるときに発生されます。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileSwapping" xml:space="preserve">
+    <value>位置を入れ替えるタイルの上にタイルをドロップするときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_TileSwapped" xml:space="preserve">
+    <value>タイルを他のタイルの上にドロップして、位置を入れ替えるときに発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_ThemeChanged" xml:space="preserve">
+    <value>'Theme' プロパティが変更されたときに呼び出されます。</value>
+  </data>
+  <data name="LD_TilesPanel" xml:space="preserve">
+    <value>これらの項目をスクロールおよび仮想化するネイティブ サポートで、子要素をタイルとして配置して整理および表示する派生パネル要素。</value>
+  </data>
+  <data name="LD_TilesPanel_P_InterTileSpacingX" xml:space="preserve">
+    <value>タイル間の水平方向スペースを取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_InterTileSpacingY" xml:space="preserve">
+    <value>タイル間の垂直方向スペースを取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_MaximizedModeSettings" xml:space="preserve">
+    <value>最大化モードで Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_MaximizedTileLimit" xml:space="preserve">
+    <value>「Maximized」タイルの最大数を取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_NormalModeSettings" xml:space="preserve">
+    <value>最大化モード以外で Tile を配置するために使用する設定を取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_TileAreaPadding" xml:space="preserve">
+    <value>TilesPanel とタイルを配置する領域間にあるスペースの量を取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_P_TileCloseAction" xml:space="preserve">
+    <value>タイルを閉じるときの操作を取得または設定します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileClosed" xml:space="preserve">
+    <value>タイルが閉じられた後に発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileClosing" xml:space="preserve">
+    <value>タイルが展開されるときに発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileDragging" xml:space="preserve">
+    <value>タイルがドラッグされるときに発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileStateChanged" xml:space="preserve">
+    <value>タイルの状態が変更された後に発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileStateChanging" xml:space="preserve">
+    <value>タイルの状態が変更されるときに発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileSwapping" xml:space="preserve">
+    <value>位置を入れ替えるタイルの上にタイルをドロップするときに発生します。</value>
+  </data>
+  <data name="LD_TilesPanel_E_TileSwapped" xml:space="preserve">
+    <value>タイルが他のタイルの上にドロップされて、位置を入れ替えるときに発生します。</value>
+  </data>
+  <data name="SmartTag_Default_TileHeader" xml:space="preserve">
+    <value>タイル</value>
+  </data>
+  <data name="SmartTag_DialogItem_NumberTiles" xml:space="preserve">
+    <value>追加するタイルの数</value>
+  </data>
+  <data name="SmartTag_DialogItem_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SmartTag_D_AddTiles" xml:space="preserve">
+    <value>タイルを追加...</value>
+  </data>
+  <data name="SmartTag_G_Appearance" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="SmartTag_G_Arrangement" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="SmartTag_G_MarginAndAlignments" xml:space="preserve">
+    <value>余白および方向</value>
+  </data>
+  <data name="SmartTag_G_Options" xml:space="preserve">
+    <value>オプション</value>
+  </data>
+  <data name="SmartTag_G_Serialization" xml:space="preserve">
+    <value>シリアル化</value>
+  </data>
+  <data name="SmartTag_G_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="SmartTag_G_Sizes" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="SmartTag_G_Tasks" xml:space="preserve">
+    <value>タスク</value>
+  </data>
+  <data name="SmartTag_G_TileConstraints" xml:space="preserve">
+    <value>TileConstraints</value>
+  </data>
+  <data name="SmartTag_N_AddTiles" xml:space="preserve">
+    <value>XamTilesControl に 1 つ以上の Tile を追加します。</value>
+  </data>
+  <data name="SmartTag_T_MaximizedModeSettings" xml:space="preserve">
+    <value>MaximizedModeSettings</value>
+  </data>
+  <data name="SmartTag_T_NormalModeSettings" xml:space="preserve">
+    <value>NormalModeSettings</value>
+  </data>
+  <data name="SmartTag_T_Tile" xml:space="preserve">
+    <value>タイル</value>
+  </data>
+  <data name="SmartTag_T_TileConstraints" xml:space="preserve">
+    <value>TileConstraints</value>
+  </data>
+  <data name="SmartTag_T_TileOptionsDialog" xml:space="preserve">
+    <value>タイルのオプション</value>
+  </data>
+  <data name="SmartTag_T_XamTilesControl" xml:space="preserve">
+    <value>XamTilesControl</value>
+  </data>
+  <data name="SmartTag_M_NumberOfTiles" xml:space="preserve">
+    <value>追加するタイルの数の有効な値を入力してください。</value>
+  </data>
+  <data name="SmartTag_T_InvalidValue" xml:space="preserve">
+    <value>無効な値</value>
+  </data>
+  <data name="LD_XamTilesControl_E_AnimationEnded" xml:space="preserve">
+    <value>タイル アニメーションが終了した時に発生します。</value>
+  </data>
+  <data name="LD_XamTilesControl_E_AnimationStarted" xml:space="preserve">
+    <value>タイル アニメーションを開始した時に発生します。</value>
+  </data>
+  <data name="XamTilesControlAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="LD_NormalModeSettings_P_ExplicitLayoutTileSizeBehavior" xml:space="preserve">
+    <value>TileLayoutOrder は 'UseExplicitRowColumnOnTile' に設定される場合に、タイルの高さは列で同期化して、タイルの幅は行で同期化されるかどうかを取得または設定します。</value>
+  </data>
+</root>

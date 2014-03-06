@@ -1,0 +1,113 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:controls="clr-namespace:Infragistics.Windows.Controls"
+	xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igTiles="clr-namespace:Infragistics.Windows.Tiles"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+	xmlns:igThemes="http://infragistics.com/Themes"
+	xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls">
+
+
+	<!-- ____________________________________________________________________________ -->
+	<!--                                                                              -->
+	<!--                             Brushes                                          -->
+	<!-- ____________________________________________________________________________ -->
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileContentBackgroundFillKey}" Color="#FFFFFFFF" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileBorderBrushFillKey}" Color="#FF66667E" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TilesControlBorderBrushFillKey}" Color="#FF66667E" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileSwapTargetBgBrushFillKey}" StartPoint="0.5,0" EndPoint="0.5,1" igThemes:ResourceWasher.WashGroup="BaseColor">
+		<GradientStop Color="#33000000" Offset="0"/>
+		<GradientStop Color="#99000000" Offset="1"/>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="BaseColor">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Offset="0" Color="#FFd7d8e2"/>
+				<GradientStop Offset="0.10" Color="#FFa4a3be"/>
+				<GradientStop Offset="0.5" Color="#FFc4c7d4"/>
+				<GradientStop Offset="0.94" Color="#FFffffff"/>
+				<GradientStop Offset="1" Color="#FFffffff"/>
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileChromeFillKey}" Color="Transparent" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionInnerBorderFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="BaseColor">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Offset="0" Color="#FFd7d8e2"/>
+				<GradientStop Offset="1" Color="#FF777792"/>
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.GrayTextBrushKey}" Color="#FFA29F99" igThemes:ResourceWasher.WashGroup="Text"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnGlyphFillKey}" Color="#FF000000" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackGlyphFillKey}" Color="#FFFFFFFF" igThemes:ResourceWasher.WashGroup="Hover"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedGlyphFillKey}" Color="#FFFFFFFF" igThemes:ResourceWasher.WashGroup="Pressed"/>
+	
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileHeaderTextFillKey}" Color="#FF000000" igThemes:ResourceWasher.WashGroup="Text"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.ToolTipOuterBorderFillKey}" Color="#FF767676" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.ToolTipCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1" igThemes:ResourceWasher.WashGroup="BaseColor">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFffffff" Offset="0" />
+				<GradientStop Color="#FFe4e5f0" Offset="1" />
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileAreaSplitterBackgroundFillKey}" Color="#FFE0DFE3" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+		<!-- TileAreaSplitterHorizontalBackgroundFillKey Not used in any theme except Office. Created here to stay consistent and pass resource unit tests -->
+		<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileAreaSplitterHorizontalBackgroundFillKey}" Color="Transparent" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileAreaSplitterBorderBrushFillKey}" Color="#FF9D9DA1" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileAreaSplitterGlyphBackgroundFillKey}" Color="#FFFFFFFF" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileAreaSplitterGlyphForegroundFillKey}" Color="#FF8D887A" igThemes:ResourceWasher.WashGroup="BaseColor"/>
+	
+
+
+	<!--====================== Close Button Brushes =====================-->
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnBorderFillKey}"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnBackgroundFillKey}"/>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackBorderFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="Hover">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFed4711" Offset="0" />
+				<GradientStop Color="#FFed4711" Offset="0.6000000238418579" />
+				<GradientStop Color="#FFa20700" Offset="1" />
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnHottrackBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="Hover">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFfe7866" Offset="0" />
+				<GradientStop Color="#FFfea68d" Offset="1" />
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedBorderFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="Pressed">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFa0382f" Offset="0" />
+				<GradientStop Color="#FFa0382f" Offset="0.6000000238418579" />
+				<GradientStop Color="#FF482618" Offset="1" />
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+	<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igTiles:TileBrushKeys.TileCaptionBtnPressedBackgroundFillKey}" StartPoint="0,0" EndPoint="0,1" igThemes:ResourceWasher.WashGroup="Pressed">
+		<LinearGradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFbb544e" Offset="0" />
+				<GradientStop Color="#FFf88877" Offset="1" />
+			</GradientStopCollection>
+		</LinearGradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<!-- ____________________________________________________________________________ -->
+	<!--                                                                              -->
+	<!--                             End of Brushes                                   -->
+	<!-- ____________________________________________________________________________ -->
+
+</ResourceDictionary>

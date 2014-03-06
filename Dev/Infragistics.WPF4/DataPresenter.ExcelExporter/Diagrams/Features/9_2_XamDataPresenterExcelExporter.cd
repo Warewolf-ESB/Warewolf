@@ -1,0 +1,373 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter">
+    <Position X="0.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>oCEEigAEAAAAgACBMEAEFQAAcHAIBFAKAAIAIAAAAAo=</HashCode>
+      <FileName>XamDataPresenterExcelExporter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportOptions" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="childRecordCollectionSpacing" Hidden="true" />
+      <Field Name="fileLimitBehaviour" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABEAAAAABAAAAAQAAAAAKAAAAAAAQAAAEQAAEAAAABA=</HashCode>
+      <FileName>ExcelExportOptions.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ChildRecordCollectionSpacing" />
+      <Property Name="FileLimitBehaviour" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings">
+    <Position X="4.25" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>QABIAREgAAAEEoiAggAAAoACAAAAAIAACAAAAAgDEAA=</HashCode>
+      <FileName>ExcelFormatSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.BeginExportEventArgs">
+    <Position X="10.75" Y="11" Width="1.75" />
+    <Members>
+      <Method Name="BeginExportEventArgs" Hidden="true" />
+      <Field Name="options" Hidden="true" />
+      <Field Name="records" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs">
+    <Position X="18" Y="11" Width="1.75" />
+    <Members>
+      <Method Name="CellExportedEventArgs" Hidden="true" />
+      <Field Name="field" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAhAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs">
+    <Position X="0.5" Y="15.25" Width="2.5" />
+    <Members>
+      <Method Name="CellExportingEventArgs" Hidden="true" />
+      <Field Name="cellFormatSettings" Hidden="true" />
+      <Field Name="field" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACEAAAgAAAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAhAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.EndExportEventArgs">
+    <Position X="3.25" Y="11" Width="1.75" />
+    <Members>
+      <Field Name="canceled" Hidden="true" />
+      <Method Name="EndExportEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs">
+    <Position X="5" Y="13" Width="3.25" />
+    <Members>
+      <Method Name="ExcelExportCancelEventArgs" Hidden="true" />
+      <Field Name="exporterHelper" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAEAAAAAQAgAAAAAABAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs">
+    <Position X="9.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAEAAAAAQAgAAAAAABAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportInitializeRecordEventArgs">
+    <Position X="12.75" Y="11" Width="2.75" />
+    <Members>
+      <Method Name="ExcelExportInitializeRecordEventArgs" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+      <Field Name="skipRecord" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQEEAAAAAAAAAAAAAAAEAAAAAAAAAEAAAAAAAAEABAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventArgs">
+    <Position X="20" Y="11" Width="2.25" />
+    <Members>
+      <Field Name="fieldLayout" Hidden="true" />
+      <Method Name="HeaderAreaExportedEventArgs" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAABAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventArgs">
+    <Position X="3.25" Y="15.25" Width="2.75" />
+    <Members>
+      <Field Name="fieldLayout" Hidden="true" />
+      <Method Name="HeaderAreaExportingEventArgs" Hidden="true" />
+      <Field Name="labelFormatSettings" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAACAAAAAAAIQAAAAEAAAAAAAAAAABAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs">
+    <Position X="5.25" Y="11" Width="2.5" />
+    <Members>
+      <Field Name="field" Hidden="true" />
+      <Method Name="HeaderLabelExportedEventArgs" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACEAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs">
+    <Position X="9" Y="15.25" Width="2.5" />
+    <Members>
+      <Field Name="field" Hidden="true" />
+      <Method Name="HeaderLabelExportingEventArgs" Hidden="true" />
+      <Field Name="labelFormatSettings" Hidden="true" />
+      <Field Name="record" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACEAAAAEAAAAACAAAAAAAIAAAAAAAAAAAAAAAAAhAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.InitializeFieldEventArgs">
+    <Position X="0.5" Y="8.75" Width="2.25" />
+    <Members>
+      <Field Name="cellFormatSettings" Hidden="true" />
+      <Field Name="field" Hidden="true" />
+      <Method Name="InitializeFieldEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportedEventArgs">
+    <Position X="15.75" Y="11" Width="2" />
+    <Members>
+      <Field Name="record" Hidden="true" />
+      <Method Name="RecordExportedEventArgs" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportingEventArgs">
+    <Position X="14.5" Y="15.25" Width="2.25" />
+    <Members>
+      <Field Name="record" Hidden="true" />
+      <Method Name="RecordExportingEventArgs" Hidden="true" />
+      <Field Name="recordFormatSettings" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAABAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventArgs">
+    <Position X="0.5" Y="11" Width="2.5" />
+    <Members>
+      <Field Name="summary" Hidden="true" />
+      <Method Name="SummaryCellExportedEventArgs" Hidden="true" />
+      <Field Name="summaryLevel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAgAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventArgs">
+    <Position X="6.25" Y="15.25" Width="2.5" />
+    <Members>
+      <Field Name="summary" Hidden="true" />
+      <Method Name="SummaryCellExportingEventArgs" Hidden="true" />
+      <Field Name="summaryFormatSettings" Hidden="true" />
+      <Field Name="summaryLevel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAEAAAARAAAAEAgAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryAreaExportingEventArgs">
+    <Position X="11.75" Y="15.25" Width="2.5" />
+    <Members>
+      <Field Name="summaries" Hidden="true" />
+      <Method Name="SummaryAreaExportingEventArgs" Hidden="true" />
+      <Field Name="summaryFormatSettings" Hidden="true" />
+      <Field Name="summaryLevel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAAAAAAAAAAAAAEAAAARAAAAEAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryAreaExportedEventArgs">
+    <Position X="8" Y="11" Width="2.5" />
+    <Members>
+      <Field Name="summaries" Hidden="true" />
+      <Method Name="SummaryAreaExportedEventArgs" Hidden="true" />
+      <Field Name="summaryLevel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAAAAAAAAAAAAAAEAAAABAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Infragistics.Windows.DataPresenter.ExcelExporter.ChildRecordCollectionSpacing">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAEAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Windows.DataPresenter.ExcelExporter.FileLimitBehaviour">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.BeginExportEventHandler" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventHandler" Collapsed="true">
+    <Position X="10.5" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportingEventHandler" Collapsed="true">
+    <Position X="16" Y="5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportedEventHandler" Collapsed="true">
+    <Position X="13.25" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryAreaExportingEventHandler" Collapsed="true">
+    <Position X="10.5" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryAreaExportedEventHandler" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventHandler" Collapsed="true">
+    <Position X="10.5" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventHandler" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventHandler" Collapsed="true">
+    <Position X="13.25" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventHandler" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventHandler" Collapsed="true">
+    <Position X="16" Y="4.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventHandler" Collapsed="true">
+    <Position X="13.25" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventHandler" Collapsed="true">
+    <Position X="16" Y="5.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventHandler" Collapsed="true">
+    <Position X="13.25" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.EndExportEventHandler" Collapsed="true">
+    <Position X="16" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Infragistics.Windows.DataPresenter.ExcelExporter.InitializeFieldEventHandler" Collapsed="true">
+    <Position X="7.75" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Events.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

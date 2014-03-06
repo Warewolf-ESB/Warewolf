@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+    xmlns:themesWin="http://infragistics.com/Themes"
+		>
+	<ResourceDictionary.MergedDictionaries>		
+        <themesWin:ResourceSetLoader Locator="{x:Static themes:OutlookBarOffice2k7Blue.Location}"/>
+    </ResourceDictionary.MergedDictionaries>        
+</ResourceDictionary>

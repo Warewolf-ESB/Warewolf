@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" />
+  <xs:complexType name="ArrayOfKeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Key" type="q1:ItemSourceType" />
+            <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Value" nillable="true" type="q2:ListManagerVersionInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfKeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp" nillable="true" type="tns:ArrayOfKeyValueOfItemSourceTypeListManagerVersionInfob3yDyBEp" />
+  <xs:complexType name="ArrayOfKeyValueOfItemSourceTypeDetailedItemSourceChangeInfob3yDyBEp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfItemSourceTypeDetailedItemSourceChangeInfob3yDyBEp">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Key" type="q3:ItemSourceType" />
+            <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Value" nillable="true" type="q4:DetailedItemSourceChangeInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfKeyValueOfItemSourceTypeDetailedItemSourceChangeInfob3yDyBEp" nillable="true" type="tns:ArrayOfKeyValueOfItemSourceTypeDetailedItemSourceChangeInfob3yDyBEp" />
+  <xs:complexType name="ArrayOfKeyValueOfItemSourceTypeItemSourceInfob3yDyBEp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfItemSourceTypeItemSourceInfob3yDyBEp">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Key" type="q5:ItemSourceType" />
+            <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Infragistics.Services.Schedules" name="Value" nillable="true" type="q6:ItemSourceInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfKeyValueOfItemSourceTypeItemSourceInfob3yDyBEp" nillable="true" type="tns:ArrayOfKeyValueOfItemSourceTypeItemSourceInfob3yDyBEp" />
+  <xs:complexType name="ArrayOfstring">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
+</xs:schema>

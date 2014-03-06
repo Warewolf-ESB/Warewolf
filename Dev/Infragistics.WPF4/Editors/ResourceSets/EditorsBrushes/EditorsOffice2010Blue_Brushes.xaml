@@ -1,0 +1,244 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igEditors="clr-namespace:Infragistics.Windows.Editors"	
+	xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+	
+	<Color x:Key="Color_000">#ffB1C0D6</Color>
+	<Color x:Key="Color_001">#ffEDF5FD</Color>
+	<Color x:Key="Color_002">#ffABBAD0</Color>
+	<Color x:Key="Color_003">#ffF2F7FC</Color>
+	<Color x:Key="Color_004">#FFE1EDFA</Color>
+	<Color x:Key="Color_005">#ffd0dfee</Color>
+	<Color x:Key="Color_006">#ffEAC656</Color>
+	<Color x:Key="Color_007">#FFfffbea</Color>
+	<Color x:Key="Color_008">#FFfff7d9</Color>
+	<Color x:Key="Color_009">#FFffffef</Color>
+	<Color x:Key="Color_010">#FFf7eab2</Color>
+	<Color x:Key="Color_011">#FFf7df85</Color>
+	<Color x:Key="Color_012">#FFf7e28e</Color>
+	<Color x:Key="Color_013">#FFf9f6dd</Color>
+	<Color x:Key="Color_014">#FFc2762b</Color>
+	<Color x:Key="Color_015">#FFc29e47</Color>
+	<Color x:Key="Color_016">#ffF8D071</Color>
+	<Color x:Key="Color_017">#FFf5c664</Color>
+	<Color x:Key="Color_018">#FFfddf84</Color>
+	<Color x:Key="Color_019">#FFf9d577</Color>
+	<Color x:Key="Color_020">#ff586585</Color>
+	<Color x:Key="Color_021">#ffABC1DE</Color>
+	<Color x:Key="Color_022">#FFF4F4F4</Color>
+	<Color x:Key="Color_023">#FFa2acb9</Color>
+	<Color x:Key="Color_024">#FFe4e6ea</Color>
+	<Color x:Key="Color_025">#FFe8e9eb</Color>
+	<Color x:Key="Color_026">#FFf0f1f2</Color>
+	<Color x:Key="Color_027">#FFfcad5d</Color>
+	<Color x:Key="Color_028">#FFfedebe</Color>
+	<Color x:Key="Color_029">#FFfaecc8</Color>
+	<Color x:Key="Color_030">#FFfcf3dd</Color>
+	<Color x:Key="Color_031">#FFCF9037</Color>
+	<Color x:Key="Color_032">#FFfae0a2</Color>
+	<Color x:Key="Color_033">#FFfcefd0</Color>
+	<Color x:Key="Color_034">#FFfca558</Color>
+	<Color x:Key="Color_035">#FFfdb97d</Color>
+	<Color x:Key="Color_036">#FFfee0c6</Color>
+	<Color x:Key="Color_037">#FFFFFFFF</Color>
+	<Color x:Key="Color_038">#FF4C6D97</Color>
+	<Color x:Key="Color_040">#CCCCCC</Color>
+	<Color x:Key="Color_041">#FF000000</Color>
+	<Color x:Key="Color_042">#ffA9C1DE</Color>
+	<Color x:Key="Color_043">#ffc95c05</Color>
+	<Color x:Key="Color_044">#FFB3B3B3</Color>
+	<Color x:Key="Color_045">#FFBFDBFF</Color>
+	<Color x:Key="Color_046">#FF9AC6FF</Color>
+	<Color x:Key="Color_047">#ff3B3B3B</Color>
+	<Color x:Key="Color_048">#00000000</Color>
+	<Color x:Key="Color_049">#00FFFFFF</Color>
+	<Color x:Key="Color_050">#666666</Color>
+	<Color x:Key="Color_051">#72FFFFFF</Color>
+	<Color x:Key="Color_052">#007A96DF</Color>	
+	
+<!--  BEGINS BRUSHES extracted with XAML Colors Extractor  -->
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalCenterFillKey}"  StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="{StaticResource Color_004}" Offset="0" />
+                <GradientStop Color="{StaticResource Color_005}" Offset="1" />
+    </LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackInnerBorderFillKey}"  StartPoint="0.5,0" EndPoint="0.5,1">
+			<GradientStop Offset="0" Color="{StaticResource Color_007}"/>
+			<GradientStop Offset="0.49" Color="{StaticResource Color_008}"/>
+			<GradientStop Offset="1" Color="{StaticResource Color_009}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackCenterFillKey}"  StartPoint="0.5,0" EndPoint="0.5,1">
+				<GradientStop Offset="0" Color="{StaticResource Color_010}"/>
+				<GradientStop Offset="0.40" Color="{StaticResource Color_011}"/>
+				<GradientStop Offset="0.5" Color="{StaticResource Color_012}"/>
+				<GradientStop Offset="0.89" Color="{StaticResource Color_013}"/>
+				<GradientStop Offset="1" Color="{StaticResource Color_013}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedOuterBorderFillKey}"  StartPoint="0.5,0" EndPoint="0.5,1">
+				<GradientStop Offset="0" Color="{StaticResource Color_014}"/>
+				<GradientStop Offset="1" Color="{StaticResource Color_015}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedCenterFillKey}"  StartPoint="0.5,0" EndPoint="0.5,1">
+				<GradientStop Offset="0" Color="{StaticResource Color_017}"/>
+				<GradientStop Offset="0.15" Color="{StaticResource Color_018}"/>
+				<GradientStop Offset="0.85" Color="{StaticResource Color_018}"/>
+				<GradientStop Offset="1" Color="{StaticResource Color_019}"/>
+    </LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxNormalInnerBoxBorderFillKey}" EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_023}"/>
+		<GradientStop Offset="0.34" Color="{StaticResource Color_023}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_024}"/>
+	</LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxNormalInnerBoxCenterFillKey}" EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_025}"/>
+		<GradientStop Offset="0.34" Color="{StaticResource Color_025}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_026}"/>
+	</LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxHottrackInnerBoxBorderFillKey}" EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_027}"/>
+		<GradientStop Offset="0.44" Color="{StaticResource Color_027}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_028}"/>
+	</LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxHottrackInnerBoxCenterFillKey}"  EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_029}"/>
+		<GradientStop Offset="0.44" Color="{StaticResource Color_029}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_030}"/>
+	</LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxPressedInnerBoxCenterFillKey}" EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_032}"/>
+		<GradientStop Offset="0.34" Color="{StaticResource Color_032}"/>
+		<GradientStop Offset="0.89" Color="{StaticResource Color_033}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_033}"/>
+	</LinearGradientBrush>
+
+<LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxPressedInnerBoxBorderFillKey}" EndPoint="1,1" StartPoint="0,0">
+		<GradientStop Offset="0" Color="{StaticResource Color_034}"/>
+		<GradientStop Offset="0.34" Color="{StaticResource Color_034}"/>
+		<GradientStop Offset="0.71" Color="{StaticResource Color_035}"/>
+		<GradientStop Offset="0.89" Color="{StaticResource Color_036}"/>
+		<GradientStop Offset="1" Color="{StaticResource Color_036}"/>
+	</LinearGradientBrush>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}" Color="{StaticResource Color_000}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsNormalCenterFillKey}" Color="{StaticResource Color_001}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}" Color="{StaticResource Color_002}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsHottrackCenterFillKey}" Color="{StaticResource Color_003}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalOuterBorderFillKey}" Color="{StaticResource Color_002}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalInnerBorderFillKey}" Color="{StaticResource Color_048}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackOuterBorderFillKey}" Color="{StaticResource Color_006}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedInnerBorderFillKey}" Color="{StaticResource Color_016}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}" Color="{StaticResource Color_020}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalBackgroundFillKey}" Color="{StaticResource Color_049}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackForegroundFillKey}" Color="{StaticResource Color_020}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackBackgroundFillKey}" Color="{StaticResource Color_049}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxNormalOuterBoxBorderFillKey}" Color="{StaticResource Color_021}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxNormalOuterBoxCenterFillKey}" Color="{StaticResource Color_022}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxHottrackOuterBoxBorderFillKey}"  Color="{StaticResource Color_031}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxCheckmarkBackgroundFillKey}" Color="{StaticResource Color_037}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CheckBoxCheckmarkNormalForegroundFillKey}" Color="{StaticResource Color_038}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBackgroundKey}" Color="{StaticResource Color_037}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBorderBrushKey}" Color="{StaticResource Color_040}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorForegroundKey}" Color="{StaticResource Color_050}" />
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}" Color="{StaticResource Color_041}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverFillKey}" Color="{StaticResource Color_049}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverForegroundKey}" Color="{StaticResource Color_041}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedFillKey}" Color="{StaticResource Color_042}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverOuterBorderFillKey}" Color="{StaticResource Color_049}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedOuterBorderFillKey}" Color="{StaticResource Color_042}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayOuterBorderFillKey}" Color="{StaticResource Color_043}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayForegroundKey}" Color="{StaticResource Color_041}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayFillKey}" Color="{StaticResource Color_049}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemInnerBorderFillKey}" Color="{StaticResource Color_051}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekFillKey}" Color="{StaticResource Color_052}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarOtherDayForegroundKey}" Color="{StaticResource Color_044}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekForegroundKey}" Color="{StaticResource Color_041}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleBackgroundKey}" Color="{StaticResource Color_045}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleForegroundKey}" Color="{StaticResource Color_041}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarSeparatorStrokeKey}" Color="{StaticResource Color_046}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey}" Color="{StaticResource Color_047}"/>
+
+<SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey}" Color="{StaticResource Color_047}"/>
+
+
+
+    <CornerRadius 
+		PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorCornerRadiusKey}" 
+		TopLeft="0" 
+		TopRight="0" 
+		BottomRight="0" 
+		BottomLeft="0" />
+
+    <CornerRadius 
+		PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.SpinButtonCornerRadiusKey}" 
+		TopLeft="0" 
+		TopRight="0" 
+		BottomRight="0" 
+		BottomLeft="0" />
+
+    <Thickness 
+		PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBorderThicknessKey}" 
+		Left="1" 
+		Top="1" 
+		Right="1" 
+		Bottom="1" />
+
+    <Thickness 
+		PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorMarginKey}" 
+		Left="1" 
+		Top="1" 
+		Right="1" 
+		Bottom="1" />
+
+    <Thickness 
+		PresentationOptions:Freeze="true" x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorPaddingKey}" 
+		Left="5" 
+		Top="3" 
+		Right="5" 
+		Bottom="3" />
+
+</ResourceDictionary>

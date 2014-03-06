@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_ResourceItems_Property" xml:space="preserve">
+    <value>リソース コレクションを取得します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_IsPolling_Property" xml:space="preserve">
+    <value>コネクターが Exchange Server の変更を現在プルしているかどうかを示す値を取得します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_PollingInterval_Property" xml:space="preserve">
+    <value>クライアントがサーバーの変更をポールする間隔を返すか、設定します。
+ デフォルトは 30 秒です。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_ServerConnectionSettings_Property" xml:space="preserve">
+    <value>Microsoft Exchange Server への接続に使用される設定を取得または設定します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_UseDefaultCredentials_Property" xml:space="preserve">
+    <value>ユーザーの 1 人が現在システムにログインしている必要があるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_Users_Property" xml:space="preserve">
+    <value>カレンダーがサーバーから取得されるユーザーのコレクションを取得または設定します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnector_UseServerWorkingHours_Property" xml:space="preserve">
+    <value>カスタム稼働時間が各ユーザーのためにサーバーからダウンロードされるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="WcfExchangeScheduleDataConnector_ResourceItems_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="ExchangeUser_Domain_Property" xml:space="preserve">
+    <value>ユーザーが属すコンピューター ドメインを取得または設定します。</value>
+  </data>
+  <data name="ExchangeUser_Password_Property" xml:space="preserve">
+    <value>ユーザーのパスワードを取得または設定します。</value>
+  </data>
+  <data name="ExchangeUser_UserName_Property" xml:space="preserve">
+    <value>ユーザーのユーザー名を取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_AcceptGZipEncoding_Property" xml:space="preserve">
+    <value>サーバーが圧縮 GZip と共に情報を返す必要があるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_CookieContainer_Property" xml:space="preserve">
+    <value>サーバーと関連付けられたクッキーを取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_HttpHeaders_Property" xml:space="preserve">
+    <value>サーバーへの各リクエストと共に送信される HTTP ヘッダーを取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_PreAuthenticate_Property" xml:space="preserve">
+    <value>サーバーへ接続するときに HTTP 事前認証が使用されるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_RequestedServerVersion_Property" xml:space="preserve">
+    <value>サーバーの要求バージョンを取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_Timeout_Property" xml:space="preserve">
+    <value>サーバーからの情報を要求するときに使用されるタイムアウトを取得または設定します (ミリセカンド)。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_Url_Property" xml:space="preserve">
+    <value>Microsoft Exchange Server への URL を取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_UserAgent_Property" xml:space="preserve">
+    <value>ユーザーエージェント HTTP ヘッダーの値を取得または設定します。</value>
+  </data>
+  <data name="ExchangeServerConnectionSettings_WebProxy_Property" xml:space="preserve">
+    <value>サーバーへの接続時に使用されるウェブ プロキシーを取得または設定します。</value>
+  </data>
+  <data name="ExchangeScheduleDataConnectorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+</root>

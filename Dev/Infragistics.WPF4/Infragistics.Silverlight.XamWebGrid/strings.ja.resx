@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DuplicateColumnKeyException" xml:space="preserve">
+    <value>以下のキーは、1 回以上定義されています: {0} 。</value>
+  </data>
+  <data name="DuplicateSortingColumnKeyException" xml:space="preserve">
+    <value>{0} キーと列のコレクションへの追加を試みています。Key が見つかりました。</value>
+  </data>
+  <data name="EmptyColumnKeyException" xml:space="preserve">
+    <value>列は Empty キーと一緒に追加されています。すべての列は一意なキーを持つ必要があります。</value>
+  </data>
+  <data name="InvalidActiveCellException" xml:space="preserve">
+    <value>ActiveCell は、表示が縮小に設定される列に属すことはできません。</value>
+  </data>
+  <data name="InvalidColumnKeyException" xml:space="preserve">
+    <value>以下のキーは、DataSource に一致しません。{0}。 列を追加したい場合、UnboundColumn タイプを使用してください。</value>
+  </data>
+  <data name="InvalidColumnTypeMappingException" xml:space="preserve">
+    <value>ColumnType および DataType は、ColumnTypeMapping に指定する必要があります。</value>
+  </data>
+  <data name="InvalidPageIndexException" xml:space="preserve">
+    <value>{0} は、無効なページ インデックスです。値は、1 から PageCount の合計の間でなければなりません。</value>
+  </data>
+  <data name="TypeResolutionException" xml:space="preserve">
+    <value>以下の Type は解決できませんでした。</value>
+  </data>
+  <data name="ResizingColumnCannotBeRemovedException" xml:space="preserve">
+    <value>列のサイズ変更コレクションでは、列は物理的にサイズ変更される必要があります。</value>
+  </data>
+  <data name="ColumnLayoutException" xml:space="preserve">
+    <value>Row Added は、ColumnLayout を共有しません。また、この RowsCollection に追加することもできません。</value>
+  </data>
+  <data name="DataTypeMismatchException" xml:space="preserve">
+    <value>CreateItem メソッドに渡されたデータ オブジェクトは、基になるリストと同じデータ タイプではありませんでした。</value>
+  </data>
+  <data name="DataTypeMismatchExceptionVerbose" xml:space="preserve">
+    <value>CreateItem メソッドに渡されたデータ オブジェクトは、基になるリストと同じデータ タイプではありませんでした。入力されたオブジェクトは、{0} タイプで、基のコレクションは {1} を指定できません。</value>
+  </data>
+  <data name="NullDataException" xml:space="preserve">
+    <value>CreateItem メソッドへ渡されたデータ オブジェクトは、null で使用できません。</value>
+  </data>
+  <data name="InvalidRowException" xml:space="preserve">
+    <value>動作を試みましたが完了できませんでした。実行する行が XamWebGrid にないためです。</value>
+  </data>
+  <data name="TypeResolutionExceptionVerbose" xml:space="preserve">
+    <value>以下の Type は解決できませんでした: {0}。</value>
+  </data>
+  <data name="EmptyGroupByAreaText" xml:space="preserve">
+    <value>列ごとにグループ分けするときは、ここに列ヘッダーをドラッグします。</value>
+  </data>
+  <data name="InvalidRowIndexException" xml:space="preserve">
+    <value>処理中の Row は Headers、Footers、または Rows コレクションに含む必要があります。</value>
+  </data>
+  <data name="TypeMismatchException" xml:space="preserve">
+    <value>TypeMismatch 例外: タイプ {0} を {1} に変換できませんでした。</value>
+  </data>
+  <data name="ChildColumnIsSelectedAccessDeniedException" xml:space="preserve">
+    <value>IsSelected プロパティは、グリッドのルート レベルの Columns コレクションの列で Xaml でのみ設定できます。ColumnLayout の Columns コレクションの Column で設定できません。</value>
+  </data>
+  <data name="ContainsString" xml:space="preserve">
+    <value>含む</value>
+  </data>
+  <data name="DoesNotContainString" xml:space="preserve">
+    <value>含まない</value>
+  </data>
+  <data name="EndsWithString" xml:space="preserve">
+    <value>～で終わる</value>
+  </data>
+  <data name="EqualsString" xml:space="preserve">
+    <value>一致する</value>
+  </data>
+  <data name="GreaterThanOrEqualsString" xml:space="preserve">
+    <value>以上</value>
+  </data>
+  <data name="GreaterThanString" xml:space="preserve">
+    <value>より大きい</value>
+  </data>
+  <data name="LessThanOrEqualsString" xml:space="preserve">
+    <value>以下</value>
+  </data>
+  <data name="LessThanString" xml:space="preserve">
+    <value>より小さい</value>
+  </data>
+  <data name="NotEqualsString" xml:space="preserve">
+    <value>一致しない</value>
+  </data>
+  <data name="StartsWithString" xml:space="preserve">
+    <value>～で始まる</value>
+  </data>
+  <data name="ChildColumnIsGroupByAccessDeniedException" xml:space="preserve">
+    <value>IsGroupBy プロパティは、グリッドのルート レベルの Columns コレクションの列で Xaml でのみ設定できます。ColumnLayout の Columns コレクションの Column で設定できません。</value>
+  </data>
+  <data name="DoesNotEndWithString" xml:space="preserve">
+    <value>～で終わらない</value>
+  </data>
+  <data name="DoesNotStartWithString" xml:space="preserve">
+    <value>～始まらない</value>
+  </data>
+  <data name="AvgSummarySelectionLabel" xml:space="preserve">
+    <value>平均値</value>
+  </data>
+  <data name="CountSummarySelectionLabel" xml:space="preserve">
+    <value>個数</value>
+  </data>
+  <data name="MaxSummaryRowLabel" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="MaxSummarySelectionLabel" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="MinSummaryRowLabel" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="MinSummarySelectionLabel" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="SumSummarySelectionLabel" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="ClearFiltersForColumnKey" xml:space="preserve">
+    <value>'{0}' のフィルターをクリアする</value>
+  </data>
+  <data name="CustomFiltersWithoutType" xml:space="preserve">
+    <value>カスタム フィルター</value>
+  </data>
+  <data name="CustomFiltersWithType" xml:space="preserve">
+    <value>カスタム フィルター ( {0} )</value>
+  </data>
+  <data name="NullConditionalFormatEvaluationValueException" xml:space="preserve">
+    <value>MinimumValue / MaximumValue を null に設定できません。</value>
+  </data>
+  <data name="NullContentString" xml:space="preserve">
+    <value>(Null)</value>
+  </data>
+  <data name="SelectAllCheckBox" xml:space="preserve">
+    <value>すべてを選択する</value>
+  </data>
+  <data name="ConditionalFormattingMaximumNotSet" xml:space="preserve">
+    <value>最大値は設定されていません。</value>
+  </data>
+  <data name="ConditionalFormattingMinimumNotSet" xml:space="preserve">
+    <value>最小値は設定されていません。</value>
+  </data>
+  <data name="FilterSelectionControl_CancelButtonText" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="FilterSelectionControl_OKButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CustomFilterDialog_CancelButtonText" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="CustomFilterDialog_OKButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ColumnChooserDisplayText" xml:space="preserve">
+    <value>列の選択</value>
+  </data>
+  <data name="ColumnChooserToolTipText" xml:space="preserve">
+    <value>非表示の列</value>
+  </data>
+  <data name="ColumnChooserDialog_ColumnLabel" xml:space="preserve">
+    <value>列</value>
+  </data>
+  <data name="ColumnChooserDialog_ViewLabel" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="TemplateColumn_RequireFilterEditorTemplate" xml:space="preserve">
+    <value>TemplateColumn を使用するときに、FilterEditorTemplate を必要なエディターに設定してください。</value>
+  </data>
+  <data name="UnboundColumn_RequireFilterEditorTemplate" xml:space="preserve">
+    <value>UnboundColumn を使用するときに、FilterEditorTemplate を必要なエディターに設定してください。</value>
+  </data>
+  <data name="CancelCaption" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="OKCaption" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="EmptyContentString" xml:space="preserve">
+    <value>(空)</value>
+  </data>
+  <data name="AvgSummaryRowLabel" xml:space="preserve">
+    <value>平均</value>
+  </data>
+  <data name="CountSummaryRowLabel" xml:space="preserve">
+    <value>個数</value>
+  </data>
+  <data name="PageSizeInvalid" xml:space="preserve">
+    <value>{0} のページ サイズは無効です。この値は 0 より大きい値にする日必要があります。</value>
+  </data>
+  <data name="SumSummaryRowLabel" xml:space="preserve">
+    <value>合計</value>
+  </data>
+  <data name="CustomFilterDialog_AndRadioButtonText" xml:space="preserve">
+    <value>And</value>
+  </data>
+  <data name="CustomFilterDialog_OrRadioButtonText" xml:space="preserve">
+    <value>Or</value>
+  </data>
+  <data name="DateTimeAfterFilterOperandString" xml:space="preserve">
+    <value>～の後</value>
+  </data>
+  <data name="DateTimeBeforeFilterOperandString" xml:space="preserve">
+    <value>～の前</value>
+  </data>
+  <data name="DateTimeLastMonthFilterOperandString" xml:space="preserve">
+    <value>先月</value>
+  </data>
+  <data name="DateTimeLastQuarterFilterOperandString" xml:space="preserve">
+    <value>前四半期</value>
+  </data>
+  <data name="DateTimeLastWeekFilterOperandString" xml:space="preserve">
+    <value>先週</value>
+  </data>
+  <data name="DateTimeLastYearFilterOperandString" xml:space="preserve">
+    <value>昨年</value>
+  </data>
+  <data name="DateTimeNextMonthFilterOperandString" xml:space="preserve">
+    <value>翌月</value>
+  </data>
+  <data name="DateTimeNextQuarterFilterOperandString" xml:space="preserve">
+    <value>翌四半期</value>
+  </data>
+  <data name="DateTimeNextWeekFilterOperandString" xml:space="preserve">
+    <value>翌週</value>
+  </data>
+  <data name="DateTimeNextYearFilterOperandString" xml:space="preserve">
+    <value>翌年</value>
+  </data>
+  <data name="DateTimeThisMonthFilterOperandString" xml:space="preserve">
+    <value>今月</value>
+  </data>
+  <data name="DateTimeThisQuarterFilterOperandString" xml:space="preserve">
+    <value>今四半期</value>
+  </data>
+  <data name="DateTimeThisWeekFilterOperandString" xml:space="preserve">
+    <value>今週</value>
+  </data>
+  <data name="DateTimeThisYearFilterOperandString" xml:space="preserve">
+    <value>今年</value>
+  </data>
+  <data name="DateTimeTodayFilterOperandString" xml:space="preserve">
+    <value>今日</value>
+  </data>
+  <data name="DateTimeTomorrowFilterOperandString" xml:space="preserve">
+    <value>明日</value>
+  </data>
+  <data name="DateTimeYearToDateFilterOperandString" xml:space="preserve">
+    <value>年度累計</value>
+  </data>
+  <data name="DateTimeYesterdayFilterOperandString" xml:space="preserve">
+    <value>昨日</value>
+  </data>
+  <data name="DateTimeFebruaryFilterOperandString" xml:space="preserve">
+    <value>2 月</value>
+  </data>
+  <data name="DateTimeJanuaryFilterOperandString" xml:space="preserve">
+    <value>1 月</value>
+  </data>
+  <data name="DateTimeAprilFilterOperandString" xml:space="preserve">
+    <value>4 月</value>
+  </data>
+  <data name="DateTimeAugustFilterOperandString" xml:space="preserve">
+    <value>8 月</value>
+  </data>
+  <data name="DateTimeDecemberFilterOperandString" xml:space="preserve">
+    <value>12 月</value>
+  </data>
+  <data name="DateTimeJulyFilterOperandString" xml:space="preserve">
+    <value>7 月</value>
+  </data>
+  <data name="DateTimeJuneFilterOperandString" xml:space="preserve">
+    <value>6 月</value>
+  </data>
+  <data name="DateTimeMarchFilterOperandString" xml:space="preserve">
+    <value>3 月</value>
+  </data>
+  <data name="DateTimeMayFilterOperandString" xml:space="preserve">
+    <value>5 月</value>
+  </data>
+  <data name="DateTimeNovemberFilterOperandString" xml:space="preserve">
+    <value>11 月</value>
+  </data>
+  <data name="DateTimeOctoberFilterOperandString" xml:space="preserve">
+    <value>10 月</value>
+  </data>
+  <data name="DateTimeSeptemberFilterOperandString" xml:space="preserve">
+    <value>9 月</value>
+  </data>
+  <data name="DateTimeQuarter1FilterOperandString" xml:space="preserve">
+    <value>四半期 1</value>
+  </data>
+  <data name="DateTimeQuarter2FilterOperandString" xml:space="preserve">
+    <value>四半期 2</value>
+  </data>
+  <data name="DateTimeQuarter3FilterOperandString" xml:space="preserve">
+    <value>四半期 3</value>
+  </data>
+  <data name="DateTimeQuarter4FilterOperandString" xml:space="preserve">
+    <value>四半期 4</value>
+  </data>
+  <data name="DateFilterObjectType_All" xml:space="preserve">
+    <value>すべて</value>
+  </data>
+  <data name="DateFilterObjectType_Date" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="DateFilterObjectType_Hour" xml:space="preserve">
+    <value>時</value>
+  </data>
+  <data name="DateFilterObjectType_Minute" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="DateFilterObjectType_Month" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="DateFilterObjectType_Second" xml:space="preserve">
+    <value>2 番目</value>
+  </data>
+  <data name="DateFilterObjectType_Year" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="AfterEllipsis" xml:space="preserve">
+    <value>～以降</value>
+  </data>
+  <data name="AllDatesInPeriod" xml:space="preserve">
+    <value>期間内のすべての日付</value>
+  </data>
+  <data name="BeforeEllipsis" xml:space="preserve">
+    <value>～の以前</value>
+  </data>
+  <data name="Blank" xml:space="preserve">
+    <value>(空白)</value>
+  </data>
+  <data name="ContainsEllipsis" xml:space="preserve">
+    <value>含む</value>
+  </data>
+  <data name="CustomFiltersWithoutTypeEllipsis" xml:space="preserve">
+    <value>カスタム フィルター</value>
+  </data>
+  <data name="DoesNotContainEllipsis" xml:space="preserve">
+    <value>含まない</value>
+  </data>
+  <data name="DoesNotEndWithEllipsis" xml:space="preserve">
+    <value>～で終わらない</value>
+  </data>
+  <data name="DoesNotStartWithEllipsis" xml:space="preserve">
+    <value>～で始まらない</value>
+  </data>
+  <data name="EndsWithEllipsis" xml:space="preserve">
+    <value>～で終わる</value>
+  </data>
+  <data name="EqualsEllipsis" xml:space="preserve">
+    <value>等しい</value>
+  </data>
+  <data name="GreaterThanEllipsis" xml:space="preserve">
+    <value>より大きい</value>
+  </data>
+  <data name="GreaterThanOrEqualEllipsis" xml:space="preserve">
+    <value>以上</value>
+  </data>
+  <data name="LessThanEllipsis" xml:space="preserve">
+    <value>より小さい</value>
+  </data>
+  <data name="LessThanOrEqualEllipsis" xml:space="preserve">
+    <value>以下</value>
+  </data>
+  <data name="NotEqualsEllipsis" xml:space="preserve">
+    <value>等しくない</value>
+  </data>
+  <data name="StartsWithEllipsis" xml:space="preserve">
+    <value>～で始まる</value>
+  </data>
+  <data name="BetweenEllipsis" xml:space="preserve">
+    <value>次の間</value>
+  </data>
+  <data name="FilterWatermark_All" xml:space="preserve">
+    <value>検索 (すべて)</value>
+  </data>
+  <data name="FilterWatermark_Date" xml:space="preserve">
+    <value>日付の検索</value>
+  </data>
+  <data name="FilterWatermark_Hour" xml:space="preserve">
+    <value>時間の検索</value>
+  </data>
+  <data name="FilterWatermark_Minute" xml:space="preserve">
+    <value>分の検索</value>
+  </data>
+  <data name="FilterWatermark_Month" xml:space="preserve">
+    <value>月の検索</value>
+  </data>
+  <data name="FilterWatermark_Second" xml:space="preserve">
+    <value>秒の検索</value>
+  </data>
+  <data name="FilterWatermark_Year" xml:space="preserve">
+    <value>年の検索</value>
+  </data>
+  <data name="Watermark" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="DateFilters" xml:space="preserve">
+    <value>日付フィルター</value>
+  </data>
+  <data name="NumberFilters" xml:space="preserve">
+    <value>数字フィルター</value>
+  </data>
+  <data name="StringFilters" xml:space="preserve">
+    <value>テキスト フィルター</value>
+  </data>
+  <data name="FilterBoxNoDataAvailable" xml:space="preserve">
+    <value>使用可能なデータはありません</value>
+  </data>
+  <data name="AppendFilterText" xml:space="preserve">
+    <value>現在の選択をフィルターに追加</value>
+  </data>
+  <data name="After" xml:space="preserve">
+    <value>後</value>
+  </data>
+  <data name="Before" xml:space="preserve">
+    <value>前</value>
+  </data>
+  <data name="BoolFilters" xml:space="preserve">
+    <value>ブール値フィルター</value>
+  </data>
+  <data name="CompoundFilterDialog_AddConditionButtonText" xml:space="preserve">
+    <value>条件の追加</value>
+  </data>
+  <data name="CompoundFilterDialog_AndButtonText" xml:space="preserve">
+    <value>'And' グループ</value>
+  </data>
+  <data name="CompoundFilterDialog_AndColorLabelText" xml:space="preserve">
+    <value>And カラー</value>
+  </data>
+  <data name="CompoundFilterDialog_OrButtonText" xml:space="preserve">
+    <value>'Or' グループ</value>
+  </data>
+  <data name="CompoundFilterDialog_OrColorLabelText" xml:space="preserve">
+    <value>Or カラー</value>
+  </data>
+  <data name="CompoundFilterDialog_RemoveConditionButtonText" xml:space="preserve">
+    <value>条件の削除</value>
+  </data>
+  <data name="CompoundFilterDialog_ToggleButtonText" xml:space="preserve">
+    <value>トグル</value>
+  </data>
+  <data name="CompoundFilterDialog_UngroupButtonText" xml:space="preserve">
+    <value>グループ解除</value>
+  </data>
+  <data name="LogicalAND" xml:space="preserve">
+    <value>AND</value>
+  </data>
+  <data name="LogicalOR" xml:space="preserve">
+    <value>OR</value>
+  </data>
+  <data name="CompoundFilterDialog_SelectedGroupText" xml:space="preserve">
+    <value>選択されたグループ</value>
+  </data>
+  <data name="FilterBoxLoading" xml:space="preserve">
+    <value>Loading</value>
+    <comment>To translate</comment>
+  </data>
+  <data name="FilterBoxNotAllItemsShowing" xml:space="preserve">
+    <value>Not all items showing</value>
+    <comment>To translate</comment>
+  </data>
+  <data name="FilterBoxNotAllItemsShowingTooltip" xml:space="preserve">
+    <value>This column has more than {0} unique items. Only the first {0} unique items are displayed</value>
+    <comment>To translate</comment>
+  </data>
+</root>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataObjectTypeMismatchException" xml:space="preserve">
+    <value>Der Typ des gesendeten Objekts entspricht nicht dem von DataManager bearbeiteten Typ.</value>
+  </data>
+  <data name="DataSourceDoesNotSupportIListException" xml:space="preserve">
+    <value>DataSource von DataManager unterstützt IList oder IEditableCollectionView nicht und kann diese Aktion nicht ausführen.</value>
+  </data>
+  <data name="InvalidEnumeratorException" xml:space="preserve">
+    <value>Die GetEnumerator-Methode der zugewiesenen IEnumerable hat Null zurückgegeben.</value>
+  </data>
+  <data name="InvalidEventName" xml:space="preserve">
+    <value>„Das Ereignis {0} konnte bei einem Element mit Typ {1} nicht gefunden werden“</value>
+  </data>
+  <data name="PropertyNotFound" xml:space="preserve">
+    <value>Die Eigenschaft wurde nicht gefunden.</value>
+  </data>
+  <data name="Provider_EnumEmpty" xml:space="preserve">
+    <value>Typ: {0} muss mindestens einen Wert enthalten.</value>
+  </data>
+  <data name="Provider_InvalidResource" xml:space="preserve">
+    <value>Die Ressource mit einem Schlüssel von {0} bei der Verifizierung des ResourceDictionary von {1} ist ungültig. Es darf nicht {2} sein.</value>
+  </data>
+  <data name="Provider_KeyNotFound" xml:space="preserve">
+    <value>Typ: {0} enthält keinen Wert von: {1}.</value>
+  </data>
+  <data name="Provider_MissingResource" xml:space="preserve">
+    <value>Für Schlüssel: {0} wurde keine Ressource gefunden.</value>
+  </data>
+  <data name="Provider_SparseEnumValues" xml:space="preserve">
+    <value>Typ: {0} Enumerationswerte müssen aufeinander folgen und mit 0 beginnen.</value>
+  </data>
+  <data name="Provider_TypeNotEnum" xml:space="preserve">
+    <value>T muss ein Enumerationstyp sein; die Klasse unterstützt Typ: {0} nicht.</value>
+  </data>
+  <data name="RequireEmptyConstructorException" xml:space="preserve">
+    <value>DataManager hat versucht, eine Instanz einer Klasse ohne leere Parameterliste zu erstellen.   </value>
+  </data>
+  <data name="RequireEmptyConstructorExceptionWithType" xml:space="preserve">
+    <value>DataManager hat versucht, eine Instanz des Typs '{0}' ohne leere Parameterliste zu erstellen.</value>
+  </data>
+  <data name="TrialVersion" xml:space="preserve">
+    <value>Testversion</value>
+  </data>
+</root>

@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LD_SectionPresenter" xml:space="preserve">
+    <value>マスク セクションを表示するエレメント。XamMaskedEditor で使用されます。</value>
+  </data>
+  <data name="LD_DisplayCharacterPresenter" xml:space="preserve">
+    <value>文字を表すマスクを表示するエレメント。XamMaskedEditor で使用されます。</value>
+  </data>
+  <data name="LD_SectionsList" xml:space="preserve">
+    <value>マスク セクションを表示するエレメント。XamMaskedEditor で使用されます。</value>
+  </data>
+  <data name="LD_DisplayCharactersList" xml:space="preserve">
+    <value>文字を表すマスクを表示するエレメント。XamMaskedEditor で使用されます。</value>
+  </data>
+  <data name="LD_CaretElement" xml:space="preserve">
+    <value>XamMaskedEditor にカレットを表示するエレメント。</value>
+  </data>
+  <data name="LC_Appearance" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="LD_CaretElement_P_BlinkVisibility" xml:space="preserve">
+    <value>現在のブリンク状態を指定します。表示可能またはブリンク アウトのいずれかです。</value>
+  </data>
+  <data name="LD_ValueEditor" xml:space="preserve">
+    <value>取得された他の値エディタからの基本クラス。</value>
+  </data>
+  <data name="LC_Data" xml:space="preserve">
+    <value>データ</value>
+  </data>
+  <data name="LD_ValueEditor_P_Value" xml:space="preserve">
+    <value>エディタの値を取得または設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_Text" xml:space="preserve">
+    <value>エディタの値をテキストとして取得または設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_ValueType" xml:space="preserve">
+    <value>エディタを操作する値のタイプを取得または設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_ValueConstraint" xml:space="preserve">
+    <value>エディタ入力の制限を取得または設定します。</value>
+  </data>
+  <data name="LC_Behavior" xml:space="preserve">
+    <value>動作</value>
+  </data>
+  <data name="LD_ValueEditor_P_InvalidValueBehavior" xml:space="preserve">
+    <value>無効な値で編集モードを終了しようとする場合にどのアクションをとるかを決定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_ValueToTextConverter" xml:space="preserve">
+    <value>テキストと値の間の変換で使用されるコンバーターを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsValueValid" xml:space="preserve">
+    <value>エディタの現在の値が有効であるかどうかを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_EditTemplate" xml:space="preserve">
+    <value>エディタが編集モードである時に使用されるテンプレート。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsNullable" xml:space="preserve">
+    <value>null 値を許可するかどうかを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_ReadOnly" xml:space="preserve">
+    <value>ユーザーが値を変更できるかどうかを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsAlwaysInEditMode" xml:space="preserve">
+    <value>このエディタが編集モードであるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsEmbedded" xml:space="preserve">
+    <value>エディタが、DataPresenter セルのような他のコントロールに組み込まれている場合は、True を返します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsInEditMode" xml:space="preserve">
+    <value>この要素が有効かどうかを設定または取得します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_OriginalValue" xml:space="preserve">
+    <value>編集モードではオリジナル値を取得します (読み取り専用)</value>
+  </data>
+  <data name="LD_ValueEditor_P_Theme" xml:space="preserve">
+    <value>コントロールのテーマを取得または設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_FormatProvider" xml:space="preserve">
+    <value>値とテキストの間の変換で使用されるフォーマット プロバイダを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_Format" xml:space="preserve">
+    <value>値とテキストの間の変換で使用されるフォーマットを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditModeEnded" xml:space="preserve">
+    <value>コントロールが、編集モードを出た時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditModeEnding" xml:space="preserve">
+    <value>コントロールが、編集モードを終了しようとする時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditModeStarted" xml:space="preserve">
+    <value>コントロールが、編集モードに入った時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditModeStarting" xml:space="preserve">
+    <value>コントロールが編集モードに入ろうとする時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditModeValidationError" xml:space="preserve">
+    <value>入力検証エラーがある場合に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_ValueChanged" xml:space="preserve">
+    <value>プロパティ 'Value' が変更する時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_TextChanged" xml:space="preserve">
+    <value>プロパティ 'Text' が変更する時に発生します。</value>
+  </data>
+  <data name="LD_ValueEditor_E_EditTemplateChanged" xml:space="preserve">
+    <value>プロパティ 'EditTemplate' が変更する時に発生します。</value>
+  </data>
+  <data name="LD_TextEditorBase_P_DisplayText" xml:space="preserve">
+    <value>エディタが編集モードない時に使用された表示テキストを返します。</value>
+  </data>
+  <data name="LD_TextEditorBase_P_NullText" xml:space="preserve">
+    <value>値が null で、エディタが編集モードでない時に表示するテキスト。</value>
+  </data>
+  <data name="LD_TextEditorBase_P_ValueToDisplayTextConverter" xml:space="preserve">
+    <value>テキストと値の間の変換で使用されるコンバーターを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_InsertMode" xml:space="preserve">
+    <value>編集モードが、'insert' または 'overstrike' かどうかを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_Mask" xml:space="preserve">
+    <value>マスクを取得または設定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_DataMode" xml:space="preserve">
+    <value>Text と Value プロパティによって返されるデータに適用されるマスク モードを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_ClipMode" xml:space="preserve">
+    <value>テキストのコピー時に適用されるマスク モードを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_DisplayMode" xml:space="preserve">
+    <value>編集モードでない時に適用されるマスク モードを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_PadChar" xml:space="preserve">
+    <value>プレースホルダ文字が空のときに入力のパッディングに使用される文字。デフォルトは、スペース（" "）文字です。</value>
+  </data>
+  <data name="LC_Display" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_PromptChar" xml:space="preserve">
+    <value>プロンプトとして使用する文字。デフォルトは、'_' 文字です。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SelectionStart" xml:space="preserve">
+    <value>選択したテキストの場所を示します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SelectionLength" xml:space="preserve">
+    <value>選択されたテキストの長さ。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SelectedText" xml:space="preserve">
+    <value>選択されたテキスト。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_TextLength" xml:space="preserve">
+    <value>編集モード時のコントロールのテキストの合計の長さ。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_E_ExecutingCommand" xml:space="preserve">
+    <value>コマンドが実行される前に発生します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_E_ExecutedCommand" xml:space="preserve">
+    <value>コマンドが実行された後に発生します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor" xml:space="preserve">
+    <value>日付および/または時間の値を編集するマスク済みエディタ。</value>
+  </data>
+  <data name="LD_XamCurrencyEditor" xml:space="preserve">
+    <value>通貨値を編集するマスク済みエディタ。</value>
+  </data>
+  <data name="LD_XamCheckEditor" xml:space="preserve">
+    <value>値の表示および編集に使用するチェックボックスを使用する	チェック エディタ。</value>
+  </data>
+  <data name="LD_XamCheckEditor_P_IsChecked" xml:space="preserve">
+    <value>チェック エディタのチェックされた状態を取得または設定します。</value>
+  </data>
+  <data name="LD_XamCheckEditor_P_IsThreeState" xml:space="preserve">
+    <value>チェック エディタが、3 つまたは 2 つの状態の間で切り替えるかどうかを指定します。</value>
+  </data>
+  <data name="LD_ValueEditorCheckBox" xml:space="preserve">
+    <value>XamCheckEditor によって使用されるチェック ボックス派生クラス。</value>
+  </data>
+  <data name="LD_XamTextEditor" xml:space="preserve">
+    <value>テキスト書式で値を編集する値エディタ。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_HorizontalScrollBarVisibility" xml:space="preserve">
+    <value>水平スクロールバーが表示可能かどうかを決定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_TextWrapping" xml:space="preserve">
+    <value>1 行に収めるために十分な領域がない場合、テキストをラップするかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_TextAlignment" xml:space="preserve">
+    <value>テキスト配列を取得または設定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_TextAlignmentResolved" xml:space="preserve">
+    <value>解決されたテキスト揃えを返します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_VerticalScrollBarVisibility" xml:space="preserve">
+    <value>垂直スクロールバーが表示可能かどうかを決定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_SelectionStart" xml:space="preserve">
+    <value>選択したテキストの場所を示します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_SelectionLength" xml:space="preserve">
+    <value>選択したテキストの長さを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_TextLength" xml:space="preserve">
+    <value>エディタの現在のテキストの長さを示します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_SelectedText" xml:space="preserve">
+    <value>選択したテキストを取得または設定します。</value>
+  </data>
+  <data name="LD_XamNumericEditor" xml:space="preserve">
+    <value>数値を編集するマスク済みエディタ。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_Enumeration" xml:space="preserve">
+    <value>有効な値として扱われるために検証された値を含む項目リスト。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_FixedValue" xml:space="preserve">
+    <value>検証されている値が等しくなければならない特別な値。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MaxExclusive" xml:space="preserve">
+    <value>制約値で許容される最大値より１大きい値を取得または設定します。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MaxInclusive" xml:space="preserve">
+    <value>制約値で許容される最大値。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MaxLength" xml:space="preserve">
+    <value>制約値で許容される最大の長さ (指定された値を含む)。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MinExclusive" xml:space="preserve">
+    <value>制約値で許容される最小値より １ 小さい値。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MinInclusive" xml:space="preserve">
+    <value>制約値で許容される最小値。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_MinLength" xml:space="preserve">
+    <value>制約値で許容される最小の長さ (指定された値を含む)。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_Nullable" xml:space="preserve">
+    <value>制約値で null （Nothing） が許容されるかどうかを示します。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_RegexPattern" xml:space="preserve">
+    <value>制約値が一致する必要がある正規表現。</value>
+  </data>
+  <data name="LD_ValuePresenter" xml:space="preserve">
+    <value>埋め込み式でホスティング値エディタ用の抽象的な基本クラス。</value>
+  </data>
+  <data name="LD_ValuePresenter_P_IsInEditMode" xml:space="preserve">
+    <value>エディタが編集モードであるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SelectAllBehavior" xml:space="preserve">
+    <value>入力した文字のみまたはすべての文字を選択するのかを指定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_IsReadOnly" xml:space="preserve">
+    <value>ユーザーが値を変更できるかどうかを指定します。</value>
+  </data>
+  <data name="LD_XamComboEditor" xml:space="preserve">
+    <value>1 つを選択するドロップ ダウンリストで項目のリストを表示する値エディタ。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_ComboBoxStyle" xml:space="preserve">
+    <value>基になる ComboBox のスタイルの設定に使用されます。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DropDownButtonDisplayMode" xml:space="preserve">
+    <value>ドロップダウンボタンをいつ表示するかを指定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DropDownButtonStyle" xml:space="preserve">
+    <value>ドロップ ダウンボタンのスタイルの設定に使用されます。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DropDownButtonVisibility" xml:space="preserve">
+    <value>ドロップ ダウン ボタンが表示されるかどうかを示します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DropDownResizeMode" xml:space="preserve">
+    <value>ユーザーがドロップ ダウンをリサイズできるかどうか、および、できる場合はその方法を指定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_IsDropDownOpen" xml:space="preserve">
+    <value>ドロップ ダウンが展開されているかどうかを示します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_IsEditable" xml:space="preserve">
+    <value>コンボ部分が、編集可能なテキストボックスかどうかを指定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_ItemsProvider" xml:space="preserve">
+    <value>項目が、ドロップダウンに表示されるかどうかを指定するために使用されます。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_MaxDropDownHeight" xml:space="preserve">
+    <value>ドロップ ダウン リスト の最高値。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_MaxDropDownWidth" xml:space="preserve">
+    <value>ドロップ ダウン リスト の最高幅。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_MinDropDownWidth" xml:space="preserve">
+    <value>ドロップ ダウン リスト の最小幅。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_SelectedIndex" xml:space="preserve">
+    <value>選択された項目のインデックスを取得または設定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_SelectedItem" xml:space="preserve">
+    <value>現在選択済みの項目。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_SelectedText" xml:space="preserve">
+    <value>選択したテキストを取得または設定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_SelectionStart" xml:space="preserve">
+    <value>選択したテキストの場所を示します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_SelectionLength" xml:space="preserve">
+    <value>選択したテキストの長さを取得または設定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_TextAlignmentResolved" xml:space="preserve">
+    <value>解決されたテキスト揃えを返します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_TextLength" xml:space="preserve">
+    <value>エディタの現在のテキストの長さを示します。</value>
+  </data>
+  <data name="LD_XamComboEditor_E_ExecutingCommand" xml:space="preserve">
+    <value>コマンドが実行される前に発生します。</value>
+  </data>
+  <data name="LD_XamComboEditor_E_ExecutedCommand" xml:space="preserve">
+    <value>コマンドが実行された後に発生します。</value>
+  </data>
+  <data name="LD_XamComboEditor_E_DropDownOpened" xml:space="preserve">
+    <value>コマンドが実行される前に発生します。</value>
+  </data>
+  <data name="LD_XamComboEditor_E_DropDownClosed" xml:space="preserve">
+    <value>ドロップ ダウン リストが閉じられる時に発生します。</value>
+  </data>
+  <data name="LD_XamComboEditor_E_SelectedItemChanged" xml:space="preserve">
+    <value>プロパティ 'SelectedItem' が変更する時に発生します。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_DisplayMemberPath" xml:space="preserve">
+    <value>テキストを取得する選択済み項目へのパス。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_DisplayTextComparer" xml:space="preserve">
+    <value>各項目の表示テキストの比較に使用するカスタム比較を指定します。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_Items" xml:space="preserve">
+    <value>関連する XamComboEditor のドロップ ダウン リストで表示する項目を指定します。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_ItemsSource" xml:space="preserve">
+    <value>この XamComboEditor のドロップ ダウンを投入するコレクションを指定します。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_ValueComparer" xml:space="preserve">
+    <value>値の比較に使用するカスタム比較を指定します。</value>
+  </data>
+  <data name="LD_ComboBoxItemsProvider_P_ValuePath" xml:space="preserve">
+    <value>データ値を取得する選択済み項目へのパス。</value>
+  </data>
+  <data name="LD_ComboBoxDataItem_P_DisplayText" xml:space="preserve">
+    <value>表示テキストを取得または設定します。</value>
+  </data>
+  <data name="LD_ComboBoxDataItem_P_Image" xml:space="preserve">
+    <value>アイテムで表示する画像のソースを取得または設定します。</value>
+  </data>
+  <data name="LD_ComboBoxDataItem_P_Tag" xml:space="preserve">
+    <value>タグを取得または設定します。</value>
+  </data>
+  <data name="LD_ComboBoxDataItem_P_Value" xml:space="preserve">
+    <value>この項目に関連ずけられた値。</value>
+  </data>
+  <data name="LD_XamMaskedEditor" xml:space="preserve">
+    <value>マスクに基づきデータを表示および編集するための値エディタ。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_ItemsSource" xml:space="preserve">
+    <value>ドロップ ダウン リストを投入するコレクションを指定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DisplayMemberPath" xml:space="preserve">
+    <value>テキストを取得する選択済み項目へのパス。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_ValuePath" xml:space="preserve">
+    <value>データ値を取得する選択済み項目へのパス。</value>
+  </data>
+  <data name="LC_MonthCalendar Properties" xml:space="preserve">
+    <value>MonthCalendar プロパティ</value>
+  </data>
+  <data name="LD_CalendarDay_P_IsWorkday" xml:space="preserve">
+    <value>日付が XamMonthCalendar の Workdays プロパティの設定によって就業日と見なされるかどうかを示すブール値を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemArea_P_DayOfWeekHeaderVisibility" xml:space="preserve">
+    <value>曜日ヘッダーの表示状態を示す値を返します。</value>
+  </data>
+  <data name="LD_CalendarItemArea_P_ItemColumns" xml:space="preserve">
+    <value>グループで表示される列数を返します。</value>
+  </data>
+  <data name="LD_CalendarItemArea_P_ItemRows" xml:space="preserve">
+    <value>グループで表示される項目行の数を返します。</value>
+  </data>
+  <data name="LD_CalendarItemArea_P_WeekNumbers" xml:space="preserve">
+    <value>月内で表示された日々の週番号を表す整数のコレクションを返します。</value>
+  </data>
+  <data name="LD_CalendarItemArea_P_WeekNumberVisibility" xml:space="preserve">
+    <value>週番号が表示されるかどうかを示す値を返します。</value>
+  </data>
+  <data name="LD_CalendarItemGroupPanel_P_GroupHeight" xml:space="preserve">
+    <value>パネル内の CalendarItemGroups の高さを返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroupPanel_P_GroupWidth" xml:space="preserve">
+    <value>パネル内の CalendarItemGroups の幅を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroupPanel_P_HorizontalContentAlignment" xml:space="preserve">
+    <value>要素内の項目の水平方向の配置を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroupPanel_P_MaxGroups" xml:space="preserve">
+    <value>要素が生成できるグループの最大数を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroupPanel_P_VerticalContentAlignment" xml:space="preserve">
+    <value>要素内の項目の垂直方向の配置を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_CurrentCalendarMode" xml:space="preserve">
+    <value>現在のカレンダー モードを返します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_ReferenceGroupOffset" xml:space="preserve">
+    <value>XamMonthCalendar を含む ReferenceDate に基づいてグループ内で表示された日付を計算する整数を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_ScrollNextButtonVisibility" xml:space="preserve">
+    <value>次の日付けのセットを表示するスクロール ボタンの表示状態を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_ScrollPreviousButtonVisibility" xml:space="preserve">
+    <value>前の日付けのセットを表示するスクロール ボタンの表示状態を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_ShowLeadingDates" xml:space="preserve">
+    <value>グループは前の日付範囲を表示するかどうかを示すブール値を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_ShowTrailingDates" xml:space="preserve">
+    <value>グループは次の日付範囲を表示するかどうかを示すブール値を返却/設定します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_ContainsSelectedDates" xml:space="preserve">
+    <value>この日付が選択された日付を少なくとも 1 つ含むかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_ContainsToday" xml:space="preserve">
+    <value>この項目が現在の日付を含むかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_EndDate" xml:space="preserve">
+    <value>カレンダー項目の終了日を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_IsActive" xml:space="preserve">
+    <value>この日が XamMonthCalendar が含まれている 'ActiveDay' を表すかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_IsLeadingOrTrailingItem" xml:space="preserve">
+    <value>CalendarItem が CalendarItemGroup を含む先頭日または後続日かどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_IsSelected" xml:space="preserve">
+    <value>日付が選択されたかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_IsSelectionActive" xml:space="preserve">
+    <value>含まれている XamMonthCalendar がキーボード フォーカスを持つかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_IsToday" xml:space="preserve">
+    <value>要素が XamMonthCalendar 含む MinCalendarMode の項目で、現在の日付を表すかどうかを示すブール値を返します。</value>
+  </data>
+  <data name="LD_CalendarItem_P_StartDate" xml:space="preserve">
+    <value>カレンダー項目の開始日を返します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_E_DropDownClosed" xml:space="preserve">
+    <value>ドロップ ダウン リストが閉じられる時に発生します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_E_DropDownOpened" xml:space="preserve">
+    <value>ドロップ ダウンが開かれた時に発生します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_AllowDropDown" xml:space="preserve">
+    <value>日付を選択するドロップ ダウンを使用するかどうかを示す値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_ComputedMaxDate" xml:space="preserve">
+    <value>コントロールの計算された最大日付値を返します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_ComputedMinCalendarMode" xml:space="preserve">
+    <value>コントロールのドロップ ダウン内で XamMonthCalendar に優先 MinCalendarMode を返します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_ComputedMinDate" xml:space="preserve">
+    <value>コントロールの計算された最小日付値を返します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_DropDownButtonDisplayMode" xml:space="preserve">
+    <value>ドロップ ダウン ボタンをいつ表示するかを指定します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_DropDownButtonStyle" xml:space="preserve">
+    <value>ドロップ ダウン ボタンのスタイルの設定に使用されます。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_DropDownButtonVisibility" xml:space="preserve">
+    <value>ドロップ ダウン ボタンが表示されるかどうかを示します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_E_ExecutedCommand" xml:space="preserve">
+    <value>コマンドが実行された後に発生します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_E_ExecutingCommand" xml:space="preserve">
+    <value>コマンドが実行される前に発生します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_E_SelectedDatesChanged" xml:space="preserve">
+    <value>SelectedDates が変更された後に発生します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_ActiveDate" xml:space="preserve">
+    <value>アクティブ日の日付を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_AutoAdjustCalendarDimensions" xml:space="preserve">
+    <value>XamMonthCalendar を整列するために、サイズに基づいて自動的にカレンダーの大きさを計算して変更するかどうかを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CalendarDayStyle" xml:space="preserve">
+    <value>コントロール内の CalendarDay インスタンスを使用するデフォルト スタイルを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CalendarDayStyleSelector" xml:space="preserve">
+    <value>特定の CalendarDay にスタイルを提供する StyleSelector クラスのインスタンスを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CalendarDimensions" xml:space="preserve">
+    <value>コントロールで表示する優先された行および列を示す値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CalendarItemStyle" xml:space="preserve">
+    <value>コントロール内の CalendarItem インスタンスを使用するデフォルト スタイルを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CalendarItemStyleSelector" xml:space="preserve">
+    <value>特定の CalendarItem にスタイルを提供する StyleSelector クラスのインスタンスを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_CurrentCalendarMode" xml:space="preserve">
+    <value>エンド ユーザーに表示するカレンダー項目のタイプを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_DayOfWeekHeaderFormat" xml:space="preserve">
+    <value>曜日のヘッダーの書式を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_DayOfWeekHeaderVisibility" xml:space="preserve">
+    <value>曜日のヘッダーを表示するかどうかを示す値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_DisabledDaysOfWeek" xml:space="preserve">
+    <value>どの曜日を常に無効にするかを示すフラグ付き列挙型を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_FirstDayOfWeek" xml:space="preserve">
+    <value>現在の CultureInfo から最初の曜日または Null を示す DayOfWeek 値を取得/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_MaxDate" xml:space="preserve">
+    <value>コントロールに選択またはアクティブ化できる優先日付の最大値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_MaxSelectedDates" xml:space="preserve">
+    <value>いつでも選択可能な最大日数を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_MinCalendarMode" xml:space="preserve">
+    <value>コントロール内で選択できる最小カレンダー項目タイプを示す列挙体を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_MinDate" xml:space="preserve">
+    <value>コントロールの選択またはアクティブ化できる優先日付の最小値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_ReferenceDate" xml:space="preserve">
+    <value>コントロールで表示する日付を決定する日付を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_ScrollButtonVisibility" xml:space="preserve">
+    <value>CalendarItemGroup インスタンスのスクロール ボタンを返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_SelectedDate" xml:space="preserve">
+    <value>選択される項目の日付を返却/設定します。選択された項目がない場合、Null です。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_SelectionType" xml:space="preserve">
+    <value>選択できる項目の数を決定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_ShowDisabledDaysOfWeek" xml:space="preserve">
+    <value>'DisabledDaysOfWeek' で無効化された曜日をカレンダーで表示するかどうかを示すブール値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_ShowLeadingAndTrailingDates" xml:space="preserve">
+    <value>表示可能な最初/最後の月の前/後の月の日を表示するかどうかを示すブール値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_Theme" xml:space="preserve">
+    <value>XamMonthCalendar とその要素の通常の外観を取得/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_TodayButtonVisibility" xml:space="preserve">
+    <value>今日ボタンが表示されるかどうかを示す値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_WeekNumberVisibility" xml:space="preserve">
+    <value>週番号が表示されるかどうかを示す値を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_WeekRule" xml:space="preserve">
+    <value>年の最初の週がどのように計算される規則を返却/設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_Workdays" xml:space="preserve">
+    <value>就業日を示すフラグ付き列挙体を返却/設定します。</value>
+  </data>
+  <data name="LD_ValueEditor_P_AlwaysValidate" xml:space="preserve">
+    <value>ユーザーが値を変更しなくても、エディターの値を検証するかどうかを指定します。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_ValidateAsType" xml:space="preserve">
+    <value>必要な値のタイプを指定します。</value>
+  </data>
+  <data name="LD_ValueConstraint_P_ValidationRules" xml:space="preserve">
+    <value>制約値を検証する ValidationRules。</value>
+  </data>
+  <data name="LD_ValueEditor_P_InvalidValueErrorInfo" xml:space="preserve">
+    <value>エディターの値が無効である理由についてのエラー情報。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DisplayValue" xml:space="preserve">
+    <value>編集部分に表示される値。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_DisplayValueSource" xml:space="preserve">
+    <value>エディターの編集部分に表示する値を指定します。</value>
+  </data>
+  <data name="LD_XamDateTimeEditor_P_DateValue" xml:space="preserve">
+    <value>エディターの値の日付の部分。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_AutoFillDate" xml:space="preserve">
+    <value>ユーザーがエディターを離れたときに、空の日付コンポーネントを自動的に塗りつぶすかどうかを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SpinButtonDisplayMode" xml:space="preserve">
+    <value>スピン ボタンを表示するか、またいつ表示するかを指定します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SpinButtonStyle" xml:space="preserve">
+    <value>スピン ボタンのスタイルの設定に使用されます。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SpinButtonVisibilityResolved" xml:space="preserve">
+    <value>スピン ボタンの表示状態を示します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SpinIncrement" xml:space="preserve">
+    <value>スピン ボタンを押すと、エディターの値を増減する量。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_IsLeadingGroup" xml:space="preserve">
+    <value>グループが先頭グループかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="LD_CalendarItemGroup_P_IsTrailingGroup" xml:space="preserve">
+    <value>グループが後続グループかどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_AllowLeadingAndTrailingGroupActivation" xml:space="preserve">
+    <value>IsLeadingGroup または IsTrailingGroup プロパティが True の CalendarItemGroup の項をアクティブにできるどうかを示すブール値を取得または設定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_Today" xml:space="preserve">
+    <value>今日の日付を表す DateTime を返します。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_AllowShiftingAcrossSections" xml:space="preserve">
+    <value>文字を削除するときに、セクションの境界を超えて文字を移動させるかどうか指定します。デフォルト値は True です。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_SpinWrap" xml:space="preserve">
+    <value>コントロールのスピンボタンの値を循環させるかどうかを指定します。デフォルト値は False です。</value>
+  </data>
+  <data name="LD_XamMaskedEditor_P_TabNavigation" xml:space="preserve">
+    <value>Tab および Shift+Tab が押された時にセクションの間でタブを設定するかどうかを指定します。デフォルト値は NextControl です。</value>
+  </data>
+  <data name="SmartTag_G_General" xml:space="preserve">
+    <value>一般的なエディター プロパティ</value>
+  </data>
+  <data name="SmartTag_G_GeneralMasked" xml:space="preserve">
+    <value>一般的なマスク エディター プロパティ</value>
+  </data>
+  <data name="SmartTag_G_GeneralText" xml:space="preserve">
+    <value>一般的なテキスト エディター プロパティ</value>
+  </data>
+  <data name="SmartTag_G_XamCheckEditor" xml:space="preserve">
+    <value>XamCheckEditor プロパティ</value>
+  </data>
+  <data name="SmartTag_G_XamComboEditor" xml:space="preserve">
+    <value>XamComboEditor プロパティ</value>
+  </data>
+  <data name="SmartTag_G_XamDateTimeEditor" xml:space="preserve">
+    <value>XamDateTimeEditor プロパティ</value>
+  </data>
+  <data name="SmartTag_G_XamMaskedEditor" xml:space="preserve">
+    <value>XamMaskedEditor プロパティ</value>
+  </data>
+  <data name="SmartTag_G_XamTextEditor" xml:space="preserve">
+    <value>XamTextEditor プロパティ</value>
+  </data>
+  <data name="SmartTag_T_XamCheckEditor" xml:space="preserve">
+    <value>XamCheckEditor</value>
+  </data>
+  <data name="SmartTag_T_XamComboEditor" xml:space="preserve">
+    <value>XamComboEditor</value>
+  </data>
+  <data name="SmartTag_T_XamCurrencyEditor" xml:space="preserve">
+    <value>XamCurrencyEditor</value>
+  </data>
+  <data name="SmartTag_T_XamDateTimeEditor" xml:space="preserve">
+    <value>XamDateTimeEditor</value>
+  </data>
+  <data name="SmartTag_T_XamMaskedEditor" xml:space="preserve">
+    <value>XamMaskedEditor</value>
+  </data>
+  <data name="SmartTag_T_XamNumericEditor" xml:space="preserve">
+    <value>XamNumericEditor</value>
+  </data>
+  <data name="SmartTag_T_XamTextEditor" xml:space="preserve">
+    <value>XamTextEditor</value>
+  </data>
+  <data name="SmartTag_G_Appearance" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="LD_XamComboEditor_P_PostDropDownAreaTemplate" xml:space="preserve">
+    <value>ドロップダウンが開いたときに、ドロップダウン項目の下に表示されるコンテンツ (ある場合) を決定します。</value>
+  </data>
+  <data name="LD_XamComboEditor_P_PreDropDownAreaTemplate" xml:space="preserve">
+    <value>ドロップダウンが開いたときに、ドロップダウン項目の上に表示されるコンテンツ (ある場合) を決定します。</value>
+  </data>
+  <data name="LD_XamMonthCalendar" xml:space="preserve">
+    <value>1 カ月以上の月を表示するために使用されるカスタム コントロール。</value>
+  </data>
+  <data name="XamCheckEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamComboEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamCurrencyEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamDateTimeEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamMaskedEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamMonthCalendarAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamNumericEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamTextEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="LD_XamMonthCalendar_P_DisabledDates" xml:space="preserve">
+    <value>無効と見なされる日付を示す CalendarDateRange インスタンスの変更可能なコレクションを返します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_AcceptsReturn" xml:space="preserve">
+    <value>リターン キーが値の一部として許可されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="LD_XamTextEditor_P_AcceptsTab" xml:space="preserve">
+    <value>タブ キーが値の一部として許可されるかどうかを取得または設定します。</value>
+  </data>
+</root>

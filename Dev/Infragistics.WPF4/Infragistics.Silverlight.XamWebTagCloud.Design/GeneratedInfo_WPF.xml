@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Menus.ScaleBreak" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="StartWeight" DisplayName="StartWeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EndWeight" DisplayName="EndWeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Weight" DisplayName="Weight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamTagCloud" HideFromToolbox="false" ToolBoxCategoryKey="XamTagCloudAssetLibrary" ImageResource="">
+    <PropertyInformation Name="MaxScale" CategoryKey="XamTagCloud_Properties" DisplayName="MaxScale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinScale" CategoryKey="XamTagCloud_Properties" DisplayName="MinScale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemSpacing" CategoryKey="XamTagCloud_Properties" DisplayName="ItemSpacing" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemsContainerStyle" CategoryKey="XamTagCloud_Properties" DisplayName="ItemsContainerStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WeightMemberPath" CategoryKey="XamTagCloud_Properties" DisplayName="WeightMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TargetName" CategoryKey="XamTagCloud_Properties" DisplayName="TargetName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="UseSmoothScaling" CategoryKey="XamTagCloud_Properties" DisplayName="UseSmoothScaling" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NavigateUriMemberPath" CategoryKey="XamTagCloud_Properties" DisplayName="NavigateUriMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScaleBreaks" CategoryKey="XamTagCloud_Properties" DisplayName="ScaleBreaks" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamTagCloudItem" HideFromToolbox="false" ToolBoxCategoryKey="XamTagCloudSupportingControlsAssetLibrary" ImageResource="">
+    <PropertyInformation Name="Owner" CategoryKey="XamTagCloudItem_Properties" DisplayName="Owner" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Weight" CategoryKey="XamTagCloudItem_Properties" DisplayName="Weight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamTagCloudItemEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="XamTagCloudItem" CategoryKey="XamTagCloudItemEventArgs_Properties" DisplayName="XamTagCloudItem" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamTagCloudClippedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CloudClipped" CategoryKey="XamTagCloudClippedEventArgs_Properties" DisplayName="CloudClipped" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamTagCloudPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="UseSmoothScaling" CategoryKey="XamTagCloudPanel_Properties" DisplayName="UseSmoothScaling" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxScale" CategoryKey="XamTagCloudPanel_Properties" DisplayName="MaxScale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinScale" CategoryKey="XamTagCloudPanel_Properties" DisplayName="MinScale" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemSpacing" CategoryKey="XamTagCloudPanel_Properties" DisplayName="ItemSpacing" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ScaleBreaks" CategoryKey="XamTagCloudPanel_Properties" DisplayName="ScaleBreaks" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalContentAlignment" CategoryKey="XamTagCloudPanel_Properties" DisplayName="HorizontalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalContentAlignment" CategoryKey="XamTagCloudPanel_Properties" DisplayName="VerticalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.AutomationPeers.XamTagCloudAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.AutomationPeers.XamTagCloudItemAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.HyperlinkButton" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NavigateUri" DisplayName="NavigateUri" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TargetName" DisplayName="TargetName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.AutomationPeers.HyperlinkButtonAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+</root>

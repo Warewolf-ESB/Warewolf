@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="XamMaskedInputAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="SectionBase_Sections_Property" xml:space="preserve">
+    <value>このセクションが属するセクション コレクションを返します。</value>
+  </data>
+  <data name="SectionBase_DisplayChars_Property" xml:space="preserve">
+    <value>このセクションの表示文字を返します。</value>
+  </data>
+  <data name="SectionBase_PreviousSection_Property" xml:space="preserve">
+    <value>直前のセクションを検索します。</value>
+  </data>
+  <data name="SectionBase_PreviousLiteralSection_Property" xml:space="preserve">
+    <value>編集セクションを無視して、直前のリテラルセクションを返します。</value>
+  </data>
+  <data name="SectionBase_NextSection_Property" xml:space="preserve">
+    <value>次のセクションを返します。</value>
+  </data>
+  <data name="SectionBase_PreviousEditSection_Property" xml:space="preserve">
+    <value>直前の編集セクションを返します。</value>
+  </data>
+  <data name="SectionBase_NextEditSection_Property" xml:space="preserve">
+    <value>リテラルのセクションを無視して次の編集セクションを返します。</value>
+  </data>
+  <data name="SectionBase_NextLiteralSection_Property" xml:space="preserve">
+    <value>編集セクションを無視して、次のリテラルセクションを返します。</value>
+  </data>
+  <data name="EditSectionBase_Orientation_Property" xml:space="preserve">
+    <value>編集の方向が左から右か、または右から左かを返します。</value>
+  </data>
+  <data name="DisplayCharsEditSection_Orientation_Property" xml:space="preserve">
+    <value>このセクションが右から左の編集セクション (数値) か、 左から右 (標準) の編集セクションかどうかを示す値を返します。</value>
+  </data>
+  <data name="NumberSection_MinValue_Property" xml:space="preserve">
+    <value>セクションの最小値を設定します。</value>
+  </data>
+  <data name="NumberSection_MaxValue_Property" xml:space="preserve">
+    <value>セクションの最大値を設定します。</value>
+  </data>
+  <data name="NumberSection_Orientation_Property" xml:space="preserve">
+    <value>オーバーライド。このセクションは右から左への編集セクション (数値) であることを返します。</value>
+  </data>
+  <data name="InputCharBase_IsEditable_Property" xml:space="preserve">
+    <value>オーバーライド。InputPositionBase 派生オブジェクトが編集可能な文字位置であることを示すため、True を返します。</value>
+  </data>
+  <data name="InputCharBase_Char_Property" xml:space="preserve">
+    <value>この文字の位置に関連する char を返します。
+ それがInputPositionBaseの派生物 (文字のプレースホルダー)である場合は、ユーザーが入力した文字または ０ (文字が入力されていない場合) を返します。 LiteralPositionおよびその派生物の場合は、テキストの格納に使用されるリテラル文字を返します (DataMaskModesのいずれかがリテラルを含む場合)。 値の設定は、IsEditable が True を返す場合のみ可能です。それ以外の場合は例外がスローされます。</value>
+  </data>
+  <data name="DisplayCharBase_IncludeMethod_Property" xml:space="preserve">
+    <value>文字を含めるかどうかを決定するときに、InputMaskMode をどのように使用するかを示す値を返すか設定します。</value>
+  </data>
+  <data name="DisplayCharBase_DrawString_Property" xml:space="preserve">
+    <value>表示文字によって描画される文字列を返します。</value>
+  </data>
+  <data name="DisplayCharBase_IsEditable_Property" xml:space="preserve">
+    <value>文字位置が編集可能かどうか (ユーザーが文字を入力できる位置かどうか) を示します。リテラル文字は False を返します。</value>
+  </data>
+  <data name="DisplayCharBase_Char_Property" xml:space="preserve">
+    <value>この文字の位置に関連する char を返します。
+ それが InputPositionBase の派生物 (文字のプレースホルダ) である場合は、ユーザーが入力した文字または 0 (文字が入力されていない場合) を返します。
+ 
+ LiteralPosition およびその派生物の場合は、関連するリテラル文字を返します。
+ 
+ このプロパティの設定は、IsEditable が True を返す場合のみ可能です。それ以外の場合は例外をスローします。</value>
+  </data>
+  <data name="FractionPart_NumberOfDigits_Property" xml:space="preserve">
+    <value>小数部の桁数。</value>
+  </data>
+  <data name="FractionPart_Orientation_Property" xml:space="preserve">
+    <value>編集の方向が左から右か、または右から左かを返します。</value>
+  </data>
+  <data name="FractionPartContinuous_Orientation_Property" xml:space="preserve">
+    <value>編集の方向が左から右か、または右から左かを返します。</value>
+  </data>
+  <data name="EditModeValidationErrorEventArgs_Editor_Property" xml:space="preserve">
+    <value>関連する値エディターを取得します。</value>
+  </data>
+  <data name="EditModeValidationErrorEventArgs_ForceExitEditMode_Property" xml:space="preserve">
+    <value>編集モードが強制的に終了されるかどうかを示します。たとえば、アプリケーションが閉じられるときなどです。</value>
+  </data>
+  <data name="EditModeValidationErrorEventArgs_InvalidValueBehavior_Property" xml:space="preserve">
+    <value>無効な値動作を取得または設定します。</value>
+  </data>
+  <data name="EditModeValidationErrorEventArgs_ErrorMessage_Property" xml:space="preserve">
+    <value>エラー メッセージを取得または設定します。</value>
+  </data>
+  <data name="EditModeValidationErrorEventArgs_Exception_Property" xml:space="preserve">
+    <value>検証エラーに関連する例外を取得します。</value>
+  </data>
+  <data name="InvalidCharEventArgs_Char_Property" xml:space="preserve">
+    <value>ユーザーが入力しようとした無効な文字を取得します。</value>
+  </data>
+  <data name="InvalidCharEventArgs_DisplayChar_Property" xml:space="preserve">
+    <value>ユーザーが無効な文字の入力を試みた表示文字インスタンスを取得します。</value>
+  </data>
+  <data name="InvalidCharEventArgs_Beep_Property" xml:space="preserve">
+    <value>XamMaskedInput がビープ音を発するかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ParsedMask_Mask_Property" xml:space="preserve">
+    <value>関連付けられたマスクを返します。</value>
+  </data>
+  <data name="ParsedMask_PromptCharacter_Property" xml:space="preserve">
+    <value>関連付けられたプロンプト文字を返します。特定のマスク モードでマスクを適用する時に限り使用されます。</value>
+  </data>
+  <data name="ParsedMask_PadCharacter_Property" xml:space="preserve">
+    <value>関連付けられたパッド文字を返します。特定のマスク モードでマスクを適用する時に限り使用されます。</value>
+  </data>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="ValueConstraint_Enumeration_Property" xml:space="preserve">
+    <value>値オプションのリストを含む System.Collections.IEnumerable を実装しているオブジェクトを取得または設定します。
+ このプロパティはデフォルトでnull（Nothing）に設定されています。</value>
+  </data>
+  <data name="ValueConstraint_HasEnumeration_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.Enumeration リストが null でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_FixedValue_Property" xml:space="preserve">
+    <value>制約値が等しくなければならない値を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasFixedValue_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.FixedValue プロパティが null (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_MaxExclusive_Property" xml:space="preserve">
+    <value>それよりも小さいデータ値を制限する値を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasMaxExclusive_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MaxExclusive プロパティが null (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_MaxInclusive_Property" xml:space="preserve">
+    <value>制約値で許容される最大値を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasMaxInclusive_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MaxInclusive プロパティが null (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_MaxLength_Property" xml:space="preserve">
+    <value>制約値で許容される最大の長さ（指定された値を含む）を取得または設定します。
+ この制約は"string"型の値に適用されます。
+ デフォルト値は０で、制限がないことを意味します。</value>
+  </data>
+  <data name="ValueConstraint_HasMaxLength_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MaxLength プロパティの値が０より大きい場合、Trueを返します。</value>
+  </data>
+  <data name="ValueConstraint_MinExclusive_Property" xml:space="preserve">
+    <value>それよりも大きいデータ値を制限する値を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasMinExclusive_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MinExclusive プロパティが null (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_MinInclusive_Property" xml:space="preserve">
+    <value>制約値で許容される最小値を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasMinInclusive_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MinInclusive プロパティが null (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_MinLength_Property" xml:space="preserve">
+    <value>制約値で許容される最小の長さ（指定された値を含む）を取得または設定します。
+ この制約は"string"型の値に適用されます。
+ デフォルト値は 0 で、最小の長さ制限がないことを意味します。</value>
+  </data>
+  <data name="ValueConstraint_HasMinLength_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.MinLength プロパティの値が０より大きい場合、Trueを返します。</value>
+  </data>
+  <data name="ValueConstraint_Nullable_Property" xml:space="preserve">
+    <value>制約値でnull（Nothing）が許容されるかどうかを示すフラグを取得または設定します。
+ このプロパティのデフォルト値は、null 値が許可される null です。</value>
+  </data>
+  <data name="ValueConstraint_HasNullable_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.Nullable プロパティがデフォルト以外の値を返す場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_RegexPattern_Property" xml:space="preserve">
+    <value>制約値が一致する必要がある正規表現を取得または設定します。</value>
+  </data>
+  <data name="ValueConstraint_HasRegexPattern_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.RegexPattern プロパティがnull (Nothing) でない場合、True を返します。</value>
+  </data>
+  <data name="ValueConstraint_ValidateAsType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ValueConstraint.Validate(System.Object,System.Type) メソッドで入力値の制約に使用される Infragistics.Controls.Editors.ValueConstraint.ValidateAsType 値を取得または設定します。デフォルトではこの値は &lt;b&gt;Unknown&lt;/b&gt; に設定されます。</value>
+  </data>
+  <data name="ValueConstraint_HasAnyConstraints_Property" xml:space="preserve">
+    <value>このオブジェクトにいずれかの制約プロパティが設定されている場合、または ValidateAsType プロパティが "Unknown" 以外に設定されている場合、True を返します。</value>
+  </data>
+  <data name="ValidationErrorInfo_ErrorMessage_Property" xml:space="preserve">
+    <value>値が無効である理由を示すエラー メッセージ。</value>
+  </data>
+  <data name="ValidationErrorInfo_Exception_Property" xml:space="preserve">
+    <value>検証エラーを発生した例外（もしあれば）を返します。</value>
+  </data>
+  <data name="DisplayCharsCollection_Section_Property" xml:space="preserve">
+    <value>関連付けられたセクション オブジェクトを返します。</value>
+  </data>
+  <data name="MaskedInputCommand_CommandId_Property" xml:space="preserve">
+    <value>関連するコマンド id を取得します。</value>
+  </data>
+  <data name="MaskedInputCommandSource_CommandId_Property" xml:space="preserve">
+    <value>コマンドで実行する CalendarCommand を取得または設定します。</value>
+  </data>
+  <data name="XamMaskedInput_SpinButtonDisplayMode_Property" xml:space="preserve">
+    <value>エディターの値を増減するスピン ボタンを表示するかどうかを指定します。
+ デフォルト値は &lt;b&gt;Never&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamMaskedInput_Properties" xml:space="preserve">
+    <value>Editor プロパティ</value>
+  </data>
+  <data name="XamMaskedInput_SpinButtonStyle_Property" xml:space="preserve">
+    <value>RepeatButton クラスのインスタンスであるスピン ボタンの Style を設定するために使用します。デフォルト値は null です。</value>
+  </data>
+  <data name="XamMaskedInput_SpinButtonVisibilityResolved_Property" xml:space="preserve">
+    <value>スピン ボタンが表示されるかどうかを示す値を返します。</value>
+  </data>
+  <data name="XamMaskedInput_SpinIncrement_Property" xml:space="preserve">
+    <value>[スピン アップ] または [スピン ダウン] ボタンをクリックして、増減するエディターの値の量を指定できます。</value>
+  </data>
+  <data name="XamMaskedInput_SpinWrap_Property" xml:space="preserve">
+    <value>コントロールのスピンボタンの値を循環させるかどうかを示す値を取得または設定します。デフォルト値は &lt;b&gt;False&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamMaskedInput_Sections_Property" xml:space="preserve">
+    <value>コントロールで使用されるセクションのコレクションです。マスクが解析されていない場合のみ有効なコレクションを返します。</value>
+  </data>
+  <data name="XamMaskedInput_DisplayChars_Property" xml:space="preserve">
+    <value>コントロールで使用されるDisplayCharのコレクションを返します。マスクが解析されていない場合のみ有効なコレクションを返します。</value>
+  </data>
+  <data name="XamMaskedInput_InsertMode_Property" xml:space="preserve">
+    <value>編集モード (挿入または上書き) を取得または設定します。</value>
+  </data>
+  <data name="XamMaskedInput_Mask_Property" xml:space="preserve">
+    <value>MaskedEdit コントロールに関連付けられたマスクを返すか設定します。</value>
+  </data>
+  <data name="XamMaskedInput_DataMode_Property" xml:space="preserve">
+    <value>データ マスキングが有効な場合に、コントロールの内容がデータソースによってどのように保存されるかを決める値を取得または設定します。</value>
+  </data>
+  <data name="XamMaskedInput_ClipMode_Property" xml:space="preserve">
+    <value>データ マスキングが有効なときに、コントロールのコンテンツをどのようにクリップボードにコピーするのかを決める値を設定します。</value>
+  </data>
+  <data name="XamMaskedInput_DisplayMode_Property" xml:space="preserve">
+    <value>コントロールが編集モードではなく、データ マスクが有効な時に、コントロールのコンテンツをどのようにクリップボードにコピーするのかを決める値を取得または設定します。</value>
+  </data>
+  <data name="XamMaskedInput_PadChar_Property" xml:space="preserve">
+    <value>パッド文字として使用される文字を取得または設定します。デフォルトはスペース （" "） です。</value>
+  </data>
+  <data name="XamMaskedInput_PromptChar_Property" xml:space="preserve">
+    <value>プロンプト文字を取得または設定します。デフォルトのプロンプト文字は、アンダースコア (_) です。</value>
+  </data>
+  <data name="XamMaskedInput_SectionTabNavigation_Property" xml:space="preserve">
+    <value>Tab および Shift+Tab が押された時にセクションの間でタブを設定するかどうかを指定します。
+ デフォルト値は &lt;b&gt;NextControl&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamMaskedInput_AllowShiftingAcrossSections_Property" xml:space="preserve">
+    <value>文字を削除するときに、セクションの境界を超えて文字を移動させるかどうか指定しま す
+ デフォルト値は &lt;b&gt;True&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamMaskedInput_SelectionStart_Property" xml:space="preserve">
+    <value>選択したテキストの開始場所を示します。テキストが選択されなければ、このプロパティはカレットの位置を示します。</value>
+  </data>
+  <data name="XamMaskedInput_SelectionLength_Property" xml:space="preserve">
+    <value>選択したテキストの長さを取得または設定します。何も選択されなければ、0 を返します。</value>
+  </data>
+  <data name="XamMaskedInput_SelectedText_Property" xml:space="preserve">
+    <value>選択したテキストを取得または設定します。</value>
+  </data>
+  <data name="XamMaskedInput_TextLength_Property" xml:space="preserve">
+    <value>編集モードの時のコントロールのテキストの合計の長さを示します。</value>
+  </data>
+  <data name="XamMaskedInput_SelectAllBehavior_Property" xml:space="preserve">
+    <value>エディターが select-all-text 操作を実行するときに、入力した文字のみを選択するのか、すべての文字（プロンプト文字を含む）を選択するのかを指定します。プロパティのデフォルト値は &lt;b&gt;SelectAllCharacters&lt;/b&gt; です。</value>
+  </data>
+  <data name="XamMaskedInput_AutoFillDate_Property" xml:space="preserve">
+    <value>ユーザーがエディターを離れようとすると、空の日付コンポーネントを自動的に塗りつぶすかどうかを指定します。
+ デフォルトは &lt;b&gt;None&lt;/b&gt; です。</value>
+  </data>
+  <data name="TextInputBase_DisplayText_Property" xml:space="preserve">
+    <value>表示テキストを返します。エディターが編集モードない場合、表示テキストだけが使用されます。</value>
+  </data>
+  <data name="TextInputBase_NullText_Property" xml:space="preserve">
+    <value>エディターの値が null、そしてエディターが編集モードでない時に表示されるテキスト。
+デフォルト値は空の文字列です。</value>
+  </data>
+  <data name="TextInputBase_ValueToDisplayTextConverter_Property" xml:space="preserve">
+    <value>表示テキストと値の間の変換で使用されるコンバーターを指定します。</value>
+  </data>
+  <data name="TextInputBase_ValueToDisplayTextConverterResolved_Property" xml:space="preserve">
+    <value>エディターの値をエディターの表示テキストに変換するために使用する解決済みのコンバーター。</value>
+  </data>
+  <data name="ValueInput_AlwaysValidateResolved_Property" xml:space="preserve">
+    <value>読み取り専用。Infragistics.Controls.Editors.ValueInput.AlwaysValidate の解決された値を取得します。</value>
+  </data>
+  <data name="ValueInput_FormatProviderResolved_Property" xml:space="preserve">
+    <value>解決された書式プロバイダーを返します。</value>
+  </data>
+  <data name="ValueInput_ValueToTextConverterResolved_Property" xml:space="preserve">
+    <value>エディターの値をエディター テキストに変換するために使用する解決済みのコンバーター。</value>
+  </data>
+  <data name="ValueInput_AlwaysValidate_Property" xml:space="preserve">
+    <value>ユーザーが値を変更しない場合、エディターの値を検証するかどうかを指定します。デフォルト値は &lt;b&gt;False&lt;/b&gt; です。エディターは、ユーザーが値を変更されたのみときに検証されます。</value>
+  </data>
+  <data name="ValueInput_Value_Property" xml:space="preserve">
+    <value>エディターの値を取得または設定します。</value>
+  </data>
+  <data name="ValueInput_Text_Property" xml:space="preserve">
+    <value>エディターの値をテキストとして取得または設定します。</value>
+  </data>
+  <data name="ValueInput_ValueType_Property" xml:space="preserve">
+    <value>このエディターを操作する値の型を取得または設定します。</value>
+  </data>
+  <data name="ValueInput_ValueTypeName_Property" xml:space="preserve">
+    <value>このエディターを操作する値の型名を取得または設定します。</value>
+  </data>
+  <data name="ValueInput_ValueTypeResolved_Property" xml:space="preserve">
+    <value>解決された値型を取得します。</value>
+  </data>
+  <data name="ValueInput_ValueConstraint_Property" xml:space="preserve">
+    <value>エディター入力の制限を取得または設定します。デフォルト値は &lt;b&gt;null&lt;/b&gt; です。</value>
+  </data>
+  <data name="ValueInput_InvalidValueBehavior_Property" xml:space="preserve">
+    <value>ユーザーが無効な値のままエディターを離れようとする時に実行されるアクションを指定します。</value>
+  </data>
+  <data name="ValueInput_ValueToTextConverter_Property" xml:space="preserve">
+    <value>テキストと値の間の変換で使用されるコンバーターを指定します。</value>
+  </data>
+  <data name="ValueInput_IsValueValid_Property" xml:space="preserve">
+    <value>エディターの現在の値が有効であるかどうかを指定します。</value>
+  </data>
+  <data name="ValueInput_HasValueChanged_Property" xml:space="preserve">
+    <value>編集モード中にコンテンツが変更されるかどうかを決定します (読み取り専用)。</value>
+  </data>
+  <data name="ValueInput_InvalidValueErrorInfo_Property" xml:space="preserve">
+    <value>エディターの値が無効の場合、無効の理由を含むエラー情報を返します。</value>
+  </data>
+  <data name="ValueInput_IsReadOnly_Property" xml:space="preserve">
+    <value>ユーザーがエディターの値を変更することが許されるかどうかを指定します。デフォルト値は &lt;b&gt;False&lt;/b&gt; です。</value>
+  </data>
+  <data name="ValueInput_OriginalValue_Property" xml:space="preserve">
+    <value>編集モードではオリジナル値を取得します (読み取り専用)</value>
+  </data>
+  <data name="ValueInput_FormatProvider_Property" xml:space="preserve">
+    <value>値とテキストの変換で使用される書式プロバイダーを指定します。</value>
+  </data>
+  <data name="ValueInput_Format_Property" xml:space="preserve">
+    <value>値とテキストの変換で使用される書式を指定します。</value>
+  </data>
+  <data name="ValueInput_IsKeyboardFocusWithin_Property" xml:space="preserve">
+    <value>エディターがキーボード フォーカスを持っているかどうかを示します。</value>
+  </data>
+  <data name="ValueInput_IsMouseOver_Property" xml:space="preserve">
+    <value>マウスがエディターの上にあるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamMaskedInput_TrimFractionalZeros_Property" xml:space="preserve">
+    <value>数値マスクで多数のゼロから成る小数部をトリミングするかどうかを指定します。デフォルトは &lt;b&gt;False&lt;/b&gt;。</value>
+  </data>
+  <data name="PropertyValueTracker_AsynchronousDispatcherPriority_Property" xml:space="preserve">
+    <value>Infragistics.Windows.Internal.PropertyValueTracker.CallAsynchronously を True に設定した場合、非同期な呼び出しに使用するディスパッチャーの優先度を取得または設定します。</value>
+  </data>
+  <data name="PropertyValueTracker_CallAsynchronously_Property" xml:space="preserve">
+    <value>Dispatcher.BeginInvoke を使用して非同期にハンドラーを呼び出すかどうかを指定します。</value>
+  </data>
+  <data name="PropertyValueTracker_Tag_Property" xml:space="preserve">
+    <value>タグを取得または設定します。</value>
+  </data>
+  <data name="PropertyValueTracker_ThrottleTime_Property" xml:space="preserve">
+    <value>ミリ秒単位のスロットル時間。デフォルトは 0 でスロットルがないことを意味します。</value>
+  </data>
+</root>

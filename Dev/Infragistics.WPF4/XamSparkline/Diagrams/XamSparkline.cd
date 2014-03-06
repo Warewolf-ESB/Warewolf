@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Charts.XamSparkline">
+    <Position X="4.5" Y="5" Width="2" />
+    <Members>
+      <Property Name="ActualMaximum" Hidden="true" />
+      <Property Name="ActualMinimum" Hidden="true" />
+      <Property Name="ConfigurationMessages" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="OnServiceProviderChanged" Hidden="true" />
+      <Property Name="ServiceProvider" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>hEYQBMihm8bMaA5IJIBGAnzOT/5QoBEKIU1jCeCT4tI=</HashCode>
+      <FileName>Model\XamSparkline.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DisplayType" />
+      <Property Name="UnknownValuePlotting" />
+      <Property Name="TrendLineType" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Infragistics.Controls.Charts.SparklineDisplayType">
+    <Position X="8.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAARABAAA=</HashCode>
+      <FileName>Enums\SparklineDisplayType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.UnknownValuePlotting">
+    <Position X="8.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enums\UnknownValuePlotting.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Controls.Charts.SparklineTrendType">
+    <Position X="8.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAYACICABAAAAAAAAAAAAAAhAgEgAAAAAAAABEAAKA=</HashCode>
+      <FileName>Enums\SparklineTrendType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

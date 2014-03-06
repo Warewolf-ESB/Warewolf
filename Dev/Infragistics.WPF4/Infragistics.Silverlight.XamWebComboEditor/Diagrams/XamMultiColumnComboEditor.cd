@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Editors.ComboEditorBase&lt;T, TControl&gt;" Collapsed="true">
+    <Position X="1.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>vGB39CBPXflT22iCfdcmBt+uz5QQnSZXAt9TxoeXh64=</HashCode>
+      <FileName>ComboEditorBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.XamComboEditor" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAQAAAABgAABCAYAAQAEAAAAACAAAAAAAAEAA=</HashCode>
+      <FileName>XamComboEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.XamMultiColumnComboEditor">
+    <Position X="2.75" Y="2.25" Width="2.25" />
+    <Members>
+      <Field Name="_columns" Hidden="true" />
+      <Field Name="_columnTypeMappings" Hidden="true" />
+      <Field Name="_headerRow" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Method Name="AllowDropDownResizingChanged" Hidden="true" />
+      <Field Name="AllowDropDownResizingProperty" Hidden="true" />
+      <Method Name="AutoGenerateColumnsChanged" Hidden="true" />
+      <Field Name="AutoGenerateColumnsProperty" Hidden="true" />
+      <Method Name="Columns_CollectionChanged" Hidden="true" />
+      <Method Name="FilterModeChanged" Hidden="true" />
+      <Field Name="FilterModeProperty" Hidden="true" />
+      <Field Name="FooterProperty" Hidden="true" />
+      <Method Name="GenerateColumnForField" Hidden="true" />
+      <Method Name="GenerateNewObject" Hidden="true" />
+      <Method Name="GetAdditionalFilters" Hidden="true" />
+      <Property Name="HeaderRow" Hidden="true" />
+      <Method Name="InitializeData" Hidden="true" />
+      <Method Name="InvalidateHeaderRows" Hidden="true" />
+      <Method Name="OnDropDownOpening" Hidden="true" />
+      <Method Name="OnEditorKeyDown" Hidden="true" />
+      <Method Name="OnFooterChanged" Hidden="true" />
+      <Method Name="XamMultiColumnComboEditor" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>hAgJgQACAIAAAEiESQCQAAAAUAEAAAQgAAgACAgAALQ=</HashCode>
+      <FileName>XamMultiColumnComboEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.TextComboColumn">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <Members>
+      <Field Name="_textBlockStyle" Hidden="true" />
+      <Method Name="FormatStringChanged" Hidden="true" />
+      <Field Name="FormatStringProperty" Hidden="true" />
+      <Method Name="GenerateContentProvider" Hidden="true" />
+      <Method Name="TextWrappingChanged" Hidden="true" />
+      <Field Name="TextWrappingProperty" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACAAGAAAAAAAAAAAYAAAAAAAAAAAAIAAAAAAACAAAUA=</HashCode>
+      <FileName>MultiColumn\Columns\TextComboColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.CheckboxComboColumn">
+    <Position X="7.25" Y="5.75" Width="2" />
+    <Members>
+      <Method Name="GenerateContentProvider" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>MultiColumn\Columns\CheckboxComboColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Controls.Editors.ComboColumn">
+    <Position X="6.25" Y="0.75" Width="2.5" />
+    <Members>
+      <Field Name="_actualHeight" Hidden="true" />
+      <Field Name="_actualWidth" Hidden="true" />
+      <Field Name="_headerStyle" Hidden="true" />
+      <Field Name="_headerTemplate" Hidden="true" />
+      <Method Name="GenerateCell" Hidden="true" />
+      <Method Name="GenerateContentProvider" Hidden="true" />
+      <Method Name="GenerateDataCell" Hidden="true" />
+      <Method Name="GenerateHeaderCell" Hidden="true" />
+      <Method Name="HeaderTextChanged" Hidden="true" />
+      <Field Name="HeaderTextProperty" Hidden="true" />
+      <Method Name="KeyChanged" Hidden="true" />
+      <Field Name="KeyProperty" Hidden="true" />
+      <Method Name="MaximumWidthChanged" Hidden="true" />
+      <Field Name="MaximumWidthProperty" Hidden="true" />
+      <Method Name="MinimumWidthChanged" Hidden="true" />
+      <Field Name="MinimumWidthProperty" Hidden="true" />
+      <Method Name="ValueConverterChanged" Hidden="true" />
+      <Method Name="ValueConverterParameterChanged" Hidden="true" />
+      <Field Name="ValueConverterParameterProperty" Hidden="true" />
+      <Field Name="ValueConverterProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>TRAAAABABAYCAQQABAABIGEIAcEAAAEAQAikxBBAAQA=</HashCode>
+      <FileName>MultiColumn\Columns\ComboColumn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Infragistics.Controls.Editors.FilterMode">
+    <Position X="0.5" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

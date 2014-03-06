@@ -1,0 +1,120 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igEditors="clr-namespace:Infragistics.Windows.Editors"
+	xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!-- *********************************  COLORS  ********************************* -->
+    <Color x:Key="Color_000">#FF282828</Color>
+    <Color x:Key="Color_001">#FF3F3F3F</Color>
+    <Color x:Key="Color_002">#FF565656</Color>
+    <Color x:Key="Color_003">#FF858585</Color>
+    <Color x:Key="Color_004">#FFB9B9B9</Color>
+    <Color x:Key="Color_005">#FFD7D7D7</Color>
+    <Color x:Key="Color_006">#FFE7E7E7</Color>
+    <Color x:Key="Color_007">#FFF4F4F4</Color>
+    <Color x:Key="Color_008">#FFF9F9F9</Color>
+    <Color x:Key="Color_009">#FFFFFFFF</Color>
+    <Color x:Key="Color_010">#FFA7DFF4</Color>
+    <Color x:Key="Color_011">#FF00AADE</Color>
+    <Color x:Key="Color_012">#FFF55E7F</Color>
+    <Color x:Key="Color_013">#FFD0284C</Color>
+    <Color x:Key="Color_014">#00FFFFFF</Color>
+    <Color x:Key="Color_015">#FF8A9B0F</Color>
+    <Color x:Key="Color_016">#FFF14D0F</Color>
+
+    <!-- *********************************  BRUSHES  ********************************* -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Color_000}"/>
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{DynamicResource Color_004}"/>
+    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="DropDownSeparatorFill" Color="{StaticResource Color_006}"/>
+    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource Color_009}" Opacity="0.6"/>
+    <SolidColorBrush x:Key="SelectionBrush" Color="{StaticResource Color_010}"/>
+
+    <!-- Editors Brushes -->
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackCenterFillKey}" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="EditorsBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsNormalBorderFillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="EditorsHoverBackgroundBrush" Color="{StaticResource Color_007}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.EditorsHottrackBorderFillKey}" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="EditorsFocusBorderBrush" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="EditorsDisabledBackground" Color="{StaticResource Color_007}"/>
+    <SolidColorBrush x:Key="EditorsDisabledBrush" Color="{StaticResource Color_005}"/>
+
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnNormalOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnHottrackOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnPressedOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalForegroundFillKey}" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="DropdownBtnGlyphHoverFill" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="DropdownBtnGlyphPressedFill" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphNormalBackgroundFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackForegroundFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.DropdownBtnGlyphHottrackBackgroundFillKey}" Color="{StaticResource Color_014}"/>
+
+    <SolidColorBrush x:Key="ListboxBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="ListboxBorderBrush" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="ListboxItemBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="ListboxItemBorderBrush" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="ListboxItemHoverBrush" Color="{StaticResource Color_006}"/>
+    <SolidColorBrush x:Key="ListboxItemHoverBorderBrush" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ListboxItemPressedBrush" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ListboxItemPressedBorderBrush" Color="{StaticResource Color_011}"/>
+
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource Color_004}"/>
+
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBackgroundKey}" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBorderBrushKey}" Color="{StaticResource Color_004}" />
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorForegroundKey}" Color="{StaticResource Color_001}" />
+
+    <!-- Calendar Brushes -->
+    <SolidColorBrush x:Key="CalendarBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="CalendarBorderBrush" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="CalendarITemForegroundBrush" Color="{StaticResource Color_000}"/>
+    <SolidColorBrush x:Key="DayOfWeekForegroundBrush" Color="{StaticResource Color_001}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverForegroundKey}" Color="{StaticResource Color_000}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverFillKey}" Color="{StaticResource Color_006}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemHoverOuterBorderFillKey}" Color="{StaticResource Color_003}"/>
+
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedFillKey}" Color="{StaticResource Color_010}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemSelectedForegroundKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="SelectedInactiveItemBackgroundBrush"  Color="{StaticResource Color_003}"/>
+
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayForegroundKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayTodayFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarOtherDayForegroundKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarDayOfWeekForegroundKey}" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleForegroundKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarItemGroupTitleBackgroundKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarSeparatorStrokeKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey}" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="CalendarWeekNumberBaseBackground" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="CalendarWeekNumberBaseStroke" Color="{StaticResource Color_005}"/>
+
+    <CornerRadius x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorCornerRadiusKey}"	TopLeft="0"	TopRight="0"	BottomRight="0"	BottomLeft="0" />
+    <CornerRadius x:Key="{x:Static igEditors:EditorsBrushKeys.SpinButtonCornerRadiusKey}"	TopLeft="0"	TopRight="0"	BottomRight="0"	BottomLeft="0" />
+    <Thickness x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorBorderThicknessKey}"	Left="1"	Top="1"	Right="1"	Bottom="1" />
+    <Thickness x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorMarginKey}"	Left="1"	Top="1"	Right="1"	Bottom="1" />
+    <Thickness x:Key="{x:Static igEditors:EditorsBrushKeys.TextEditorPaddingKey}"	Left="5"	Top="3"	Right="5"	Bottom="3" />
+
+    <SolidColorBrush x:Key="CheckBoxFill" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="CheckboxNormalStroke" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="CheckboxHoverStroke" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="CheckboxPressedStroke" Color="{StaticResource Color_011}"/>
+
+    <SolidColorBrush x:Key="ScrollbarNormalFill" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ScrollbarHoverFill" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="ScrollbarPressedFill" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ScrollbarDisabledFill" Color="{StaticResource Color_005}"/>
+
+    <SolidColorBrush x:Key="ArrowNormalFill" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ArrowHoverFill" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="ArrowPressedFill" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ArrowDisabledFill" Color="{StaticResource Color_005}"/>
+</ResourceDictionary>

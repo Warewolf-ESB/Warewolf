@@ -1,0 +1,673 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+    >
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="PrimitivesGeneric.xaml" />
+        <ResourceDictionary Source="PrimitivesAero_Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+
+	<!-- _________________________ XamTabControl Resources __________________________________________ -->
+	<!-- ************************************************** -->
+	<!-- XamTabControl Resources -->
+	<!-- ************************************************** -->
+	<Style TargetType="{x:Type RepeatButton}" x:Key="PagerScrollBtnBase">
+		<!--<Setter Property="ClickMode" Value="Hover"/>-->
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabContentBackgroundFillKey}}"/>
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="3" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid>
+					<Border BorderBrush="{TemplateBinding BorderBrush}" 
+						   BorderThickness="{TemplateBinding BorderThickness}" 
+						   Background="{TemplateBinding Background}" 
+						   CornerRadius="1">
+						<Path Margin="{TemplateBinding Padding}" 
+							   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+							   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+							   Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" 
+							   Fill="{TemplateBinding Foreground}"/>
+					</Border>
+						<Border x:Name="Highlight" BorderThickness="1" BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}" Margin="1" CornerRadius="1"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="BorderBrush" TargetName="Highlight" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"/>
+							<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackTopCenterFillKey}}"/>
+							<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="{x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}">
+		<Setter Property="Content" Value="M 4,0 L 4,6 0,3 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="{x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}">
+		<Setter Property="Content" Value="M 0,0 L 0,6 4,3 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="{x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}">
+		<Setter Property="Content" Value="M 0,4 L 6,4 3,0 Z"/>
+	</Style>
+	<Style TargetType="{x:Type RepeatButton}" BasedOn="{StaticResource PagerScrollBtnBase}" x:Key="{x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}">
+		<Setter Property="Content" Value="M 0,0 L 6,0 3,4 Z"/>
+	</Style>
+
+
+	<!-- _________________________ XamTabControl - SingleRowTabItemPagerStyleKey ______________________________________ -->
+	<Style x:Key="{x:Static igWindows:XamTabControl.SingleRowTabItemPagerStyleKey}" TargetType="{x:Type igWindows:XamPager}">
+		<Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}}"/>
+		<Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+		<Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}}"/>
+		<Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}}"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamPager}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="row1" Height="Auto"/>
+							<RowDefinition x:Name="row2" Height="Auto"/>
+							<RowDefinition x:Name="row3" Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="col1" Width="Auto"/>
+							<ColumnDefinition x:Name="col2" Width="Auto"/>
+							<ColumnDefinition x:Name="col3" Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<!-- I would have template bound the cancontent scroll but when we try to change 
+					this property from the tab control template trigger its being ignored because the 
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+						<igWindows:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+						<RepeatButton
+								x:Name="PART_ScrollLeft"
+								Style="{TemplateBinding ScrollLeftButtonStyle}"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineLeftCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollUp"
+								Style="{TemplateBinding ScrollUpButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineUpCommand}"/>
+						<RepeatButton
+								x:Name="PART_ScrollRight"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								Style="{TemplateBinding ScrollRightButtonStyle}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineRightCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollDown"
+								Style="{TemplateBinding ScrollDownButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineDownCommand}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,0,1,2"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,1,2"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,2,1,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,2,1,0"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row3" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="0,3,2,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="0,1,2,1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="2,3,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="2,1,0,1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="2"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col2" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<!-- _________________________ XamTabControl - MultiRowTabItemPagerStyleKey ______________________________________ -->
+	<Style x:Key="{x:Static igWindows:XamTabControl.MultiRowTabItemPagerStyleKey}" TargetType="{x:Type igWindows:XamPager}">
+		<Setter Property="ScrollDownButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollDownButtonStyleKey}}"/>
+		<Setter Property="ScrollLeftButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollLeftButtonStyleKey}}"/>
+		<Setter Property="ScrollRightButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollRightButtonStyleKey}}"/>
+		<Setter Property="ScrollUpButtonStyle" Value="{DynamicResource {x:Static igWindows:XamTabControl.ScrollUpButtonStyleKey}}"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamPager}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition x:Name="row1" Height="Auto"/>
+							<RowDefinition x:Name="row2" Height="Auto"/>
+							<RowDefinition x:Name="row3" Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="col1" Width="Auto"/>
+							<ColumnDefinition x:Name="col2" Width="Auto"/>
+							<ColumnDefinition x:Name="col3" Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<!-- I would have template bound the cancontent scroll but when we try to change 
+					this property from the tab control template trigger its being ignored because the 
+					scoll viewer will bind to the cancontentscroll of the templated parent -->
+						<igWindows:PagerContentPresenter x:Name="PART_PagerContentPresenter" ReserveSpaceForScrollButtons="False" CanContentScroll="True"/>
+						<RepeatButton
+								x:Name="PART_ScrollLeft"
+								Style="{TemplateBinding ScrollLeftButtonStyle}"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineLeftCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollUp"
+								Style="{TemplateBinding ScrollUpButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineUpCommand}"/>
+						<RepeatButton
+								x:Name="PART_ScrollRight"
+								Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+								Style="{TemplateBinding ScrollRightButtonStyle}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineRightCommand}">
+						</RepeatButton>
+						<RepeatButton
+								x:Name="PART_ScrollDown"
+								Style="{TemplateBinding ScrollDownButtonStyle}"
+								Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Command="{x:Static ScrollBar.LineDownCommand}"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Top">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,0,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="2"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,3"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Bottom">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollUp" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollUp" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollUp" Value="3,3,0,1"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollDown" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollDown" Value="3,1,0,0"/>
+							<Setter Property="Grid.RowSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Width" TargetName="col3" Value="0"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="Height" TargetName="row3" Value="*"/>
+							<Setter Property="ClipContentVertically" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Left">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="0,0,1,3"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="0"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="2"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,0,3,3"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="1"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Height" TargetName="row3" Value="0"/>
+							<Setter Property="Height" TargetName="row2" Value="*"/>
+							<Setter Property="Width" TargetName="col1" Value="*"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, {x:Type igWindows:XamTabControl}, 1}, Path=TabStripPlacement}" Value="Right">
+							<Setter Property="Grid.Row" TargetName="PART_ScrollLeft" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollLeft" Value="0"/>
+							<Setter Property="Margin" TargetName="PART_ScrollLeft" Value="3,3,1,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_ScrollRight" Value="1"/>
+							<Setter Property="Margin" TargetName="PART_ScrollRight" Value="1,3,0,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_PagerContentPresenter" Value="0"/>
+							<Setter Property="Grid.ColumnSpan" TargetName="PART_PagerContentPresenter" Value="3"/>
+							<Setter Property="Height" TargetName="row3" Value="0"/>
+							<Setter Property="Height" TargetName="row1" Value="*"/>
+							<Setter Property="Width" TargetName="col3" Value="*"/>
+							<Setter Property="ClipContentHorizontally" TargetName="PART_PagerContentPresenter" Value="False"/>
+						</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- ************************************************** -->
+	<!-- End XamTabControl Resources -->
+	<!-- ************************************************** -->
+
+
+	<!-- _________________________ XamTabControl ______________________________________ -->
+	<Style TargetType="{x:Type igWindows:XamTabControl}">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTextFillKey}}"/>
+		<Setter Property="Padding" Value="4"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTopCenterFillKey}}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamTabControl}">
+					<Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="gridCol0"/>
+							<ColumnDefinition Width="0" x:Name="gridCol1"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" x:Name="gridRow0"/>
+							<RowDefinition Height="*" x:Name="gridRow1"/>
+						</Grid.RowDefinitions>
+						<Border
+							BorderBrush="{x:Null}"
+							x:Name="ContentPanel"
+							KeyboardNavigation.TabIndex="2"
+							KeyboardNavigation.TabNavigation="Local"
+							KeyboardNavigation.DirectionalNavigation="Contained"
+							Grid.Row="1"
+							Visibility="Visible"
+							Margin="0,-1,0,0"
+							Background="{TemplateBinding Background}">
+							<!--Background="#FF515151"-->
+							<Border
+								BorderThickness="{TemplateBinding Border.BorderThickness}"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								Margin="0,1,0,0">
+								<!--<Border Background="{DynamicResource Container_Fill}" BorderBrush="{DynamicResource Container_BorderFill}" CornerRadius="5,5,5,5">-->
+								<Border CornerRadius="5,5,5,5">
+									<ContentPresenter
+										ContentSource="SelectedContent"
+										Margin="{TemplateBinding Control.Padding}"
+										Height="{TemplateBinding TabItemContentHeight}"
+										Name="PART_SelectedContentHost"
+										SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+								</Border>
+							</Border>
+						</Border>
+						<!--<DockPanel x:Name="PART_HeaderArea" Panel.ZIndex="1" Background="#FF535353">-->
+            <!-- AS 5/4/10 TFS30695 
+              Added Tab(Index|Navigation) settings so this gets focus first. -->
+            <DockPanel x:Name="PART_HeaderArea" 
+                       Panel.ZIndex="1" 							
+                       KeyboardNavigation.TabIndex="1"
+                       KeyboardNavigation.TabNavigation="Local">
+							<ContentPresenter
+								x:Name="PreTabItemContent"
+								DockPanel.Dock="Left"
+								ContentSource="PreTabItemContent" />
+							<Button
+								Name="CloseButton"
+								DockPanel.Dock="Right"
+								Command="igWindows:TabControlCommands.CloseSelected"
+								CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+								Visibility="Collapsed"
+								Style="{DynamicResource {x:Static igWindows:XamTabControl.CloseButtonStyleKey}}"
+								/>
+							<ContentPresenter
+								x:Name="PostTabItemContent"
+								DockPanel.Dock="Right"
+								ContentSource="PostTabItemContent" />
+							<igWindows:XamPager x:Name="PART_TabItemScrollViewer" 
+                                                Style="{DynamicResource {x:Static igWindows:XamTabControl.SingleRowTabItemPagerStyleKey}}"
+                                                CanContentScroll="True" 
+                                                ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding TabItemVerticalScrollBarVisibility}" 
+                                                ScrollViewer.HorizontalScrollBarVisibility="{TemplateBinding TabItemHorizontalScrollBarVisibility}">
+								<ItemsPresenter x:Name="PART_TabHeaderPanel" Margin="2,2,1,0" />
+							</igWindows:XamPager>
+						</DockPanel>
+						<Popup
+							x:Name="PART_Popup"
+							StaysOpen="False"
+							Width="{TemplateBinding PreferredDropDownExtent}"
+							IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+							CustomPopupPlacementCallback="{TemplateBinding PreferredDropDownPlacementCallback}"
+							Placement="Custom"
+							AllowsTransparency="True"
+							PopupAnimation="{Binding Path=DropDownAnimation, RelativeSource={RelativeSource TemplatedParent}}">
+							<Border
+								BorderBrush="#FFD0CEBF"
+								BorderThickness="0,0,1,1"
+								KeyboardNavigation.TabIndex="2"
+								KeyboardNavigation.TabNavigation="Local"
+								KeyboardNavigation.DirectionalNavigation="Contained">
+								<Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="{TemplateBinding Border.BorderThickness}">
+									<Border Background="{TemplateBinding Panel.Background}">
+										<ContentPresenter
+											ContentSource="SelectedContent"
+											Margin="{TemplateBinding Control.Padding}"
+											Height="{TemplateBinding TabItemContentHeight}"
+											Name="PART_SelectedContentHostMinimized"
+											HorizontalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=HorizontalAlignment}"
+											VerticalAlignment="{Binding ElementName=PART_SelectedContentHost, Path=VerticalAlignment}"
+											SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+											ContentTemplateSelector="{TemplateBinding TabControl.SelectedContentTemplateSelector}"
+											ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}"
+											Content="{x:Null}"/>
+									</Border>
+								</Border>
+							</Border>
+						</Popup>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="ShowTabHeaderCloseButton" Value="True">
+							<Setter Property="Visibility" TargetName="CloseButton" Value="Visible"/>
+						</Trigger>
+						<Trigger Property="DropDownAnimation" Value="None">
+							<!--<Setter Property="AllowsTransparency" TargetName="PART_Popup" Value="False"/>-->
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Top">
+							<Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter TargetName="CloseButton" Property="Margin" Value="3,1,3,0"/>
+							<Setter TargetName="PreTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+							<Setter TargetName="PostTabItemContent" Property="VerticalAlignment" Value="Bottom"/>
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="3,0,3,2"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="3,0,3,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+							<Setter TargetName="CloseButton" Property="Margin" Value="3,0,3,1"/>
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="3,2,3,0"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="3,2,3,0"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="*"/>
+							<Setter Property="Height" TargetName="gridRow1" Value="Auto"/>
+							<Setter Property="Width" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,0,2,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Left">
+							<Setter Property="Margin" TargetName="CloseButton" Value="0,0,4,3"/>
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="5,3,4,3"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="5,3,4,3"/>
+							<Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+							<Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Right"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="0"/>
+							<Setter Property="Width" TargetName="gridCol0" Value="Auto"/>
+							<Setter Property="Width" TargetName="gridCol1" Value="*"/>
+							<Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+							<Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+							<Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="2,2,0,2"/>
+						</Trigger>
+						<Trigger Property="TabControl.TabStripPlacement" Value="Right">
+							<Setter TargetName="PostTabItemContent" Property="Margin" Value="5,3,4,3"/>
+							<Setter TargetName="PreTabItemContent" Property="Margin" Value="5,3,4,3"/>
+							<Setter Property="Margin" TargetName="CloseButton" Value="4,0,0,3"/>
+							<Setter Property="DockPanel.Dock" TargetName="CloseButton" Value="Bottom"/>
+							<Setter Property="HorizontalAlignment" TargetName="CloseButton" Value="Left"/>
+							<Setter Property="Grid.Row" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Grid.Column" TargetName="PART_HeaderArea" Value="1"/>
+							<Setter Property="Height" TargetName="gridRow0" Value="0"/>
+							<Setter Property="Width" TargetName="gridCol0" Value="*"/>
+							<Setter Property="Width" TargetName="gridCol1" Value="Auto"/>
+							<Setter Property="DockPanel.Dock" TargetName="PreTabItemContent" Value="Top"/>
+							<Setter Property="DockPanel.Dock" TargetName="PostTabItemContent" Value="Bottom"/>
+							<Setter Property="Height" TargetName="PART_Popup" Value="{Binding Path=PreferredDropDownExtent, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="FrameworkElement.Margin" TargetName="PART_TabHeaderPanel" Value="0,2,2,2"/>
+						</Trigger>
+						<Trigger Property="UIElement.IsEnabled" Value="False">
+							<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.GrayTextBrushKey}}"/>
+						</Trigger>
+						<Trigger Property="IsMinimized" Value="True">
+							<Setter Property="Visibility" TargetName="ContentPanel" Value="Collapsed"/>
+						</Trigger>
+							<Trigger Property="IsMultiRow" Value="True">
+								<Setter TargetName="PART_TabItemScrollViewer" Property="Style" Value="{DynamicResource {x:Static igWindows:XamTabControl.MultiRowTabItemPagerStyleKey}}"/>
+							</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<!--<Setter Property="Background" Value="{DynamicResource Container_Fill}"/>-->
+		<Style.Triggers>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+			</Trigger>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Left">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+			</Trigger>
+			<Trigger Property="TabControl.TabStripPlacement" Value="Right">
+				<Setter Property="Panel.Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+
+	<!-- _________________________ TabItemEx ______________________________________ -->
+	<Style x:Key="{x:Type igWindows:TabItemEx}" TargetType="{x:Type igWindows:TabItemEx}">
+		<!-- <Setter Property="FocusVisualStyle" Value="{StaticResource Foo}" /> -->
+		<Setter Property="Foreground" Value="#FF000000"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}}"/>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTopCenterFillKey}}"/>
+		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		<Setter Property="VerticalContentAlignment" Value="Stretch"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:TabItemEx}">
+					<Grid SnapsToDevicePixels="true">
+						<Border
+							Name="Bd"
+							Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							Background="{TemplateBinding Background}"
+							BorderThickness="1,1,1,0">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<ContentPresenter
+									Name="Content"
+									ContentSource="Header"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									RecognizesAccessKey="true"
+									HorizontalAlignment="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+									VerticalAlignment="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+								<Button
+									Name="CloseButton"
+									Grid.Column="1"
+									Command="igWindows:TabItemExCommands.Close"
+									CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+									Visibility="{TemplateBinding ComputedCloseButtonVisibility}"
+									Style="{DynamicResource {x:Static igWindows:XamTabControl.CloseButtonStyleKey}}"
+									Margin="10,0,0,0"
+									/>
+							</Grid>
+						</Border>
+						<Border
+							x:Name="Highlight"
+							Margin="1,1,1,0"
+							BorderBrush="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"
+							BorderThickness="1,1,1,0"/>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True"/>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Panel.ZIndex" Value="1"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTopCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}}"/>
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="False"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackTopCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						<Trigger Property="TabStripPlacement" Value="Top">
+							<Setter Property="Padding" Value="5,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,1,0"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Bottom">
+							<Setter Property="Padding" Value="5,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,1,0"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalBottomCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="1,0,1,1"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="1,0,1,1"/>
+							<Setter TargetName="Highlight" Property="Margin" Value="1,0,1,1"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Left">
+							<Setter Property="Padding" Value="4,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,0,1"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalLeftCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="1,1,0,1"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="1,1,0,1"/>
+							<Setter TargetName="Highlight" Property="Margin" Value="1,1,0,1"/>
+						</Trigger>
+						<Trigger Property="TabStripPlacement" Value="Right">
+							<Setter Property="Padding" Value="4,2,4,2"/>
+							<Setter Property="Margin" Value="0,0,0,1"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemNormalRightCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderThickness" Value="0,1,1,1"/>
+							<Setter TargetName="Highlight" Property="BorderThickness" Value="0,1,1,1"/>
+							<Setter TargetName="Highlight" Property="Margin" Value="0,1,1,1"/>
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Top"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Margin" Value="-2,-2,-3,-1"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,0,0,1"/>
+							<Setter Property="Padding" Value="7,1,8,3"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Bottom"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-2,-1,-3,-2"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,1,0,0"/>
+							<Setter Property="Padding" Value="7,3,8,1"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Left"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-2,-2,-1,-3"/>
+							<Setter TargetName="Content" Property="Margin" Value="0,0,1,0"/>
+							<Setter Property="Padding" Value="4,4,4,6"/>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Right"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}}"/>
+							<Setter Property="Margin" Value="-1,-2,-2,-3"/>
+							<Setter TargetName="Content" Property="Margin" Value="1,0,0,0"/>
+							<Setter Property="Padding" Value="4,4,4,6"/>
+						</MultiTrigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Bd" Value="Pink" Property="Background"/>
+							<Setter TargetName="Bd" Value="Cyan" Property="BorderBrush"/>
+							<Setter Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.GrayTextBrushKey}}" Property="Foreground"/>
+						</Trigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="False"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Bottom"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackBottomCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="False"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Left"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackLeftCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="False"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+								<Condition Property="TabStripPlacement" Value="Right"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Highlight" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}}"/>
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackRightCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}}"/>
+						</MultiTrigger>
+						
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledCenterFillKey}}"/>
+							<Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledOuterBorderFillKey}}" />
+							<Setter Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.GrayTextBrushKey}}" Property="Foreground"/>
+							<Setter TargetName="Highlight" Property="Visibility" Value="Collapsed"/>
+						</Trigger>
+						
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+
+</ResourceDictionary>

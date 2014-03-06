@@ -1,0 +1,126 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:igWindows="http://infragistics.com/Windows"
+	xmlns:igEditors="clr-namespace:Infragistics.Windows.Editors"	
+	xmlns:luna="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+	xmlns:igThemes="http://infragistics.com/Themes"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    >
+    <ResourceDictionary.MergedDictionaries>
+        <!--<igThemes:EditorsGenericBrushes />-->
+        <ResourceDictionary Source="EditorsGeneric.xaml" />
+        <ResourceDictionary Source="../EditorsBrushes/EditorsLunaNormal_Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+<Style x:Key="BorderlessButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="Transparent">
+                        <ContentPresenter 
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+	<!--  _________________________ XamMonthCalendar __________________________________________  -->
+
+    <!-- _________________________ XamMonthNavButtons ______________________________________ -->
+	<Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollPreviousRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey} }"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid Width="16" Height="14" Background="#00FFFFFF">
+						<Path
+							Stretch="Fill"
+							Opacity="1"
+							Data="M 431,43 C431,43 427,46.5 427,46.5 427,46.5 431,50 431,50 431,50 431,43 431,43 z"
+							Fill="{TemplateBinding Foreground}" Width="4" Height="7" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey} }"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+
+			</Setter.Value>
+		</Setter>
+        <!-- AS 9/18/08
+            Instead of having 14 pixels on each side of the content within the CalendarItemGroupTitle, we'll put it here on the button.
+        -->
+        <Setter Property="Margin" Value="0,0,14,0" />
+	</Style>
+	<Style x:Key="{x:Static igEditors:XamMonthCalendar.ScrollNextRepeatButtonStyleKey}" TargetType="{x:Type RepeatButton}">
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphFillKey} }"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid Width="16" Height="14" Background="#00FFFFFF">
+						<Path
+							Stretch="Fill"
+							Opacity="1"
+							Data="M437,43C437,43 441,46.5 441,46.5 441,46.5 437,50 437,50 437,50 437,43 437,43z"
+							Fill="{TemplateBinding Foreground}" Width="4" Height="7" x:Name="path" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Foreground" Value="{DynamicResource {x:Static igEditors:EditorsBrushKeys.CalendarNavGlyphHoverFillKey} }"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+
+			</Setter.Value>
+		</Setter>
+        <!-- AS 9/18/08
+            Instead of having 14 pixels on each side of the content within the CalendarItemGroupTitle, we'll put it here on the button.
+        -->
+        <Setter Property="Margin" Value="14,0,0,0" />
+    </Style>
+
+    <!-- AS 9/12/08
+        The only difference in the today button template between office, luna & generic is
+        the corner radius of the today box which should be the same as what's used in the day
+        so we'll use a resource key for this.
+    -->
+    <CornerRadius x:Key="{x:Static igEditors:CalendarItem.CornerRadiusKey}">0</CornerRadius>
+
+	<!-- _________________________ CalendarItem ______________________________________ -->
+	<Style TargetType="{x:Type igEditors:CalendarItem}" BasedOn="{StaticResource CalendarItemBase}">
+        <Setter Property="Padding" Value="6,3,6,3"/>
+        <Setter Property="Template" Value="{StaticResource CalendarItemNoInner}" />
+    </Style>
+
+    <!-- _________________________ CalendarDay ______________________________________ -->
+    <Style TargetType="{x:Type igEditors:CalendarDay}" BasedOn="{StaticResource CalendarDayBase}">
+        <Setter Property="Padding" Value="6,3,6,3"/>
+        <Setter Property="Template" Value="{StaticResource CalendarItemNoInner}" />
+    </Style>
+
+	<!-- _________________________ CalendarDayOfWeek ______________________________________ -->
+	<Style TargetType="{x:Type igEditors:CalendarDayOfWeek}" BasedOn="{StaticResource CalendarDayOfWeekBase}">
+		<Setter Property="BorderThickness" Value="0,0,0,0" />
+		<Setter Property="Margin" Value="0,2,0,2"/>
+	</Style>
+    
+	<!-- _________________________ CalendarWeekNumber ______________________________________ -->
+	<Style TargetType="{x:Type igEditors:CalendarWeekNumber}" BasedOn="{StaticResource CalendarWeekNumberBase}">
+		<Setter Property="BorderThickness" Value="0,0,0,0" />
+		<Setter Property="Margin" Value="2,0,2,0"/>
+    </Style>
+
+	<!-- _________________________ CalendarItemGroupTitle ______________________________________ -->
+	<Style TargetType="{x:Type igEditors:CalendarItemGroupTitle}" BasedOn="{StaticResource CalendarItemGroupTitleBase}">
+        <Setter Property="Margin" Value="1"/>
+		<Setter Property="Padding" Value="5,10,5,10"/>
+	</Style>
+    
+    <Style TargetType="{x:Type igEditors:CalendarItemArea}" BasedOn="{StaticResource CalendarItemAreaBase}">
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+    
+</ResourceDictionary>

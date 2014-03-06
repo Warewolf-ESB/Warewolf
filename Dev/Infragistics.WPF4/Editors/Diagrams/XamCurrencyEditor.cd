@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Windows.Editors.XamCurrencyEditor">
+    <Position X="0.5" Y="0.75" Width="2.5" />
+    <Members>
+      <Field Name="_license" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MaskedEditor\XamCurrencyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.Editors.XamMaskedEditor">
+    <Position X="4" Y="0.75" Width="2.5" />
+    <Members>
+      <Field Name="_allowShiftingAcrossSections" Hidden="true" />
+      <Field Name="_autoFillDate" Hidden="true" />
+      <Field Name="_cachedCaretVisible" Hidden="true" />
+      <Field Name="_cachedClipMode" Hidden="true" />
+      <Field Name="_cachedDataMode" Hidden="true" />
+      <Field Name="_cachedDisplayMode" Hidden="true" />
+      <Field Name="_cachedMask" Hidden="true" />
+      <Field Name="_cachedPadChar" Hidden="true" />
+      <Field Name="_cachedPromptChar" Hidden="true" />
+      <Field Name="_caretElement" Hidden="true" />
+      <Field Name="_displayChars" Hidden="true" />
+      <Field Name="_displayChars_Sections" Hidden="true" />
+      <Field Name="_displayFormattedTextWhenNotFocused" Hidden="true" />
+      <Field Name="_displayNullTextWhenNotFocused" Hidden="true" />
+      <Field Name="_editInfo" Hidden="true" />
+      <Field Name="_isDisplayingContextMenu" Hidden="true" />
+      <Field Name="_isDragSelecting" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_maskInfo" Hidden="true" />
+      <Field Name="_transitingIntoEditModeInMouseDown" Hidden="true" />
+      <Field Name="_transitingIntoEditModeInMouseDownPoint" Hidden="true" />
+      <Method Name="ApplyMaskToText" Hidden="true" />
+      <Method Name="AreAllDisplayCharsEmpty" Hidden="true" />
+      <Method Name="Beep" Hidden="true" />
+      <Property Name="CaretElement" Hidden="true" />
+      <Property Name="CaretPosition" Hidden="true" />
+      <Field Name="CaretPositionProperty" Hidden="true" />
+      <Property Name="CaretVisible" Hidden="true" />
+      <Field Name="CaretVisibleProperty" Hidden="true" />
+      <Field Name="ClipModeProperty" Hidden="true" />
+      <Method Name="ConvertToFourYear" Hidden="true" />
+      <Method Name="CreateContextMenu" Hidden="true" />
+      <Field Name="DataModeProperty" Hidden="true" />
+      <Method Name="DeduceEditAsType" Hidden="true" />
+      <Field Name="DEFAULT_PAD_CHAR" Hidden="true" />
+      <Field Name="DEFAULT_PROMPT_CHAR" Hidden="true" />
+      <Property Name="DefaultCultureInfo" Hidden="true" />
+      <Method Name="DelayedSetFocusToFocusSiteHelper" Hidden="true" />
+      <Property Name="DesignMode" Hidden="true" />
+      <Property Name="DisplayFormattedTextWhenNotFocused" Hidden="true" />
+      <Field Name="DisplayModeProperty" Hidden="true" />
+      <Property Name="DisplayNullTextWhenNotFocused" Hidden="true" />
+      <Property Name="EditInfo" Hidden="true" />
+      <Method Name="EnsureInEditMode" Hidden="true" />
+      <Method Name="EraseAllChars" Hidden="true" />
+      <Method Name="ExecuteCommandImpl" Hidden="true" />
+      <Field Name="ExecutedCommandEvent" Hidden="true" />
+      <Field Name="ExecutingCommandEvent" Hidden="true" />
+      <Field Name="g_defaultMaskTable" Hidden="true" />
+      <Field Name="g_defaultMaskTableInitialized" Hidden="true" />
+      <Field Name="g_lastDateFormatProvider" Hidden="true" />
+      <Field Name="g_lastDateSeparator" Hidden="true" />
+      <Field Name="g_lastDefaultDateMask" Hidden="true" />
+      <Field Name="g_lastDefaultTimeMask" Hidden="true" />
+      <Field Name="g_lastShortDatePattern" Hidden="true" />
+      <Field Name="g_lastShortTimePattern" Hidden="true" />
+      <Field Name="g_lastTimeSeparator" Hidden="true" />
+      <Field Name="g_lastUsePostfixSeparatorsFromLongDatePattern" Hidden="true" />
+      <Method Name="GetChar" Hidden="true" />
+      <Method Name="GetCultureAMPMDesignator" Hidden="true" />
+      <Method Name="GetCultureCalendar" Hidden="true" />
+      <Method Name="GetCultureChar" Hidden="true" />
+      <Method Name="GetCurrencyValue" Hidden="true" />
+      <Method Name="GetDataValue" Hidden="true" />
+      <Method Name="GetDateTimeFormatInfo" Hidden="true" />
+      <Method Name="GetDateTimeValue" Hidden="true" />
+      <Method Name="GetDefaultMask" Hidden="true" />
+      <Method Name="GetDefaultMaskForTypeHelper" Hidden="true" />
+      <Method Name="GetDisplayCharacterPresenter" Hidden="true" />
+      <Method Name="GetDisplayCharacterPresenters" Hidden="true" />
+      <Method Name="GetDisplayCharAtPosition" Hidden="true" />
+      <Method Name="GetDisplayCharLocation" Hidden="true" />
+      <Method Name="GetDoubleValue" Hidden="true" />
+      <Method Name="GetFloatValue" Hidden="true" />
+      <Method Name="GetNonstandardForeignDateMaskAndPostfixSymbols" Hidden="true" />
+      <Method Name="GetNumberFormatInfo" Hidden="true" />
+      <Method Name="GetNumberSectionCount" Hidden="true" />
+      <Method Name="GetSection" Hidden="true" />
+      <Method Name="GetText" Hidden="true" />
+      <Method Name="GetTotalNumberOfDisplayChars" Hidden="true" />
+      <Method Name="GetWholeNumberValue" Hidden="true" />
+      <Method Name="HideCaretElement" Hidden="true" />
+      <Method Name="ICommandHost.CanExecute" Hidden="true" />
+      <Property Name="ICommandHost.CurrentState" Hidden="true" />
+      <Method Name="ICommandHost.Execute" Hidden="true" />
+      <Method Name="IllegalOperation" Hidden="true" />
+      <Method Name="InitializeCachedPropertyValues" Hidden="true" />
+      <Field Name="InsertModeProperty" Hidden="true" />
+      <Method Name="InternalSetIsTextBoxEntryEnabled" Hidden="true" />
+      <Method Name="InternalSetSections" Hidden="true" />
+      <Method Name="IsInputValid" Hidden="true" />
+      <Method Name="IsMaskValidForDataType" Hidden="true" />
+      <Method Name="IsSectionNumeric" Hidden="true" />
+      <Field Name="IsTextBoxEntryEnabledProperty" Hidden="true" />
+      <Field Name="IsTextBoxEntryEnabledPropertyKey" Hidden="true" />
+      <Method Name="IsValidPromptChar" Hidden="true" />
+      <Field Name="LOCALIZED_ESCAPE_SEQUENCE" Hidden="true" />
+      <Property Name="MaskInfo" Hidden="true" />
+      <Property Name="MaskInfoIfAllocated" Hidden="true" />
+      <Field Name="MaskProperty" Hidden="true" />
+      <Method Name="NotifyDisplayCharDrawStringsChanged" Hidden="true" />
+      <Method Name="NotifyPropertyOnDisplayCharacters" Hidden="true" />
+      <Method Name="OnCaretPositionChanged" Hidden="true" />
+      <Method Name="OnCaretVisibleChanged" Hidden="true" />
+      <Method Name="OnClipModeChanged" Hidden="true" />
+      <Method Name="OnCoerceCaretPosition" Hidden="true" />
+      <Method Name="OnCoercePivotPosition" Hidden="true" />
+      <Method Name="OnContextMenuClosed" Hidden="true" />
+      <Method Name="OnDataModeChanged" Hidden="true" />
+      <Method Name="OnDisplayModeChanged" Hidden="true" />
+      <Method Name="OnInvalidChar" Hidden="true" />
+      <Method Name="OnInvalidOperation" Hidden="true" />
+      <Method Name="OnMaskChanged" Hidden="true" />
+      <Method Name="OnPadCharChanged" Hidden="true" />
+      <Method Name="OnPivotPositionChanged" Hidden="true" />
+      <Method Name="OnPromptCharChanged" Hidden="true" />
+      <Method Name="OnSectionsChanged" Hidden="true" />
+      <Method Name="OnValueConstraintChanged" Hidden="true" />
+      <Field Name="PadCharProperty" Hidden="true" />
+      <Property Name="PivotPosition" Hidden="true" />
+      <Field Name="PivotPositionProperty" Hidden="true" />
+      <Method Name="ProcessIsBeingEditedAndFocusedChanged" Hidden="true" />
+      <Method Name="ProcessKeyDown" Hidden="true" />
+      <Method Name="ProcessSelectionChanged" Hidden="true" />
+      <Field Name="PromptCharProperty" Hidden="true" />
+      <Method Name="RaiseExecutedCommand" Hidden="true" />
+      <Method Name="RaiseExecutingCommand" Hidden="true" />
+      <Method Name="ReparseMask" Hidden="true" />
+      <Method Name="ResetCaretBlinking" Hidden="true" />
+      <Method Name="ResolveMask" Hidden="true" />
+      <Field Name="s_defaultCultureInfo" Hidden="true" />
+      <Field Name="SectionsProperty" Hidden="true" />
+      <Field Name="SectionsPropertyKey" Hidden="true" />
+      <Field Name="SelectAllBehaviorProperty" Hidden="true" />
+      <Method Name="SetCurrencyValue" Hidden="true" />
+      <Method Name="SetDataValue" Hidden="true" />
+      <Method Name="SetDateTimeValue" Hidden="true" />
+      <Method Name="SetDoubleValue" Hidden="true" />
+      <Method Name="SetFloatValue" Hidden="true" />
+      <Method Name="SetText" Hidden="true" />
+      <Method Name="ShowCaretElement" Hidden="true" />
+      <Field Name="SpinWrapProperty" Hidden="true" />
+      <Method Name="SyncDrawAsSelectedOnDisplayPresenters" Hidden="true" />
+      <Method Name="SyncValuePropertiesOverride" Hidden="true" />
+      <Field Name="TabNavigationProperty" Hidden="true" />
+      <Property Name="TabNavigationResolved" Hidden="true" />
+      <Method Name="ValidateAllSections" Hidden="true" />
+      <Method Name="ValidatePadChar" Hidden="true" />
+      <Method Name="ValidatePromptChar" Hidden="true" />
+      <Method Name="VerifyElementsPositioned" Hidden="true" />
+      <Method Name="XamMaskedEditor" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>z4d3tyf5o2q272tM89fwV9efzlmvhh/9V8Td7/MTu/0=</HashCode>
+      <FileName>MaskedEditor\XamMaskedEditor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Infragistics.Windows.Editors.TextEditorBase">
+    <Position X="7.75" Y="0.75" Width="2.5" />
+    <Members>
+      <Method Name="CoerceToolTipIsEnabled" Hidden="true" />
+      <Field Name="DisplayTextProperty" Hidden="true" />
+      <Field Name="DisplayTextPropertyKey" Hidden="true" />
+      <Property Name="HasDropDown" Hidden="true" />
+      <Property Name="HasOpenDropDown" Hidden="true" />
+      <Method Name="MouseLeftButtonDown_ToggleDropDownHelper" Hidden="true" />
+      <Field Name="NullTextProperty" Hidden="true" />
+      <Method Name="RaiseDropDownClosedIfPending" Hidden="true" />
+      <Method Name="ShouldToggleDropDown" Hidden="true" />
+      <Method Name="SyncDisplayText" Hidden="true" />
+      <Method Name="SyncValuePropertiesOverride" Hidden="true" />
+      <Method Name="TextEditorBase" Hidden="true" />
+      <Method Name="ToggleDropDown" Hidden="true" />
+      <Method Name="UpdateDropDownButtonVisibility" Hidden="true" />
+      <Field Name="ValueToDisplayTextConverterProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgABAAAAIRAAACIAMAQkEAAFIABAEAAkAQREAACIAAE=</HashCode>
+      <FileName>TextEditorBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Windows.Editors.ValueEditor">
+    <Position X="7.75" Y="5" Width="2.5" />
+    <Members>
+      <Field Name="_cachedEditTemplate" Hidden="true" />
+      <Field Name="_cachedFormat" Hidden="true" />
+      <Field Name="_cachedFormatProvider" Hidden="true" />
+      <Field Name="_cachedFormatProviderResolved" Hidden="true" />
+      <Field Name="_cachedInvalidValueBehavior" Hidden="true" />
+      <Field Name="_cachedValueConstraint" Hidden="true" />
+      <Field Name="_cachedValueType" Hidden="true" />
+      <Field Name="_focusSite" Hidden="true" />
+      <Field Name="_host" Hidden="true" />
+      <Field Name="_hostContext" Hidden="true" />
+      <Field Name="_initialized" Hidden="true" />
+      <Field Name="_inSyncValueProperties" Hidden="true" />
+      <Field Name="_isChangingTemplate" Hidden="true" />
+      <Field Name="_isEnteringEditMode" Hidden="true" />
+      <Field Name="_isInEditMode" Hidden="true" />
+      <Field Name="_isInEndEditMode" Hidden="true" />
+      <Field Name="_pendingPropertyChangedEvents" Hidden="true" />
+      <Field Name="_processingPendingPropertyChangedEvents" Hidden="true" />
+      <Field Name="_syncingValueProperties" Hidden="true" />
+      <Field Name="AlwaysValidateProperty" Hidden="true" />
+      <Method Name="BeginSyncValueProperties" Hidden="true" />
+      <Field Name="CachedRenderTemplateProperty" Hidden="true" />
+      <Method Name="CanShowErrorMessage" Hidden="true" />
+      <Method Name="CoerceIsInEditMode" Hidden="true" />
+      <Method Name="ConvertTextToValueHelper" Hidden="true" />
+      <Property Name="CultureInfoResolved" Hidden="true" />
+      <Field Name="EditModeEndedEvent" Hidden="true" />
+      <Field Name="EditModeEndingEvent" Hidden="true" />
+      <Field Name="EditModeStartedEvent" Hidden="true" />
+      <Field Name="EditModeStartingEvent" Hidden="true" />
+      <Field Name="EditModeValidationErrorEvent" Hidden="true" />
+      <Field Name="EditTemplateChangedEvent" Hidden="true" />
+      <Field Name="EditTemplateProperty" Hidden="true" />
+      <Method Name="EndSyncValueProperties" Hidden="true" />
+      <Field Name="FormatProperty" Hidden="true" />
+      <Field Name="FormatProviderProperty" Hidden="true" />
+      <Field Name="g_defaultEditors" Hidden="true" />
+      <Field Name="g_LanguageCultureMap" Hidden="true" />
+      <Method Name="HasValueChangedInternal" Hidden="true" />
+      <Field Name="HasValueChangedProperty" Hidden="true" />
+      <Field Name="HasValueChangedPropertyKey" Hidden="true" />
+      <Method Name="InitializeCachedPropertyValues" Hidden="true" />
+      <Method Name="InitializeValueProperties" Hidden="true" />
+      <Property Name="InternalFormatProviderResolved" Hidden="true" />
+      <Property Name="InternalIsInitialized" Hidden="true" />
+      <Method Name="InternalSetCachedValueConstraintHelper" Hidden="true" />
+      <Field Name="InvalidValueBehaviorProperty" Hidden="true" />
+      <Property Name="InvalidValueBehaviorResolved" Hidden="true" />
+      <Field Name="InvalidValueErrorInfoProperty" Hidden="true" />
+      <Field Name="InvalidValueErrorInfoPropertyKey" Hidden="true" />
+      <Field Name="IsAlwaysInEditModeProperty" Hidden="true" />
+      <Property Name="IsEditingAllowed" Hidden="true" />
+      <Field Name="IsEmbeddedProperty" Hidden="true" />
+      <Field Name="IsEmbeddedPropertyKey" Hidden="true" />
+      <Field Name="IsInEditModeProperty" Hidden="true" />
+      <Property Name="IsNullable" Hidden="true" />
+      <Field Name="IsReadOnlyProperty" Hidden="true" />
+      <Method Name="IsValueValidHelper" Hidden="true" />
+      <Field Name="IsValueValidProperty" Hidden="true" />
+      <Field Name="IsValueValidPropertyKey" Hidden="true" />
+      <Property Name="LanguageCultureInfo" Hidden="true" />
+      <Method Name="OnAlwaysValidateChanged" Hidden="true" />
+      <Method Name="OnCoerceTemplate" Hidden="true" />
+      <Method Name="OnCoerceText" Hidden="true" />
+      <Method Name="OnCoerceValue" Hidden="true" />
+      <Method Name="OnEditTemplateChanged" Hidden="true" />
+      <Method Name="OnFormatChanged" Hidden="true" />
+      <Method Name="OnFormatProviderChanged" Hidden="true" />
+      <Method Name="OnInvalidValueBehaviorChanged" Hidden="true" />
+      <Method Name="OnIsReadOnlyChanged" Hidden="true" />
+      <Method Name="OnReadOnlyChanged" Hidden="true" />
+      <Method Name="OnTextChanged" Hidden="true" />
+      <Method Name="OnThemeChangedCallback" Hidden="true" />
+      <Method Name="OnValueChanged" Hidden="true" />
+      <Method Name="OnValueConstraint_SubPropChanged" Hidden="true" />
+      <Method Name="OnValueConstraintChanged" Hidden="true" />
+      <Method Name="OnValueTypeChanged" Hidden="true" />
+      <Field Name="OriginalValueProperty" Hidden="true" />
+      <Field Name="OriginalValuePropertyKey" Hidden="true" />
+      <Method Name="ProcessKeyDown" Hidden="true" />
+      <Method Name="RaiseEditModeEnded" Hidden="true" />
+      <Method Name="RaiseEditModeEnding" Hidden="true" />
+      <Method Name="RaiseEditModeStarted" Hidden="true" />
+      <Method Name="RaiseEditModeStarting" Hidden="true" />
+      <Method Name="RaiseEditModeValidationError" Hidden="true" />
+      <Method Name="RaiseValuePropertyChangedEvent" Hidden="true" />
+      <Field Name="ReadOnlyProperty" Hidden="true" />
+      <Method Name="RevalidateCurrentValue" Hidden="true" />
+      <Method Name="SetFocusToFocusSite" Hidden="true" />
+      <Method Name="SetIsValueValid" Hidden="true" />
+      <Method Name="SetTemplate" Hidden="true" />
+      <Method Name="StartEditModeOnMouseDownHelper" Hidden="true" />
+      <Property Name="SyncingValueProperties" Hidden="true" />
+      <Method Name="SyncTextWithValue" Hidden="true" />
+      <Method Name="SyncValueProperties" Hidden="true" />
+      <Method Name="SyncValuePropertiesOverride" Hidden="true" />
+      <Method Name="SyncValueWithText" Hidden="true" />
+      <Field Name="TextChangedEvent" Hidden="true" />
+      <Field Name="TextProperty" Hidden="true" />
+      <Field Name="ThemeProperty" Hidden="true" />
+      <Method Name="ValidateCurrentValueHelper" Hidden="true" />
+      <Method Name="ValidateInputHelper" Hidden="true" />
+      <Field Name="ValueChangedEvent" Hidden="true" />
+      <Field Name="ValueConstraintProperty" Hidden="true" />
+      <Method Name="ValueEditor" Hidden="true" />
+      <Field Name="ValueProperty" Hidden="true" />
+      <Field Name="ValueToTextConverterProperty" Hidden="true" />
+      <Field Name="ValueTypeProperty" Hidden="true" />
+      <Method Name="VerifyFocusSite" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>KCZcfyDFJ2J1UNL+tJU750lPfW9Saq21PvZqPgEg9qM=</HashCode>
+      <FileName>ValueEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

@@ -1,0 +1,63 @@
+﻿<Window x:Class="Infragistics.Windows.Design.Tiles.TileOptionsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:igEditors="http://infragistics.com/Editors"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:local="clr-namespace:Infragistics.Windows.Design.Tiles"
+    Title="TileOptionsDialog"
+	WindowStartupLocation="CenterScreen"
+	SizeToContent="WidthAndHeight"
+	ShowInTaskbar="False"
+	ResizeMode="NoResize"
+	WindowStyle="ToolWindow"
+	>
+
+	<Grid Width="400">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<StackPanel>
+			<StackPanel.Resources>
+				<Style TargetType="{x:Type Border}">
+					<Setter Property="BorderThickness" Value="1"/>
+					<Setter Property="BorderBrush" Value="DarkGray"/>
+					<Setter Property="CornerRadius" Value="3"/>
+					<Setter Property="Margin" Value="5,8,5,8"/>
+				</Style>
+
+				<Style TargetType="{x:Type Grid}">
+					<Setter Property="Margin" Value="5"/>
+				</Style>
+			</StackPanel.Resources>
+
+			<!-- TotalTiles -->
+			<Border>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<TextBlock	x:Name="txtNumberOfTiles" Text="{x:Static local:TileOptionsDialog.string_NumberTiles}" TextAlignment="Left" Grid.Column="0" VerticalAlignment="Center" Foreground="Black"/>
+					<igEditors:XamNumericEditor
+								x:Name="numTotalTiles"
+								ValueType="{x:Type sys:Int32}"
+								Grid.Column="1"
+								Value="1"
+								PromptChar=""
+								SpinWrap="False"
+								SpinButtonDisplayMode="Always"
+								SpinIncrement="1">
+						<igEditors:XamNumericEditor.ValueConstraint>
+							<igEditors:ValueConstraint MinInclusive="1" MaxInclusive="50"/>
+						</igEditors:XamNumericEditor.ValueConstraint>
+					</igEditors:XamNumericEditor>
+				</Grid>
+			</Border>
+		</StackPanel>
+
+		<Button x:Name="btnOK" Grid.Row="1" Click="btnOK_Click" HorizontalAlignment="Right" Margin="0,20,10,10" MinWidth="100" IsDefault="True" Content="{x:Static local:TileOptionsDialog.string_OK}"></Button>
+	</Grid>
+</Window>

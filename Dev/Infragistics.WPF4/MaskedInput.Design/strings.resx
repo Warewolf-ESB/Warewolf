@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data xml:space="preserve" name="ToolboxTabName">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInputAssetLibrary">
+    <value>Infragistics</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_Sections_Property">
+    <value>Returns the sections collection this section belongs to.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_DisplayChars_Property">
+    <value>Returns the display characters of this section.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_PreviousSection_Property">
+    <value>Finds the previous section.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_PreviousLiteralSection_Property">
+    <value>Returns the previous literal section, skipping any edit sections.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_NextSection_Property">
+    <value>Returns the next section.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_PreviousEditSection_Property">
+    <value>Returns the previous edit section.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_NextEditSection_Property">
+    <value>Returns the next edit section, skipping any literal sections.</value>
+  </data>
+  <data xml:space="preserve" name="SectionBase_NextLiteralSection_Property">
+    <value>Returns the next literal section, skipping any edit sections.</value>
+  </data>
+  <data xml:space="preserve" name="EditSectionBase_Orientation_Property">
+    <value>Returns whether editing is left-to-right or right-to-left.</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharsEditSection_Orientation_Property">
+    <value>indicates whether this section is a right-to-left edit section (number section)
+ or a left-to-right (regular edit sections)</value>
+  </data>
+  <data xml:space="preserve" name="NumberSection_MinValue_Property">
+    <value>min value for this section</value>
+  </data>
+  <data xml:space="preserve" name="NumberSection_MaxValue_Property">
+    <value>max value for this section</value>
+  </data>
+  <data xml:space="preserve" name="NumberSection_Orientation_Property">
+    <value>overridden. returns RightToLeft to indicate that this section
+ is to be edited right-to-left</value>
+  </data>
+  <data xml:space="preserve" name="InputCharBase_IsEditable_Property">
+    <value>Overridden, returns true to indicate that InputPositionBase derivatives
+ are editable character positions.</value>
+  </data>
+  <data xml:space="preserve" name="InputCharBase_Char_Property">
+    <value>returns the char associated with this character position.
+ If it's an InputPositionBase derivative (character placeholder),
+ it will return the character that the user has input, or 0 if it's empty
+ 
+ For LiteralPosition and derivatives, it will return the 
+ literal character that will be used in storing the text (if one
+ of the DataMaskModes is to include literals)
+ 
+ set will only work if IsEditable returns true, otherwise it will
+ throw an exception</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharBase_IncludeMethod_Property">
+    <value>Returns or sets a value that specifies how InputMaskMode is used in deciding whether or not to include the character.</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharBase_DrawString_Property">
+    <value>Returns the string that will be drawn by this display character.</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharBase_IsEditable_Property">
+    <value>Indicates if the character position is an editable position, one that
+ user can input a character into. The literal characters will return False.</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharBase_Char_Property">
+    <value>Returns the char associated with this character position.
+ If it's an InputPositionBase derivative (character placeholder),
+ it will return the character that the user has input, or 0 if it's empty.
+ 
+ For LiteralPosition and derivatives, it will return the associated
+ literal character.
+ 
+ Set of this property will only work if IsEditable returns true, otherwise it 
+ will throw an exception.</value>
+  </data>
+  <data xml:space="preserve" name="FractionPart_NumberOfDigits_Property">
+    <value>Number of digits in this fraction part.</value>
+  </data>
+  <data xml:space="preserve" name="FractionPart_Orientation_Property">
+    <value>Returns whether editing is left-to-right or right-to-left.</value>
+  </data>
+  <data xml:space="preserve" name="FractionPartContinuous_Orientation_Property">
+    <value>Returns whether editing is left-to-right or right-to-left.</value>
+  </data>
+  <data xml:space="preserve" name="EditModeValidationErrorEventArgs_Editor_Property">
+    <value>Gets the associated value editor.</value>
+  </data>
+  <data xml:space="preserve" name="EditModeValidationErrorEventArgs_ForceExitEditMode_Property">
+    <value>Indicates if the edit mode is being exitted forcefully. For example, when the
+ application is being closed.</value>
+  </data>
+  <data xml:space="preserve" name="EditModeValidationErrorEventArgs_InvalidValueBehavior_Property">
+    <value>Gets or sets the invalid value behavior.</value>
+  </data>
+  <data xml:space="preserve" name="EditModeValidationErrorEventArgs_ErrorMessage_Property">
+    <value>Gets or sets the error message.</value>
+  </data>
+  <data xml:space="preserve" name="EditModeValidationErrorEventArgs_Exception_Property">
+    <value>Gets any exception associated with the validation error.</value>
+  </data>
+  <data xml:space="preserve" name="InvalidCharEventArgs_Char_Property">
+    <value>Gets the invalid character that the user attempted to input.</value>
+  </data>
+  <data xml:space="preserve" name="InvalidCharEventArgs_DisplayChar_Property">
+    <value>Gets the display character instance where the user attempted to enter the invalid character.</value>
+  </data>
+  <data xml:space="preserve" name="InvalidCharEventArgs_Beep_Property">
+    <value>Gets or sets a value indicating whether the XamMaskedInput should beep.</value>
+  </data>
+  <data xml:space="preserve" name="ParsedMask_Mask_Property">
+    <value>Returns the associated mask.</value>
+  </data>
+  <data xml:space="preserve" name="ParsedMask_PromptCharacter_Property">
+    <value>Returns the associated prompt character. Used only when applying mask with certain mask modes.</value>
+  </data>
+  <data xml:space="preserve" name="ParsedMask_PadCharacter_Property">
+    <value>Returns the associated pad character. Used only when applying mask with certain mask modes.</value>
+  </data>
+  <data xml:space="preserve" name="Resources_Customizer_Property">
+    <value>Returns the Infragistics.Shared.ResourceCustomizer for this assembly.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_Enumeration_Property">
+    <value>Gets/sets an object implementing System.Collections.IEnumerable which contains a list of value options.
+ Note, this property defaults to a null (Nothing) value.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasEnumeration_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.Enumeration list is not null.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_FixedValue_Property">
+    <value>Gets/sets the value which the constrained value must be equal to.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasFixedValue_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.FixedValue property is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MaxExclusive_Property">
+    <value>Gets/sets the value that will constraint the data value to be less than it.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMaxExclusive_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MaxExclusive property is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MaxInclusive_Property">
+    <value>Gets/sets the maximum value which the constrained value is allowed to be.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMaxInclusive_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MaxInclusive property is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MaxLength_Property">
+    <value>Gets/sets the maximum length (inclusive) allowed for the constrained value.
+ This constraint applies to values of type 'string'.
+ The default value is 0, which means that there is no limit.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMaxLength_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MaxLength property has a value greater than 0.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MinExclusive_Property">
+    <value>Gets/sets the value that will constraint the data value to be greater than it.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMinExclusive_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MinExclusive property is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MinInclusive_Property">
+    <value>Gets/sets the minimum value which the constrained value is allowed to be.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMinInclusive_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MinInclusive property is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_MinLength_Property">
+    <value>Gets/sets the minimum length (inclusive) allowed for the constrained value.
+ This constraint applies to values of type 'string'.
+ The default value is 0, which means there is no minimum length constraint.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasMinLength_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.MinLength property has a value greater than 0.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_Nullable_Property">
+    <value>Gets/sets a flag which indicates if the constrained value is allowed to be null (Nothing).
+ Default value of this property is null which is to allow null values.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasNullable_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.Nullable property returns a non-default value.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_RegexPattern_Property">
+    <value>Gets/sets the regular expression to which the constrained value must adhere.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasRegexPattern_Property">
+    <value>Returns true if the Infragistics.Controls.Editors.ValueConstraint.RegexPattern is not null (Nothing).</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_ValidateAsType_Property">
+    <value>Gets/sets the Infragistics.Controls.Editors.ValueConstraint.ValidateAsType value which the Infragistics.Controls.Editors.ValueConstraint.Validate(System.Object,System.Type) method should
+ use to constrain the input value. By default this value is set to &lt;b&gt;Unknown&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="ValueConstraint_HasAnyConstraints_Property">
+    <value>Returns true if any of the constraint properties are set on this object or if the ValidateAsType
+ property is set to something other than 'Unknown'.</value>
+  </data>
+  <data xml:space="preserve" name="ValidationErrorInfo_ErrorMessage_Property">
+    <value>Error message indicating why the value is invalid.</value>
+  </data>
+  <data xml:space="preserve" name="ValidationErrorInfo_Exception_Property">
+    <value>Returns the exception if any that caused validation error.</value>
+  </data>
+  <data xml:space="preserve" name="DisplayCharsCollection_Section_Property">
+    <value>Returns the associated section object.</value>
+  </data>
+  <data xml:space="preserve" name="MaskedInputCommand_CommandId_Property">
+    <value>Gets the associated command id.</value>
+  </data>
+  <data xml:space="preserve" name="MaskedInputCommandSource_CommandId_Property">
+    <value>Gets or sets the CalendarCommand which is to be executed by the command.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SpinButtonDisplayMode_Property">
+    <value>Specifies if and when to display spin buttons which are used to increment or decrement the editor value.
+ Default value is &lt;b&gt;Never&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_Properties">
+    <value>Editor Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SpinButtonStyle_Property">
+    <value>Used for setting the Style of the spin buttons which are instances of RepeatButton class. Default value is null.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SpinButtonVisibilityResolved_Property">
+    <value>Returns the value indicating whether the spin buttons should be displayed.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SpinIncrement_Property">
+    <value>Specifies the amount by which to increase or decrease the value of the editor when 
+ up or down spin button is clicked.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SpinWrap_Property">
+    <value>Returns or sets a value indicating whether the control's spin buttons should wrap its value. Default value is &lt;b&gt;False&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_Sections_Property">
+    <value>A collection of the sections used in the control. Returns
+ a valid collection only if the mask has been parsed yet.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_DisplayChars_Property">
+    <value>A collection of the display characters used in the control. Returns
+ a valid collection only if the mask has been parsed yet.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_InsertMode_Property">
+    <value>Returns or sets the editing mode (insert or overstrike).</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_Mask_Property">
+    <value>Returns or sets the mask associated with the masked edit control.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_DataMode_Property">
+    <value>Returns or sets a value that determines how the control's contents will be stored by 
+ the data source when data masking is enabled.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_ClipMode_Property">
+    <value>Returns or sets a value that determines how the control's contents will be copied to the clipboard when data masking is in enabled.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_DisplayMode_Property">
+    <value>Returns or sets a value that determines how the control's contents will be displayed when the control is not in edit mode and data masking is enabled.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_PadChar_Property">
+    <value>Returns or sets the character that will be used as the pad character. Default is space character (' ').</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_PromptChar_Property">
+    <value>Returns or sets the prompt character. The default prompt character is the underscore (_).</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SectionTabNavigation_Property">
+    <value>Specifies whether to tab between sections when Tab and Shift+Tab keys are pressed.
+ The default value is &lt;b&gt;NextControl&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_AllowShiftingAcrossSections_Property">
+    <value>Specifies whether to shift characters across section boundaries when deleting characters.
+ Default value is &lt;b&gt;True&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SelectionStart_Property">
+    <value>Indicates the start location of the selected text. If no text is selected, this property indicates
+ the location of the caret.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SelectionLength_Property">
+    <value>Gets/sets the length of the selected text. If nothing is selected then returns 0.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SelectedText_Property">
+    <value>Gets or sets the selected text.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_TextLength_Property">
+    <value>Indicates the total length of the text in the control when in edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_SelectAllBehavior_Property">
+    <value>Specifies whether to select only the entered characters or all the characters (including prompt
+ characters) when the editor performs the operation of select all text. The default value of
+ the property is &lt;b&gt;SelectAllCharacters&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_AutoFillDate_Property">
+    <value>Specifies whether to auto-fill empty date components when the user attempts to leave the editor.
+ The default is &lt;b&gt;None&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="TextInputBase_DisplayText_Property">
+    <value>Returns the display text. Note that display text is only used when the editor is not in edit mode.</value>
+  </data>
+  <data xml:space="preserve" name="TextInputBase_NullText_Property">
+    <value>The text to display when the value of the editor is null and the editor is not in edit mode.
+ The default value is empty string.</value>
+  </data>
+  <data xml:space="preserve" name="TextInputBase_ValueToDisplayTextConverter_Property">
+    <value>Specifies the converter used for converting between display text and value.</value>
+  </data>
+  <data xml:space="preserve" name="TextInputBase_ValueToDisplayTextConverterResolved_Property">
+    <value>Resolved converter used for converting editor value to editor display text.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_AlwaysValidateResolved_Property">
+    <value>Read-only. Gets the resolved value of the Infragistics.Controls.Editors.ValueInput.AlwaysValidate property.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_FormatProviderResolved_Property">
+    <value>Returns the resolved format provider.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueToTextConverterResolved_Property">
+    <value>Resolved converter used for converting editor value to editor text.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_AlwaysValidate_Property">
+    <value>Specifies whether to validate the editor's value even if the user doesn't modify the value. Default value
+ is &lt;b&gt;False&lt;/b&gt; where the editor only validates the value if the user modifies it.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_Value_Property">
+    <value>Gets or sets the value of the editor.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_Text_Property">
+    <value>Gets or sets the value of the editor as text.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueType_Property">
+    <value>Gets or sets the type of values that this editor manipulates.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueTypeName_Property">
+    <value>Gets or sets the name of the type of values that this editor manipulates.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueTypeResolved_Property">
+    <value>Gets the resolved value type.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueConstraint_Property">
+    <value>Gets or sets the constraints for editor input. Default value is &lt;b&gt;null&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_InvalidValueBehavior_Property">
+    <value>Specifies what action to take when the user attempts to leave the editor with an invalid value.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_ValueToTextConverter_Property">
+    <value>Specifies the converter used for converting between text and value.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_IsValueValid_Property">
+    <value>Specifies whether the current value of the editor is valid.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_HasValueChanged_Property">
+    <value>Determines if the content has changed while in edit mode (read-only).</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_InvalidValueErrorInfo_Property">
+    <value>If the editor's value is invalid, returns error information regarding why it's invalid.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_IsReadOnly_Property">
+    <value>Specifies whether the user is allowed to modify the value in the editor. Default value is &lt;b&gt;false&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_OriginalValue_Property">
+    <value>Gets the original value while in edit mode (read-only)</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_FormatProvider_Property">
+    <value>Specifies format provider used for converting between value and text.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_Format_Property">
+    <value>Specifies format used for converting between value and text.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_IsKeyboardFocusWithin_Property">
+    <value>Indicates whether the editor has keyboard focus.</value>
+  </data>
+  <data xml:space="preserve" name="ValueInput_IsMouseOver_Property">
+    <value>Returns a value indicating whether the mouse is over the editor.</value>
+  </data>
+  <data xml:space="preserve" name="XamMaskedInput_TrimFractionalZeros_Property">
+    <value>Specifies whether to trim insignificant zero's in fraction part of numeric masks. Default value is &lt;b&gt;False&lt;/b&gt;.</value>
+  </data>
+  <data xml:space="preserve" name="PropertyValueTracker_AsynchronousDispatcherPriority_Property">
+    <value>Gets or sets the dispatcher priority to use to call asynchronously if 
+ Infragistics.Windows.Internal.PropertyValueTracker.CallAsynchronously is set to true.</value>
+  </data>
+  <data xml:space="preserve" name="PropertyValueTracker_CallAsynchronously_Property">
+    <value>Specifies whether to call the handler asyncrhonously using Dispatcher.BeginInvoke.</value>
+  </data>
+  <data xml:space="preserve" name="PropertyValueTracker_Tag_Property">
+    <value>Gets or sets the tag.</value>
+  </data>
+  <data xml:space="preserve" name="PropertyValueTracker_ThrottleTime_Property">
+    <value>Throttle time in milliseconds. Default is 0 which means there's no throttling.</value>
+  </data>
+</root>

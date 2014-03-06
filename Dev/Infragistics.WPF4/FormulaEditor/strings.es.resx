@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FunctionSearchType_All_Desc" xml:space="preserve">
+    <value>(Todo)</value>
+  </data>
+  <data name="FunctionSearchType_FunctionName_Desc" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="FunctionSearchType_CategoryName_Desc" xml:space="preserve">
+    <value>Nombre de categoría</value>
+  </data>
+  <data name="OperandSearchType_All_Desc" xml:space="preserve">
+    <value>(Todo)</value>
+  </data>
+  <data name="OperandSearchType_OperandName_Desc" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="OperandSearchType_OwnerName_Desc" xml:space="preserve">
+    <value>Nombre del propietario</value>
+  </data>
+  <data name="OperandSearchType_CategoryName_Desc" xml:space="preserve">
+    <value>Nombre de categoría</value>
+  </data>
+  <data name="FunctionSignatureLabel" xml:space="preserve">
+    <value>Formato esperado</value>
+  </data>
+  <data name="OperandSignatureLabel" xml:space="preserve">
+    <value>Mostrado como</value>
+  </data>
+  <data name="ClearButton" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="EditingAreaLabel" xml:space="preserve">
+    <value>Introducir fórmula/expresión</value>
+  </data>
+  <data name="SyntaxErrorLabel" xml:space="preserve">
+    <value>{0}, en {1}</value>
+  </data>
+  <data name="SyntaxErrorLabelLink" xml:space="preserve">
+    <value>línea: {0} columna: {1}</value>
+  </data>
+  <data name="FunctionTreeLabel" xml:space="preserve">
+    <value>Funciones</value>
+  </data>
+  <data name="OperandTreeLabel" xml:space="preserve">
+    <value>Operandos</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ShowDialogButtonToolTip" xml:space="preserve">
+    <value>Mostrar diálogo (Ctrl+F3)</value>
+  </data>
+  <data name="CloseWithoutSavingPrompt" xml:space="preserve">
+    <value>El panel debe ser el antecesor del elemento subordinado especificado.</value>
+  </data>
+  <data name="CommitFormulaWithErrorsPrompt" xml:space="preserve">
+    <value>La fórmula tiene uno o más errores de sintaxis. ¿Desea aplicar la fórmula de todos modos?</value>
+  </data>
+  <data name="DialogTitle" xml:space="preserve">
+    <value>Editor de fórmulas</value>
+  </data>
+  <data name="DialogTitleWithTarget" xml:space="preserve">
+    <value>Editor de fórmulas - {0}</value>
+  </data>
+  <data name="FunctionSearchType_Category_Desc" xml:space="preserve">
+    <value>Categoría</value>
+  </data>
+  <data name="LE_ArgumentException_PanelNotInAncestorChain" xml:space="preserve">
+    <value>El panel debe ser el antecesor del elemento subordinado especificado.</value>
+  </data>
+  <data name="LE_ArgumentOutOfRangeException_OffsetCantBeNaN" xml:space="preserve">
+    <value>{0} no puede ser NaN.</value>
+  </data>
+  <data name="LE_DoesNotImplementInterface" xml:space="preserve">
+    <value>No implementa {0}</value>
+  </data>
+  <data name="MissingArgumentName" xml:space="preserve">
+    <value>Arg{0}</value>
+  </data>
+  <data name="MissingCategoryName" xml:space="preserve">
+    <value>[Sin categoría]</value>
+  </data>
+  <data name="OperandNotInitialized" xml:space="preserve">
+    <value>&lt;Error: Operando no iniciado&gt;</value>
+  </data>
+  <data name="OperandSearchType_ControlName_Desc" xml:space="preserve">
+    <value>Nombre del control</value>
+  </data>
+  <data name="OperandSearchType_NamedReferenceCategory_Desc" xml:space="preserve">
+    <value>Categoría de referencia con nombre</value>
+  </data>
+  <data name="SaveChangesPrompt" xml:space="preserve">
+    <value>¿Desea guardar los cambios en la fórmula?</value>
+  </data>
+</root>

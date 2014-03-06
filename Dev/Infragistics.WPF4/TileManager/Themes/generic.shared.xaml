@@ -1,0 +1,961 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local="clr-namespace:Infragistics.Controls.Layouts"
+    xmlns:localPrim="clr-namespace:Infragistics.Controls.Layouts.Primitives"
+	xmlns:ig="http://schemas.infragistics.com/xaml"
+	xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	mc:Ignorable="PresentationOptions">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--                             IMPORTANT NOTE:                                -->
+    <!--                                                                            -->
+    <!-- Only place resources in this ResourceDictionary that can be shared between -->
+    <!-- Silverlight and WPF.  This file is merged into the platform-specific       -->
+    <!-- specific ResourceDictionaries (i.e., generic.sl.xaml and generic.wpf.xaml) -->
+    <!-- and the appropriate platform-specific ResourceDictionary is copied in the  -->
+    <!-- pre-build steps so that it overwrites generic.xaml (which  by default has  -->
+    <!-- no content)                                                                -->
+    <!--                                                                            -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <igPrim:SystemResourceProvider x:Key="SRP"/>
+
+    <!-- ____________________________________________________________________________ -->
+    <!--                                                                              -->
+    <!--                            Brushes                                           -->
+    <!-- ____________________________________________________________________________ -->
+
+    <!-- State Button Brushes -->
+
+    <LinearGradientBrush x:Key="btnNormalBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFa3aeb9"/>
+                <GradientStop Offset="0.370" Color="#FF8399a9"/>
+                <GradientStop Offset="0.370" Color="#FF718597"/>
+                <GradientStop Offset="1" Color="#FF617584"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="btnHoverBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFb5bdc8"/>
+                <GradientStop Offset="0.370" Color="#FF8399a9"/>
+                <GradientStop Offset="0.370" Color="#FF718597"/>
+                <GradientStop Offset="0.906" Color="#FFb9c1ca"/>
+                <GradientStop Offset="1" Color="#FFb9c1ca"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="btnHoverStrokeBrush" Color="#59FFFFFF"/>
+
+    <LinearGradientBrush x:Key="btnPressedBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FF6b7c8d"/>
+                <GradientStop Offset="0.370" Color="#FF4d606f"/>
+                <GradientStop Offset="0.370" Color="#FF465460"/>
+                <GradientStop Offset="0.906" Color="#FF262d33"/>
+                <GradientStop Offset="1" Color="#FF262d33"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="btnPressedStrokeBrush" Color="#59FFFFFF"/>
+
+    <!--______________________________________Tile Brushes____________________________________________________-->
+
+
+    <SolidColorBrush x:Key="TileContentBackgroundFillKey" Color="#FFFFFFFF" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileBaseBorderBrushFillKey" Color="#FF535353"/>
+    <SolidColorBrush x:Key="TilesControlBorderBrushFillKey" Color="White" PresentationOptions:Freeze="true" />
+
+    <LinearGradientBrush x:Key="TileSwapTargetBgBrushFillKey" StartPoint="0.5,0" EndPoint="0.5,1" PresentationOptions:Freeze="true" >
+        <GradientStop Color="#33000000" Offset="0"/>
+        <GradientStop Color="#99000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TileBaseFillKey" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#BFf5f8fa"/>
+                <GradientStop Offset="1" Color="#BFeff3f7"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="TileCaptionInnerBorderFillKey" StartPoint="0,0" EndPoint="0,1" PresentationOptions:Freeze="true" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="#FFc0c1c2"/>
+                <GradientStop Offset="1" Color="#FFadb1b8"/>
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="TileCaptionBtnGlyphFillKey" Color="#FFFFFFFF" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileCaptionBtnGlyphNormalFillKey" Color="#FF787878" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileCaptionBtnGlyphHoverlFillKey" Color="#FFFFFFFF" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileCaptionBtnGlyphPressedFillKey" Color="#FFFFFFFF" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileCaptionBtnPressedGlyphFillKey" Color="#FFFFFFFF" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileHeaderTextFillKey" Color="#FF000000" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="ToolTipOuterBorderFillKey" Color="#FF767676" PresentationOptions:Freeze="true" />
+
+    <!--______________________________________Tooltip Brushes____________________________________________________-->
+
+    <LinearGradientBrush x:Key="ToolTipCenterFillKey" StartPoint="0.5,0" EndPoint="0.5,1" PresentationOptions:Freeze="true" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFffffff" Offset="0" />
+                <GradientStop Color="#FFe4e5f0" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="TileAreaSplitterHorizontalBackgroundFillKey" Color="Transparent" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileAreaSplitterBorderBrushFillKey" Color="#FF767676" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileAreaSplitterGlyphBackgroundFillKey" Color="#FFEBEBEB" PresentationOptions:Freeze="true" />
+    <SolidColorBrush x:Key="TileAreaSplitterGlyphForegroundFillKey" Color="#FF767676" PresentationOptions:Freeze="true" />
+
+
+    <!-- ======================== -->
+    <!-- ToolTips			      -->
+    <!-- ======================== -->
+
+    <!-- ========== XamTilesControl.ToolTipStyleKey ========== -->
+    <Style x:Key="ToolTipStyleKey" TargetType="ToolTip">
+        <Setter Property="BorderBrush" Value="{StaticResource ToolTipOuterBorderFillKey}" />
+        <Setter Property="Background" Value="{StaticResource ToolTipCenterFillKey}" />
+    </Style>
+
+    <localPrim:TileManagerResourceString x:Key="CloseButtonToolTipContent" ResourceName="CloseButtonToolTip"/>
+    <localPrim:TileManagerResourceString x:Key="MaximizeButtonToolTipContent" ResourceName="MaximizeButtonToolTip"/>
+    <localPrim:TileManagerResourceString x:Key="MinimizeButtonToolTipContent" ResourceName="MinimizeButtonToolTip"/>
+    <localPrim:TileManagerResourceString x:Key="ExpandButtonToolTipContent" ResourceName="ExpandButtonToolTip"/>
+    <localPrim:TileManagerResourceString x:Key="CollapseButtonToolTipContent" ResourceName="CollapseButtonToolTip"/>
+
+    <!-- ======================== -->
+    <!-- ValueConverters          -->
+    <!-- ======================== -->
+    <igPrim:ValueConverterGroup x:Key="boolToVisibility">
+        <!-- if true sets visibility to Visible -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <sys:Boolean>True</sys:Boolean>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <!-- if false sets visibility to Collapsed -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+	
+		<!-- JJD 1/5/12 - TFS98037 - added -->
+    <igPrim:ValueConverterGroup x:Key="closeActionToBool">
+        <!-- if DoNothing converts to false -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+							<local:TileCloseAction>DoNothing</local:TileCloseAction>
+						</igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+							<sys:Boolean>False</sys:Boolean>
+						</igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <!-- else converts to true -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Boolean>True</sys:Boolean>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToExpandCollapseTooltipConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>MinimizedExpanded</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <!-- JJD 9/19/11 - TFS87912
+								Use binding instead to the Value property of the ScheduleResourceString
+								so we can get notified when the resources are changed.-->
+                <!--<ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{StaticResource CollapseButtonToolTipContent}"/>-->
+                <ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{Binding Path=Value, Source={StaticResource CollapseButtonToolTipContent}}"/>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <!-- JJD 9/19/11 - TFS87912
+								Use binding instead to the Value property of the ScheduleResourceString
+								so we can get notified when the resources are changed.-->
+                <!--<ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{StaticResource ExpandButtonToolTipContent}"/>-->
+                <ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{Binding Path=Value, Source={StaticResource ExpandButtonToolTipContent}}"/>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToMaximizeMinimizeTooltipConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>Maximized</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <!-- JJD 9/19/11 - TFS87912
+								Use binding instead to the Value property of the ScheduleResourceString
+								so we can get notified when the resources are changed.-->
+                <!--<ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{StaticResource MinimizeButtonToolTipContent}"/>-->
+                <ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{Binding Path=Value, Source={StaticResource MinimizeButtonToolTipContent}}"/>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <!-- JJD 9/19/11 - TFS87912
+								Use binding instead to the Value property of the ScheduleResourceString
+								so we can get notified when the resources are changed.-->
+                <!--<ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{StaticResource MaximizeButtonToolTipContent}"/>-->
+                <ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{Binding Path=Value, Source={StaticResource MaximizeButtonToolTipContent}}"/>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToExpandedGlyphVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>MinimizedExpanded</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToCollapsededGlyphVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>Minimized</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToMaximizeGlyphVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>Maximized</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="stateToRestoreGlyphVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <local:TileState>Maximized</local:TileState>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="isSwappingToFillConverter">
+        <igPrim:FixedValueConverter DestinationValue="{StaticResource TileSwapTargetBgBrushFillKey}">
+            <igPrim:FixedValueConverter.SourceValue>
+                <sys:Boolean>True</sys:Boolean>
+            </igPrim:FixedValueConverter.SourceValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <SolidColorBrush Color="Transparent" />
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="isDraggingToOpacityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <sys:Boolean>True</sys:Boolean>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>75e-2</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>1</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="HorizontalToVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <Orientation>Horizontal</Orientation>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="VerticalToVisibilityConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <Orientation>Vertical</Orientation>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="OrientationToMinWidthConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <Orientation>Vertical</Orientation>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>6</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>0</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:ValueConverterGroup x:Key="OrientationToMinHeightConverter">
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <Orientation>Horizontal</Orientation>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>6</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <sys:Double>0</sys:Double>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <!-- ======================== -->
+    <!-- Control Styles           -->
+    <!-- ======================== -->
+
+    <!-- ========== CaptionButtonStyleBase ========== -->
+    <Style x:Key="CaptionButtonStyleBase" TargetType="ButtonBase" >
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="15" />
+        <Setter Property="Foreground" Value="{StaticResource TileCaptionBtnGlyphNormalFillKey}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.CloseButtonStyleKey ========== -->
+    <Style x:Key="CloseButtonStyleKey" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"	Background="{TemplateBinding Background}"
+					 BorderBrush="{TemplateBinding BorderBrush}"
+					 BorderThickness="{TemplateBinding BorderThickness}"
+				     igPrim:XamlHelper.SnapsToDevicePixels="True"
+					 Padding="{TemplateBinding Padding}">
+                        <ToolTipService.ToolTip>
+                            <!-- JJD 9/19/11 - TFS87912
+								Use binding instead to the Value property of the ScheduleResourceString
+								so we can get notified when the resources are changed.-->
+                            <!--<ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{StaticResource CloseButtonToolTipContent}"/>-->
+                            <ToolTip Style="{StaticResource ToolTipStyleKey}" Content="{Binding Path=Value, Source={StaticResource CloseButtonToolTipContent}}"/>
+                        </ToolTipService.ToolTip>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard Storyboard.TargetProperty="Fill" Storyboard.TargetName="CloseGlyph">
+                                        <ObjectAnimationUsingKeyFrames>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding Path=[ControlDarkBrush], Source={StaticResource SRP}}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CloseGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnPressedGlyphFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CloseGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnGlyphPressedFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Path
+							x:Name="CloseGlyph"
+							Width="8"
+							Height="7"
+							Data="M 1,1 C1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 2,4 2,4 2,4 2,5 2,5 2,5 1,5 1,5 1,5 1,6 1,6 1,6 0,6 0,6 0,6 0,7 0,7 0,7 2,7 2,7 2,7 2,6 2,6 2,6 3,6 3,6 3,6 3,5 3,5 3,5 4,5 4,5 4,5 5,5 5,5 5,5 5,6 5,6 5,6 6,6 6,6 6,6 6,7 6,7 6,7 8,7 8,7 8,7 8,6 8,6 8,6 7,6 7,6 7,6 7,5 7,5 7,5 6,5 6,5 6,5 6,4 6,4 6,4 5,4 5,4 5,4 5,3 5,3 5,3 6,3 6,3 6,3 6,2 6,2 6,2 7,2 7,2 7,2 7,1 7,1 7,1 8,1 8,1 8,1 8,0 8,0 8,0 6,0 6,0 6,0 6,1 6,1 6,1 5,1 5,1 5,1 5,2 5,2 5,2 4,2 4,2 4,2 3,2 3,2 3,2 3,1 3,1 3,1 2,1 2,1 2,1 2,0 2,0 2,0 0,0 0,0 0,0 0,1 0,1 0,1 1,1 1,1 z"
+							Fill="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.ExpandButtonStyleKey ========== -->
+    <Style x:Key="ExpandButtonStyleKey" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+						Background="{TemplateBinding Background}"
+						 BorderThickness="{TemplateBinding BorderThickness}"
+						 igPrim:XamlHelper.SnapsToDevicePixels="True"
+						 Padding="{TemplateBinding Padding}"
+						 ToolTipService.ToolTip ="{Binding Path=Tag.State, Converter={StaticResource stateToExpandCollapseTooltipConverter}, RelativeSource={RelativeSource TemplatedParent}}" CornerRadius="0,0,2,2"
+						 >
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard >
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding Path=[ControlDarkBrush], Source={StaticResource SRP}}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="NotCollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding Path=[ControlDarkBrush], Source={StaticResource SRP}}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnPressedGlyphFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="NotCollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnPressedGlyphFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnGlyphPressedFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="NotCollapsedImage">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnGlyphPressedFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <Path
+									x:Name="CollapsedImage"
+										Width="7"
+										Height="8"
+										Data="M 0,4 C0,4 0,5 0,5 0,5 1,5 1,5 1,5 1,6 1,6 1,6 2,6 2,6 2,6 2,7 2,7 2,7 3,7 3,7 3,7 3,8 3,8 3,8 4,8 4,8 4,8 4,7 4,7 4,7 5,7 5,7 5,7 5,6 5,6 5,6 6,6 6,6 6,6 6,5 6,5 6,5 7,5 7,5 7,5 7,4 7,4 7,4 5,4 5,4 5,4 5,5 5,5 5,5 4,5 4,5 4,5 4,6 4,6 4,6 3,6 3,6 3,6 3,5 3,5 3,5 2,5 2,5 2,5 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,1 0,1 0,1 1,1 1,1 1,1 1,2 1,2 1,2 2,2 2,2 2,2 2,3 2,3 2,3 3,3 3,3 3,3 3,4 3,4 3,4 4,4 4,4 4,4 4,3 4,3 4,3 5,3 5,3 5,3 5,2 5,2 5,2 6,2 6,2 6,2 6,1 6,1 6,1 7,1 7,1 7,1 7,0 7,0 7,0 5,0 5,0 5,0 5,1 5,1 5,1 4,1 4,1 4,1 4,2 4,2 4,2 3,2 3,2 3,2 3,1 3,1 3,1 2,1 2,1 2,1 2,0 2,0 2,0 0,0 0,0 z"
+										Fill="{TemplateBinding Foreground}"
+										Stretch="Fill"
+										Visibility="{Binding Path=Tag.State, Converter={StaticResource stateToCollapsededGlyphVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center" StrokeThickness="0"/>
+                            <Path
+										x:Name="NotCollapsedImage"
+										Width="7"
+										Height="8"
+										Data="M 0,4 C0,4 0,3 0,3 0,3 1,3 1,3 1,3 1,2 1,2 1,2 2,2 2,2 2,2 2,1 2,1 2,1 3,1 3,1 3,1 3,0 3,0 3,0 4,0 4,0 4,0 4,1 4,1 4,1 5,1 5,1 5,1 5,2 5,2 5,2 6,2 6,2 6,2 6,3 6,3 6,3 7,3 7,3 7,3 7,4 7,4 7,4 5,4 5,4 5,4 5,3 5,3 5,3 4,3 4,3 4,3 4,2 4,2 4,2 3,2 3,2 3,2 3,3 3,3 3,3 2,3 2,3 2,3 2,4 2,4 2,4 0,4 0,4 zM 0,8 C0,8 0,7 0,7 0,7 1,7 1,7 1,7 1,6 1,6 1,6 2,6 2,6 2,6 2,5 2,5 2,5 3,5 3,5 3,5 3,4 3,4 3,4 4,4 4,4 4,4 4,5 4,5 4,5 5,5 5,5 5,5 5,6 5,6 5,6 6,6 6,6 6,6 6,7 6,7 6,7 7,7 7,7 7,7 7,8 7,8 7,8 5,8 5,8 5,8 5,7 5,7 5,7 4,7 4,7 4,7 4,6 4,6 4,6 3,6 3,6 3,6 3,7 3,7 3,7 2,7 2,7 2,7 2,8 2,8 2,8 0,8 0,8 z"
+										Fill="{TemplateBinding Foreground}"
+										Stretch="Fill"
+										HorizontalAlignment="Center"
+										Visibility="{Binding Path=Tag.State, Converter={StaticResource stateToExpandedGlyphVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+										VerticalAlignment="Center" StrokeThickness="0"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- ========== TileHeaderPresenter.MaximizeButtonStyleKey ========== -->
+    <Style x:Key="MaximizeButtonStyleKey" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyleBase}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+						 Background="{TemplateBinding Background}"
+						 BorderBrush="{TemplateBinding BorderBrush}"
+						 BorderThickness="{TemplateBinding BorderThickness}"
+						 igPrim:XamlHelper.SnapsToDevicePixels="True"
+						 Padding="{TemplateBinding Padding}"
+						 ToolTipService.ToolTip ="{Binding Path=Tag.State, Converter={StaticResource stateToMaximizeMinimizeTooltipConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+									>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard >
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="MaximizeGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding Path=[ControlDarkBrush], Source={StaticResource SRP}}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="RestoreGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding Path=[ControlDarkBrush], Source={StaticResource SRP}}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnPressedStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="MaximizeGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnPressedGlyphFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="RestoreGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnPressedGlyphFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource btnHoverStrokeBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="MaximizeGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnGlyphPressedFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="RestoreGlyph">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TileCaptionBtnGlyphPressedFillKey}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <Path
+								x:Name="MaximizeGlyph"
+								Width="9"
+								Height="9"
+								Visibility="{Binding Path=Tag.State, Converter={StaticResource stateToMaximizeGlyphVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+								Data="M 1,3 C1,3 7,3 7,3 7,3 7,6 7,6 7,6 1,6 1,6 1,6 1,3 1,3 zM 0,1 C0,1 0,7 0,7 0,7 8,7 8,7 8,7 8,1 8,1 8,1 8,0.87 8,0.87 8,0.39 7.60,0 7.12,0 7.12,0 0.87,0 0.87,0 0.39,0 0,0.39 0,0.87 0,0.87 0,1 0,1 z"
+								Fill="{TemplateBinding Foreground}" />
+                            <Path
+								x:Name="RestoreGlyph"
+								Width="9"
+								Height="9"
+								Visibility="{Binding Path=Tag.State, Converter={StaticResource stateToRestoreGlyphVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+								Data="M 1,5 C1,5 2,5 2,5 2,5 5,5 5,5 5,5 5,7 5,7 5,7 1,7 1,7 1,7 1,5 1,5 zM 6,4 C6,4 6,3.87 6,3.87 6,3.39 5.60,3 5.12,3 5.12,3 3,3 3,3 3,3 3,2 3,2 3,2 7,2 7,2 7,2 7,4 7,4 7,4 6,4 6,4 zM 0,4 C0,4 0,8 0,8 0,8 6,8 6,8 6,8 6,5 6,5 6,5 8,5 8,5 8,5 8,1 8,1 8,1 8,0.87 8,0.87 8,0.39 7.60,0 7.12,0 7.12,0 2.87,0 2.87,0 2.39,0 2,0.39 2,0.87 2,0.87 2,1 2,1 2,1 2,3 2,3 2,3 0.87,3 0.87,3 0.39,3 0,3.39 0,3.87 0,3.87 0,4 0,4 z"
+								Fill="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <!-- ================================ -->
+    <!--       TileHeaderPresenter        -->
+    <!-- ================================ -->
+    <Style TargetType="localPrim:TileHeaderPresenter">
+        <!-- JJD 07/11/12 - TFS113932
+			Removed TextTrimming setter since this caused problems in SL -->
+        <!--<Setter Property="TextBlock.TextTrimming" Value="WordEllipsis" />-->
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="localPrim:TileHeaderPresenter">
+                    <Grid>
+                        <Border  CornerRadius="2,2,0,0" BorderThickness="0" Margin="0">
+                            <Border CornerRadius="2,2,0,0" 
+																	Margin="0" 
+																	Background="{TemplateBinding Background}"
+																	BorderThickness="0.5,0.5,0.5,0">
+                                <Grid Margin="{TemplateBinding Padding}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image x:Name="image"
+											Grid.Column="0"
+											Source="{Binding Path=Tile.Image, RelativeSource={RelativeSource TemplatedParent}}"
+										Stretch="None"
+											Visibility="{Binding Path=Tile.HasImage, Converter={StaticResource boolToVisibility}, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                                    <ContentPresenter
+										Grid.Column="1"
+										HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										/>
+
+                                    <Button x:Name="ToggleExpandCollapse"
+										 AutomationProperties.Name="ToggleExpandCollapse"
+										 Grid.Column="2"
+										 IsTabStop="False"
+										 Visibility="{Binding Path=Tile.ExpandButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+										 CommandParameter="{TemplateBinding Tile}"
+										 Style="{StaticResource ExpandButtonStyleKey}"
+										 Opacity="1"
+										 Tag="{TemplateBinding Tile}">
+                                        <ig:Commanding.Command>
+                                            <localPrim:TileCommandSource EventName="Click" CommandType="ToggleMinimizedExpansion" ParameterBinding="{Binding Path=Tile, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        </ig:Commanding.Command>
+
+                                    </Button>
+
+										<!-- JJD 1/5/12 - TFS98037 - added IsEnabled binding-->
+										<Button x:Name="ToggleMaximized"
+										  IsEnabled="{Binding Path=Tile.AllowMaximizeResolved, RelativeSource={RelativeSource TemplatedParent}}"											
+										  AutomationProperties.Name="ToggleMaximized"
+										  Grid.Column="3"
+											IsTabStop="False"
+										ClickMode="Release"
+										Visibility="{Binding Path=Tile.MaximizeButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+										CommandParameter="{TemplateBinding Tile}"
+										Style="{StaticResource MaximizeButtonStyleKey}"
+										Opacity="1"
+											Tag="{TemplateBinding Tile}" Height="16"
+										>
+                                        <ig:Commanding.Command>
+                                            <localPrim:TileCommandSource EventName="Click" CommandType="ToggleMaximized" ParameterBinding="{Binding Path=Tile, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        </ig:Commanding.Command>
+
+                                    </Button>
+
+										<!-- JJD 1/5/12 - TFS98037 - added IsEnabled binding-->
+										<Button x:Name="Close"
+										  IsEnabled="{Binding Path=Tile.CloseActionResolved, Converter={StaticResource closeActionToBool}, RelativeSource={RelativeSource TemplatedParent}}"											
+										  AutomationProperties.Name="Close"
+										  Grid.Column="4"
+										IsTabStop="False"
+										Visibility="{Binding Path=Tile.CloseButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
+										CommandParameter="{TemplateBinding Tile}"
+										Style="{StaticResource CloseButtonStyleKey}"
+											Tag="{TemplateBinding Tile}"
+										Opacity="1">
+                                        <ig:Commanding.Command>
+                                            <localPrim:TileCommandSource EventName="Click" CommandType="Close" ParameterBinding="{Binding Path=Tile, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        </ig:Commanding.Command>
+
+
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+
+    <!-- ========== TileAreaSplitter.PreviewStyleKey ========== -->
+	<Style x:Key="PreviewStyleKey" TargetType="ContentControl">
+		<Setter Property="Background" Value="#7F000000"/>
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="VerticalAlignment" Value="Stretch"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ContentControl">
+					<Border
+						Background="{TemplateBinding Background}"
+						igPrim:XamlHelper.SnapsToDevicePixels="True">
+						<ContentPresenter/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- ================================ -->
+    <!--           TileAreaSplitter       -->
+    <!-- ================================ -->
+    <Style TargetType="localPrim:TileAreaSplitter">
+        <Setter Property="PreviewStyle" Value="{StaticResource PreviewStyleKey}"/>
+        <Setter Property="Foreground" Value="{StaticResource TileAreaSplitterGlyphForegroundFillKey}"/>
+        <Setter Property="Background" Value="{StaticResource TileAreaSplitterGlyphBackgroundFillKey}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TileAreaSplitterBorderBrushFillKey}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="2,0,1,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="localPrim:TileAreaSplitter">
+                    <Grid>
+                        <Border
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							MinWidth="{Binding Path=(localPrim:TileAreaSplitter.Orientation), Converter={StaticResource OrientationToMinWidthConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+							MinHeight="{Binding Path=(localPrim:TileAreaSplitter.Orientation), Converter={StaticResource OrientationToMinHeightConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+							CornerRadius="1" Margin="0">
+                            <Grid>
+                                <Grid x:Name="verticalGlyphs" Visibility="{Binding Path=(localPrim:TileAreaSplitter.Orientation), Converter={StaticResource VerticalToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Path
+										Width="2"
+										Height="14"
+										Margin="1,2,0,0"
+										Data="M 0,12 C0,12 0,14 0,14 0,14 2,14 2,14 2,14 2,12 2,12 2,12 0,12 0,12 zM 0,8 C0,8 0,10 0,10 0,10 2,10 2,10 2,10 2,8 2,8 2,8 0,8 0,8 zM 0,4 C0,4 0,6 0,6 0,6 2,6 2,6 2,6 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 2,0 0,0 0,0 z"
+										Fill="{TemplateBinding Background}"
+										Opacity="1"
+										Stretch="Fill"/>
+                                    <Path
+										Width="2"
+										Height="14"
+										Data="M 0,12 C0,12 0,14 0,14 0,14 2,14 2,14 2,14 2,12 2,12 2,12 0,12 0,12 zM 0,8 C0,8 0,10 0,10 0,10 2,10 2,10 2,10 2,8 2,8 2,8 0,8 0,8 zM 0,4 C0,4 0,6 0,6 0,6 2,6 2,6 2,6 2,4 2,4 2,4 0,4 0,4 zM 0,0 C0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 2,0 0,0 0,0 z"
+										Fill="{TemplateBinding Foreground}"
+										Opacity="1"
+										Stretch="Fill"/>
+                                </Grid>
+                                <Grid x:Name="horizontalGlyphs" Visibility="{Binding Path=(localPrim:TileAreaSplitter.Orientation), Converter={StaticResource HorizontalToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Path
+										Width="14"
+										Height="2"
+										Margin="2,2,0,0"
+										Data="M 2,0 C2,0 0,0 0,0 0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 zM 6,0 C6,0 4,0 4,0 4,0 4,2 4,2 4,2 6,2 6,2 6,2 6,0 6,0 zM 10,0 C10,0 8,0 8,0 8,0 8,2 8,2 8,2 10,2 10,2 10,2 10,0 10,0 zM 14,0 C14,0 12,0 12,0 12,0 12,2 12,2 12,2 14,2 14,2 14,2 14,0 14,0 z"
+										Stretch="Fill" Fill="#FFE2E2E2"/>
+                                    <Path
+										Width="14"
+										Height="2"
+										Margin="0,0,0,0"
+										Data="M 2,0 C2,0 0,0 0,0 0,0 0,2 0,2 0,2 2,2 2,2 2,2 2,0 2,0 zM 6,0 C6,0 4,0 4,0 4,0 4,2 4,2 4,2 6,2 6,2 6,2 6,0 6,0 zM 10,0 C10,0 8,0 8,0 8,0 8,2 8,2 8,2 10,2 10,2 10,2 10,0 10,0 zM 14,0 C14,0 12,0 12,0 12,0 12,2 12,2 12,2 14,2 14,2 14,2 14,0 14,0 z"
+										Fill="{TemplateBinding Foreground}"
+										Stretch="Fill"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <Thumb x:Name="Thumb" Opacity="0"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================ -->
+    <!--          XamTile				          -->
+    <!-- ================================ -->
+    <Style TargetType="local:XamTile">
+        <Setter Property="Background" Value="{StaticResource TileBaseFillKey}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TileBaseBorderBrushFillKey}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:XamTile">
+                    <Grid Background="Transparent" Margin="0">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="MouseOver"/>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="MinimizedStates">
+                                <VisualState x:Name="NotMinimized"/>
+                                <VisualState x:Name="MinimizedExpanded"/>
+                                <VisualState x:Name="Minimized"/>
+                                <VisualState x:Name="Maximized"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" 
+								CornerRadius="4,4,0,0" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Margin="0"							
+							    Opacity ="{Binding Path=(local:XamTileManager.IsDragging), Converter={StaticResource isDraggingToOpacityConverter}, RelativeSource={RelativeSource TemplatedParent}}" >
+                            <Border x:Name="InnerBorder" Margin="0" CornerRadius="4,4,0,0" BorderBrush="White" BorderThickness="0.5">
+                                <Grid Background="Transparent">
+                                    <Grid Margin="{TemplateBinding Padding}">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <!-- Header area-->
+                                        <localPrim:TileHeaderPresenter
+													x:Name="TileHeader"
+													AutomationProperties.AutomationId="TileHeader"
+													Content="{TemplateBinding Header}"
+													ContentTemplate="{TemplateBinding HeaderTemplate}"
+													Tile="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                       />
+                                        <Border Visibility="{TemplateBinding ContentVisibility}"
+											Grid.Row="1" Background="White" Margin="2,0,2,2" Padding="4" BorderBrush="#FF94A8BC" BorderThickness="1"
+										>
+                                            <!-- Content area-->
+                                            <ContentPresenter
+												ContentTemplate="{TemplateBinding ContentTemplateResolved}"
+												/>
+                                        </Border>
+                                        <!-- Content area-->
+                                    </Grid>
+
+                                    <Rectangle x:Name="Overlay"
+									IsHitTestVisible ="False"
+									Fill="{Binding Path=(local:XamTileManager.IsSwapTarget), Converter={StaticResource isSwappingToFillConverter}, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                                </Grid>
+                            </Border>
+                        </Border>
+
+                        <!-- the following Canvas is used while animating state transitions. During an animation it may contain an image element. 
+								 The Canvas must be named "TransitionCanvas" and be a sibling of the root Border element. 
+								 Otherwise state transitions will not scale properly during the animations. -->
+                        <Canvas Background="Transparent" x:Name="TransitionCanvas"  IsHitTestVisible ="False" Visibility="Collapsed"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================ -->
+    <!--          TileDragIndicator       -->
+    <!-- ================================ -->
+    <Style TargetType="localPrim:TileDragIndicator">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="localPrim:TileDragIndicator">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================ -->
+    <!--          XamTilesControl		  -->
+    <!-- ================================ -->
+
+    <Style TargetType="local:XamTileManager">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TilesControlBorderBrushFillKey}"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="igPrim:XamlHelper.CanContentScroll" Value="true" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:XamTileManager">
+                    <Border Name="Bd"
+									Background="{TemplateBinding Background}"
+									BorderBrush="{TemplateBinding BorderBrush}"
+									BorderThickness="{TemplateBinding BorderThickness}"
+								  igPrim:XamlHelper.SnapsToDevicePixels="true"
+									Padding="{TemplateBinding Padding}"
+                            >
+                        <ScrollViewer igPrim:XamlHelper.Focusable="false" Margin="0" BorderThickness="0" Padding="0"
+													HorizontalScrollBarVisibility="Auto"
+													VerticalScrollBarVisibility="Auto"
+													>
+                            <localPrim:TileAreaPanel x:Name="TilePanel" igPrim:XamlHelper.SnapsToDevicePixels="{TemplateBinding igPrim:XamlHelper.SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,171 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:igWindows="clr-namespace:Infragistics.Windows.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+	xmlns:themes="clr-namespace:Infragistics.Windows.Themes">
+
+    <!--<ResourceDictionary.MergedDictionaries>
+		<themes:PrimitivesGeneric/>
+	</ResourceDictionary.MergedDictionaries>-->
+
+    <!-- *********************************  COLORS  ********************************* -->
+    <Color x:Key="Color_000">#FF282828</Color>
+    <Color x:Key="Color_001">#FF3F3F3F</Color>
+    <Color x:Key="Color_002">#FF565656</Color>
+    <Color x:Key="Color_003">#FF858585</Color>
+    <Color x:Key="Color_004">#FFB9B9B9</Color>
+    <Color x:Key="Color_005">#FFD7D7D7</Color>
+    <Color x:Key="Color_006">#FFE7E7E7</Color>
+    <Color x:Key="Color_007">#FFF4F4F4</Color>
+    <Color x:Key="Color_008">#FFF9F9F9</Color>
+    <Color x:Key="Color_009">#FFFFFFFF</Color>
+    <Color x:Key="Color_010">#FFA7DFF4</Color>
+    <Color x:Key="Color_011">#FF00AADE</Color>
+    <Color x:Key="Color_012">#FFF55E7F</Color>
+    <Color x:Key="Color_013">#FFD0284C</Color>
+    <Color x:Key="Color_014">#00FFFFFF</Color>
+    <Color x:Key="Color_015">#FF8A9B0F</Color>
+    <Color x:Key="Color_016">#FFF14D0F</Color>
+	<Color x:Key="Color_017">#B2FFFFFF</Color>
+	<Color x:Key="Color_018">#66FFFFFF</Color>
+
+    <!-- *********************************  BRUSHES  ********************************* -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Color_001}"/>
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="ArrowNormalFill" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ArrowHoverFill" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="ArrowPressedFill" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ArrowDisabledFill" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{DynamicResource Color_004}"/>
+	<SolidColorBrush x:Key="CloseButtonTabActiveForegroundBrush" Color="{DynamicResource Color_003}"/>
+
+    <SolidColorBrush x:Key="{ComponentResourceKey {x:Type igWindows:IGControlBase}, CarouselItemSelected}" Color="{StaticResource Color_004}"/>
+
+    <!-- TabControl Brushes -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabControlTabStripCenterFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabContentBackgroundFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalOuterBorderFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalBottomCenterFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTopCenterFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalLeftCenterFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalRightCenterFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalHighlightDarkFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalHighlightLightFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemNormalTextFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_017}"/>
+
+    <!-- Hottrack Brushes -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackBottomCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackTopCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackLeftCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackRightCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightDarkFillKey}" themes:ResourceWasher.WashGroup="Hover" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackHighlightLightFillKey}" themes:ResourceWasher.WashGroup="Hover" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemHottrackTextFillKey}" themes:ResourceWasher.WashGroup="Hover" Color="{StaticResource Color_009}"/>
+
+    <!-- IsSelected Brushes -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedBottomCenterFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTopCenterFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedLeftCenterFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedRightCenterFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedHighlightDarkFillKey}" themes:ResourceWasher.WashGroup="Selected" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedHighlightLightFillKey}" themes:ResourceWasher.WashGroup="Selected" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemIsSelectedTextFillKey}" themes:ResourceWasher.WashGroup="Selected" Color="{StaticResource Color_011}"/>
+
+    <!-- TabItemDisabledButton Brushes -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.TabItemDisabledCenterFillKey}" Color="{StaticResource Color_014}"/>
+
+    <!-- For Left/Right Pager ScrollButtons -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonGlyphFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_017}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonOuterBorderFillKey}" themes:ResourceWasher.WashGroup="BaseColor" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonCenterGrayGradientFillKey}" Color="{StaticResource Color_017}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonHottrackFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonHottrackBorderFillKey}" themes:ResourceWasher.WashGroup="Hover" Color="{StaticResource Color_009}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonPressedCenterFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.XamPagerButtonPressedBorderFillKey}" themes:ResourceWasher.WashGroup="Hover" Color="{StaticResource Color_009}"/>
+
+    <!--  PaneToolWindow Brushes  -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowBackgroundFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionTextFillKey}" Color="{StaticResource Color_001}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionTextFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionOuterBorderFillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionInnerBorderFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionCenterFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveOuterBorder1FillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveOuterBorder2FillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveOuterBorder3FillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveOuterBorder4FillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionOuterBorderFillKey}" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionInnerBorderFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveCaptionCenterFillKey}" Color="{StaticResource Color_006}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveOuterBorder1FillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveOuterBorder2FillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveOuterBorder3FillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowInactiveOuterBorder4FillKey}" Color="{StaticResource Color_006}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonNormalCenterFillKey}" Color="{StaticResource Color_008}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackOuterBorderFillKey}" Color="{StaticResource Color_010}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonHottrackCenterFillKey}" Color="{StaticResource Color_011}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveMinMaxButtonPressedCenterFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalOuterBorderFillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveMinMaxButtonNormalCenterFillKey}" Color="{StaticResource Color_004}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedCenterFillKey}" Color="{StaticResource Color_014}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalOuterBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalInnerBorderFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowNotActiveCloseButtonNormalCenterFillKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphStrokeKey}" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonNormalGlyphFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonHottrackGlyphFillKey}" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCloseButtonPressedGlyphFillKey}" Color="{StaticResource Color_009}"/>
+
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonOuterBorderFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonInnerBorderFillKey}" Color="{StaticResource Color_005}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonCenterFillKey}" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.ToolWindowDisabledCloseButtonGlyphFillKey}" Color="{StaticResource Color_014}"/>
+
+    <!--  DropIndicator Brushes  -->
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.DropIndicatorFillKey}" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="{x:Static igWindows:PrimitivesBrushKeys.DropTargetStrokeKey}" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ExpansionIndicatorBackground" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="ExpansionIndicatorStroke" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="ExpansionIndicatorGlyph" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ExpansionIndicatorGlyphHover" Color="{StaticResource Color_002}"/>
+    <SolidColorBrush x:Key="ExpanderBarBackground" Color="{StaticResource Color_011}"/>
+
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource Color_004}"/>
+
+    <SolidColorBrush x:Key="ListboxBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="ListboxBorderBrush" Color="{StaticResource Color_004}"/>
+    <SolidColorBrush x:Key="ListboxItemBackgroundBrush" Color="{StaticResource Color_009}"/>
+    <SolidColorBrush x:Key="ListboxItemBorderBrush" Color="{StaticResource Color_014}"/>
+    <SolidColorBrush x:Key="ListboxItemHoverBrush" Color="{StaticResource Color_006}"/>
+    <SolidColorBrush x:Key="ListboxItemHoverBorderBrush" Color="{StaticResource Color_003}"/>
+    <SolidColorBrush x:Key="ListboxItemPressedBrush" Color="{StaticResource Color_011}"/>
+    <SolidColorBrush x:Key="ListboxItemPressedBorderBrush" Color="{StaticResource Color_011}"/>
+
+</ResourceDictionary>

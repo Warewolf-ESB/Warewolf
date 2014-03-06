@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Controls.Editors.XamDateTimeInput">
+    <Position X="2.25" Y="2" Width="3.25" />
+    <Members>
+      <Field Name="_calendar" Hidden="true" />
+      <Field Name="_dropDownButton" Hidden="true" />
+      <Field Name="_dropDownManager" Hidden="true" />
+      <Field Name="_hasTimeSectionsOnly" Hidden="true" />
+      <Field Name="_isClosePending" Hidden="true" />
+      <Field Name="_isInitialized" Hidden="true" />
+      <Field Name="_license" Hidden="true" />
+      <Field Name="_popup" Hidden="true" />
+      <Field Name="AllowDropDownResolvedPropertyKey" Hidden="true" />
+      <Field Name="CalendarPart" Hidden="true" />
+      <Field Name="ComputedMaxDatePropertyKey" Hidden="true" />
+      <Field Name="ComputedMinCalendarModePropertyKey" Hidden="true" />
+      <Field Name="ComputedMinDatePropertyKey" Hidden="true" />
+      <Property Name="DefaultValueType" Hidden="true" />
+      <Field Name="DropDownButtonPart" Hidden="true" />
+      <Field Name="DropDownButtonVisibilityPropertyKey" Hidden="true" />
+      <Method Name="EnsureFocusInCalendar" Hidden="true" />
+      <Method Name="GetDate" Hidden="true" />
+      <Property Name="HasDropDown" Hidden="true" />
+      <Property Name="HasOpenDropDown" Hidden="true" />
+      <Field Name="IsDropDownOpenProperty" Hidden="true" />
+      <Method Name="OnAllowDropDownChanged" Hidden="true" />
+      <Method Name="OnAllowDropDownResolvedChanged" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnCoerceIsDropDownOpen" Hidden="true" />
+      <Method Name="OnDateValueChanged" Hidden="true" />
+      <Method Name="OnDropDownButtonDisplayModeChanged" Hidden="true" />
+      <Method Name="OnDropDownClosed" Hidden="true" />
+      <Method Name="OnDropDownOpened" Hidden="true" />
+      <Method Name="OnGotFocus" Hidden="true" />
+      <Method Name="OnInitialized" Hidden="true" />
+      <Method Name="OnIsDropDownOpenChanged" Hidden="true" />
+      <Method Name="OnIsKeyboardFocusWithinChanged" Hidden="true" />
+      <Method Name="OnIsReadOnlyChanged" Hidden="true" />
+      <Method Name="OnKeyDown" Hidden="true" />
+      <Method Name="OnMouseEnter" Hidden="true" />
+      <Method Name="OnMouseLeave" Hidden="true" />
+      <Method Name="OnPopopOpened" Hidden="true" />
+      <Method Name="OnPopupClosed" Hidden="true" />
+      <Method Name="OnSectionsChanged" Hidden="true" />
+      <Method Name="OnSelectionCommitted" Hidden="true" />
+      <Method Name="OnValueConstraintChanged" Hidden="true" />
+      <Method Name="OpenOnLoad" Hidden="true" />
+      <Field Name="PopupPart" Hidden="true" />
+      <Method Name="ProcessPropertyChanged" Hidden="true" />
+      <Method Name="RaiseDropDownClosed" Hidden="true" />
+      <Method Name="RaiseDropDownClosedIfPending" Hidden="true" />
+      <Method Name="RaiseDropDownOpened" Hidden="true" />
+      <Method Name="RaisePeerExpandCollapseChange" Hidden="true" />
+      <Method Name="RegisterToOpenOnLoad" Hidden="true" />
+      <Method Name="ResolveAllowDropDown" Hidden="true" />
+      <Method Name="SyncValuePropertiesOverride" Hidden="true" />
+      <Method Name="ToggleDropDown" Hidden="true" />
+      <Method Name="UpdateComputedDates" Hidden="true" />
+      <Method Name="UpdateDropDownButtonVisibility" Hidden="true" />
+      <Method Name="VerifyIsDropDownOpen" Hidden="true" />
+      <Method Name="XamDateTimeInput" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>PiIgJAFcIBXCBDBEaYfiaAAFsANAkCAQGTBCEAlCMAA=</HashCode>
+      <FileName>XamDateTimeInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

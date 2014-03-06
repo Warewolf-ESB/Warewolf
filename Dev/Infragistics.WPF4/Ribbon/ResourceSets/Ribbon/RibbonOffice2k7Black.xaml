@@ -1,0 +1,905 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	mc:Ignorable="d"
+	  xmlns:igWindows="http://infragistics.com/Windows"
+	  xmlns:igEditors="http://infragistics.com/Editors"	
+	  xmlns:igThemes="http://infragistics.com/Themes"	
+	  xmlns:igRibbon="clr-namespace:Infragistics.Windows.Ribbon"
+	  xmlns:compModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
+	  xmlns:themes="clr-namespace:Infragistics.Windows.Themes"
+  >
+	<ResourceDictionary.MergedDictionaries>
+        <!-- AS 8/21/08 BR35771 -->
+        <ResourceDictionary Source="RibbonGeneric.xaml" />
+        <!--<themes:RibbonOffice2k7BlackBrushes/>-->
+        <ResourceDictionary Source="../RibbonBrushes/RibbonOffice2k7Brushes_Black.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+	<!-- Converters-->
+	<BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+	<igRibbon:ContextualTabBaseColorToHoverBrushConverter x:Key="contextualTabBaseColorToHoverBrushConverter" />
+	<igWindows:StringWithoutMnemonicsConverter x:Key="stringWithoutMnemonicsConverter" />
+
+
+	<!-- =================================================================== -->
+	<!-- RibbonTabItem Style -->
+	<!-- =================================================================== -->
+
+	<Style TargetType="{x:Type igRibbon:RibbonTabItem}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igRibbon:RibbonTabItem}" x:Name="ControlTemplate">
+					<ControlTemplate.Resources>
+						<Storyboard x:Key="TabMouseOver">
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabHottrack" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.0000" Value="{x:Static Visibility.Visible}"/>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabHottrack" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="TabMouseOut" FillBehavior="Stop">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabHottrack" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.30000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabHottrack" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.310000" Value="{x:Static Visibility.Collapsed}"/>
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="ContextualTabMouseOver">
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ContextualTabHottrack" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.0000" Value="{x:Static Visibility.Visible}"/>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ContextualTabHottrack" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="ContextualTabMouseOut" FillBehavior="Stop">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ContextualTabHottrack" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ContextualTabHottrack" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.21000" Value="{x:Static Visibility.Collapsed}"/>
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="TabMouseOverNotSelected">
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabMouseOverNotSelected" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.00000" Value="{x:Static Visibility.Visible}"/>
+							</ObjectAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="TabMouseOverNotSelected" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="TabMouseOutNotSelected" FillBehavior="Stop">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabMouseOverNotSelected" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="TabMouseOverNotSelected" Storyboard.TargetProperty="(UIElement.Visibility)">
+								<DiscreteObjectKeyFrame KeyTime="00:00:00.21000" Value="{x:Static Visibility.Collapsed}"/>
+							</ObjectAnimationUsingKeyFrames>
+						</Storyboard>
+					</ControlTemplate.Resources>
+					<Grid x:Name="Tab">
+						<Line x:Name="ContextualTabInTabAreaSeparatorLeft" 
+							HorizontalAlignment="Left" 
+							Stretch="Fill"
+							Visibility="{TemplateBinding Converter={StaticResource BoolToVisConverter}, Property=IsFirstTabInContextualTabGroup}"
+							SnapsToDevicePixels="True"
+							StrokeThickness="1" Margin="0, -3, 0, 0"
+							X1="0" X2="0" Y1="0" Y2="1" IsHitTestVisible="False"
+							Stroke="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabSeparatorFillKey}}"/>
+
+						<Grid 
+							Visibility="Collapsed" 
+							x:Name="TabMouseOverNotSelected"
+							Height="Auto" Opacity="0" Margin="3,0,3,0" SnapsToDevicePixels="True" d:IsHidden="True">
+
+							<Border x:Name="notSelectedBase" Background="#00000000" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabInactiveHoverBorderFillKey}}" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0" SnapsToDevicePixels="True"/>
+							<Border x:Name="notSelectedInnerGlow2" SnapsToDevicePixels="True" Margin="1,1,1,0" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabInactiveHoverBackgroundFillKey}}" CornerRadius="2,2,0,0"/>
+							<Border x:Name="notSelectedHighlight" Margin="1,1,1,0" VerticalAlignment="Top" Height="9" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabInactiveHoverTopFillKey}}" CornerRadius="2,2,5,5" SnapsToDevicePixels="True"/>
+							<Border x:Name="notSelectedInnerGlow" SnapsToDevicePixels="True" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabInactiveHoverCenterGlowKey}}" Padding="0,0,0,0"/>
+
+							<Border Margin="1,1,0,0" VerticalAlignment="Top" Height="10"
+								CornerRadius="2.5,2.5,5,5" SnapsToDevicePixels="True"
+								x:Name="notSelectedContextualHighlight"
+								HorizontalAlignment="Stretch"
+								Width="Auto"
+								Visibility="Collapsed">
+								<Border.Background>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#25FFFFFF" Offset="0"/>
+										<GradientStop Color="#0CFFFFFF" Offset="1"/>
+									</LinearGradientBrush>
+								</Border.Background>
+							</Border>
+
+						</Grid>
+
+
+						<Grid
+							x:Name="TabSelected"
+							Height="Auto"
+							Visibility="Collapsed" 
+							Background="{x:Null}" Margin="0,0,0,-1" VerticalAlignment="Stretch">
+							<Border SnapsToDevicePixels="True" Margin="3,1,3,0" CornerRadius="4,3,0,0" x:Name="InnerBorder1" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalInnerBorderFillKey}}"/>
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalLeftHighlightFillKey}}" SnapsToDevicePixels="True" x:Name="BottomLeftInnerFilet1" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Bottom" />
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalLeftHighlightFillKey}}" SnapsToDevicePixels="True" x:Name="BottomRightInnerFilet1" HorizontalAlignment="Right" Margin="0,0,1,0" VerticalAlignment="Bottom" />
+							<Border SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="4,1,4,3" x:Name="InnerSideHighlightLeft1" Width="3" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalLeftHighlightFillKey}}" BorderThickness="1,0,0,0" CornerRadius="2,0,0,0"/>
+							<Border x:Name="InnerSideHighlightRight1" Width="3" BorderThickness="0,0,1,0" CornerRadius="2,2,0,0" SnapsToDevicePixels="True" HorizontalAlignment="Right" Margin="0,1,4,3" VerticalAlignment="Stretch" Height="Auto" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalRightHighlightFillKey}}"/>
+							<Border SnapsToDevicePixels="True" Margin="4,1,4,0" BorderThickness="0,1,0,0" CornerRadius="2,2,0,0" x:Name="TopHighlight" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalTopHighlightFillKey}}"/>
+							<Path
+								Margin="0,0,0,0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Bottom"
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomLeftFilet1" />
+							<Path
+								Margin="0,0,0,0"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Bottom"
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomRightFilet1" />
+							<Border SnapsToDevicePixels="True" Margin="3,0,3,3" x:Name="OuterStroke1" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalBorderFillKey}}" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"/>
+							<Border Margin="6,4,6,0" CornerRadius="1,1,0,0" SnapsToDevicePixels="True" x:Name="Center1" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalCenterFillKey}}"/>
+						</Grid>
+
+
+						<Grid
+							x:Name="TabHottrack"
+							Visibility="Collapsed"
+							Opacity="0" d:IsHidden="True" Margin="0,0,0,0">
+							<Border Height="Auto" CornerRadius="2,0,1,0" SnapsToDevicePixels="True" Opacity="1" x:Name="OuterGlowLeft" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHottrackOuterGlowFillKey}}" HorizontalAlignment="Left" Margin="1,0,0,0" Width="2" Padding="0,0,0,0"/>
+							<Border Height="Auto" CornerRadius="0,2,0,1" SnapsToDevicePixels="True" Opacity="1" x:Name="OuterGlowRight" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHottrackOuterGlowFillKey}}" Width="2" Padding="0,0,0,0" HorizontalAlignment="Right" Margin="0,0,1,0"/>
+							<Border SnapsToDevicePixels="True" x:Name="HotTrackOuterStroke" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0" Margin="3,0,3,0" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHoverBorderFillKey}}"/>
+							<Rectangle SnapsToDevicePixels="True" HorizontalAlignment="Right" Margin="0,3,4,0" x:Name="HoverSideHighlightRight" Width="1" Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHoverSideHighlightFillKey}}"/>
+							<Rectangle SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="4,3,0,0" x:Name="HoverSideHighlightLeft" Width="1" Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHoverSideHighlightFillKey}}"/>
+							<Border SnapsToDevicePixels="True" Margin="4,1,4,0" VerticalAlignment="Top" Height="2" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHoverTopHighlightFillKey}}" CornerRadius="3,3,0,0" x:Name="TopHighlight2"/>
+						</Grid>
+
+
+						<Border
+							x:Name="ContextualTabBase"
+							Visibility="Collapsed"
+							BorderThickness="1,1,1,0"
+							CornerRadius="3,3,0,0"	
+							Margin="0,-1,0,0" 						
+							d:IsHidden="True"/>
+						<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+						<!--Background="{Binding Path=ContextualTabGroup.BaseBackColorResolved, Converter={StaticResource contextualTabBaseColorToHoverBrushConverter}, ConverterParameter=Black, RelativeSource={x:Static RelativeSource.TemplatedParent}}"-->
+
+						<Grid 
+							x:Name="ContextualTabSelected"
+							Visibility="Collapsed"
+							Margin="0,0,0,-1">
+							<Border SnapsToDevicePixels="True" CornerRadius="4,4,0,0" x:Name="InnerBorder2_Copy" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveBackgroundFillKey}}" Margin="3,1,3,0"/>
+							<Border SnapsToDevicePixels="True" CornerRadius="2,2,0,0" x:Name="InnerBorderContextual" Margin="3,1,3,0"
+								   Width="Auto" Height="Auto" >
+								<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+								<!--Background="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}">-->
+								<Border.OpacityMask>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#BF000000" Offset="0"/>
+										<GradientStop Color="#3FFFFFFF" Offset="1"/>
+									</LinearGradientBrush>
+								</Border.OpacityMask>
+							</Border>
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								SnapsToDevicePixels="True" x:Name="BottomLeftInnerFiletContextual" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Bottom" />
+							<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+							<!--Fill="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"-->
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								SnapsToDevicePixels="True" x:Name="BottomRightInnerFiletContextual" HorizontalAlignment="Right" Margin="0,0,1,0" VerticalAlignment="Bottom" />
+							<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+							<!--Fill="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"-->
+							<Border SnapsToDevicePixels="True" x:Name="InnerSideHighlightLeftContextual" Width="3" 
+								   BorderThickness="1,0,0,0" CornerRadius="2,0,0,0" HorizontalAlignment="Left" Margin="4,1,0,3"/>
+							<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+							<!--BorderBrush="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"-->
+							<Border x:Name="InnerSideHighlightRightContextual" Width="3" BorderThickness="0,0,1,0" CornerRadius="2,2,0,0" SnapsToDevicePixels="True" Height="Auto" HorizontalAlignment="Right" Margin="0,1,4,3" >
+								<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+								<!--BorderBrush="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}">-->
+								<Border.OpacityMask>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#00000000" Offset="0"/>
+										<GradientStop Color="#FFFFFFFF" Offset="0.65"/>
+									</LinearGradientBrush>
+								</Border.OpacityMask>
+							</Border>
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomLeftFilet2_Copy" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomRightFilet2_Copy" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+							<Border SnapsToDevicePixels="True" x:Name="OuterStroke2_Copy" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveNormalBorderFillKey}}" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0" Margin="3,0,3,3"/>
+							<Border SnapsToDevicePixels="True" BorderThickness="0,0,0,0" CornerRadius="3,3,0,0" x:Name="TopHighlight1_Copy" Height="4" Margin="4,0,4,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveTopHighlightFillKey}}"/>
+						</Grid>
+
+
+						<Grid
+							x:Name="ContextualTabHottrack"
+							Visibility="Collapsed"
+							Height="Auto"
+							Margin="0,0,0,-1" 
+							Background="{x:Null}" Opacity="0">
+							<Border Height="Auto" CornerRadius="2,0,1,0" SnapsToDevicePixels="True" Opacity="0.50" x:Name="OuterGlowLeft_Copy" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHottrackOuterGlowFillKey}}" Width="2" Padding="0,0,0,0" HorizontalAlignment="Left" Margin="1,0,0,1"/>
+							<Border Height="Auto" CornerRadius="0,2,0,1" SnapsToDevicePixels="True" Opacity="0.50" x:Name="OuterGlowRight_Copy" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveHottrackOuterGlowFillKey}}" Width="2" Padding="0,0,0,0" HorizontalAlignment="Right" Margin="0,0,1,1"/>
+							<Border SnapsToDevicePixels="True" Margin="3,1,3,0" CornerRadius="4,4,0,0" x:Name="InnerBorder2" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverCenterFillKey}}"/>
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverLeftHighlightFillKey}}" SnapsToDevicePixels="True" x:Name="BottomLeftInnerFilet2" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Bottom" />
+							<Path
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverLeftHighlightFillKey}}" SnapsToDevicePixels="True" x:Name="BottomRightInnerFilet2" HorizontalAlignment="Right" Margin="0,0,1,0" VerticalAlignment="Bottom" />
+							<Border SnapsToDevicePixels="True" HorizontalAlignment="Left" Margin="4,1,4,3" x:Name="InnerSideHighlightLeft2" Width="3" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverLeftHighlightFillKey}}" BorderThickness="1,0,0,0" CornerRadius="2,0,0,0"/>
+							<Border x:Name="InnerSideHighlightRight2" Width="3" BorderThickness="0,0,1,0" CornerRadius="2,2,0,0" SnapsToDevicePixels="True" HorizontalAlignment="Right" Margin="0,1,4,3" VerticalAlignment="Stretch" Height="Auto" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverRightHighlightFillKey}}"/>
+							<Path
+								Margin="0,0,0,0"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Bottom"
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 24,71 C24,71 24,72 24,72 24,73 23,74 22,74 22,74 21,74 21,74 21,74 21,75 21,75 21,75 22,75 22,75 22,75 23,75 23,75 24,75 25,74 25,73 25,73 25,71 25,71 25,71 24,71 24,71 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomLeftFilet2" />
+							<Path
+								Margin="0,0,0,0"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Bottom"
+								Height="4"
+								Width="4"
+								Stretch="Fill"
+								Opacity="1"
+								Data="M 28,75 C28,75 29,75 29,75 29,75 30,75 30,75 30,75 30,74 30,74 30,74 29,74 29,74 28,74 27,73 27,72 27,72 27,71 27,71 27,71 26,71 26,71 26,71 26,72 26,72 26,72 26,73 26,73 26,74 27,75 28,75 z"
+								Fill="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabActiveNormalBorderFillKey}}" SnapsToDevicePixels="True" x:Name="BottomRightFilet2" />
+							<Border SnapsToDevicePixels="True" Margin="3,0,3,3" x:Name="OuterStroke2" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabContextualHoverBorderFillKey}}" BorderThickness="1,1,1,0" CornerRadius="3,3,0,0"/>
+							<Border SnapsToDevicePixels="True" Margin="4,1,4,0" BorderThickness="0,0,0,0" CornerRadius="3,3,0,0" x:Name="TopHighlight1" VerticalAlignment="Top" Height="3" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabHoverTopHighlightFillKey}}"/>
+							<Border SnapsToDevicePixels="True" Margin="4,1,4,0" BorderThickness="0,0,0,0" CornerRadius="3,3,0,0" x:Name="ContextualTopHighlight" VerticalAlignment="Top" Height="3" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabActiveTopHighlightFillKey}}"/>
+						</Grid>
+						<ContentPresenter
+							x:Name="tabItemText"
+							Margin="6,4,6,3"
+							Content="{TemplateBinding Header, Converter={StaticResource stringWithoutMnemonicsConverter}}"
+							ContentTemplate="{TemplateBinding HeaderTemplate}"
+							ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Stretch" 
+							TextBlock.TextAlignment="Center"
+							Width="Auto"
+							igRibbon:XamRibbon.KeyTipPlacementType="Caption"
+							igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
+							igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igRibbon:XamRibbon.ToolTipStyleKey}"
+							igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type igRibbon:RibbonTabItem}"
+							TextElement.Foreground="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabNotSelectedTextFillKey}}"/>
+
+						<Line x:Name="TabSeparator"  
+							HorizontalAlignment="Right" Stretch="Fill"
+							Opacity="{TemplateBinding igWindows:TabItemPanel.TabSeparatorOpacity}"
+							StrokeThickness="1"
+							X1="0" X2="0" Y1="0" Y2="1" 
+							IsHitTestVisible="False" 
+							SnapsToDevicePixels="True"
+							Margin="0, -2, 0, 0"
+							Stroke="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabSeparatorFillKey}}"/>
+							
+						<Line x:Name="ContextualTabInTabAreaSeparatorRight" HorizontalAlignment="Right" Stretch="Fill"
+							Visibility="{TemplateBinding Converter={StaticResource BoolToVisConverter}, Property=IsLastTabInContextualTabGroup}"
+							StrokeThickness="1" Margin="0, -3, 0, 0"
+							X1="0" X2="0" Y1="0" Y2="1" IsHitTestVisible="False" SnapsToDevicePixels="True"
+							Stroke="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContextualTabSeparatorFillKey}}"/>
+
+					</Grid>
+					<ControlTemplate.Triggers>
+						<!-- IsInContextualTabGroup -->
+						<Trigger Property="IsInContextualTabGroup" Value="True">
+							<Setter Property="Visibility" TargetName="notSelectedContextualHighlight" Value="Visible"/>
+							<Setter Property="Visibility" TargetName="notSelectedInnerGlow" Value="Collapsed"/>
+							<Setter Property="Visibility" TargetName="notSelectedInnerGlow2" Value="Collapsed"/>
+							<Setter Property="Visibility" TargetName="notSelectedHighlight" Value="Collapsed"/>
+							<Setter Property="Fill" TargetName="BottomLeftInnerFiletContextual" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="Fill" TargetName="BottomRightInnerFiletContextual" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="BorderBrush" TargetName="InnerSideHighlightLeftContextual" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="BorderBrush" TargetName="InnerSideHighlightRightContextual" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="Background" TargetName="ContextualTabBase" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolved, Converter={StaticResource contextualTabBaseColorToHoverBrushConverter}, ConverterParameter=Black, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="Background" TargetName="InnerBorderContextual" 
+                      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}"/>
+							<Setter Property="Background" TargetName="notSelectedBase"
+								      Value="{Binding Path=ContextualTabGroup.BaseBackColorResolved, Converter={StaticResource contextualTabBaseColorToHoverBrushConverter}, ConverterParameter=Black, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+						</Trigger>
+
+						<!-- IsSelected && !IsInContextualTabGroup -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True" />
+								<Condition Property="IsInContextualTabGroup" Value="False" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Visibility" TargetName="TabSelected" Value="Visible"/>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+						<!-- IsSelected && IsInContextualTabGroup && !XamRibbon.IsActive -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="IsInContextualTabGroup" Value="True"/>
+								<Condition Property="igRibbon:XamRibbon.IsActive" Value="False"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Visibility" TargetName="ContextualTabSelected" Value="Visible"/>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+						<!-- IsMouseOverTab && !IsSelected -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding Path=IsMouseOverTab, RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+								<Condition Binding="{Binding Path=IsSelected, RelativeSource={x:Static RelativeSource.Self}}" Value="False"/>
+							</MultiDataTrigger.Conditions>
+							<MultiDataTrigger.EnterActions>
+								<BeginStoryboard x:Name="TabMouseOverNotSelected_BeginStoryboard" Storyboard="{StaticResource TabMouseOverNotSelected}"/>
+							</MultiDataTrigger.EnterActions>
+							<MultiDataTrigger.ExitActions>
+								<BeginStoryboard x:Name="TabMouseOutNotSelected_BeginStoryboard" Storyboard="{StaticResource TabMouseOutNotSelected}"/>
+							</MultiDataTrigger.ExitActions>
+						</MultiDataTrigger>
+
+						<!-- IsMouseOverTab && IsSelected && !XamRibbon.IsActive -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOverTab" Value="True"/>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="igRibbon:XamRibbon.IsActive" Value="False"/>
+							</MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
+								<BeginStoryboard Storyboard="{StaticResource TabMouseOver}"/>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
+								<BeginStoryboard x:Name="TabMouseOut_BeginStoryboard" Storyboard="{StaticResource TabMouseOut}"/>
+							</MultiTrigger.ExitActions>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+						<!-- IsMouseOverTab && IsSelected && IsInContextualTabGroup -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOverTab" Value="True"/>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="IsInContextualTabGroup" Value="True"/>
+								<Condition Property="igRibbon:XamRibbon.IsActive" Value="False"/>
+							</MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
+								<BeginStoryboard Storyboard="{StaticResource ContextualTabMouseOver}"/>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
+								<BeginStoryboard x:Name="ContextualTabMouseOut_BeginStoryboard" Storyboard="{StaticResource ContextualTabMouseOut}"/>
+							</MultiTrigger.ExitActions>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+						<!-- IsSelected && XamRibbon.IsActive -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="igRibbon:XamRibbon.IsActive" Value="True"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="ContextualTabHottrack" Property="Visibility" Value="Visible"/>
+							<Setter TargetName="ContextualTabHottrack" Property="Opacity" Value="1"/>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+						<!-- !IsSelected && XamRibbon.IsActive -->
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding Path=(igRibbon:XamRibbon.IsActive), RelativeSource={x:Static RelativeSource.Self}}" Value="True"/>
+								<Condition Binding="{Binding Path=IsSelected, RelativeSource={x:Static RelativeSource.Self}}" Value="False"/>
+							</MultiDataTrigger.Conditions>
+							<MultiDataTrigger.EnterActions>
+								<BeginStoryboard x:Name="ActivatedNotSelected_BeginStoryboard" Storyboard="{StaticResource TabMouseOverNotSelected}"/>
+							</MultiDataTrigger.EnterActions>
+							<MultiDataTrigger.ExitActions>
+								<BeginStoryboard x:Name="DeactivatedNotSelected_BeginStoryboard" Storyboard="{StaticResource TabMouseOutNotSelected}"/>
+							</MultiDataTrigger.ExitActions>
+						</MultiDataTrigger>
+
+						<!-- IsSelected && IsInContextualTabGroup && !XamRibbon.IsActive -->
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsSelected" Value="True"/>
+								<Condition Property="igRibbon:XamRibbon.IsActive" Value="True"/>
+								<Condition Property="IsInContextualTabGroup" Value="False"/>
+							</MultiTrigger.Conditions>
+							<Setter TargetName="ContextualTabSelected" Property="Visibility" Value="Visible"/>
+							<Setter Property="TextElement.Foreground" TargetName="tabItemText" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.TabIsSelectedTextFillKey}}"/>
+						</MultiTrigger>
+
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsInContextualTabGroup" Value="True">
+				<Setter Property="igWindows:XamTabControl.TabPriority" Value="10"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- =================================================================== -->
+	<!-- Ribbon's XamTabControl Style -->
+	<!-- =================================================================== -->
+	<Style x:Key="{x:Static igRibbon:XamRibbon.RibbonTabControlStyleKey}" TargetType="{x:Type igWindows:XamTabControl}">
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Continue" />
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igWindows:XamTabControl}">
+					<Grid Margin="0" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition x:Name="gridCol0" />
+							<ColumnDefinition Width="0" x:Name="gridCol1" />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" x:Name="gridRow0" />
+							<RowDefinition Height="*" x:Name="gridRow1" />
+						</Grid.RowDefinitions>
+						<Border
+							SnapsToDevicePixels="True"
+							BorderBrush="{x:Null}"
+							Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonTabControlHeaderPanelBackgroundKey}}"
+							x:Name="ContentPanel"
+							KeyboardNavigation.TabIndex="2"
+							KeyboardNavigation.TabNavigation="Local"
+							KeyboardNavigation.DirectionalNavigation="Continue"
+							Grid.Row="1"
+							Visibility="Visible" Margin="0,-1,0,0"
+>
+							<Grid Margin="0,1,0,1">
+								<Border
+									x:Name="innerContentBorder"
+									SnapsToDevicePixels="True"
+									Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerFillKey}}"
+									BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerBorderFillKey}}"
+									BorderThickness="1,1,1,1"
+									CornerRadius="3"
+									Margin="1,1,1,1"
+									Padding="2,0,2,0">
+									<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Width="Auto" Margin="0,-1,0,-2">
+										<Border
+											x:Name="ContextualFill"
+											CornerRadius="5,5,5,5"
+											Visibility="Visible"
+											SnapsToDevicePixels="True">
+											<!--JJD 12/11/07 moved setting to Trigger if IsInContextualTabGroup == true -->
+											<!--<Border.Background>
+												<SolidColorBrush Color="{Binding Path=(igRibbon:XamRibbon.Ribbon).SelectedTab.ContextualTabGroup.BaseBackColorResolved, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+											</Border.Background>-->
+											<Border.OpacityMask>
+												<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+													<GradientStop Color="#1E000000" Offset="0"/>
+													<GradientStop Color="#00FFFFFF" Offset="0.51"/>
+												</LinearGradientBrush>
+											</Border.OpacityMask>
+										</Border>
+										<ContentPresenter ContentSource="SelectedContent"
+											Margin="{TemplateBinding Padding}"
+											Height="{TemplateBinding TabItemContentHeight}"
+											x:Name="PART_SelectedContentHost"
+											SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+											ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+											Content="{TemplateBinding SelectedContent}" />
+									</Grid>
+								</Border>
+
+							</Grid>
+						</Border>
+						<DockPanel x:Name="PART_HeaderArea" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonTabControlHeaderPanelBackgroundKey}}" SnapsToDevicePixels="True">
+							<ContentPresenter x:Name="PreTabItemContent"
+								DockPanel.Dock="Left"
+								Content="{TemplateBinding PreTabItemContent}"
+								ContentTemplate="{TemplateBinding PreTabItemContentTemplate}"
+								ContentTemplateSelector="{TemplateBinding PreTabItemContentTemplateSelector}" />
+							<ContentPresenter x:Name="PostTabItemContent"
+								DockPanel.Dock="Right"
+								Content="{TemplateBinding PostTabItemContent}"
+								ContentTemplate="{TemplateBinding PostTabItemContentTemplate}"
+								ContentTemplateSelector="{TemplateBinding PostTabItemContentTemplateSelector}" />
+							<igWindows:XamPager x:Name="PART_TabItemScrollViewer" Focusable="False"
+                                CanContentScroll="True"
+								KeyboardNavigation.TabIndex="1"
+								KeyboardNavigation.TabNavigation="Local"
+								KeyboardNavigation.DirectionalNavigation="Continue"
+								ScrollLeftButtonStyle="{DynamicResource {x:Static igRibbon:RibbonGroupCollection.PagerScrollLeftButtonStyleKey}}"
+								ScrollRightButtonStyle="{DynamicResource {x:Static igRibbon:RibbonGroupCollection.PagerScrollRightButtonStyleKey}}"
+								ScrollViewer.VerticalScrollBarVisibility="{TemplateBinding TabItemVerticalScrollBarVisibility}"
+								ScrollViewer.HorizontalScrollBarVisibility="{TemplateBinding TabItemHorizontalScrollBarVisibility}">
+								<ItemsPresenter x:Name="PART_TabHeaderPanel"
+									Margin="2,1,2,-1"
+									KeyboardNavigation.TabNavigation="Once"/>
+							</igWindows:XamPager>
+						</DockPanel>
+                        <!-- AS 9/23/09 TFS2236 - Added HandleMouseDownOnClose -->
+						<Popup x:Name="PART_Popup"
+						  AllowsTransparency="True"
+                            igWindows:PopupHelper.HandleMouseDownOnClose="True"
+							StaysOpen="False"
+							Width="{TemplateBinding PreferredDropDownExtent}"
+							IsOpen="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+							PlacementTarget="{Binding ElementName=PART_HeaderArea}"
+							CustomPopupPlacementCallback="{TemplateBinding PreferredDropDownPlacementCallback}" 
+						  Placement="Custom"
+							SnapsToDevicePixels="True">
+							<AdornerDecorator>
+								<Border
+									SnapsToDevicePixels="True"
+									BorderThickness="0,0,0,0"
+									KeyboardNavigation.TabIndex="2"
+									KeyboardNavigation.TabNavigation="Local"
+									KeyboardNavigation.DirectionalNavigation="Cycle"
+									Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonTabControlHeaderPanelBackgroundKey}}">
+									<Border
+										SnapsToDevicePixels="True"
+										BorderBrush="{TemplateBinding Border.BorderBrush}"
+										BorderThickness="{TemplateBinding Border.BorderThickness}"
+										Margin="1,0,1,4">
+										<Border
+											SnapsToDevicePixels="True"
+											Background="{TemplateBinding Panel.Background}"
+											BorderThickness="1,1,1,1"
+											BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerBorderFillKey}}"
+											CornerRadius="3,3,3,3"
+                                            Padding="2,0,2,0">
+											<ContentPresenter
+												ContentSource="SelectedContent"
+												Margin="{TemplateBinding Padding}"
+												Height="{TemplateBinding TabItemContentHeight}"
+												x:Name="PART_SelectedContentHostMinimized"
+												HorizontalAlignment="{Binding Path=HorizontalAlignment, ElementName=PART_SelectedContentHost}"
+												VerticalAlignment="{Binding Path=VerticalAlignment, ElementName=PART_SelectedContentHost}"
+												SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+												ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+												Content="{x:Null}"/>
+										</Border>
+									</Border>
+								</Border>
+							</AdornerDecorator>
+						</Popup>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsDropDownOpen" Value="False">
+							<Setter Property="PopupAnimation" TargetName="PART_Popup" Value="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"/>
+						</Trigger>
+						<Trigger Property="UIElement.IsEnabled" Value="False">
+							<Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.GrayTextBrushKey}}"/>
+						</Trigger>
+						<Trigger Property="IsMinimized" Value="True">
+							<Setter Property="Visibility" TargetName="ContentPanel" Value="Collapsed" />
+							<!-- AS 7/20/11 TFS80142 -->
+							<Setter Property="Grid.RowSpan" TargetName="PART_HeaderArea" Value="2" />
+						</Trigger>
+						<Trigger Property="igRibbon:XamRibbon.IsSelectedItemInContextualTabGroup" Value="True">
+							<Setter Property="Background" TargetName="innerContentBorder" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerInContextualBaseFillKey}}"/>
+							<Setter Property="BorderBrush" TargetName="innerContentBorder" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerInContextualBorderFillKey}}"/>
+							<Setter Property="Background" TargetName="ContextualFill"
+                  Value="{Binding Path=(igRibbon:XamRibbon.Ribbon).SelectedTab.ContextualTabGroup.BaseBackColorResolvedBrush, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+							<Setter Property="Visibility" TargetName="ContextualFill" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="PreTabItemContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<Rectangle Width="{x:Static igRibbon:XamRibbon.ApplicationMenuButtonWidth}" Height="1"/>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Background" Value="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerFillKey}}"/>
+		<Setter Property="MaximumSizeToFitAdjustment" Value="18" />
+		<Setter Property="MinimumTabExtent" Value="28" />
+	</Style>
+
+	<!-- =================================================================== -->
+	<!-- Styles for buttons in MenuButtonArea -->
+	<!-- =================================================================== -->
+	<!-- AS 11/8/07 BR27990  Moved up and adjusted the template to have a root level panel that could be used to provide the background -->
+	<Style TargetType="{x:Type ContentControl}" x:Key="PlainContentControlStyle">
+		<Setter Property="OverridesDefaultStyle" Value="True" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ContentControl}">
+					<igWindows:CardPanel Background="{TemplateBinding Background}">
+						<ContentPresenter Margin="{TemplateBinding Padding}"
+								igRibbon:RibbonGroupPanel.SizingModeVersion="{TemplateBinding igRibbon:RibbonGroupPanel.SizingModeVersion}" />
+					</igWindows:CardPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- =================================================================== -->
+	<!-- RibbonGroup Style -->
+	<!-- =================================================================== -->
+	<Style TargetType="{x:Type igRibbon:RibbonGroup}">
+		<!--<Setter Property="Background" Value="{StaticResource RibbonGroupBackground}"/>
+<Setter Property="BorderBrush" Value="{StaticResource RibbonGroupBorder}"/>
+<Setter Property="BorderThickness" Value="1"/>
+<Setter Property="Margin" Value="0,0,4,0"/>-->
+		<Setter Property="SmallImage">
+			<Setter.Value>
+				<DrawingImage>
+					<DrawingImage.Drawing>
+						<DrawingGroup>
+							<GeometryDrawing Brush="#00FFFFFF">
+								<GeometryDrawing.Geometry>
+									<RectangleGeometry Rect="0,0,11,11"/>
+								</GeometryDrawing.Geometry>
+							</GeometryDrawing>
+							<DrawingGroup Opacity="0.67058823529411771">
+								<GeometryDrawing Brush="#FFFFFFFF" Geometry="M1,1C1,1 10,1 10,1 10,1 10,10 10,10 10,10 1,10 1,10 1,10 1,1 1,1z M0,0C0,0 0,11 0,11 0,11 11,11 11,11 11,11 11,0 11,0 11,0 0,0 0,0z"/>
+							</DrawingGroup>
+							<DrawingGroup>
+								<DrawingGroup.Transform>
+									<MatrixTransform Matrix="1,0,0,1,3,3"/>
+								</DrawingGroup.Transform>
+								<GeometryDrawing Brush="#FFFFFFFF" Geometry="M5,0 C5,0 4.2857132,0 4.2857132,0 4.2857132,0 0,5 0,5 0,5 0.7142868,5 0.7142868,5 0.7142868,5 5,0 5,0 z"/>
+							</DrawingGroup>
+						</DrawingGroup>
+					</DrawingImage.Drawing>
+				</DrawingImage>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type igRibbon:RibbonGroup}">
+					<ControlTemplate.Resources>
+						<!-- Fade-In Animations -->
+						<Storyboard x:Key="RibbonGroup_FadeIn">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Center" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BorderHover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="RibbonGroup_IsInContextual_FadeIn">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IsInContextualCenter" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BorderHover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="PART_Header_FadeIn">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Header_Hover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<!-- Fade-Out Animations -->
+						<Storyboard x:Key="RibbonGroup_FadeOut">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Center" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BorderHover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="RibbonGroup_IsInContextual_FadeOut">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="IsInContextualCenter" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="BorderHover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+						<Storyboard x:Key="PART_Header_FadeOut">
+							<DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Header_Hover" Storyboard.TargetProperty="(UIElement.Opacity)">
+								<SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</ControlTemplate.Resources>
+					<igWindows:CardPanel>
+						<ContentControl x:Name="PART_RibbonGroupSite" Style="{StaticResource PlainContentControlStyle}" igRibbon:RibbonGroupPanel.SizingModeVersion="{TemplateBinding igRibbon:RibbonGroupPanel.SizingModeVersion}" >
+							<igWindows:CardPanel x:Name="groupPanel" Background="{TemplateBinding Background}">
+								<Grid Opacity="0" x:Name="Center">
+									<Border HorizontalAlignment="Stretch" Margin="1,1,2,2" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupHoverCenterFillKey}}" CornerRadius="2,2,2,2"/>
+								</Grid>
+								<Grid Opacity="0" x:Name="IsInContextualCenter">
+									<Border HorizontalAlignment="Stretch" Margin="1,1,2,2" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupIsInContextualHoverCenterFillKey}}" CornerRadius="2,2,2,2"/>
+								</Grid>
+								<Border x:Name="borderLight" HorizontalAlignment="Stretch" Margin="1,1,0,0" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupNormalBorderLightFillKey}}" BorderThickness="1" CornerRadius="3" SnapsToDevicePixels="True">
+									<DockPanel LastChildFill="True" KeyboardNavigation.TabNavigation="Local">
+										<Grid Width="Auto" Height="Auto" DockPanel.Dock="Bottom" KeyboardNavigation.TabIndex="1" KeyboardNavigation.TabNavigation="Local">
+											<Border x:Name="Header_Background"  Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupNormalBottomGradientFillKey}}" Margin="-1,0,0,0" HorizontalAlignment="Stretch" CornerRadius="0,0,2,2" SnapsToDevicePixels="True" />
+											<Border x:Name="Header_Hover"  Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupHoverBottomGradientFillKey}}" Margin="-1,0,0,0" HorizontalAlignment="Stretch" CornerRadius="0,0,2,2" SnapsToDevicePixels="True" Opacity="0" />
+											<DockPanel LastChildFill="True" d:IsHidden="True">
+												<ContentControl x:Name="DialogBoxLauncher" Height="15" DockPanel.Dock="Right" Content="{TemplateBinding DialogBoxLauncherTool}" Visibility="Hidden" Focusable="False"/>
+												<TextBlock x:Name="PART_Caption"
+													Text="{TemplateBinding Caption, Converter={StaticResource stringWithoutMnemonicsConverter}}"
+													Grid.Row="1"
+													Margin="5,0,5,2"
+													VerticalAlignment="Bottom"
+													HorizontalAlignment="Stretch"
+													TextTrimming="CharacterEllipsis"
+                                                    igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
+                                                    igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igRibbon:XamRibbon.ToolTipStyleKey}"
+													TextAlignment="Center" Foreground="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupCaptionTextFillKey}}"/>
+											</DockPanel>
+										</Grid>
+										<ItemsPresenter x:Name="PART_Items" Margin="2,0,4,1" HorizontalAlignment="Center"
+													KeyboardNavigation.TabIndex="0"
+													KeyboardNavigation.TabNavigation="Local"
+													SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+									</DockPanel>
+								</Border>
+								<Border x:Name="borderDarkNormal" Margin="0,0,1,1" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupNormalBorderDarkFillKey}}" BorderThickness="1" CornerRadius="3" SnapsToDevicePixels="True" />
+								<Grid x:Name="BorderHover" Opacity="0" SnapsToDevicePixels="True" >
+									<Border x:Name="borderDarkHover" Margin="0,0,1,1" BorderBrush="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.RibbonGroupHoverBorderFillKey}}" BorderThickness="1" CornerRadius="3" SnapsToDevicePixels="True" />
+								</Grid>
+							</igWindows:CardPanel>
+						</ContentControl>
+						<igRibbon:DropDownToggle x:Name="PART_RibbonGroupButton"
+										   igRibbon:RibbonGroupPanel.SizingModeVersion="{TemplateBinding igRibbon:RibbonGroupPanel.SizingModeVersion}"
+										   IsDroppedDown="{Binding Path=IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+										   Style="{DynamicResource {x:Static igRibbon:RibbonGroup.CollapsedGroupButtonStyleKey}}"
+										   Visibility="Collapsed" />
+                        <!-- AS 9/23/09 TFS2236 - Added HandleMouseDownOnClose -->
+						<Popup x:Name="PART_Popup"
+                                igWindows:PopupHelper.HandleMouseDownOnClose="True"
+								 AllowsTransparency="True"
+							   StaysOpen="False"
+							   PlacementTarget="{Binding ElementName=PART_RibbonGroupButton}"
+								 Placement="Bottom"
+							   IsOpen="{Binding Path=IsOpen, RelativeSource={RelativeSource TemplatedParent}}">
+							<AdornerDecorator KeyboardNavigation.DirectionalNavigation="Cycle">
+								<Border
+								Background="{DynamicResource {x:Static igRibbon:RibbonBrushKeys.ContainerFillKey}}"
+								CornerRadius="3,3,3,3">
+									<ContentControl x:Name="PART_PopupRibbonGroupSite" Style="{StaticResource PlainContentControlStyle}" igRibbon:RibbonGroupPanel.SizingModeVersion="{TemplateBinding igRibbon:RibbonGroupPanel.SizingModeVersion}" />
+								</Border>
+							</AdornerDecorator>
+						</Popup>
+					</igWindows:CardPanel>
+					<ControlTemplate.Triggers>
+						<!-- AS 11/30/07 BR28788 -->
+						<Trigger Property="IsOpen" Value="False">
+							<Setter Property="PopupAnimation" TargetName="PART_Popup" Value="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"/>
+						</Trigger>
+
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<!-- JM BR28878 12-04-07 - Do not execute the trigger actions if we are at designtime -->
+								<Condition Property="compModel:DesignerProperties.IsInDesignMode" Value="False"/>
+								<Condition Property="igRibbon:RibbonGroup.IsInContextualTabGroup" Value="True"/>
+                                <!-- AS BR33990 6/18/08 -->
+                                <!--<Condition Property="IsMouseOver" SourceName="groupPanel" Value="True"/>-->
+                                <!-- AS BR28885 12/5/07 - Added sourcename to only prevent highlight when something within the group has capture -->
+                                <!--<Condition Property="IsMouseCaptureWithin" SourceName="groupPanel" Value="False"/>-->
+                                <Condition Property="HighlightContent" Value="True"/>
+                            </MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
+								<BeginStoryboard x:Name="RibbonGroup_IsInContextual_FadeIn_BeginStoryboard" Storyboard="{StaticResource RibbonGroup_IsInContextual_FadeIn}"/>
+								<BeginStoryboard x:Name="PART_Header_IsInContextual_FadeIn_BeginStoryboard" Storyboard="{StaticResource PART_Header_FadeIn}"/>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
+								<StopStoryboard BeginStoryboardName="RibbonGroup_IsInContextual_FadeIn_BeginStoryboard"/>
+								<StopStoryboard BeginStoryboardName="PART_Header_IsInContextual_FadeIn_BeginStoryboard"/>
+								<BeginStoryboard x:Name="RibbonGroup_IsInContextual_FadeOut_BeginStoryboard" Storyboard="{StaticResource RibbonGroup_IsInContextual_FadeOut}"/>
+								<BeginStoryboard x:Name="PART_Header_IsInContextual_FadeOut_BeginStoryboard" Storyboard="{StaticResource PART_Header_FadeOut}"/>
+							</MultiTrigger.ExitActions>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<!-- JM BR28878 12-04-07 - Do not execute the trigger actions if we are at designtime -->
+								<Condition Property="compModel:DesignerProperties.IsInDesignMode" Value="False"/>
+								<Condition Property="igRibbon:RibbonGroup.IsInContextualTabGroup" Value="False"/>
+                                <!-- AS BR33990 6/18/08 -->
+                                <!--<Condition Property="IsMouseOver" SourceName="groupPanel" Value="True"/>-->
+                                <!-- AS BR28885 12/5/07 - Added sourcename to only prevent highlight when something within the group has capture -->
+                                <!--<Condition Property="IsMouseCaptureWithin" SourceName="groupPanel" Value="False"/>-->
+                                <Condition Property="HighlightContent" Value="True"/>
+                            </MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
+								<BeginStoryboard x:Name="RibbonGroup_FadeIn_BeginStoryboard" Storyboard="{StaticResource RibbonGroup_FadeIn}"/>
+								<BeginStoryboard x:Name="PART_Header_FadeIn_BeginStoryboard" Storyboard="{StaticResource PART_Header_FadeIn}"/>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
+								<StopStoryboard BeginStoryboardName="RibbonGroup_FadeIn_BeginStoryboard"/>
+								<StopStoryboard BeginStoryboardName="PART_Header_FadeIn_BeginStoryboard"/>
+								<BeginStoryboard x:Name="RibbonGroup_FadeOut_BeginStoryboard" Storyboard="{StaticResource RibbonGroup_FadeOut}"/>
+								<BeginStoryboard x:Name="PART_Header_FadeOut_BeginStoryboard" Storyboard="{StaticResource PART_Header_FadeOut}"/>
+							</MultiTrigger.ExitActions>
+						</MultiTrigger>
+						<Trigger Property="IsCollapsed" Value="True">
+							<Setter Property="Visibility" TargetName="PART_RibbonGroupButton" Value="Visible"/>
+							<Setter Property="igRibbon:RibbonGroup.Caption" TargetName="PART_RibbonGroupButton" Value="{Binding Path=Caption, RelativeSource={RelativeSource TemplatedParent}}"/>
+							<Setter Property="igRibbon:RibbonGroup.SmallImage" TargetName="PART_RibbonGroupButton" Value="{Binding Path=SmallImage, RelativeSource={RelativeSource TemplatedParent}}"/>
+							<Setter Property="Visibility" TargetName="PART_RibbonGroupSite" Value="Collapsed"/>
+						</Trigger>
+						<Trigger Property="IsActive" Value="True">
+							<Setter Property="Background" TargetName="PART_RibbonGroupButton" Value="Yellow"/>
+						</Trigger>
+						<Trigger Property="Location" Value="QuickAccessToolbar">
+							<Setter Property="Style" TargetName="PART_RibbonGroupButton" Value="{DynamicResource {x:Static igRibbon:RibbonGroup.QuickAccessToolbarGroupButtonStyleKey}}"/>
+							<Setter Property="Visibility" TargetName="PART_RibbonGroupButton" Value="Visible"/>
+							<Setter Property="igRibbon:RibbonGroup.Caption" TargetName="PART_RibbonGroupButton" Value="{Binding Path=Caption, RelativeSource={RelativeSource TemplatedParent}}"/>
+							<Setter Property="igRibbon:RibbonGroup.SmallImage" TargetName="PART_RibbonGroupButton" Value="{Binding Path=SmallImage, RelativeSource={RelativeSource TemplatedParent}}"/>
+							<Setter Property="Visibility" TargetName="PART_RibbonGroupSite" Value="Collapsed"/>
+						</Trigger>
+						<Trigger Property="HasDialogBoxLauncherTool" Value="True">
+							<Setter Property="Visibility" TargetName="DialogBoxLauncher" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Margin" Value="2,0,0,0"/>
+		<Style.Triggers>
+			<Trigger Property="Location" Value="QuickAccessToolbar">
+				<Setter Property="Margin" Value="0" />
+				<Setter Property="Focusable" Value="True" />
+			</Trigger>
+			<Trigger Property="IsCollapsed" Value="True">
+				<Setter Property="Focusable" Value="True" />
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+
+
+</ResourceDictionary>

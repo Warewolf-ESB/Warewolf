@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="XamDialogWindow_Properties" xml:space="preserve">
+    <value>XamDialogWindow プロパティ</value>
+  </data>
+  <data name="XamDialogWindow_IsActive_Property" xml:space="preserve">
+    <value>IsActive プロパティを取得または設定します。XamDialogWindow のインスタンスがフォーカスを持ち、Active 状態になるときの IsActive プロパティは True です。そうでない場合、コントロールはアクティブではないため、IsActive プロパティは False です。</value>
+  </data>
+  <data name="XamDialogWindow_IsResizable_Property" xml:space="preserve">
+    <value>IsResizable プロパティを取得または設定します。プロパティが true の時に Infragistics.Controls.Interactions.XamDialogWindow インスタンスは、サイズ変更可能な領域 (境界線) をドラッグしてサイズ変更できます。</value>
+  </data>
+  <data name="XamDialogWindow_Left_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の X 座標を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MinimizedHeight_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow.WindowState は Infragistics.Controls.Interactions.WindowState.Minimized に設定する場合に Infragistics.Controls.Interactions.XamDialogWindow の Height を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MinimizedWidth_Property" xml:space="preserve">
+    <value>MinimizedWidth を取得または設定します。
+最小化幅は Infragistics.Controls.Interactions.XamDialogWindowin の最小化状態の幅を指定します。</value>
+  </data>
+  <data name="XamDialogWindow_ModalBackground_Property" xml:space="preserve">
+    <value>Modal Dialog の背景のクリックできない領域に適用する System.Windows.Media.Brush を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_ModalBackgroundEffect_Property" xml:space="preserve">
+    <value>Modal Dialog の背景のクリックできない領域に適用する System.Windows.Media.Effects.Effect を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_ModalBackgroundOpacity_Property" xml:space="preserve">
+    <value>Modal Dialog の背景のクリックできない領域の背景に適用する Opacity を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MinimizedHeaderTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow.WindowState が Infragistics.Controls.Interactions.WindowState.Minimized に設定された場合、Infragistics.Controls.Interactions.XamDialogWindow の Header の System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MinimizedPanel_Property" xml:space="preserve">
+    <value>MinimizedPanel を取得または設定します。MinimizedPanel はパネルで、最小化状態で Infragistics.Controls.Interactions.XamDialogWindow インスタンスを整列するために使用されます。</value>
+  </data>
+  <data name="XamDialogWindow_RestrictInContainer_Property" xml:space="preserve">
+    <value>[コンテナーで制限する] かどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_StartupPosition_Property" xml:space="preserve">
+    <value>StartUpPosition プロパティを取得または設定します。Show メソッドでの XamDialogWindow インスタンスの位置を表します。ManualRelativeToApplication の場合、インスタンスは Application に相対して Left および Top プロパティの値を使用します。ManualRelativeToContainer の場合、インスタンスは ContainerPanel または Parent に相対して Left および Top プロパティの値を使用します。CenterCanvas の場合、インスタンスは Canvas で中央に配置します。CenterApplication の場合、インスタンスは RootVisual に中央に配置します。Default の場合、インスタンスは Show メソッドで Left=0 および Top=0 を使用します。それ以外は縮小されます。</value>
+  </data>
+  <data name="XamDialogWindow_Top_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の Y 座標を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_WindowState_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の状態は Maximized、Minimized、Hidden、または Normal かどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_IsModal_Property" xml:space="preserve">
+    <value>このインスタンスがモーダルできるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindowCommandSource_CommandType_Property" xml:space="preserve">
+    <value>コマンドで実行する XamDialogWindowCommand を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindowCommandSource_Properties" xml:space="preserve">
+    <value>XamDialogWindowCommandSource プロパティ</value>
+  </data>
+  <data name="BoolPropertyChangedEventArgs_NewValue_Property" xml:space="preserve">
+    <value>NewValue プロパティを識別します</value>
+  </data>
+  <data name="BoolPropertyChangedEventArgs_OldValue_Property" xml:space="preserve">
+    <value>OldValue プロパティを識別します</value>
+  </data>
+  <data name="ClosedEventArgs_DialogResult_Property" xml:space="preserve">
+    <value>DialogResult プロパティを識別します。</value>
+  </data>
+  <data name="XamWebDialogWindowAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamWebDialogWindowSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamDialogWindow</value>
+  </data>
+  <data name="XamDialogWindow_CloseButtonVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow で Close ボタンを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_CustomCursors_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow で使用するカーソルを含む Infragistics.Controls.Interactions.XamDialogWindow.CustomCursors オブジェクトを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderIconTemplate_Property" xml:space="preserve">
+    <value>HeaderIconTemplate プロパティを取得または設定します。HeaderIconTemplate は画像の DataTemplate のように使用されます。XamDialogWindow のタイトル バー (ドラッグ領域) に配置します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderIconVisibility_Property" xml:space="preserve">
+    <value>HeaderIconVisibility プロパティを取得または設定します。プロパティが Visible の場合 Image を表示されます。そうでない場合は Image は縮小されます。</value>
+  </data>
+  <data name="XamDialogWindow_IsMoveable_Property" xml:space="preserve">
+    <value>XamDialogWindow インスタンスが移動できるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_KeyboardSettings_Property" xml:space="preserve">
+    <value>キーボードで Infragistics.Controls.Interactions.XamDialogWindow の移動についての設定を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MaximizeButtonVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow で Maximize ボタンを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_MinimizeButtonVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow で Minimize ボタンを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="KeyboardSettings_HorizontalStep_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow がアクティブな場合、左または右矢印のキーを押すと、水平方向に移動するピクセルの数を取得または設定します。</value>
+  </data>
+  <data name="KeyboardSettings_IsKeyNavigation_Property" xml:space="preserve">
+    <value>このインスタンスが移動できるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="KeyboardSettings_VerticalStep_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow がアクティブの場合、上または下矢印のキーを押すと、垂直方向に移動するピクセルの数を取得または設定します。</value>
+  </data>
+  <data name="MovedEventArgs_Left_Property" xml:space="preserve">
+    <value>Left 座標プロパティを取得または設定します。</value>
+  </data>
+  <data name="MovedEventArgs_Top_Property" xml:space="preserve">
+    <value>Top 座標プロパティを取得または設定します。</value>
+  </data>
+  <data name="MovingEventArgs_Left_Property" xml:space="preserve">
+    <value>Left 座標プロパティを取得または設定します。</value>
+  </data>
+  <data name="MovingEventArgs_Top_Property" xml:space="preserve">
+    <value>Top 座標プロパティを取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangingEventArgs_NewWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの新しい Infragistics.Controls.Interactions.WindowState を取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangingEventArgs_OldWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの古い状態を取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangedEventArgs_OldWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの古い状態を取得または設定します。</value>
+  </data>
+  <data name="CustomCursors_DiagonalResizeCursor_Property" xml:space="preserve">
+    <value>水平サイズ変更カーソルを取得または設定します。</value>
+  </data>
+  <data name="CustomCursors_HorizontalResizeCursor_Property" xml:space="preserve">
+    <value>水平サイズ変更カーソルを取得または設定します。</value>
+  </data>
+  <data name="CustomCursors_VerticalResizeCursor_Property" xml:space="preserve">
+    <value>垂直サイズ変更カーソルを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_Header_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Interactions.XamDialogWindow の Header に表示するコンテンツを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderBackground_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の Header に適用する System.Windows.Media.Brush を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderForeground_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の Header の Foreground に適用する System.Windows.Media.Brush を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderHorizontalContentAlignment_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の Header のコンテンツに適用する System.Windows.HorizontalAlignment を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderTemplate_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Interactions.XamDialogWindow の Header に適用する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindow_HeaderVerticalContentAlignment_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Interactions.XamDialogWindow の Header のコンテンツに適用する System.Windows.VerticalAlignment を取得または設定します。</value>
+  </data>
+  <data name="KeyboardSettings_AllowKeyboardNavigation_Property" xml:space="preserve">
+    <value>このインスタンスが移動できるかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangingEventArgs_CurrentWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの現在の Infragistics.Controls.Interactions.WindowState を取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangedEventArgs_PreviousWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの前の Infragistics.Controls.Interactions.WindowState を取得または設定します。</value>
+  </data>
+  <data name="WindowStateChangedEventArgs_NewWindowState_Property" xml:space="preserve">
+    <value>ウィンドウの新しい Infragistics.Controls.Interactions.WindowState を取得または設定します。</value>
+  </data>
+  <data name="DialogRootPanel_DialogWindow_Property" xml:space="preserve">
+    <value>このパネルを所有する Infragistics.Controls.Interactions.XamDialogWindow を取得します。</value>
+  </data>
+  <data name="CustomCursors_RightDiagonalResizeCursor_Property" xml:space="preserve">
+    <value>水平サイズ変更カーソルを取得または設定します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_CanMove_Property" xml:space="preserve">
+    <value>要素を移動できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_Properties" xml:space="preserve">
+    <value>XamDialogWindowAutomationPeer プロパティ</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_CanResize_Property" xml:space="preserve">
+    <value>要素のサイズを変更できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_CanRotate_Property" xml:space="preserve">
+    <value>要素を回転できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_InteractionState_Property" xml:space="preserve">
+    <value>ウインドウのインタラクション状態を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_IsModal_Property" xml:space="preserve">
+    <value>ウインドウがモーダルかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_IsTopmost_Property" xml:space="preserve">
+    <value>ウィンドウがレイアウトの z-order で最上部の要素かどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_Maximizable_Property" xml:space="preserve">
+    <value>ウインドウを最大化できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_Minimizable_Property" xml:space="preserve">
+    <value>ウインドウを最小化できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamDialogWindowAutomationPeer_VisualState_Property" xml:space="preserve">
+    <value>ウインドウの表示状態を取得します。</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+</root>
+

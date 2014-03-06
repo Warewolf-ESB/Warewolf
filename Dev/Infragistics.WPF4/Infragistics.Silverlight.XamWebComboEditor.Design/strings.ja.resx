@@ -1,0 +1,771 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="ItemsPanel_ComboEditor_Property" xml:space="preserve">
+    <value>親 Infragistics.Controls.Editors.XamComboEditor への参照を取得します。</value>
+  </data>
+  <data name="ComboEditorItem_ComboEditor_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem を保持する Infragistics.Controls.Editors.XamComboEditor を取得します。</value>
+  </data>
+  <data name="ComboEditorItem_Data_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem に保持されているビジネス オブジェクトを取得します。</value>
+  </data>
+  <data name="ComboEditorItem_IsSelected_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem が選択されたかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItem_IsFocused_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem がフォーカスされたかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItem_Control_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem にアタッチされている Infragistics.Silverlight.Controls.ComboEditorItemControl を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItem_IsEnabled_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem が有効かどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItem_Style_Property" xml:space="preserve">
+    <value>この項目を表す Infragistics.Controls.Editors.ComboEditorItemControl に適用されるスタイルを取得または設定します。 
+ 注: この項目に設定されているスタイルは Infragistics.Controls.Editors.XamComboEditor に設定されているスタイルをオーバーライドします。</value>
+  </data>
+  <data name="ItemsFilter_Conditions_Property" xml:space="preserve">
+    <value>この列に適用するフィルター条件のコレクションを取得します。</value>
+  </data>
+  <data name="ItemsFilter_ObjectType_Property" xml:space="preserve">
+    <value>処理されているオブジェクトの Type を取得または設定します。</value>
+  </data>
+  <data name="ItemsFilter_FieldName_Property" xml:space="preserve">
+    <value>フィルターされているプロパティのフィールド名を取得または設定します。</value>
+  </data>
+  <data name="ItemsFilter_FieldType_Property" xml:space="preserve">
+    <value>FieldName プロパティの Type を取得または設定します。</value>
+  </data>
+  <data name="ComboItemAddingEventArgs_Item_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamComboEditor ドロップダウンに追加されている項目。</value>
+  </data>
+  <data name="ComboItemAddedEventArgs_Item_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamComboEditor ドロップダウンに追加された項目。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer_IsReadOnly_Property" xml:space="preserve">
+    <value>コントロールの値が読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer_Value_Property" xml:space="preserve">
+    <value>コントロールの値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer_IsSelected_Property" xml:space="preserve">
+    <value>項目が選択されているかどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer_SelectionContainer_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.ISelectionProvider を実装し、呼び出しのオブジェクトのコンテーナーとして動作する UI 自動化プロバイダーを取得します。</value>
+  </data>
+  <data name="ComboEditorItemControl_Item_Property" xml:space="preserve">
+    <value>親 ComboBoxItem オブジェクトを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_CanSelectMultiple_Property" xml:space="preserve">
+    <value>UI 自動化プロバイダーによって 2 つ以上の子要素を同時に選択できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_Properties" xml:space="preserve">
+    <value>XamComboEditorAutomationPeer プロパティ</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_IsSelectionRequired_Property" xml:space="preserve">
+    <value>UI 自動化プロバイダーによって少なくとも 1 つの子要素を選択する必要があるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_ExpandCollapseState_Property" xml:space="preserve">
+    <value>コントロールの状態 (展開または縮小) を取得します。</value>
+  </data>
+  <data name="XamComboEditor_AllowFiltering_Property" xml:space="preserve">
+    <value>編集モードのときにエディターが項目をフィルターするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_Properties" xml:space="preserve">
+    <value>XamCombo プロパティ</value>
+  </data>
+  <data name="XamComboEditor_IsDropDownOpen_Property" xml:space="preserve">
+    <value>選択可能なドロップダウンが開いているかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_ItemContainerStyle_Property" xml:space="preserve">
+    <value>このコンボのドロップダウンのすべての Infragistics.Controls.Editors.ComboEditorItemControl に適用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_MaxDropDownHeight_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamComboEditor のドロップダウンの最大の高さを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_SelectedIndex_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.XamComboEditor 内の選択された項目のインデックスを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_SelectedItem_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.XamComboEditorNote の選択されているデータ項目を取得または設定します。項目は Infragistics.Controls.Editors.ComboEditorItem のタイプではなく、固有のデータ モデルのタイプになります。</value>
+  </data>
+  <data name="XamComboEditor_SelectedItems_Property" xml:space="preserve">
+    <value>現在選択されている項目を取得します。</value>
+  </data>
+  <data name="XamComboEditor_CustomItemsFilter_Property" xml:space="preserve">
+    <value>AllowFiltering がオンになっている場合、適用される Infragistics.Controls.Editors.ItemsFilter を取得または設定します。 
+ 注: 設定されていない場合、デフォルトは StartsWith フィルターになります。</value>
+  </data>
+  <data name="XamComboEditor_IsEditable_Property" xml:space="preserve">
+    <value>XamComboEditor でエンド ユーザーが選択するためにコンボに入力できるかどうかを取得または設定します。
+ 注: AllowFilter および AutoComplete が正しく動作するのに true に設定する必要があります。</value>
+  </data>
+  <data name="XamComboEditor_ItemTemplate_Property" xml:space="preserve">
+    <value>ドロップダウンの各 Infragistics.Controls.Editors.ComboEditorItem に適用される DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_ItemsSource_Property" xml:space="preserve">
+    <value>各項目のコンテンツを作成するコレクションを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_DisplayMemberPath_Property" xml:space="preserve">
+    <value>オブジェクトの視覚的表現として使用されるソース オブジェクトの値へのパスを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_AutoComplete_Property" xml:space="preserve">
+    <value>ユーザーが入力している間にコンボがデータ ソースを検索し、現在の入力と一致するの残りのテキストをハイライトするかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_Items_Property" xml:space="preserve">
+    <value>コントロールのコンテンツを生成するコレクションを取得します。</value>
+  </data>
+  <data name="XamComboEditor_AllowMultipleSelection_Property" xml:space="preserve">
+    <value>エンド ユーザーが同時に複数の項目を選択できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_CheckBoxVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItemControl のドロップダウンにチェックボックスを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_MultiSelectValueDelimiter_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamComboEditor で SelectedItems を区別するのに使用される文字を取得または設定します。AllowMultipleSelection が true に設定された場合のみに適用します。</value>
+  </data>
+  <data name="XamComboEditor_AutoCompleteDelay_Property" xml:space="preserve">
+    <value>テキスト ボックスにテキストが入力された後に Infragistics.Controls.Editors.XamComboEditorコントロールがドロップダウンに一致する可能性のある項目のリストを生成するまでの最小時間 (ミリ秒) を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_CustomValueEnteredAction_Property" xml:space="preserve">
+    <value>元の ItemsSource に存在しないコンボ エディターにデータを入力するときに発生するアクションを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_OpenDropDownOnTyping_Property" xml:space="preserve">
+    <value>ユーザーが入力を開始したときに DropDown を開くかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditor_EmptyText_Property" xml:space="preserve">
+    <value>エディターで何も選択されていないときに表示するテキストを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamComboEditorSupportAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamComboEditor</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_IsReadOnly_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.IValueProvider メンバーが編集可能かどうかを取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer_Value_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.IValueProvider オブジェクトの値を取得します。</value>
+  </data>
+  <data name="ValidateInputTextEventArgs_TextToValidate_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValidateInputTextEventArgs_IsValid_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Resources_Customizer_Property" xml:space="preserve">
+    <value>このアセンブリの Infragistics.Shared.ResourceCustomizer を返します。</value>
+  </data>
+  <data name="ItemsFilter_ObjectTypedInfo_Property" xml:space="preserve">
+    <value>オブジェクトの型といずれかの PropertyDescriptors。</value>
+  </data>
+  <data name="ComboCellControl_ContentProvider_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboCellControl の Infragistics.Controls.Editors.Primitives.ComboColumnContentProviderBase を解決します。</value>
+  </data>
+  <data name="ComboCellControl_Cell_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCellControl を所有する Infragistics.Controls.Editors.ComboCell。</value>
+  </data>
+  <data name="XamComboEditorBase`2_AllowFiltering_Property" xml:space="preserve">
+    <value>編集モードのときにエディターが項目をフィルターするかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_Properties" xml:space="preserve">
+    <value>XamComboEditorBase`2 プロパティ</value>
+  </data>
+  <data name="XamComboEditorBase`2_IsDropDownOpen_Property" xml:space="preserve">
+    <value>選択可能なドロップダウンが開いているかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_ItemContainerStyle_Property" xml:space="preserve">
+    <value>このコンボのドロップダウンのすべての Infragistics.Controls.Editors.ComboEditorItemControl に適用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_MaxDropDownHeight_Property" xml:space="preserve">
+    <value>この XamComboEditorBase のドロップダウンの最大の高さを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_SelectedIndex_Property" xml:space="preserve">
+    <value>この XamComboEditorBase で選択された項目のインデックスを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_SelectedItem_Property" xml:space="preserve">
+    <value>この XamComboEditorBase の選択されているデータ項目を取得または設定します。項目は Infragistics.Controls.Editors.ComboEditorItem のタイプではなく、固有のデータ モデルのタイプになります。</value>
+  </data>
+  <data name="XamComboEditorBase`2_SelectedItems_Property" xml:space="preserve">
+    <value>現在選択されている項目を取得します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_CustomItemsFilter_Property" xml:space="preserve">
+    <value>フィルターがオンになっている場合、適用される Infragistics.Controls.Editors.ItemsFilter を取得または設定します。 
+ 注: 設定されていない場合、デフォルトは StartsWith フィルターになります。</value>
+  </data>
+  <data name="XamComboEditorBase`2_IsEditable_Property" xml:space="preserve">
+    <value>XamComboEditorBase でエンド ユーザーが選択するためにコンボに入力できるかどうかを取得または設定します。
+ 注: AllowFilter および AutoComplete が正しく動作するのに true に設定する必要があります。</value>
+  </data>
+  <data name="XamComboEditorBase`2_ItemTemplate_Property" xml:space="preserve">
+    <value>ドロップダウンの各 Infragistics.Controls.Editors.ComboEditorItem に適用される DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_ItemsSource_Property" xml:space="preserve">
+    <value>各項目のコンテンツを作成するコレクションを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_DisplayMemberPath_Property" xml:space="preserve">
+    <value>オブジェクトの視覚的表現として使用されるソース オブジェクトの値へのパスを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_AutoComplete_Property" xml:space="preserve">
+    <value>ユーザーが入力している間にコンボがデータ ソースを検索し、現在の入力と一致するの残りのテキストをハイライトするかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_Items_Property" xml:space="preserve">
+    <value>コントロールのコンテンツを生成するコレクションを取得します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_AllowMultipleSelection_Property" xml:space="preserve">
+    <value>エンド ユーザーが同時に複数の項目を選択できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_CheckBoxVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItemControl のドロップダウンにチェックボックスを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_MultiSelectValueDelimiter_Property" xml:space="preserve">
+    <value>XamComboEditorBase で SelectedItems を区別するのに使用される文字を取得または設定します。AllowMultipleSelection が true に設定された場合のみに適用します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_AutoCompleteDelay_Property" xml:space="preserve">
+    <value>テキスト ボックスにテキストが入力された後に、 XamComboEditorBase コントロールがドロップダウンに一致する可能性のある項目のリストを生成するまでの最小時間 (ミリ秒) を取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_CustomValueEnteredAction_Property" xml:space="preserve">
+    <value>元の ItemsSource に存在しないコンボ エディターにデータを入力するときに発生するアクションを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_OpenDropDownOnTyping_Property" xml:space="preserve">
+    <value>ユーザーが入力を開始したときに DropDown を開くかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamComboEditorBase`2_EmptyText_Property" xml:space="preserve">
+    <value>エディターで何も選択されていないときに表示するテキストを取得または設定します。</value>
+  </data>
+  <data name="ItemsPanelBase`2_ComboEditor_Property" xml:space="preserve">
+    <value>親 ComboEditorBase への参照を取得します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_Data_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem に保持されているビジネス オブジェクトを取得します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_IsSelected_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem が選択されたかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_IsFocused_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem がフォーカスされたかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_Control_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem にアタッチされている Infragistics.Silverlight.Controls.ComboEditorItemControl を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_IsEnabled_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItem が有効かどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItemBase`1_Style_Property" xml:space="preserve">
+    <value>この項目を表す Infragistics.Controls.Editors.ComboEditorItemControl に適用されるスタイルを取得または設定します。 
+ 注: この項目に設定されているスタイルは Infragistics.Controls.Editors.XamComboEditor に設定されているスタイルをオーバーライドします。</value>
+  </data>
+  <data name="ComboColumn_Key_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn を識別する文字列を取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_DataType_Property" xml:space="preserve">
+    <value>列データが派生される DataType。</value>
+  </data>
+  <data name="ComboColumn_IsAutoGenerated_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn が定義済みかどうか、または元になるデータに基づいて Infragistics.Controls.Editors.XamMultiColumnComboEditor が生成されるかどうかを取得します。</value>
+  </data>
+  <data name="ComboColumn_ValueConverter_Property" xml:space="preserve">
+    <value>列で値を表示する System.Windows.Data.IValueConverter を取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_ValueConverterParameter_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn.ValueConverter プロパティで使用するパラメーターを取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_CellStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboColumn ですべての Infragistics.Controls.Editors.ComboCellControl オブジェクトに使用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_ActualWidth_Property" xml:space="preserve">
+    <value>列の実際の幅を取得します。</value>
+  </data>
+  <data name="ComboColumn_MinimumWidth_Property" xml:space="preserve">
+    <value>列の最小幅を取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_MaximumWidth_Property" xml:space="preserve">
+    <value>列の最大幅を取得または設定します。</value>
+  </data>
+  <data name="TextComboColumn_TextBlockStyle_Property" xml:space="preserve">
+    <value>編集モードでない時に Infragistics.Controls.Editors.ComboCellBase でデータを表示する System.Windows.Controls.TextBlock に適用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="TextComboColumn_TextWrapping_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.TextComboColumn.TextWrapping  が Infragistics.Controls.Editors.TextComboColumn の System.Windows.Controls.TextBlock および System.Windows.Controls.TextBox に適用されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="TextComboColumn_FormatString_Property" xml:space="preserve">
+    <value>列ですべてのセルに適用する書式文字列を取得または設定します。</value>
+  </data>
+  <data name="ComboItemAddingEventArgs`1_Item_Property" xml:space="preserve">
+    <value>ComboEditorBase ドロップダウンに追加されている項目。</value>
+  </data>
+  <data name="ComboItemAddedEventArgs`1_Item_Property" xml:space="preserve">
+    <value>ComboEditorBase ドロップダウンに追加された項目。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_CanSelectMultiple_Property" xml:space="preserve">
+    <value>UI 自動化プロバイダーによって 2 つ以上の子要素を同時に選択できるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_Properties" xml:space="preserve">
+    <value>XamComboEditorAutomationPeer`2 プロパティ</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_IsSelectionRequired_Property" xml:space="preserve">
+    <value>UI 自動化プロバイダーによって少なくとも 1 つの子要素を選択する必要があるかどうかを示す値を取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_ExpandCollapseState_Property" xml:space="preserve">
+    <value>コントロールの状態 (展開または縮小) を取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_IsReadOnly_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.IValueProvider メンバーが編集可能かどうかを取得します。</value>
+  </data>
+  <data name="XamComboEditorAutomationPeer`2_Value_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.IValueProvider オブジェクトの値を取得します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_AutoGenerateColumns_Property" xml:space="preserve">
+    <value>指定されていない場合、この Infragistics.Controls.Editors.XamMultiColumnComboEditor の列が作成されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_Properties" xml:space="preserve">
+    <value>XamCombo プロパティ</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_ColumnTypeMappings_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamMultiColumnComboEditor で Infragistics.Controls.Editors.ComboColumnTypeMapping オブジェクトのコレクションを取得します。</value>
+  </data>
+  <data name="ComboCellsPanel_Row_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.Primitives.ComboCellsPanel を所有する Infragistics.Controls.Editors.ComboRowBase への参照を取得します。</value>
+  </data>
+  <data name="ComboColumnTypeMapping_ColumnType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumnTypeMapping.DataType と関連付ける列のタイプを取得または設定します。</value>
+  </data>
+  <data name="ComboColumnTypeMapping_DataType_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumnTypeMapping.ColumnType と関連付けるデータのタイプを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer`2_IsReadOnly_Property" xml:space="preserve">
+    <value>コントロールの値が読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer`2_Value_Property" xml:space="preserve">
+    <value>コントロールの値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer`2_IsSelected_Property" xml:space="preserve">
+    <value>項目が選択されているかどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboEditorItemControlAutomationPeer`2_SelectionContainer_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.ISelectionProvider を実装し、呼び出しのオブジェクトのコンテーナーとして動作する UI 自動化プロバイダーを取得します。</value>
+  </data>
+  <data name="ComboCell_Row_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCell を所有する Infragistics.Controls.Editors.ComboRow。</value>
+  </data>
+  <data name="ComboCell_Column_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn の Infragistics.Controls.Editors.ComboColumnWidth を取得または設定します。</value>
+  </data>
+  <data name="ComboCell_Control_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCell にアタッチされた Infragistics.Controls.Editors.ComboCellControl を取得します。</value>
+  </data>
+  <data name="ComboCell_Style_Property" xml:space="preserve">
+    <value>すべての Infragistics.Controls.Editors.ComboCellControl オブジェクトに使用される Infragistics.Controls.Editors.ComboCell.Style を取得または設定します。</value>
+  </data>
+  <data name="ComboRow_Cells_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboRow に属する Infragistics.Controls.Editors.Primitives.ComboCellsCollection を取得します。</value>
+  </data>
+  <data name="ComboRow_ComboEditor_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRow を保持する Infragistics.Controls.Editors.XamMultiColumnComboEditor を取得します。</value>
+  </data>
+  <data name="ComboRow_CellStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRow ですべての Infragistics.Controls.Editors.ComboCellControl オブジェクトに使用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_Columns_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamMultiColumnComboEditor が所有する Infragistics.Controls.Editors.ComboColumnCollection を取得します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_AllowDropDownResizing_Property" xml:space="preserve">
+    <value>エンド ユーザーがドロップ ダウン パネルを編集できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_Footer_Property" xml:space="preserve">
+    <value>ドロップダウン パネルの下の領域でコンテンツとして使用されるオブジェクトを取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_HeaderText_Property" xml:space="preserve">
+    <value>ヘッダーに表示されるテキストを取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_HeaderTextResolved_Property" xml:space="preserve">
+    <value>Column を説明する文字列を取得します。HeaderText プロパティが設定されていない場合、Column のキーが返されます。</value>
+  </data>
+  <data name="ComboColumn_HeaderTemplate_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn のヘッダーのコンテンツを定義する System.Windows.DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="TextComboColumn_IsFilterable_Property" xml:space="preserve">
+    <value>ドロップダウン リストをドロップダウン検索ボックスを使用してフィルターするときに、列を考慮に入れるかどうかを決定する値を取得または設定します。</value>
+  </data>
+  <data name="TextComboColumn_IsHeaderFilterToggleEnabled_Property" xml:space="preserve">
+    <value>列の Infragistics.Controls.Editors.TextComboColumn.IsFilterable プロパティをトリガーするために、エンドユーザーが列をクリックできるかどうかを決定する値を取得または設定します。</value>
+  </data>
+  <data name="ComboColumn_HeaderStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboColumn ですべての Infragistics.Controls.Editors.ComboHeaderCellControl オブジェクトに使用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="ComboRow_RowType_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRowBase の Infragistics.Controls.Editors.ComboRow.RowType を取得します。</value>
+  </data>
+  <data name="ComboCellControlBase_ContentProvider_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboCellControlBase の Infragistics.Controls.Editors.Primitives.ComboColumnContentProviderBase を解決します。</value>
+  </data>
+  <data name="ComboCellControlBase_Cell_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCellControlBase を所有する Infragistics.Controls.Editors.ComboCellBase。</value>
+  </data>
+  <data name="ComboCellBase_Row_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCellBase を所有する Infragistics.Controls.Editors.ComboRowBase。</value>
+  </data>
+  <data name="ComboCellBase_Column_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCellBase が表す Infragistics.Controls.Editors.ComboColumn。</value>
+  </data>
+  <data name="ComboCellBase_Control_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboCellBase にアタッチされた Infragistics.Controls.Editors.ComboCellControlBase を取得します。</value>
+  </data>
+  <data name="ComboCellBase_Style_Property" xml:space="preserve">
+    <value>すべての Infragistics.Controls.Editors.ComboCellControlBase オブジェクトに使用される Infragistics.Controls.Editors.ComboCellBase.Style を取得または設定します。</value>
+  </data>
+  <data name="ComboRowBase_Cells_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboRow に属する Infragistics.Controls.Editors.Primitives.ComboCellsCollection を取得します。</value>
+  </data>
+  <data name="ComboRowBase_ComboEditor_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRow を保持する Infragistics.Controls.Editors.XamMultiColumnComboEditor を取得します。</value>
+  </data>
+  <data name="ComboRowBase_CellStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRowBase ですべての Infragistics.Controls.Editors.ComboCellControlBase オブジェクトに使用される System.Windows.Style を取得または設定します。</value>
+  </data>
+  <data name="ComboRowBase_RowType_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRowBase の Infragistics.Controls.Editors.ComboRowBase.RowType を取得します。</value>
+  </data>
+  <data name="ComboHeaderRow_RowType_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ComboRowBase の Infragistics.Controls.Editors.ComboHeaderRow.RowType を取得します。</value>
+  </data>
+  <data name="ItemsPanelBase`2_FixedRowsTop_Property" xml:space="preserve">
+    <value>Viewport の上に現在固定されている行を取得します。</value>
+  </data>
+  <data name="MultiColumnComboItemsPanel_FixedRowsTop_Property" xml:space="preserve">
+    <value>Viewport の上に現在固定されている行を取得します。</value>
+  </data>
+  <data name="ComboEditorBase`2_IsDropDownOpen_Property" xml:space="preserve">
+    <value>選択可能なドロップダウンが開いているかどうかを示す値を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_ItemContainerStyle_Property" xml:space="preserve">
+    <value>このコンボのドロップダウンのすべての Infragistics.Controls.Editors.ComboEditorItemControl に適用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_MaxDropDownHeight_Property" xml:space="preserve">
+    <value>この ComboEditorBase のドロップダウンの最大の高さを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_SelectedIndex_Property" xml:space="preserve">
+    <value>この ComboEditorBase で選択された項目のインデックスを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_SelectedItem_Property" xml:space="preserve">
+    <value>この ComboEditorBase の選択されているデータ項目を取得または設定します。項目は Infragistics.Controls.Editors.ComboEditorItem のタイプではなく、固有のデータ モデルのタイプになります。</value>
+  </data>
+  <data name="ComboEditorBase`2_SelectedItems_Property" xml:space="preserve">
+    <value>現在選択されている項目を取得します。</value>
+  </data>
+  <data name="ComboEditorBase`2_CustomItemsFilter_Property" xml:space="preserve">
+    <value>フィルターがオンになっている場合、適用される Infragistics.Controls.Editors.ItemsFilter を取得または設定します。 
+ 注: 設定されていない場合、デフォルトは StartsWith フィルターになります。</value>
+  </data>
+  <data name="ComboEditorBase`2_ItemTemplate_Property" xml:space="preserve">
+    <value>ドロップダウンの各 Infragistics.Controls.Editors.ComboEditorItem に適用される DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_ItemsSource_Property" xml:space="preserve">
+    <value>各項目のコンテンツを作成するコレクションを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_DisplayMemberPath_Property" xml:space="preserve">
+    <value>オブジェクトの視覚的表現として使用されるソース オブジェクトの値へのパスを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_Items_Property" xml:space="preserve">
+    <value>コントロールのコンテンツを生成するコレクションを取得します。</value>
+  </data>
+  <data name="ComboEditorBase`2_AllowMultipleSelection_Property" xml:space="preserve">
+    <value>エンド ユーザーが同時に複数の項目を選択できるかどうかを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_CheckBoxVisibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboEditorItemControl のドロップダウンにチェックボックスを表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_MultiSelectValueDelimiter_Property" xml:space="preserve">
+    <value>ComboEditorBase で SelectedItems を区別するのに使用される文字を取得または設定します。AllowMultipleSelection が true に設定された場合のみに適用します。</value>
+  </data>
+  <data name="ComboEditorBase`2_AutoCompleteDelay_Property" xml:space="preserve">
+    <value>テキスト ボックスにテキストが入力された後に、 ComboEditorBase コントロールがドロップダウンに一致する可能性のある項目のリストを生成するまでの最小時間 (ミリ秒) を取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_CustomValueEnteredAction_Property" xml:space="preserve">
+    <value>元の ItemsSource に存在しないコンボ エディターにデータを入力するときに発生するアクションを取得または設定します。</value>
+  </data>
+  <data name="ComboEditorBase`2_EmptyText_Property" xml:space="preserve">
+    <value>エディターで何も選択されていないときに表示するテキストを取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_DropDownSearchBoxVisibility_Property" xml:space="preserve">
+    <value>ドロップダウン パネルの検索ボックスの表示状態を返します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_IsListSearchingEnabled_Property" xml:space="preserve">
+    <value>ドロップダウン パネルのリストで検索とフィルターが現在有効な場合、true 返します。</value>
+  </data>
+  <data name="ComboColumnCollection_FixedAdornerColumns_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.XamMultiColumnComboEditor に最初に表示して固定する Infragistics.Controls.Editors.ComboColumn オブジェクトのコレクション。
+注: この列は一般的に  Infragistics.Controls.Editors.ComboColumnCollection.RowSelectionCheckBoxColumn など基本データ ソース フィールドを表さない列です。</value>
+  </data>
+  <data name="ComboColumn_ActualHeight_Property" xml:space="preserve">
+    <value>列の実際の高さを取得します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_FilterMode_Property" xml:space="preserve">
+    <value>指定されていない場合、この Infragistics.Controls.Editors.XamMultiColumnComboEditor の列が作成されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_FooterTemplate_Property" xml:space="preserve">
+    <value>ドロップダウンの下に表示されるレイアウト コンテンツに使用される DataTemplate を取得または設定します。</value>
+  </data>
+  <data name="HighlightingTextBlock_Text_Property" xml:space="preserve">
+    <value>コントロールに関連するテキストを取得または設定します。</value>
+  </data>
+  <data name="ResizingContentControl_ResizerBarVisibility_Property" xml:space="preserve">
+    <value>サイズ変更バーが表示されているかどうかを示す値を取得または設定します。また、このプロパティを Collapsed に設定した場合、ユーザーはコントロール コンテンツをサイズ変更できません。</value>
+  </data>
+  <data name="ResizingContentControl_ResizeMode_Property" xml:space="preserve">
+    <value>コントロールのコンテンツをサイズ変更する方向を決定する値を取得または設定します。</value>
+  </data>
+  <data name="ImageComboColumn_ImageStyle_Property" xml:space="preserve">
+    <value>この Infragistics.Controls.Editors.ImageComboColumn ですべての System.Windows.Controls.Image に適用する Style を取得または設定します。</value>
+  </data>
+  <data name="ImageComboColumn_ImageHeight_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ImageComboColumn のすべての画像の高さを取得または設定します。</value>
+  </data>
+  <data name="ImageComboColumn_ImageWidth_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ImageComboColumn のすべての画像の幅を取得または設定します。</value>
+  </data>
+  <data name="ComboRowBase_ActualHeight_Property" xml:space="preserve">
+    <value>行の実際の高さを取得します。</value>
+  </data>
+  <data name="ComboColumn_Visibility_Property" xml:space="preserve">
+    <value>Infragistics.Controls.Editors.ComboColumn の表示を取得または設定します。</value>
+  </data>
+  <data name="ComboCellsPanel_Owner_Property" xml:space="preserve">
+    <value>このコントロールを所有する MultiColumnComboItemsPanel を取得または設定します。</value>
+  </data>
+  <data name="ComboColumnCollection_FillerColumn_Property" xml:space="preserve">
+    <value>行の空き領域を埋めるために使用される列を取得します。</value>
+  </data>
+  <data name="ComboRowBase_IsMouseOver_Property" xml:space="preserve">
+    <value>マウスが現在行の上にあるかどうかを取得または設定します。</value>
+  </data>
+  <data name="MultiColumnComboEditorCommandSource_CommandType_Property" xml:space="preserve">
+    <value>コマンドで実行する MultiColumnComboEditorCommand を取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_LocalizedStrings_Property" xml:space="preserve">
+    <value>コントロール テンプレートによって使用されるローカライズされた文字列のディクショナリを返します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditor_SelectedItemsResetButtonVisibility_Property" xml:space="preserve">
+    <value>エンドユーザーが現在選択されている項目のリストをリセットできるボタンをコントロールの UI に表示するかどうかを取得または設定します。</value>
+  </data>
+  <data name="XamMultiColumnComboEditorAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="MultiColumnComboItemsPanel_ComboEditor_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_IsDropDownOpen_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_ItemContainerStyle_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_MaxDropDownHeight_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_SelectedIndex_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_SelectedItem_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_SelectedItems_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_CustomItemsFilter_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_ItemTemplate_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_ItemsSource_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_DisplayMemberPath_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_Items_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_AllowMultipleSelection_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_CheckBoxVisibility_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_MultiSelectValueDelimiter_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_AutoCompleteDelay_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_CustomValueEnteredAction_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="XamMultiColumnComboEditor_EmptyText_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_Data_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_IsSelected_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_IsFocused_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_Control_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_IsEnabled_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboRowBase_Style_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ComboCellsPanelAutomationPeer_IsReadOnly_Property" xml:space="preserve">
+    <value>コントロールの値が読み取り専用かどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboCellsPanelAutomationPeer_Value_Property" xml:space="preserve">
+    <value>コントロールの値を取得します。</value>
+  </data>
+  <data name="ComboCellsPanelAutomationPeer_IsSelected_Property" xml:space="preserve">
+    <value>項目が選択されているかどうかを示す値を取得します。</value>
+  </data>
+  <data name="ComboCellsPanelAutomationPeer_SelectionContainer_Property" xml:space="preserve">
+    <value>System.Windows.Automation.Provider.ISelectionProvider を実装し、呼び出しのオブジェクトのコンテーナーとして動作する UI 自動化プロバイダーを取得します。</value>
+  </data>
+  <data name="ComboEditorBase`2_EditAreaBackground_Property" xml:space="preserve">
+    <value>コントロールが編集可能なときにテキスト領域に適用される色を制御します。</value>
+  </data>
+  <data name="ComboEditorBase`2_IsTouchSupportEnabled_Property" xml:space="preserve">
+    <value>タッチ サポートがこのコントロールで有効かどうかを返すか、設定します。</value>
+  </data>
+  <data name="ComboColumn_Width_Property" xml:space="preserve">
+    <value>Gets/sets the Infragistics.Controls.Editors.ComboColumnWidth of the Infragistics.Controls.Editors.ComboColumn</value>
+    <comment>To translate</comment>
+  </data>
+</root>

@@ -1,0 +1,391 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:igDock="clr-namespace:Infragistics.Windows.DockManager"
+    >
+
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.DarkBrushKey}" Color="#FF000000"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.LightBrushKey}" Color="#FFFFFFFF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.ThemeColorTextFillKey}" Color="#FF555564" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemOuterBorderFillKey}" Color="#FF898C95"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHighlightFillKey}" Color="#7FFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftCenterFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFebebeb" Offset="0.550000011920929" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightCenterFillKey}" StartPoint="1,0" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFebebeb" Offset="0.550000011920929" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopCenterFillKey}" StartPoint="0,1" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFebebeb" Offset="0.550000011920929" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomCenterFillKey}" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFebebeb" Offset="0.550000011920929" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}" Color="#FF3C7FB1" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackHighlightFillKey}" Color="#FFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftHottrackCenterFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.550000011920929" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightHottrackCenterFillKey}" StartPoint="1,0" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.550000011920929" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopHottrackCenterFillKey}" StartPoint="0,1" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.550000011920929" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomHottrackCenterFillKey}" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.5490000247955322" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.550000011920929" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabGroupPaneGlyphFillKey}" Color="#FF434E54"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneOuterBorderFillKey}" Color="#FF69A1BF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneInnerBorderFillKey}" Color="#FFFFFFFF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneCenterFillKey}" Color="#FFD2E6FA"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveOuterBorderFillKey}" Color="#FF898C95" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveInnerBorderFillKey}" Color="#00000000" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveBottomCenterFillKey}" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListGroupFillKey}" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTopCenterFillKey}" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveLeftCenterFillKey}" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveRightCenterFillKey}" Color="#FFFFFFFF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTextFillKey}" Color="#FF000000"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHighlightFillKey}" Color="#FFFFC83C"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHighlightBorderFillKey}" Color="#FFE68B2C"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTextFillKey}" Color="#FF716F64"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveOuterBorderFillKey}" Color="#FF898C95"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveInnerBorderFillKey}" Color="#BFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveBottomCenterFillKey}" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFebebeb" Offset="0.5" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTopCenterFillKey}" StartPoint="0,1" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFebebeb" Offset="0.5" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveLeftCenterFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFebebeb" Offset="0.5" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveRightCenterFillKey}" StartPoint="1,0" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFcfcfcf" Offset="0" />
+                <GradientStop Color="#FFdddddd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFebebeb" Offset="0.5" />
+                <GradientStop Color="#FFf2f2f2" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackOuterBorderFillKey}" Color="#FF898C95" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackInnerBorderFillKey}" Color="#BFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackBottomCenterFillKey}" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.5" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackTopCenterFillKey}" StartPoint="0,1" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.5" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackLeftCenterFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.5" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackRightCenterFillKey}" StartPoint="1,0" EndPoint="0,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFa7d9f5" Offset="0" />
+                <GradientStop Color="#FFbee6fd" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.5" />
+                <GradientStop Color="#FFeaf6fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackTextFillKey}" Color="#FF716F64" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveOuterBorderFillKey}" Color="#FF69A1BF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}" Color="#FFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFf9fcfe" Offset="0" />
+                <GradientStop Color="#FFeaf3fc" Offset="0.3055559992790222" />
+                <GradientStop Color="#FFd2e6fa" Offset="0.9888889789581299" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveOuterBorderFillKey}" Color="#FF9196A2"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}" Color="#FFF3F3F7"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveCenterFillKey}" StartPoint="1,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFecf5fc" Offset="0" />
+                <GradientStop Color="#FFecf5fc" Offset="0.12222199887037277" />
+                <GradientStop Color="#FF98b4d2" Offset="0.9888889789581299" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}" Color="#FF69A1BF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackInnerBorderFillKey}" Color="#FFFFFFFF" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}" StartPoint="1,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFeff9fd" Offset="0" />
+                <GradientStop Color="#FFeff9fd" Offset="0.1333329975605011" />
+                <GradientStop Color="#FF81d0f1" Offset="0.9833329916000366" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}" Color="#ff000000" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF8fadce" Offset="0" />
+                <GradientStop Color="#FFbdd3ef" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionInnerBorderFillKey}" Color="#00000000"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFb7cae0" Offset="0" />
+                <GradientStop Color="#FFe8f0ff" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}" Color="#00000000"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonHottrackOuterBorderFillKey}" Color="#FF3399FF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonHottrackCenterFillKey}" Color="#FFB6E4F7" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonPressedOuterBorderFillKey}" Color="#FF3C7FB1" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonPressedCenterFillKey}" Color="#FFCEEDFA" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonNotActiveHottrackOuterBorderFillKey}" Color="#FF3399FF" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonNotActiveHottrackCenterFillKey}" Color="#FFB6E4F7" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemOuterBorderFillKey}" Color="#FFA0A0A0"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCenterFillKey}" Color="#FFf0f0f0"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemIconGroupBorderFillKey}" Color="#FFA0A0B4" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemIconGroupCenterFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFf4f7fc" Offset="0" />
+                <GradientStop Color="#FFd4d8e6" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxNormalOuterBorderFillKey}" Color="#FF2999FF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxNormalCenterFillKey}" Color="#FFCEEDFA"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxHottrackOuterBorderFillKey}" Color="#FF2999FF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxHottrackCenterFillKey}" Color="#FFCEEDFA"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionOuterBorderFillKey}" Color="#FF96d9f9" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionInnerBorderFillKey}" Color="#00000000" />
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFf1f8fb" Offset="0" />
+                <GradientStop Color="#FFdfedf2" Offset="0.5" />
+                <GradientStop Color="#FFbae4f6" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionHottrackTextFillKey}" Color="#FF555564"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.ToolTipOuterBorderFillKey}" Color="#FF767676"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.ToolTipCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFffffff" Offset="0" />
+                <GradientStop Color="#FFe4e5f0" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}" Color="#FF000000"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" Color="#FF434E54"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFe9ecfa" Offset="0" />
+                <GradientStop Color="#FFf4f7fc" Offset="0.75" />
+                <GradientStop Color="#FFf4f7fc" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}" Color="#FFA0A0A0"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabFlyoutSplitterLightStrokeFillKey}" Color="#FFF0F0F0" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabFlyoutSplitterDarkStrokeFillKey}" Color="#FFA0A0A0" />
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemSeparatorLightFillKey}" Color="#FFFFFFFF"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemSeparatorDarkFillKey}" Color="#FFA0A0B4"/>
+    <!-- ===================== Docking Indicators Brushes ===================== -->
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalOuterBorderFillKey}" Color="#FF888888"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalInnerBorderFillKey}" Color="#FFFFFFFF"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFffffff" Offset="0" />
+                <GradientStop Color="#FFeeeeee" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFdddddd" Offset="0.5" />
+                <GradientStop Color="#FFdddddd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackOuterBorderFillKey}" Color="#FF4A8EC0"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackInnerBorderFillKey}" StartPoint="0.5172413793103449,0" EndPoint="0.5172413793103449,0.9666666666666667">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFbdfbff" Offset="0" />
+                <GradientStop Color="#FF79efff" Offset="0.49880000948905945" />
+                <GradientStop Color="#FF2ce5fd" Offset="0.5" />
+                <GradientStop Color="#FF7eebfe" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackCenterFillKey}" StartPoint="0.5172413793103449,0" EndPoint="0.5172413793103449,0.9666666666666667">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFebf7fe" Offset="0" />
+                <GradientStop Color="#FFd9f0fc" Offset="0.49900001287460327" />
+                <GradientStop Color="#FFbee5fa" Offset="0.5" />
+                <GradientStop Color="#FF7ccdf6" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.DockingIndicatorGlyphFillKey}" EndPoint="0,0" StartPoint="1,0">
+        <GradientStop Color="#FF758BDD" Offset="0"/>
+        <GradientStop Color="#FF48506C" Offset="1"/>
+    </LinearGradientBrush>
+    <!-- ===================== END Docking Indicators Brushes ===================== -->
+    <!-- ===================== PaneNavigator Brushes ===================== -->
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}" Color="#FF6E96D5"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorCenterFillKey}" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFffffff" Offset="0" />
+                <GradientStop Color="#FFffffff" Offset="0.25119999051094055" />
+                <GradientStop Color="#FFf4f8fc" Offset="0.5" />
+                <GradientStop Color="#FFe6f1f8" Offset="0.699999988079071" />
+                <GradientStop Color="#FFd6e7f5" Offset="0.800000011920929" />
+                <GradientStop Color="#FFcae0f1" Offset="0.949999988079071" />
+                <GradientStop Color="#FFcae0f1" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorHeaderFillKey}" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF0d528f" Offset="0" />
+                <GradientStop Color="#FF0a589a" Offset="0.15399999916553497" />
+                <GradientStop Color="#FF2b7ab8" Offset="0.3411000072956085" />
+                <GradientStop Color="#FF0c6dba" Offset="0.4860000014305115" />
+                <GradientStop Color="#FF2e7eba" Offset="0.7336000204086304" />
+                <GradientStop Color="#FF2f70a5" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorFooterFillKey}" Color="#FFEEF5FA"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackOuterBorderFillKey}" Color="#FF9ADFFE"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackInnerBorderFillKey}" Color="#7FFFFFFF"/>
+    <LinearGradientBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFf2f9fe" Offset="0" />
+                <GradientStop Color="#FFd6f0fd" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorLightTextFillKey}" Color="#FF434E54"/>
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorDarkTextFillKey}" Color="#FF434E54"/>
+    
+    <!-- AS 10/15/08 TFS6433-->
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentGroupFillKey}" x:Shared="false" Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}" />
+    
+    <SolidColorBrush PresentationOptions:Freeze="true" x:Key="{x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}" Color="#FFA29F99" />
+    <!-- ===================== END PaneNavigator Brushes ===================== -->
+    
+</ResourceDictionary>

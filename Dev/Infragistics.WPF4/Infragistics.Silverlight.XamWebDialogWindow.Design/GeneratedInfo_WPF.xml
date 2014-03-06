@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Interactions.MovedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Left" DisplayName="Left" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Top" DisplayName="Top" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.MovingEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Left" DisplayName="Left" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Top" DisplayName="Top" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.WindowStateChangingEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NewWindowState" DisplayName="NewWindowState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentWindowState" DisplayName="CurrentWindowState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.WindowStateChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="PreviousWindowState" DisplayName="PreviousWindowState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewWindowState" DisplayName="NewWindowState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.Clip" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.CustomCursors" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DiagonalResizeCursor" DisplayName="DiagonalResizeCursor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalResizeCursor" DisplayName="HorizontalResizeCursor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="RightDiagonalResizeCursor" DisplayName="RightDiagonalResizeCursor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalResizeCursor" DisplayName="VerticalResizeCursor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.KeyboardSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="HorizontalStep" DisplayName="HorizontalStep" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowKeyboardNavigation" DisplayName="AllowKeyboardNavigation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalStep" DisplayName="VerticalStep" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.DialogRootPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DialogWindow" DisplayName="DialogWindow" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.CloseCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.MaximizeCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.MinimizeCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.RestoreCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.ToggleMaximizeCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.ToggleMinimizeCommand" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Interactions.XamDialogWindowCommandSource" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CommandType" CategoryKey="XamDialogWindowCommandSource_Properties" DisplayName="CommandType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.XamDialogWindow" HideFromToolbox="false" ToolBoxCategoryKey="XamWebDialogWindowAssetLibrary" ImageResource="">
+    <PropertyInformation Name="CloseButtonVisibility" CategoryKey="XamDialogWindow_Properties" DisplayName="CloseButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaximizeButtonVisibility" CategoryKey="XamDialogWindow_Properties" DisplayName="MaximizeButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimizeButtonVisibility" CategoryKey="XamDialogWindow_Properties" DisplayName="MinimizeButtonVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CustomCursors" CategoryKey="XamDialogWindow_Properties" DisplayName="CustomCursors" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsActive" CategoryKey="XamDialogWindow_Properties" DisplayName="IsActive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsModal" CategoryKey="XamDialogWindow_Properties" DisplayName="IsModal" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ModalBackground" CategoryKey="XamDialogWindow_Properties" DisplayName="ModalBackground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ModalBackgroundEffect" CategoryKey="XamDialogWindow_Properties" DisplayName="ModalBackgroundEffect" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ModalBackgroundOpacity" CategoryKey="XamDialogWindow_Properties" DisplayName="ModalBackgroundOpacity" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMoveable" CategoryKey="XamDialogWindow_Properties" DisplayName="IsMoveable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsResizable" CategoryKey="XamDialogWindow_Properties" DisplayName="IsResizable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="KeyboardSettings" CategoryKey="XamDialogWindow_Properties" DisplayName="KeyboardSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Left" CategoryKey="XamDialogWindow_Properties" DisplayName="Left" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Top" CategoryKey="XamDialogWindow_Properties" DisplayName="Top" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimizedHeaderTemplate" CategoryKey="XamDialogWindow_Properties" DisplayName="MinimizedHeaderTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimizedHeight" CategoryKey="XamDialogWindow_Properties" DisplayName="MinimizedHeight" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimizedPanel" CategoryKey="XamDialogWindow_Properties" DisplayName="MinimizedPanel" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MinimizedWidth" CategoryKey="XamDialogWindow_Properties" DisplayName="MinimizedWidth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="StartupPosition" CategoryKey="XamDialogWindow_Properties" DisplayName="StartupPosition" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="WindowState" CategoryKey="XamDialogWindow_Properties" DisplayName="WindowState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Header" CategoryKey="XamDialogWindow_Properties" DisplayName="Header" IsVisible="true" IsAlternateContentProperty="false" />
+    <PropertyInformation Name="HeaderTemplate" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderBackground" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderBackground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderForeground" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderForeground" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderHorizontalContentAlignment" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderHorizontalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderVerticalContentAlignment" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderVerticalContentAlignment" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderIconTemplate" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderIconVisibility" CategoryKey="XamDialogWindow_Properties" DisplayName="HeaderIconVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.AutomationPeers.XamDialogWindowAutomationPeer" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CanMove" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="CanMove" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CanResize" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="CanResize" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CanRotate" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="CanRotate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="InteractionState" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="InteractionState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsModal" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="IsModal" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsTopmost" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="IsTopmost" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Maximizable" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="Maximizable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Minimizable" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="Minimizable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VisualState" CategoryKey="XamDialogWindowAutomationPeer_Properties" DisplayName="VisualState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Interactions.Primitives.XamDialogWindowCommandBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+</root>

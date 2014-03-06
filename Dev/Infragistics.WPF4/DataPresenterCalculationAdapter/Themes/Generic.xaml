@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local="clr-namespace:Infragistics.Windows.DataPresenter.Calculations"
+    xmlns:localPrim="clr-namespace:Infragistics.Windows.DataPresenter.Calculations.Primitives"
+    xmlns:igBase="clr-namespace:Infragistics.Controls"
+		xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+		xmlns:igPrimLocal="clr-namespace:Infragistics.Controls.Primitives"
+	  xmlns:igWindows="http://schemas.infragistics.com/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--                             IMPORTANT NOTE:                                -->
+    <!--                                                                            -->
+    <!-- Only place WPF-specific resources in this ResourceDictionary.  This file   -->
+    <!-- gets copied in the pre-build step so that it overwrites generic.xaml       -->
+    <!-- (which by default has no content).                                         -->
+    <!--                                                                            -->
+    <!-- Note that this ResourceDictionary merges in the contents of                -->
+    <!-- generic.shared.xaml which contains resources that work in both SL and WPF. -->
+    <!--                                                                            -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+</ResourceDictionary>

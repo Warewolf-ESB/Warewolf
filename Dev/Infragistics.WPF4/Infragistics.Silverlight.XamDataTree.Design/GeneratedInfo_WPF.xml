@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <ControlInfo Name="Infragistics.Controls.Menus.SettingsBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeLayout" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Tree" DisplayName="Tree" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="TargetTypeName" DisplayName="TargetTypeName" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Visibility" DisplayName="Visibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayMemberPath" DisplayName="DisplayMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayMemberPathResolved" DisplayName="DisplayMemberPathResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxMemberPath" DisplayName="CheckBoxMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxMemberPathResolved" DisplayName="CheckBoxMemberPathResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLayouts" DisplayName="NodeLayouts" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Indentation" DisplayName="Indentation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IndentationResolved" DisplayName="IndentationResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemTemplate" DisplayName="ItemTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemTemplateResolved" DisplayName="ItemTemplateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderText" DisplayName="HeaderText" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderTemplate" DisplayName="HeaderTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HeaderContentResolved" DisplayName="HeaderContentResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EditorTemplate" DisplayName="EditorTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EditingSettings" DisplayName="EditingSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxSettings" DisplayName="CheckBoxSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDraggable" DisplayName="IsDraggable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDraggableResolved" DisplayName="IsDraggableResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropTarget" DisplayName="IsDropTarget" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropTargetResolved" DisplayName="IsDropTargetResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeStyleResolved" DisplayName="NodeStyleResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeStyle" DisplayName="NodeStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExpandedIconTemplate" DisplayName="ExpandedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExpandedIconTemplateResolved" DisplayName="ExpandedIconTemplateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollapsedIconTemplate" DisplayName="CollapsedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollapsedIconTemplateResolved" DisplayName="CollapsedIconTemplateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsExpandedMemberPath" DisplayName="IsExpandedMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsExpandedMemberPathResolved" DisplayName="IsExpandedMemberPathResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnabledMemberPath" DisplayName="IsEnabledMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnabledMemberPathResolved" DisplayName="IsEnabledMemberPathResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeLayoutBase" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Key" DisplayName="Key" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.ActiveNodeIndicator" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.SettingsBaseOverride" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.NodeLinePanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeLayoutEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NodeLayout" DisplayName="NodeLayout" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.InitializeNodeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.CancellableNodeExpansionChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.CancellableNodeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeExpansionChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeLayoutAssignedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NodeLayout" DisplayName="NodeLayout" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Level" DisplayName="Level" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Key" DisplayName="Key" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DataType" DisplayName="DataType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.ActiveNodeChangedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OriginalActiveTreeNode" DisplayName="OriginalActiveTreeNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewActiveTreeNode" DisplayName="NewActiveTreeNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Cancel" DisplayName="Cancel" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.BeginEditingNodeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeEditingNodeEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Editor" DisplayName="Editor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeExitEditingEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NewValue" DisplayName="NewValue" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EditingCanceled" DisplayName="EditingCanceled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Editor" DisplayName="Editor" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeValidationErrorEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="ValidationErrorEventArgs" DisplayName="ValidationErrorEventArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Handled" DisplayName="Handled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTreeNodeDataContext" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Data" CategoryKey="XamDataTreeNodeDataContext_Properties" DisplayName="Data" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Node" CategoryKey="XamDataTreeNodeDataContext_Properties" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTreeNodesManager" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.NodesManager" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Nodes" DisplayName="Nodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemsSource" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ParentNode" DisplayName="ParentNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLayout" DisplayName="NodeLayout" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Level" DisplayName="Level" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTreeNodeControl" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" CategoryKey="XamDataTreeNodeControl_Properties" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxStyle" CategoryKey="XamDataTreeNodeControl_Properties" DisplayName="CheckBoxStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTreeNode" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="IsExpanded" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsExpanded" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Data" CategoryKey="XamDataTreeNode_Properties" DisplayName="Data" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Index" CategoryKey="XamDataTreeNode_Properties" DisplayName="Index" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Manager" CategoryKey="XamDataTreeNode_Properties" DisplayName="Manager" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Control" CategoryKey="XamDataTreeNode_Properties" DisplayName="Control" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMouseOver" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsMouseOver" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLayout" CategoryKey="XamDataTreeNode_Properties" DisplayName="NodeLayout" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HasChildren" CategoryKey="XamDataTreeNode_Properties" DisplayName="HasChildren" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Nodes" CategoryKey="XamDataTreeNode_Properties" DisplayName="Nodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsHeader" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsHeader" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsChecked" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsChecked" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsSelected" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsSelected" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Style" CategoryKey="XamDataTreeNode_Properties" DisplayName="Style" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsActive" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsActive" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEditing" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsEditing" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDraggable" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsDraggable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropTarget" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsDropTarget" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDraggableResolved" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsDraggableResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropTargetResolved" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsDropTargetResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExpandedIconTemplate" CategoryKey="XamDataTreeNode_Properties" DisplayName="ExpandedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollapsedIconTemplate" CategoryKey="XamDataTreeNode_Properties" DisplayName="CollapsedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExpandedIconTemplateResolved" CategoryKey="XamDataTreeNode_Properties" DisplayName="ExpandedIconTemplateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollapsedIconTemplateResolved" CategoryKey="XamDataTreeNode_Properties" DisplayName="CollapsedIconTemplateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnabled" CategoryKey="XamDataTreeNode_Properties" DisplayName="IsEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTree" HideFromToolbox="false" ToolBoxCategoryKey="XamDataTreeAssetLibrary" ImageResource="">
+    <PropertyInformation Name="ItemsSource" CategoryKey="XamDataTree_Properties" DisplayName="ItemsSource" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="MaxDepth" CategoryKey="XamDataTree_Properties" DisplayName="MaxDepth" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="GlobalNodeLayouts" CategoryKey="XamDataTree_Properties" DisplayName="GlobalNodeLayouts" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLayouts" CategoryKey="XamDataTree_Properties" DisplayName="NodeLayouts" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DisplayMemberPath" CategoryKey="XamDataTree_Properties" DisplayName="DisplayMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxMemberPath" CategoryKey="XamDataTree_Properties" DisplayName="CheckBoxMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnabledMemberPath" CategoryKey="XamDataTree_Properties" DisplayName="IsEnabledMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsExpandedMemberPath" CategoryKey="XamDataTree_Properties" DisplayName="IsExpandedMemberPath" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Nodes" CategoryKey="XamDataTree_Properties" DisplayName="Nodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="Indentation" CategoryKey="XamDataTree_Properties" DisplayName="Indentation" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ItemTemplate" CategoryKey="XamDataTree_Properties" DisplayName="ItemTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ActiveNode" CategoryKey="XamDataTree_Properties" DisplayName="ActiveNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ShowActiveNodeIndicator" CategoryKey="XamDataTree_Properties" DisplayName="ShowActiveNodeIndicator" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectionSettings" CategoryKey="XamDataTree_Properties" DisplayName="SelectionSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ActiveNodeIndicatorStyle" CategoryKey="XamDataTree_Properties" DisplayName="ActiveNodeIndicatorStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeStyle" CategoryKey="XamDataTree_Properties" DisplayName="NodeStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EditingSettings" CategoryKey="XamDataTree_Properties" DisplayName="EditingSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxSettings" CategoryKey="XamDataTree_Properties" DisplayName="CheckBoxSettings" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDraggable" CategoryKey="XamDataTree_Properties" DisplayName="IsDraggable" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsDropTarget" CategoryKey="XamDataTree_Properties" DisplayName="IsDropTarget" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLineVisibility" CategoryKey="XamDataTree_Properties" DisplayName="NodeLineVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ExpandedIconTemplate" CategoryKey="XamDataTree_Properties" DisplayName="ExpandedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollapsedIconTemplate" CategoryKey="XamDataTree_Properties" DisplayName="CollapsedIconTemplate" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="EnsureNodeExpansion" CategoryKey="XamDataTree_Properties" DisplayName="EnsureNodeExpansion" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowDragDropCopy" CategoryKey="XamDataTree_Properties" DisplayName="AllowDragDropCopy" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsTouchSupportEnabled" CategoryKey="XamDataTree_Properties" DisplayName="IsTouchSupportEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.SelectedCollectionBase`1" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Tree" DisplayName="Tree" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.SelectedNodesCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeEditingSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AllowEditing" DisplayName="AllowEditing" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsF2EditingEnabled" DisplayName="IsF2EditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnterKeyEditingEnabled" DisplayName="IsEnterKeyEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMouseActionEditingEnabled" DisplayName="IsMouseActionEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsOnNodeActiveEditingEnabled" DisplayName="IsOnNodeActiveEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowDeletion" DisplayName="AllowDeletion" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeSelectionSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NodeSelection" DisplayName="NodeSelection" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="SelectedNodes" DisplayName="SelectedNodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeLayoutCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.CheckBoxSettings" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CheckBoxStyle" DisplayName="CheckBoxStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxVisibility" DisplayName="CheckBoxVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsCheckBoxThreeState" DisplayName="IsCheckBoxThreeState" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxMode" DisplayName="CheckBoxMode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.NodesPanel" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Tree" DisplayName="Tree" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VisibleNodes" DisplayName="VisibleNodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.IntermediateNodesManager" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.GlobalNodeLayoutCollection" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.NodeLineTerminator" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NodeLineEnd" DisplayName="NodeLineEnd" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeEditingSettingsOverride" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="AllowEditing" DisplayName="AllowEditing" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowEditingResolved" DisplayName="AllowEditingResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsF2EditingEnabled" DisplayName="IsF2EditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsF2EditingEnabledResolved" DisplayName="IsF2EditingEnabledResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnterKeyEditingEnabled" DisplayName="IsEnterKeyEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsEnterKeyEditingEnabledResolved" DisplayName="IsEnterKeyEditingEnabledResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMouseActionEditingEnabled" DisplayName="IsMouseActionEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsMouseActionEditingEnabledResolved" DisplayName="IsMouseActionEditingEnabledResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsOnNodeActiveEditingEnabled" DisplayName="IsOnNodeActiveEditingEnabled" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsOnNodeActiveEditingEnabledResolved" DisplayName="IsOnNodeActiveEditingEnabledResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowDeletion" DisplayName="AllowDeletion" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="AllowDeletionResolved" DisplayName="AllowDeletionResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.CheckBoxSettingsOverride" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="CheckBoxVisibility" DisplayName="CheckBoxVisibility" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxVisibilityResolved" DisplayName="CheckBoxVisibilityResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxStyle" DisplayName="CheckBoxStyle" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CheckBoxStyleResolved" DisplayName="CheckBoxStyleResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="IsCheckBoxThreeStateResolved" DisplayName="IsCheckBoxThreeStateResolved" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.Primitives.NodeLineControl" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="Node" DisplayName="Node" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="VerticalLine" DisplayName="VerticalLine" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="HorizontalLine" DisplayName="HorizontalLine" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeDataObjectCreationEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="NewObject" DisplayName="NewObject" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ObjectType" DisplayName="ObjectType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="ParentNode" DisplayName="ParentNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CollectionType" DisplayName="CollectionType" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeSelectionEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OriginalSelectedNodes" DisplayName="OriginalSelectedNodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="CurrentSelectedNodes" DisplayName="CurrentSelectedNodes" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.TreeDropEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="DragDropEventArgs" DisplayName="DragDropEventArgs" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="DropDestination" DisplayName="DropDestination" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.CancellableNodeDeletionEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.NodeDeletedEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="" />
+  <ControlInfo Name="Infragistics.Controls.Menus.ActiveNodeChangingEventArgs" HideFromToolbox="true" ToolBoxCategoryKey="" ImageResource="">
+    <PropertyInformation Name="OriginalActiveTreeNode" DisplayName="OriginalActiveTreeNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+    <PropertyInformation Name="NewActiveTreeNode" DisplayName="NewActiveTreeNode" IsVisible="true" IsAlternateContentProperty="false" AddStringObjectConverter="false" />
+  </ControlInfo>
+  <ControlInfo Name="Infragistics.Controls.Menus.XamDataTreeNodesCollection" HideFromToolbox="true" />
+</root>

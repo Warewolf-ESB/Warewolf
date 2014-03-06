@@ -1,0 +1,3358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataChartMouseButtonEventArgs_Handled_Property" xml:space="preserve">
+    <value>ルーティングを実行するときにルート イベントのイベント処理の状態を示す値を取得または設定します。</value>
+  </data>
+  <data name="DataChartMouseButtonEventArgs_StylusDevice_Property" xml:space="preserve">
+    <value>入力と関連付けられたスタイラス ポイントのコレクションなどのスタイラス デバイスの情報を報告するオブジェクトを取得します。</value>
+  </data>
+  <data name="DataChartMouseButtonEventArgs_OriginalSource_Property" xml:space="preserve">
+    <value>イベントを発行したオブジェクトの参照を取得します。</value>
+  </data>
+  <data name="DataChartMouseButtonEventArgs_Item_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた ItemsSource 項目を取得します。</value>
+  </data>
+  <data name="DataChartMouseButtonEventArgs_Series_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられているシリーズを取得します。</value>
+  </data>
+  <data name="DataChartMouseButtonEventArgs_Chart_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた Chart を取得します。</value>
+  </data>
+  <data name="DataChartLegendMouseButtonEventArgs_LegendItem_Property" xml:space="preserve">
+    <value>マウス イベントの対象だった凡例項目。</value>
+  </data>
+  <data name="FinancialIndicator_DisplayType_Property" xml:space="preserve">
+    <value>現在の FinancialIndicator オブジェクトの表示を取得または設定します。
+ &lt;para /&gt;
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineType_Property" xml:space="preserve">
+    <value>現在のインジケーター シリーズのトレンド タイプを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineBrush_Property" xml:space="preserve">
+    <value>トレンドラインを描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>このインジケーターの有効な TrendLineBrush を取得します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在のインジケーター オブジェクトのトレンドラインの太さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在のインジケーター オブジェクトのトレンドラインの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在のインジケーター オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの期間を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_NegativeBrush_Property" xml:space="preserve">
+    <value>シリーズの負の領域を描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_XAxis_Property" xml:space="preserve">
+    <value>現在の FinancialSeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_YAxis_Property" xml:space="preserve">
+    <value>現在の FinancialSeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_OpenMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの始値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_HighMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの高値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_LowMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの安値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_CloseMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの終値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialSeries_VolumeMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの出来高マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_RootCanvas_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのルート キャンバスを取得します。</value>
+  </data>
+  <data name="Series_Chart_Property" xml:space="preserve">
+    <value>シリーズに関連付けられたチャートを取得します。</value>
+  </data>
+  <data name="Series_ItemsSource_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの ItemsSource プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Legend_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの凡例を取得または設定します。</value>
+  </data>
+  <data name="Series_LegendItem_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトに関連付けられた凡例を取得します。</value>
+  </data>
+  <data name="Series_ActualLegend_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトに関連付けられた有効な凡例を取得します。</value>
+  </data>
+  <data name="Series_LegendItemVisibility_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの凡例項目の表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_LegendItemTemplate_Property" xml:space="preserve">
+    <value>LegendItemTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Index_Property" xml:space="preserve">
+    <value>Index プロパティを取得します。</value>
+  </data>
+  <data name="Series_TransitionEasingFunction_Property" xml:space="preserve">
+    <value>現在のシリーズを変形するために使用する EasingFunction を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_TransitionDuration_Property" xml:space="preserve">
+    <value>現在のシリーズの変形の期間を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Resolution_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのレンダリング解像度を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Title_Property" xml:space="preserve">
+    <value>Title プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Brush_Property" xml:space="preserve">
+    <value>シリーズのブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ActualBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効なブラシを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_Outline_Property" xml:space="preserve">
+    <value>シリーズのアウトラインを描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ActualOutline_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効なアウトラインを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_LineJoin_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのライン接続スタイルを指定するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_MiterLimit_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの輪郭のマイター制限。</value>
+  </data>
+  <data name="Series_Thickness_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの線の太さの幅を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_DashCap_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_DashArray_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのアウトラインに使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ToolTip_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの ToolTip を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_MarkerType_Property" xml:space="preserve">
+    <value>現在の categorySeries オブジェクトのマーカー タイプを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_MarkerTemplate_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの MarkerTemplate を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ActualMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の categorySeries オブジェクトの有効なマーカー テンプレートを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_MarkerBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーの内部をペイントする方法を指定するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ActualMarkerBrush_Property" xml:space="preserve">
+    <value>現在の categorySeries オブジェクトの有効なマーカー ブラシを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_MarkerOutline_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーの輪郭を塗りつぶす方法を指定するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Series_ActualMarkerOutline_Property" xml:space="preserve">
+    <value>現在の categorySeries オブジェクトの有効なマーカーの輪郭を取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="StandardDeviationIndicator_Period_Property" xml:space="preserve">
+    <value>現在の StandardDeviationIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ STDEV 期間の一般的な値かつ初期値は 20 です。
+ </value>
+  </data>
+  <data name="SlowStochasticOscillatorIndicator_Period_Property" xml:space="preserve">
+    <value>現在の SlowStochasticOscillatorIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ SlowStochasticOscillatorIndicator 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="ChartCursorEventArgs_Item_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた ItemsSource 項目を取得します。</value>
+  </data>
+  <data name="ChartCursorEventArgs_Series_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられているシリーズを取得します。</value>
+  </data>
+  <data name="ChartCursorEventArgs_Chart_Property" xml:space="preserve">
+    <value>イベントに関連付けられたチャートを取得します。</value>
+  </data>
+  <data name="NumericAxisBase_MinimumValue_Property" xml:space="preserve">
+    <value>MinimumValue プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="NumericAxisBase_ActualMinimumValue_Property" xml:space="preserve">
+    <value>現在の数値軸オブジェクトの事実上の最小値を取得します。</value>
+  </data>
+  <data name="NumericAxisBase_MaximumValue_Property" xml:space="preserve">
+    <value>MaximumValue プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="NumericAxisBase_ActualMaximumValue_Property" xml:space="preserve">
+    <value>現在の数値軸オブジェクトの事実上の最大値を取得します。</value>
+  </data>
+  <data name="NumericAxisBase_Interval_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NumericAxisBase_ReferenceValue_Property" xml:space="preserve">
+    <value>ReferenceValue プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="NumericAxisBase_IsLogarithmic_Property" xml:space="preserve">
+    <value>IsLogarithmic プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="NumericAxisBase_LogarithmBase_Property" xml:space="preserve">
+    <value>LogarithmBase プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_RootCanvas_Property" xml:space="preserve">
+    <value>現在の Axis オブジェクトのルート キャンバスを取得します。</value>
+  </data>
+  <data name="Axis_Chart_Property" xml:space="preserve">
+    <value>チャート コントロールの参照を取得または設定します。</value>
+  </data>
+  <data name="Axis_Stroke_Property" xml:space="preserve">
+    <value>Stroke プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_StrokeThickness_Property" xml:space="preserve">
+    <value>StrokeThickness プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_StrokeDashArray_Property" xml:space="preserve">
+    <value>StrokeDashArray プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_Strip_Property" xml:space="preserve">
+    <value>Strip プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MajorStroke_Property" xml:space="preserve">
+    <value>MajorStroke プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MajorStrokeThickness_Property" xml:space="preserve">
+    <value>MajorStrokeThickness プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MajorStrokeDashArray_Property" xml:space="preserve">
+    <value>MajorStrokeDashArray プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MinorStroke_Property" xml:space="preserve">
+    <value>MinorStroke プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MinorStrokeThickness_Property" xml:space="preserve">
+    <value>MinorStrokeThickness プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_MinorStrokeDashArray_Property" xml:space="preserve">
+    <value>MinorStrokeDashArray プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_IsInverted_Property" xml:space="preserve">
+    <value>IsInverted プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_LabelSettings_Property" xml:space="preserve">
+    <value>軸ラベルの設定を取得または設定します。</value>
+  </data>
+  <data name="Axis_CrossingAxis_Property" xml:space="preserve">
+    <value>CrossingAxis プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Axis_CrossingValue_Property" xml:space="preserve">
+    <value>CrossingValue プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FastStochasticOscillatorIndicator_Period_Property" xml:space="preserve">
+    <value>現在の FastStochasticOscillatorIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ FastStochasticOscillatorIndicator 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="AverageTrueRangeIndicator_Period_Property" xml:space="preserve">
+    <value>現在の AverageTrueRangeSeries オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ AverageTrueRange 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="ScatterBase_XAxis_Property" xml:space="preserve">
+    <value>現在のオブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_YAxis_Property" xml:space="preserve">
+    <value>現在のオブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_XMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_YMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineType_Property" xml:space="preserve">
+    <value>現在の散布図シリーズのトレンド タイプを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineBrush_Property" xml:space="preserve">
+    <value>トレンドラインを描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>このシリーズの有効な TrendLineBrush を取得します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在の散布図シリーズ オブジェクトのトレンドラインの太さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在の散布図シリーズ オブジェクトのトレンドラインの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在の散布図シリーズ オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在の散布図シリーズ オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_TrendLineZIndex_Property" xml:space="preserve">
+    <value>トレンドラインの Z インデックス。ゼロより大きな値を指定すると、トレンドラインがシリーズ データの前に描画されます。</value>
+  </data>
+  <data name="ScatterBase_MaximumMarkers_Property" xml:space="preserve">
+    <value>現在のシリーズによって表示される markerItems の最大数を取得または設定します。
+ 指定した数を超える markerItems が表示されている場合、シリーズは、代表的なセットを自動的に選択します。これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_OpenColumn_Property" xml:space="preserve">
+    <value>インジケーターの計算を要求している財務シリーズの始値の読み取り専用コレクション。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_CloseColumn_Property" xml:space="preserve">
+    <value>インジケーターの計算を要求している財務シリーズの終値の読み取り専用コレクション。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_HighColumn_Property" xml:space="preserve">
+    <value>インジケーターの計算を要求している財務シリーズの高値の読み取り専用コレクション。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_LowColumn_Property" xml:space="preserve">
+    <value>インジケーターの計算を要求している財務シリーズの安値の読み取り専用コレクション。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_VolumeColumn_Property" xml:space="preserve">
+    <value>インジケーターの計算を要求している財務シリーズの出来高の読み取り専用コレクション。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_IndicatorColumn_Property" xml:space="preserve">
+    <value>方式計算のインジケーターの出力値。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_TypicalColumn_Property" xml:space="preserve">
+    <value>計算で使用するシリーズによって提供される典型的な価格の列挙可能なリスト。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_TrueRange_Property" xml:space="preserve">
+    <value>計算で使用するシリーズによって提供される真の範囲値の列挙可能なリスト。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_TrueLow_Property" xml:space="preserve">
+    <value>計算で使用するシリーズによって提供される真の安値の列挙可能なリスト。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_Period_Property" xml:space="preserve">
+    <value>該当する場合、計算で使用する期間。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_ShortPeriod_Property" xml:space="preserve">
+    <value>該当する場合、計算で使用する短い期間。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_LongPeriod_Property" xml:space="preserve">
+    <value>該当する場合、計算で使用する長い期間。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_Count_Property" xml:space="preserve">
+    <value>シリーズ内の値の数。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_CalculateFrom_Property" xml:space="preserve">
+    <value>計算を開始する開始インデックス。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_CalculateCount_Property" xml:space="preserve">
+    <value>計算を開始する開始インデックスからの項目数。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_Multiplier_Property" xml:space="preserve">
+    <value>計算で一部の倍率がサポートされている場合、この値が使用されます。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_MinimumValue_Property" xml:space="preserve">
+    <value>計算でインジケーター値の範囲が決まる場合、最小プロパティと最大プロパティが設定されます。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_MaximumValue_Property" xml:space="preserve">
+    <value>計算でインジケーター値の範囲が決まる場合、最小プロパティと最大プロパティが設定されます。</value>
+  </data>
+  <data name="FinancialCalculationDataSource_SpecifiesRange_Property" xml:space="preserve">
+    <value>最小値プロパティと最大値プロパティを指定する場合、計算方式はこれを True に設定する必要があります。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_EMA_Property" xml:space="preserve">
+    <value>コレクションの指数移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_SMA_Property" xml:space="preserve">
+    <value>コレクションの単純移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_STDEV_Property" xml:space="preserve">
+    <value>コレクションの標準偏差を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_MovingSum_Property" xml:space="preserve">
+    <value>コレクションの移動合計を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_ShortVolumeOscillatorAverage_Property" xml:space="preserve">
+    <value>出来高オシレーター インジケーターの短い期間の移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_LongVolumeOscillatorAverage_Property" xml:space="preserve">
+    <value>出来高オシレーター インジケーターの長い期間の移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_ShortPriceOscillatorAverage_Property" xml:space="preserve">
+    <value>価格オシレーター インジケーターの短い期間の移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_LongPriceOscillatorAverage_Property" xml:space="preserve">
+    <value>価格オシレーター インジケーターの長い期間の移動平均を計算するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_ToEnumerableRange_Property" xml:space="preserve">
+    <value>インデックスを取得するラムダ式を設定可能な範囲で使用し、入力データ上の列挙値に変換するためのデータに変換するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_ToEnumerable_Property" xml:space="preserve">
+    <value>インデックスを取得するラムダ式を設定可能な長さで使用し、入力データ上の列挙値に変換するためのデータに変換するために提供される方式。</value>
+  </data>
+  <data name="FinancialCalculationSupportingCalculations_MakeSafe_Property" xml:space="preserve">
+    <value>double をプロットしても安全にするために提供される方式。デフォルトでは、値が無効な場合ゼロになります。</value>
+  </data>
+  <data name="SupportingCalculation`1_Strategy_Property" xml:space="preserve">
+    <value>計算の方式。</value>
+  </data>
+  <data name="SupportingCalculation`1_BasedOn_Property" xml:space="preserve">
+    <value>計算の基となるプロパティ。</value>
+  </data>
+  <data name="CalculatedColumn_BasedOn_Property" xml:space="preserve">
+    <value>この計算された列の基になる列。</value>
+  </data>
+  <data name="DetrendedPriceOscillatorIndicator_Period_Property" xml:space="preserve">
+    <value>現在の DetrendedPriceOscillatorIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ DPO 期間の一般的な値かつ初期値は 20 です。
+ </value>
+  </data>
+  <data name="AnchoredCategorySeries_ValueMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineType_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンド タイプを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineBrush_Property" xml:space="preserve">
+    <value>トレンドラインを描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>このシリーズの有効な TrendLineBrush を取得します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの太さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの期間を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="CategorySeries_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="CategorySeries_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="AxisRangeChangedEventArgs_OldMinimumValue_Property" xml:space="preserve">
+    <value>範囲を変更する前の最小値を取得します。レポートされた最小値は、設定された値ではなく、有効な値です。</value>
+  </data>
+  <data name="AxisRangeChangedEventArgs_MinimumValue_Property" xml:space="preserve">
+    <value>範囲を変更した後の最小値を取得します。レポートされた最小値は、設定された値ではなく、有効な値です。</value>
+  </data>
+  <data name="AxisRangeChangedEventArgs_OldMaximumValue_Property" xml:space="preserve">
+    <value>範囲を変更する前の最大値を取得します。レポートされた最大値は、設定された値ではなく、有効な値です。</value>
+  </data>
+  <data name="AxisRangeChangedEventArgs_MaximumValue_Property" xml:space="preserve">
+    <value>範囲を変更した後の最大値を取得します。レポートされた最大値は、設定された値ではなく、有効な値です。</value>
+  </data>
+  <data name="CategoryAxisBase_ItemsSource_Property" xml:space="preserve">
+    <value>現在の軸の ItemsSource プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="CategoryAxisBase_ItemsCount_Property" xml:space="preserve">
+    <value>現在のカテゴリ軸項目ソース内の項目数を取得します。</value>
+  </data>
+  <data name="CategoryAxisBase_Gap_Property" xml:space="preserve">
+    <value>現在の軸オブジェクトの隣接カテゴリ間のスペースの量を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="CategoryAxisBase_Overlap_Property" xml:space="preserve">
+    <value>現在の軸オブジェクトの隣接カテゴリ間の重なりの量を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="SyncSettings_SyncChannel_Property" xml:space="preserve">
+    <value>同期するチャネルを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="SyncSettings_SynchronizeVertically_Property" xml:space="preserve">
+    <value>ウィンドウ プレビューのシャドーを表示するために使用されるブール値を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="SyncSettings_SynchronizeHorizontally_Property" xml:space="preserve">
+    <value>ウィンドウ プレビューのシャドーを表示するために使用されるブール値を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="TRIXIndicator_Period_Property" xml:space="preserve">
+    <value>現在の TRIXIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ TRIX 期間の一般的な値かつ初期値は 15 です。
+ </value>
+  </data>
+  <data name="ForceIndexIndicator_Period_Property" xml:space="preserve">
+    <value>現在の AverageTrueRangeSeries オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ForceIndex 期間の一般的な値かつ初期値は 0 です。
+ </value>
+  </data>
+  <data name="ChaikinOscillatorIndicator_ShortPeriod_Property" xml:space="preserve">
+    <value>現在の ChaikinOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 短い CHO 期間の一般的な値かつ初期値は 3 です。
+ </value>
+  </data>
+  <data name="ChaikinOscillatorIndicator_LongPeriod_Property" xml:space="preserve">
+    <value>現在の ChaikinOscillatorIndicator オブジェクトの長い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い CHO 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="CommodityChannelIndexIndicator_Period_Property" xml:space="preserve">
+    <value>現在の CCISeries オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ CCI 期間の一般的な値かつ初期値は 20 です。
+ </value>
+  </data>
+  <data name="AverageDirectionalIndexIndicator_Period_Property" xml:space="preserve">
+    <value>現在の AverageDirectionalIndexIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ AverageDirectionalIndexIndicator 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="WaterfallSeries_NegativeBrush_Property" xml:space="preserve">
+    <value>シリーズの負の領域を描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="PercentagePriceOscillatorIndicator_ShortPeriod_Property" xml:space="preserve">
+    <value>現在の PercentagePriceOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 短い PPO 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="PercentagePriceOscillatorIndicator_LongPeriod_Property" xml:space="preserve">
+    <value>現在の PercentagePriceOscillatorIndicator オブジェクトの長い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い PVO 期間の一般的な値かつ初期値は 30 です。
+ </value>
+  </data>
+  <data name="MovingAverageConvergenceDivergenceIndicator_ShortPeriod_Property" xml:space="preserve">
+    <value>現在の MovingAverageConvergenceDivergenceIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 短い MACD 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="MovingAverageConvergenceDivergenceIndicator_LongPeriod_Property" xml:space="preserve">
+    <value>現在の MovingAverageConvergenceDivergenceIndicator オブジェクトの長い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い MACD 期間の一般的な値かつ初期値は 30 です。
+ </value>
+  </data>
+  <data name="MovingAverageConvergenceDivergenceIndicator_SignalPeriod_Property" xml:space="preserve">
+    <value>現在の MovingAverageConvergenceDivergenceIndicator オブジェクトの長い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い PVO 期間の一般的な値かつ初期値は 30 です。
+ </value>
+  </data>
+  <data name="MoneyFlowIndexIndicator_Period_Property" xml:space="preserve">
+    <value>現在の MoneyFlowIndexIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ MoneyFlowIndexIndicator 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="AxisLabelSettings_Foreground_Property" xml:space="preserve">
+    <value>Foreground プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_FontFamily_Property" xml:space="preserve">
+    <value>FontFamily プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_FontSize_Property" xml:space="preserve">
+    <value>FontSize プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_FontStretch_Property" xml:space="preserve">
+    <value>FontStretch プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_FontStyle_Property" xml:space="preserve">
+    <value>FontStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_FontWeight_Property" xml:space="preserve">
+    <value>FontWeight プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_HorizontalAlignment_Property" xml:space="preserve">
+    <value>HorizontalAlignment プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_VerticalAlignment_Property" xml:space="preserve">
+    <value>VerticalAlignment プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_IsHitTestVisible_Property" xml:space="preserve">
+    <value>IsHitTestVisible プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_OpacityMask_Property" xml:space="preserve">
+    <value>OpacityMask プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Opacity_Property" xml:space="preserve">
+    <value>Opacity プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Padding_Property" xml:space="preserve">
+    <value>Padding プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Projection_Property" xml:space="preserve">
+    <value>Projection プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Style_Property" xml:space="preserve">
+    <value>Style プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_TextDecorations_Property" xml:space="preserve">
+    <value>TextDecorations プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_TextWrapping_Property" xml:space="preserve">
+    <value>TextWrapping プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Visibility_Property" xml:space="preserve">
+    <value>Visibility プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Extent_Property" xml:space="preserve">
+    <value>Extent プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Angle_Property" xml:space="preserve">
+    <value>Angle プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_Location_Property" xml:space="preserve">
+    <value>Location プロパティを取得または設定します。</value>
+  </data>
+  <data name="AxisLabelSettings_TextAlignment_Property" xml:space="preserve">
+    <value>TextAlignment プロパティを取得または設定します。</value>
+  </data>
+  <data name="AbsoluteVolumeOscillatorIndicator_ShortPeriod_Property" xml:space="preserve">
+    <value>現在の AbsoluteVolumeOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 短い AVO 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="AbsoluteVolumeOscillatorIndicator_LongPeriod_Property" xml:space="preserve">
+    <value>現在の AbsoluteVolumeOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い AVO 期間の一般的な値かつ初期値は 30 です。
+ </value>
+  </data>
+  <data name="Legend_ContentPresenter_Property" xml:space="preserve">
+    <value>現在の Legend オブジェクトの ContentPresenter を取得します。</value>
+  </data>
+  <data name="Legend_Orientation_Property" xml:space="preserve">
+    <value>現在の Legend オブジェクトの方向を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="Legend_Children_Property" xml:space="preserve">
+    <value>現在の Legend オブジェクトの子の UIElements のコレクションを取得します。
+ 
+ Children コレクションはチャートによって自動的に保守され、ユーザーが変更しないことをお勧めします。</value>
+  </data>
+  <data name="XamDataChart_ContentPresenter_Property" xml:space="preserve">
+    <value>現在の Chart のルート ContentPresenter を取得します。</value>
+  </data>
+  <data name="XamDataChart_Properties" xml:space="preserve">
+    <value>XamDataChart プロパティ</value>
+  </data>
+  <data name="XamDataChart_PreviewPathStyle_Property" xml:space="preserve">
+    <value>ウィンドウ プレビューのシャドーを表示するために使用されるスタイルを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_HorizontalZoomable_Property" xml:space="preserve">
+    <value>現在の Chart の水平ズーム可否を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_VerticalZoomable_Property" xml:space="preserve">
+    <value>現在の Chart の垂直ズーム可否を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_IsSquare_Property" xml:space="preserve">
+    <value>チャートで四角の縦横比を使用するかどうかを取得または設定します。極座標およびラジアル チャートで true にロックされます。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_GridMode_Property" xml:space="preserve">
+    <value>GridMode プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaBorderBrush_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の境界として使用するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaBorderThickness_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の境界の太さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaBackground_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の背景として使用するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaBackgroundContent_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのグリッド領域の背景として使用する FrameworkElement を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_Legend_Property" xml:space="preserve">
+    <value>Series.Legend プロパティで設定されていない場合、この XamDataChart のすべてのシリーズの凡例を取得または設定します。</value>
+  </data>
+  <data name="XamDataChart_CrosshairLineStyle_Property" xml:space="preserve">
+    <value>現在の Chart の十字線を表示するために使用するスタイルを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_InkVisibility_Property" xml:space="preserve">
+    <value>現在の Chart の Ink の表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_DefaultInteraction_Property" xml:space="preserve">
+    <value>DefaultInteraction プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_ToolTipStyle_Property" xml:space="preserve">
+    <value>現在の XamDataChart の ToolTipStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="XamDataChart_Brushes_Property" xml:space="preserve">
+    <value>Brushes プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_MarkerBrushes_Property" xml:space="preserve">
+    <value>MarkerBrushes プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_Outlines_Property" xml:space="preserve">
+    <value>Outlines プロパティを取得または設定します。</value>
+  </data>
+  <data name="XamDataChart_MarkerOutlines_Property" xml:space="preserve">
+    <value>MarkerOutlines プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_CrosshairVisibility_Property" xml:space="preserve">
+    <value>現在の Chart の十字線の表示状態のオーバーライドを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_InkBrush_Property" xml:space="preserve">
+    <value>現在の Chart の Ink の表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_InkThickness_Property" xml:space="preserve">
+    <value>現在の Chart の Ink の表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_DragModifier_Property" xml:space="preserve">
+    <value>現在の Chart の DragModifier プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PanModifier_Property" xml:space="preserve">
+    <value>現在の Chart の PanModifier プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_InkModifier_Property" xml:space="preserve">
+    <value>現在の Chart の InkModifier プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_EraseModifier_Property" xml:space="preserve">
+    <value>現在の Chart の EraseModifier プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_CircleMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の CircleMarkerTemplate プロパティを取得または設定します。</value>
+  </data>
+  <data name="XamDataChart_TriangleMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の TriangleMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PyramidMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の PyramidMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_SquareMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の SquareMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_DiamondMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の DiamondMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PentagonMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の PentagonMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_HexagonMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の HexagonMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_TetragramMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の TetragramMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PentagramMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の PentagramMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_HexagramMarkerTemplate_Property" xml:space="preserve">
+    <value>現在の Chart の HexagramMarkerTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_WindowRect_Property" xml:space="preserve">
+    <value>表示されているチャートの領域を表す矩形。</value>
+  </data>
+  <data name="XamDataChart_Children_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの子のコレクションを取得します。</value>
+  </data>
+  <data name="XamDataChart_Axes_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの子の DataChartAxes を取得します。</value>
+  </data>
+  <data name="XamDataChart_Series_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの子の DataChartSeries を取得します。このコレクションは自動的に保守され、ユーザーは変更しないことをお勧めします。</value>
+  </data>
+  <data name="PercentageVolumeOscillatorIndicator_ShortPeriod_Property" xml:space="preserve">
+    <value>現在の PercentageVolumeOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 短い PVO 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="PercentageVolumeOscillatorIndicator_LongPeriod_Property" xml:space="preserve">
+    <value>現在の PercentageVolumeOscillatorIndicator オブジェクトの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ 長い PVO 期間の一般的な値かつ初期値は 30 です。
+ </value>
+  </data>
+  <data name="ItemwiseStrategyCalculationStrategy_ItemwiseStrategy_Property" xml:space="preserve">
+    <value>計算全体で項目ごとに適用される方式。</value>
+  </data>
+  <data name="FullStochasticOscillatorIndicator_Period_Property" xml:space="preserve">
+    <value>現在の FullStochasticOscillatorIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ FullStochasticOscillatorIndicator 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="FullStochasticOscillatorIndicator_SmoothingPeriod_Property" xml:space="preserve">
+    <value>現在の FullStochasticOscillatorIndicator オブジェクトの移動平均 SmoothingPeriod を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ FullStochasticOscillatorIndicator の SmoothingPeriod の一般的な値かつ初期値は 3 です。
+ </value>
+  </data>
+  <data name="FullStochasticOscillatorIndicator_TriggerPeriod_Property" xml:space="preserve">
+    <value>現在の FullStochasticOscillatorIndicator オブジェクトの移動平均 SmoothingPeriod を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ FullStochasticOscillatorIndicator の TriggerPeriod の一般的な値かつ初期値は 3 です。
+ </value>
+  </data>
+  <data name="DataContext_Series_Property" xml:space="preserve">
+    <value>現在の DataContext のシリーズを取得します。</value>
+  </data>
+  <data name="DataContext_Item_Property" xml:space="preserve">
+    <value>現在の DataContext の項目を取得します。</value>
+  </data>
+  <data name="AxisItemDataContext_Item_Property" xml:space="preserve">
+    <value>現在の DataContext の項目を取得します。</value>
+  </data>
+  <data name="RangeCategorySeries_LowMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="RangeCategorySeries_HighMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="ChartMouseEventArgs_StylusDevice_Property" xml:space="preserve">
+    <value>入力に関連付けられているスタイラス ポイントのコレクションなど、スタイラス デバイス情報をレポートするオブジェクトを取得します。</value>
+  </data>
+  <data name="ChartMouseEventArgs_OriginalSource_Property" xml:space="preserve">
+    <value>イベントを発行したオブジェクトの参照を取得します。</value>
+  </data>
+  <data name="ChartMouseEventArgs_Item_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた ItemsSource 項目を取得します。</value>
+  </data>
+  <data name="ChartMouseEventArgs_Series_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられているシリーズを取得します。</value>
+  </data>
+  <data name="ChartMouseEventArgs_Chart_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた Chart を取得します。</value>
+  </data>
+  <data name="ChartLegendMouseEventArgs_LegendItem_Property" xml:space="preserve">
+    <value>マウス イベントの対象だった凡例項目。</value>
+  </data>
+  <data name="PriceChannelOverlay_Period_Property" xml:space="preserve">
+    <value>現在の PriceChannelOverlay オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ボリンジャー バンド期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="AxisRange_Minimum_Property" xml:space="preserve">
+    <value>範囲の最小値を取得します。</value>
+  </data>
+  <data name="AxisRange_Maximum_Property" xml:space="preserve">
+    <value>範囲の最大値を取得します。</value>
+  </data>
+  <data name="ScatterSplineSeries_Stiffness_Property" xml:space="preserve">
+    <value>Stiffness プロパティを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialEventArgs_Position_Property" xml:space="preserve">
+    <value>計算の開始位置。</value>
+  </data>
+  <data name="FinancialEventArgs_Count_Property" xml:space="preserve">
+    <value>先頭から計算される位置の数。</value>
+  </data>
+  <data name="FinancialEventArgs_DataSource_Property" xml:space="preserve">
+    <value>計算で使用するデータ。</value>
+  </data>
+  <data name="FinancialEventArgs_SupportingCalculations_Property" xml:space="preserve">
+    <value>計算で使用する補助計算。</value>
+  </data>
+  <data name="FinancialEventArgs_BasedOn_Property" xml:space="preserve">
+    <value>どの列の変更でシリーズが無効になり再計算が発生するかを指定するために使用します。</value>
+  </data>
+  <data name="StochRSIIndicator_Period_Property" xml:space="preserve">
+    <value>現在の StochRSIIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ StochRSI 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineType_Property" xml:space="preserve">
+    <value>現在の財務シリーズのトレンド タイプを取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineBrush_Property" xml:space="preserve">
+    <value>トレンドラインを描画するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>この FinancialPriceSeries の有効な TrendLineBrush を取得します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在の FinancialPriceSeries オブジェクトのトレンドラインの太さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在の FinancialPriceSeries オブジェクトのトレンドラインの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在の FinancialPriceSeries オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。 
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの期間を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="BollingerBandWidthIndicator_Period_Property" xml:space="preserve">
+    <value>ボリンジャー バンド幅インジケーターの短い移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ CCI 期間の一般的な値かつ初期値は 20 です。
+ </value>
+  </data>
+  <data name="BollingerBandWidthIndicator_Multiplier_Property" xml:space="preserve">
+    <value>ボリンジャー バンドの幅の乗数を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ボリンジャー バンドの幅の乗数の一般的な値かつ初期値は 2 です。
+ </value>
+  </data>
+  <data name="RateOfChangeAndMomentumIndicator_Period_Property" xml:space="preserve">
+    <value>現在の AverageTrueRangeSeries オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ AverageTrueRange 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="WilliamsPercentRIndicator_Period_Property" xml:space="preserve">
+    <value>現在の StandardDeviationIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ Williams %R 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="Pool`1_Create_Property" xml:space="preserve">
+    <value>新しい項目を作成するために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="Pool`1_Disactivate_Property" xml:space="preserve">
+    <value>項目を無効にするために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="Pool`1_Activate_Property" xml:space="preserve">
+    <value>項目を有効にするために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="Pool`1_Destroy_Property" xml:space="preserve">
+    <value>古い項目を破棄するために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="RelativeStrengthIndexIndicator_Period_Property" xml:space="preserve">
+    <value>現在の RelativeStrengthIndexIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ RSI 期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="ChaikinVolatilityIndicator_Period_Property" xml:space="preserve">
+    <value>現在の ChaikinVolatilityIndicator オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ChaikinVolatilityIndicator 期間の一般的な値かつ初期値は 10 です。
+ </value>
+  </data>
+  <data name="BollingerBandsOverlay_Period_Property" xml:space="preserve">
+    <value>現在の BollingerBandOverlay オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ボリンジャー バンド期間の一般的な値かつ初期値は 14 です。
+ </value>
+  </data>
+  <data name="BollingerBandsOverlay_Multiplier_Property" xml:space="preserve">
+    <value>現在の BollingerBandOverlay オブジェクトの移動平均期間を取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ ボリンジャー バンド乗数の一般的な値かつ初期値は 2 です。
+ </value>
+  </data>
+  <data name="Series_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>LegendItemBadgeTemplate プロパティを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaMinWidth_Property" xml:space="preserve">
+    <value>プロット領域のサイズを変更するために使用する最小の幅を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_PlotAreaMinHeight_Property" xml:space="preserve">
+    <value>プロット領域のサイズを変更するために使用する最小の高さを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_DisplayType_Property" xml:space="preserve">
+    <value>軸の表示タイプを取得または設定します。 
+ Continuous 表示タイプは軸を均等な間隔に分割します。ラベルはデータ ポイントと配置しない可能性があります。
+ Discrete 表示タイプは定数の間隔を使用しません。各ラベルはデータ ポイントと配置します。</value>
+  </data>
+  <data name="AxisLabelSettings_Effect_Property" xml:space="preserve">
+    <value>Effect プロパティを取得または設定します。</value>
+  </data>
+  <data name="PropertyUpdatedEventArgs_PropertyName_Property" xml:space="preserve">
+    <value>更新されるプロパティの名前。</value>
+  </data>
+  <data name="PropertyUpdatedEventArgs_OldValue_Property" xml:space="preserve">
+    <value>更新されるプロパティの以前の値。</value>
+  </data>
+  <data name="PropertyUpdatedEventArgs_NewValue_Property" xml:space="preserve">
+    <value>更新されるプロパティの新しい値。</value>
+  </data>
+  <data name="XamDataChart_HorizontalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの水平 Zoombar。</value>
+  </data>
+  <data name="XamDataChart_VerticalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの垂直 Zoombar。</value>
+  </data>
+  <data name="XamDataChart_HorizontalZoombarVisibility_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの水平ズーム バーの表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_VerticalZoombarVisibility_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの垂直ズーム バーの表示状態を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_ZoombarStyle_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのズーム バーを表示するために使用するスタイルを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChartAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="HashPool`2_Create_Property" xml:space="preserve">
+    <value>新しい項目を作成するために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="HashPool`2_Disactivate_Property" xml:space="preserve">
+    <value>項目を無効にするために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="HashPool`2_Activate_Property" xml:space="preserve">
+    <value>項目を有効にするために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="HashPool`2_Destroy_Property" xml:space="preserve">
+    <value>古い項目を破棄するために使用される関数を取得または設定します。</value>
+  </data>
+  <data name="FinancialIndicator_TrendLineZIndex_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの z インデックスを取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ デフォルトでは、トレンドラインはシリーズおよびマーカーの上に描画します。背景に描画するには、この値を減らします。
+ </value>
+  </data>
+  <data name="Axis_Label_Property" xml:space="preserve">
+    <value>軸ラベルの書式文字列を取得または設定します。</value>
+  </data>
+  <data name="AnchoredCategorySeries_TrendLineZIndex_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの Z インデックスを取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ デフォルトでは、トレンドラインはシリーズおよびマーカーの上に描画します。背景に描画するには、この値を減らします。
+ </value>
+  </data>
+  <data name="MarkerSeries_MarkerType_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカー タイプを取得または設定します。</value>
+  </data>
+  <data name="MarkerSeries_MarkerTemplate_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの MarkerTemplate を取得または設定します。</value>
+  </data>
+  <data name="MarkerSeries_ActualMarkerTemplate_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効なマーカー テンプレートを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="MarkerSeries_MarkerBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーの内部をペイントする方法を指定するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="MarkerSeries_ActualMarkerBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効なマーカー ブラシを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="MarkerSeries_MarkerOutline_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーの輪郭をペイントする方法を指定するブラシを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="MarkerSeries_ActualMarkerOutline_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効なマーカー アウトラインを取得します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialPriceSeries_TrendLineZIndex_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの Z インデックスを取得または設定します。
+ 
+ これは依存プロパティです。
+ 
+ デフォルトでは、トレンドラインはシリーズおよびマーカーの上に描画します。背景に描画するには、この値を減らします。
+ </value>
+  </data>
+  <data name="CategoryDateTimeXAxis_DateTimeMemberPath_Property" xml:space="preserve">
+    <value>CategoryDateTimeXAxis の DateTime マッピング プロパティを取得または設定します。</value>
+  </data>
+  <data name="CategoryXAxis_Interval_Property" xml:space="preserve">
+    <value>表示するラベルの間隔を取得または設定します。</value>
+  </data>
+  <data name="MarkerSeries_MarkerStyle_Property" xml:space="preserve">
+    <value>マーカーのために使用する Style を取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamDataChart_WindowPositionHorizontal_Property" xml:space="preserve">
+    <value>水平スクロールバーの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="XamDataChart_WindowPositionVertical_Property" xml:space="preserve">
+    <value>垂直スクロールバーの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="XamDataChart_WindowScaleHorizontal_Property" xml:space="preserve">
+    <value>水平ズームバーのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="XamDataChart_WindowScaleVertical_Property" xml:space="preserve">
+    <value>垂直ズームバーのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="FinancialPriceSeries_DisplayType_Property" xml:space="preserve">
+    <value>現在の FinancialPriceSeries オブジェクトの表示タイプを取得または設定します。
+ 
+ これは依存プロパティです。</value>
+  </data>
+  <data name="LineSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値がチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="ScatterLineSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値がチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="AreaSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値がチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="Series_StartCap_Property" xml:space="preserve">
+    <value>このシリーズを表すラインまたはポリラインの開始ポイントのスタイル。</value>
+  </data>
+  <data name="Series_EndCap_Property" xml:space="preserve">
+    <value>このシリーズを表すラインまたはポリラインの終了ポイントのスタイル。</value>
+  </data>
+  <data name="XamDataChartSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamDataChart</value>
+  </data>
+  <data name="AnchoredRadialSeries_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>このシリーズの有効な TrendLineBrush を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインをペイントする方法を指定するブラシを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの点線の最後をどのように描画するかを指定する PenLineCap 列挙値を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在のシリーズのトレンドラインの期間を取得または設定します。これは依存プロパティです。ボリンジャー バンド期間の一般的な値かつ初期値は 20 です。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの太さを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineType_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンド タイプを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredRadialSeries_TrendLineZIndex_Property" xml:space="preserve">
+    <value>トレンドラインの Z インデックスを取得または設定します。</value>
+  </data>
+  <data name="AnchoredRadialSeries_ValueMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズの値を提供する項目パスを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="AxisItemDataContext_Axis_Property" xml:space="preserve">
+    <value>この項目を所有する軸を取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_RadiusMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="CategoryAngleAxis_Interval_Property" xml:space="preserve">
+    <value>表示するラベルの間隔を取得または設定します。</value>
+  </data>
+  <data name="CategoryAngleAxis_StartAngleOffset_Property" xml:space="preserve">
+    <value>チャートの角度 0 度をオフセットする角度を示します。これは依存プロパティです。</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_Interval_Property" xml:space="preserve">
+    <value>X 軸の時間間隔を取得または設定します。</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_MaximumValue_Property" xml:space="preserve">
+    <value>軸の MaximumValue を取得または設定します。</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_MinimumValue_Property" xml:space="preserve">
+    <value>軸の MinimumValue を取得または設定します。</value>
+  </data>
+  <data name="ColumnSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="ColumnSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="DataContext_ActualItemBrush_Property" xml:space="preserve">
+    <value>項目に色をつけるのに計算されたブラシを取得します。</value>
+  </data>
+  <data name="DataContext_ItemBrush_Property" xml:space="preserve">
+    <value>項目に色をつけるブラシを取得または設定します。</value>
+  </data>
+  <data name="HashPool`2_ActiveKeys_Property" xml:space="preserve">
+    <value>アクティブ プール オブジェクトのキーを取得します。</value>
+  </data>
+  <data name="NumericAngleAxis_StartAngleOffset_Property" xml:space="preserve">
+    <value>チャートの角度 0 度をオフセットする角度を示します。これは依存プロパティです。</value>
+  </data>
+  <data name="NumericRadiusAxis_RadiusExtentScale_Property" xml:space="preserve">
+    <value>最大半径として使用する最大半径の範囲のパーセンテージを定義します。0.0 と 1.0 の間の値でなければいけません。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarAxes_AngleAxis_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PolarAxes_RadiusAxis_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PolarBase_ActualTrendLineBrush_Property" xml:space="preserve">
+    <value>このシリーズの有効な TrendLineBrush を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_AngleAxis_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効な角度軸を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_AngleMemberPath_Property" xml:space="preserve">
+    <value>シリーズの角度値を検索するためのパスを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_MaximumMarkers_Property" xml:space="preserve">
+    <value>現在のシリーズによって表示されるマーカーの最大数を取得または設定します。指定した数を超えるマーカーが表示されている場合、ポーラ シリーズは代表的なセットを自動的に選択します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_RadiusAxis_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効な半径軸を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_RadiusMemberPath_Property" xml:space="preserve">
+    <value>シリーズの半径値を取得するためのパスを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインをペイントする方法を指定するブラシを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineDashArray_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインを描画するために使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineDashCap_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの点線の最後をどのように描画するかを指定する PenLineCap 列挙値を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLinePeriod_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの移動平均期間を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineThickness_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンドラインの太さを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineType_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのトレンド タイプを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_TrendLineZIndex_Property" xml:space="preserve">
+    <value>トレンドラインの Z インデックスを取得または設定します。</value>
+  </data>
+  <data name="PolarBase_UseCartesianInterpolation_Property" xml:space="preserve">
+    <value>Archimedian スパイラルに基づく補間の代わりに Cartesian 補間を使用するかどうかを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="PolarLineSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値をチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="PolarSplineSeries_Stiffness_Property" xml:space="preserve">
+    <value>Stiffness プロパティを取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="Pool`1_Active_Property" xml:space="preserve">
+    <value>アクティブなオブジェクトのリスト。</value>
+  </data>
+  <data name="Pool`1_Count_Property" xml:space="preserve">
+    <value>プールにある項目数を取得または設定します。</value>
+  </data>
+  <data name="Pool`1_Inactive_Property" xml:space="preserve">
+    <value>アクティブではないオブジェクトのリスト。</value>
+  </data>
+  <data name="RadialAreaSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値をチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="RadialAxes_AngleAxis_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RadialAxes_RadiusAxis_Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RadialBase_AngleAxis_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効な角度軸を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="RadialBase_ValueAxis_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの有効な値軸を取得します。これは依存プロパティです。</value>
+  </data>
+  <data name="RadialColumnSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="RadialColumnSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="RadialLineSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値をチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="RadialPieSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="RadialPieSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。これは依存プロパティです。</value>
+  </data>
+  <data name="RangeColumnSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。</value>
+  </data>
+  <data name="RangeColumnSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。</value>
+  </data>
+  <data name="SafeReadOnlyDoubleCollection_Count_Property" xml:space="preserve">
+    <value>コレクションにある項目の数を取得します。</value>
+  </data>
+  <data name="SafeReadOnlyDoubleCollection_IsReadOnly_Property" xml:space="preserve">
+    <value>コレクションが読み取り専用かどうかを取得します。</value>
+  </data>
+  <data name="SafeSortedReadOnlyDoubleCollection_Count_Property" xml:space="preserve">
+    <value>コレクションにある項目の数を取得します。</value>
+  </data>
+  <data name="SafeSortedReadOnlyDoubleCollection_IsReadOnly_Property" xml:space="preserve">
+    <value>コレクションが読み取り専用かどうかを取得します。</value>
+  </data>
+  <data name="SplineSeriesBase_SplineType_Property" xml:space="preserve">
+    <value>描画されるスプラインのタイプを取得または設定します。</value>
+  </data>
+  <data name="WaterfallSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。</value>
+  </data>
+  <data name="WaterfallSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_BubbleLargeSize_Property" xml:space="preserve">
+    <value>現在のシリーズの最大のバブル マーカーのピクセル サイズを取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_BubbleSmallSize_Property" xml:space="preserve">
+    <value>現在のシリーズの最小のバブル マーカーのピクセル サイズを取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_BubbleWeightScale_Property" xml:space="preserve">
+    <value>バブル マーカーを縮尺する方法を取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_LogarithmBase_Property" xml:space="preserve">
+    <value>対数的に縮尺されたバブル マーカーの対数の底を取得または設定します。</value>
+  </data>
+  <data name="PolarSplineAreaSeries_Stiffness_Property" xml:space="preserve">
+    <value>Stiffness プロパティを取得または設定します。依存プロパティです。</value>
+  </data>
+  <data name="Axis_LabelPanelStyle_Property" xml:space="preserve">
+    <value>LabelPanelStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="DataContext_ItemLabel_Property" xml:space="preserve">
+    <value>現在のデータ コンテキストの項目ラベルを取得または設定します。</value>
+  </data>
+  <data name="HashPool`2_ActiveCount_Property" xml:space="preserve">
+    <value>アクティブ数のカウントを取得します。</value>
+  </data>
+  <data name="ScatterBase_ErrorBarSettings_Property" xml:space="preserve">
+    <value>プロパティの説明。</value>
+  </data>
+  <data name="MarkerSeries_UseLightweightMarkers_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカー タイプを取得または設定します。</value>
+  </data>
+  <data name="Series_DiscreteLegendItemTemplate_Property" xml:space="preserve">
+    <value>DiscreteLegendItemTemplate プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="CategorySeries_ErrorBarSettings_Property" xml:space="preserve">
+    <value>プロパティの説明。</value>
+  </data>
+  <data name="NumericRadiusAxis_InnerRadiusExtentScale_Property" xml:space="preserve">
+    <value>チャートの中央で空白にする最大半径の範囲の割合を定義します。0.0 ～ 1.0 の範囲の値を入力してください。
+これは依存プロパティです。</value>
+  </data>
+  <data name="PolarBase_ClipSeriesToBounds_Property" xml:space="preserve">
+    <value>シリーズを境界線でクリップするかどうかを設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="RadialBase_ClipSeriesToBounds_Property" xml:space="preserve">
+    <value>シリーズを境界線でクリップするかどうかを設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PolarAreaSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値をチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="BubbleSeries_RadiusScale_Property" xml:space="preserve">
+    <value>バブルの半径サイズ スケールを取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_LabelMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのラベル マッピング プロパティを取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_FillMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの塗りつぶしマッピング プロパティを取得または設定します。</value>
+  </data>
+  <data name="BubbleSeries_FillScale_Property" xml:space="preserve">
+    <value>マーカー ブラシのブラシ スケールを取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。バーおよび列シリーズにのみ適用します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。バーおよび列シリーズにのみ適用します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="Slice_StartAngle_Property" xml:space="preserve">
+    <value>図形の終了角度を取得します。</value>
+  </data>
+  <data name="Slice_EndAngle_Property" xml:space="preserve">
+    <value>形状の終了角度を取得します。</value>
+  </data>
+  <data name="Slice_InnerExtentStart_Property" xml:space="preserve">
+    <value>図形の開始内側範囲を取得または設定します。</value>
+  </data>
+  <data name="Slice_InnerExtentEnd_Property" xml:space="preserve">
+    <value>図形の終了内側範囲を取得または設定します。</value>
+  </data>
+  <data name="Slice_IsSelected_Property" xml:space="preserve">
+    <value>スライスが選択されるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="Slice_IsExploded_Property" xml:space="preserve">
+    <value>スライスが分割されるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="Slice_IsOthersSlice_Property" xml:space="preserve">
+    <value>スライスが他のスライスを表すかどうかを取得します。</value>
+  </data>
+  <data name="SizeScale_MinimumValue_Property" xml:space="preserve">
+    <value>このスケールの最小値を設定または取得します。</value>
+  </data>
+  <data name="SizeScale_MaximumValue_Property" xml:space="preserve">
+    <value>このスケールの最大値を設定または取得します。</value>
+  </data>
+  <data name="SizeScale_IsLogarithmic_Property" xml:space="preserve">
+    <value>スケールが対数であるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="SizeScale_LogarithmBase_Property" xml:space="preserve">
+    <value>このスケールの対数の底を取得または設定します。</value>
+  </data>
+  <data name="DoubleAnimator_TransitionProgress_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ValueOverlay_Axis_Property" xml:space="preserve">
+    <value>値オーバーレイによって使用される軸を取得または設定します。</value>
+  </data>
+  <data name="ValueOverlay_Value_Property" xml:space="preserve">
+    <value>オーバーレイの値を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_ContentPresenter_Property" xml:space="preserve">
+    <value>現在の Chart のルート ContentPresenter を取得します。</value>
+  </data>
+  <data name="PieChartBase_ToolTip_Property" xml:space="preserve">
+    <value>円チャートの ToolTip を設定または取得します。
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_ExplodedRadius_Property" xml:space="preserve">
+    <value>分割スライスが中央からオフセットされる量を決定します。0 と 1 の間の値。</value>
+  </data>
+  <data name="PieChartBase_Title_Property" xml:space="preserve">
+    <value>Title プロパティを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_Brushes_Property" xml:space="preserve">
+    <value>Brushes プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_Outlines_Property" xml:space="preserve">
+    <value>Outlines プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_LegendItemTemplate_Property" xml:space="preserve">
+    <value>LegendItemTemplate プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>LegendItemBadgeTemplate プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedColumnSeries_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedColumnSeries_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedSeriesBase_Series_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedSeriesBase_AutoGenerateSeries_Property" xml:space="preserve">
+    <value>シリーズが自動的に生成されるかどうかを取得または設定します。ItemsSource として GroupBy の使用を要求します。</value>
+  </data>
+  <data name="StackedSeriesBase_GroupMemberPath_Property" xml:space="preserve">
+    <value>GroupMemberPath を取得または設定します。</value>
+  </data>
+  <data name="CustomPaletteBrushScale_BrushSelectionMode_Property" xml:space="preserve">
+    <value>ブラシ選択モードを取得または設定します。</value>
+  </data>
+  <data name="BrushScale_Brushes_Property" xml:space="preserve">
+    <value>このスケールによって使用されるブラシ コレクションを取得します。</value>
+  </data>
+  <data name="XamFunnelView_ToolTip_Property" xml:space="preserve">
+    <value>ツールチップとして使用するポップアップを表します。</value>
+  </data>
+  <data name="XamFunnelView_Properties" xml:space="preserve">
+    <value>XamFunnelView プロパティ</value>
+  </data>
+  <data name="StackedBarSeries_RadiusX_Property" xml:space="preserve">
+    <value>棒の角を丸めるために使用される楕円の x 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedBarSeries_RadiusY_Property" xml:space="preserve">
+    <value>棒の角を丸めるために使用される楕円の y 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScaleLegend_ContentPresenter_Property" xml:space="preserve">
+    <value>凡例の ContentPresenter を取得します。</value>
+  </data>
+  <data name="ScaleLegend_LegendScaleElement_Property" xml:space="preserve">
+    <value>凡例スケールを表す形を取得します。</value>
+  </data>
+  <data name="ScaleLegend_MinText_Property" xml:space="preserve">
+    <value>最小スケール値を示す TextBlock を取得します。</value>
+  </data>
+  <data name="ScaleLegend_MaxText_Property" xml:space="preserve">
+    <value>最大スケール値を示す TextBlock を取得します。</value>
+  </data>
+  <data name="LegendBase_Children_Property" xml:space="preserve">
+    <value>現在の Legend オブジェクトの子の UIElements のコレクションを取得します。
+ 
+Children コレクションはチャートによって自動的に保守され、ユーザーは変更しないことをお勧めします。</value>
+  </data>
+  <data name="CategoryErrorBarsSettings_EnableErrorBars_Property" xml:space="preserve">
+    <value>なし、プラス 1、マイナス 1 または両方など、どの誤差範囲が有効かを判断します。</value>
+  </data>
+  <data name="CategoryErrorBarsSettings_Calculator_Property" xml:space="preserve">
+    <value>誤差範囲の計算機を指定します。</value>
+  </data>
+  <data name="CategoryErrorBarsSettings_Stroke_Property" xml:space="preserve">
+    <value>誤差範囲のストロークを決定します。</value>
+  </data>
+  <data name="CategoryErrorBarsSettings_StrokeThickness_Property" xml:space="preserve">
+    <value>誤差範囲のストロークの太さを決定します。</value>
+  </data>
+  <data name="ValueBrushScale_MinimumValue_Property" xml:space="preserve">
+    <value>このスケールの最小値を設定または取得します。</value>
+  </data>
+  <data name="ValueBrushScale_MaximumValue_Property" xml:space="preserve">
+    <value>このスケールの最大値を設定または取得します。</value>
+  </data>
+  <data name="ValueBrushScale_IsLogarithmic_Property" xml:space="preserve">
+    <value>スケールが対数であるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="ValueBrushScale_LogarithmBase_Property" xml:space="preserve">
+    <value>このスケールの対数の底を取得または設定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_EnableErrorBarsHorizontal_Property" xml:space="preserve">
+    <value>なし、プラス 1、マイナス 1 または両方など、どの水平方向の誤差範囲が有効かを判断します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalCalculator_Property" xml:space="preserve">
+    <value>水平方向の誤差範囲の計算機を指定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalStroke_Property" xml:space="preserve">
+    <value>水平方向の誤差範囲のストロークを決定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalThickness_Property" xml:space="preserve">
+    <value>プロパティの説明。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_EnableErrorBarsVertical_Property" xml:space="preserve">
+    <value>向の誤差範囲が有効かを判断します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalCalculator_Property" xml:space="preserve">
+    <value>垂直方向の誤差範囲の計算機を指定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalStroke_Property" xml:space="preserve">
+    <value>垂直方向の誤差範囲のストロークを決定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalThickness_Property" xml:space="preserve">
+    <value>プロパティの説明。</value>
+  </data>
+  <data name="CategoryYAxis_Interval_Property" xml:space="preserve">
+    <value>表示するラベルの間隔を取得または設定します。</value>
+  </data>
+  <data name="ItemLegend_ContentPresenter_Property" xml:space="preserve">
+    <value>凡例コンテンツを取得します。</value>
+  </data>
+  <data name="XamFunnelSlice_StrokeThickness_Property" xml:space="preserve">
+    <value>スライスのストロークに使用する太さを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelSlice_Properties" xml:space="preserve">
+    <value>XamFunnelSlice プロパティ</value>
+  </data>
+  <data name="FunnelSliceClickedEventArgs_Index_Property" xml:space="preserve">
+    <value>クリックされたスライスのインデックス。</value>
+  </data>
+  <data name="FunnelSliceClickedEventArgs_Item_Property" xml:space="preserve">
+    <value>クリックされたスライスのデータ項目。</value>
+  </data>
+  <data name="XamFunnel_ItemsSource_Property" xml:space="preserve">
+    <value>ファンネル チャートの ItemsSource を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_Properties" xml:space="preserve">
+    <value>XamFunnelChart プロパティ</value>
+  </data>
+  <data name="XamFunnel_ValueMemberPath_Property" xml:space="preserve">
+    <value>ファンネル チャートの値メンバー パスを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_Brushes_Property" xml:space="preserve">
+    <value>Brushes プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_Outlines_Property" xml:space="preserve">
+    <value>Outlines プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_BottomEdgeWidth_Property" xml:space="preserve">
+    <value>ファンネルに必要なボタン境界線の余白の割合 (ほぼ 0 から 1) 取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_InnerLabelMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの InnerLabel マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_OuterLabelMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの OuterLabel マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_InnerLabelVisibility_Property" xml:space="preserve">
+    <value>内側ラベルが表示されるかどうかを取得するまたは設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_OuterLabelVisibility_Property" xml:space="preserve">
+    <value>外側ラベルが表示されるかどうかを取得するまたは設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_OuterLabelAlignment_Property" xml:space="preserve">
+    <value>外側ラベルを表示するチャートの端を取得または設定します
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_FunnelSliceDisplay_Property" xml:space="preserve">
+    <value>ファンネル スライスの高さを設定する方法を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_InnerLabelTemplate_Property" xml:space="preserve">
+    <value>内側ラベルを表示するときに使用する DataTemplate 取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_OuterLabelTemplate_Property" xml:space="preserve">
+    <value>外側ラベルを表示するときに使用する DataTemplate を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_TransitionDuration_Property" xml:space="preserve">
+    <value>アニメーションが実行される期間を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_IsInverted_Property" xml:space="preserve">
+    <value>ファンネルが反転して描画されるかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_UpperBezierControlPoint_Property" xml:space="preserve">
+    <value>ベジエ曲線がファンネルを定義するために使用される場合、より高いコントロール ポイントを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_LowerBezierControlPoint_Property" xml:space="preserve">
+    <value>ベジエ曲線がファンネルを定義するために使用される場合、より低いコントロール ポイントを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_UseBezierCurve_Property" xml:space="preserve">
+    <value>ファンネルを定義するためにベジエ曲線を使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_AllowSliceSelection_Property" xml:space="preserve">
+    <value>スライスの選択を許可するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_UseUnselectedStyle_Property" xml:space="preserve">
+    <value>未選択スライスに使用するスタイルを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_SelectedSliceStyle_Property" xml:space="preserve">
+    <value>選択スタイルに使用するスタイルを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_UnselectedSliceStyle_Property" xml:space="preserve">
+    <value>未選択のスライスに未選択のスライスを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_ToolTip_Property" xml:space="preserve">
+    <value>スライスに表示する ToolTip を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_SelectedItems_Property" xml:space="preserve">
+    <value>現在選択されている項目を表します。</value>
+  </data>
+  <data name="SortedListView`1_IsFixedSize_Property" xml:space="preserve">
+    <value>ビューが固定サイズを持つかどうかを返します。</value>
+  </data>
+  <data name="SortedListView`1_IsReadOnly_Property" xml:space="preserve">
+    <value>ビューが読み取り専用かどうかを返します。</value>
+  </data>
+  <data name="SortedListView`1_Count_Property" xml:space="preserve">
+    <value>表示する項目数を返します。</value>
+  </data>
+  <data name="SortedListView`1_IsSynchronized_Property" xml:space="preserve">
+    <value>コレクションが同期されているかどうかを返します。</value>
+  </data>
+  <data name="SortedListView`1_SyncRoot_Property" xml:space="preserve">
+    <value>コレクションの同期に使用する同期ルート返します。</value>
+  </data>
+  <data name="FunnelDataContext_Item_Property" xml:space="preserve">
+    <value>コンテキスト内のデータ項目。</value>
+  </data>
+  <data name="FunnelDataContext_Index_Property" xml:space="preserve">
+    <value>コンテキスト内のデータ項目のインデックス。</value>
+  </data>
+  <data name="BarSeries_RadiusX_Property" xml:space="preserve">
+    <value>棒の角を丸めるために使用される楕円の x 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="BarSeries_RadiusY_Property" xml:space="preserve">
+    <value>棒の角を丸めるために使用される楕円の x 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_LabelMemberPath_Property" xml:space="preserve">
+    <value>ラベルを含むプロパティ名を取得または設定します。</value>
+  </data>
+  <data name="XamFunnel_Legend_Property" xml:space="preserve">
+    <value>チャートに表示する凡例を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_LegendItemTemplate_Property" xml:space="preserve">
+    <value>凡例項目に使用する LegendItemTemplate を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>凡例項目に使用する LegendItemBadge テンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnel_UseOuterLabelsForLegend_Property" xml:space="preserve">
+    <value>凡例項目を識別するために外側ラベルを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="PieChartBase_ItemsSource_Property" xml:space="preserve">
+    <value>チャートのデータ ソースを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_ValueMemberPath_Property" xml:space="preserve">
+    <value>値を含むプロパティ名を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_LabelStyle_Property" xml:space="preserve">
+    <value>ラベルに適用するスタイルを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_LabelsPosition_Property" xml:space="preserve">
+    <value>チャート ラベルの位置を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_LeaderLineVisibility_Property" xml:space="preserve">
+    <value>引き出し線が表示されるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="PieChartBase_LeaderLineStyle_Property" xml:space="preserve">
+    <value>リーダー ラインのスタイルを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_OthersCategoryThreshold_Property" xml:space="preserve">
+    <value>スライスが他のスライスとグループ化されるかどうかを決定するしきい値を得または設定します。</value>
+  </data>
+  <data name="PieChartBase_OthersCategoryType_Property" xml:space="preserve">
+    <value>数値または割合ベースのしきい値を使用するかどうかを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_OthersCategoryText_Property" xml:space="preserve">
+    <value>他のスライスのラベルを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_RadiusFactor_Property" xml:space="preserve">
+    <value>チャートの半径のスケール ファクターを取得または設定します。0 と 1 の間の値。</value>
+  </data>
+  <data name="PieChartBase_AllowSliceSelection_Property" xml:space="preserve">
+    <value>スライスが選択されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_AllowSliceExplosion_Property" xml:space="preserve">
+    <value>スライスが分割されるかどうかを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_ExplodedSlices_Property" xml:space="preserve">
+    <value>分割スライス インデックスのコレクションを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_Legend_Property" xml:space="preserve">
+    <value>現在のチャートに使用する凡例を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_LabelExtent_Property" xml:space="preserve">
+    <value>スライスの端からオフセットされるラベルのピクセル量を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_StartAngle_Property" xml:space="preserve">
+    <value>チャートの開始角度を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_SweepDirection_Property" xml:space="preserve">
+    <value>チャートの回転方向を取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_SelectedSlices_Property" xml:space="preserve">
+    <value>選択スライス インデックスのコレクションを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_OthersCategoryStyle_Property" xml:space="preserve">
+    <value>他のスライスに使用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_SelectedStyle_Property" xml:space="preserve">
+    <value>スライスが選択されたときに使用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="PieChartBase_ToolTipStyle_Property" xml:space="preserve">
+    <value>ツールチップに使用されるスタイルを取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_Slice_Property" xml:space="preserve">
+    <value>現在のスライスを取得します。</value>
+  </data>
+  <data name="Slice_Origin_Property" xml:space="preserve">
+    <value>スライスの基点を取得します。</value>
+  </data>
+  <data name="Slice_ExplodedOrigin_Property" xml:space="preserve">
+    <value>分割スライスの基点を取得します。</value>
+  </data>
+  <data name="Slice_Radius_Property" xml:space="preserve">
+    <value>スライスの半径を取得します。</value>
+  </data>
+  <data name="Slice_ExplodedRadius_Property" xml:space="preserve">
+    <value>分割スライスの半径を取得します。</value>
+  </data>
+  <data name="Slice_Index_Property" xml:space="preserve">
+    <value>スライスのインデックスを取得します。</value>
+  </data>
+  <data name="Slice_StrokeThickness_Property" xml:space="preserve">
+    <value>スライスのストロークの太さを取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_IsSelected_Property" xml:space="preserve">
+    <value>スライスが選択されるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_IsExploded_Property" xml:space="preserve">
+    <value>スライスが分割されるかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_Opacity_Property" xml:space="preserve">
+    <value>スライスの不透明度を取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_Fill_Property" xml:space="preserve">
+    <value>スライスの塗りつぶしブラシを取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_Stroke_Property" xml:space="preserve">
+    <value>スライスのストローク ブラシを取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_StrokeThickness_Property" xml:space="preserve">
+    <value>スライスのストロークの太さを取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_IsOthersSlice_Property" xml:space="preserve">
+    <value>現在のスライスが他のスライスの一部かどうかを取得します。</value>
+  </data>
+  <data name="XamFunnelChart_ItemsSource_Property" xml:space="preserve">
+    <value>ファンネル チャートの ItemsSource を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_Properties" xml:space="preserve">
+    <value>XamFunnelChart プロパティ</value>
+  </data>
+  <data name="XamFunnelChart_ValueMemberPath_Property" xml:space="preserve">
+    <value>ファンネル チャートの値メンバー パスを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_Brushes_Property" xml:space="preserve">
+    <value>Brushes プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_Outlines_Property" xml:space="preserve">
+    <value>Outlines プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_BottomEdgeWidth_Property" xml:space="preserve">
+    <value>ファンネルに必要なボタン境界線の余白の割合 (ほぼ 0 から 1) 取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_InnerLabelMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの InnerLabel マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_OuterLabelMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの OuterLabel マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_InnerLabelVisibility_Property" xml:space="preserve">
+    <value>内側ラベルが表示されるかどうかを取得するまたは設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_OuterLabelVisibility_Property" xml:space="preserve">
+    <value>外側ラベルが表示されるかどうかを取得するまたは設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_OuterLabelAlignment_Property" xml:space="preserve">
+    <value>外側ラベルを表示するチャートの端を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_FunnelSliceDisplay_Property" xml:space="preserve">
+    <value>ファンネル スライスの高さを設定する方法を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_InnerLabelTemplate_Property" xml:space="preserve">
+    <value>内側ラベルを表示するときに使用する DataTemplate 取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_OuterLabelTemplate_Property" xml:space="preserve">
+    <value>外側ラベルを表示するときに使用する DataTemplate を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_TransitionDuration_Property" xml:space="preserve">
+    <value>アニメーションが実行される期間を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_IsInverted_Property" xml:space="preserve">
+    <value>ファンネルが反転して描画されるかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_UpperBezierControlPoint_Property" xml:space="preserve">
+    <value>ベジエ曲線がファンネルを定義するために使用される場合、より高いコントロール ポイントを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_LowerBezierControlPoint_Property" xml:space="preserve">
+    <value>ベジエ曲線がファンネルを定義するために使用される場合、より低いコントロール ポイントを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_UseBezierCurve_Property" xml:space="preserve">
+    <value>ファンネルを定義するためにベジエ曲線を使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_AllowSliceSelection_Property" xml:space="preserve">
+    <value>スライスの選択を許可するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_UseUnselectedStyle_Property" xml:space="preserve">
+    <value>未選択スライスに使用する見選択スタイルを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_SelectedSliceStyle_Property" xml:space="preserve">
+    <value>選択スタイルに使用するスタイルを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_UnselectedSliceStyle_Property" xml:space="preserve">
+    <value>未選択のスライスに使用するスライスを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_ToolTip_Property" xml:space="preserve">
+    <value>スライスに表示する ToolTip を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_SelectedItems_Property" xml:space="preserve">
+    <value>現在選択されている項目を表します。</value>
+  </data>
+  <data name="XamFunnelChart_Legend_Property" xml:space="preserve">
+    <value>チャートに表示する凡例を取得または設定します。
+ これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_LegendItemTemplate_Property" xml:space="preserve">
+    <value>凡例項目に使用する LegendItemTemplate を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>凡例項目に使用する LegendItemBadge テンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelChart_UseOuterLabelsForLegend_Property" xml:space="preserve">
+    <value>凡例項目を識別するために外側ラベルを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SyncLink_Charts_Property" xml:space="preserve">
+    <value>現在のチャートに知られているチャート領域のコレクションを取得します。</value>
+  </data>
+  <data name="PieSliceDataContext_Slice_Property" xml:space="preserve">
+    <value>現在の DataContext の円スライスを取得します。</value>
+  </data>
+  <data name="XamPieChart_Properties" xml:space="preserve">
+    <value>XamPieChart プロパティ</value>
+  </data>
+  <data name="XamPieChartSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/XamPieChart</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalStrokeThickness_Property" xml:space="preserve">
+    <value>水平方向の誤差範囲のストロークの太さを決定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalStrokeThickness_Property" xml:space="preserve">
+    <value>垂直方向の誤差範囲のストロークの太さを決定します。</value>
+  </data>
+  <data name="SliceAppearance_BezierPoints_Property" xml:space="preserve">
+    <value>ベジエ曲線の左側ラスター化を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Fill_Property" xml:space="preserve">
+    <value>スライスの塗りつぶしを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_HasInnerLabel_Property" xml:space="preserve">
+    <value>スライスにインナー ラベルがあるかどうかを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Index_Property" xml:space="preserve">
+    <value>スライスに関連付けられたインデックスを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_InnerLabelPosition_Property" xml:space="preserve">
+    <value>スライスのインナー ラベルの位置を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_InnerLabelTemplate_Property" xml:space="preserve">
+    <value>インナー ラベルに使用するテンプレートを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_InnerLabel_Property" xml:space="preserve">
+    <value>スライスのインナー ラベルを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Item_Property" xml:space="preserve">
+    <value>スライスに関連付けられた項目を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_LowerLeft_Property" xml:space="preserve">
+    <value>スライスの左下のポイントを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_LowerRight_Property" xml:space="preserve">
+    <value>スライスの右下のポイントを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Offset_Property" xml:space="preserve">
+    <value>スライスを描画するオフセットを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Outline_Property" xml:space="preserve">
+    <value>スライスのアウトラインを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Points_Property" xml:space="preserve">
+    <value>スライスの集合点を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_RightBezierPoints_Property" xml:space="preserve">
+    <value>ベジエ曲線の右側ラスター化を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_Style_Property" xml:space="preserve">
+    <value>スライスのスタイルを設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_UpperLeft_Property" xml:space="preserve">
+    <value>左上のポイントの位置を設定または取得します。</value>
+  </data>
+  <data name="SliceAppearance_UpperRight_Property" xml:space="preserve">
+    <value>スライスの右上のポイントを設定または取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Brush_Property" xml:space="preserve">
+    <value>積層フラグメントのブラシを取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Cursor_Property" xml:space="preserve">
+    <value>積層フラグメントのカーソルを取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_DashArray_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのアウトラインに使用される点線や間隔のパターンを示す Double 値のコレクションを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_DashCap_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの点線の最後をどのように描写するかを指定する PenLineCap 列挙値を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_Effect_Property" xml:space="preserve">
+    <value>積層フラグメントの効果を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_EndCap_Property" xml:space="preserve">
+    <value>このシリーズを表すラインまたはポリラインの終了ポイントのスタイル。</value>
+  </data>
+  <data name="StackedFragmentSeries_IsHitTestVisible_Property" xml:space="preserve">
+    <value>シリーズがマウス イベントを取得するかどうか取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Legend_Property" xml:space="preserve">
+    <value>現在の Series オブジェクトの凡例を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>LegendItemBadgeTemplate プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_LegendItemTemplate_Property" xml:space="preserve">
+    <value>LegendItemTemplate プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_LegendItemVisibility_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの凡例項目の表示状態を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_MarkerBrush_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーの内部をペイントする方法を指定するブラシを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_MarkerOutline_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカーのアウトラインを塗りつぶす方法を指定するブラシを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_MarkerStyle_Property" xml:space="preserve">
+    <value>マーカーのために使用する Style を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_MarkerTemplate_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの MarkerTemplate を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_MarkerType_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカー タイプを取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Name_Property" xml:space="preserve">
+    <value>積層フラグメントの Name を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Opacity_Property" xml:space="preserve">
+    <value>積層フラグメントの Opacity を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_OpacityMask_Property" xml:space="preserve">
+    <value>積層フラグメントの OpacityMask を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Outline_Property" xml:space="preserve">
+    <value>シリーズのアウトラインを描画するブラシを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_Resolution_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのレンダリング解像度を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_StartCap_Property" xml:space="preserve">
+    <value>このシリーズを表すラインまたはポリラインの開始ポイントのスタイル。</value>
+  </data>
+  <data name="StackedFragmentSeries_Style_Property" xml:space="preserve">
+    <value>積層フラグメントの Style を取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_Thickness_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの線の太さの幅を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_Title_Property" xml:space="preserve">
+    <value>Title プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_ToolTip_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの ToolTip を取得または設定します。
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_TransitionEasingFunction_Property" xml:space="preserve">
+    <value>現在のシリーズを変形するために使用する EasingFunction を取得または設定します。
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_TransitionDuration_Property" xml:space="preserve">
+    <value>現在のシリーズの変形の期間を取得または設定します。
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_UnknownValuePlotting_Property" xml:space="preserve">
+    <value>不明な値をチャートでプロットする方法を決定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_UseLightweightMarkers_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトのマーカー タイプを取得または設定します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ValueMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_Visibility_Property" xml:space="preserve">
+    <value>積層フラグメントの表示設定を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesBase_ReverseLegendOrder_Property" xml:space="preserve">
+    <value>フラグメント シリーズの順序を凡例で逆にするかどうかを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_Brush_Property" xml:space="preserve">
+    <value>シリーズ ブラシを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_LegendItem_Property" xml:space="preserve">
+    <value>シリーズの凡例項目を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_LegendItemTemplate_Property" xml:space="preserve">
+    <value>シリーズの凡例項目連プレートを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_LegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>シリーズの凡例バッジ テンプレートを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_LegendItemVisibility_Property" xml:space="preserve">
+    <value>シリーズ凡例の表示設定を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_Outline_Property" xml:space="preserve">
+    <value>シリーズのアウトライン ブラシを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_DashArray_Property" xml:space="preserve">
+    <value>シリーズ ストロークの破線の配列を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_DashCap_Property" xml:space="preserve">
+    <value>シリーズの破線のキャップを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_Thickness_Property" xml:space="preserve">
+    <value>シリーズのアウトラインの太さを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_Title_Property" xml:space="preserve">
+    <value>シリーズ タイトルを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_ToolTip_Property" xml:space="preserve">
+    <value>シリーズ ツールチップを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_TransitionDuration_Property" xml:space="preserve">
+    <value>シリーズのアニメーション トランジションを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_TransitionEasingFunction_Property" xml:space="preserve">
+    <value>シリーズのアニメーション イージング関数を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_MarkerBrush_Property" xml:space="preserve">
+    <value>シリーズのマーカー ブラシを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_MarkerOutline_Property" xml:space="preserve">
+    <value>シリーズのマーカー アウトラインを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_MarkerStyle_Property" xml:space="preserve">
+    <value>シリーズのマーカー スタイルを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_MarkerTemplate_Property" xml:space="preserve">
+    <value>シリーズのマーカー テンプレートを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_MarkerType_Property" xml:space="preserve">
+    <value>シリーズのマーカー タイプを取得または設定します。</value>
+  </data>
+  <data name="XamFunnelSlice_Fill_Property" xml:space="preserve">
+    <value>スライスの塗りつぶし部分に使用するブラシを取得または設定します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelSlice_Outline_Property" xml:space="preserve">
+    <value>スライスのストローク部分に使用するブラシを取得または設定します。
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelSlice_ActualFill_Property" xml:space="preserve">
+    <value>スライスの塗りつぶし部分に使用する効果的なブラシを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelSlice_ActualOutline_Property" xml:space="preserve">
+    <value>スライスのストローク部分に使用する効果的なブラシを取得または設定します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="XamFunnelSlice_LabelVisibility_Property" xml:space="preserve">
+    <value>インナー ラベルが表示されるかどうかを設定または取得します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_ErrorXMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterBase_ErrorYMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="AnchoredCategorySeries_ErrorMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualBrush_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のブラシを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualCursor_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のカーソルを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualDashArray_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の点線の配列を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualDashCap_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の破線キャップを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualEffect_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の効果を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualEndCap_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の終了キャップを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualIsHitTestVisible_Property" xml:space="preserve">
+    <value>シリーズがマウス イベントを受け取るかどうかの実際の値を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualLegend_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の凡例を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualLegendItemBadgeTemplate_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の凡例項目のバッジ テンプレートを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualLegendItemTemplate_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際の凡例項目のテンプレートを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualLegendItemVisibility_Property" xml:space="preserve">
+    <value>シリーズの凡例項目の実際の表示設定を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualMarkerBrush_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のマーカー ブラシを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualMarkerOutline_Property" xml:space="preserve">
+    <value>シリーズの実際のマーカー アウトラインを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualMarkerStyle_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のマーカー スタイルを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualMarkerTemplate_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のマーカー テンプレートを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualMarkerType_Property" xml:space="preserve">
+    <value>シリーズによって使用される実際のマーカータイプ設定を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualOpacity_Property" xml:space="preserve">
+    <value>シリーズの不透明度を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualOpacityMask_Property" xml:space="preserve">
+    <value>シリーズの不透明マスクを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualOutline_Property" xml:space="preserve">
+    <value>シリーズ アウトラインを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualRadiusX_Property" xml:space="preserve">
+    <value>シリーズの実際の角の半径を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualRadiusY_Property" xml:space="preserve">
+    <value>シリーズの実際の角の半径を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualStartCap_Property" xml:space="preserve">
+    <value>シリーズの開始キャップを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualStyle_Property" xml:space="preserve">
+    <value>シリーズ スタイルを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualToolTip_Property" xml:space="preserve">
+    <value>シリーズ ツールチップを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualTransitionEasingFunction_Property" xml:space="preserve">
+    <value>シリーズ トランジション イージング関数を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualTransitionDuration_Property" xml:space="preserve">
+    <value>シリーズ トランジションの期間を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualUseLightweightMarkers_Property" xml:space="preserve">
+    <value>軽量なマーカーがシリーズで使用されるかどうかを取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualVisibility_Property" xml:space="preserve">
+    <value>積層フラグメントの実際の表示設定を取得します。</value>
+  </data>
+  <data name="LegendBase_ContentPresenter_Property" xml:space="preserve">
+    <value>現在の Legend オブジェクトの ContentPresenter を取得します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalCalculatorReference_Property" xml:space="preserve">
+    <value>依存する水平の計算に参照値を指定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalCalculatorReference_Property" xml:space="preserve">
+    <value>依存する垂直の計算に参照値を指定します。</value>
+  </data>
+  <data name="SeriesViewer_Series_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの子の DataChartSeries を取得します。このコレクションは自動的に保持されます。ユーザーは変更しないことをお勧めします。</value>
+  </data>
+  <data name="SeriesViewer_CrosshairPoint_Property" xml:space="preserve">
+    <value>これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_Legend_Property" xml:space="preserve">
+    <value>SeriesViewer プロパティで設定されていない場合、この XamDataChart のすべてのシリーズに使用する凡例を取得または設定します。</value>
+  </data>
+  <data name="SeriesViewer_HorizontalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの水平 Zoombar。</value>
+  </data>
+  <data name="SeriesViewer_VerticalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの垂直 Zoombar。</value>
+  </data>
+  <data name="SeriesViewer_WindowRect_Property" xml:space="preserve">
+    <value>現在表示されているチャート部分を表す矩形。</value>
+  </data>
+  <data name="SeriesViewer_HorizontalZoomable_Property" xml:space="preserve">
+    <value>現在の Chart の水平ズーム可否を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_HorizontalZoombarVisibility_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの水平ズーム バーの表示/非表示を設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_VerticalZoomable_Property" xml:space="preserve">
+    <value>現在の Chart の垂直ズーム可否を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_VerticalZoombarVisibility_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの垂直ズーム バーの表示/非表示を設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_ActualSyncLink_Property" xml:space="preserve">
+    <value>チャートを同期するために使用する同期マネージャーを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_CrosshairVisibility_Property" xml:space="preserve">
+    <value>現在の Chart の十字線の表示/非表示のオーバーライドを設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PlotAreaBorderBrush_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の境界として使用するブラシを取得または設定します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PlotAreaBorderThickness_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の境界の太さを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PlotAreaBackground_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのプロット領域の背景として使用するブラシを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PlotAreaMinWidth_Property" xml:space="preserve">
+    <value>プロット領域のサイズのために使用される最小幅を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PlotAreaMinHeight_Property" xml:space="preserve">
+    <value>プロット領域のサイズのために使用される最小の高さを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_DefaultInteraction_Property" xml:space="preserve">
+    <value>DefaultInteraction プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_DragModifier_Property" xml:space="preserve">
+    <value>現在の Chart の DragModifier プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PanModifier_Property" xml:space="preserve">
+    <value>現在の Chart の PanModifier プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PreviewRect_Property" xml:space="preserve">
+    <value>プレビュー矩形を設定または取得します。</value>
+  </data>
+  <data name="SeriesViewer_WindowPositionHorizontal_Property" xml:space="preserve">
+    <value>水平スクロールの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_WindowPositionVertical_Property" xml:space="preserve">
+    <value>垂直スクロールの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_WindowScaleHorizontal_Property" xml:space="preserve">
+    <value>水平ズームのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_WindowScaleVertical_Property" xml:space="preserve">
+    <value>垂直ズームのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_ContentPresenter_Property" xml:space="preserve">
+    <value>現在の Chart のルート ContentPresenter を取得します。</value>
+  </data>
+  <data name="SeriesViewer_CrosshairLineStyle_Property" xml:space="preserve">
+    <value>現在の Chart の十字線を表示するために使用するスタイルを設定または取得します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PreviewPathStyle_Property" xml:space="preserve">
+    <value>ウィンドウ プレビューのシャドーを表示するために使用されるスタイルを取得または設定します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_ToolTipStyle_Property" xml:space="preserve">
+    <value>現在の SeriesViewer の ToolTipStyle プロパティを設定または取得します。</value>
+  </data>
+  <data name="SeriesViewer_ZoombarStyle_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトのズーム バーを表示するために使用するスタイルを取得または設定します。
+
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_CircleMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに円マーカーを使用するためのテンプレートを取得または設定します。</value>
+  </data>
+  <data name="SeriesViewer_TriangleMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに三角形マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PyramidMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートにピラミッド マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_SquareMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに四角マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_DiamondMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートにダイアモンド マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PentagonMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに五角形マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_HexagonMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに六角形マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_TetragramMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートにテトラグラム マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_PentagramMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに星形五角形マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_HexagramMarkerTemplate_Property" xml:space="preserve">
+    <value>チャートに六線星形マーカーを使用するためのテンプレートを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ErrorBarSettingsBase_ErrorBarCapLength_Property" xml:space="preserve">
+    <value>各誤差範囲のキャップ長さ (ピクセル) を決定します。</value>
+  </data>
+  <data name="SeriesViewerView_HorizontalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの水平 Zoombar。</value>
+  </data>
+  <data name="SeriesViewerView_VerticalZoombar_Property" xml:space="preserve">
+    <value>現在の Chart オブジェクトの垂直 Zoombar。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_Index_Property" xml:space="preserve">
+    <value>シリーズのインデックスを取得します。</value>
+  </data>
+  <data name="Axis_SeriesViewer_Property" xml:space="preserve">
+    <value>現在の Axis オブジェクトの ChartArea を取得します。</value>
+  </data>
+  <data name="ChartCursorEventArgs_SeriesViewer_Property" xml:space="preserve">
+    <value>現在のイベントに関連付けられた Chart を取得します。</value>
+  </data>
+  <data name="Series_SeriesViewer_Property" xml:space="preserve">
+    <value>現在のチャートのチャート シリーズ オブジェクトの Chart を取得します。</value>
+  </data>
+  <data name="FinancialIndicator_IgnoreFirst_Property" xml:space="preserve">
+    <value>インジケータの開始を非表示にするための値の数を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="FinancialOverlay_IgnoreFirst_Property" xml:space="preserve">
+    <value>インジケータの開始を非表示にするための値の数を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalErrorBarStyle_Property" xml:space="preserve">
+    <value>HorizontalErrorBarStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalErrorBarStyle_Property" xml:space="preserve">
+    <value>VerticalErrorBarStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="CategoryErrorBarSettings_EnableErrorBars_Property" xml:space="preserve">
+    <value>有効にする誤差範囲を決定します: なし、プラス 1、マイナス 1、または両方</value>
+  </data>
+  <data name="CategoryErrorBarSettings_Calculator_Property" xml:space="preserve">
+    <value>誤差範囲の計算機を指定します。</value>
+  </data>
+  <data name="CategoryErrorBarSettings_Stroke_Property" xml:space="preserve">
+    <value>誤差範囲のストロークを決定します。</value>
+  </data>
+  <data name="CategoryErrorBarSettings_StrokeThickness_Property" xml:space="preserve">
+    <value>誤差範囲のストロークの太さを決定します。</value>
+  </data>
+  <data name="CategoryErrorBarSettings_ErrorBarStyle_Property" xml:space="preserve">
+    <value>ErrorBarStyle プロパティを取得または設定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_HorizontalErrorBarCapLength_Property" xml:space="preserve">
+    <value>各誤差範囲キャップの長さ (ピクセル) を決定します。</value>
+  </data>
+  <data name="ScatterErrorBarSettings_VerticalErrorBarCapLength_Property" xml:space="preserve">
+    <value>垂直の各誤差範囲キャップの長さ (ピクセル) を決定します。</value>
+  </data>
+  <data name="SeriesViewer_WindowRectMinWidth_Property" xml:space="preserve">
+    <value>固定される前のウィンドウ矩形の最小幅を取得または設定します。
+ビュアーへ更にズームすることを許可する場合は、この値を減らします。
+この値が小さすぎると、フローティング ポイントの計算間違いによるグラフィックに問題が発生する場合があります。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_ActualWindowPositionHorizontal_Property" xml:space="preserve">
+    <value>水平ズームバーの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_ActualWindowPositionVertical_Property" xml:space="preserve">
+    <value>垂直ズームバーの位置を決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_ActualWindowScaleHorizontal_Property" xml:space="preserve">
+    <value>水平ズームバーのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="SeriesViewer_ActualWindowScaleVertical_Property" xml:space="preserve">
+    <value>垂直ズームバーのスケールを決定する 0 ～ 1 の数。</value>
+  </data>
+  <data name="CategoryErrorBarSettings_ErrorBarCapLength_Property" xml:space="preserve">
+    <value>各誤差範囲キャップの長さ (ピクセル) を決定します。</value>
+  </data>
+  <data name="XamDataChart_GridZIndex_Property" xml:space="preserve">
+    <value>グリッドの表示に使用するインデックスを取得します。</value>
+  </data>
+  <data name="XamDataChart_SeriesZIndex_Property" xml:space="preserve">
+    <value>シリーズの表示に使用するインデックスを取得します。</value>
+  </data>
+  <data name="Series_View_Property" xml:space="preserve">
+    <value>シリーズに関連付けられたビューを取得または設定します。</value>
+  </data>
+  <data name="Series_SyncLink_Property" xml:space="preserve">
+    <value>シリーズに関連付けられた同期リンクを取得または設定します。</value>
+  </data>
+  <data name="Series_ToolTipFormatter_Property" xml:space="preserve">
+    <value>シリーズに関連付けられたツールチップ フォーマッターを取得します。</value>
+  </data>
+  <data name="RadialAxisLabelPanel_RotationCenter_Property" xml:space="preserve">
+    <value>パネルの回転の中心を取得または設定します。</value>
+  </data>
+  <data name="RadialAxisLabelPanel_CrossingAngle_Property" xml:space="preserve">
+    <value>パネルの交差する角度を取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_StartCap_Property" xml:space="preserve">
+    <value>開始キャップを取得または設定します。</value>
+  </data>
+  <data name="StackedSeriesCreatedEventArgs_EndCap_Property" xml:space="preserve">
+    <value>終了キャップを取得または設定します。</value>
+  </data>
+  <data name="XamFunnelSlice_Owner_Property" xml:space="preserve">
+    <value>スライスのオーナー。</value>
+  </data>
+  <data name="SyncLink_SyncChannel_Property" xml:space="preserve">
+    <value>関連する同期チャネルの名前。</value>
+  </data>
+  <data name="SeriesViewer_ViewportRect_Property" xml:space="preserve">
+    <value>プロット エリアの物理的なディメンションで、チャートに関連付けられたビューポート矩形を取得します。</value>
+  </data>
+  <data name="SeriesViewer_WindowResponse_Property" xml:space="preserve">
+    <value>ユーザーによるパニングとズーム: ユーザー アクションが発生しているときに表示をただちに更新するかどうか、またはユーザーアクションが完了するまで更新を遅延するかどうか。ユーザー アクションは、パニングやズームが発生する要因となるマウス ドラッグなどのアクションです。</value>
+  </data>
+  <data name="SeriesViewer_SyncChannel_Property" xml:space="preserve">
+    <value>チャートに使用する同期チャネルを取得または設定します。</value>
+  </data>
+  <data name="SeriesViewer_OverviewPlusDetailPaneVisibility_Property" xml:space="preserve">
+    <value>OverviewPlusDetailPane の表示状態。</value>
+  </data>
+  <data name="SeriesViewer_OverviewPlusDetailPaneStyle_Property" xml:space="preserve">
+    <value>OverviewPlusDetailPane に適用するスタイル。</value>
+  </data>
+  <data name="SeriesViewer_OverviewPlusDetailPaneHorizontalAlignment_Property" xml:space="preserve">
+    <value>OverviewPlusDetailPane の水平方向の配置。</value>
+  </data>
+  <data name="SeriesViewer_OverviewPlusDetailPaneVerticalAlignment_Property" xml:space="preserve">
+    <value>OverviewPlusDetailPane の垂直方向の配置。</value>
+  </data>
+  <data name="SeriesViewer_ActualWindowRect_Property" xml:space="preserve">
+    <value>現在のズーム レベルを表す長方形ウィンドウの実際の値を取得します。</value>
+  </data>
+  <data name="SeriesViewerView_PlotAreaViewport_Property" xml:space="preserve">
+    <value>プロット エリアのビューポートを取得します。</value>
+  </data>
+  <data name="SeriesViewerView_CurrentModifiers_Property" xml:space="preserve">
+    <value>現在押されているキーボード モディファイヤーを表します。</value>
+  </data>
+  <data name="DoubleColumn_Values_Property" xml:space="preserve">
+    <value>2 つの柱状チャートの値を取得または設定します。</value>
+  </data>
+  <data name="StringColumn_Values_Property" xml:space="preserve">
+    <value>文字列柱状チャートの値を取得または設定します。</value>
+  </data>
+  <data name="ObjectColumn_Values_Property" xml:space="preserve">
+    <value>オブジェクト柱状チャートの値。</value>
+  </data>
+  <data name="IntColumn_Values_Property" xml:space="preserve">
+    <value>柱状チャートの値。</value>
+  </data>
+  <data name="RenderSurface_Surface_Property" xml:space="preserve">
+    <value>描画するサーフェス。</value>
+  </data>
+  <data name="NumericAxisBase_ActualIsLogarithmic_Property" xml:space="preserve">
+    <value>軸に有効な対数目盛があるかどうかを決定します。</value>
+  </data>
+  <data name="NumericAxisBase_HasUserMinimum_Property" xml:space="preserve">
+    <value>軸にユーザー定義の最小値があるかどうかを決定します。</value>
+  </data>
+  <data name="NumericAxisBase_HasUserMaximum_Property" xml:space="preserve">
+    <value>軸にユーザー定義の最大値があるかどうかを決定します。</value>
+  </data>
+  <data name="NumericAxisBase_TickmarkValues_Property" xml:space="preserve">
+    <value>目盛値を取得または設定します。</value>
+  </data>
+  <data name="NumericAxisBase_ActualTickmarkValues_Property" xml:space="preserve">
+    <value>実際の目盛値を取得または設定します。</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_ActualMinimumValue_Property" xml:space="preserve">
+    <value>強制的に最少値を取得します</value>
+  </data>
+  <data name="CategoryDateTimeXAxis_ActualMaximumValue_Property" xml:space="preserve">
+    <value>強制的に最大値を取得します。</value>
+  </data>
+  <data name="StackedFragmentSeries_ActualThickness_Property" xml:space="preserve">
+    <value>積層フラグメントの幅を取得または設定します。</value>
+  </data>
+  <data name="AngleAxisLabelPanel_ClipLabelsToBounds_Property" xml:space="preserve">
+    <value>ラベルが境界線でクリップされるどうかを取得または設定します。</value>
+  </data>
+  <data name="AngleAxisLabelPanel_GetPoint_Property" xml:space="preserve">
+    <value>ポイントの位置を計算するために使用する関数を取得または設定します。</value>
+  </data>
+  <data name="SliceClickEventArgs_DataContext_Property" xml:space="preserve">
+    <value>スライス データ  コンテキストを取得します。</value>
+  </data>
+  <data name="HorizontalAnchoredCategorySeries_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HorizontalAnchoredCategorySeries_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="LogarithmicTickmarkValues_LogarithmBase_Property" xml:space="preserve">
+    <value>対数ベースを取得または設定します。</value>
+  </data>
+  <data name="HorizontalStackedSeriesBase_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HorizontalStackedSeriesBase_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ColumnFragment_RadiusX_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の x 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="ColumnFragment_RadiusY_Property" xml:space="preserve">
+    <value>列の角を丸めるために使用される楕円の y 半径を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="VerticalAnchoredCategorySeries_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="VerticalAnchoredCategorySeries_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HorizontalRangeCategorySeries_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HorizontalRangeCategorySeries_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="VerticalStackedSeriesBase_XAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="VerticalStackedSeriesBase_YAxis_Property" xml:space="preserve">
+    <value>現在の CategorySeries オブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="StraightNumericAxisBase_ScaleMode_Property" xml:space="preserve">
+    <value>軸スケール モードを取得または設定します。</value>
+  </data>
+  <data name="StraightNumericAxisBase_Scaler_Property" xml:space="preserve">
+    <value>軸スケーラーを取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_VisibleMinimum_Property" xml:space="preserve">
+    <value>目盛の最小値を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_VisibleMaximum_Property" xml:space="preserve">
+    <value>目盛の最大値を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_ActualMinimum_Property" xml:space="preserve">
+    <value>実際の目盛の最小値を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_ActualMaximum_Property" xml:space="preserve">
+    <value>実際の目盛の最大値を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_Resolution_Property" xml:space="preserve">
+    <value>目盛のレンダリング解像度を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_HasUserInterval_Property" xml:space="preserve">
+    <value>ユーザーがカスタムな間隔を設定したかどうかを指定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_UserInterval_Property" xml:space="preserve">
+    <value>ユーザー定義の目盛間隔を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_IntervalOverride_Property" xml:space="preserve">
+    <value>軸によって返される間隔をオーバーライドを許可します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_MinorCountOverride_Property" xml:space="preserve">
+    <value>軸によって返される複線数のオーバーライドを許可します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_Mode2GroupCount_Property" xml:space="preserve">
+    <value>Mode2 カテゴリー モードのシリーズ数を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_Viewport_Property" xml:space="preserve">
+    <value>チャートのビューポートを取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_Window_Property" xml:space="preserve">
+    <value>チャートのウィンドウを取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_IsInverted_Property" xml:space="preserve">
+    <value>目盛が反転するかどうかを取得するまたは設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_GetScaledValue_Property" xml:space="preserve">
+    <value>スケール値を計算するために使用する関数を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_GetGroupCenter_Property" xml:space="preserve">
+    <value>グループ化を使用するシリーズのグループの中心を計算するための関数を取得または設定します。</value>
+  </data>
+  <data name="TickmarkValuesInitializationParameters_GetUnscaledGroupCenter_Property" xml:space="preserve">
+    <value>グループ化を使用するシリーズのスケールなしのグループの中心を計算するための関数を取得または設定します。</value>
+  </data>
+  <data name="FunnelSliceDataContext_ItemOutline_Property" xml:space="preserve">
+    <value>項目に色を付けるためのアウトラインを取得または設定します。</value>
+  </data>
+  <data name="Axis_IsDisabled_Property" xml:space="preserve">
+    <value>IsDisabled プロパティを取得または設定します。true の場合、軸は描画されません。
+これは依存プロパティです。</value>
+  </data>
+  <data name="AxisLabelSettings_Axis_Property" xml:space="preserve">
+    <value>これらのラベル設定を含む軸への参照。</value>
+  </data>
+  <data name="SeriesViewer_EffectiveViewport_Property" xml:space="preserve">
+    <value>余白が減算された後に有効なビューポイント領域を表す EffectiveViewport 四角形を取得します。</value>
+  </data>
+  <data name="ScalerParams_WindowRect_Property" xml:space="preserve">
+    <value>現在のズームとパンニングを表す四角形。</value>
+  </data>
+  <data name="ScalerParams_ViewportRect_Property" xml:space="preserve">
+    <value>レイアウト領域に相対する四角形。スケール座標の参照フレーム。</value>
+  </data>
+  <data name="ScalerParams_EffectiveViewportRect_Property" xml:space="preserve">
+    <value>動作が定義されている場合、ViewportRect がスケーリングを目的として強制されている四角形。通常 ViewportRect のサブエリアです。
+Rect.Empty の値は、EffectiveViewportRect が ViewportRect と同じであることををデフォルトで暗黙に示します。</value>
+  </data>
+  <data name="ScalerParams_IsInverted_Property" xml:space="preserve">
+    <value>スケールを反転するかどうかを決定するブール値。</value>
+  </data>
+  <data name="HighDensityScatterSeries_XAxis_Property" xml:space="preserve">
+    <value>現在のオブジェクトの有効な X 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_YAxis_Property" xml:space="preserve">
+    <value>現在のオブジェクトの有効な Y 軸を取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_XMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_YMemberPath_Property" xml:space="preserve">
+    <value>現在のシリーズ オブジェクトの値マッピング プロパティを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_UseBruteForce_Property" xml:space="preserve">
+    <value>ブルート フォース モードを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_ProgressiveLoad_Property" xml:space="preserve">
+    <value>ブルート フォース モードを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_MouseOverEnabled_Property" xml:space="preserve">
+    <value>マウスの移動が有効かどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_UseSquareCutoffStyle_Property" xml:space="preserve">
+    <value>描画トラバーサルを中止する際に、結合領域の図形の代わりに四角を使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_MaxRenderDepth_Property" xml:space="preserve">
+    <value>ブルート フォース モードを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_HeatMinimum_Property" xml:space="preserve">
+    <value>ブルート フォース モードを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="HighDensityScatterSeries_HeatMaximum_Property" xml:space="preserve">
+    <value>ブルート フォース モードを使用するかどうかを取得または設定します。
+ 
+これは依存プロパティです。</value>
+  </data>
+  <data name="SeriesViewer_Properties" xml:space="preserve">
+    <value>SeriesViewer プロパティ</value>
+  </data>
+</root>

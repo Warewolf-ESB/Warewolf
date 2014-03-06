@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infragistics.Math.Matrix">
+    <Position X="0.75" Y="6" Width="2.75" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Field Name="Empty" Hidden="true" />
+      <Method Name="FindValues" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IEnumerable&lt;double&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="ToString_Helper" Hidden="true" />
+      <Method Name="ToString_HelperSubscript" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>hEIGhAgAAQQgABwM6AeXAgMBAA2AAIAgACoAAEIgJzA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Matrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.MatrixBase">
+    <Position X="7" Y="1.5" Width="1.75" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="dimensions" Hidden="true" />
+      <Property Name="Dimensions" Hidden="true" />
+      <Method Name="ICollection.CopyTo" Hidden="true" />
+      <Property Name="ICollection.Count" Hidden="true" />
+      <Property Name="ICollection.IsSynchronized" Hidden="true" />
+      <Property Name="ICollection.SyncRoot" Hidden="true" />
+      <Field Name="length" Hidden="true" />
+      <Method Name="MatrixBase" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AABRAAAADAAEgBAEgkAAAAJAABAACYAAAAEAAAAAIAI=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\MatrixBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Compute">
+    <Position X="21.5" Y="2.25" Width="2.75" />
+    <Members>
+      <Method Name="Determinant_Helper" Hidden="true" />
+      <Method Name="GetString" Hidden="true" />
+      <Method Name="MatrixProductHelper" Hidden="true" />
+      <Method Name="RandomHelper" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gUCGFgBAGZgkwdhEnOBURCcx9C2IHbAMwCsSYE4hhAY=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Compute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Math.BooleanMatrix">
+    <Position X="11" Y="6" Width="2.5" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IEnumerable&lt;bool&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="ToString_Helper" Hidden="true" />
+      <Method Name="ToString_HelperSubscript" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>KAAEACAAAAAAABAMihISACAAAAAAAIAiQAIAAAAAIjA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\BooleanMatrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.BooleanVector">
+    <Position X="7.5" Y="6" Width="3.25" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IEnumerable&lt;bool&gt;.GetEnumerator" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAAAACAAAAAAABAMihISACAAAAABAIAiAAACAAgAMjA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\BooleanVector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.ComplexMatrix">
+    <Position X="14.25" Y="6" Width="3.25" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Method Name="FindValues" Hidden="true" />
+      <Method Name="IEnumerable&lt;Complex&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="ToString_Helper" Hidden="true" />
+      <Method Name="ToString_HelperSubscript" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gEIGBAAAAQAgABwM7A/XQgNBAA2AAIAgACoAAEIgJzA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\ComplexMatrix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.ComplexVector">
+    <Position X="3.75" Y="6" Width="3.25" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Method Name="FindValues" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IEnumerable&lt;Complex&gt;.GetEnumerator" Hidden="true" />
+      <Method Name="Reverse" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gEICBAAAAQAgABws7AfXQgMBAA2AAIAgACgSAEogJzA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\ComplexVector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infragistics.Math.Constant" Collapsed="true">
+    <Position X="24.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAIAAAAAAAAACAAAAAAAQABAAAABAAiAAACA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Constant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infragistics.Math.Vector">
+    <Position X="17.75" Y="6" Width="2.75" />
+    <Members>
+      <Method Name="CopyTo" Hidden="true" />
+      <Field Name="elements" Hidden="true" />
+      <Property Name="Elements" Hidden="true" />
+      <Method Name="FindValues" Hidden="true" />
+      <Method Name="ICloneable.Clone" Hidden="true" />
+      <Method Name="IEnumerable&lt;double&gt;.GetEnumerator" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>hEICBAgAAQAgABwM6AeXAgMBAA2AAIAgACgCCEogJzA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Vector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Infragistics.Math.Complex" BaseTypeListCollapsed="true">
+    <Position X="24.75" Y="6" Width="2" />
+    <Members>
+      <Method Name="IComparable.CompareTo" Hidden="true" />
+      <Method Name="IComparable&lt;Complex&gt;.CompareTo" Hidden="true" />
+      <Field Name="im" Hidden="true" />
+      <Field Name="re" Hidden="true" />
+      <Method Name="TryParseHelper_Factor" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIIgAAAQARAAEgAE4A+DAgAAAgAAgIAAAABAAAAAByA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Complex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Enum Name="Infragistics.Math.ComparisonType" Collapsed="true">
+    <Position X="8.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAABAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAgACA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Math.ConvolutionType" Collapsed="true">
+    <Position X="10" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAIAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Math.FindValuesType" Collapsed="true">
+    <Position X="11.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Math.StatisticsType" Collapsed="true">
+    <Position X="8.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Infragistics.Math.VectorType" Collapsed="true">
+    <Position X="10" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Work\NetAdvantage\DEV\Common\Math\v01\Source\PublicModel\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

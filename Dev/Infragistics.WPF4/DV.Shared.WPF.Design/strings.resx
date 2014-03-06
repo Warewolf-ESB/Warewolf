@@ -1,0 +1,1026 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AxisBase_AutoRange_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether the Minimum, Maximum and Unit are automatically calculated. To create manual range AutoRange property has to be set to false and Minimum, Maximum and Unit have to be set.</value>
+  </data>
+  <data name="AxisBase_ScrollPosition_Property" xml:space="preserve">
+    <value>Gets or sets the position of the current view inside the scrollable area, expressed as a value between 0 and 1.</value>
+  </data>
+  <data name="AxisBase_ScrollScale_Property" xml:space="preserve">
+    <value>Gets or sets the scale of the scrollable area, expressed as a value between 0 and 1.</value>
+  </data>
+  <data name="Axis_Properties" xml:space="preserve">
+    <value>Axis Properties</value>
+  </data>
+  <data name="BrushCollection_InterpolationMode_Property" xml:space="preserve">
+    <value>Sets or gets the interpolation mode used to interpolate brushes.</value>
+  </data>
+  <data name="CultureInfoHelper_CultureToUse_Property" xml:space="preserve">
+    <value>Gets the culture to use.</value>
+  </data>
+  <data name="DataMappingPair_ExternalName_Property" xml:space="preserve">
+    <value>Gets or sets the external name for the current DataMappingPair object.</value>
+  </data>
+  <data name="DataMappingPair_InternalName_Property" xml:space="preserve">
+    <value>Gets or sets the internal name for the current DataMappingPair object.</value>
+  </data>
+  <data name="FastItemsSourceEventArgs_Action_Property" xml:space="preserve">
+    <value>Gets the action that caused the event.</value>
+  </data>
+  <data name="FastItemsSourceEventArgs_Count_Property" xml:space="preserve">
+    <value>Gets the number of modified rows.</value>
+  </data>
+  <data name="FastItemsSourceEventArgs_Position_Property" xml:space="preserve">
+    <value>Gets the position of the modified rows.</value>
+  </data>
+  <data name="FastItemsSourceEventArgs_PropertyName_Property" xml:space="preserve">
+    <value>Gets the name of the modified property.</value>
+  </data>
+  <data name="FastItemsSource_Count_Property" xml:space="preserve">
+    <value>Gets the number of items in the current FastItemsSource object.</value>
+  </data>
+  <data name="FastReflectionHelper_Invalid_Property" xml:space="preserve">
+    <value>Returns true if the fast reflection helper is invalid, probably due to a lack of a property name.</value>
+  </data>
+  <data name="FastReflectionHelper_PropertyName_Property" xml:space="preserve">
+    <value>Gets or sets the property name of the current FastReflectionHelper object.</value>
+  </data>
+  <data name="FastReflectionHelper_UseTraditionalReflection_Property" xml:space="preserve">
+    <value>Indicates that current FastReflectionHelper object is not using compiled expressions.</value>
+  </data>
+  <data name="FontSizeBestFitTextBlock_Text_Property" xml:space="preserve">
+    <value>The string of text to display inside the TextBlock.</value>
+  </data>
+  <data name="GeometryUtil_UnitBubble_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a bubble.</value>
+  </data>
+  <data name="GeometryUtil_UnitDiamond_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a diamond.</value>
+  </data>
+  <data name="GeometryUtil_UnitHexagon_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a hexagon.</value>
+  </data>
+  <data name="GeometryUtil_UnitHexagram_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a hexagram.</value>
+  </data>
+  <data name="GeometryUtil_UnitHourglass_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like an hourglass.</value>
+  </data>
+  <data name="GeometryUtil_UnitNone_Property" xml:space="preserve">
+    <value>Gets an empty Geometry.</value>
+  </data>
+  <data name="GeometryUtil_UnitPentagon_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a pentagon.</value>
+  </data>
+  <data name="GeometryUtil_UnitPentagram_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a pentagram.</value>
+  </data>
+  <data name="GeometryUtil_UnitPyramid_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a pyramid.</value>
+  </data>
+  <data name="GeometryUtil_UnitRaindrop_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a raindrop.</value>
+  </data>
+  <data name="GeometryUtil_UnitSquare_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a square.</value>
+  </data>
+  <data name="GeometryUtil_UnitTetragram_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a tetragram.</value>
+  </data>
+  <data name="GeometryUtil_UnitThermometer_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a thermometer.</value>
+  </data>
+  <data name="GeometryUtil_UnitTriangle_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a triangle.</value>
+  </data>
+  <data name="GeometryUtil_UnitTube_Property" xml:space="preserve">
+    <value>Gets a Geometry shaped like a tube.</value>
+  </data>
+  <data name="Groupable_AutoRescales_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether [auto rescales].</value>
+  </data>
+  <data name="Groupable_CanBeGrouped_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance can be grouped.</value>
+  </data>
+  <data name="Groupable_HorizontalAlignment_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal alignment.</value>
+  </data>
+  <data name="Groupable_Margin_Property" xml:space="preserve">
+    <value>Gets or sets the margin.</value>
+  </data>
+  <data name="Groupable_Parent_Property" xml:space="preserve">
+    <value>Gets or sets the parent.</value>
+  </data>
+  <data name="Groupable_VerticalAlignment_Property" xml:space="preserve">
+    <value>Gets or sets the vertical alignment.</value>
+  </data>
+  <data name="Group_Children_Property" xml:space="preserve">
+    <value>Gets or sets the children.</value>
+  </data>
+  <data name="Group_Count_Property" xml:space="preserve">
+    <value>Gets the number of elements contained in the System.Collections.Generic.ICollection`1.</value>
+  </data>
+  <data name="Group_IsReadOnly_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the System.Collections.Generic.ICollection`1 is read-only.</value>
+  </data>
+  <data name="InputContext_DocMousePosition_Property" xml:space="preserve">
+    <value>Gets or sets the doc mouse position.</value>
+  </data>
+  <data name="InputContext_Key_Property" xml:space="preserve">
+    <value>Gets or sets the key.</value>
+  </data>
+  <data name="InputContext_ViewMousePosition_Property" xml:space="preserve">
+    <value>Gets or sets the view mouse position.</value>
+  </data>
+  <data name="InteractionHelper_ClickCount_Property" xml:space="preserve">
+    <value>Gets the number of times the control was clicked.</value>
+  </data>
+  <data name="InteractionHelper_Control_Property" xml:space="preserve">
+    <value>Gets the control the InteractionHelper is targeting.</value>
+  </data>
+  <data name="InteractionHelper_IsFocused_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the control has focus.</value>
+  </data>
+  <data name="InteractionHelper_IsMouseOver_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the mouse is over the control.</value>
+  </data>
+  <data name="InteractionHelper_IsPressed_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the mouse button is pressed down
+ over the control.</value>
+  </data>
+  <data name="InteractionHelper_IsReadOnly_Property" xml:space="preserve">
+    <value>Gets a value indicating whether the read-only property is set.</value>
+  </data>
+  <data name="InteractiveControl_Canvas_Property" xml:space="preserve">
+    <value>Canvas containing the content of this InteractiveControl.</value>
+  </data>
+  <data name="InteractiveControl_CurrentTool_Property" xml:space="preserve">
+    <value>The current tool being used to handle interaction.</value>
+  </data>
+  <data name="InteractiveControl_DoubleClickTimer_Property" xml:space="preserve">
+    <value>Timer used to detect double-click actions.</value>
+  </data>
+  <data name="InteractiveControl_LastInput_Property" xml:space="preserve">
+    <value>Gets or sets the last input.</value>
+  </data>
+  <data name="InteractiveControl_MouseDownTools_Property" xml:space="preserve">
+    <value>A Collection of tools to handle MouseDown actions.</value>
+  </data>
+  <data name="InteractiveControl_MouseMoveTools_Property" xml:space="preserve">
+    <value>A Collection of tools to handle MouseMove actions.</value>
+  </data>
+  <data name="InteractiveControl_VisualElements_Property" xml:space="preserve">
+    <value>The collection of visual elements within this control.</value>
+  </data>
+  <data name="InteractiveElement_Cursor_Property" xml:space="preserve">
+    <value>Gets or sets the cursor.</value>
+  </data>
+  <data name="InteractiveElement_IsMouseCaptured_Property" xml:space="preserve">
+    <value>Indicates whether the mouse operation is being captured by this element.</value>
+  </data>
+  <data name="InteractiveElement_IsMouseOver_Property" xml:space="preserve">
+    <value>Indicates whether the mouse is currently over this element.</value>
+  </data>
+  <data name="InteractiveElement_IsSelectable_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance is selectable.</value>
+  </data>
+  <data name="InteractiveElement_IsSelected_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this instance is selected.</value>
+  </data>
+  <data name="MarkBase_Fill_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the Shape outline.</value>
+  </data>
+  <data name="MarkBase_StrokeThickness_Property" xml:space="preserve">
+    <value>Gets or sets the width of the Shape outline.</value>
+  </data>
+  <data name="MarkBase_Stroke_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the Shape outline.</value>
+  </data>
+  <data name="MarkBase_TickMarkSize_Property" xml:space="preserve">
+    <value>Gets or sets the TickMark size. This is scaling factor applied to the default TickMark size. Value 1 is default size, a value between 0 and 1 decrease the default TickMark size and a value greater than 1 increase the default TickMark size.</value>
+  </data>
+  <data name="Mark_Properties" xml:space="preserve">
+    <value>Mark Properties</value>
+  </data>
+  <data name="PriorityQueue`1_Count_Property" xml:space="preserve">
+    <value>Gets the number of items in the current priority queue.</value>
+  </data>
+  <data name="Range_Maximum_Property" xml:space="preserve">
+    <value>Gets or sets the maximum value of the Range.</value>
+  </data>
+  <data name="Range_Minimum_Property" xml:space="preserve">
+    <value>Gets or sets the minimum value of the Range.</value>
+  </data>
+  <data name="Range_Scale_Property" xml:space="preserve">
+    <value>Gets the scale of the Zoombar.</value>
+  </data>
+  <data name="Range_Scroll_Property" xml:space="preserve">
+    <value>Gets the scroll of the Zoombar.</value>
+  </data>
+  <data name="RectChangedEventArgs_NewRect_Property" xml:space="preserve">
+    <value>Gets the new rectangle.</value>
+  </data>
+  <data name="RectChangedEventArgs_OldRect_Property" xml:space="preserve">
+    <value>Gets the rectangle before the change.</value>
+  </data>
+  <data name="SerializableAttribute_SerializationType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the serialization.</value>
+  </data>
+  <data name="SerializablePropertyAttribute_SerializationType_Property" xml:space="preserve">
+    <value>Gets or sets the type of the serialization.</value>
+  </data>
+  <data name="ShapeElement_FrameworkElements_Property" xml:space="preserve">
+    <value>Gets or sets the framework elements.</value>
+  </data>
+  <data name="ShapeElement_FrameworkElement_Property" xml:space="preserve">
+    <value>Gets or sets the framework element.</value>
+  </data>
+  <data name="SmartPlacer_Bounds_Property" xml:space="preserve">
+    <value>Sets or gets the placement bounds for this smart placer. Setting the
+ placement bounds has no effect on previously placed objects.</value>
+  </data>
+  <data name="SmartPlacer_Fade_Property" xml:space="preserve">
+    <value>Sets or gets the fade exponent for ISmartPlaceables which exceed
+ the current overlap. Setting the
+ placement fade has no effect on previously placed objects.</value>
+  </data>
+  <data name="SmartPlacer_Overlap_Property" xml:space="preserve">
+    <value>Sets or gets the maximum permissible placed overlap expressed as a
+ percentage [0, 1] of each placeable's area. Setting the
+ placement overlap has no effect on previously placed objects.</value>
+  </data>
+  <data name="StringFormatter_CompiledFormatString_Property" xml:space="preserve">
+    <value>Gets the compiled format string for the current StringFormatter object.</value>
+  </data>
+  <data name="StringFormatter_FormatString_Property" xml:space="preserve">
+    <value>Gets or sets the raw formatting string for the current StringFormatter object.</value>
+  </data>
+  <data name="StringFormatter_PropertyNames_Property" xml:space="preserve">
+    <value>Gets the list of the property names referred to by the current StringFormatter object.</value>
+  </data>
+  <data name="StringResourceLocationAttribute_Location_Property" xml:space="preserve">
+    <value>The fully-qualified path to the assembly's string resources, e.g. Infragistics.Windows.DataVisualization.Strings.</value>
+  </data>
+  <data name="StripeBase_Fill_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the interior of the shape.</value>
+  </data>
+  <data name="StripeBase_StrokeThickness_Property" xml:space="preserve">
+    <value>Gets or sets the width of the Shape outline.</value>
+  </data>
+  <data name="StripeBase_Stroke_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the Shape outline.</value>
+  </data>
+  <data name="StripeGroupBase_Fill_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the interior of the shape.</value>
+  </data>
+  <data name="StripeGroupBase_StrokeThickness_Property" xml:space="preserve">
+    <value>Gets or sets the width of the Shape outline.</value>
+  </data>
+  <data name="StripeGroupBase_Stroke_Property" xml:space="preserve">
+    <value>Gets or sets the Brush that specifies how to paint the Shape outline.</value>
+  </data>
+  <data name="StripeGroupBase_Style_Property" xml:space="preserve">
+    <value>Gets or sets the style to be applied to the label during rendering.</value>
+  </data>
+  <data name="StripeGroupBase_Unit_Property" xml:space="preserve">
+    <value>Gets or sets a distance between two neighboring stripes. If value is 0 double axis unit value is used.</value>
+  </data>
+  <data name="StripeGroupBase_Width_Property" xml:space="preserve">
+    <value>Gets or sets a the stripe width</value>
+  </data>
+  <data name="StripeGroup_Properties" xml:space="preserve">
+    <value>StripeGroup Properties</value>
+  </data>
+  <data name="Stripe_Properties" xml:space="preserve">
+    <value>Stripe Properties</value>
+  </data>
+  <data name="ToolboxTabName" xml:space="preserve">
+    <value>NetAdvantage 10.1 Silverlight</value>
+  </data>
+  <data name="Tool_LastInput_Property" xml:space="preserve">
+    <value>Gets the last input.</value>
+  </data>
+  <data name="Tool_View_Property" xml:space="preserve">
+    <value>Gets the view.</value>
+  </data>
+  <data name="VisualElement_Bottom_Property" xml:space="preserve">
+    <value>Gets the y-axis position of the bottom side of the element.</value>
+  </data>
+  <data name="VisualElement_Bounds_Property" xml:space="preserve">
+    <value>Gets or sets the bounds.</value>
+  </data>
+  <data name="VisualElement_Center_Property" xml:space="preserve">
+    <value>Gets the center.</value>
+  </data>
+  <data name="VisualElement_Fill_Property" xml:space="preserve">
+    <value>Gets or sets the fill.</value>
+  </data>
+  <data name="VisualElement_Height_Property" xml:space="preserve">
+    <value>Gets or sets the height.</value>
+  </data>
+  <data name="VisualElement_Initializing_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether this Infragistics.VisualElement is initializing.</value>
+  </data>
+  <data name="VisualElement_Left_Property" xml:space="preserve">
+    <value>Gets the x-axis position of the left side of the element.</value>
+  </data>
+  <data name="VisualElement_Right_Property" xml:space="preserve">
+    <value>Gets the x-axis position of the right side of the element.</value>
+  </data>
+  <data name="VisualElement_StrokeDashArray_Property" xml:space="preserve">
+    <value>Gets or sets the stroke dash array.</value>
+  </data>
+  <data name="VisualElement_StrokeThickness_Property" xml:space="preserve">
+    <value>Gets or sets the stroke thickness.</value>
+  </data>
+  <data name="VisualElement_Stroke_Property" xml:space="preserve">
+    <value>Gets or sets the stroke.</value>
+  </data>
+  <data name="VisualElement_Top_Property" xml:space="preserve">
+    <value>Gets the y-axis position of the top side of the element.</value>
+  </data>
+  <data name="VisualElement_View_Property" xml:space="preserve">
+    <value>Gets the view.</value>
+  </data>
+  <data name="VisualElement_Visibility_Property" xml:space="preserve">
+    <value>Gets or sets the visibility.</value>
+  </data>
+  <data name="VisualElement_Width_Property" xml:space="preserve">
+    <value>Gets or sets the width of the bounds of the element.</value>
+  </data>
+  <data name="VisualElement_X_Property" xml:space="preserve">
+    <value>Gets or sets the x-axis position of the left side of the element.</value>
+  </data>
+  <data name="VisualElement_Y_Property" xml:space="preserve">
+    <value>Gets or sets the y-axis position of the top side of the element.</value>
+  </data>
+  <data name="VisualElement_ZIndex_Property" xml:space="preserve">
+    <value>Gets or sets the Z-index.</value>
+  </data>
+  <data name="XamDock_LayoutPriority_Property" xml:space="preserve">
+    <value>Gets or sets the layout priority.</value>
+  </data>
+  <data name="XamDock_Properties" xml:space="preserve">
+    <value>XamDock Properties</value>
+  </data>
+  <data name="XamDVSharedAssetLibrary" xml:space="preserve">
+    <value>Infragistics</value>
+  </data>
+  <data name="XamZoombar_HorizontalPreviewContent_Property" xml:space="preserve">
+    <value>Gets or sets the content of the horizontal preview.</value>
+  </data>
+  <data name="XamZoombar_HorizontalScaleLeftStyle_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal scale left element style.</value>
+  </data>
+  <data name="XamZoombar_HorizontalScaleRightStyle_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal scale right element style.</value>
+  </data>
+  <data name="XamZoombar_HorizontalScrollLeftStyle_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal scroll left style.</value>
+  </data>
+  <data name="XamZoombar_HorizontalScrollRightStyle_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal scroll right style.</value>
+  </data>
+  <data name="XamZoombar_HorizontalThumbStyle_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal thumb element style.</value>
+  </data>
+  <data name="XamZoombar_LargeChange_Property" xml:space="preserve">
+    <value>Gets or sets a value to be added to or subtracted from the values of the Range element.</value>
+  </data>
+  <data name="XamZoombar_Maximum_Property" xml:space="preserve">
+    <value>Gets or sets the maximum possible values of the Range element.</value>
+  </data>
+  <data name="XamZoombar_Minimum_Property" xml:space="preserve">
+    <value>Gets or sets the minimum possible values of the Range element.</value>
+  </data>
+  <data name="XamZoombar_Orientation_Property" xml:space="preserve">
+    <value>Gets or sets whether the Zoombar has an orientation of vertical or horizontal.</value>
+  </data>
+  <data name="XamZoombar_PreviewContentSize_Property" xml:space="preserve">
+    <value>Gets the size of the preview content.</value>
+  </data>
+  <data name="XamZoombar_Properties" xml:space="preserve">
+    <value>XamZoombar Properties</value>
+  </data>
+  <data name="XamZoombar_Range_Property" xml:space="preserve">
+    <value>Gets or sets the current Range element.</value>
+  </data>
+  <data name="XamZoombar_SmallChange_Property" xml:space="preserve">
+    <value>Gets or sets a value to be added to or subtracted from the values of the Range element.</value>
+  </data>
+  <data name="XamZoombar_VerticalPreviewContent_Property" xml:space="preserve">
+    <value>Gets or sets the content of the vertical preview.</value>
+  </data>
+  <data name="XamZoombar_VerticalScaleBottomStyle_Property" xml:space="preserve">
+    <value>Gets or sets the vertical scale bottom element style.</value>
+  </data>
+  <data name="XamZoombar_VerticalScaleTopStyle_Property" xml:space="preserve">
+    <value>Gets or sets the vertical scale top element style.</value>
+  </data>
+  <data name="XamZoombar_VerticalScrollBottomStyle_Property" xml:space="preserve">
+    <value>Gets or sets the vertical scroll bottom style.</value>
+  </data>
+  <data name="XamZoombar_VerticalScrollTopStyle_Property" xml:space="preserve">
+    <value>Gets or sets the vertical scroll top style.</value>
+  </data>
+  <data name="XamZoombar_VerticalThumbStyle_Property" xml:space="preserve">
+    <value>Gets or sets the vertical thumb element style.</value>
+  </data>
+  <data name="ZoomChangedEventArgs_NewRange_Property" xml:space="preserve">
+    <value>Gets the new range.</value>
+  </data>
+  <data name="ZoomChangeEventArgs_NewRange_Property" xml:space="preserve">
+    <value>Gets the new range.</value>
+  </data>
+  <data name="HalfEdge_Beg_Property" xml:space="preserve">
+    <value>B.</value>
+  </data>
+  <data name="HalfEdge_End_Property" xml:space="preserve">
+    <value>E.</value>
+  </data>
+  <data name="HalfEdgeCollection_Count_Property" xml:space="preserve">
+    <value>Count of HalfEdges in the set.</value>
+  </data>
+  <data name="Triangle_v0_Property" xml:space="preserve">
+    <value>v0.</value>
+  </data>
+  <data name="Triangle_v1_Property" xml:space="preserve">
+    <value>v1.</value>
+  </data>
+  <data name="Triangle_v2_Property" xml:space="preserve">
+    <value>v2.</value>
+  </data>
+  <data name="TriangleMesh_TriangleList_Property" xml:space="preserve">
+    <value>Collection of Triangles.</value>
+  </data>
+  <data name="TriangleMesh_EdgeCollection_Property" xml:space="preserve">
+    <value>Set of HalfEdges.</value>
+  </data>
+  <data name="TriangleMesh_Points_Property" xml:space="preserve">
+    <value>List of Points.</value>
+  </data>
+  <data name="ErrorMessageDisplayingEventArgs_ErrorMessage_Property" xml:space="preserve">
+    <value>Gets or sets the error message.</value>
+  </data>
+  <data name="SafeSetter_Value_Property" xml:space="preserve">
+    <value>Sets or gets the value that should be set on the target.</value>
+  </data>
+  <data name="SafeSetter_ValueAsXamlString_Property" xml:space="preserve">
+    <value>Sets or gets the Xaml string that will be hydrated and then set on the target.</value>
+  </data>
+  <data name="SafeSetter_PropertyName_Property" xml:space="preserve">
+    <value>Sets or gets the name of the property on the target that will be set.</value>
+  </data>
+  <data name="GroupBy_ItemsSource_Property" xml:space="preserve">
+    <value>The input data to the grouping operation.</value>
+  </data>
+  <data name="GroupBy_KeyMemberPath_Property" xml:space="preserve">
+    <value>The property to use as a key to flatten a group into properties on the row.</value>
+  </data>
+  <data name="GroupBy_ValueMemberPath_Property" xml:space="preserve">
+    <value>Gets or sets the property name that supplies numeric values.</value>
+  </data>
+  <data name="GroupBy_GroupMemberPath_Property" xml:space="preserve">
+    <value>The property to use as a the group by clause.</value>
+  </data>
+  <data name="SurfaceViewer_DragStroke_Property" xml:space="preserve">
+    <value>Sets or gets the DragStroke property.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_DragStrokeThickness_Property" xml:space="preserve">
+    <value>Sets or gets the DragStrokeThickness property.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_DragStrokeDashArray_Property" xml:space="preserve">
+    <value>Sets or gets the DragStrokeDashArray property.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_PreviewBrush_Property" xml:space="preserve">
+    <value>Sets or gets the PreviewBrush property.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_MinimumScale_Property" xml:space="preserve">
+    <value>Sets or gets the minimum allowed scale.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_MaximumScale_Property" xml:space="preserve">
+    <value>Sets or gets the maximum allowed scale.
+ This is a dependency property.</value>
+  </data>
+  <data name="SurfaceViewer_WorldRect_Property" xml:space="preserve">
+    <value>Gets or sets the world rect.</value>
+  </data>
+  <data name="SurfaceViewer_WindowRect_Property" xml:space="preserve">
+    <value>Gets or sets the window rect.</value>
+  </data>
+  <data name="SurfaceViewer_PreviewRect_Property" xml:space="preserve">
+    <value>Gets or sets the preview rect.</value>
+  </data>
+  <data name="SurfaceViewer_ViewportRect_Property" xml:space="preserve">
+    <value>Gets the ViewportRect property.</value>
+  </data>
+  <data name="StackPool`1_DeferDisactivate_Property" xml:space="preserve">
+    <value>Sets or gets the DeferDisactivate flag.</value>
+  </data>
+  <data name="StackPool`1_ActiveCount_Property" xml:space="preserve">
+    <value>Gets the number of active items in the current StackPool object.</value>
+  </data>
+  <data name="StackPool`1_InactiveCount_Property" xml:space="preserve">
+    <value>Gets the number of inactive (not including limbo) items in the
+ current StackPool object.</value>
+  </data>
+  <data name="StackPool`1_Create_Property" xml:space="preserve">
+    <value>Gets or sets the function used to create new items.</value>
+  </data>
+  <data name="StackPool`1_Deactivate_Property" xml:space="preserve">
+    <value>Gets or sets the function used to disactivate items.</value>
+  </data>
+  <data name="StackPool`1_Activate_Property" xml:space="preserve">
+    <value>Gets or sets the function used to activate items.</value>
+  </data>
+  <data name="StackPool`1_Destroy_Property" xml:space="preserve">
+    <value>Gets or sets the function used to destroy old items.</value>
+  </data>
+  <data name="XamThumbnail_Immediate_Property" xml:space="preserve">
+    <value>Sets or gets the Immediate property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_Properties" xml:space="preserve">
+    <value>XamThumbnail Properties</value>
+  </data>
+  <data name="XamThumbnail_World_Property" xml:space="preserve">
+    <value>Sets or gets the World property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_WorldStyle_Property" xml:space="preserve">
+    <value>Sets or gets the WorldStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_Window_Property" xml:space="preserve">
+    <value>Sets or gets the Window property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_WindowStyle_Property" xml:space="preserve">
+    <value>Sets or gets the WindowStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_Preview_Property" xml:space="preserve">
+    <value>Sets or gets the Preview property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamThumbnail_PreviewStyle_Property" xml:space="preserve">
+    <value>Sets or gets the PreviewStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="PropertyChangedEventArgs`1_OldValue_Property" xml:space="preserve">
+    <value>Gets the value before the change.</value>
+  </data>
+  <data name="PropertyChangedEventArgs`1_NewValue_Property" xml:space="preserve">
+    <value>Gets the value after the change.</value>
+  </data>
+  <data name="SurfaceViewer_NavigationSettings_Property" xml:space="preserve">
+    <value>Gets or sets the navigation settings.</value>
+  </data>
+  <data name="SurfaceViewer_MinimumZoomLevel_Property" xml:space="preserve">
+    <value>Gets or sets the minimum scale.</value>
+  </data>
+  <data name="SurfaceViewer_MaximumZoomLevel_Property" xml:space="preserve">
+    <value>Gets or sets the maximum scale.</value>
+  </data>
+  <data name="SurfaceViewer_ZoomLevel_Property" xml:space="preserve">
+    <value>Gets or sets the zoom level.</value>
+  </data>
+  <data name="NavigationSettings_AllowPan_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether the user can move the Infragistics.Controls.SurfaceViewer.</value>
+  </data>
+  <data name="NavigationSettings_AllowZoom_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether the user can zoom the Infragistics.Controls.SurfaceViewer.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_Immediate_Property" xml:space="preserve">
+    <value>Sets or gets the Immediate property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_Properties" xml:space="preserve">
+    <value>XamOverviewPlusDetailPane Properties</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_World_Property" xml:space="preserve">
+    <value>Sets or gets the World property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_WorldStyle_Property" xml:space="preserve">
+    <value>Sets or gets the WorldStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_Window_Property" xml:space="preserve">
+    <value>Sets or gets the Window property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_WindowStyle_Property" xml:space="preserve">
+    <value>Sets or gets the WindowStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_Preview_Property" xml:space="preserve">
+    <value>Sets or gets the Preview property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_PreviewStyle_Property" xml:space="preserve">
+    <value>Sets or gets the PreviewStyle property.
+ This is a dependency property.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_Mode_Property" xml:space="preserve">
+    <value>Gets or sets the mode.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_ThumbnailOpacity_Property" xml:space="preserve">
+    <value>Gets or sets the thumbnail opacity.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_ThumbnailWidth_Property" xml:space="preserve">
+    <value>Gets or sets the width of the thumbnail.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_ThumbnailHeight_Property" xml:space="preserve">
+    <value>Gets or sets the height of the thumbnail.</value>
+  </data>
+  <data name="XamOverviewPlusDetailPane_ShrinkToThumbnail_Property" xml:space="preserve">
+    <value>Gets or sets a value indicating whether is shrinking to thumbnail.</value>
+  </data>
+  <data name="AggregateValueSource_ItemsSource_Property" xml:space="preserve">
+    <value>Gets or sets the items source.</value>
+  </data>
+  <data name="AggregateValueSource_ValueMemberPath_Property" xml:space="preserve">
+    <value>Gets or sets the value member path.</value>
+  </data>
+  <data name="AggregateValueCollection_ItemsSources_Property" xml:space="preserve">
+    <value>Gets or sets the items sources.</value>
+  </data>
+  <data name="SurfaceViewer_OverviewPlusDetailPaneStyle_Property" xml:space="preserve">
+    <value>Gets or sets the overview plus detail pane style.</value>
+  </data>
+  <data name="SurfaceViewer_HorizontalOverviewPlusDetailPaneAlignment_Property" xml:space="preserve">
+    <value>Gets or sets the horizontal overview plus detail pane alignment.</value>
+  </data>
+  <data name="SurfaceViewer_VerticalOverviewPlusDetailPaneAlignment_Property" xml:space="preserve">
+    <value>Gets or sets the vertical overview plus detail pane alignment.</value>
+  </data>
+  <data name="SurfaceViewer_OverviewPlusDetailPaneVisibility_Property" xml:space="preserve">
+    <value>Gets or sets the overview plus detail pane visibility.</value>
+  </data>
+  <data name="SurfaceViewer_OverviewPlusDetailPane_Property" xml:space="preserve">
+    <value>Gets the overview plus detail pane.</value>
+  </data>
+  <data name="SurfaceViewer_Properties" xml:space="preserve">
+    <value>Surface Properties</value>
+  </data>
+  <data name="CommonSupportingControlsAssetLibrary" xml:space="preserve">
+    <value>Infragistics/Control Parts/Common</value>
+  </data>
+  <data xml:space="preserve" name="CloudMadeTileSource_Key_Property">
+    <value>Gets or sets the key.</value>
+  </data>
+  <data xml:space="preserve" name="CloudMadeTileSource_Parameter_Property">
+    <value>The CloudMade parameter, which can be used to select the style of tile images to return.</value>
+  </data>
+  <data xml:space="preserve" name="DesignServices_IsInDesignModeStatic_Property">
+    <value>Gets a value indicating whether the control is in design mode (running in Blend
+ or Visual Studio).</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_ContentPresenter_Property">
+    <value>The main ContentPresenter UIElement which comes from the ControlTemplate of this MultiScaleImage control.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_Properties">
+    <value>XamMultiScaleImage Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_Source_Property">
+    <value>The TileSource to use for tiles in this XamMultiScaleImage.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_ViewportOrigin_Property">
+    <value>The origin point of the MultiScaleImage Viewport.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_ViewportWidth_Property">
+    <value>The Width of the MultiScaleImage Viewport.</value>
+  </data>
+  <data xml:space="preserve" name="BingMapsTileSource_Token_Property">
+    <value>Gets or sets the bing maps token.</value>
+  </data>
+  <data xml:space="preserve" name="BingMapsTileSource_TilePath_Property">
+    <value>Gets or sets the map tile image uri.</value>
+  </data>
+  <data xml:space="preserve" name="BingMapsTileSource_SubDomains_Property">
+    <value>Gets or sets the collection of image uri subdomains.</value>
+  </data>
+  <data xml:space="preserve" name="BingMapsTileSource_CultureName_Property">
+    <value>Gets or sets the culture name for this tile source.</value>
+  </data>
+  <data xml:space="preserve" name="DoubleAnimator_TransitionProgress_Property">
+    <value>Sets or gets the value mapping property for the current series object.
+ 
+ This is a dependency property.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_SurfaceViewer_Property">
+    <value>Gets the surface viewer.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_PreviewCanvas_Property">
+    <value>Gets the preview canvas.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_PreviewViewportdRect_Property">
+    <value>Gets the preview viewportd rect.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_Viewport_Property">
+    <value>Gets the viewport.</value>
+  </data>
+  <data xml:space="preserve" name="FastItemsSource_Dispatcher_Property">
+    <value>The Dispatcher to defer refresh operations through, in order to avoid updates which are more frequent than necessary.</value>
+  </data>
+  <data xml:space="preserve" name="FastItemsSource_ItemsSource_Property">
+    <value>The enumerable list of objects to get data from.</value>
+  </data>
+  <data xml:space="preserve" name="Clipper_Target_Property">
+    <value>Destination target for clipped points.</value>
+  </data>
+  <data xml:space="preserve" name="Clipper_IsClosed_Property">
+    <value>Boolean value. True if the clipper is configured to perform closed-shape clipping, else false.</value>
+  </data>
+  <data xml:space="preserve" name="SurfaceViewer_ZoomLevelDisplayText_Property">
+    <value>The text to display in the callout above the zoom level slider.</value>
+  </data>
+  <data xml:space="preserve" name="SurfaceViewer_DefaultInteraction_Property">
+    <value>Gets or sets the default interaction state.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ZoomTo100ButtonVisibility_Property">
+    <value>Gets or sets the zoom to 100% button visibility.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ScaleToFitButtonVisibility_Property">
+    <value>Gets or sets the scale to fit button visibility.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_InteractionStatesToolVisibility_Property">
+    <value>Gets or sets the interaction states tool visibility.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ZoomTo100ButtonToolTip_Property">
+    <value>Gets or sets the zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ScaleToFitButtonToolTip_Property">
+    <value>Gets or sets the scale to fit button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_ImageWidth_Property">
+    <value>The width of the Deep Zoom image.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_Properties">
+    <value>XamMultiScaleTileSource Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_ImageHeight_Property">
+    <value>The height of the Deep Zoom image.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_TileWidth_Property">
+    <value>The width of the tiles in the Deep Zoom image.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_TileHeight_Property">
+    <value>The height of the tiles in the Deep Zoom image.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleTileSource_TileOverlap_Property">
+    <value>How much the tiles in the Deep Zoom image overlap.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_NoWiggle_Property">
+    <value>If true, no attempt will be made to shift the position of the smart placeable element.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_Element_Property">
+    <value>Gets or sets the associated FrameworkElement.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_ElementLocationResult_Property">
+    <value>The resulting location for Element after smart placement.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_OriginalLocation_Property">
+    <value>Gets or sets the original location for Element.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_DragPanButtonToolTip_Property">
+    <value>Gets or sets the zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_DragZoomButtonToolTip_Property">
+    <value>Gets or sets the zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ZoomInButtonToolTip_Property">
+    <value>Gets or sets the zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ZoomOutButtonToolTip_Property">
+    <value>Gets or sets the zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="GeometryUtil_UnitSmiley_Property">
+    <value>Gets a Geometry shaped like a smiling face.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_DefaultInteractionButtonToolTip_Property">
+    <value>The content to display as the tooltip over the button which changes the default interaction of the host control.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_ZoomLevelLargeChange_Property">
+    <value>The amount to increment the zoom level by when an interaction by the end user calls for a large change.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_IsZoomable_Property">
+    <value>Boolean indicating whether or not zooming is enabled on the OverviewPlusDetailPane.</value>
+  </data>
+  <data xml:space="preserve" name="XamOverviewPlusDetailPane_UpdatingSliderRanges_Property">
+    <value>Boolean indicating whether or not the slider ranges are currently being updated.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_DeferralHandler_Property">
+    <value>The deferral handler to use for deferred refreshes.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_UseSprings_Property">
+    <value>Boolean indicating whether or not dampening should be used during pan operations.</value>
+  </data>
+  <data xml:space="preserve" name="XamMultiScaleImage_SpringsEasingFunction_Property">
+    <value>The easing function to use for dampening during pan operations.</value>
+  </data>
+  <data xml:space="preserve" name="DoubleAnimator_IntervalMilliseconds_Property">
+    <value>The total number of milliseconds in the interval.</value>
+  </data>
+  <data xml:space="preserve" name="SRProvider_OPD_DefaultInteraction_Property">
+    <value>The default value of the XamOverviewPlusDetailPane's default interaction button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="SRProvider_OPD_ScaleToFit_Property">
+    <value>The default value of the XamOverviewPlusDetailPane's scale to fit button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="SRProvider_OPD_ZoomTo100_Property">
+    <value>The default value of the XamOverviewPlusDetailPane's zoom to 100% button tooltip.</value>
+  </data>
+  <data xml:space="preserve" name="SRProvider_OPD_ScaleToFit_SeriesViewer_Property">
+    <value>The deafult value of the XamOverviewPlusDetailPane's scale to fit button tooltip in the SeriesViewer styles.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_Opacity_Property">
+    <value>The Opacity of the underlying element.</value>
+  </data>
+  <data xml:space="preserve" name="SmartPlaceableWrapper`1_SmartPosition_Property">
+    <value>The SmartPosition being used for placement of the SmartPlaceableWrapper.</value>
+  </data>
+  <data xml:space="preserve" name="XamDockAutomationPeer_Dock_Property">
+    <value>A reference to the XamDock control.</value>
+  </data>
+  <data xml:space="preserve" name="XamDockAutomationPeer_Properties">
+    <value>XamDockAutomationPeer Properties</value>
+  </data>
+  <data xml:space="preserve" name="RearrangedList`1_Count_Property">
+    <value>The total number of items in the collection.</value>
+  </data>
+  <data xml:space="preserve" name="RearrangedList`1_IsReadOnly_Property">
+    <value>Boolean indicating whether or not the collection is read-only.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetDefaultStringAttribute_Value_Property">
+    <value>The widget default.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetDefaultNumberAttribute_Value_Property">
+    <value>The widget default.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetDefaultBooleanAttribute_Value_Property">
+    <value>The widget default.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetModuleAttribute_Name_Property">
+    <value>The widget module name.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetModuleParentAttribute_Name_Property">
+    <value>The name of the widget parent module.</value>
+  </data>
+  <data xml:space="preserve" name="WidgetIgnoreDependsAttribute_Name_Property">
+    <value>The name of the dependency to ignore.</value>
+  </data>
+  <data xml:space="preserve" name="GroupingBase_Key_Property">
+    <value>They GroupBy key.</value>
+  </data>
+  <data xml:space="preserve" name="ImageStreamValidEventArgs_Stream_Property">
+    <value>The stream containing the image bytes for validation.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_Zoombar_Property">
+    <value>A reference to the XamZoombar.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_Properties">
+    <value>XamZoombarAutomationPeer Properties</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_HorizontallyScrollable_Property">
+    <value>Boolean indicating whether or not the zoombar is horizontally scrollable.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_HorizontalScrollPercent_Property">
+    <value>A numeric value representing the horizontal scroll position as a percentage of the scrollable area.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_HorizontalViewSize_Property">
+    <value>The horizontal range of the zoombar.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_VerticallyScrollable_Property">
+    <value>Boolean indicating whether or not the zoombar is vertically scrollable.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_VerticalScrollPercent_Property">
+    <value>A numeric value representing the vertical scroll position as a percentage of the scrollable area.</value>
+  </data>
+  <data xml:space="preserve" name="XamZoombarAutomationPeer_VerticalViewSize_Property">
+    <value>The vertical range of the zoombar.</value>
+  </data>
+</root>

@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="http://infragistics.com/Windows"
+	xmlns:editors="http://infragistics.com/Editors"	
+	xmlns:igDP="http://infragistics.com/DataPresenter"
+	xmlns:igThemes="http://infragistics.com/Themes"
+	xmlns:local="clr-namespace:Infragistics.Windows.Themes.Fall" 
+	xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	>
+	<ResourceDictionary.MergedDictionaries>
+        <!--<themes:ResourceSetLoader Locator="{x:Static themes:PrimitivesGeneric.Location}"/>-->
+
+        <igThemes:ResourceWasher AutoWash="True" WashMode="HueSaturationReplacement" >
+            <igThemes:ResourceWasher.SourceDictionary>
+                <igThemes:PrimitivesWashBaseLight />
+            </igThemes:ResourceWasher.SourceDictionary>
+            <igThemes:ResourceWasher.WashGroups>
+                <igThemes:WashGroupCollection>
+                    <igThemes:WashGroup Name="ThemeColor"  WashColor="#FFf0d687"/>
+                    <igThemes:WashGroup Name="AlternateColor" WashColor="#FFf0d687"  />
+                </igThemes:WashGroupCollection>
+            </igThemes:ResourceWasher.WashGroups>
+        </igThemes:ResourceWasher>
+        <ResourceDictionary Source="PrimitivesFall_Brushes.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+	<!-- _________________________ ExpanderBar __________________________________________ -->
+	<Style TargetType="{x:Type controls:ExpanderBar}" BasedOn="{x:Static igThemes:PrimitivesGeneric.ExpanderBar}">
+		<Setter Property="BackgroundHover">
+			<Setter.Value>
+				<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+					<GradientStop Offset="0" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".06" Color="#FFFFFFFF"/>
+					<GradientStop Offset=".37" Color="#FFE6D4A9"/>
+					<GradientStop Offset=".61" Color="#FFC7A45F"/>
+					<GradientStop Offset=".63" Color="#FFDBC38C"/>
+					<GradientStop Offset=".71" Color="#FFDBC38C"/>
+					<GradientStop Offset=".74" Color="#FFE6D4A9"/>
+					<GradientStop Offset="1" Color="#FFE5D2A6"/>
+				</LinearGradientBrush>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="BorderHoverBrush" Value="#FF4E2202" />
+	</Style>
+    
+    <Style TargetType="{x:Type controls:DropIndicator}" BasedOn="{x:Static igThemes:PrimitivesGeneric.DropIndicator}" />
+
+</ResourceDictionary>
