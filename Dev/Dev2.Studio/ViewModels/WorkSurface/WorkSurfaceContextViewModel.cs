@@ -491,6 +491,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickDebug()
         {
+            if(DebugOutputViewModel.IsProcessing)
+            {
+                StopExecution();
+            }
             var successfuleSave = Save(ContextualResourceModel, true);
             if(!successfuleSave)
             {
