@@ -61,7 +61,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
 using Dev2.Utils;
-using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -1847,10 +1846,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.DisplayName = message.ResourceName;
             resourceModel.Category = message.ResourceCategory;
             resourceModel.WorkflowXaml = resourceModel.WorkflowXaml.Replace(unsavedName, message.ResourceName);
+            resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.Save(resourceModel);
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             resourceModel.IsWorkflowSaved = true;
-            resourceModel.IsNewWorkflow = false;
         }
 
         #endregion
