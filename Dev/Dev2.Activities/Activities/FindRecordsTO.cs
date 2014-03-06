@@ -139,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _isSearchCriteriaVisible = value;
-                OnPropertyChanged();
+                OnPropertyChanged(ref _isSearchCriteriaVisible, value);
             }
         }
 

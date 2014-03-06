@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_IndexOutOfBounds_DoesNothing()
         {
-            Verify_OnSearchTypeChanged_IndexOutOfBounds_DoesNothing(-1);
+            Verify_OnSearchTypeChanged_IndexOutOfBounds_DoesNothing(-2);
             Verify_OnSearchTypeChanged_IndexOutOfBounds_DoesNothing(2);
             Verify_OnSearchTypeChanged_IndexOutOfBounds_DoesNothing(3);
         }

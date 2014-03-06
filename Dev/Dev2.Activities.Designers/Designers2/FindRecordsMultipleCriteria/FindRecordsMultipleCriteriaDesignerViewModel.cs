@@ -51,6 +51,11 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
         {
             var index = (int)indexObj;
 
+            if(index == -1)
+            {
+                index = 0;
+            }
+
             if(index < 0 || index >= ItemCount)
             {
                 return;
