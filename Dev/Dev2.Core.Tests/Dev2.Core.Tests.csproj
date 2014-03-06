@@ -203,6 +203,7 @@
     <Compile Include="ExtMethods\DoubleMetaphoneTest.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="Logging\DummyDebugProvider.cs" />
+    <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
     <Compile Include="StringExtensionTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestModelItemFactory.cs" />

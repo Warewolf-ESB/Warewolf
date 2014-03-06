@@ -1465,6 +1465,9 @@ namespace Dev2.Core.Tests
         }
 
 
+
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
         [TestMethod]
         public void ClearConflicts_Expects_AllItemsHaveNoConflicts()
         {
@@ -1479,12 +1482,21 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(false, _vm.Root.Children[0].IsOverwrite);
             Assert.AreEqual(false, _vm.Root.Children[0].Children[0].IsOverwrite);
            
+
+
+        }
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
+        [TestMethod]
+        public void ClearConflicts_Expects_NoSideEffects()
+        {
+
+
             // make sure no side effects 
-            // base case
             Init(false, true);
             _vm.ClearConflictingNodesNodes();
             Assert.AreEqual(false, _vm.Root.IsOverwrite);
-            Assert.AreEqual(true,  _vm.Root.Children.All(a=> a.IsOverwrite==false));
+            Assert.AreEqual(true, _vm.Root.Children.All(a => a.IsOverwrite == false));
             Assert.AreEqual(true, _vm.Root.Children[0].Children.All(a => !a.IsOverwrite));
 
         }

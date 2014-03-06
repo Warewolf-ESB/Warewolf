@@ -192,10 +192,18 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             private set
             {
-                _sourceEnvironment = value;
+                
+                var notify = !ReferenceEquals( value, _sourceEnvironment); 
+                // unsubscibe from previous
+                if (null != _sourceEnvironment)
+                    _sourceEnvironment.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
 
+                _sourceEnvironment = value;
+                
+                //subscribe to current
                 if (null != _sourceEnvironment)
                 _sourceEnvironment.IsConnectedChanged += SourceEnvironmentConnectedChanged;
+                if(notify)
                 NotifyOfPropertyChange(() => SourceEnvironment);
             }
         }
