@@ -46,7 +46,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0">
@@ -69,7 +69,6 @@
                                     AllowUserInsertLine="True"
                                     MaxHeight="80"
                                     TextWrapping="Wrap"
-                                    VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
