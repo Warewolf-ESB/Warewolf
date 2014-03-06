@@ -225,6 +225,7 @@ Scenario: Calculate for a negative recordset index for Output Format
 	And the debug output as 
 	|               |
 	| [[result]] = |
+
 	
 Scenario: Default outputs for dateparts not present
 	Given I have a date "0" 
@@ -240,3 +241,18 @@ Scenario: Default outputs for dateparts not present
 	And the debug output as 
 	|                                            |
 	| [[result]] = 0001-01-01 00r:00:00 AM A.D. |
+
+#Scenario: Calculate with data in output format
+#       Given I have a date " 2013 March 29" 
+#       And the input format as " yyyy MM dd"
+#       And I selected Add time as "Years" with a value of 1
+#       And the output format as "yyyy-mm-dd ‘wrong ‘date"
+#       When the datetime tool is executed
+#       Then the datetime result should be "2014-03-29 wrong date"
+#       And the execution has "NO" error
+#       And the debug inputs as  
+#       | Input        | Input Format | Add Time |    | Output Format           |
+#       | 2013 March 29| yyyy MM dd   | Years    | 1  | yyyy-mm-dd 'wrong 'date |  
+#       And the debug output as 
+#       |                                    |  
+#       | [[result]] = 2014-03-29 wrong date |
