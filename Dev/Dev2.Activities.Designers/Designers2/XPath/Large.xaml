@@ -69,16 +69,14 @@
                                     AllowUserInsertLine="True"
                                     MaxHeight="80"
                                     TextWrapping="Wrap"
-                                    Height="37"
                                     MinHeight="37"
-                                    VerticalAlignment="Top"                                                           
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipXML}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXML}"
