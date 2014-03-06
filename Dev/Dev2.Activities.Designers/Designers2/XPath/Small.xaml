@@ -33,8 +33,8 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Label  Content="XML"
@@ -49,9 +49,7 @@
                                                 AllowUserInsertLine="True"
                                                 MaxHeight="52"
                                     TextWrapping="Wrap"
-                                    MinWidth="86"
-                                    Width="86"
-                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.XPathToolTipXML}"
@@ -71,6 +69,7 @@
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                Grid.Row="1"
                                Grid.Column="0"
+                               Grid.ColumnSpan="2"
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">

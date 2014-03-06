@@ -17,7 +17,7 @@
                                xmlns:findRecordsMultipleCriteria="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
                                Width="350"
                                MinWidth="350"
-                               MinHeight="350"
+                               MinHeight="380"
                                Height="350"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
@@ -49,44 +49,49 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0"
-               Grid.Column="0"
-               Content="In Field(s)"
-               Style="{StaticResource ActivityMapppingLabelStyle}" />
-        <ui:IntellisenseTextBox Grid.Row="0"
-                                Grid.Column="1"
-                                x:Name="InitialFocusElement"
-                                AllowMultilinePaste="True"
-                                AcceptsReturn="True"
-                                AllowUserInsertLine="True"
-                                MaxHeight="52"
-                                TextWrapping="Wrap"
-                                MinHeight="37"
-                                VerticalAlignment="Top"
-                                VerticalContentAlignment="Top"
-                                VerticalScrollBarVisibility="Auto"
-                                DefaultText="[[Recordset().Field]]"
-                                Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.FindRecordsInFieldsToolTip}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsFieldsToSearchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearchtxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.FieldsToSearch"
-                                     SourcePropertyValue="{Binding  ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        <Grid Grid.Row="0"
+              Grid.Column="0"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="In Field(s)"
+                   Style="{StaticResource ActivityMapppingLabelStyle}" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    x:Name="InitialFocusElement"
+                                    AllowMultilinePaste="True"
+                                    AcceptsReturn="True"
+                                    AllowUserInsertLine="True"
+                                    MaxHeight="80"
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Top"
+                                    VerticalContentAlignment="Top"
+                                    VerticalScrollBarVisibility="Auto"
+                                    DefaultText="[[Recordset().Field]]"
+                                    Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static help:HelpTextResources.FindRecordsInFieldsToolTip}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsFieldsToSearchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearchtxt_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="ModelItem.FieldsToSearch"
+                                         SourcePropertyValue="{Binding  ModelItem.FieldsToSearch, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
 
         <controls:Dev2DataGrid Grid.Row="1"
                                Grid.Column="0"
@@ -300,29 +305,35 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <Label Grid.Row="4"
-               Grid.Column="0"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+        <Grid Grid.Row="4"
+              Grid.Column="0"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Style="{StaticResource ActivityLabelStyle}"
+                   Content="Result" />
 
-        <ui:IntellisenseTextBox Grid.Row="4"
-                                Grid.Column="1"
-                                Margin="0,2,0,2"
-                                DefaultText="[[RowWithResult]]"
-                                WrapInBrackets="True"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    Margin="0,2,0,2"
+                                    DefaultText="[[RowWithResult]]"
+                                    WrapInBrackets="True"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
 
         <errors:OnError Grid.Row="5"
                         Grid.Column="0"

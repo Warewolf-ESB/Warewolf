@@ -40,11 +40,9 @@
                Style="{StaticResource ActivityLabelStyle}"
                Content="In Field(s)" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
+                                Grid.Column="1"
                                 Grid.Row="0"
                                 AllowMultilinePaste="True"
-                                Width="142"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
                                 MaxHeight="52"
@@ -57,7 +55,6 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsUndoEnabled="True"
                                 Margin="0,2"
-                                HorizontalAlignment="Right"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
@@ -245,9 +242,7 @@
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
-                                Width="115"
                                 Margin="0,2,0,2"
-                                HorizontalAlignment="Right"
                                 DefaultText="[[RowWithResult]]"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

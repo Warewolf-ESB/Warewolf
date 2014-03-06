@@ -69,7 +69,6 @@
                                     AllowUserInsertLine="True"
                                     MaxHeight="80"
                                     TextWrapping="Wrap"
-                                    MinHeight="37"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
