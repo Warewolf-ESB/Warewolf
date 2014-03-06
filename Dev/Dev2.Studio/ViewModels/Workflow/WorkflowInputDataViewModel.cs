@@ -20,6 +20,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 using Dev2.ViewModels.Workflow;
 
 // ReSharper disable once CheckNamespace
@@ -289,7 +290,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
-            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString());
+            WebServer.Send(WebServerMethod.POST, _resourceModel, payload.ToString(),new AsyncWorker());
         }
 
         public void ViewInBrowser()

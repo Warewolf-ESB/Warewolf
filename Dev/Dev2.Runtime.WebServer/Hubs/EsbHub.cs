@@ -63,11 +63,34 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// </returns>
         public override Task OnConnected()
         {
-            var workspaceID = Server.GetWorkspaceID(Context.User.Identity);
-            Server.SendWorkspaceID(workspaceID, Context.ConnectionId);
-            Server.SendServerID(HostSecurityProvider.Instance.ServerID, Context.ConnectionId);
+            ConnectionActions();
             return base.OnConnected();
         }
+
+        #region Overrides of Hub
+
+        /// <summary>
+        /// Called when the connection reconnects to this hub instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Threading.Tasks.Task"/>
+        /// </returns>
+        public override Task OnReconnected()
+        {
+            ConnectionActions();
+            return base.OnReconnected();
+        }
+
+        void ConnectionActions()
+        {
+            var workspaceID = Server.GetWorkspaceID(Context.User.Identity);
+            var hubCallerConnectionContext = Clients;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            user.SendWorkspaceID(workspaceID);
+            user.SendServerID(HostSecurityProvider.Instance.ServerID);
+        }
+
+        #endregion
 
         #endregion
 

@@ -1,4 +1,12 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Providers.Events;
@@ -11,14 +19,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -446,7 +446,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion
 
         #region public methods
-        
+
         /// <summary>
         ///     Appends the specified content.
         /// </summary>
@@ -482,7 +482,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             if(content.IsFinalStep())
             {
-                DebugStatus = DebugStatus.Finished;
+                //DebugStatus = DebugStatus.Finished;
                 _continueDebugDispatch = true;
             }
 
@@ -720,10 +720,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return;
                 }
             }
-            
+
             if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(content)), DispatcherPriority.Render);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(content)), DispatcherPriority.Background);
             }
             else
             {
@@ -733,18 +733,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddItemToTreeImpl(IDebugState content)
         {
-            if((DebugStatus == DebugStatus.Stopping ||
-                DebugStatus == DebugStatus.Finished) &&
-                string.IsNullOrEmpty(content.Message) &&
-                !_continueDebugDispatch &&
-                !_dispatchLastDebugState)
+            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
             }
 
-            if(_lastStep != null &&
-                DebugStatus == DebugStatus.Finished &&
-                content.StateType == StateType.Message)
+            if(_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;
                 _lastStep = null;
@@ -807,6 +801,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         theParent.HasError = true;
                     }
                 }
+            }
+            if(content.IsFinalStep())
+            {
+                DebugStatus = DebugStatus.Finished;
             }
         }
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Network
@@ -21,7 +22,7 @@ namespace Dev2.Studio.Core.Network
     public static class WebServer
     {
 
-        public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload)
+        public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload,IAsyncWorker asyncWorker)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -33,11 +34,14 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-
-            var controller = new CommunicationController();
-            controller.ServiceName = resourceModel.ResourceName;
-            controller.AddPayloadArgument("DebugPayload", payload);
-            controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
+            asyncWorker.Start(() =>
+            {
+                var controller = new CommunicationController();
+                controller.ServiceName = resourceModel.ResourceName;
+                controller.AddPayloadArgument("DebugPayload", payload);
+                controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
+            }, () => { });
+            
         }
 
         public static bool IsServerUp(IContextualResourceModel resourceModel)

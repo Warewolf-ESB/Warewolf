@@ -407,7 +407,7 @@ namespace Dev2.Core.Tests.Workflows
 
 
             //------------Execute Test---------------------------
-            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem() { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex = "2" });
+            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex = "2" });
             workflowInputDataViewModel.Save();
 
             //------------Assert Results-------------------------
