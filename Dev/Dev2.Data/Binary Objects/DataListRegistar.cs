@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Data.Storage;
@@ -89,7 +90,8 @@ namespace Dev2.Data.Binary_Objects
                             _registrationRoster.TryRemove(transactionScopeID, out dummy);
 
                             // now remove children ;)
-                            foreach(var key in _activityThreadToParentThreadID.Keys)
+                            var keyList = _activityThreadToParentThreadID.Keys.ToList();
+                            foreach(var key in keyList)
                             {
                                 if(key == transactionScopeID)
                                 {
