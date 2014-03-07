@@ -804,7 +804,7 @@ namespace Dev2.Core.Tests
             }
             else
             {
-                Assert.Fail("Couldnt find start page.");
+                Assert.Fail("Could not find start page.");
             }
         }
 

@@ -13,8 +13,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void IsValidXpathRule_Check_StringIsEmpty_ReturnsError()
         {
             //------------Setup for test--------------------------
-            var rule = new IsValidXpathRule(() => "");
-            rule.LabelText = "Xpath";
+            var rule = new IsValidXpathRule(() => "") { LabelText = "Xpath" };
             //------------Execute Test---------------------------
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
@@ -28,8 +27,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void IsValidXpathRule_Check_StringIsInvalidXPath_ReturnsError()
         {
             //------------Setup for test--------------------------
-            var rule = new IsValidXpathRule(() => "$$!");
-            rule.LabelText = "Xpath";
+            var rule = new IsValidXpathRule(() => "$$!") { LabelText = "Xpath" };
             //------------Execute Test---------------------------
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
@@ -44,8 +42,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void IsValidXpathRule_Check_StringInvalidXPath_ReturnsNoError()
         {
             //------------Setup for test--------------------------
-            var rule = new IsValidXpathRule(() => "//root/number[@id='1']/text()");
-            rule.LabelText = "Xpath";
+            var rule = new IsValidXpathRule(() => "//root/number[@id='1']/text()") { LabelText = "Xpath" };
             //------------Execute Test---------------------------
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------

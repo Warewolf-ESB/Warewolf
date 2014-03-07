@@ -1,6 +1,6 @@
-﻿using Dev2.Providers.Errors;
-using System;
+﻿using System;
 using System.Xml;
+using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {

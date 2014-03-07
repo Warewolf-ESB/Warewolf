@@ -48,7 +48,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 return wpfText;
             }
-            throw new Exception("Couldnt find the " + autoId + " label.");
+            throw new Exception("Could not find the " + autoId + " label.");
         }
 
     }

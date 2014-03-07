@@ -160,7 +160,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_CanRemove_SearchTypeWithDataAndSearchTypeEmpty_ReturnFalse()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Contains", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Contains", SearchCriteria = string.Empty };
             //------------Execute Test---------------------------
             Assert.IsFalse(findRecordsTO.CanRemove());
             //------------Assert Results-------------------------
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeWithData_ReturnFalse()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = string.Empty, SearchCriteria = "Data" };
+            var findRecordsTO = new FindRecordsTO { SearchType = string.Empty, SearchCriteria = "Data" };
             //------------Execute Test---------------------------
             Assert.IsFalse(findRecordsTO.CanRemove());
             //------------Assert Results-------------------------
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsStartsWith_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Starts With", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Starts With", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
         }
 
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsEndsWith_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Ends With", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Ends With", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
         }
 
@@ -204,7 +204,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntEndWith_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Doesn't End With", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Doesn't End With", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
         }
 
@@ -214,17 +214,17 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntStartWith_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Doesn't Start With", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Doesn't Start With", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
         }
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
         public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsBetween_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Between", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Is Between", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "From");
         }
 
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsNotBetween_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Not Between", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Is Not Between", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "From");
         }
         [TestMethod]
@@ -243,7 +243,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsBetween_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Between", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Is Between", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "To");
         }
 
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsNotBetween_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Not Between", SearchCriteria = string.Empty };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Is Not Between", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "To");
         }
 
@@ -267,7 +267,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
             Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
         }
-
+        
         #endregion
     }
 }

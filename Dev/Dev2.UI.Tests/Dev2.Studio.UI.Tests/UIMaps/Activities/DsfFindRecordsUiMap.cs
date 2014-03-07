@@ -80,7 +80,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 return firstOrDefault;
             }
-            throw new Exception("Couldnt find the small view");
+            throw new Exception("Could not find the small view");
         }
 
         UITestControl GetLargeView()
@@ -91,7 +91,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 return firstOrDefault;
             }
-            throw new Exception("Couldnt find the large view");
+            throw new Exception("Could not find the large view");
         }
     }
 

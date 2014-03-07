@@ -10,26 +10,24 @@ namespace Dev2.DataList
     /// <summary>
     /// Class for the "is xml" recordset search option 
     /// </summary>
-    public class RsOpIsXML :AbstractRecsetSearchValidation
+    public class RsOpIsXML : AbstractRecsetSearchValidation
     {
-        public RsOpIsXML()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
-            result = () => {
+            result = () =>
+            {
                 ErrorResultTO err = new ErrorResultTO();
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
 
-                    if (p.Payload.IsXml()) {
+                    if(p.Payload.IsXml())
+                    {
                         fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else

@@ -43,14 +43,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public UITestControl GetFieldsToSearchTextBoxControl(ViewType viewType)
         {
-            return GetControl("UI__SourceStringtxt_AutoID", GetView(viewType), ControlType.Edit); 
+            return GetControl("UI__SourceStringtxt_AutoID", GetView(viewType), ControlType.Edit);
         }
 
         public UITestControl GetDoneButton()
         {
             return GetControlOnActivity("DoneButton", ControlType.Button);
         }
-        
+
         private UITestControl GetControl(string autoId, UITestControl viewControl, ControlType controlType)
         {
             UITestControlCollection uiTestControlCollection = viewControl.GetChildren();
@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 return control;
             }
 
-            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
+            throw new Exception("Could not find the " + autoId + " for control type " + controlType);
         }
 
         private UITestControl GetControlOnActivity(string autoId, ControlType controlType)
@@ -72,7 +72,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 return control;
             }
 
-            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
+            throw new Exception("Could not find the " + autoId + " for control type " + controlType);
         }
 
         private UITestControl GetView(ViewType viewType)
@@ -92,7 +92,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 return firstOrDefault;
             }
-            throw new Exception("Couldnt find the small view");
+            throw new Exception("Could not find the small view");
         }
 
         UITestControl GetLargeView()
@@ -103,7 +103,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 return firstOrDefault;
             }
-            throw new Exception("Couldnt find the large view");
+            throw new Exception("Could not find the large view");
         }
     }
 }
