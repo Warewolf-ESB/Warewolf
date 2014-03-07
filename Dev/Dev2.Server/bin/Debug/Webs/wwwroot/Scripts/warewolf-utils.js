@@ -153,6 +153,8 @@ utils.updateSaveValidationSpan = function (selectorText, helpText) {
                 if (there) {
                     $inPaneHelp.find("#inButtonBarHelpSpanStandalone")[0].innerHTML = helpText;
                 } else {
+                    // How do I know it is the save dialog?!
+                    // check that it is the correct dialog ;)
                     $inPaneHelp.append("<span id='inButtonBarHelpSpanStandalone' class='inSaveButtonBarSpan'>" + helpText + "</span>");
                 }
             }

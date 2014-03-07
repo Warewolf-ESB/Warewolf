@@ -10,8 +10,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
     using System;
     using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
     // ReSharper disable InconsistentNaming
@@ -26,6 +26,33 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             UITestControl uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Playback.Wait(500);
             Mouse.Click(uIItemImage, new Point(x, 25));
+        }
+
+        /// <summary>
+        /// Selects all window contents.
+        /// </summary>
+        /// <returns></returns>
+        public string GetWindowContents()
+        {
+            KeyboardCommands.SelectAndCopy();
+            return Clipboard.GetText();
+        }
+
+        /// <summary>
+        /// Edits the source.
+        /// </summary>
+        public void EditSource()
+        {
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendEnter();
+        }
+
+        /// <summary>
+        /// Cancels the entire operation.
+        /// </summary>
+        public void CancelEntireOperation()
+        {
+            KeyboardCommands.SendEsc();
         }
 
         public void EnterDataIntoMappingTextBox(int textboxNumber, string newMappingText)

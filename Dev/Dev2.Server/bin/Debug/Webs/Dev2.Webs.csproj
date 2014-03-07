@@ -64,35 +64,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Tests\Decisions\DecisionModelTests.js" />
+    <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
     <Content Include="Tests\Services\DbServiceViewModelTests.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
     <Content Include="Tests\Services\WebServiceViewModelTests.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
+    <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
+    <Content Include="Tests\Sources\ServerViewModelTests.js" />
+    <Content Include="Tests\Sources\WebSourceViewModelTests.js" />
     <Content Include="wwwroot\default.htm" />
-    <Content Include="Tests\Decisions\DecisionModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
-    <Content Include="Tests\Services\PluginServiceViewModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Sources\PluginSourceViewModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Sources\DbSourceViewModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Sources\ServerViewModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tests\Sources\WebSourceViewModelTests.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Tests\SourceTests.htm" />
     <Content Include="Tests\Switch\DragModel_Test.js" />
-    <Content Include="Tests\Switch\DropModelTests.js" />
     <Content Include="Tests\Services\ServiceViewModelTests.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

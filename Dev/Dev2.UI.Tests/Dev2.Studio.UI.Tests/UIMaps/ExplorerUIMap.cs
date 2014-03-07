@@ -542,7 +542,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             int counter = 0;
             while(newTab == null || !TabManagerUIMap.GetActiveTabName().Contains(resourceName) && counter < 7)
             {
-                Playback.Wait(1000);
+                Playback.Wait(500);
                 newTab = TabManagerUIMap.GetActiveTab();
                 counter++;
             }

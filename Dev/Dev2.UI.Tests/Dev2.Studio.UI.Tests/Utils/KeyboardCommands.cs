@@ -70,6 +70,12 @@ namespace Dev2.Studio.UI.Tests
             SendKey(SpaceCommand, waitAmt);
         }
 
+        public static void SelectAndCopy()
+        {
+            SendKey(SelectAllCommand, 5);
+            SendKey(CopyCommand, 5);
+        }
+
         #endregion Methods
     }
 }

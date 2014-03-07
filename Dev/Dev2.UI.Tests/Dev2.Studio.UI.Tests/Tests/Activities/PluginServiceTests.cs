@@ -62,5 +62,34 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             //Assert that the fix errors button isnt there anymore
             Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
         }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServiceTests_CodedUI")]
+        public void PluginServiceTests_CodedUI_EditSource_FromEditService_ExceptNoNameError()
+        {
+            //------------Setup for test--------------------------
+
+            //Drag the service onto the design surface
+            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
+
+            UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DummyService");
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+
+            //------------Execute Test---------------------------
+            activityUiMap.ClickEdit();
+            PluginServiceWizardUIMap.EditSource();
+            var contents = PluginServiceWizardUIMap.GetWindowContents();
+            PluginServiceWizardUIMap.CancelEntireOperation();
+
+            var result = (contents.IndexOf("Name already exists.", StringComparison.Ordinal) >= 0);
+            var isEmpty = (contents.Length == 0);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isEmpty, "Copy did not copy content of Edit Source Wizard!");
+            Assert.IsFalse(result, "Plugin Source Window Contains Save Message?! Check your warewolf-utils.js - updateSaveValidationSpan method");
+
+        }
     }
 }

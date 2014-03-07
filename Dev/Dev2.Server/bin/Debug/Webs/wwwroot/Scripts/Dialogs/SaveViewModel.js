@@ -27,6 +27,8 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
     self.titleSearchString = "Save";
 
+    self.HasKeyPressed = false;
+
     //2013.06.20: Ashley Lewis for bug 9786 - default folder selection + resource name help text
     self.defaultFolderName = "Unassigned";
     self.helpDictionaryID = "SaveDialog";
@@ -172,22 +174,30 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     };      
 
     self.isResourceNameValid = function () {
+       
         var name = self.data.resourceName() != null ? self.data.resourceName().toLowerCase() : "";
-        var isValid = name !== "" && self.isValidName(name);
-        if (!self.isEditing() && isValid) {
-            // check for duplicates
-            var matches = ko.utils.arrayFilter(self.resourceNames(), function(resourceName) {
-                return resourceName.toLowerCase() === name;
-            });
-            if (matches.length == 0) {
-                isValid = true;
-            } else {
-                isValid = false;
-                self.updateHelpText("DuplicateFound");
+        
+        if (self.HasKeyPressed) {
+            var isValid = name !== "" && self.isValidName(name);
+            if (!self.isEditing() && isValid) {
+                // check for duplicates
+                var matches = ko.utils.arrayFilter(self.resourceNames(), function (resourceName) {
+                    return resourceName.toLowerCase() === name;
+                });
+                if (matches.length == 0) {
+                    isValid = true;
+                    // self.data
+                } else {
+                    isValid = false;
+                    self.updateHelpText("DuplicateFound");
+                }
             }
+
+            self.enableSaveButton(isValid);
+            return isValid;
         }
-        self.enableSaveButton(isValid);
-        return isValid;
+        
+        return true;
     };    
 
     $newFolderName.keyup(function (e) {
@@ -202,16 +212,22 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
         if (e.which == 13) {
             e.preventDefault();
         }
+        
+        
     });
     
     $resourceName.keyup(function (e) {
-        // ENTER key pressed
+        // ENTER key pressedresourceName
         if (e.keyCode == 13) {
             self.save();
         }
     }).keydown(function (e) {
         if (e.which == 13) {
             e.preventDefault();
+        }
+        
+        if (!self.HasKeyPressed) {
+            self.HasKeyPressed = true;
         }
     });
 

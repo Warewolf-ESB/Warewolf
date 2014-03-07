@@ -355,7 +355,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         return true;
     };
 
-    self.saveViewModel = SaveViewModel.create("Service/PluginServices/Save", self, saveContainerID);
+    self.saveViewModel = SaveViewModel.create("Service/PluginServices/Save", self, saveContainerID, true);
 
     self.save = function () {
 
