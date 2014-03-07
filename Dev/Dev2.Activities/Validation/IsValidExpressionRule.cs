@@ -31,6 +31,28 @@ namespace Dev2.Validation
                     _outputValue = _variableValue;
                 }
             }
+            else
+            {
+                result = value.TryParseRecordsetVariables(DoError, LabelText, _variableValue, _inputs);
+                if(result != null)
+                {
+                    if(string.Equals(value, _outputValue))
+                    {
+                        _outputValue = _variableValue;
+                    }
+                }
+                else
+                {
+                    result = value.TryParseVariableSpecialChars(DoError, LabelText, _variableValue, _inputs);
+                    if(result != null)
+                    {
+                        if(string.Equals(value, _outputValue))
+                        {
+                            _outputValue = _variableValue;
+                        }
+                    }
+                }
+            }
             return result;
         }
 

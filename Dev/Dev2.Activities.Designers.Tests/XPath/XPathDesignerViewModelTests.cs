@@ -73,7 +73,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_XPathIsInvalid_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDTO> { new XPathDTO { XPath = "@@", OutputVariable = "[[a]]" } };
+            var items = new List<XPathDTO> { new XPathDTO { XPath = "%", OutputVariable = "[[a]]" } };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = new XPathDesignerViewModel(mi);
@@ -82,6 +82,23 @@ namespace Dev2.Activities.Designers.Tests.XPath
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
             Assert.AreEqual("'XPath' is not a valid expression", viewModel.Errors[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("XPathDesignerViewModel_ValidateThis")]
+        public void XPathDesignerViewModel_ValidateThis_OutputVariableHasSpecialCharacter_DoesHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<XPathDTO> { new XPathDTO { XPath = "a", OutputVariable = "[[a$]]" } };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("SourceString", "<x></x>");
+            var viewModel = new XPathDesignerViewModel(mi);
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual("'Results' - Invalid expression: Variable has special characters.", viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -137,6 +154,60 @@ namespace Dev2.Activities.Designers.Tests.XPath
             Assert.AreEqual(1, viewModel.Errors.Count);
             StringAssert.Contains(viewModel.Errors[0].Message, "'XML' is not a valid expression");
         }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("XPathDesignerViewModel_ValidateThis")]
+        public void XPathDesignerViewModel_ValidateThis_SourceStringIsValidRecordset_DoesNotHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<XPathDTO> { new XPathDTO() };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("SourceString", "[[rec().set]]");
+            var viewModel = new XPathDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNull(viewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("XPathDesignerViewModel_ValidateThis")]
+        public void XPathDesignerViewModel_ValidateThis_SourceStringRecordsetHasANegativeIndex_DoesHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<XPathDTO> { new XPathDTO() };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("SourceString", "[[rec(-1).set]]");
+            var viewModel = new XPathDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            StringAssert.Contains(viewModel.Errors[0].Message, "XML' - Invalid expression: Recordset index is invalid.");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("XPathDesignerViewModel_ValidateThis")]
+        public void XPathDesignerViewModel_ValidateThis_SourceStringRecordsetHasASpecialCharacter_DoesHaveErrors()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<XPathDTO> { new XPathDTO() };
+            var mi = CreateModelItem(items);
+            mi.SetProperty("SourceString", "[[rec(@).set]]");
+            var viewModel = new XPathDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            StringAssert.Contains(viewModel.Errors[0].Message, "XML' - Invalid expression: Recordset index is invalid.");
+        }
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]

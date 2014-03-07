@@ -6,6 +6,7 @@ using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.XPath
@@ -51,6 +52,11 @@ namespace Dev2.Activities.Designers2.XPath
                     if(!string.IsNullOrEmpty(SourceString) && !DataListUtil.IsEvaluated(SourceString))
                     {
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
+                    }
+                    else
+                    {
+                        var outputExprRule = new IsValidExpressionRule(() => SourceString, "1");
+                        ruleSet.Add(outputExprRule);
                     }
 
                     break;

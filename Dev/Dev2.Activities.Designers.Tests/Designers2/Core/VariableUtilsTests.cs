@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Validation;
+﻿using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.ObjectModel;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class VariableUtilsTests
     {
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string outputValue;
             string variableValue = "xxx";
 
-            var inputs = new ObservableCollection<ObservablePair<string,string>>();
+            var inputs = new ObservableCollection<ObservablePair<string, string>>();
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
 
             //------------Execute Test---------------------------
@@ -74,6 +74,118 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             //------------Assert Results-------------------------
             Assert.IsNull(error);
             Assert.AreEqual(variableValue, outputValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseRecordsetVariables")]
+        public void VariableUtils_TryParseRecordsetVariables_InputValueIsValidRecordsetExpression_HasNoErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec().set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseRecordsetVariables("[[rec().set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(error);
+        }
+          
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseRecordsetVariables")]
+        public void VariableUtils_TryParseComplexRecordsetVariables_InputValueIsValidRecordsetExpression_HasNoErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec([[res().col]]).set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseRecordsetVariables("[[rec([[res().col]]).set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(error);
+        }
+
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseRecordsetVariables")]
+        public void VariableUtils_TryParseRecordsetVariables_RecordsetExpressionWithNegativeIndex_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec(-1).set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseRecordsetVariables("[[rec(-1).set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: Recordset index is invalid.", error.Message);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseRecordsetVariables")]
+        public void VariableUtils_TryParseRecordsetVariables_RecordsetExpressionWithSpecialCharIndex_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec(#).set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseRecordsetVariables("[[rec(#).set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: Recordset index is invalid.", error.Message);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseRecordsetVariables")]
+        public void VariableUtils_TryParseComplexRecordsetVariables_RecordsetExpressionWithNegativeIndex_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec([[res(-1).set]]).set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseRecordsetVariables("[[rec([[res(-1).set]]).set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: Recordset index is invalid.", error.Message);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseVariableSpecialChars")]
+        public void VariableUtils_TryParseVariableSpecialChars_RecordsetExpressionWithSpecialChar_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec([[res().$et]]).set]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseVariableSpecialChars("[[rec([[res().$et]]).set]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: Variable has special characters.", error.Message);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseVariableSpecialChars")]
+        public void VariableUtils_TryParseVariableSpecialChars_VariableExpressionWithSpecialChar_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[$et]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseVariableSpecialChars("[[$et]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: Variable has special characters.", error.Message);
         }
     }
 }

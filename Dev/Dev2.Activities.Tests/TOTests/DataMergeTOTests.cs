@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.TOTests
@@ -11,6 +10,7 @@ namespace Dev2.Tests.Activities.TOTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class DataMergeTOTests
     {
         [TestMethod]
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataMergeDTO_ClearRow_PropertiesAreEmpty()
         {
             //------------Setup for test--------------------------
-            var dto = new DataMergeDTO { InputVariable = "xxx", MergeType = DataMergeDTO.MergeTypeNone, Alignment = "Right", At ="1", Padding = " "};
+            var dto = new DataMergeDTO { InputVariable = "xxx", MergeType = DataMergeDTO.MergeTypeNone, Alignment = "Right", At = "1", Padding = " " };
 
             Assert.IsFalse(dto.IsEmpty());
 
