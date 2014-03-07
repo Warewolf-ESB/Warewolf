@@ -844,6 +844,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         protected override void OnDispose()
         {
             EventPublishers.Aggregator.Unsubscribe(this);
+            // unsubscibe from previous source environemt
+            if (null != _sourceEnvironment)
+                _sourceEnvironment.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
             base.OnDispose();
         }
 
