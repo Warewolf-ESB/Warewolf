@@ -61,6 +61,7 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.Workspaces;
@@ -1382,14 +1383,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void DoWorkspaceSave()
         {
-            if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
+            AsyncWorker asyncWorker = new AsyncWorker();
+            asyncWorker.Start(() =>
             {
-                BindToModel();
-                WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
-                ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
-                _workspaceSave = true;
+                if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
+                {
+                    BindToModel();
+                    WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
+                    ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+                    _workspaceSave = true;
 
-            }
+                }
+            });
+
             AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
