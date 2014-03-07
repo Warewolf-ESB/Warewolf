@@ -38,14 +38,12 @@ namespace Dev2.Data.Binary_Objects
         public int GetMaxIndex()
         {
             int result = MaxValue;
-            while(Gaps.Contains(result) && result > 1)
+            while(Gaps.Contains(result) && result >= 1)
             {
                 result--;
             }
-
             return result;
         }
-
         public int GetMinIndex()
         {
             int result = MinValue;
@@ -114,11 +112,6 @@ namespace Dev2.Data.Binary_Objects
                 }
             }
 
-            // check to ensure idx is not in the gaps collection ;)
-            if(Gaps.Contains(idx))
-            {
-                Gaps.Remove(idx);
-            }
         }
 
         public void SetGapsCollection(HashSet<int> myGaps)

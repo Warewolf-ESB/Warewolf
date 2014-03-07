@@ -8,7 +8,8 @@
 //using Dev2.Data.ServiceModel;
 //using Dev2.Studio.Core.Network;
 //using Dev2.Studio.Webs;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using System.Diagnostics.CodeAnalysis;
 //using Dev2.Studio.Core.Interfaces;
 //using System.ComponentModel.Composition;
 //using Moq;
@@ -16,7 +17,8 @@
 //using Dev2.Studio.Core;
 //
 //namespace Dev2.Core.Tests {
-//    [TestClass][ExcludeFromCodeCoverage]
+//    [TestClass]
+//    [ExcludeFromCodeCoverage]
 //    public class WebCommunicationTest {
 //
 //        #region Get Tests

@@ -63,7 +63,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         #region Indexor
 
-        public IList<IBinaryDataListItem> this[int key]
+        public IList<IBinaryDataListItem> this[int key, bool removeFromGaps = true]
         {
             get
             {
@@ -501,9 +501,20 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// Removes the specified idx.
         /// </summary>
         /// <param name="idx">The idx.</param>
-        public void Remove(int idx)
+        /// <param name="blankData"></param>
+        public void Remove(int idx, bool blankData = false)
         {
             _myKeys.AddGap(idx);
+            if(blankData)
+            {
+                IList<IBinaryDataListItem> binaryDataListItems = this[idx];
+                foreach(var dev2Column in binaryDataListItems)
+                {
+                    dev2Column.UpdateValue(string.Empty);
+                }
+
+                this[idx, false] = binaryDataListItems;
+            }
         }
 
 

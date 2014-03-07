@@ -573,8 +573,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         }
                     }
                 }
-
-                result = _internalObj.Keys.MaxIndex();
+                int tmpIndex = _internalObj.Keys.MaxIndex();
+                if(tmpIndex == 0)
+                {
+                    result = 1;
+                }
+                else
+                {
+                    result = tmpIndex;
+                }
             }
 
             return result;
@@ -946,14 +953,22 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 error = "Recordset was empty.";
                 return false;
             }
+            int count = _internalObj.Count;
+            for(int i = 1; i <= count; i++)
+            {
+                _internalObj.Remove(i, true);
+            }
+            if(_internalObj.Keys.IsEmpty)
+            {
+                _internalObj.IsEmtpy = true;
+            }
+            //var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
 
-            var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
+            //tmp.Init(_internalObj.Columns.Count);
 
-            tmp.Init(_internalObj.Columns.Count);
-
-            _internalObj = tmp;
-            int lastRowIndex = FetchLastRecordsetIndex();
-            _internalObj.Remove(lastRowIndex);
+            //_internalObj = tmp;
+            //int lastRowIndex = FetchLastRecordsetIndex();
+            //_internalObj.Remove(lastRowIndex, true);
 
             return true;
         }
@@ -969,7 +984,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             // Bug 8725
             if(!_internalObj.IsEmtpy)
             {
-                _internalObj.Remove(lastRowIndex);
+                _internalObj.Remove(lastRowIndex, true);
 
                 if(_internalObj.Keys.IsEmpty)
                 {
@@ -977,7 +992,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
                 return true;
             }
-            error = "The specified record didnt exist.";
+            error = "The specified record does not exist.";
             return false;
         }
 
@@ -994,12 +1009,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int lastIndex = FetchLastRecordsetIndex();
             if(index <= lastIndex && index > 0)
             {
-                _internalObj.Remove(index);
+                _internalObj.Remove(index, true);
+                if(_internalObj.Keys.IsEmpty)
+                {
+                    _internalObj.IsEmtpy = true;
+                }
                 result = true;
             }
             else
             {
-                error = "The specified record didnt exist.";
+                error = "The specified record does not exist.";
             }
 
             return result;

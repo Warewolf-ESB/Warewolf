@@ -18,7 +18,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             IndexList il = new IndexList(null, 5);
 
-            Assert.AreEqual(1,il.MinValue);
+            Assert.AreEqual(1, il.MinValue);
             Assert.AreEqual(5, il.MaxValue);
         }
 
@@ -29,12 +29,12 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_CanInitWithGaps()
         {
 
-            HashSet<int> gaps = new HashSet<int> {1, 3};
+            HashSet<int> gaps = new HashSet<int> { 1, 3 };
             IndexList il = new IndexList(gaps, 5);
-            
+
             Assert.AreEqual(1, il.MinValue);
             Assert.AreEqual(5, il.MaxValue);
-            Assert.AreEqual(3,il.Count());
+            Assert.AreEqual(3, il.Count());
         }
 
         [TestMethod]
@@ -44,14 +44,14 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_CanSetMaxValueWhenInGaps()
         {
 
-            HashSet<int> gaps = new HashSet<int> {1, 5};
+            HashSet<int> gaps = new HashSet<int> { 1, 5 };
             IndexList il = new IndexList(gaps, 5);
 
             il.SetMaxValue(5, false);
 
             Assert.AreEqual(1, il.MinValue);
             Assert.AreEqual(5, il.MaxValue);
-            Assert.AreEqual(4, il.Count());
+            Assert.AreEqual(3, il.Count());
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
 
             HashSet<int> gaps = new HashSet<int> { 1, 5 };
-            IndexList il = new IndexList(gaps, 4,3);
+            IndexList il = new IndexList(gaps, 4, 3);
 
             Assert.AreEqual(3, il.MinValue);
             Assert.AreEqual(4, il.MaxValue);
@@ -76,7 +76,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_ContainsOperatesAsExpected()
         {
 
-            HashSet<int> gaps = new HashSet<int> {1, 5};
+            HashSet<int> gaps = new HashSet<int> { 1, 5 };
             IndexList il = new IndexList(gaps, 5);
 
             Assert.IsFalse(il.Contains(1));
