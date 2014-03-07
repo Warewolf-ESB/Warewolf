@@ -135,7 +135,6 @@ namespace Dev2.Server.Datalist
                         res = tmpEntry.TryDeleteRows(recsetIndexStr, out error);
                         allErrors.AddError(error);
                     }
-                    allErrors.AddError(error);
                     TryPushDataList(theDL, out error);
                     allErrors.AddError(error);
 
