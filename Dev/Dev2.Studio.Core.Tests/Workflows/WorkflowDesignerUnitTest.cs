@@ -13,7 +13,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
