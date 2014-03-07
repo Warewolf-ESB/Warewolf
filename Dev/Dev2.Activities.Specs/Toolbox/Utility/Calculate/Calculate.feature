@@ -86,4 +86,8 @@ Scenario: Calculate using isnumber and blank
     Given I have the formula "if(isnumber(""),"Is number","Not number")"
 	When the calculate tool is executed
 	Then the calculate result should be "Not number"
+	And the debug inputs as  
+	| fx =                                    |
+	| "if(isnumber(""),"Is number","Not number")" |	
 	And the execution has "NO" error
+
