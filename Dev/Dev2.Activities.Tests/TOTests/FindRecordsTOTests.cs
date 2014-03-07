@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Providers.Validation.Rules;
+using Dev2.Validation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
@@ -172,6 +174,96 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Assert Results-------------------------
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsStartsWith_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Starts With", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsEndsWith_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Ends With", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntEndWith_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Doesn't End With", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnSearchCriteriaSearchTypeAsDoesntStartWith_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Doesn't Start With", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsBetween_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Between", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "From");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnFromSearchTypeAsIsNotBetween_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Not Between", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "From");
+        }
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsBetween_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Between", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "To");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsTO_GetRuleSet")]
+        public void FindRecordsTO_GetRuleSet_OnToSearchTypeAsIsNotBetween_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var findRecordsTO = new FindRecordsTO() { SearchType = "Is Not Between", SearchCriteria = string.Empty };
+            VerifyCorrectRulesForEachField(findRecordsTO, "To");
+        }
+
+
+        static void VerifyCorrectRulesForEachField(FindRecordsTO findRecordsTO, string fieldName)
+        {
+            //------------Execute Test---------------------------
+            var rulesSet = findRecordsTO.GetRuleSet(fieldName);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+        }
+        
         #endregion
     }
 }

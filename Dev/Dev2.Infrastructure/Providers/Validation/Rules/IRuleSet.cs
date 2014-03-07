@@ -11,5 +11,7 @@ namespace Dev2.Providers.Validation.Rules
         List<IActionableErrorInfo> ValidateRules();
 
         List<IActionableErrorInfo> ValidateRules(string labelText, Action doError);
+
+        List<RuleBase> Rules { get; set; }
     }
 }

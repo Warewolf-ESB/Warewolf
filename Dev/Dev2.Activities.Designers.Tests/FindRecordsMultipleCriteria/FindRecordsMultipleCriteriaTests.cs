@@ -3,7 +3,9 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -238,6 +240,41 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             StringAssert.Contains(viewModel.Errors[1].Message, "'Result' cannot be empty or only white space");
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_GetRuleSet")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_GetRuleSet_OnFieldsToSearch_GetsFourRules()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
+            var mi = CreateModelItem(items);
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+            //------------Execute Test---------------------------
+            var rulesSet = viewModel.GetRuleSet("FieldsToSearch");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyOrWhiteSpaceRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[2], typeof(HasNoDuplicateEntriesRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[3], typeof(HasNoIndexsInRecordsetsRule));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_GetRuleSet")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_GetRuleSet_OnResult_GetsFourRules()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
+            var mi = CreateModelItem(items);
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+            //------------Execute Test---------------------------
+            var rulesSet = viewModel.GetRuleSet("Result");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyOrWhiteSpaceRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+        }
 
         [TestMethod]
         [Owner("Massimo Guerrera")]

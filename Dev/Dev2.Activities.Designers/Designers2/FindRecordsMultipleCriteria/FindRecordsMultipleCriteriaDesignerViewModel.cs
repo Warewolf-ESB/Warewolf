@@ -10,6 +10,7 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
@@ -121,7 +122,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             }
         }
 
-        IRuleSet GetRuleSet(string propertyName)
+        public IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 
@@ -129,15 +130,14 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             {
                 case "FieldsToSearch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
-                    if(!string.IsNullOrEmpty(FieldsToSearch))
-                    {
-                        ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
-                        ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
-                    }
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, "1"));
+                    ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
+                    ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
                     break;
 
                 case "Result":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Result));
+                    ruleSet.Add(new IsValidExpressionRule(() => Result, "1"));
                     break;
             }
             return ruleSet;

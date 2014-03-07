@@ -187,5 +187,21 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.IsNotNull(error);
             Assert.AreEqual("Invalid expression: Variable has special characters.", error.Message);
         }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VariableUtils_TryParseIsValidRecordset")]
+        public void VariableUtils_TryParseIsValidRecordset_RecordsetWithoutAFieldName_HasErrors()
+        {
+            //------------Setup for test--------------------------
+            string variableValue = "[[rec()]]";
+
+            //------------Execute Test---------------------------
+            var error = VariableUtils.TryParseIsValidRecordset("[[rec()]]", () => { }, variableValue: variableValue);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid record expression: Recordset not properly formed.", error.Message);
+        }
     }
 }

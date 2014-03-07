@@ -4,6 +4,7 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -196,18 +197,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, "1"));
                     }
                     break;
                 case "From":
                     if(SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, "1"));
                     }
                     break;
                 case "To":
                     if(SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, "1"));
                     }
                     break;
             }

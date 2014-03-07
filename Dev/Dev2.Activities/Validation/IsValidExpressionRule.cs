@@ -24,37 +24,33 @@ namespace Dev2.Validation
         {
             var value = GetValue();
             var result = value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
-            if(result != null)
-            {
-                if(string.Equals(value, _outputValue))
-                {
-                    _outputValue = _variableValue;
-                }
-            }
-            else
+            if(!HasError(result, value))
             {
                 result = value.TryParseRecordsetVariables(DoError, LabelText, _variableValue, _inputs);
-                if(result != null)
-                {
-                    if(string.Equals(value, _outputValue))
-                    {
-                        _outputValue = _variableValue;
-                    }
-                }
-                else
+                if(!HasError(result, value))
                 {
                     result = value.TryParseVariableSpecialChars(DoError, LabelText, _variableValue, _inputs);
-                    if(result != null)
+                    if(!HasError(result, value))
                     {
-                        if(string.Equals(value, _outputValue))
-                        {
-                            _outputValue = _variableValue;
-                        }
+                        result = value.TryParseIsValidRecordset(DoError, LabelText, _variableValue, _inputs);
+                        HasError(result, value);
                     }
                 }
             }
             return result;
         }
 
+        private bool HasError(IActionableErrorInfo result, string value)
+        {
+            if(result != null)
+            {
+                if(string.Equals(value, _outputValue))
+                {
+                    _outputValue = _variableValue;
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }

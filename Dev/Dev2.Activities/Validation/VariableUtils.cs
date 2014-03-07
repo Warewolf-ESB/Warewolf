@@ -1,5 +1,3 @@
-using Dev2.Data.Enums;
-using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
@@ -8,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml;
-using Dev2.Runtime.Hosting;
 
 namespace Dev2.Validation
 {
@@ -97,10 +94,6 @@ namespace Dev2.Validation
                             }
                         }
                     }
-                    else
-                    {
-                        isValid = false;
-                    }
                 }
 
                 if(!isValid)
@@ -179,6 +172,47 @@ namespace Dev2.Validation
                     ErrorType = ErrorType.Critical,
                     Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
                               + "Invalid expression: Variable has special characters."
+                };
+            }
+
+            return null;
+        }
+
+        public static IActionableErrorInfo TryParseIsValidRecordset(this string inputValue, Action onError, string labelText = null, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+        {
+            var isValid = true;
+
+            if(!string.IsNullOrEmpty(inputValue))
+            {
+                var variableList = inputValue.Length == 1 ? new[] { inputValue } : inputValue.Split(',');
+
+                foreach(var v in variableList)
+                {
+                    var evaluatedExpression = v;
+
+                    if(DataListUtil.IsEvaluated(evaluatedExpression))
+                    {
+                        if(DataListUtil.IsValueRecordset(evaluatedExpression))
+                        {
+                            var extractRecordsetNameFromValue = DataListUtil.ExtractRecordsetNameFromValue(evaluatedExpression);
+                            var extractFieldNameFromValue = DataListUtil.ExtractFieldNameFromValue(evaluatedExpression);
+
+                            if(string.IsNullOrEmpty(extractFieldNameFromValue) || string.IsNullOrEmpty(extractRecordsetNameFromValue))
+                            {
+                                isValid = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(!isValid)
+            {
+                return new ActionableErrorInfo(onError)
+                {
+                    ErrorType = ErrorType.Critical,
+                    Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
+                              + "Invalid record expression: Recordset not properly formed."
                 };
             }
 

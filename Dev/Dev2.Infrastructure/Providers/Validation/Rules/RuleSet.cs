@@ -25,7 +25,7 @@ namespace Dev2.Providers.Validation.Rules
             Rules.Add(rule);
         }
 
-        internal List<RuleBase> Rules { get; set; }
+        public List<RuleBase> Rules { get; set; }
 
         public List<IActionableErrorInfo> ValidateRules()
         {

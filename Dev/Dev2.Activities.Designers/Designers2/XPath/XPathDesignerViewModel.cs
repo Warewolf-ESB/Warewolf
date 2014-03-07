@@ -53,11 +53,9 @@ namespace Dev2.Activities.Designers2.XPath
                     {
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
                     }
-                    else
-                    {
-                        var outputExprRule = new IsValidExpressionRule(() => SourceString, "1");
-                        ruleSet.Add(outputExprRule);
-                    }
+                    
+                    var outputExprRule = new IsValidExpressionRule(() => SourceString, "1");
+                    ruleSet.Add(outputExprRule);
 
                     break;
             }
