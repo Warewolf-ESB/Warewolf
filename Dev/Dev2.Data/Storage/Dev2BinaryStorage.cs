@@ -686,7 +686,6 @@ namespace Dev2.Data.Storage
             {
                 lock(_opsLock)
                 {
-                    ServerLogger.LogMessage("**** Compacting Memory");
                     CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
                     _runningRemoveCnt = 0;
                 }

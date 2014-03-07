@@ -11,7 +11,6 @@ using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -608,7 +607,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Handle(UpdateIntellisenseMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
             OnUpdateIntellisense();
         }
 
