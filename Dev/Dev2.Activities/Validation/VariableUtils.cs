@@ -1,4 +1,3 @@
-using Dev2.Data.Compilers;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml;
+using Dev2.Runtime.Hosting;
 
 namespace Dev2.Validation
 {
@@ -70,33 +70,37 @@ namespace Dev2.Validation
             if(!string.IsNullOrWhiteSpace(inputValue))
             {
                 var isValid = true;
-                var v = inputValue;
 
-                if(!string.IsNullOrEmpty(v))
+                var variableList = inputValue.Length == 1 ? new[] { inputValue } : inputValue.Split(',');
+
+                foreach(var v in variableList)
                 {
-                    if(DataListUtil.IsValueRecordset(v))
+                    if(!string.IsNullOrEmpty(v))
                     {
-                        var index = DataListUtil.ExtractIndexRegionFromRecordset(v);
-
-                        if(!string.IsNullOrEmpty(index))
+                        if(DataListUtil.IsValueRecordset(v))
                         {
-                            if(DataListUtil.IsEvaluated(index))
-                            {
-                                return index.TryParseRecordsetVariables(onError);
-                            }
+                            var index = DataListUtil.ExtractIndexRegionFromRecordset(v);
 
-                            int indexForRecset;
-                            int.TryParse(index, out indexForRecset);
-                            if(indexForRecset <= 0)
+                            if(!string.IsNullOrEmpty(index))
                             {
-                                isValid = false;
+                                if(DataListUtil.IsEvaluated(index))
+                                {
+                                    return index.TryParseRecordsetVariables(onError);
+                                }
+
+                                int indexForRecset;
+                                int.TryParse(index, out indexForRecset);
+                                if(indexForRecset <= 0)
+                                {
+                                    isValid = false;
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    isValid = false;
+                    else
+                    {
+                        isValid = false;
+                    }
                 }
 
                 if(!isValid)
@@ -114,13 +118,15 @@ namespace Dev2.Validation
 
         public static IActionableErrorInfo TryParseVariableSpecialChars(this string inputValue, Action onError, string labelText = null, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
-            if(!string.IsNullOrWhiteSpace(inputValue))
-            {
-                var isValid = true;
+            var isValid = true;
 
-                var evaluatedExpression = inputValue;
-                if(!string.IsNullOrEmpty(evaluatedExpression))
+            if(!string.IsNullOrEmpty(inputValue))
+            {
+                var variableList = inputValue.Length == 1 ? new[] { inputValue } : inputValue.Split(',');
+
+                foreach(var v in variableList)
                 {
+                    var evaluatedExpression = v;
                     try
                     {
                         if(DataListUtil.IsEvaluated(evaluatedExpression))
@@ -164,17 +170,18 @@ namespace Dev2.Validation
                         isValid = false;
                     }
                 }
-
-                if(!isValid)
-                {
-                    return new ActionableErrorInfo(onError)
-                    {
-                        ErrorType = ErrorType.Critical,
-                        Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
-                                  + "Invalid expression: Variable has special characters."
-                    };
-                }
             }
+
+            if(!isValid)
+            {
+                return new ActionableErrorInfo(onError)
+                {
+                    ErrorType = ErrorType.Critical,
+                    Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
+                              + "Invalid expression: Variable has special characters."
+                };
+            }
+
             return null;
         }
     }
