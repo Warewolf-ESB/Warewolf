@@ -984,6 +984,10 @@ namespace Dev2.Studio.ViewModels
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
+            if(ActiveItem != null)
+            {
+                ActiveItem.SaveToWorkspaceIfUnsavedWorkflow();
+            }
             base.ActivateItem(item);
             if(item == null || item.ContextualResourceModel == null) return;
 
@@ -992,6 +996,7 @@ namespace Dev2.Studio.ViewModels
                 ExplorerViewModel.BringItemIntoView(item);
             }
         }
+
 
         #endregion
 

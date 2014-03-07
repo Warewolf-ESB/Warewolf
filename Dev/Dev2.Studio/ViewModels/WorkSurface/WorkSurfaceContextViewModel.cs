@@ -626,15 +626,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void DispatchServerDebugMessage(ExecuteMessage message, IContextualResourceModel resource)
         {
-            if(message != null)
+            if(message != null && message.Message != null)
             {
-                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-                if(_debugOutputViewModel != null)
-                {
-                    debugstate.SessionID = _debugOutputViewModel.SessionID;
-                    _debugOutputViewModel.Append(debugstate);
-                }
+            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+            if(_debugOutputViewModel != null)
+            {
+                debugstate.SessionID = _debugOutputViewModel.SessionID;
+                _debugOutputViewModel.Append(debugstate);
             }
+        }
         }
 
         public virtual void Debug()
@@ -706,5 +706,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #endregion
 
         #endregion
+
+        public void SaveToWorkspaceIfUnsavedWorkflow()
+        {
+            //if(ContextualResourceModel != null && ContextualResourceModel.IsNewWorkflow)
+            //{
+            //    BindToModel();
+            //    _workspaceItemRepository.UpdateWorkspaceItem(ContextualResourceModel, true);
+            //    ContextualResourceModel.Environment.ResourceRepository.Save(ContextualResourceModel);
+            //}
+        }
     }
 }

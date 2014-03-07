@@ -546,10 +546,13 @@ namespace Dev2.Activities.Designers2.Service
             CheckIsDeleted(memo);
 
             UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
-            if(CheckSourceMissing())
+            if(SourceID == Guid.Empty)
             {
-                InitializeMappings();
-                UpdateMappings();
+                if(CheckSourceMissing())
+                {
+                    InitializeMappings();
+                    UpdateMappings();
+                }
             }
             if(OnDesignValidationReceived != null)
             {

@@ -24,6 +24,7 @@ using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Composition;
@@ -37,6 +38,7 @@ using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Dev2.Messages;
+using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -61,6 +63,7 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
 using Dev2.Utils;
+using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -69,7 +72,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
 
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
-                                             IHandle<UpdateResourceMessage>,
                                              IHandle<AddStringListToDataListMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<SaveUnsavedWorkflowMessage>,
@@ -93,6 +95,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
         Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
+        // ReSharper disable InconsistentNaming
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
         DsfActivityDropViewModel _vm;
@@ -905,11 +908,21 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(UpdateResourceMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            if(
-                ContexttualResourceModelEqualityComparer.Current.Equals(
-                    message.ResourceModel, _resourceModel))
+            if(ContexttualResourceModelEqualityComparer.Current.Equals(message.ResourceModel, _resourceModel))
             {
+                IObservableReadOnlyList<IErrorInfo> currentErrors = null;
+                if(message.ResourceModel.Errors != null && message.ResourceModel.Errors.Count > 0)
+                {
+                    currentErrors = message.ResourceModel.Errors;
+                }
                 _resourceModel.Update(message.ResourceModel);
+                if(currentErrors != null && currentErrors.Count > 0)
+                {
+                    foreach(var currentError in currentErrors)
+                    {
+                        _resourceModel.AddError(currentError);
+                    }
+                }
             }
         }
 
@@ -1322,6 +1335,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var checkDataList = CheckDataList();
 
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
+                    _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
                 }
                 else
@@ -1364,6 +1378,19 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void ProcessDataListOnLoad()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
+        }
+
+        public void DoWorkspaceSave()
+        {
+            if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
+            {
+                BindToModel();
+                WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
+                ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+                _workspaceSave = true;
+
+            }
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
         /// <summary>
@@ -1532,6 +1559,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             if(dropOccured)
             {
+                _workspaceSave = false;
                 ResourceModel.IsWorkflowSaved = false;
                 NotifyOfPropertyChange(() => DisplayName);
             }
@@ -1553,7 +1581,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         };
 
         string _originalDataList;
-
+        bool _workspaceSave;
 
         /// <summary>
         /// Models the service model changed.

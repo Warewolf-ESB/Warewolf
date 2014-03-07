@@ -27,7 +27,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             if(string.IsNullOrWhiteSpace(Format))
             {
-                return dateTime.ToString(CultureInfo.InvariantCulture);
+                var dateTimeFormatInfo = CultureInfo.InvariantCulture.DateTimeFormat;
+                var customFormat = dateTimeFormatInfo.ShortDatePattern+" "+dateTimeFormatInfo.LongTimePattern.Replace("ss", "ss.ffff");
+                return dateTime.ToString(customFormat);
             }
             return dateTime.ToString(Format);
         }
