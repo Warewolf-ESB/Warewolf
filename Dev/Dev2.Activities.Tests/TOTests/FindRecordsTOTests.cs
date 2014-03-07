@@ -1,7 +1,7 @@
-﻿using Dev2.Providers.Validation.Rules;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.TOTests
@@ -57,7 +57,9 @@ namespace Dev2.Tests.Activities.TOTests
             var findRecordsTO = new FindRecordsTO();
             const string searchType = "MyValue";
             //------------Execute Test---------------------------
+            // ReSharper disable ImplicitlyCapturedClosure
             var notifyPropertyChanged = TestUtils.PropertyChangedTester(findRecordsTO, () => findRecordsTO.SearchType, () => findRecordsTO.SearchType = searchType);
+            // ReSharper restore ImplicitlyCapturedClosure
             //------------Assert Results-------------------------
             Assert.AreEqual(searchType, findRecordsTO.SearchType);
             Assert.IsTrue(notifyPropertyChanged);
@@ -72,7 +74,9 @@ namespace Dev2.Tests.Activities.TOTests
             var findRecordsTO = new FindRecordsTO();
             const string searchCriteria = "MyValue";
             //------------Execute Test---------------------------
+            // ReSharper disable ImplicitlyCapturedClosure
             var notifyPropertyChanged = TestUtils.PropertyChangedTester(findRecordsTO, () => findRecordsTO.SearchCriteria, () => findRecordsTO.SearchCriteria = searchCriteria);
+            // ReSharper restore ImplicitlyCapturedClosure
             //------------Assert Results-------------------------
             Assert.AreEqual(searchCriteria, findRecordsTO.SearchCriteria);
             Assert.IsTrue(notifyPropertyChanged);
@@ -116,7 +120,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_CanAdd_SearchTypeEmpty_ReturnFalse()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() {SearchType = string.Empty};            
+            var findRecordsTO = new FindRecordsTO { SearchType = string.Empty };
             //------------Execute Test---------------------------
             Assert.IsFalse(findRecordsTO.CanAdd());
             //------------Assert Results-------------------------
@@ -128,7 +132,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_CanAdd_SearchTypeWithData_ReturnTrue()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = "Contains" };
+            var findRecordsTO = new FindRecordsTO { SearchType = "Contains" };
             //------------Execute Test---------------------------
             Assert.IsTrue(findRecordsTO.CanAdd());
             //------------Assert Results-------------------------
@@ -144,7 +148,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void FindRecordsTO_CanRemove_SearchTypeEmptyAndSearchTypeEmpty_ReturnTrue()
         {
             //------------Setup for test--------------------------
-            var findRecordsTO = new FindRecordsTO() { SearchType = string.Empty,SearchCriteria = string.Empty};
+            var findRecordsTO = new FindRecordsTO { SearchType = string.Empty, SearchCriteria = string.Empty };
             //------------Execute Test---------------------------
             Assert.IsTrue(findRecordsTO.CanRemove());
             //------------Assert Results-------------------------
@@ -213,7 +217,7 @@ namespace Dev2.Tests.Activities.TOTests
             var findRecordsTO = new FindRecordsTO() { SearchType = "Doesn't Start With", SearchCriteria = string.Empty };
             VerifyCorrectRulesForEachField(findRecordsTO, "SearchCriteria");
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FindRecordsTO_GetRuleSet")]
@@ -263,7 +267,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
             Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
         }
-        
+
         #endregion
     }
 }
