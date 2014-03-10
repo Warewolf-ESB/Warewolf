@@ -496,6 +496,7 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void DeployViewModel_SourceServerDisconnected_ClearsConflictingNodes()
         {
+
             var mockSourceServer = new Mock<IEnvironmentModel>();
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
@@ -659,6 +660,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanSelectAllDependencies_IsAuthorizedToDeployFrom_Correct()
         {
+            ImportService.CurrentContext = OkayContext;
             Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: false, isAuthorizedDeployFrom: false);
             Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: true, isAuthorizedDeployFrom: true);
         }

@@ -48,9 +48,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         private ObservableCollection<DeployStatsTO> _sourceStats;
         private ObservableCollection<DeployStatsTO> _targetStats;
 
-        private IEnvironmentModel _sourceEnvironment;
-        private IEnvironmentModel _targetEnvironment;
-
         private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
 
@@ -184,51 +181,16 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        public IEnvironmentModel SourceEnvironment
-        {
-            get
-            {
-                return _sourceEnvironment;
-            }
-            private set
-            {
-                
-                var notify = !ReferenceEquals( value, _sourceEnvironment); 
-                // unsubscibe from previous
-                if (null != _sourceEnvironment)
-                    _sourceEnvironment.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
-
-                _sourceEnvironment = value;
-                
-                //subscribe to current
-                if (null != _sourceEnvironment)
-                _sourceEnvironment.IsConnectedChanged += SourceEnvironmentConnectedChanged;
-                if(notify)
-                NotifyOfPropertyChange(() => SourceEnvironment);
-            }
-        }
 
         public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
         {
-            if (null != _targetEnvironment && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
+            if (null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
             {
                 
                 _target.ClearConflictingNodesNodes();
             }
         }
 
-        public IEnvironmentModel TargetEnvironment
-        {
-            get
-            {
-                return _targetEnvironment;
-            }
-            private set
-            {
-                _targetEnvironment = value;
-                NotifyOfPropertyChange(() => TargetEnvironment);
-            }
-        }
 
         /// <summary>
         /// Used to indicate a successfull deploy has happened
@@ -298,7 +260,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(value == _source) return;
 
                 _source = value;
-                if (null != _targetEnvironment && null != _target && _sourceStatPredicates != null &&
+                if (null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null &&
                     _targetStatPredicates != null)
                 {
                     CalculateStats();
@@ -329,20 +291,27 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                _selectedSourceServer = value;
-                SourceServerHasDropped = false;
-                if(_selectedSourceServer != null)
-                {
-                    _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
-                    _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
-                }
+              
+                    if (null != _selectedSourceServer)
+                        _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
 
-                LoadSourceEnvironment(_selectedSourceServer);
-                NotifyOfPropertyChange(() => SelectedSourceServer);
-                NotifyOfPropertyChange(() => SourceItemsSelected);
-                NotifyOfPropertyChange(() => CanDeploy);
-                NotifyOfPropertyChange(() => ServersAreNotTheSame);
-            }
+                    _selectedSourceServer = value;
+                    SourceServerHasDropped = false;
+                    if (_selectedSourceServer != null)
+                    {
+                        _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
+                        _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
+                        _selectedSourceServer.IsConnectedChanged += SourceEnvironmentConnectedChanged;
+
+                    }
+
+                    LoadSourceEnvironment();
+                    NotifyOfPropertyChange(() => SelectedSourceServer);
+                    NotifyOfPropertyChange(() => SourceItemsSelected);
+                    NotifyOfPropertyChange(() => CanDeploy);
+                    NotifyOfPropertyChange(() => ServersAreNotTheSame);
+                }
+            
         }
 
         public string ServerDisconnectedMessage
@@ -391,7 +360,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                         _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
                     }
 
-                    LoadDestinationEnvironment(_selectedDestinationServer);
+                    LoadDestinationEnvironment();
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
                     NotifyOfPropertyChange(() => CanDeploy);
@@ -501,7 +470,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                                       n => _deployStatsCalculator.SelectForDeployPredicate(n));
             _targetStatPredicates.Add("New Resources",
                                       n => _deployStatsCalculator
-                                               .DeploySummaryPredicateNew(n, TargetEnvironment));
+                                               .DeploySummaryPredicateNew(n, SelectedDestinationServer));
             _targetStatPredicates.Add("Override",
                                       n => _deployStatsCalculator
                                                .DeploySummaryPredicateExisting(n, Target));
@@ -535,7 +504,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<ResourceTreeViewModel> selectedResourcesTreeViewModels = resourceTreeViewModels.Where(c => c.IsChecked == true).ToList();
             List<IContextualResourceModel> selectedResourceModels = selectedResourcesTreeViewModels.Select(resourceTreeViewModel => resourceTreeViewModel.DataContext).ToList();
 
-            List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
+            List<string> dependancyNames = SelectedSourceServer.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SelectedSourceServer);
 
             foreach(var dependant in dependancyNames)
             {
@@ -640,7 +609,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                                               .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
                                               .Select(n => n.DataContext as IResourceModel).ToList();
 
-                var deployResourceRepo = SourceEnvironment.ResourceRepository;
+                var deployResourceRepo = SelectedSourceServer.ResourceRepository;
 
                 if(HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
                 {
@@ -655,12 +624,12 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     IsDeploying = true;
 
-                    deployResourceRepo.DeployResources(SourceEnvironment, TargetEnvironment, deployDto, EventPublisher);
+                    deployResourceRepo.DeployResources(SelectedSourceServer, SelectedDestinationServer, deployDto, EventPublisher);
 
                     //
                     // Reload the environments resources & update explorer
                     //
-                    LoadDestinationEnvironment(SelectedDestinationServer);
+                    LoadDestinationEnvironment();
 
                     DeploySuccessfull = true;
                 }
@@ -733,21 +702,20 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Loads an environment for the source navigation manager
         /// </summary>
-        private void LoadSourceEnvironment(IEnvironmentModel server)
+        private void LoadSourceEnvironment()
         {
-            // BUG 9276 : TWR : 2013.04.19
-            SourceEnvironment = EnvironmentRepository.Fetch(server);
+
 
             Source.RemoveAllEnvironments();
 
-            if(SourceEnvironment != null)
+            if (_selectedSourceServer != null)
             {
                 if(_selectingAndExpandingFromNavigationItem)
                 {
                     Source.LoadResourcesCompleted += SourceOnResourcesLoaded;
                 }
 
-                Source.AddEnvironment(SourceEnvironment);
+                Source.AddEnvironment(_selectedSourceServer);
             }
         }
 
@@ -762,17 +730,17 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Loads an environment for the target navigation manager
         /// </summary>
-        private void LoadDestinationEnvironment(IEnvironmentModel server)
+        private void LoadDestinationEnvironment()
         {
             // BUG 9276 : TWR : 2013.04.19
-            TargetEnvironment = EnvironmentRepository.Fetch(server);
+
 
             Target.RemoveAllEnvironments();
 
-            if(TargetEnvironment != null)
+            if (SelectedDestinationServer != null)
             {
                 Target.LoadResourcesCompleted += DestinationOnResourcesLoaded;
-                Target.AddEnvironment(TargetEnvironment);
+                Target.AddEnvironment(SelectedDestinationServer);
             }
         }
 
@@ -845,8 +813,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             EventPublishers.Aggregator.Unsubscribe(this);
             // unsubscibe from previous source environemt
-            if (null != _sourceEnvironment)
-                _sourceEnvironment.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
+            if (null != _selectedSourceServer)
+                _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
             base.OnDispose();
         }
 
@@ -920,7 +888,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             if(resource != null)
             {
-                List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SourceEnvironment);
+                List<string> dependancyNames = SelectedSourceServer.ResourceRepository.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SelectedSourceServer);
                 dependancyNames.Add(resource.ResourceName);
                 foreach(var dependant in dependancyNames)
                 {

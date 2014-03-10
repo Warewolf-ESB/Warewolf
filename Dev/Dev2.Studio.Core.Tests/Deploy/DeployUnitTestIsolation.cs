@@ -102,7 +102,9 @@ namespace Dev2.Core.Tests.Deploy
 
             var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
             {
-                Source = mockedSource
+                Source = mockedSource,
+                SelectedSourceServer = server.Object
+                
             };
 
             //------------Execute Test--------------------------- 
