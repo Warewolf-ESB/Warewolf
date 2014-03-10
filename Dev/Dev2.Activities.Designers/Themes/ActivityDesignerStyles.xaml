@@ -151,6 +151,7 @@
                                  Margin="0"
                                  VerticalAlignment="Center"
                                  Focusable="True"
+                                 MaxWidth="180"
                                  IsTabStop="True">
                         <TextBlock MinWidth="20"
                                    MaxWidth="{Binding Path=ActualWidth,ElementName=DisplayNameWidthSetter}"
