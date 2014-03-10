@@ -863,6 +863,45 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
         }
 
+        [TestMethod]
+        [TestCategory("ServiceDesignerViewModel_FixErrors")]
+        [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
+        [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
+        public void ServiceDesignerViewModel_FixErrors_MulitpleRequiredWhenMappingValid_ShouldRemoveRequiredMappingErrors()
+        // ReSharper restore InconsistentNaming
+        {
+            const string xml = @"<Args>
+          <Input>[
+          {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
+        </Args>";
+
+            // Inputs must have MapsTo
+            var inputs = new List<IDev2Definition> { new Dev2Definition("n1", "n1", "somevalue", false, "somevalue", false, "") };
+            var outputs = new List<IDev2Definition>();
+
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
+
+            var instanceID = Guid.NewGuid();
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
+
+            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError,worstError);
+
+            var actualInputs = vm.DataMappingViewModel.Inputs;
+
+            Assert.AreEqual(1, actualInputs.Count, "Fix errors returned an incorrect number of outputmappings");
+            Assert.AreEqual("n1", actualInputs[0].Name, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect Name value");
+            Assert.AreNotEqual(string.Empty, actualInputs[0].MapsTo, "Fix errors failed to fix a mapping error. The first output mapping contains an incorrect MapsTo value");
+            Assert.IsFalse(vm.ShowLarge, "Fix errors failed to show the mapping.");
+
+            // Always expect at least one error in the activity's error list - the no error
+            Assert.AreEqual(ErrorType.None, vm.WorstError, "Fix errors failed to clear the error.");
+            Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
+
+            Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+        }
+
         #endregion
 
         #region OnDesignValidationReceived

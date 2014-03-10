@@ -64,7 +64,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Utils;
-using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -1389,11 +1388,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 asyncWorker.Start(() =>
                 {
                     BindToModel();
-                    WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
+                    //WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
                     _workspaceSave = true;
-
-
                 });
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItems();

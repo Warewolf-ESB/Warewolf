@@ -657,8 +657,9 @@ namespace Dev2.Activities.Designers2.Service
 
                 if(!keepError)
                 {
-                    memo.Errors.Remove(reqiredMappingChanged);
-                    RemoveError(reqiredMappingChanged);
+                    var worstErrors = memo.Errors.Where(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID).ToList();
+                    memo.Errors.RemoveAll(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID);
+                    RemoveErrors(worstErrors);
                 }
             }
         }
@@ -833,6 +834,11 @@ namespace Dev2.Activities.Designers2.Service
         {
             DesignValidationErrors.Remove(worstError);
             RootModel.RemoveError(worstError);
+        }
+
+        void RemoveErrors(IEnumerable<ErrorInfo> worstErrors)
+        {
+            worstErrors.ToList().ForEach(RemoveError);
         }
 
         #endregion
