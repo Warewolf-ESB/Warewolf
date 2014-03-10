@@ -9,9 +9,11 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
+using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Net;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -77,6 +79,28 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             ScenarioContext.Current.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
             ScenarioContext.Current.Add(ActualSourceHolder, location);
+        }
+
+        [Given(@"assign error to variable ""(.*)""")]
+        public void GivenAssignErrorToVariable(string errorVariable)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if(variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();   
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(errorVariable, ""));
+            ScenarioContext.Current.Add("errorVariable", errorVariable);
+        }
+
+        [Given(@"call the web service ""(.*)""")]
+        public void GivenCallTheWebService(string onErrorWebserviceToCall)
+        {
+            ScenarioContext.Current.Add("webserviceToCall", onErrorWebserviceToCall);
         }
 
         void CreateSourceFileWithSomeDummyData()
@@ -152,6 +176,25 @@ namespace Dev2.Activities.Specs.BaseTypes
             variableList.Add(new Tuple<string, string>(resultVar, ""));
 
             ScenarioContext.Current.Add(ResultVariableHolder, resultVar);
+        }
+
+        [Then(@"the result from the web service ""(.*)"" will have the same data as variable ""(.*)""")]
+        public void ThenTheResultFromTheWebServiceWillHaveTheSameDataAsVariable(string webservice, string errorVariable)
+        {
+            string error;
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+
+            //Get the error value
+            string errorValue;
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(errorVariable),
+                                       out errorValue, out error);
+            errorValue = errorValue.Replace('"', ' ').Trim();
+
+            //Call the service and get the result
+            WebClient webClient = new WebClient();
+            webClient.Credentials = CredentialCache.DefaultCredentials;
+            var webCallResult = webClient.DownloadString(webservice);
+            Assert.IsTrue(webCallResult.Contains(errorValue));
         }
 
 

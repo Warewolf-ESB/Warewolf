@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
+using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -45,6 +46,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 {
                     Action = dataSplit
                 };
+
+            string errorVariable;
+            ScenarioContext.Current.TryGetValue("errorVariable", out errorVariable);
+
+            string webserviceToCall;
+            ScenarioContext.Current.TryGetValue("webserviceToCall", out webserviceToCall);
+
+            dataSplit.OnErrorVariable = errorVariable;
+            dataSplit.OnErrorWorkflow = webserviceToCall;
+          
             ScenarioContext.Current.Add("activity", dataSplit);
         }
 
@@ -144,7 +155,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void WhenTheDataSplitToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var esbChannel = new EsbServicesEndpoint();
+            IDSFDataObject result = ExecuteProcess(isDebug: true,channel:esbChannel, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

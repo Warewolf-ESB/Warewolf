@@ -429,21 +429,21 @@ Scenario: Split text using a index with "," and space
      Then the split result for "[[var]]" will be "123"
      And the execution has "NO" error
 
-#    Scenario: Sending Error in error variable and calling webservice
-#    Given A string to split with value "@!?><":}{+_)(*&^~"
-#	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected"
-#	And the direction is "Backward"
-#    And assign error to variable "[[error]]"
-#    And call the web service "http://localhost:3142/services/Unsaved%2046.xml?content=[[error]]"
-#    When the data split tool is executed
-#    Then the execution has "AN" error
-#    And the debug Input as
-#	|   |            | With  | Using        | Include      | Escape |
-#	| 1 | @!?><":}{+_)(*&^~|  *    | Index        | unselected   |        |
-#
-#    And the debug output as
-#	|   |    | With  | Using | Include      | Escape |
-#	| 1 |          |  *    | Index |   unselected |        |
+    Scenario: Sending Error in error variable and calling webservice
+    Given A string to split with value "@!?><":}{+_)(*&^~"
+	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected"
+	And the direction is "Backward"
+    And assign error to variable "[[error]]"
+    And call the web service "http://rsaklfsvrtfsbld:3142/services/OnError_WriteToFile.xml?errorLog=[[error]]"
+    When the data split tool is executed
+    Then the execution has "AN" error
+    And the result from the web service "http://rsaklfsvrtfsbld:3142/services/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
+    And the debug inputs as
+	| String to Split   | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
+	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] = | Index | *     | No      |        |
+    And the debug output as
+	| # |                       |
+	| 1 | [[vowels(1).chars]] = |
 
 
 Scenario: Split negative record index as Input
