@@ -15,6 +15,7 @@ cls
 @echo "Make sure your source is update to date for Release %1%"
 @echo "Using %2% as the release number"
 @echo "Make sure you have updated the build meta data for the installer project"
+@echo "Make sure you have updated assembly versions for Dev2.Instrumentation, Dev2.Studio and Dev2.Server"
 
 @set /P waitKey=Press Enter When Ready or Q/q to exit 
 
@@ -85,11 +86,11 @@ REM rd /S /Q "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
 REM mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\"
 REM mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
 
-xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
-xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
+REM xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
+REM xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
 
-xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
-xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
+REM xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
+REM xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
 
 @echo -Preping Example Workflows-
 REM mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
