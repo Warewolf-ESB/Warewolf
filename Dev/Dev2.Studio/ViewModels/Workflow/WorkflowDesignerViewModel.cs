@@ -1383,19 +1383,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void DoWorkspaceSave()
         {
-            AsyncWorker asyncWorker = new AsyncWorker();
-            asyncWorker.Start(() =>
+            if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
             {
-                if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
+                AsyncWorker asyncWorker = new AsyncWorker();
+                asyncWorker.Start(() =>
                 {
                     BindToModel();
                     WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
                     _workspaceSave = true;
 
-                }
-            });
 
+                });
+            }
             AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 

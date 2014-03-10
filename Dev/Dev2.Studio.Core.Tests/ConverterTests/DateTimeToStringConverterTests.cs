@@ -2,6 +2,7 @@
 using Dev2.Studio.Core.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]
@@ -33,8 +34,8 @@ namespace Dev2.Core.Tests.ConverterTests
             var convertedValue = dateTimeToStringConverter.Convert(dateTimeToConvert, null, null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("01/02/2014 10:15:52.0520", convertedValue);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DateTimeToStringConverter_Convert")]
