@@ -298,5 +298,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Assert.IsTrue(uiTestControlCollection.Count > 0);
             return uiTestControlCollection[stepIndex];
         }
+        public UITestControl GetStepType(int stepIndex)
+        {
+            UITestControlCollection uiTestControlCollection = GetOutputWindow();
+            Assert.IsTrue(uiTestControlCollection.Count > 0);
+            return uiTestControlCollection[stepIndex];
+        }
     }
 }

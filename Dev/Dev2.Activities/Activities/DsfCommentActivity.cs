@@ -1,4 +1,5 @@
-﻿using Dev2.Activities;
+﻿using Dev2;
+using Dev2.Activities;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using System;
@@ -46,6 +47,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            InitializeDebug(context.GetExtension<IDSFDataObject>());
+            DispatchDebugState(context, StateType.Before);
+
             DispatchDebugState(context, StateType.After);
         }
 

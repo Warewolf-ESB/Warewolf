@@ -294,7 +294,10 @@ namespace Dev2.Studio.ViewModels.Deploy
               
                     if (null != _selectedSourceServer)
                         _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
-
+                   if (value != _selectedSourceServer)
+                   {
+                       _target.ClearConflictingNodesNodes();
+                   }
                     _selectedSourceServer = value;
                     SourceServerHasDropped = false;
                     if (_selectedSourceServer != null)

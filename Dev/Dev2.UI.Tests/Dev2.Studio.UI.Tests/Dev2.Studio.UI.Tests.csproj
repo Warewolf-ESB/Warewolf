@@ -116,6 +116,7 @@
     <Compile Include="AllToolsUITests.cs" />
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\ToolType.cs" />
+    <Compile Include="Tests\Activities\DsfCommentTests.cs" />
     <Compile Include="Tests\Activities\DsfDataMergeActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfXPathActivityTests.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
     <Compile Include="Enums\Dev2MappingType.cs" />
     <Compile Include="Tests\VariableList\VariableListUITests.cs" />
+    <Compile Include="UIMaps\Activities\DsfCommentUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfDataSplitUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfDataMergeUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfXpathUiMap.cs" />
