@@ -11,7 +11,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.FindMissingStrategies
 {
     /// <summary>
-    /// Responsible for the find missing logic that applys to all the activities that have a collection property and some static properties on them
+    /// Responsible for the find missing logic that apply to all the activities that have a collection property and some static properties on them
     /// </summary>
     class MixedActivityFindMissingStrategy : IFindMissingStrategy
     {
@@ -32,37 +32,37 @@ namespace Dev2.FindMissingStrategies
             List<string> results = new List<string>();
             Type activityType = activity.GetType();
 
-            if (activityType == typeof(DsfDataSplitActivity))
+            if(activityType == typeof(DsfDataSplitActivity))
             {
                 DsfDataSplitActivity dsAct = activity as DsfDataSplitActivity;
-                if (dsAct != null)
+                if(dsAct != null)
                 {
                     results.AddRange(InternalFindMissing(dsAct.ResultsCollection));
-                    if (!string.IsNullOrEmpty(dsAct.SourceString))
+                    if(!string.IsNullOrEmpty(dsAct.SourceString))
                     {
                         results.Add(dsAct.SourceString);
                     }
                 }
             }
-            else if (activityType == typeof(DsfDataMergeActivity))
+            else if(activityType == typeof(DsfDataMergeActivity))
             {
                 DsfDataMergeActivity dmAct = activity as DsfDataMergeActivity;
-                if (dmAct != null)
+                if(dmAct != null)
                 {
                     results.AddRange(InternalFindMissing(dmAct.MergeCollection));
-                    if (!string.IsNullOrEmpty(dmAct.Result))
+                    if(!string.IsNullOrEmpty(dmAct.Result))
                     {
                         results.Add(dmAct.Result);
                     }
                 }
             }
-            else if (activityType == typeof(DsfXPathActivity))
+            else if(activityType == typeof(DsfXPathActivity))
             {
                 DsfXPathActivity xpAct = activity as DsfXPathActivity;
-                if (xpAct != null)
+                if(xpAct != null)
                 {
                     results.AddRange(InternalFindMissing(xpAct.ResultsCollection));
-                    if (!string.IsNullOrEmpty(xpAct.SourceString))
+                    if(!string.IsNullOrEmpty(xpAct.SourceString))
                     {
                         results.Add(xpAct.SourceString);
                     }
@@ -112,29 +112,31 @@ namespace Dev2.FindMissingStrategies
             }
 
             return results;
-        }        
+        }
 
         #endregion
 
         #region Private Methods
 
-        private IList<string> InternalFindMissing<T>(IEnumerable<T> data)
+        private static IEnumerable<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
-            foreach (T row in data)
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(T row in data)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
-                foreach (PropertyInfo propertyInfo in properties)
+                foreach(PropertyInfo propertyInfo in properties)
                 {
                     object property = propertyInfo.GetValue(row, null);
-                    if (property != null)
+                    if(property != null)
                     {
                         results.Add(property.ToString());
                     }
                 }
             }
             return results;
-        }        
+        }
         #endregion
     }
 }

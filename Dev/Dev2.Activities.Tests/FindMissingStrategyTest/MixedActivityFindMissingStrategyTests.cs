@@ -25,29 +25,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
-
         #region DataSplit Activity Tests
 
         [TestMethod]
@@ -91,14 +68,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void MixedActivityFindMissingStrategy_GetActivityFields_DsfSqlBulkInsertActivity_AllFindMissingFieldsToBeReturned()
         {
             //------------Setup for test--------------------------
-            var activity = new DsfSqlBulkInsertActivity();
-            activity.Result = "[[Result]]";
-            activity.OnErrorVariable = "[[onErr]]";
-            activity.InputMappings = new List<DataColumnMapping>
-            {
-                new DataColumnMapping { InputColumn  = "[[rs().Field1]]", OutputColumn = new DbColumn()}, 
-                new DataColumnMapping { InputColumn  = "[[rs().Field2]]", OutputColumn = new DbColumn()}, 
-            };
+            var activity = new DsfSqlBulkInsertActivity
+                {
+                    Result = "[[Result]]", OnErrorVariable = "[[onErr]]", InputMappings = new List<DataColumnMapping>
+                        {
+                            new DataColumnMapping { InputColumn = "[[rs().Field1]]", OutputColumn = new DbColumn() },
+                            new DataColumnMapping { InputColumn = "[[rs().Field2]]", OutputColumn = new DbColumn() },
+                        }
+                };
 
             var fac = new Dev2FindMissingStrategyFactory();
             var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
@@ -107,7 +84,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             var actual = strategy.GetActivityFields(activity);
 
             //------------Assert Results-------------------------
-            var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]" , "[[onErr]]"};
+            var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]", "[[onErr]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
     }

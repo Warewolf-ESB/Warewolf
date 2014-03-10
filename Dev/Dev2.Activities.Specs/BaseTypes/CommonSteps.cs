@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using ActivityUnitTests;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
@@ -9,11 +10,9 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
-using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Net;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -89,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if(variableList == null)
             {
-                variableList = new List<Tuple<string, string>>();   
+                variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
@@ -191,8 +190,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             errorValue = errorValue.Replace('"', ' ').Trim();
 
             //Call the service and get the result
-            WebClient webClient = new WebClient();
-            webClient.Credentials = CredentialCache.DefaultCredentials;
+            WebClient webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             var webCallResult = webClient.DownloadString(webservice);
             Assert.IsTrue(webCallResult.Contains(errorValue));
         }
