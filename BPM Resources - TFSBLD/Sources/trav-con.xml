@@ -1,0 +1,21 @@
+
+<Source ID="31648157-beef-4993-b0f0-c6fa4fdacb53" Name="trav-con" Type="Dev2Server" ConnectionString="AppServerUri=http://rsaklftravis:3142/dsf;WebServerPort=3142" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <TypeOf>Dev2Server</TypeOf>
+  <DisplayName>trav-con</DisplayName>
+  <Category>
+  </Category>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>cQjzjntixZfN+6Oyq2a/xXnRBa8=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>rX22h9y+nkUoS9f2K3fRGWOMBoERp/6FYpBcKIn3/+GxK4ZYReFJZBO4NHFIy46hZHfWPj+Qma6Rbm3LCB4y84I5e8KmKULqyEEmM+VAK9c2D5M3L3YPw6NdCqMELc/eGdTS4q5Kr9P3yFQk5oodEqSGdLfXPgOMECSfmPOVvXA=</SignatureValue>
+  </Signature>
+</Source>
