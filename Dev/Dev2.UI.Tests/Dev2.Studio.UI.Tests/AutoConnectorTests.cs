@@ -162,7 +162,7 @@ namespace Dev2.Studio.UI.Tests
                 throw new Exception("MultiAssignDesigner not found on active tab");
             }
 
-            DecisionWizardUIMap.ClickCancel();
+            DecisionWizardUIMap.CancelWizard();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.IsTrue(connectors.Count == 2, "Connector line wasn't split");

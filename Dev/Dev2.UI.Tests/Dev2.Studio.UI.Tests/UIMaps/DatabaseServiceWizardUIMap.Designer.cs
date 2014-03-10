@@ -10,7 +10,6 @@
 
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 {
@@ -50,7 +49,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickMappingTab(int x = 280)
         {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[2];
             Playback.Wait(500);
             Mouse.Click(uIItemImage, new Point(x, 25));
         }
@@ -60,7 +59,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickTestAction()
         {
-            var control = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            var control = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[2];
             control.WaitForControlEnabled();
 
             // Click image

@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
         /// </summary>
         public void ClickMappingTab(int x = 280)
         {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[2];
             Playback.Wait(500);
             Mouse.Click(uIItemImage, new Point(x, 25));
         }

@@ -42,6 +42,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             Keyboard.SendKeys(uIItemImage, textToType, ModifierKeys.None);
         }
 
+
+
         /// <summary>
         /// ClickAndTypeInNameTextbox - Use 'ClickAndTypeInNameTextboxParams' to pass parameters into this method.
         /// </summary>
@@ -49,17 +51,21 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         {
             WizardsUIMap.WaitForWizard();
             #region Variable Declarations
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
+            //UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             #endregion
 
+            KeyboardCommands.SendTabs(6, 150);
+            KeyboardCommands.SendKey(textToType);
+            KeyboardCommands.SendTabs(2, 150);
+            KeyboardCommands.SendEnter();
             // Click image
-            Mouse.Click(uIItemImage, new Point(145, 364));
+            //Mouse.Click(uIItemImage, new Point(145, 364));
 
             // Type text in 'Wpf' window
-            SendKeys.SendWait(textToType);
-            Playback.Wait(500);
-            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
-            Playback.Wait(2000);
+            //SendKeys.SendWait(textToType);
+            //Playback.Wait(500);
+            //SendKeys.SendWait("{TAB}{TAB}{ENTER}");
+            //Playback.Wait(2000);
         }
 
         /// <summary>

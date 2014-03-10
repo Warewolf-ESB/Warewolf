@@ -223,12 +223,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             _decisionWizardUiMap.SelectMenuItem(17, 100); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11, 500);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 120));
 
             _decisionWizardUiMap.SendTabs(2, 500);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(400, 150));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(400, 120));
             _decisionWizardUiMap.SendTabs(1, 500);
-            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(600, 150));
+            _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(600, 120));
 
             _decisionWizardUiMap.SendTabs(6, 500);
             KeyboardCommands.SendEnter();

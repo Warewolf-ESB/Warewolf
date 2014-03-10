@@ -49,14 +49,6 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
             dsfActivityUiMap.DragToolOntoDesigner(ToolType.Assign);
             RibbonUIMap.ClickSave();
 
-            // Here we want to verify there is not silly space folder name ;)
-            var contents = PluginServiceWizardUIMap.GetWindowContents();
-            var isEmpty = (contents.Length == 0);
-
-            // Get Save Dialog Data for Assert below
-            const string naughtyFolder = "    ";
-            var isPresent = contents.IndexOf(naughtyFolder, StringComparison.Ordinal) >= 0;
-
             SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
             //Create second workflow
             DsfActivityUiMap dsfActivityUiMap2 = new DsfActivityUiMap();
@@ -67,10 +59,6 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
             TabManagerUIMap.ClickTab(firstName);
             TabManagerUIMap.ClickTab(secondName);
             TabManagerUIMap.ClickTab(firstName);
-
-            // check we don't have a blank folder name
-            Assert.IsFalse(isPresent, "Blank Folder Name Appearing in Save Dialog");
-            Assert.IsFalse(isEmpty, "Did not select save dialog contents");
 
             //Check that the tabs names dont have stars in them
             Assert.IsTrue(TabManagerUIMap.GetTabCount() >= 2);
