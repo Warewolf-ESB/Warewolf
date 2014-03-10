@@ -13,7 +13,9 @@ using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Services.Execution
 {
-    public abstract class ServiceExecutionAbstract<TService, TSource> : IServiceExecution where TService : Service, new() where TSource:Resource,new()                                                                                  
+    public abstract class ServiceExecutionAbstract<TService, TSource> : IServiceExecution
+        where TService : Service, new()
+        where TSource : Resource, new()
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
@@ -54,7 +56,7 @@ namespace Dev2.Services.Execution
         public abstract void AfterExecution(ErrorResultTO errors);
         protected void CreateService(ResourceCatalog catalog)
         {
-            if (!GetService(catalog)) return;
+            if(!GetService(catalog)) return;
             GetSource(catalog);
         }
 
@@ -196,7 +198,7 @@ namespace Dev2.Services.Execution
         object ExecuteService(IList<MethodParameter> methodParameters, IDev2IteratorCollection itrCollection, IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if (methodParameters.Any())
+            if(methodParameters.Any())
             {
                 // Loop iterators 
                 var pos = 0;
@@ -216,7 +218,7 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                var result =  ExecuteService(out invokeErrors);
+                var result = ExecuteService(out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 return result;
             }
@@ -238,30 +240,39 @@ namespace Dev2.Services.Execution
             // NOTE : This is only used by Plugin Services and is 1 of 4 locations that now needs to be updated should the DataList or execution model change ;)
 
             // Format the XML data
-            if (RequiresFormatting)
+            if(RequiresFormatting)
             {
                 if(result == null)
                 {
-                   return;
+                    return;
                 }
-                errors = new ErrorResultTO();
-                ErrorResultTO invokeErrors;
-                var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
 
-                // Create a shape from the service action outputs
-                var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
+                try
+                {
 
-                // Push formatted data into a datalist using the shape from the service action outputs
-                var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
+                    errors = new ErrorResultTO();
+                    ErrorResultTO invokeErrors;
+                    var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
 
-                // This merge op is killing the alias data....
-                // We need to account for alias ops too ;)
-                compiler.SetParentID(shapeDataListID, DataObj.DataListID);
+                    // Create a shape from the service action outputs
+                    var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
 
-                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), InstanceOutputDefintions, InstanceOutputDefintions, shapeDataListID, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
+                    // Push formatted data into a datalist using the shape from the service action outputs
+                    var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+
+                    // This merge op is killing the alias data....
+                    // We need to account for alias ops too ;)
+                    compiler.SetParentID(shapeDataListID, DataObj.DataListID);
+
+                    compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), InstanceOutputDefintions, InstanceOutputDefintions, shapeDataListID, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                }
+                catch(Exception)
+                {
+                    errors.AddError("Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON");
+                }
             }
 
         }
@@ -277,7 +288,7 @@ namespace Dev2.Services.Execution
                 return null;
             }
 
-             return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
+            return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
         }
 
         #endregion
