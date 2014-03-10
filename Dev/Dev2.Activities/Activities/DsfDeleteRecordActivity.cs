@@ -62,13 +62,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
-// ReSharper disable RedundantOverridenMember
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
 
         }
-// ReSharper restore RedundantOverridenMember
+        // ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -100,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
                             if(dataObject.IsDebugMode())
                             {
-                                IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset.Replace("()", "(*)"), false, out errors);
+                                IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset, false, out errors);
                                 AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionID));
                             }
 
@@ -145,7 +145,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-        
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
