@@ -30,7 +30,6 @@ namespace Dev2.Threading
         /// <date>2013/08/08</date>
         public Task Start(Action backgroundAction)
         {
-            var scheduler = GetTaskScheduler();
             return Task.Factory.StartNew(backgroundAction);
         }
 

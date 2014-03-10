@@ -2083,9 +2083,7 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
                     workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x/>"));
-                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                    //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-                    viewModel.ServiceDefinition = new StringBuilder("<x/>");
+                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = new StringBuilder("<x/>") };
 
                     #endregion
 
@@ -2172,9 +2170,7 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
                     workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                    //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-                    viewModel.ServiceDefinition = xamlBuilder;
+                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
 
                     #endregion
 
@@ -2264,9 +2260,7 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
                     workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                    //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-                    viewModel.ServiceDefinition = xamlBuilder;
+                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
 
                     #endregion
 
@@ -3176,7 +3170,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             viewModel.Handle(updateResourceMessage);
             //------------Assert Results-------------------------
-            resourceModel.Verify(model => model.AddError(It.IsAny<IErrorInfo>()),Times.Once());
+            resourceModel.Verify(model => model.AddError(It.IsAny<IErrorInfo>()), Times.Once());
         }
 
         static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
