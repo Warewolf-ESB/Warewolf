@@ -109,10 +109,10 @@ namespace Dev2.Runtime.ServiceModel
                                 //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
                                 if(category.Trim().Length > 0)
                                 {
-                                    paths.Add(category.ToUpper());
-                                }
+                                paths.Add(category.ToUpper());
                             }
                         }
+                    }
                     }
                     return true;
                 }, new ResourceDelimiter
