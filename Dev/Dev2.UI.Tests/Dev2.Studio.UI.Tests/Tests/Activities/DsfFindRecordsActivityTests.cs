@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 KeyboardCommands.SendTab();
             }
             //Check that the focus is in the result box
-            Assert.IsTrue(_dsfActivityUiMap.GetResultTextBoxControl(ViewType.Large).HasFocus);
+            Assert.IsTrue(_dsfActivityUiMap.GetResultTextBoxControl(ToolsUiMapBase.ViewType.Large).HasFocus);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Dev2.Studio.UI.Tests.Enums;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
@@ -93,9 +93,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             }
         }
 
+        public void ClickButton(string automationId)
+        {
+            UITestControl button = AdornersGetButton(automationId);
+            Mouse.Move(new Point(Activity.BoundingRectangle.X + 1, Activity.BoundingRectangle.Y + 1));
+            Mouse.Click();
+            Mouse.Click(button, new Point(5, 5));
+        }
+
         public void ClickHelp()
         {
             UITestControl button = AdornersGetButton("Open Help");
+            button.SetFocus();
             Mouse.Click(button, new Point(5, 5));
         }
 

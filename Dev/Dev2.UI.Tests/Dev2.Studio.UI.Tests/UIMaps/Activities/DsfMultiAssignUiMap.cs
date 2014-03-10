@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
-    public class DsfMultiAssignUiMap : ActivityUiMapBase
+    public class DsfMultiAssignUiMap : ToolsUiMapBase
     {
         public DsfMultiAssignUiMap(bool createNewtab = true, bool dragAssignOntoNewTab = true)
             : base(createNewtab, 1500)
@@ -18,19 +18,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 DragToolOntoDesigner(ToolType.Assign);
             }
         }
-
-        public void ClickOpenLargeView()
-        {
-            UITestControl button = AdornersGetButton("Open Large View");
-            Mouse.Click(button, new Point(5, 5));
-        }
-
-        public void ClickCloseLargeView()
-        {
-            UITestControl button = AdornersGetButton("Close Large View");
-            Mouse.Click(button, new Point(5, 5));
-        }
-
+        
         public void EnterTextIntoVariable(int index, string stringToEnter)
         {
             WpfTable table = GetLargeViewTable();
@@ -102,70 +90,5 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             }
             return null;
         }
-
-        public WpfTable GetSmallViewTable()
-        {
-            UITestControl findContent = null;
-            foreach(var child in Activity.GetChildren())
-            {
-                if(child.FriendlyName == "SmallViewContent")
-                {
-                    findContent = child;
-                    break;
-                }
-            }
-            if(findContent != null)
-            {
-                UITestControl findTable = null;
-                var children = findContent.GetChildren();
-                foreach(var child in children)
-                {
-                    if(child.FriendlyName == "SmallDataGrid")
-                    {
-                        findTable = child;
-                        break;
-                    }
-                }
-                if(findTable != null)
-                {
-                    WpfTable foundTable = (WpfTable)findTable;
-                    return foundTable;
-                }
-            }
-            throw new UITestControlNotFoundException("Cannot find specified control large view content");
-        }
-
-        public WpfTable GetLargeViewTable()
-        {
-            UITestControl findContent = null;
-            foreach(var child in Activity.GetChildren())
-            {
-                if(child.FriendlyName == "LargeViewContent")
-                {
-                    findContent = child;
-                    break;
-                }
-            }
-            if(findContent != null)
-            {
-                UITestControl findTable = null;
-                var children = findContent.GetChildren();
-                foreach(var child in children)
-                {
-                    if(child.FriendlyName == "LargeDataGrid")
-                    {
-                        findTable = child;
-                        break;
-                    }
-                }
-                if(findTable != null)
-                {
-                    WpfTable foundTable = (WpfTable)findTable;
-                    return foundTable;
-                }
-            }
-            return null;
-        }
-
     }
 }

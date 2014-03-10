@@ -23,6 +23,7 @@
                                      IsEnabled="{Binding CanAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      CustomCommand="{Binding AddCommand}"
                                      IsValidatedBefore="True"
+                                     AutomationProperties.AutomationId="AddButton"
                                      IsClosedAfter="True">
         </core:ActivityDesignerButton>
     </core:ActivityDesignerTemplate.RightButtons>
@@ -81,7 +82,8 @@
                      VerticalContentAlignment="Top"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"
-                     TextWrapping="Wrap"                    
+                     TextWrapping="Wrap"           
+                     AutomationProperties.AutomationId="QviVariableListBox"
                      attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}"
@@ -104,6 +106,7 @@
                           Style="{StaticResource ActivityComboBoxStyle}"
                           ItemsSource="{Binding SplitTypeList}"
                           SelectedValue="{Binding SplitType}"
+                          AutomationProperties.AutomationId="QviSplitOnCombobox"
                           HorizontalAlignment="Stretch">
                     <i:Interaction.Behaviors>
                         <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
@@ -114,6 +117,7 @@
                          Style="{StaticResource ActivityTextBoxStyle}"
                          Text="{Binding SplitToken, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsSplitTokenEnabled}"
+                         AutomationProperties.AutomationId="QviSplitOnCharacter"
                          attached:FocusSetter.IsFocused="{Binding IsSplitOnFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
                         <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
@@ -161,6 +165,7 @@
                 <RadioButton Content="Append"
                              IsChecked="True"
                              VerticalAlignment="Center"
+                             AutomationProperties.AutomationId="AppendOption"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
                         <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableAppendHelpText}"
@@ -170,6 +175,7 @@
                 <RadioButton Margin="15,0,0,0"
                              Content="Replace"
                              IsChecked="{Binding Overwrite}"
+                             AutomationProperties.AutomationId="ReplaceOption"
                              VerticalAlignment="Center"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>

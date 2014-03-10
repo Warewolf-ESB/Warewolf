@@ -33,7 +33,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             return control;
         }
-
+        
         public static UITestControl FindByAutomationId(this UITestControl container, string automationId)
         {
             List<UITestControl> parentCollection = container.GetChildren()
@@ -118,28 +118,13 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void Click(this UITestControl control)
         {
+            control.SetFocus();
             Point point;
             if(control.TryGetClickablePoint(out point))
             {
                 point.Offset(control.Left, control.Top);
                 Mouse.Move(point);
-                if(control.State == ControlStates.Focused)
-                {
-                    Mouse.Click();
-                }
-                else
-                {
-                    try
-                    {
-                        Mouse.DoubleClick();
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch
-                    // ReSharper restore EmptyGeneralCatchClause
-                    {
-                        // just to handle silly UI framework issues
-                    }
-                }
+                Mouse.Click();
             }
             else
             {

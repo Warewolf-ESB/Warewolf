@@ -1,13 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using Dev2.Studio.UI.Tests.Enums;
+﻿using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using System;
+using System.Linq;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
-    public class DsfFindRecordsUiMap : ActivityUiMapBase
+    public class DsfFindRecordsUiMap : ToolsUiMapBase
     {
         public DsfFindRecordsUiMap(bool createNewtab = true, bool dragFindRecordsOntoNewTab = true)
             : base(createNewtab, 1500)
@@ -16,18 +15,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 DragToolOntoDesigner(ToolType.Find);
             }
-        }
-
-        public void ClickOpenLargeView()
-        {
-            UITestControl button = AdornersGetButton("Open Large View");
-            Mouse.Click(button, new Point(5, 5));
-        }
-
-        public void ClickCloseLargeView()
-        {
-            UITestControl button = AdornersGetButton("Close Large View");
-            Mouse.Click(button, new Point(5, 5));
         }
 
         public void EnterTextIntoFieldsToSearch(string stringToEnter, ViewType viewType)
@@ -63,41 +50,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             throw new Exception("Couldn't find the" + autoId + " textbox.");
         }
 
-        private UITestControl GetView(ViewType viewType)
-        {
-            if(viewType == ViewType.Large)
-            {
-                return GetLargeView();
-            }
-            return GetSmallView();
         }
 
-        UITestControl GetSmallView()
-        {
-            UITestControlCollection uiTestControlCollection = Activity.GetChildren();
-            UITestControl firstOrDefault = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "SmallViewContent");
-            if(firstOrDefault != null)
-            {
-                return firstOrDefault;
-            }
-            throw new Exception("Could not find the small view");
-        }
-
-        UITestControl GetLargeView()
-        {
-            UITestControlCollection uiTestControlCollection = Activity.GetChildren();
-            UITestControl firstOrDefault = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "LargeViewContent");
-            if(firstOrDefault != null)
-            {
-                return firstOrDefault;
-            }
-            throw new Exception("Could not find the large view");
-        }
-    }
-
-    public enum ViewType
-    {
-        Large,
-        Small
-    }
 }

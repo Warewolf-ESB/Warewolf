@@ -28,15 +28,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void ClickOpenMapping()
         {
-            UITestControl button = AdornersGetButton("Open Mapping");
-            Mouse.Click(button, new Point(5, 5));
+            ClickButton("Open Mapping");
         }
 
         public void ClickCloseMapping(int waitAmt = 0)
         {
-            UITestControl button = AdornersGetButton("Close Mapping");
-            Playback.Wait(waitAmt);
-            Mouse.Click(button, new Point(5, 5));
+            ClickButton("Close Mapping");
         }
 
         public bool IsFixErrorButtonShowing()
