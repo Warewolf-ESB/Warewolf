@@ -287,17 +287,25 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
             {
                 new Tuple<string, string>("Decisions/Wizard.htm", @"<div id=""container"">
     <div class=""float-left"">
-
-        <div id=""header"" class=""ui-dialog-titlebar ui-widget-header ui-helper-clearfix"" style=""padding: 5px; font-size: 1.2em;"">
-            Decision Flow"),
+        <div id=""body"" class=""ui-widget-content"">
+            <form id=""mainForm"">
+                <div id=""mainFormError"" class=""error"" style=""display: none; text-align: left; margin-top: 1em; margin-left: 1em; float: left;"">
+                    <img src=""../images/warning.png"" alt=""Warning!"" width=""24"" height=""24"" class=""icon"" />
+                    <span id=""Dev2Msg"">You missed some fields.The have been highlighted below.</span>
+                </div>
+                <div class=""decision-form"">"),
                 new Tuple<string, string>("Dialogs/SaveDialog.htm", "<div id=\"saveForm\" title=\"Save\""),
                 new Tuple<string, string>("Services/WebService.htm", "<div id=\"webServiceContainer\""),
                 new Tuple<string, string>("Sources/WebSource.htm", "<div id=\"webSourceContainer\""),
-                new Tuple<string, string>("Switch/Drag.htm", @"<div id=""container"">
+                new Tuple<string, string>("Switch/Drag.htm", @"<div id=""container"" style=""height: 111px;"">
     <div class=""float-left"">
-        
-        <div id=""header"" class=""ui-dialog-titlebar ui-widget-header ui-helper-clearfix"" style=""padding: 5px; font-size: 1.2em;"">
-            Switch Case"),
+       <div id=""body"" class=""ui-widget-content"">
+           <form id=""mainForm"">
+            <div class=""mainFormError"" style=""display: none; text-align: right;"">
+                <img src=""images/warning.gif"" alt=""Warning!"" width=""24"" height=""24"" class=""icon"" />
+                <span id=""Dev2Msg"">You missed some fields.The have been highlighted below.</span>
+            </div>
+            <div class=""switch-form"">"),
                 new Tuple<string, string>("Templates/InputMapping.htm", @"<h4>Inputs</h4>
 <div>"),
             };

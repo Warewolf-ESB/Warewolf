@@ -311,7 +311,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(dataObject.IsDebugMode())
                         {
                             //Dont remove this it is here to fix the data not being returned correctly
-                            compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+                            if(string.IsNullOrEmpty(testData))
+                            {
+                                
+                            }
                         }
 
                     }

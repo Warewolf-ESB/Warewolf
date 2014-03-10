@@ -573,6 +573,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         if(aliasMasterEntry != null)
                         {
                             result = aliasMasterEntry.FetchRecordsetIndexes().MaxIndex();
+                            if(result == 0)
+                            {
+                                result = 1;
+                            }
                             return result;
                         }
                     }
@@ -962,17 +966,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 _internalObj.Remove(i, true);
             }
-            if(_internalObj.Keys.IsEmpty)
-            {
-                _internalObj.IsEmtpy = true;
-            }
-            //var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
 
-            //tmp.Init(_internalObj.Columns.Count);
+            var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
 
-            //_internalObj = tmp;
-            //int lastRowIndex = FetchLastRecordsetIndex();
-            //_internalObj.Remove(lastRowIndex, true);
+            tmp.Init(_internalObj.Columns.Count);
+
+            _internalObj = tmp;
 
             return true;
         }

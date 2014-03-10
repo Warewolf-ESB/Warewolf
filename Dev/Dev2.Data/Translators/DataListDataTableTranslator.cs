@@ -91,7 +91,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
