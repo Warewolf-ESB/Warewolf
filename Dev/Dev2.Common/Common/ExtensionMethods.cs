@@ -343,7 +343,7 @@ namespace Dev2.Common.Common
 
         public static bool IsEqual(this StringBuilder sb, StringBuilder that)
         {
-            if(sb.Length == that.Length)
+            if(that != null && (sb != null && sb.Length == that.Length))
             {
                 // length check passes, check content ;)
                 for(int i = 0; i < sb.Length; i++)
