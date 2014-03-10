@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
@@ -33,7 +32,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             return control;
         }
-        
+
         public static UITestControl FindByAutomationId(this UITestControl container, string automationId)
         {
             List<UITestControl> parentCollection = container.GetChildren()
