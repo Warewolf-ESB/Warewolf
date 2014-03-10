@@ -68,7 +68,7 @@ namespace Dev2.Activities.Debug
                     if(!dlEntry.IsEmpty())
                     {
                         var collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1, labelText);
-                        if(collection.Count < 2)
+                        if(collection.Count < 2 && collection.Count > 0)
                         {
                             collection[0].GroupName = "";
                         }

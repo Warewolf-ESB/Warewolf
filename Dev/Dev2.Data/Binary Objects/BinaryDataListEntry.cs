@@ -257,11 +257,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     // entry already exist, so update the row ;)
                     _internalObj[myIdx] = itms;
                     _internalObj.IsEmtpy = false;
+                    _internalObj.Keys.RemoveGap(myIdx);
                 }
                 else if(myIdx >= 1)
                 {
                     _internalObj[myIdx] = itms;
                     _internalObj.IsEmtpy = false;
+                    _internalObj.Keys.RemoveGap(myIdx);
                 }
 
                 error = string.Empty;
@@ -283,6 +285,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         _internalObj[myIdx] = new List<IBinaryDataListItem> { item };
                         error = string.Empty;
                         _internalObj.IsEmtpy = false;
+                        _internalObj.Keys.RemoveGap(myIdx);
                     }
                     else
                     {
@@ -302,7 +305,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         _internalObj[myIdx] = cols;
                         _internalObj.IsEmtpy = false;
-
+                        _internalObj.Keys.RemoveGap(myIdx);
                         error = string.Empty;
 
                     }
@@ -322,6 +325,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 Dev2Column colToFind = Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
                 if(colToFind != null)
                 {
+                    _internalObj.Keys.RemoveGap(FetchAppendRecordsetIndex());
                     _internalObj[FetchAppendRecordsetIndex()] = new List<IBinaryDataListItem> { item };
                     error = string.Empty;
                     _internalObj.IsEmtpy = false;

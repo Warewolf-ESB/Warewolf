@@ -106,7 +106,6 @@ namespace Dev2.Server.Datalist
                     bool res = false;
                     if(theDL.TryGetEntry(recsetName, out tmpEntry, out error))
                     {
-                        errors.AddError(error);
                         string recsetIndexStr = DataListUtil.ExtractIndexRegionFromRecordset(expression);
 
                         // evaluate it if need be ;)
@@ -133,8 +132,8 @@ namespace Dev2.Server.Datalist
                         }
 
                         res = tmpEntry.TryDeleteRows(recsetIndexStr, out error);
-                        allErrors.AddError(error);
                     }
+                    allErrors.AddError(error);
                     TryPushDataList(theDL, out error);
                     allErrors.AddError(error);
 

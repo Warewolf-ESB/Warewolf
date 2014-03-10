@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,7 +44,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             int val;
             if(int.TryParse(substring, out val))
             {
-                Assert.IsTrue(val < 2500, "Deleting tool to long");
+                Assert.IsTrue(val < 2500, "Deleting tool to long it took " + val.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
