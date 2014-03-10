@@ -16,7 +16,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
-
+    // ReSharper disable InconsistentNaming
     public partial class ExplorerUIMap
     {
         private UITestControl _explorerTree;

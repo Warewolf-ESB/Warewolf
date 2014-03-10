@@ -21,6 +21,42 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 _theTab = RibbonUIMap.CreateNewWorkflow(waitAmt);
             }
         }
+        
+        public UITestControl GetActivityDisplayNameControl()
+        {
+            return GetControlOnActivity("DisplayNameReadOnlyControl", ControlType.Edit);
+        }
+
+        public int GetDisplayNameMaxWidth()
+        {
+            var displayNameControl = GetActivityDisplayNameControl();
+            return displayNameControl.Width;
+        }
+        
+        protected UITestControl GetControlOnActivity(string autoId, ControlType controlType)
+        {
+            UITestControlCollection uiTestControlCollection = Activity.GetChildren();
+            UITestControl control = uiTestControlCollection.FirstOrDefault(c => ((WpfControl)c).AutomationId.Equals(autoId));
+            if(control != null)
+            {
+                return control;
+            }
+
+            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
+        }
+
+        protected UITestControl GetControl(string autoId, UITestControl viewControl, ControlType controlType)
+        {
+            UITestControlCollection uiTestControlCollection = viewControl.GetChildren();
+            UITestControl control = uiTestControlCollection.FirstOrDefault(c => ((WpfControl)c).AutomationId.Equals(autoId));
+            if(control != null)
+            {
+                return control;
+            }
+
+            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
+        }
+
 
         #region Properties
 
@@ -118,7 +154,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         #endregion
 
         #region Private Methods
-
 
         #endregion
 

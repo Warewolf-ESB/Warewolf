@@ -9,6 +9,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     /// Summary description for DsfActivityTests
     /// </summary>
     [CodedUITest]
+    // ReSharper disable InconsistentNaming
     public class DsfActivityTests : UIMapBase
     {
         #region Fields
@@ -51,6 +52,16 @@ Using recordset () will add a new record and (*) will assign every record.";
             _dsfActivityUiMap.ClickHelp();
             string actualHelpText = _dsfActivityUiMap.GetHelpText();
             Assert.AreEqual(expectedHelpText, actualHelpText);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfActivityTests_CodedUI")]
+        public void DsfActivityTests_CodedUI_GetAServiceWilALongDisplayName_TheDisplayNameBoxWidthSizeWillBe174()
+        {
+            _dsfActivityUiMap.DragWorkflowOntoDesigner("this name is so long the display name", "TEST");
+            _dsfActivityUiMap.ClickCloseMapping();
+            Assert.AreEqual(174, _dsfActivityUiMap.GetDisplayNameMaxWidth());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         {
             ClickButton("Close Mapping");
         }
-
+        
         public bool IsFixErrorButtonShowing()
         {
             UITestControl fixErrorsButton = GetFixErrorsButton();

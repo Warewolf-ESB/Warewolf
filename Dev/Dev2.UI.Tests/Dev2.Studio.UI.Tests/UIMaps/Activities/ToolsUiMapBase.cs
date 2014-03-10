@@ -73,8 +73,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         {
             GetControlOnActivity("AddButton", ControlType.Button).Click();
         }
-
-
+        
         public WpfTable GetSmallViewTable()
         {
             UITestControl findContent = null;
@@ -161,6 +160,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             throw new Exception("Couldnt find the large view");
         }
 
+        protected UITestControl GetView(ViewType viewType)
+        {
+            if(viewType == ViewType.Large)
+            {
+                return GetLargeView();
+            }
+            return GetSmallView();
+        }
+        
         protected UITestControl GetQuickVariableInputView()
         {
             UITestControlCollection uiTestControlCollection = Activity.GetChildren();
@@ -170,39 +178,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 return firstOrDefault;
             }
             throw new Exception("Couldnt find the quick variable input view");
-        }
-
-        protected UITestControl GetControlOnActivity(string autoId, ControlType controlType)
-        {
-            UITestControlCollection uiTestControlCollection = Activity.GetChildren();
-            UITestControl control = uiTestControlCollection.FirstOrDefault(c => ((WpfControl)c).AutomationId.Equals(autoId));
-            if(control != null)
-            {
-                return control;
-            }
-
-            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
-        }
-
-        protected UITestControl GetView(ViewType viewType)
-        {
-            if(viewType == ViewType.Large)
-            {
-                return GetLargeView();
-            }
-            return GetSmallView();
-        }
-
-        protected UITestControl GetControl(string autoId, UITestControl viewControl, ControlType controlType)
-        {
-            UITestControlCollection uiTestControlCollection = viewControl.GetChildren();
-            UITestControl control = uiTestControlCollection.FirstOrDefault(c => ((WpfControl)c).AutomationId.Equals(autoId));
-            if(control != null)
-            {
-                return control;
-            }
-
-            throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
         }
 
         public enum ViewType
