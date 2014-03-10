@@ -95,7 +95,8 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string PostDataToWebserverAsRemoteAgent(string postandUrl, Guid requestID)
         {
-            if(postandUrl.Split('?').Count() == 1)
+            var len = postandUrl.Split('?').Count();
+            if(len == 1)
             {
                 string result = string.Empty;
 
@@ -110,7 +111,9 @@ namespace Dev2.Integration.Tests.Helpers
                 {
                     if(response != null)
                     {
+                        // ReSharper disable AssignNullToNotNullAttribute
                         using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        // ReSharper restore AssignNullToNotNullAttribute
                         {
                             result = reader.ReadToEnd();
                         }
@@ -127,10 +130,10 @@ namespace Dev2.Integration.Tests.Helpers
         {
             string result = string.Empty;
 
-            int start = canidate.IndexOf(startStr);
+            int start = canidate.IndexOf(startStr, StringComparison.Ordinal);
             if(start >= 0)
             {
-                int end = canidate.LastIndexOf(endStr);
+                int end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
                 if(end > start)
                 {
                     result = canidate.Substring(start, ((end + endStr.Length) - start));

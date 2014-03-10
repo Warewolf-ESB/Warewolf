@@ -93,7 +93,10 @@ namespace Dev2.Tests.Runtime.ESB
                 if(!actualName.StartsWith("Dev2System"))
                 {
                     var expectedNode = expectedRoot.Element(actualName);
-                    Assert.AreEqual(expectedNode.Value, actualNode.Value);
+                    if(expectedNode != null)
+                    {
+                        Assert.AreEqual(expectedNode.Value, actualNode.Value);
+                    }
                 }
             }
         }
@@ -113,14 +116,17 @@ namespace Dev2.Tests.Runtime.ESB
 
             var resultXml = XElement.Parse(result);
 
-            var expectedRoot = (XElement)WebServiceWithoutInputsResponseXml;
+            var expectedRoot = WebServiceWithoutInputsResponseXml;
             foreach(var actualNode in resultXml.Elements())
             {
                 var actualName = actualNode.Name.LocalName;
                 if(!actualName.StartsWith("Dev2System"))
                 {
                     var expectedNode = expectedRoot.Element(actualName);
-                    Assert.AreEqual(expectedNode.Value, actualNode.Value);
+                    if(expectedNode != null)
+                    {
+                        Assert.AreEqual(expectedNode.Value, actualNode.Value);
+                    }
                 }
             }
         }
@@ -128,7 +134,7 @@ namespace Dev2.Tests.Runtime.ESB
         [TestMethod]
         public void WebServiceContainerExecuteWhenThrowsErrorExpectErrorIsAddedToErrorsCollection()
         {
-            var container = CreateWebServiceContainerThrowingException(WebServiceWithoutInputsXml, WebSourceWithoutInputsXml, WebServiceWithoutInputsResponse);
+            var container = CreateWebServiceContainerThrowingException(WebServiceWithoutInputsResponse);
 
             ErrorResultTO errors;
             container.Execute(out errors);
@@ -137,7 +143,7 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual("Service Execution Error: Object reference not set to an instance of an object.", errors.FetchErrors()[0]);
         }
 
-        WebServiceContainer CreateWebServiceContainerThrowingException(XElement serviceXml, XElement sourceXml, string response)
+        WebServiceContainer CreateWebServiceContainerThrowingException(string response)
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -146,15 +152,9 @@ namespace Dev2.Tests.Runtime.ESB
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
 
-            var workspace = new Mock<IWorkspace>();
-            var esbChannel = new Mock<IEsbChannel>();
-
-            var sa = CreateServiceAction(serviceXml, sourceXml);
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
-            var webService = new WebService();
-            webService.Method = new ServiceMethod();
-            var outputDescription = new OutputDescription();
-            outputDescription.Format = OutputFormats.ShapedXML;
+            var webService = new WebService { Method = new ServiceMethod() };
+            var outputDescription = new OutputDescription { Format = OutputFormats.ShapedXML };
             webService.OutputDescription = outputDescription;
             serviceExecution.Service = webService;
             var container = new WebServiceContainerMockWithError(serviceExecution)
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.ESB
             var esbChannel = new Mock<IEsbChannel>();
 
             var sa = CreateServiceAction(serviceXml, sourceXml);
-            WebServiceContainer container = null;
+            WebServiceContainer container;
 
             if(!isFaulty)
             {

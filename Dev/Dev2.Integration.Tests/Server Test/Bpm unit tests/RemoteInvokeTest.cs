@@ -36,7 +36,47 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             Assert.AreEqual(1, debugItems.Count);
             Assert.AreEqual("The workflow must have at least one service or activity connected to the Start Node.", debugItems[0].ErrorMessage);
         }
-        
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_Invoke")]
+        public void Webservice_Invoke_WhenDataReturnedIsDifferentThenTestedDataType_DataFormatErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_11271_Test_Bad");
+
+            Guid id = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, debugItems.Count);
+            StringAssert.Contains(debugItems[1].ErrorMessage, " 1 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_Invoke")]
+        public void Webservice_Invoke_WhenDataReturnedIsSameAsTestedDataType_NoDataFormatErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_11271_Test_Ok");
+
+            Guid id = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, debugItems.Count);
+            StringAssert.Contains(debugItems[1].ErrorMessage, string.Empty);
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RemoteInvoke_CanFetchDebugItems")]
