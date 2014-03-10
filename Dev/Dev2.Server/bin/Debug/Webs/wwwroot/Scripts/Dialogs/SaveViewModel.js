@@ -65,9 +65,11 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.searchFolderTerm = ko.observable("");
     self.searchFolderResults = ko.computed(function () {
         var term = self.searchFolderTerm().toLowerCase();
+
         if (term == "") {
             return self.resourceFolders();
         }
+        
         return ko.utils.arrayFilter(self.resourceFolders(), function (folder) {
             return folder.toLowerCase().indexOf(term) !== -1;
         });

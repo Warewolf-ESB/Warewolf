@@ -84,30 +84,33 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
-            var getSearchPath = GetWebsSensitiveServiceType((ResourceType) Enum.Parse(typeof (ResourceType), args));
+            var getSearchPath = GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), args));
 
             var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
             var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            if (!String.IsNullOrEmpty(args))
+            if(!String.IsNullOrEmpty(args))
             {
-                ResourceIterator.Instance.Iterate(RootFolders.Select(c => c.Value).Distinct().ToArray() , workspaceID, iteratorResult =>
+                ResourceIterator.Instance.Iterate(RootFolders.Select(c => c.Value).Distinct().ToArray(), workspaceID, iteratorResult =>
                 {
                     string resourceType;
-                    if (iteratorResult.Values.TryGetValue(3, out resourceType))
+                    if(iteratorResult.Values.TryGetValue(3, out resourceType))
                     {
                         string name;
-                        if (iteratorResult.Values.TryGetValue(1, out name))
+                        if(iteratorResult.Values.TryGetValue(1, out name))
                         {
                             names.Add(name);
                         }
                         string category;
-                        if (iteratorResult.Values.TryGetValue(2, out category))
+                        if(iteratorResult.Values.TryGetValue(2, out category))
                         {
-                            if (GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
+                            if(GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
                             {
                                 //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
-                                paths.Add(category.ToUpper());
+                                if(category.Trim().Length > 0)
+                                {
+                                    paths.Add(category.ToUpper());
+                                }
                             }
                         }
                     }
@@ -381,11 +384,11 @@ namespace Dev2.Runtime.ServiceModel
                 result = tmp.DataListSpecification;
             }
 
-            using (var sr = new StringReader(result))
+            using(var sr = new StringReader(result))
             {
 
                 var dataListSpec = XElement.Load(sr);
-                if (dataListSpec.HasElements)
+                if(dataListSpec.HasElements)
                 {
                     var validElements = new List<DataListVariable>();
                     var xElements = dataListSpec.Elements();
