@@ -97,6 +97,20 @@ namespace Dev2.FindMissingStrategies
                 }
             }
 
+            var act = activity as DsfNativeActivity<string>;
+            if(act != null)
+            {
+                if(!string.IsNullOrEmpty(act.OnErrorVariable))
+                {
+                    results.Add(act.OnErrorVariable);
+                }
+
+                if(!string.IsNullOrEmpty(act.OnErrorWorkflow))
+                {
+                    results.Add(act.OnErrorWorkflow);
+                }
+            }
+
             return results;
         }        
 

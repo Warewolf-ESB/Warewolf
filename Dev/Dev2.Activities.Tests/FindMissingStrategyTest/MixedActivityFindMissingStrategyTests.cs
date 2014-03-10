@@ -16,32 +16,14 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class MixedActivityFindMissingStrategyTests
     {
-        public MixedActivityFindMissingStrategyTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -72,12 +54,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void GetActivityFieldsOffDataSplitActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             DsfDataSplitActivity dataSplitActivity = new DsfDataSplitActivity();
+            dataSplitActivity.OnErrorVariable = "[[onErr]]";
             dataSplitActivity.ResultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[OutputVariable1]]", "Index", "[[At1]]", 1) { EscapeChar = "[[Escaped1]]" }, new DataSplitDTO("[[OutputVariable2]]", "Index", "[[At2]]", 2) { EscapeChar = "[[Escaped2]]" } };
             dataSplitActivity.SourceString = "[[SourceString]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
             List<string> actual = strategy.GetActivityFields(dataSplitActivity);
-            List<string> expected = new List<string> { "[[Escaped1]]", "[[OutputVariable1]]", "[[At1]]", "[[Escaped2]]", "[[OutputVariable2]]", "[[At2]]",  "[[SourceString]]" };
+            List<string> expected = new List<string> { "[[Escaped1]]", "[[OutputVariable1]]", "[[At1]]", "[[Escaped2]]", "[[OutputVariable2]]", "[[At2]]", "[[SourceString]]", "[[onErr]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -89,12 +72,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void GetActivityFieldsOffDataMergeActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             DsfDataMergeActivity dataMergeActivity = new DsfDataMergeActivity();
+            dataMergeActivity.OnErrorVariable = "[[onErr]]";
             dataMergeActivity.MergeCollection = new List<DataMergeDTO> { new DataMergeDTO("[[InputVariable1]]", "None", "[[At1]]", 1, "[[Padding1]]", "Left"), new DataMergeDTO("[[InputVariable2]]", "None", "[[At2]]", 2, "[[Padding2]]", "Left") };
             dataMergeActivity.Result = "[[Result]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
             List<string> actual = strategy.GetActivityFields(dataMergeActivity);
-            List<string> expected = new List<string> { "[[Padding1]]", "[[InputVariable1]]", "[[At1]]", "[[Padding2]]", "[[InputVariable2]]", "[[At2]]", "[[Result]]" };
+            List<string> expected = new List<string> { "[[Padding1]]", "[[InputVariable1]]", "[[At1]]", "[[Padding2]]", "[[InputVariable2]]", "[[At2]]", "[[Result]]", "[[onErr]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -109,6 +93,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //------------Setup for test--------------------------
             var activity = new DsfSqlBulkInsertActivity();
             activity.Result = "[[Result]]";
+            activity.OnErrorVariable = "[[onErr]]";
             activity.InputMappings = new List<DataColumnMapping>
             {
                 new DataColumnMapping { InputColumn  = "[[rs().Field1]]", OutputColumn = new DbColumn()}, 
@@ -122,7 +107,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             var actual = strategy.GetActivityFields(activity);
 
             //------------Assert Results-------------------------
-            var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]" };
+            var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]" , "[[onErr]]"};
             CollectionAssert.AreEqual(expected, actual);
         }
     }
