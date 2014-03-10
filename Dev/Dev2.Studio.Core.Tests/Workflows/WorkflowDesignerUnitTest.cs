@@ -1737,6 +1737,7 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
 
 
         }
@@ -1827,6 +1828,7 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
             repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
             repo.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
+            repo.Verify(repository => repository.DeleteResource(It.IsAny<IResourceModel>()), Times.Once());
 
 
         }

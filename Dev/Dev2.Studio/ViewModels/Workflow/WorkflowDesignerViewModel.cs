@@ -1850,6 +1850,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
             EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel));
             var resourceModel = message.ResourceModel;
+            resourceModel.Environment.ResourceRepository.DeleteResource(resourceModel);
             var unsavedName = resourceModel.ResourceName;
             BindToModel();
             UpdateResourceModel(message, resourceModel, unsavedName);
@@ -1860,6 +1861,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
             }
             NewWorkflowNames.Instance.Remove(unsavedName);
+            
         }
 
         void PublishMessages(IContextualResourceModel resourceModel)
