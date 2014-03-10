@@ -496,5 +496,86 @@ namespace Dev2.Data.Tests.ConverterTest
 
             Assert.AreEqual("<DataList><One>aaa</One><Two>bbb</Two><Three>ccc</Three></DataList>", data);
         }
+
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator can convert to a single scalar value")]
+        [Owner("Hagashen Naidu")]
+        public void Populate_TwiceWithStarIndex_AddsToCorrectIndex()
+        {
+            //-------------------Setup ----------------------------------
+            var outputDefs = "<Outputs><Output Name=\"[[rs(*).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(*).num]]\" /></Outputs>";
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
+            // build up DataTable
+            DataTable dbData = new DataTable("rec");
+            dbData.Columns.Add("num", typeof(string));
+            dbData.Rows.Add("One");
+            dbData.Rows.Add("Two");
+            dbData.Rows.Add("Three");
+
+            // Execute Translator
+            Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
+            dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dlID, out errors);
+
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><rs><num>One</num></rs><rs><num>Two</num></rs><rs><num>Three</num></rs></DataList>", data);
+        }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator can convert to a single scalar value")]
+        [Owner("Hagashen Naidu")]
+        public void Populate_TwiceWithAppendIndex_AddsToEnd()
+        {
+            //-------------------Setup ----------------------------------
+            var outputDefs = "<Outputs><Output Name=\"[[rs().num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs().num]]\" /></Outputs>";
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
+            // build up DataTable
+            DataTable dbData = new DataTable("rec");
+            dbData.Columns.Add("num", typeof(string));
+            dbData.Rows.Add("One");
+            dbData.Rows.Add("Two");
+            dbData.Rows.Add("Three");
+
+            // Execute Translator
+            Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
+            dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dlID, out errors);
+
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><rs><num>One</num></rs><rs><num>Two</num></rs><rs><num>Three</num></rs><rs><num>One</num></rs><rs><num>Two</num></rs><rs><num>Three</num></rs></DataList>", data);
+        }
+
+        [TestMethod]
+        [TestCategory("DataTableTranslator_UnitTest")]
+        [Description("Test that a DataTableTranslator can convert to a single scalar value")]
+        [Owner("Hagashen Naidu")]
+        public void Populate_TwiceWithNumericIndex_PutsDataAtIndex()
+        {
+            //-------------------Setup ----------------------------------
+            var outputDefs = "<Outputs><Output Name=\"[[rs(2).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(2).num]]\" Recordset=\"rs\"/></Outputs>";
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
+            // build up DataTable
+            DataTable dbData = new DataTable("rec");
+            dbData.Columns.Add("num", typeof(string));
+            dbData.Rows.Add("One");
+            dbData.Rows.Add("Two");
+            dbData.Rows.Add("Three");
+
+            // Execute Translator
+            Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
+
+            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+
+            Assert.AreEqual("<DataList><rs><num>One</num></rs><rs><num>Two</num></rs><rs><num>Three</num></rs></DataList>", data);
+        }
     }
 }

@@ -8,6 +8,7 @@ using Dev2.DynamicServices.Test;
 using Dev2.Server.Datalist;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList
 {
     /// <summary>

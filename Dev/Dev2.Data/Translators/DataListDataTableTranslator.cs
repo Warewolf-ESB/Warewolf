@@ -91,7 +91,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
@@ -114,7 +114,10 @@ namespace Dev2.Data.Translators
 
                 foreach(var def in defs)
                 {
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
+                    var expression = def.Value;
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(expression);
+                    var rsType = DataListUtil.GetRecordsetIndexType(expression);
+                    var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(expression);
                     var rsNameUse = def.RecordSetName;
 
                     if(string.IsNullOrEmpty(rsName))
@@ -147,6 +150,14 @@ namespace Dev2.Data.Translators
 
                             // now convert to binary datalist ;)
                             int rowIdx = entry.FetchAppendRecordsetIndex();
+                            if(rsType == enRecordsetIndexType.Star)
+                            {
+                                rowIdx = 1;
+                            }
+                            if(rsType == enRecordsetIndexType.Numeric)
+                            {
+                                rowIdx = int.Parse(rowIndex);
+                            }
 
                             if(dbData.Rows != null)
                             {
