@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void Test_CaseConvert_With_Scalar()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "CaseConversion_With_Scalar");
-            string expected = @"<Sentence>ThisIsTheSentenceThatMustBeConverted</Sentence><People><FirstName>travis</FirstName></People><People><FirstName>brendon</FirstName></People><People><FirstName>mat</FirstName></People><People><FirstName>sashen</FirstName></People><People><FirstName>trevor</FirstName></People><People><FirstName>barney</FirstName></People><People><FirstName>massimo</FirstName></People><People><FirstName>wallis</FirstName></People>";
+            string expected = @"<Sentence>ThisIsTheSentenceThatMustBeConverted</Sentence><PeoplerowID=""1""><FirstName>travis</FirstName></People><PeoplerowID=""2""><FirstName>brendon</FirstName></People><PeoplerowID=""3""><FirstName>mat</FirstName></People><PeoplerowID=""4""><FirstName>sashen</FirstName></People><PeoplerowID=""5""><FirstName>trevor</FirstName></People><PeoplerowID=""6""><FirstName>barney</FirstName></People><PeoplerowID=""7""><FirstName>massimo</FirstName></People><PeoplerowID=""8""><FirstName>wallis</FirstName></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void Test_CaseConvert_Recset_With_Index()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "CaseConversion_Recset_With_Index");
-            string expected = @"<People>      <FirstName>travis</FirstName>    </People>    <People>      <FirstName>brendon</FirstName>    </People>    <People>      <FirstName>mat</FirstName>    </People>    <People>      <FirstName>sashen</FirstName>    </People>    <People>      <FirstName>TREVOR</FirstName>    </People>    <People>      <FirstName>barney</FirstName>    </People>    <People>      <FirstName>massimo</FirstName>    </People>    <People>      <FirstName>wallis</FirstName>    </People>";
+            string expected = @"<People rowID=""1""><FirstName>travis</FirstName></People><People rowID=""2""><FirstName>brendon</FirstName></People><People rowID=""3""><FirstName>mat</FirstName></People><People rowID=""4""><FirstName>sashen</FirstName></People><People rowID=""5""><FirstName>TREVOR</FirstName></People><People rowID=""6""><FirstName>barney</FirstName></People><People rowID=""7""><FirstName>massimo</FirstName></People><People rowID=""8""><FirstName>wallis</FirstName></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
             // Since the UnitTest allow for two individual fields, this shall go ahead as it stands.
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "CaseConversion_Recset_With_NoIndex");
-            string expected = @"<People><FirstName>travis</FirstName></People><People><FirstName>brendon</FirstName></People><People><FirstName>mat</FirstName></People><People><FirstName>sashen</FirstName></People><People><FirstName>trevor</FirstName></People><People><FirstName>barney</FirstName></People><People><FirstName>massimo</FirstName></People><People><FirstName>wallis</FirstName></People><People><FirstName>WALLIS</FirstName></People>";
+            string expected = @"<People rowID=""1""><FirstName>travis</FirstName></People><People rowID=""2""><FirstName>brendon</FirstName></People><People rowID=""3""><FirstName>mat</FirstName></People><People rowID=""4""><FirstName>sashen</FirstName></People><People rowID=""5""><FirstName>trevor</FirstName></People><People rowID=""6""><FirstName>barney</FirstName></People><People rowID=""7""><FirstName>massimo</FirstName></People><People rowID=""8""><FirstName>wallis</FirstName></People><People rowID=""9""><FirstName>WALLIS</FirstName></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "CaseConvertRecsetWithStar");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string expected = "<recSet><Name>Michael</Name><Surname>CULLEN</Surname></recSet><recSet><Name>Sashen</Name><Surname>NAIDOO</Surname></recSet>";
+            const string expected = "<recSet><Name>Michael</Name><Surname>CULLEN</Surname></recSet><recSet><Name>Sashen</Name><Surname>NAIDOO</Surname></recSet>";
 
             StringAssert.Contains(ResponseData, expected);
         }

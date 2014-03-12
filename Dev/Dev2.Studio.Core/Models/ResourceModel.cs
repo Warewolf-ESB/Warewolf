@@ -575,7 +575,10 @@ namespace Dev2.Studio.Core.Models
                 if(xaml == null || xaml.Length == 0)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
-                    xaml = msg.Message;
+                    if(msg != null && msg.Message != null)
+                    {
+                        xaml = msg.Message;
+                    }
                 }
 
                 var service = CreateWorkflowXElement(xaml);

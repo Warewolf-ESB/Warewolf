@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DeleteRecordUsingRecordsetWithNumericIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DeleteRecordUsingRecordsetWithNumericIndex");
-            string expected = @"<DeleteResult>Success</DeleteResult><Customers><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers><Customers><FirstName>Michael</FirstName><LastName>Cullen</LastName></Customers>";
+            const string expected = @"<DeleteResult>Success</DeleteResult><Customers rowID=""2""><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers rowID=""3""><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers rowID=""4""><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers rowID=""5""><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers rowID=""6""><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers rowID=""7""><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers rowID=""8""><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers rowID=""9""><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers><Customers rowID=""10""><FirstName>Michael</FirstName><LastName>Cullen</LastName></Customers>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DeleteRecordUsingRecsetWithBlankIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DeleteRecordUsingRecsetWithBlankIndex");
-            string expected = @"<DeleteResult>Success</DeleteResult><Customers><FirstName>Barney</FirstName><LastName>Buchan</LastName></Customers><Customers><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers>";
+            const string expected = @"<DeleteResult>Success</DeleteResult><Customers rowID=""1""><FirstName>Barney</FirstName><LastName>Buchan</LastName></Customers><Customers rowID=""2""><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers rowID=""3""><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers rowID=""4""><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers rowID=""5""><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers rowID=""6""><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers rowID=""7""><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers rowID=""8""><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers rowID=""9""><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -68,7 +68,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DeleteRecordUsingRecordsetWithStarIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DeleteRecordUsingRecordsetWithStarIndex");
-            string expected = @"<DeleteResult>Success</DeleteResult>";
+            const string expected = @"<DeleteResult>Success</DeleteResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

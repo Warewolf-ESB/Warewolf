@@ -50,10 +50,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------
-            const string expectedReturnValue = "<Name>Dev2</Name><Departments><Name>Dev</Name></Departments><Departments><Name>Accounts</Name></Departments>" +
-                                               "<Departments_Employees><Name>Brendon</Name></Departments_Employees><Departments_Employees><Name>Jayd</Name>" +
-                                               "</Departments_Employees><Departments_Employees><Name>Bob</Name></Departments_Employees>" +
-                                               "<Departments_Employees><Name>Jo</Name></Departments_Employees>";
+            const string expectedReturnValue = @"<Name>Dev2</Name><Departments rowID=""1""><Name>Dev</Name></Departments><Departments rowID=""2""><Name>Accounts</Name></Departments><Departments_Employees rowID=""1""><Name>Brendon</Name></Departments_Employees><Departments_Employees rowID=""2""><Name>Jayd</Name></Departments_Employees><Departments_Employees rowID=""3""><Name>Bob</Name></Departments_Employees><Departments_Employees rowID=""4""><Name>Jo</Name></Departments_Employees>";
+
             StringAssert.Contains(result, expectedReturnValue);
         }
     }

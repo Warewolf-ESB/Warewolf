@@ -276,7 +276,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test
@@ -356,8 +356,13 @@ namespace Dev2.Data.Translators
                             {
                                 errors.AddError(error);
                             }
+
                             result.Append("<");
                             result.Append(entry.Namespace);
+                            result.Append(" ");
+                            result.Append(GlobalConstants.RowAnnotation);
+                            result.Append("=");
+                            result.Append("\"" + i + "\"");
                             result.Append(">");
 
                             foreach(IBinaryDataListItem col in rowData)

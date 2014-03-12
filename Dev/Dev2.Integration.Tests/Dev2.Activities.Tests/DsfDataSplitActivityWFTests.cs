@@ -46,12 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithStar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitTestWithRecordsetUsingStar");
-            string expected = @"<RecCount>20</RecCount><Contacts><field>Title</field></Contacts><Contacts><field>Fname</field></Contacts><Contacts><field>LName</field></Contacts><Contacts><field>TelNo</field></Contacts><Contacts><field>
-1.Mr</field></Contacts><Contacts><field>Frank</field></Contacts><Contacts><field>Williams</field></Contacts><Contacts><field>0795628443
-2.Mr</field></Contacts><Contacts><field>Enzo</field></Contacts><Contacts><field>Ferrari</field></Contacts><Contacts><field>0821169853
-3.Mrs</field></Contacts><Contacts><field>Jenny</field></Contacts><Contacts><field>Smith</field></Contacts><Contacts><field>0762458963
-4.Ms</field></Contacts><Contacts><field>Kerrin</field></Contacts><Contacts><field>deSilvia</field></Contacts><Contacts><field>0724587310
-5.Sir</field></Contacts><Contacts><field>Richard</field></Contacts><Contacts><field>Branson</field></Contacts><Contacts><field>0812457896</field></Contacts>";
+            string expected = @"<RecCount>20</RecCount><ContactsrowID=""1""><field>Title</field></Contacts><ContactsrowID=""2""><field>Fname</field></Contacts><ContactsrowID=""3""><field>LName</field></Contacts><ContactsrowID=""4""><field>TelNo</field></Contacts><ContactsrowID=""5""><field>1.Mr</field></Contacts><ContactsrowID=""6""><field>Frank</field></Contacts><ContactsrowID=""7""><field>Williams</field></Contacts><ContactsrowID=""8""><field>07956284432.Mr</field></Contacts><ContactsrowID=""9""><field>Enzo</field></Contacts><ContactsrowID=""10""><field>Ferrari</field></Contacts><ContactsrowID=""11""><field>08211698533.Mrs</field></Contacts><ContactsrowID=""12""><field>Jenny</field></Contacts><ContactsrowID=""13""><field>Smith</field></Contacts><ContactsrowID=""14""><field>07624589634.Ms</field></Contacts><ContactsrowID=""15""><field>Kerrin</field></Contacts><ContactsrowID=""16""><field>deSilvia</field></Contacts><ContactsrowID=""17""><field>07245873105.Sir</field></Contacts><ContactsrowID=""18""><field>Richard</field></Contacts><ContactsrowID=""19""><field>Branson</field></Contacts><ContactsrowID=""20""><field>0812457896</field></Contacts>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             ResponseData = TestHelper.CleanUp(ResponseData);
@@ -64,10 +59,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitTestWithRecordsetWithIndex");
-            string expected = @"<Contacts><field>0812457896</field></Contacts>";
+            string expected = @"<Contacts rowID=""5""><field>0812457896</field></Contacts>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            string notExpected = "0795628443";
+            const string notExpected = "0795628443";
 
             ResponseData = TestHelper.CleanUp(ResponseData);
             expected = TestHelper.CleanUp(expected);
@@ -80,7 +75,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithNoIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitTestWithRecordsetsWithNoIndexes");
-            string expected = @"<Contacts><Title>Title</Title><FirstName>Fname</FirstName><LastName>LName</LastName><Tel>TelNo</Tel></Contacts><Contacts><Title>1.Mr</Title><FirstName>Frank</FirstName><LastName>Williams</LastName><Tel>0795628443</Tel></Contacts><Contacts><Title>2.Mr</Title><FirstName>Enzo</FirstName><LastName>Ferrari</LastName><Tel>0821169853</Tel></Contacts><Contacts><Title>3.Mrs</Title><FirstName>Jenny</FirstName><LastName>Smith</LastName><Tel>0762458963</Tel></Contacts><Contacts><Title>4.Ms</Title><FirstName>Kerrin</FirstName><LastName>deSilvia</LastName><Tel>0724587310</Tel></Contacts><Contacts><Title>5.Sir</Title><FirstName>Richard</FirstName><LastName>Branson</LastName><Tel>0812457896</Tel></Contacts>";
+            string expected = @"<ContactsrowID=""1""><Title>Title</Title><FirstName>Fname</FirstName><LastName>LName</LastName><Tel>TelNo</Tel></Contacts><ContactsrowID=""2""><Title>1.Mr</Title><FirstName>Frank</FirstName><LastName>Williams</LastName><Tel>0795628443</Tel></Contacts><ContactsrowID=""3""><Title>2.Mr</Title><FirstName>Enzo</FirstName><LastName>Ferrari</LastName><Tel>0821169853</Tel></Contacts><ContactsrowID=""4""><Title>3.Mrs</Title><FirstName>Jenny</FirstName><LastName>Smith</LastName><Tel>0762458963</Tel></Contacts><ContactsrowID=""5""><Title>4.Ms</Title><FirstName>Kerrin</FirstName><LastName>deSilvia</LastName><Tel>0724587310</Tel></Contacts><ContactsrowID=""6""><Title>5.Sir</Title><FirstName>Richard</FirstName><LastName>Branson</LastName><Tel>0812457896</Tel></Contacts>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -94,7 +89,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithAppendingToDifferentRecordsets()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitTestAppendingToDifferentRecordsets");
-            string expected = @"<Titles><Title>Title</Title></Titles><Titles><Title>Mr</Title></Titles><Titles><Title>Mr</Title></Titles><Titles><Title>Mrs</Title></Titles><Titles><Title>Ms</Title></Titles><Titles><Title>Sir</Title></Titles><FirstNames><FirstName>Fname</FirstName></FirstNames><FirstNames><FirstName>Frank</FirstName></FirstNames><FirstNames><FirstName>Enzo</FirstName></FirstNames><FirstNames><FirstName>Jenny</FirstName></FirstNames><FirstNames><FirstName>Kerrin</FirstName></FirstNames><FirstNames><FirstName>Richard</FirstName></FirstNames><LastNames><LastName>LName</LastName></LastNames><LastNames><LastName>Williams</LastName></LastNames><LastNames><LastName>Ferrari</LastName></LastNames><LastNames><LastName>Smith</LastName></LastNames><LastNames><LastName>deSilvia</LastName></LastNames><LastNames><LastName>Branson</LastName></LastNames><Tels><Tel>TelNo</Tel></Tels><Tels><Tel>0795628443</Tel></Tels><Tels><Tel>0821169853</Tel></Tels><Tels><Tel>0762458963</Tel></Tels><Tels><Tel>0724587310</Tel></Tels><Tels><Tel>0812457896</Tel></Tels>";
+            string expected = @"<TitlesrowID=""1""><Title>Title</Title></Titles><TitlesrowID=""2""><Title>Mr</Title></Titles><TitlesrowID=""3""><Title>Mr</Title></Titles><TitlesrowID=""4""><Title>Mrs</Title></Titles><TitlesrowID=""5""><Title>Ms</Title></Titles><TitlesrowID=""6""><Title>Sir</Title></Titles><FirstNamesrowID=""1""><FirstName>Fname</FirstName></FirstNames><FirstNamesrowID=""2""><FirstName>Frank</FirstName></FirstNames><FirstNamesrowID=""3""><FirstName>Enzo</FirstName></FirstNames><FirstNamesrowID=""4""><FirstName>Jenny</FirstName></FirstNames><FirstNamesrowID=""5""><FirstName>Kerrin</FirstName></FirstNames><FirstNamesrowID=""6""><FirstName>Richard</FirstName></FirstNames><LastNamesrowID=""1""><LastName>LName</LastName></LastNames><LastNamesrowID=""2""><LastName>Williams</LastName></LastNames><LastNamesrowID=""3""><LastName>Ferrari</LastName></LastNames><LastNamesrowID=""4""><LastName>Smith</LastName></LastNames><LastNamesrowID=""5""><LastName>deSilvia</LastName></LastNames><LastNamesrowID=""6""><LastName>Branson</LastName></LastNames><TelsrowID=""1""><Tel>TelNo</Tel></Tels><TelsrowID=""2""><Tel>0795628443</Tel></Tels><TelsrowID=""3""><Tel>0821169853</Tel></Tels><TelsrowID=""4""><Tel>0762458963</Tel></Tels><TelsrowID=""5""><Tel>0724587310</Tel></Tels><TelsrowID=""6""><Tel>0812457896</Tel></Tels>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -108,7 +103,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithScalar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitTestWithScalar");
-            string expected = @"<Contacts><Title></Title><FirstName>Fname</FirstName><LastName>LName</LastName><Tel>TelNo</Tel></Contacts><Contacts><Title></Title><FirstName>Frank</FirstName><LastName>Williams</LastName><Tel>0795628443</Tel></Contacts><Contacts><Title></Title><FirstName>Enzo</FirstName><LastName>Ferrari</LastName><Tel>0821169853</Tel></Contacts><Contacts><Title></Title><FirstName>Jenny</FirstName><LastName>Smith</LastName><Tel>0762458963</Tel></Contacts><Contacts><Title></Title><FirstName>Kerrin</FirstName><LastName>deSilvia</LastName><Tel>0724587310</Tel></Contacts><Contacts><Title></Title><FirstName>Richard</FirstName><LastName>Branson</LastName><Tel>0812457896</Tel></Contacts><TitleScalar>5.Sir</TitleScalar>";
+            string expected = @"<ContactsrowID=""1""><Title></Title><FirstName>Fname</FirstName><LastName>LName</LastName><Tel>TelNo</Tel></Contacts><ContactsrowID=""2""><Title></Title><FirstName>Frank</FirstName><LastName>Williams</LastName><Tel>0795628443</Tel></Contacts><ContactsrowID=""3""><Title></Title><FirstName>Enzo</FirstName><LastName>Ferrari</LastName><Tel>0821169853</Tel></Contacts><ContactsrowID=""4""><Title></Title><FirstName>Jenny</FirstName><LastName>Smith</LastName><Tel>0762458963</Tel></Contacts><ContactsrowID=""5""><Title></Title><FirstName>Kerrin</FirstName><LastName>deSilvia</LastName><Tel>0724587310</Tel></Contacts><ContactsrowID=""6""><Title></Title><FirstName>Richard</FirstName><LastName>Branson</LastName><Tel>0812457896</Tel></Contacts><TitleScalar>5.Sir</TitleScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -126,7 +121,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithAllDifferentSplits()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitAllDifferentTypesOfSplits");
-            string expected = @"<Contacts><Title>0.</Title><FirstName>Title</FirstName><LastName>Fname</LastName><Tel>LName|TelNo</Tel></Contacts><Contacts><Title>1.</Title><FirstName>Mr</FirstName><LastName>Frank</LastName><Tel>Williams|0795628443</Tel></Contacts><Contacts><Title>2.</Title><FirstName>Mr</FirstName><LastName>Enzo</LastName><Tel>Ferrari|0821169853</Tel></Contacts><Contacts><Title>3.</Title><FirstName>Mrs</FirstName><LastName>Jenny</LastName><Tel>Smith|07624 58963</Tel></Contacts><Contacts><Title>4.</Title><FirstName>Ms</FirstName><LastName>Kerrin</LastName><Tel>deSilvia|0724587310</Tel></Contacts><Contacts><Title>5.</Title><FirstName>Sir</FirstName><LastName>Richard</LastName><Tel>Branson|0812457896</Tel></Contacts>";
+            string expected = @"<Contacts rowID=""1""><Title>0.</Title><FirstName>Title</FirstName><LastName>Fname</LastName><Tel>LName|TelNo</Tel></Contacts><Contacts rowID=""2""><Title>1.</Title><FirstName>Mr</FirstName><LastName>Frank</LastName><Tel>Williams|0795628443</Tel></Contacts><Contacts rowID=""3""><Title>2.</Title><FirstName>Mr</FirstName><LastName>Enzo</LastName><Tel>Ferrari|0821169853</Tel></Contacts><Contacts rowID=""4""><Title>3.</Title><FirstName>Mrs</FirstName><LastName>Jenny</LastName><Tel>Smith|07624 58963</Tel></Contacts><Contacts rowID=""5""><Title>4.</Title><FirstName>Ms</FirstName><LastName>Kerrin</LastName><Tel>deSilvia|0724587310</Tel></Contacts><Contacts rowID=""6""><Title>5.</Title><FirstName>Sir</FirstName><LastName>Richard</LastName><Tel>Branson|0812457896</Tel></Contacts>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -140,12 +135,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataSplitWorkflowWithVariableInSource()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataSplitVariableInSource");
-            string expected = @"<Contacts><field>Title</field></Contacts><Contacts><field>Fname</field></Contacts><Contacts><field>LName</field></Contacts><Contacts><field>TelNo</field></Contacts><Contacts><field>
-1.Mr</field></Contacts><Contacts><field>Frank</field></Contacts><Contacts><field>Williams</field></Contacts><Contacts><field>0795628443
-2.Mr</field></Contacts><Contacts><field>Enzo</field></Contacts><Contacts><field>Ferrari</field></Contacts><Contacts><field>0821169853
-3.Mrs</field></Contacts><Contacts><field>Jenny</field></Contacts><Contacts><field>Smith</field></Contacts><Contacts><field>0762458963
-4.Ms</field></Contacts><Contacts><field>Kerrin</field></Contacts><Contacts><field>deSilvia</field></Contacts><Contacts><field>0724587310
-5.Sir</field></Contacts><Contacts><field>Richard</field></Contacts><Contacts><field>Branson</field></Contacts><Contacts><field>0812457896</field></Contacts>";
+            string expected = @"<SourceStringVar>Title|Fname|LName|TelNo|1.Mr|Frank|Williams|07956284432.Mr|Enzo|Ferrari|08211698533.Mrs|Jenny|Smith|07624589634.Ms|Kerrin|deSilvia|07245873105.Sir|Richard|Branson|0812457896</SourceStringVar><ContactsrowID=""1""><field>Title</field></Contacts><ContactsrowID=""2""><field>Fname</field></Contacts><ContactsrowID=""3""><field>LName</field></Contacts><ContactsrowID=""4""><field>TelNo</field></Contacts><ContactsrowID=""5""><field>1.Mr</field></Contacts><ContactsrowID=""6""><field>Frank</field></Contacts><ContactsrowID=""7""><field>Williams</field></Contacts><ContactsrowID=""8""><field>07956284432.Mr</field></Contacts><ContactsrowID=""9""><field>Enzo</field></Contacts><ContactsrowID=""10""><field>Ferrari</field></Contacts><ContactsrowID=""11""><field>08211698533.Mrs</field></Contacts><ContactsrowID=""12""><field>Jenny</field></Contacts><ContactsrowID=""13""><field>Smith</field></Contacts><ContactsrowID=""14""><field>07624589634.Ms</field></Contacts><ContactsrowID=""15""><field>Kerrin</field></Contacts><ContactsrowID=""16""><field>deSilvia</field></Contacts><ContactsrowID=""17""><field>07245873105.Sir</field></Contacts><ContactsrowID=""18""><field>Richard</field></Contacts><ContactsrowID=""19""><field>Branson</field></Contacts><ContactsrowID=""20""><field>0812457896</field></Contacts><RecordCount>20</RecordCount><SplitChars>|</SplitChars>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

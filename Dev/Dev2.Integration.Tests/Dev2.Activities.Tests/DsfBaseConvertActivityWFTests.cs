@@ -1,7 +1,7 @@
-﻿using Dev2.Integration.Tests.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
+using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -45,8 +45,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithStar");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            const string expected1 = "<recSet><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
-            const string expected2 = "<recSet><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
+            const string expected1 = "<recSet rowID=\"1\"><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
+            const string expected2 = "<recSet rowID=\"2\"><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
 
             StringAssert.Contains(ResponseData, expected1);
             StringAssert.Contains(ResponseData, expected2);
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithIndex");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            const string expected = "<recSet><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
+            const string expected = "<recSet rowID=\"1\"><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet rowID=\"2\"><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
 
             StringAssert.Contains(ResponseData, expected);
         }
@@ -87,7 +87,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithNoIndex");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            const string expected = "<recSet><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet><recSet><Name>0101001001100101011000110101001101100101011101000011001001001110011000010110110101100101</Name><Surname>UmVjU2V0MlN1cm5hbWU=</Surname></recSet><recSet><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
+            const string expected = "<recSet rowID=\"1\"><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet rowID=\"2\"><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet><recSet rowID=\"3\"><Name>0101001001100101011000110101001101100101011101000011001001001110011000010110110101100101</Name><Surname>UmVjU2V0MlN1cm5hbWU=</Surname></recSet><recSet rowID=\"4\"><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
 
             StringAssert.Contains(ResponseData, expected);
         }

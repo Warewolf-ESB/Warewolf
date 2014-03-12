@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -14,14 +14,14 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void LastRecordSetNotionUpdatesEntry_Expected_RecordsCreated()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "LastRecordSetNotationUpdatesEntry");
-            string expected = @"<nameSet><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
-                                <nameSet><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
-                                <nameSet><Name>MASSIMO</Name><Surname></Surname></nameSet>
-                                <nameSet><Name>0x4d415353494d4f</Name><Surname></Surname></nameSet>";
+            string expected = @"<nameSetrowID=""1""><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
+                                <nameSetrowID=""2""><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
+                                <nameSetrowID=""3""><Name>MASSIMO</Name><Surname></Surname></nameSet>
+                                <nameSetrowID=""4""><Name>0x4d415353494d4f</Name><Surname></Surname></nameSet>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            // Standardise the outputs (Remove newlines, etc)
+            // Standardize the outputs (Remove newlines, etc)
             expected = TestHelper.CleanUp(expected);
             ResponseData = TestHelper.CleanUp(ResponseData);
             StringAssert.Contains(ResponseData, expected);

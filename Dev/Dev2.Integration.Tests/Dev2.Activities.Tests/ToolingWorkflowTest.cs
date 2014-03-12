@@ -61,9 +61,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
                 }
             }
 
-            const string expected = @"<DataList><rs><val>1</val><result>res = 3</result></rs><rs><val>2</val><result>res = 3</result></rs><rs><val>3</val><result>res = 3</result></rs><rs><val></val><result>res = 3</result></rs></DataList>";
+            const string expected = @"<DataList><rs rowID=""1""><val>1</val><result>res = 3</result></rs><rs rowID=""2""><val>2</val><result>res = 3</result></rs><rs rowID=""3""><val>3</val><result>res = 3</result></rs><rs rowID=""4""><val></val><result>res = 3</result></rs></DataList>";
 
-            Assert.IsTrue(responseData.Contains(expected), "Got [ " + responseData + " ] Expected [ " + expected + " ]");
+            StringAssert.Contains(responseData, expected);
         }
     }
 }

@@ -659,7 +659,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Value is target shape
             const string outputs = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[dbo_proc_get_Rows(*).BigID]]"" Recordset=""dbo_proc_get_Rows"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[dbo_proc_get_Rows().Column1]]"" Recordset=""dbo_proc_get_Rows"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[dbo_proc_get_Rows().Column2]]"" Recordset=""dbo_proc_get_Rows"" /></Outputs>";
-
+            const string expected = @"<DataList><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2>1</Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2>2</Column2></dbo_proc_get_Rows></DataList>";
             //------------Execute Test---------------------------
             Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
 
@@ -671,7 +671,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var resultStr = results.FetchAsString();
 
-            Assert.AreEqual("<DataList><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2>1</Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2>2</Column2></dbo_proc_get_Rows></DataList>", resultStr);
+            StringAssert.Contains(resultStr, expected);
 
         }
 
@@ -699,7 +699,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Value is target shape
             const string outputs = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[dbo_proc_get_Rows(*).BigID]]"" Recordset=""dbo_proc_get_Rows"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[dbo_proc_get_Rows().Column1]]"" Recordset=""dbo_proc_get_Rows"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[scalar]]"" Recordset=""dbo_proc_get_Rows"" /></Outputs>";
-
+            const string expected = @"<DataList><scalar>2</scalar><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2></Column2></dbo_proc_get_Rows></DataList>";
             //------------Execute Test---------------------------
             Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
 
@@ -710,10 +710,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                                             out tmpErrors);
 
             var resultStr = results.FetchAsString();
-
-            Assert.AreEqual("<DataList><scalar>2</scalar><dbo_proc_get_Rows><BigID>1</BigID><Column1>ZZZ</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>1</Column1><Column2></Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID></BigID><Column1>2</Column1><Column2></Column2></dbo_proc_get_Rows></DataList>", resultStr);
-
-
+            StringAssert.Contains(resultStr, expected);
         }
 
         [TestMethod]

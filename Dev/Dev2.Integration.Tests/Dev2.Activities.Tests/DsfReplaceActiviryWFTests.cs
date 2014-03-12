@@ -22,11 +22,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReplaceToolUsingRecordsetWithStar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReplaceToolUsingRecordsetWithStar");
-            const string expected = @"<ReplacementCount>3</ReplacementCount><People><Name>Wallis Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Barney Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Jurie Smit</Name><Province>GP</Province></People><People><Name>Massimo Guerrera</Name><Province>Kwa-Zulu Natal</Province></People>";
+            const string expected = @"<ReplacementCount>3</ReplacementCount><People rowID=""1""><Name>Wallis Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People rowID=""2""><Name>Barney Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People rowID=""3""><Name>Jurie Smit</Name><Province>GP</Province></People><People rowID=""4""><Name>Massimo Guerrera</Name><Province>Kwa-Zulu Natal</Province></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.IsTrue(ResponseData.Contains(expected));
+            StringAssert.Contains(ResponseData, expected);
         }
 
 

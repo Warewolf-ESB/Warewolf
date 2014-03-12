@@ -223,7 +223,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListMalformed));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListMalformed, out errors);
+            xmlConverter.ConvertTo(data, _dataListMalformed, out errors);
 
             // convert fails, hence no datalist cleanup ;)
 
@@ -312,8 +312,8 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatInputsOnly);
-            var payload = "<DataList><rs2><f2>rec1.f2.value</f2></rs2><rs2><f2>rec2.f2.value</f2></rs2><scalar1>scalar1Value</scalar1></DataList>";
-            var shape = "<ADL><rs2><f2/></rs2><scalar1/></ADL>";
+            const string payload = "<DataList><rs2><f2>rec1.f2.value</f2></rs2><rs2><f2>rec2.f2.value</f2></rs2><scalar1>scalar1Value</scalar1></DataList>";
+            const string shape = "<ADL><rs2><f2/></rs2><scalar1/></ADL>";
             var data = TestHelper.ConvertStringToByteArray(payload);
 
             var tmp = xmlConverter.ConvertTo(data, shape, out errors);
@@ -373,7 +373,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var payload = xmlConverter.ConvertFrom(dl1, out errors);
 
             string actual = payload.FetchAsString();
-            string expected = "Travis Is \"Cool\"&amp;>'nstuff'<";
+            const string expected = "Travis Is \"Cool\"&amp;>'nstuff'<";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
 
@@ -398,7 +398,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Assert Results-------------------------
             string actual = payload.FetchAsString();
-            string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
+            const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
         }
@@ -424,6 +424,59 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XmlTranslator_ConvertFrom")]
+        public void XmlTranslator_ConvertAndFilter_WhenRecordset_ExpectRowAnnotations()
+        {
+            //------------Setup for test--------------------------
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+
+            string error;
+            var cols = new List<Dev2Column> { DataListFactory.CreateDev2Column("val", string.Empty) };
+            dl1.TryCreateRecordsetTemplate("rs", string.Empty, cols, true, out error);
+
+            dl1.TryCreateRecordsetValue("1", "val", "rs", 1, out error);
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>", out errors);
+            actual = actual.Replace("\r", "").Replace("\n", "");
+
+            //------------Assert Results-------------------------
+            const string expected = "<rs rowID=\"1\"><val>1</val></rs>";
+
+            StringAssert.Contains(actual, expected, "rowID attribute not present");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XmlTranslator_ConvertFrom")]
+        public void XmlTranslator_ConvertAndFilter_WhenRecordsetWithGaps_ExpectRowAnnotations()
+        {
+            //------------Setup for test--------------------------
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+
+            string error;
+            var cols = new List<Dev2Column> { DataListFactory.CreateDev2Column("val", string.Empty) };
+            dl1.TryCreateRecordsetTemplate("rs", string.Empty, cols, true, out error);
+
+            dl1.TryCreateRecordsetValue("1", "val", "rs", 1, out error);
+            dl1.TryCreateRecordsetValue("3", "val", "rs", 3, out error);
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>", out errors);
+            actual = actual.Replace("\r", "").Replace("\n", "");
+
+            //------------Assert Results-------------------------
+            const string expected = "<rs rowID=\"1\"><val>1</val></rs><rs rowID=\"3\"><val>3</val></rs>";
+
+            StringAssert.Contains(actual, expected, "rowID attribute not present");
         }
 
         #endregion

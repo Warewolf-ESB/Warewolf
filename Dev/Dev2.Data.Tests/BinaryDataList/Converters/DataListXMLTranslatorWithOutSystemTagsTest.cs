@@ -38,7 +38,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             //------------Assert Results-------------------------
             const string expected = "<DataList><person><fname>sara</fname><lname>jones</lname></person></DataList>";
 
-            Assert.AreEqual(expected, result);
+            StringAssert.Contains(result, expected);
         }
 
         [TestMethod]

@@ -51,7 +51,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", WebserverURI, "MultiAssignUsingIndexIntegrationTest");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string expected = "<recSet><Name>1</Name><Surname>2</Surname></recSet><recSet><Name>3</Name><Surname>4</Surname></recSet>";
+            const string expected = @"<recSet rowID=""1""><Name>1</Name><Surname>2</Surname></recSet><recSet rowID=""2""><Name>3</Name><Surname>4</Surname></recSet>";
             StringAssert.Contains(ResponseData, expected);
         }
 
@@ -64,13 +64,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", WebserverURI, "MultiAssignUsingBlankIntegrationTest");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string expected1 = "<someRec><Name>NAME1</Name><Surname>SURNAME1</Surname></someRec>";
-            string expected2 = "<someRec><Name>Name2</Name><Surname>Surname2</Surname></someRec>";
-            string expected3 = "<someRec><Name>name3</Name><Surname>SURNAME3</Surname></someRec>";
-            string expected4 = "<someRec><Name>Name4</Name><Surname></Surname></someRec>";
-            string expected5 = "<someRec><Name>name5</Name><Surname>SURNAME5</Surname></someRec>";
-            string expected6 = "<someRec><Name></Name><Surname>Surname6</Surname></someRec>";
-            string expected7 = "<someRec><Name></Name><Surname>Surname7</Surname></someRec>";
+            const string expected1 = @"<someRec rowID=""1""><Name>NAME1</Name><Surname>SURNAME1</Surname></someRec>";
+            const string expected2 = @"<someRec rowID=""2""><Name>Name2</Name><Surname>Surname2</Surname></someRec>";
+            const string expected3 = @"<someRec rowID=""3""><Name>name3</Name><Surname>SURNAME3</Surname></someRec>";
+            const string expected4 = @"<someRec rowID=""4""><Name>Name4</Name><Surname></Surname></someRec>";
+            const string expected5 = @"<someRec rowID=""5""><Name>name5</Name><Surname>SURNAME5</Surname></someRec>";
+            const string expected6 = @"<someRec rowID=""6""><Name></Name><Surname>Surname6</Surname></someRec>";
+            const string expected7 = @"<someRec rowID=""7""><Name></Name><Surname>Surname7</Surname></someRec>";
 
             StringAssert.Contains(ResponseData, expected1);
             StringAssert.Contains(ResponseData, expected2);
@@ -89,11 +89,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void MutiAssignUsingRecursiveEvalutationIntergrationTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "MutiAssignRecursiveEvaluationTestWorkflow");
-            string expected = @"<testScalar>hello2</testScalar><recset1><rec>testScalarData</rec><field>world1</field></recset1><recset1><rec>hello1</rec><field>world2</field></recset1><recset1><rec>hello2</rec><field>world3</field></recset1><recset1><rec>hello3</rec><field>world4</field></recset1><recset1><rec>hello4</rec><field></field></recset1><recset2><field2>world1</field2></recset2><recset2><field2>world2</field2></recset2><recset2><field2>world3</field2></recset2><recset2><field2>world4</field2></recset2><recsetName>recset1</recsetName><recsetFieldName>rec</recsetFieldName><recsetIndex>3</recsetIndex><five>se</five><six>ven</six><temp>7</temp><seven>7</seven><eight></eight>";
+            const string expected = @"<testScalar>hello2</testScalar><recset1 rowID=""1""><rec>testScalarData</rec><field>world1</field></recset1><recset1 rowID=""2""><rec>hello1</rec><field>world2</field></recset1><recset1 rowID=""3""><rec>hello2</rec><field>world3</field></recset1><recset1 rowID=""4""><rec>hello3</rec><field>world4</field></recset1><recset1 rowID=""5""><rec>hello4</rec><field></field></recset1><recset2 rowID=""1""><field2>world1</field2></recset2><recset2 rowID=""2""><field2>world2</field2></recset2><recset2 rowID=""3""><field2>world3</field2></recset2><recset2 rowID=""4""><field2>world4</field2></recset2><recsetName>recset1</recsetName><recsetFieldName>rec</recsetFieldName><recsetIndex>3</recsetIndex><five>se</five><six>ven</six><temp>7</temp><seven>7</seven><eight></eight>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            //Assert.IsTrue(XElement.DeepEquals(XElement.Parse(expected), XElement.Parse(ResponseData)));
             StringAssert.Contains(ResponseData, expected);
         }
 
