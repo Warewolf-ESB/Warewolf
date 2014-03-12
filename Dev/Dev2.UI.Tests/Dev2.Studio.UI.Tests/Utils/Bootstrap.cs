@@ -20,6 +20,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
+        private const bool DoServer = false;
         private const int ServerTimeOut = 5000;
         private const int StudioTimeOut = 5000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
@@ -64,13 +65,15 @@ namespace Dev2.Studio.UI.Tests.Utils
                 {
                     // term any existing studio processes ;)
                     KillProcess(studioProcess);
-
-                    // term any existing server processes ;)
-                    KillProcess(serverProcess);
-
                     CleanWarewolfAppData();
 
-                    StartServer();
+                    //if(DoServer)
+                    //{
+                    //    // term any existing server processes ;)
+                    //    KillProcess(serverProcess);
+                    //    StartServer();
+                    //}
+
                     StartStudio();
                 }
                 else
@@ -223,19 +226,27 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyCleanup()]
         public static void Teardown()
         {
-            if(ServerProc != null && !ServerProc.HasExited)
-            {
-                ServerProc.Kill();
-            }
+            //if(DoServer)
+            //{
+            //    if(ServerProc != null && !ServerProc.HasExited)
+            //    {
+            //        ServerProc.Kill();
+            //    }
+
+            //    if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName))
+            //    {
+            //        //Server was deployed and started, stop it now.
+            //        KillProcess(TryGetProcess(ServerProcName));
+            //    }
+            //}
             if(StudioProc != null && !StudioProc.HasExited)
             {
                 StudioProc.Kill();
             }
 
-            if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName) && File.Exists(testCtx.DeploymentDirectory + @"\" + StudioName))
+            if(File.Exists(testCtx.DeploymentDirectory + @"\" + StudioName))
             {
-                //Server and studio were deployed and started, stop them now.
-                KillProcess(TryGetProcess(ServerProcName));
+                //Studio was deployed and started, stop it now.
                 KillProcess(TryGetProcess(StudioProcName));
             }
 
