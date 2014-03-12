@@ -276,7 +276,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-            throw new NotImplementedException();
+           throw new NotImplementedException();
         }
 
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test

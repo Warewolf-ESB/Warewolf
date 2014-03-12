@@ -503,7 +503,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.IsFalse(result.HasErrors);
+            Assert.IsFalse(result.HasErrors);           
         }
         #endregion
 

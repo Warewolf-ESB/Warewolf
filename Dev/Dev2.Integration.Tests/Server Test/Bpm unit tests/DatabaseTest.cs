@@ -129,8 +129,8 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             //------------Assert Results-------------------------
             const string expectedReturnValue = @"<Countries rowID=""1""><CountryID>127</CountryID><Description>Solomon Islands</Description></Countries><Countries rowID=""2""><CountryID>128</CountryID><Description>Somalia</Description></Countries><Countries rowID=""3""><CountryID>129</CountryID><Description>South Africa</Description></Countries>";
             StringAssert.Contains(result, expectedReturnValue);
-        }
-
+        }  
+        
 
     }
 }

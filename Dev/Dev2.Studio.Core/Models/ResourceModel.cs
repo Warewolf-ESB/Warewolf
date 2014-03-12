@@ -577,8 +577,8 @@ namespace Dev2.Studio.Core.Models
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     if(msg != null && msg.Message != null)
                     {
-                        xaml = msg.Message;
-                    }
+                    xaml = msg.Message;
+                }
                 }
 
                 var service = CreateWorkflowXElement(xaml);
