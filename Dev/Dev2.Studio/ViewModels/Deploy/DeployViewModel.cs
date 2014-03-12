@@ -184,9 +184,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
         {
-            if (null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
+            if(null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
             {
-                
+
                 _target.ClearConflictingNodesNodes();
             }
         }
@@ -260,7 +260,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(value == _source) return;
 
                 _source = value;
-                if (null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null &&
+                if(null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null &&
                     _targetStatPredicates != null)
                 {
                     CalculateStats();
@@ -291,30 +291,35 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-              
-                    if (null != _selectedSourceServer)
-                        _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
-                   if (value != _selectedSourceServer)
-                   {
-                       _target.ClearConflictingNodesNodes();
-                   }
-                    _selectedSourceServer = value;
-                    SourceServerHasDropped = false;
-                    if (_selectedSourceServer != null)
-                    {
-                        _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
-                        _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
-                        _selectedSourceServer.IsConnectedChanged += SourceEnvironmentConnectedChanged;
 
-                    }
-
-                    LoadSourceEnvironment();
-                    NotifyOfPropertyChange(() => SelectedSourceServer);
-                    NotifyOfPropertyChange(() => SourceItemsSelected);
-                    NotifyOfPropertyChange(() => CanDeploy);
-                    NotifyOfPropertyChange(() => ServersAreNotTheSame);
+                if(null != _selectedSourceServer)
+                {
+                    _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
                 }
-            
+
+                // ReSharper disable PossibleUnintendedReferenceComparison
+                if(value != _selectedSourceServer)
+                // ReSharper restore PossibleUnintendedReferenceComparison
+                {
+                    _target.ClearConflictingNodesNodes();
+                }
+                _selectedSourceServer = value;
+                SourceServerHasDropped = false;
+                if(_selectedSourceServer != null)
+                {
+                    _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
+                    _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
+                    _selectedSourceServer.IsConnectedChanged += SourceEnvironmentConnectedChanged;
+
+                }
+
+                LoadSourceEnvironment();
+                NotifyOfPropertyChange(() => SelectedSourceServer);
+                NotifyOfPropertyChange(() => SourceItemsSelected);
+                NotifyOfPropertyChange(() => CanDeploy);
+                NotifyOfPropertyChange(() => ServersAreNotTheSame);
+            }
+
         }
 
         public string ServerDisconnectedMessage
@@ -711,7 +716,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Source.RemoveAllEnvironments();
 
-            if (_selectedSourceServer != null)
+            if(_selectedSourceServer != null)
             {
                 if(_selectingAndExpandingFromNavigationItem)
                 {
@@ -740,7 +745,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Target.RemoveAllEnvironments();
 
-            if (SelectedDestinationServer != null)
+            if(SelectedDestinationServer != null)
             {
                 Target.LoadResourcesCompleted += DestinationOnResourcesLoaded;
                 Target.AddEnvironment(SelectedDestinationServer);
@@ -816,7 +821,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             EventPublishers.Aggregator.Unsubscribe(this);
             // unsubscibe from previous source environemt
-            if (null != _selectedSourceServer)
+            if(null != _selectedSourceServer)
                 _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
             base.OnDispose();
         }

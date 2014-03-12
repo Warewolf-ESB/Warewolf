@@ -16,11 +16,9 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
-using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -231,10 +229,7 @@ namespace Dev2.Core.Tests
                 isOverwriteMessageDisplayed = true;
             };
 
-            deployViewModel.HasNoResourcesToDeploy = (o, i) =>
-                {
-                    return false;
-                };
+            deployViewModel.HasNoResourcesToDeploy = (o, i) => false;
 
             SetupResources(deployStatsCalculator, true);
 
@@ -482,8 +477,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(deployViewModel.SourceServerHasDropped);
 
             mockSourceServer.Setup(server => server.IsConnected).Returns(false);
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = false;
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             mockSourceServer.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
 
             Assert.IsTrue(deployViewModel.SourceServerHasDropped);
@@ -502,30 +496,29 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-           
+
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
-            
+
 
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
-             
+
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             var target = new PartialNaviationViewModel(deployViewModel.Target);
             deployViewModel.Target = target;
             deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
             destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
-            
+
             Assert.IsFalse(deployViewModel.SourceServerHasDropped);
 
             mockSourceServer.Setup(server => server.IsConnected).Returns(false);
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = false;
-            deployViewModel.SourceEnvironmentConnectedChanged(this,connectedEventArgs);
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
+            deployViewModel.SourceEnvironmentConnectedChanged(this, connectedEventArgs);
 
             Assert.IsTrue(target.ClearCalled);
-           
+
 
         }
 
@@ -551,8 +544,7 @@ namespace Dev2.Core.Tests
 
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
             destEnv.Setup(server => server.IsConnected).Returns(false);
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = false;
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             destEnv.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
 
             Assert.IsTrue(deployViewModel.DestinationServerHasDropped);
@@ -583,8 +575,7 @@ namespace Dev2.Core.Tests
             destEnv.Setup(server => server.IsConnected).Returns(true);
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
 
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = false;
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             destEnv.Setup(server => server.IsConnected).Returns(false);
             mockSourceServer.Setup(server => server.IsConnected).Returns(false);
             destEnv.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
@@ -809,14 +800,14 @@ namespace Dev2.Core.Tests
 
     }
 
-    public class PartialNaviationViewModel :NavigationViewModel
+    public class PartialNaviationViewModel : NavigationViewModel
     {
         public bool ClearCalled { get; set; }
 
         public PartialNaviationViewModel(NavigationViewModel model)
             : base(model.EventAggregator, model.AsyncWorker, model.Context, model.EnvironmentRepository, model.IsFromActivityDrop, model.DsfActivityType)
         {
-           
+
         }
 
         public override void ClearConflictingNodesNodes()

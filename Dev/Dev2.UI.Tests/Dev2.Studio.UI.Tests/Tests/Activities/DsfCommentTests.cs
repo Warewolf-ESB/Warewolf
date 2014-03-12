@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Globalization;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -40,22 +39,18 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         #endregion
 
 
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ToolDesigners_CommentSmallView")]
         public void ToolDesigners_AssignSmallView_EnteringMultipleRows_IndexingWorksFine()
         {
-            _dsfActivityUiMap = new DsfCommentUiMap(false,false);
-            _dsfActivityUiMap.TheTab = RibbonUIMap.CreateNewWorkflow(2000);
+            _dsfActivityUiMap = new DsfCommentUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) };
             Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(_dsfActivityUiMap.TheTab);
             _dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Comment, _dsfActivityUiMap.TheTab, pointToDragTo);
-            _dsfActivityUiMap.EnterTextIntoComment("sometext");
             RibbonUIMap.DebugShortcutKeyPress();
             var stepType = OutputUIMap.GetStep(2);
 
-            Assert.AreEqual("Comment",stepType.FriendlyName);
-
+            Assert.AreEqual("Comment", stepType.FriendlyName);
 
         }
 

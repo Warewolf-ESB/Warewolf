@@ -1,10 +1,10 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2;
 using Dev2.Activities;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -37,7 +37,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
-
 
         #region GetForEachInputs/Outputs
 
