@@ -308,7 +308,8 @@ namespace Dev2.Studio.Core.Models
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
-            return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), IsLocalHost);
+            var isLocalConnection = environmentConnection.WebServerUri != null && !string.IsNullOrEmpty(environmentConnection.WebServerUri.AbsoluteUri) &&  environmentConnection.WebServerUri.AbsoluteUri.Contains("localhost");
+            return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), isLocalConnection);
         }
 
         void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)
@@ -316,7 +317,7 @@ namespace Dev2.Studio.Core.Models
             IsAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
             IsAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
         }
-
+         
         #region Overrides of Object
 
         /// <summary>
