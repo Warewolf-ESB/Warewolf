@@ -18,7 +18,7 @@ namespace Dev2.Runtime.Security
         readonly TimeSpan _timeOutPeriod;
 
         protected ServerAuthorizationService(ISecurityService securityService)
-            : base(securityService)
+            : base(securityService, true)
         {
             _timeOutPeriod = securityService.TimeOutPeriod;
             securityService.Read();

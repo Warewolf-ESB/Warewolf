@@ -308,7 +308,7 @@ namespace Dev2.Studio.Core.Models
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
-            return new ClientAuthorizationService(new ClientSecurityService(environmentConnection));
+            return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), IsLocalHost);
         }
 
         void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)

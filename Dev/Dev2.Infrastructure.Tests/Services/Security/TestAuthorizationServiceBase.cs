@@ -5,8 +5,8 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 {
     public class TestAuthorizationServiceBase : AuthorizationServiceBase
     {
-        public TestAuthorizationServiceBase(ISecurityService securityService)
-            : base(securityService)
+        public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true)
+            : base(securityService, isLocalConnection)
         {
         }
 

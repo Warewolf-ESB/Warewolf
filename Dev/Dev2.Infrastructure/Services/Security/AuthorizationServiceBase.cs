@@ -11,11 +11,13 @@ namespace Dev2.Services.Security
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
         readonly ISecurityService _securityService;
+        readonly bool _isLocalConnection;
 
-        protected AuthorizationServiceBase(ISecurityService securityService)
+        protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
             _securityService = securityService;
+            _isLocalConnection = isLocalConnection;
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
         }
@@ -25,7 +27,7 @@ namespace Dev2.Services.Security
 
         public Permissions GetResourcePermissions(Guid resourceID)
         {
-            var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceID.ToString());
+            var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceID.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
@@ -86,7 +88,9 @@ namespace Dev2.Services.Security
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
-            return _securityService.Permissions.Where(p => IsInRole(principal, p) && p.Matches(resource));
+            var groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p) && p.Matches(resource)).ToList();
+            FilterAdminGroupForRemote(groupPermissions);
+            return groupPermissions;
         }
 
         static bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
@@ -96,9 +100,22 @@ namespace Dev2.Services.Security
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
         {
-            return _securityService.Permissions.Where(p => IsInRole(principal, p));
+            var groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
+            FilterAdminGroupForRemote(groupPermissions);
+            return groupPermissions;
         }
 
+        private void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
+        {
+            if(!_isLocalConnection)
+            {
+                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals("BuiltIn\\Administrators"));
+                if(adminGroup != null)
+                {
+                    groupPermissions.Remove(adminGroup);
+                }
+            }
+        }
         public string JsonPermissions()
         {
             var result = new StringBuilder();

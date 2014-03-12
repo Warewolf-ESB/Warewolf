@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using Dev2.Services.Security;
+﻿using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -305,6 +305,54 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToRemoteServer_WithOnlyBuiltInAdminGroup_UserNotAuthorized()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = "BuiltIn\\Administrators" };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, false) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithOnlyBuiltInAdminGroup_UserIsAuthorized()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = "BuiltIn\\Administrators" };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });

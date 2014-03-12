@@ -5,8 +5,8 @@ namespace Dev2.Security
 {
     public class ClientAuthorizationService : AuthorizationServiceBase
     {
-        public ClientAuthorizationService(ISecurityService securityService)
-            : base(securityService)
+        public ClientAuthorizationService(ISecurityService securityService, bool isLocalConnection)
+            : base(securityService, isLocalConnection)
         {
         }
 
