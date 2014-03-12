@@ -20,6 +20,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Utils;
 using Action = System.Action;
 
 // ReSharper disable CheckNamespace
@@ -156,7 +157,14 @@ namespace Dev2.Studio.Core.Models
             var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID).ToList();
             if(modifiedPermissions.Count > 0)
             {
-                UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+                try
+                {
+                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+                }
+                catch(SystemException exception)
+                {
+                    HelperUtils.ShowTrustRelationshipError(exception);
+                }
             }
 
             if(OnPermissionsModifiedReceived != null)
@@ -577,8 +585,8 @@ namespace Dev2.Studio.Core.Models
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     if(msg != null && msg.Message != null)
                     {
-                    xaml = msg.Message;
-                }
+                        xaml = msg.Message;
+                    }
                 }
 
                 var service = CreateWorkflowXElement(xaml);

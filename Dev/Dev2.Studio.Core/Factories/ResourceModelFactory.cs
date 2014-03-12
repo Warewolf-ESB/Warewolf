@@ -6,6 +6,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Utils;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories
@@ -133,18 +134,11 @@ namespace Dev2.Studio.Core.Factories
             }
             catch(SystemException exception)
             {
-                if(exception.Message.Contains("The trust relationship between this workstation and the primary domain failed"))
-                {
-                    var popup = ImportService.GetExportValue<IPopupController>();
-                    popup.Header = "Error connecting to server";
-                    popup.Description = "This computer cannot contact the Domain Controller."
-                        + Environment.NewLine + "If it does not belong to a domain, please ensure it is removed from the domain in computer management.";
-                    popup.Buttons = MessageBoxButton.OK;
-                    popup.ImageType = MessageBoxImage.Error;
-                    popup.Show();
-                }
+                HelperUtils.ShowTrustRelationshipError(exception);
             }
             return null;
         }
+
+        
     }
 }

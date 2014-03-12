@@ -23,6 +23,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
+using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -609,7 +610,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
-                resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
+                try
+                {
+                    resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
+                }
+                catch(SystemException exception)
+                {
+                    HelperUtils.ShowTrustRelationshipError(exception);
+                }
 
                 if(data.Errors != null)
                 {
