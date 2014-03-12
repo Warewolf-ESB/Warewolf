@@ -20,7 +20,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
-        private const bool DoServer = false;
         private const int ServerTimeOut = 5000;
         private const int StudioTimeOut = 5000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
@@ -65,15 +64,12 @@ namespace Dev2.Studio.UI.Tests.Utils
                 {
                     // term any existing studio processes ;)
                     KillProcess(studioProcess);
+                    // term any existing server processes ;)
+                    KillProcess(serverProcess);
+
                     CleanWarewolfAppData();
 
-                    //if(DoServer)
-                    //{
-                    //    // term any existing server processes ;)
-                    //    KillProcess(serverProcess);
-                    //    StartServer();
-                    //}
-
+                    StartServer();
                     StartStudio();
                 }
                 else
@@ -107,40 +103,27 @@ namespace Dev2.Studio.UI.Tests.Utils
                         ServerLocation = GetProcessPath(serverProcess);
                     }
 
-                    //Remote, assume studio is running
-                    if(studioProcess == null)
+                    //Remote Restart Studio
+                    StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + StudioName;
+                    if(File.Exists(StudioLocation))
                     {
-                        //Remote by a build agent
-                        StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + StudioName;
-                        if(File.Exists(StudioLocation))
+                        //Restart Studio.
+                        KillProcess(TryGetProcess(StudioProcName));
+                        StartStudio();
+                        if(buildLabel.LoggingURL != string.Empty)
                         {
-                            //Try start
-                            StartStudio();
-                            if(buildLabel.LoggingURL != string.Empty)
-                            {
-                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the studio for coded UI test! It should already have been started!");
-                            }
-                        }
-                        else
-                        {
-                            if(buildLabel.LoggingURL != string.Empty)
-                            {
-                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Studio is not running for coded UI test pack and no build is deployed to start!");
-                            }
-                            throw new Exception("Cannot run coded UI test pack because studio is not running and no build is available.");
+                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the studio for coded UI test! It should already have been started!");
                         }
                     }
                     else
                     {
-                        if((from ManagementObject process in studioProcess select process.Properties["ExecutionState"].Value).FirstOrDefault() == null && (from ManagementObject process in studioProcess select process.Properties["Status"].Value).FirstOrDefault() == null)
+                        if(buildLabel.LoggingURL != string.Empty)
                         {
-                            StudioLocation = GetProcessPath(studioProcess);
+                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Studio is not running for coded UI test pack and no build is deployed to start!");
                         }
-                        else
-                        {
-                            throw new Exception("Studio state cannot be determined for Coded UI run.");
-                        }
+                        throw new Exception("Cannot run coded UI test pack because studio is not running and no build is available.");
                     }
+                    StudioLocation = GetProcessPath(studioProcess);
                 }
             }
         }
@@ -226,19 +209,17 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyCleanup()]
         public static void Teardown()
         {
-            //if(DoServer)
-            //{
-            //    if(ServerProc != null && !ServerProc.HasExited)
-            //    {
-            //        ServerProc.Kill();
-            //    }
+            if(ServerProc != null && !ServerProc.HasExited)
+            {
+                ServerProc.Kill();
+            }
 
-            //    if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName))
-            //    {
-            //        //Server was deployed and started, stop it now.
-            //        KillProcess(TryGetProcess(ServerProcName));
-            //    }
-            //}
+            if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName))
+            {
+                //Server was deployed and started, stop it now.
+                KillProcess(TryGetProcess(ServerProcName));
+            }
+
             if(StudioProc != null && !StudioProc.HasExited)
             {
                 StudioProc.Kill();
