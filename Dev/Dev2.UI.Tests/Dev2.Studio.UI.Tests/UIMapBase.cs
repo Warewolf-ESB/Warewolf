@@ -736,6 +736,7 @@ namespace Dev2.Studio.UI.Tests
             {
 
             }
+            Bootstrap.Init();
         }
         #endregion
     }
