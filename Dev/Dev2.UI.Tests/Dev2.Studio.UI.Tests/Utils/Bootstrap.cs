@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Threading;
 using BuildEventLogging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,8 +20,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
-        private const int ServerTimeOut = 30000;
-        private const int StudioTimeOut = 30000;
+        private const int ServerTimeOut = 5000;
+        private const int StudioTimeOut = 5000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
         public static string ServerLocation;
@@ -37,14 +38,18 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         /// <param name="textCtx">The test CTX.</param>
         [AssemblyInitialize()]
-        public static void Init(TestContext textCtx)
+        public static void AssemblyInit(TestContext textCtx)
         {
             testCtx = textCtx;
+        }
+
+        public static void Init()
+        {
             lock(_tumbler)
             {
                 var serverProcess = TryGetProcess(ServerProcName);
                 var studioProcess = TryGetProcess(StudioProcName);
-                if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+                if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
                 {
                     //Local, assume server is running
                     ServerLocation = GetProcessPath(serverProcess);
@@ -52,7 +57,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     return;
                 }
 
-                var deployLocation = textCtx.DeploymentDirectory;
+                var deployLocation = testCtx.DeploymentDirectory;
                 ServerLocation = deployLocation + @"\" + ServerName;
                 StudioLocation = deployLocation + @"\" + StudioName;
                 if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
@@ -63,16 +68,18 @@ namespace Dev2.Studio.UI.Tests.Utils
                     // term any existing server processes ;)
                     KillProcess(serverProcess);
 
+                    CleanWarewolfAppData();
+
                     StartServer();
                     StartStudio();
                 }
                 else
                 {
-                    var buildLabel = new BuildLabel(textCtx.DeploymentDirectory);
+                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
                     //Remote, assume server is running
                     if(serverProcess == null)
                     {
-                        //Remote by a build agent
+                        //Remote by a build agent 
                         ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + ServerName;
                         if(File.Exists(ServerLocation))
                         {
@@ -290,6 +297,23 @@ namespace Dev2.Studio.UI.Tests.Utils
                     // Do nothing
                 }
             }
+        }
+
+        static void CleanWarewolfAppData()
+        {
+            //Clean dir
+            var appdataPath = "C:\\Users\\" + System.Security.Principal.WindowsIdentity.GetCurrent().Name.TrimStart("DEV2\\".ToCharArray()) + "\\AppData\\Local\\Warewolf";
+            if(Directory.Exists(appdataPath))
+            {
+                try
+                {
+                    Directory.Delete(appdataPath, true);
+                }
+                catch { }
+            }
+            //Deploy standard layout
+            Directory.CreateDirectory(Path.Combine(appdataPath, "UserInterfaceLayouts"));
+            File.Copy(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Default.xml"), Path.Combine(appdataPath, "UserInterfaceLayouts", "Default.xml"));
         }
     }
 }
