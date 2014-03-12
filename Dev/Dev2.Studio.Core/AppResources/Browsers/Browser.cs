@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public static void Startup()
         {
-            var settings = new Settings();
+            var settings = new CefSharp.Settings();
 
             if(CEF.Initialize(settings))
             {

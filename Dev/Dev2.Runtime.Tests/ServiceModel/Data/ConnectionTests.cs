@@ -9,7 +9,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace Dev2.Tests.Runtime.ServiceModel
+// ReSharper disable InconsistentNaming
+namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -31,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         [TestMethod]
         public void Connections_Test_ExceptionThrown_InvalidResult()
-            {
+        {
             const string Error = "An unexpected error occurre";
             Verify_Test("http://testurl:333", Error, () => { throw new Exception(Error); });
         }
@@ -74,7 +75,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -92,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search(null, Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -110,7 +111,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("gendev", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -127,11 +128,84 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("testgreenmonster", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.AreEqual("[]", search);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_GetTestAddress")]
+        public void Connections_GetTestAddress_HasDsf_DsfRemoved()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            var connection = new Connection();
+            connection.Address = "http://localhost:3142/dsf";
+            //------------Execute Test---------------------------
+            var testAddress = connections.GetTestAddress(connection);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://localhost:3142", testAddress);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_GetTestAddress")]
+        public void Connections_GetTestAddress_NoDsf_Nothing()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            var connection = new Connection();
+            connection.Address = "http://localhost:3142";
+            //------------Execute Test---------------------------
+            var testAddress = connections.GetTestAddress(connection);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://localhost:3142", testAddress);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_GetTestAddress")]
+        public void Connections_GetTestAddress_HasNullConnection_DsfRemoved()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            //------------Execute Test---------------------------
+            var testAddress = connections.GetTestAddress(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", testAddress);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_GetTestAddress")]
+        public void Connections_GetTestAddress_HasNullAddress_DsfRemoved()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            var connection = new Connection();
+            connection.Address = null;
+            //------------Execute Test---------------------------
+            var testAddress = connections.GetTestAddress(connection);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", testAddress);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Connections_GetTestAddress")]
+        public void Connections_GetTestAddress_HasEmptyAddress_DsfRemoved()
+        {
+            //------------Setup for test--------------------------
+            var connections = new Connections();
+            var connection = new Connection();
+            connection.Address = "";
+            //------------Execute Test---------------------------
+            var testAddress = connections.GetTestAddress(connection);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", testAddress);
         }
 
         #region ToString Tests
@@ -223,11 +297,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         // Proper Unit Testing, Avoid External Resource ;)
         private Func<List<string>> CreateQueryFn()
         {
-            return () =>
-            {
-                return new List<string>() { "RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD" };
-            };
-        } 
+            return () => new List<string> { "RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD" };
+        }
 
         #endregion Private Test Methods
     }

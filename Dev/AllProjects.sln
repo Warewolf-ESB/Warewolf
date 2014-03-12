@@ -267,6 +267,9 @@ Global
 		SccProjectName45 = Dev2.Instrumentation
 		SccLocalPath45 = Dev2.Instrumentation
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 722b8d01-c88c-4d6e-95f3-51a8c87225d4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

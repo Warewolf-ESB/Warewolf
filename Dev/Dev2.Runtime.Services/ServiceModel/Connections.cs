@@ -184,10 +184,20 @@ namespace Dev2.Runtime.ServiceModel
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                 }
-                var testAddress = connection.Address.Replace("/dsf","");
+                var testAddress = GetTestAddress(connection);
                 result = client.DownloadString(testAddress + "/services/ping");
             }
             return result;
+        }
+
+        public string GetTestAddress(Connection connection)
+        {
+            if(connection != null && !string.IsNullOrEmpty(connection.Address))
+            {
+                var testAddress = connection.Address.Replace("/dsf", "");
+                return testAddress;
+            }
+            return "";
         }
     }
 }
