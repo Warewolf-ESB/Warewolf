@@ -80,7 +80,7 @@ namespace Dev2.Integration.Tests
                             {
                                 BuildEventLogger.LogBuildEvent(buildLabel, "Error! Server is not running for integration test pack and no build is deployed to start!");
                             }
-                            throw new Exception("Cannot run integration test pack because server is not running and no build is available.");
+                            throw new Exception("Cannot run integration test pack because server is not running and no build is available at " + ServerLocation);
                         }
                     }
                     else
