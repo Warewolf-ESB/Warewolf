@@ -75,55 +75,40 @@ namespace Dev2.Studio.UI.Tests.Utils
                 else
                 {
                     var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    //Remote, assume server is running
-                    if(serverProcess == null)
-                    {
-                        //Remote by a build agent 
-                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
-                        if(File.Exists(ServerLocation))
-                        {
-                            //Try start
-                            StartServer();
-                            if(buildLabel.LoggingURL != string.Empty)
-                            {
-                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the server for coded UI test! It should already have been started!");
-                            }
-                        }
-                        else
-                        {
-                            if(buildLabel.LoggingURL != string.Empty)
-                            {
-                                BuildEventLogger.LogBuildEvent(buildLabel, "Error! Server is not running for coded UI test pack and no build is deployed to start!");
-                            }
-                            throw new Exception("Cannot run coded UI test pack because server is not running and no build is available.");
-                        }
-                    }
-                    else
-                    {
-                        ServerLocation = GetProcessPath(serverProcess);
-                    }
+                    //Remote. Restart Server and Studio.
+                    //Stop Studio.
+                    KillProcess(TryGetProcess(StudioProcName));
+                    //Stop Server.
+                    KillProcess(TryGetProcess(ServerProcName));
 
-                    //Remote Restart Studio
+                    ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
                     StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + StudioName;
-                    if(File.Exists(StudioLocation))
+                    if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
                     {
-                        //Restart Studio.
-                        KillProcess(TryGetProcess(StudioProcName));
-                        StartStudio();
+                        //Try start
+                        StartServer();
+                        ServerLocation = GetProcessPath(serverProcess);
                         if(buildLabel.LoggingURL != string.Empty)
                         {
-                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Test pack has had to start the studio for coded UI test! It should already have been started!");
+                            BuildEventLogger.LogBuildEvent(buildLabel, "Server restarted for Coded UI Test");
+                        }
+
+                        //Try start
+                        StartStudio();
+                        StudioLocation = GetProcessPath(studioProcess);
+                        if(buildLabel.LoggingURL != string.Empty)
+                        {
+                            BuildEventLogger.LogBuildEvent(buildLabel, "Studio restarted for Coded UI Test");
                         }
                     }
                     else
                     {
                         if(buildLabel.LoggingURL != string.Empty)
                         {
-                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Studio is not running for coded UI test pack and no build is deployed to start!");
+                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Build not found to restart server and studio for coded ui test!");
                         }
-                        throw new Exception("Cannot run coded UI test pack because studio is not running and no build is available.");
+                        throw new Exception("Cannot run coded UI test pack because no build is available to restart.");
                     }
-                    StudioLocation = GetProcessPath(studioProcess);
                 }
             }
         }
