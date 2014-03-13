@@ -18,7 +18,7 @@ namespace Dev2.Integration.Tests
     {
         private const string ServerName = "Warewolf Server.exe";
         private const string ServerProcName = "Warewolf Server";
-        private const int ServerTimeOut = 30000;
+        private const int ServerTimeOut = 5000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
         public static string ServerLocation;
@@ -64,7 +64,7 @@ namespace Dev2.Integration.Tests
                     if(serverProcess == null)
                     {
                         //Remote by a build agent
-                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\" + ServerName;
+                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
                         if(File.Exists(ServerLocation))
                         {
                             //Try start
