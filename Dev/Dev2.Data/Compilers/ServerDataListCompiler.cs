@@ -2443,7 +2443,7 @@ namespace Dev2.Server.Datalist
 
                         if(payload.IsDebug && !payload.IsIterativePayload())
                         {
-
+                            debugOutputTO.Expression = frameItem.Expression;
                             payload.DebugOutputs.Add(debugOutputTO);
                             _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
                         }

@@ -11,10 +11,11 @@ namespace Dev2.Data.TO
 
         }
 
-        public DebugOutputTO(IBinaryDataListEntry targetEntry,IBinaryDataListEntry fromEntry)
+        public DebugOutputTO(IBinaryDataListEntry targetEntry,IBinaryDataListEntry fromEntry, string expression)
         {
             TargetEntry = targetEntry;
-            FromEntry = fromEntry;                            
+            FromEntry = fromEntry;
+            Expression = expression;
         }
 
         #endregion
@@ -23,6 +24,7 @@ namespace Dev2.Data.TO
 
         public IBinaryDataListEntry TargetEntry { get; set; }
         public IBinaryDataListEntry FromEntry { get; set; }
+        public string Expression { get; set; }
         /// <summary>
         /// Gets or sets the index of the used recordset.
         /// </summary>

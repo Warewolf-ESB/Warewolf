@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Dev2.Activities.Debug
 {
@@ -213,6 +213,19 @@ namespace Dev2.Activities.Debug
                             GroupIndex = grpIdx
                         });
                     }
+                }
+                else
+                {
+                    //Could not evaluate
+                    results.Add(new DebugItemResult
+                    {
+                        Type = DebugItemResultType.Value,
+                        Label = labelText,
+                        Variable = debugOutputTO.Expression,
+                        Operator = "=",
+                        GroupName = "",
+                        Value = ""
+                    });
                 }
             }
             return results;
