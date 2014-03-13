@@ -77,16 +77,18 @@ namespace Dev2.Studio.UI.Tests.Utils
                     var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
                     //Remote. Restart Server and Studio.
                     //Stop Studio.
-                    KillProcess(TryGetProcess(StudioProcName));
+                    KillProcess(studioProcess);
                     //Stop Server.
-                    KillProcess(TryGetProcess(ServerProcName));
+                    KillProcess(serverProcess);
 
-                    ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
+                    CleanWarewolfAppData();
+
+                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
                     StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + StudioName;
                     if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
-                    {
-                        //Try start
-                        StartServer();
+                        {
+                            //Try start
+                            StartServer();
                         ServerLocation = GetProcessPath(serverProcess);
                         if(buildLabel.LoggingURL != string.Empty)
                         {
