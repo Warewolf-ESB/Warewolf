@@ -60,7 +60,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        ////PBI 9461
+        //PBI 9461
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
