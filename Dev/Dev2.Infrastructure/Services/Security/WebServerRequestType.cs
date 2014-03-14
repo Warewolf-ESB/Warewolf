@@ -33,5 +33,6 @@ namespace Dev2.Services.Security
         EsbWrite,
 
         ResourcesSendMemo,
+        WebExecuteInternalService
     }
 }

@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WarewolfServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Warewolf Server")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Business Design Studio")]
+[assembly: AssemblyProduct("Warewolf")]
 [assembly: AssemblyCopyright("Copyright © Warewolf 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -33,4 +33,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //[assembly: AssemblyVersion("0.4.1.6")]
-[assembly: AssemblyFileVersion("0.4.4.0")]
+[assembly: AssemblyFileVersion("0.4.4.3")]

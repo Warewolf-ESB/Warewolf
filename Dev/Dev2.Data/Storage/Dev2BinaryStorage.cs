@@ -198,10 +198,11 @@ namespace Dev2.Data.Storage
                                     f.Delete();
                                 }
                             }
-                            catch(Exception e)
+                            // ReSharper disable EmptyGeneralCatchClause
+                            catch(Exception)
+                            // ReSharper restore EmptyGeneralCatchClause
                             {
                                 // Best effort ;)
-                                this.LogError(e);
                             }
                             startupCleaned = true;
                         }

@@ -612,7 +612,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.IsNewWorkflow = isNewWorkflow;
                 try
                 {
-                    resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
+                resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
                 }
                 catch(SystemException exception)
                 {

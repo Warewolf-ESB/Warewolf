@@ -20,7 +20,7 @@ namespace Dev2.Data.Storage
         private readonly int _numOfSegments;
         readonly ConcurrentDictionary<int, Dev2BinaryStorage<T>> _scalableCache = new ConcurrentDictionary<int, Dev2BinaryStorage<T>>();
 
-        public Dev2DistributedCache(int numOfSegments, int segmentSize)
+        public Dev2DistributedCache(int segmentSize, int numOfSegments)
         {
 
             _numOfSegments = numOfSegments;

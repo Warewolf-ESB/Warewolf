@@ -7,7 +7,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WarewolfStudio")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Warewolf Studio")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf")]
@@ -52,4 +52,4 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //[assembly: AssemblyVersion("0.4.1.6")]
-[assembly: AssemblyFileVersion("0.4.4.0")]
+[assembly: AssemblyFileVersion("0.4.4.3")]

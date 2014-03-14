@@ -2,8 +2,8 @@
 <!DOCTYPE dotfuscator SYSTEM "http://www.preemptive.com/dotfuscator/dtd/dotfuscator_v2.3.dtd">
 <dotfuscator version="2.3">
   <propertylist>
-    <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-	<property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
+    <property name="targetdir" value="C:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
+	<property name="sourcedir" value="C:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
   </propertylist>
   <global>
     <option>debug</option>
@@ -173,13 +173,6 @@
         <option>library</option>
         <option>transformxaml</option>
         <file dir="${sourcedir}" name="Dev2.Services.Sql.dll" />
-      </inputassembly>
-      <inputassembly refid="28792b78-4245-48de-af97-c0002df8600e">
-        <option>honoroas</option>
-        <option>stripoa</option>
-        <option>library</option>
-        <option>transformxaml</option>
-        <file dir="${sourcedir}" name="HttpFramework.dll" />
       </inputassembly>
       <inputassembly refid="d2aef95e-aa6a-428f-9a4b-e589ca02a628">
         <option>honoroas</option>
@@ -398,9 +391,6 @@
       </assembly>
       <assembly>
         <file dir="${sourcedir}" name="Dev2.UndoFramework.dll" />
-      </assembly>
-      <assembly>
-        <file dir="${sourcedir}" name="HttpFramework.dll" />
       </assembly>
       <assembly>
         <file dir="${sourcedir}" name="Weave.dll" />

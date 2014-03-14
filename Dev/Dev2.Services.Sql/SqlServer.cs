@@ -158,7 +158,7 @@ namespace Dev2.Services.Sql
                     {
                         var parameters = GetProcedureParameters(command);
 
-                        var helpText = GetHelpText(_connection, fullProcedureName);
+                        var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                         if(IsStoredProcedure(row, procedureTypeColumn))
                         {
@@ -178,6 +178,23 @@ namespace Dev2.Services.Sql
                     }
                 }
             }
+        }
+
+
+        private string FetchHelpTextContinueOnException(string fullProcedureName, SqlConnection con)
+        {
+            string helpText;
+
+            try
+            {
+                helpText = GetHelpText(con, fullProcedureName);
+            }
+            catch(Exception e)
+            {
+                helpText = "Could not fetch because of : " + e.Message;
+            }
+
+            return helpText;
         }
 
         #endregion

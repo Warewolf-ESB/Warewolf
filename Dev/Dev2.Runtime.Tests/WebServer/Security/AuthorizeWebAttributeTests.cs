@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var attribute = new AuthorizeWebAttribute(null);
+            new AuthorizeWebAttribute(null);
 
             //------------Assert Results-------------------------
         }

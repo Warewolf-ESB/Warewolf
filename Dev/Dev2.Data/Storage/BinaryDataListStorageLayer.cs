@@ -21,7 +21,7 @@ namespace Dev2.Data.Storage
         {
             if(LevelZeroCache == null)
             {
-                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentCount(), StorageSettingManager.GetSegmentSize());
+                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
             }
         }
 
@@ -150,7 +150,7 @@ namespace Dev2.Data.Storage
         {
             if(LevelZeroCache == null)
             {
-                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentCount(), StorageSettingManager.GetSegmentSize());
+                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
             }
         }
 

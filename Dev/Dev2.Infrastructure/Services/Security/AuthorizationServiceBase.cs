@@ -95,7 +95,16 @@ namespace Dev2.Services.Security
 
         static bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
-            return principal.IsInRole(p.WindowsGroup) || p.IsBuiltInGuestsForExecution;
+            var isInRole = false;
+
+            try
+            {
+                // THIS IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
+                isInRole = principal.IsInRole(p.WindowsGroup);
+            }
+            catch { }
+
+            return isInRole || p.IsBuiltInGuestsForExecution;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

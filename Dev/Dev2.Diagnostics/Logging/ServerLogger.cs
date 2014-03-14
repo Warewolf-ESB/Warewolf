@@ -655,6 +655,11 @@ namespace Dev2.Common
 
         #endregion LogDebug
 
+        public static void LogTrace(this object obj, string message = null, [CallerMemberName] string methodName = null)
+        {
+            LogTrace(CreateMessage(obj == null ? string.Empty : obj.GetType().Name, methodName, message));
+        }
+
         public static void LogError(string className, Exception ex, [CallerMemberName] string methodName = null)
         {
             LogError(className, methodName, ex);
@@ -668,11 +673,6 @@ namespace Dev2.Common
         public static void LogError(this object obj, string message, [CallerMemberName] string methodName = null)
         {
             LogError(obj, methodName, new Exception(message));
-        }
-
-        public static void LogTrace(this object obj, string message = null, [CallerMemberName] string methodName = null)
-        {
-            LogTrace(CreateMessage(obj == null ? string.Empty : obj.GetType().Name, methodName, message));
         }
 
         static void LogError(object obj, string methodName, Exception e)

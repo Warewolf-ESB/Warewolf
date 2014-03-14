@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using Dev2.Common;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 
@@ -33,11 +37,56 @@ namespace Dev2.Runtime.WebServer.Security
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
                 return;
             }
-
-            if(!Service.IsAuthorized(actionContext.GetAuthorizationRequest()))
+            var authorizationRequest = GetAuthorizationRequest(actionContext);
+            if(!Service.IsAuthorized(authorizationRequest))
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
             }
+        }
+
+        AuthorizationRequest GetAuthorizationRequest(HttpActionContext actionContext)
+        {
+            AuthorizationRequest authorizationRequest = actionContext.GetAuthorizationRequest();
+
+            try
+            {
+                var absolutePath = actionContext.Request.RequestUri.AbsolutePath;
+                var startIndex = GetNameStartIndex(absolutePath);
+                if(startIndex > -1)
+                {
+                    var resourceName = HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
+                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+
+                    if(resource != null && resource.ResourceType == ResourceType.ReservedService)
+                    {
+                        authorizationRequest = new AuthorizationRequest
+                        {
+                            RequestType = WebServerRequestType.WebExecuteInternalService,
+                            User = actionContext.ControllerContext.RequestContext.Principal,
+                            Url = actionContext.Request.RequestUri,
+                            QueryString = new QueryString(actionContext.Request.GetQueryNameValuePairs())
+                        };
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                this.LogError(e);
+            }
+
+            return authorizationRequest;
+        }
+
+        int GetNameStartIndex(string absolutePath)
+        {
+            var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
+            if(startIndex == -1)
+            {
+                return -1;
+            }
+
+            startIndex += 9;
+            return startIndex;
         }
     }
 }

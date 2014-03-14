@@ -159,8 +159,8 @@ namespace Dev2.Studio.Core.Models
             {
                 try
                 {
-                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
-                }
+                UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+            }
                 catch(SystemException exception)
                 {
                     HelperUtils.ShowTrustRelationshipError(exception);
@@ -585,8 +585,8 @@ namespace Dev2.Studio.Core.Models
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     if(msg != null && msg.Message != null)
                     {
-                        xaml = msg.Message;
-                    }
+                    xaml = msg.Message;
+                }
                 }
 
                 var service = CreateWorkflowXElement(xaml);

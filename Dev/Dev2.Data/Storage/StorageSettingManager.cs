@@ -109,6 +109,9 @@ namespace Dev2.Data.Storage
 
             var totalFreeMemory = TotalFreeMemory();
 
+            ServerLogger.LogMessage("*** Total Free Memory [ " + ((totalFreeMemory / 1024) / 1024) + " MB ]");
+            ServerLogger.LogMessage("*** Total Required Memory [ " + ((totalRequiredMemory / 1024) / 1024) + " MB]");
+
             // we need to adjust, shoot ;(
             if(totalRequiredMemory >= totalFreeMemory)
             {
@@ -131,7 +134,7 @@ namespace Dev2.Data.Storage
 
                 int result = (int)(usableMemeory / totalSegments);
 
-                ServerLogger.LogMessage("Total Free Memory [ " + result + " ]");
+                ServerLogger.LogMessage("*** Slab Size Is [ " + ((result / 1024) / 1024) + " ]");
 
                 if(result < GlobalConstants.DefaultStorageSegmentSize)
                 {

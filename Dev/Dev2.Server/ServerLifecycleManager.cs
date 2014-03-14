@@ -21,7 +21,6 @@ using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
-using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -1271,7 +1270,6 @@ namespace Dev2
 
                 GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
-                new EsbServicesEndpoint();
 
                 _isWebServerEnabled = false;
 
@@ -1581,7 +1579,9 @@ namespace Dev2
         {
             readonly string _name;
             readonly KeyValuePair<string, string>[] _arguments;
+            // ReSharper disable UnusedMember.Local
             public string Name { get { return _name; } }
+            // ReSharper restore UnusedMember.Local
 
             public KeyValuePair<string, string>[] Arguments { get { return _arguments; } }
 

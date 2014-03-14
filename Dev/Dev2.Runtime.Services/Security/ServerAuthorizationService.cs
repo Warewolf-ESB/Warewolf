@@ -75,6 +75,8 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebBookmarkWorkflow:
                     return IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
 
+                case WebServerRequestType.WebExecuteInternalService:
+                    return IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
                 case WebServerRequestType.HubConnect:
                     var result = IsAuthorizedToConnect(request.User);
                     if(!result)
@@ -110,6 +112,10 @@ namespace Dev2.Runtime.Security
 
                     case WebServerRequestType.WebBookmarkWorkflow:
                         resource = GetWebBookmarkName(request.Url.AbsolutePath);
+                        break;
+
+                    case WebServerRequestType.WebExecuteInternalService:
+                        resource = GetWebExecuteName(request.Url.AbsolutePath);
                         break;
                 }
             }
