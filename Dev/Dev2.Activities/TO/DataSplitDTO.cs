@@ -176,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeNone && string.IsNullOrEmpty(At);
         }
 
-        public override IRuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
             if(IsEmpty())
@@ -187,21 +187,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1");
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
                     break;
 
                 case "At":
                     switch(SplitType)
                     {
                         case SplitTypeIndex:
-                            var atIndexExprRule = new IsValidExpressionRule(() => At, "1");
+                            var atIndexExprRule = new IsValidExpressionRule(() => At,datalist, "1");
                             ruleSet.Add(atIndexExprRule);
                             ruleSet.Add(new IsPositiveNumberRule(() => atIndexExprRule.ExpressionValue));
                             break;
                         case SplitTypeChars:
-                            var atCharsExprRule = new IsValidExpressionRule(() => At, ",");
+                            var atCharsExprRule = new IsValidExpressionRule(() => At,datalist, ",");
                             ruleSet.Add(atCharsExprRule);
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;

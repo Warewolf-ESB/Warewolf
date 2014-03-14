@@ -201,7 +201,7 @@ namespace Dev2
             return false;
         }
 
-        public bool Validate(string propertyName)
+        public bool Validate(string propertyName, string datalist)
         {
             return false;
         }

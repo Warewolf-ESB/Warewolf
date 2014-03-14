@@ -303,7 +303,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndExpressionIsInvalid_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
@@ -315,7 +315,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndExpressionIsValid_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -327,7 +327,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsNumeric_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "1", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "1", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -339,7 +339,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndExpressionIsInvalid_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeChars };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
@@ -351,7 +351,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndExpressionIsValid_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeChars };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndIsEmpty_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "", SplitType = DataSplitDTO.SplitTypeChars };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", "cannot be empty");
@@ -375,7 +375,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndIsNotEmpty_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = ",", SplitType = DataSplitDTO.SplitTypeChars };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = ",", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -387,7 +387,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsLessThan0_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "-1", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "-1", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", " must be a positive whole number");
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsGreaterThan0_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "5", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "5", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -411,7 +411,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIs0_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "0", SplitType = DataSplitDTO.SplitTypeIndex };
+            var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "0", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -419,9 +419,11 @@ namespace Dev2.Tests.Activities.TOTests
 
         static void Verify_RuleSet(DataSplitDTO dto, string propertyName, string expectedErrorMessage)
         {
-
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
             //------------Execute Test---------------------------
-            var ruleSet = dto.GetRuleSet(propertyName);
+            var ruleSet = dto.GetRuleSet(propertyName, datalist);
             var errors = ruleSet.ValidateRules(null, null);
 
             //------------Assert Results-------------------------

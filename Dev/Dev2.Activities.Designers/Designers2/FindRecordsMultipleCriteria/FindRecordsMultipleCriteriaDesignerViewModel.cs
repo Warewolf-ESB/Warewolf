@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,11 +13,13 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Studio.Core;
 
 namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 {
     public class FindRecordsMultipleCriteriaDesignerViewModel : ActivityCollectionDesignerViewModel<FindRecordsTO>
     {
+        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
 
         public FindRecordsMultipleCriteriaDesignerViewModel(ModelItem modelItem)
@@ -106,17 +109,17 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             {
                 yield break;
             }
-            foreach(var error in dto.GetRuleSet("SearchCriteria").ValidateRules("'Match'", () => mi.SetProperty("IsSearchCriteriaFocused", true)))
+            foreach(var error in dto.GetRuleSet("SearchCriteria", GetDatalistString()).ValidateRules("'Match'", () => mi.SetProperty("IsSearchCriteriaFocused", true)))
             {
                 yield return error;
             }
 
-            foreach(var error in dto.GetRuleSet("From").ValidateRules("'From'", () => mi.SetProperty("IsFromFocused", true)))
+            foreach(var error in dto.GetRuleSet("From", GetDatalistString()).ValidateRules("'From'", () => mi.SetProperty("IsFromFocused", true)))
             {
                 yield return error;
             }
 
-            foreach(var error in dto.GetRuleSet("To").ValidateRules("'To'", () => mi.SetProperty("IsToFocused", true)))
+            foreach(var error in dto.GetRuleSet("To", GetDatalistString()).ValidateRules("'To'", () => mi.SetProperty("IsToFocused", true)))
             {
                 yield return error;
             }
@@ -130,14 +133,14 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             {
                 case "FieldsToSearch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, GetDatalistString(), "1"));
                     ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
                     ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
                     break;
 
                 case "Result":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Result));
-                    ruleSet.Add(new IsValidExpressionRule(() => Result, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(),"1"));
                     break;
             }
             return ruleSet;

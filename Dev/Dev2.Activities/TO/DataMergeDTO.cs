@@ -185,7 +185,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override IRuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             RuleSet ruleSet = new RuleSet();
             if(IsEmpty())
@@ -197,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "At":
                     if(MergeType == MergeTypeIndex)
                     {
-                        var atExprRule = new IsValidExpressionRule(() => At, "1");
+                        var atExprRule = new IsValidExpressionRule(() => At,datalist, "1");
                         ruleSet.Add(atExprRule);
 
                         ruleSet.Add(new IsStringEmptyRule(() => atExprRule.ExpressionValue));
@@ -207,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
                     {
-                        var paddingExprRule = new IsValidExpressionRule(() => Padding, "0");
+                        var paddingExprRule = new IsValidExpressionRule(() => Padding,datalist, "0");
                         ruleSet.Add(paddingExprRule);
 
                         ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));

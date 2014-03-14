@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dev2.Activities.Designers2.DataMerge;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Activities.Designers2.DataMerge;
-using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DataMerge
@@ -195,6 +195,13 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             // ReSharper restore PossibleNullReferenceException
 
             var viewModel = new DataMergeDesignerViewModel(mi);
+            viewModel.GetDatalistString = () =>
+                {
+                    const string trueString = "True";
+                    const string noneString = "None";
+                    var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                    return datalist;
+                };
 
             //------------Execute Test---------------------------
             viewModel.Validate();

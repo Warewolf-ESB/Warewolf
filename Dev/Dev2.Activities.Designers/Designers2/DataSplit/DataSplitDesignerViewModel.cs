@@ -1,19 +1,21 @@
+using Dev2.Activities.Designers2.Core;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation.Rules;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation.Rules;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataSplit
 {
     public class DataSplitDesignerViewModel : ActivityCollectionDesignerViewModel<DataSplitDTO>
     {
+        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
         public IList<string> ItemsList { get; private set; }
 
         public DataSplitDesignerViewModel(ModelItem modelItem)
@@ -120,11 +122,11 @@ namespace Dev2.Activities.Designers2.DataSplit
                 yield break;
             }
 
-            foreach(var error in dto.GetRuleSet("OutputVariable").ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("At").ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }

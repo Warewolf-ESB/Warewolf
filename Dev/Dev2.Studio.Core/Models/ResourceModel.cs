@@ -154,7 +154,7 @@ namespace Dev2.Studio.Core.Models
 
         void ReceivePermissionsModified(PermissionsModifiedMemo memo)
         {
-            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID).ToList();
+            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID == Guid.Empty).ToList();
             if(modifiedPermissions.Count > 0)
             {
                 try

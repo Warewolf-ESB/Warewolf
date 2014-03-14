@@ -11,6 +11,6 @@ namespace Dev2.Providers.Validation
 
         bool Validate(string propertyName, IRuleSet ruleSet);
 
-        bool Validate(string propertyName);
+        bool Validate(string propertyName, string datalist);
     }
 }

@@ -207,11 +207,10 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             //------------Setup for test--------------------------
             var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
             var mi = CreateModelItem(items);
-            mi.SetProperty("FieldsToSearch", "[[recset().field]]");
-            mi.SetProperty("Result", "[[res]]");
+            mi.SetProperty("FieldsToSearch", "[[rec().set]]");
+            mi.SetProperty("Result", "[[a]]");
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
-
-
+            SetDataListString(viewModel);
             //------------Execute Test---------------------------
             viewModel.Validate();
 
@@ -230,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             mi.SetProperty("FieldsToSearch", " ");
             mi.SetProperty("Result", " ");
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
-
+            SetDataListString(viewModel);
             //------------Execute Test---------------------------
             viewModel.Validate();
 
@@ -249,8 +248,10 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
             var mi = CreateModelItem(items);
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+            SetDataListString(viewModel);
             //------------Execute Test---------------------------
             var rulesSet = viewModel.GetRuleSet("FieldsToSearch");
+          
             //------------Assert Results-------------------------
             Assert.IsNotNull(rulesSet);
             Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyOrWhiteSpaceRule));
@@ -268,6 +269,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var items = new List<FindRecordsTO> { new FindRecordsTO("", "", 0) };
             var mi = CreateModelItem(items);
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+            SetDataListString(viewModel);
             //------------Execute Test---------------------------
             var rulesSet = viewModel.GetRuleSet("Result");
             //------------Assert Results-------------------------
@@ -285,7 +287,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             var mi = ModelItemUtils.CreateModelItem(new DsfFindRecordsMultipleCriteriaActivity());
             mi.SetProperty("DisplayName", "Find");
             mi.SetProperty("FieldsToSearch", "a,b");
-            mi.SetProperty("Result", "[[res]]");
+            mi.SetProperty("Result", "[[a]]");
 
             var dto1 = new FindRecordsTO("", "Starts With", 0);
             var dto2 = new FindRecordsTO("", "Ends With", 1);
@@ -305,7 +307,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             // ReSharper restore PossibleNullReferenceException
 
             var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
-
+            SetDataListString(viewModel);
             //------------Execute Test---------------------------
             viewModel.Validate();
 
@@ -336,6 +338,17 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             StringAssert.Contains(viewModel.Errors[7].Message, "'To' cannot be empty");
             Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsToFocused");
 
+        }
+        
+        static void SetDataListString(FindRecordsMultipleCriteriaDesignerViewModel viewModel)
+        {
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
         }
 
         void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)

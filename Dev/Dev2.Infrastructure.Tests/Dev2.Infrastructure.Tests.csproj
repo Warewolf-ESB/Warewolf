@@ -116,6 +116,7 @@
     <Compile Include="Providers\Errors\ActionableErrorInfoTests.cs" />
     <Compile Include="Providers\Events\EventPublisherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\Validation\Rules\IsValidCalculateRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidEmailAddressRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidFileNameRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSetTests.cs" />
@@ -138,6 +139,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

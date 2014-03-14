@@ -336,9 +336,12 @@ namespace Dev2.Tests.Activities.TOTests
 
         static void Verify_RuleSet(DataMergeDTO dto, string propertyName, string expectedErrorMessage)
         {
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
 
             //------------Execute Test---------------------------
-            var ruleSet = dto.GetRuleSet(propertyName);
+            var ruleSet = dto.GetRuleSet(propertyName, datalist);
             var errors = ruleSet.ValidateRules(null, null);
 
             //------------Assert Results-------------------------

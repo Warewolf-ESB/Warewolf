@@ -35,16 +35,16 @@ namespace Dev2.Tests.Activities.TOTests
             const string ExpectedPropertyName = "TestProp";
             string actualPropertyName = null;
             var validatedObject = new Mock<ValidatedObject> { CallBase = true };
-            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>()))
-                .Callback((string propertyName) => actualPropertyName = propertyName)
+            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback((string propertyName, string datalist) => actualPropertyName = propertyName)
                 .Returns(new RuleSet())
                 .Verifiable();
 
             //------------Execute Test---------------------------
-            validatedObject.Object.Validate(ExpectedPropertyName);
+            validatedObject.Object.Validate(ExpectedPropertyName, "");
 
             //------------Assert Results-------------------------
-            validatedObject.Verify(v => v.GetRuleSet(It.IsAny<string>()));
+            validatedObject.Verify(v => v.GetRuleSet(It.IsAny<string>(), It.IsAny<string>()));
             Assert.AreEqual(ExpectedPropertyName, actualPropertyName);
         }
 
@@ -59,10 +59,10 @@ namespace Dev2.Tests.Activities.TOTests
             ruleSet.Setup(r => r.ValidateRules()).Verifiable();
 
             var validatedObject = new Mock<ValidatedObject> { CallBase = true };
-            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>())).Returns(ruleSet.Object);
+            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>(),It.IsAny<string>())).Returns(ruleSet.Object);
 
             //------------Execute Test---------------------------
-            var result = validatedObject.Object.Validate(PropertyName, null);
+            var result = validatedObject.Object.Validate(PropertyName, (IRuleSet)null);
 
             //------------Assert Results-------------------------
             var errors = validatedObject.Object.Errors;
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Activities.TOTests
                 .Verifiable();
 
             var validatedObject = new Mock<ValidatedObject> { CallBase = true };
-            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>())).Returns(ruleSet.Object);
+            validatedObject.Setup(v => v.GetRuleSet(It.IsAny<string>(), It.IsAny<string>())).Returns(ruleSet.Object);
 
             //------------Execute Test---------------------------
             var result = validatedObject.Object.Validate(PropertyName, ruleSet.Object);
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Activities.TOTests
             var validatedObject = new Mock<ValidatedObject> { CallBase = true };
 
             //------------Execute Test---------------------------
-            var result = validatedObject.Object.Validate(null, null);
+            var result = validatedObject.Object.Validate(null, (IRuleSet)null);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Activities.TOTests
 
     public class TestValidatedObject : ValidatedObject
     {
-        public override IRuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             return null;
         }

@@ -258,7 +258,9 @@
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
-    <Compile Include="Validation\IsValidExpressionRule.cs" />
+    <Compile Include="Validation\IsValidExpressionRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />

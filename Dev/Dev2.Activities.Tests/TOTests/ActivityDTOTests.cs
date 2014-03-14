@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
@@ -267,7 +268,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO();
             //------------Execute Test---------------------------
-            var validate = activityDTO.Validate("FieldName", null);
+            var validate = activityDTO.Validate("FieldName", (IRuleSet)null);
             //------------Assert Results-------------------------
             Assert.IsTrue(validate);
         }
@@ -331,6 +332,40 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ActivityDTO_GetRuleSet")]
+        public void ActivityDTO_GetRuleSet_OnFieldName_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var activityDto = new ActivityDTO { FieldName = "[[a]]" , FieldValue = "anything"};
+            //------------Execute Test---------------------------
+            var rulesSet = activityDto.GetRuleSet("FieldName", "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+            Assert.AreEqual(2, rulesSet.Rules.Count);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ActivityDTO_GetRuleSet")]
+        public void ActivityDTO_GetRuleSet_OnFieldValue_ReturnTwoRules()
+        {
+            //------------Setup for test--------------------------
+            var activityDto = new ActivityDTO { FieldName = "[[a]]", FieldValue = "[[b]]" };
+            //------------Execute Test---------------------------
+            var rulesSet = activityDto.GetRuleSet("FieldValue", "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(rulesSet);
+            Assert.AreEqual(2, rulesSet.Rules.Count);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
+            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+        }
+
+
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_OnPropertyChanged")]
         public void ActivityDTO_OnPropertyChanged_ErrorsChanged_FiresPropertyChanged()
@@ -353,7 +388,7 @@ namespace Dev2.Tests.Activities.TOTests
             var activityDTO = new ActivityDTO();
             activityDTO.FieldName = "1";
             //------------Execute Test---------------------------
-            activityDTO.Validate(() => activityDTO.FieldName);
+            activityDTO.Validate(() => activityDTO.FieldName, "");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, activityDTO.Errors.Count);
         }

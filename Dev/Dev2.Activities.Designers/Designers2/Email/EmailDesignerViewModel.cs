@@ -36,6 +36,7 @@ namespace Dev2.Activities.Designers2.Email
         readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
+        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
 
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -310,45 +311,45 @@ namespace Dev2.Activities.Designers2.Email
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            foreach(var error in GetRuleSet("EmailSource").ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
+            foreach(var error in GetRuleSet("EmailSource", GetDatalistString()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("FromAccount").ValidateRules("'From Account'", () => IsFromAccountFocused = true))
+            foreach(var error in GetRuleSet("FromAccount", GetDatalistString()).ValidateRules("'From Account'", () => IsFromAccountFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("Password").ValidateRules("'Password'", () => IsPasswordFocused = true))
+            foreach(var error in GetRuleSet("Password", GetDatalistString()).ValidateRules("'Password'", () => IsPasswordFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("Recipients").ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
+            foreach(var error in GetRuleSet("Recipients", GetDatalistString()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("To").ValidateRules("'To'", () => IsToFocused = true))
+            foreach(var error in GetRuleSet("To", GetDatalistString()).ValidateRules("'To'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("Cc").ValidateRules("'Cc'", () => IsCcFocused = true))
+            foreach(var error in GetRuleSet("Cc", GetDatalistString()).ValidateRules("'Cc'", () => IsCcFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("Bcc").ValidateRules("'Bcc'", () => IsBccFocused = true))
+            foreach(var error in GetRuleSet("Bcc", GetDatalistString()).ValidateRules("'Bcc'", () => IsBccFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("SubjectAndBody").ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
+            foreach(var error in GetRuleSet("SubjectAndBody", GetDatalistString()).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
             {
                 yield return error;
             }
-            foreach(var error in GetRuleSet("Attachments").ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
+            foreach(var error in GetRuleSet("Attachments", GetDatalistString()).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
             {
                 yield return error;
             }
         }
 
-        IRuleSet GetRuleSet(string propertyName)
+        IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
 
@@ -358,7 +359,7 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsNullRule(() => EmailSource));
                     break;
                 case "FromAccount":
-                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, "user@test.com");
+                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist,"user@test.com");
                     ruleSet.Add(fromExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => fromExprRule.ExpressionValue));
                     break;
@@ -366,22 +367,22 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsRequiredWhenOtherIsNotEmptyRule(() => Password, () => FromAccount));
                     break;
                 case "To":
-                    var toExprRule = new IsValidExpressionRule(() => To, "user@test.com");
+                    var toExprRule = new IsValidExpressionRule(() => To,datalist, "user@test.com");
                     ruleSet.Add(toExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => toExprRule.ExpressionValue));
                     break;
                 case "Cc":
-                    var ccExprRule = new IsValidExpressionRule(() => Cc, "user@test.com");
+                    var ccExprRule = new IsValidExpressionRule(() => Cc, datalist, "user@test.com");
                     ruleSet.Add(ccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => ccExprRule.ExpressionValue));
                     break;
                 case "Bcc":
-                    var bccExprRule = new IsValidExpressionRule(() => Bcc, "user@test.com");
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc,datalist, "user@test.com");
                     ruleSet.Add(bccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => bccExprRule.ExpressionValue));
                     break;
                 case "Attachments":
-                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, @"c:\test.txt");
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments,datalist, @"c:\test.txt");
                     ruleSet.Add(attachmentsExprRule);
                     ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;

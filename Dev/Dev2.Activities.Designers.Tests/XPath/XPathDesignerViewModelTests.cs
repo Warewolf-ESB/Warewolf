@@ -77,6 +77,13 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = new XPathDesignerViewModel(mi);
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -94,11 +101,18 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = new XPathDesignerViewModel(mi);
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'Results' - Invalid expression: Variable has special characters.", viewModel.Errors[0].Message);
+            Assert.AreEqual("'Results' -  [[a$]] does not exist in your Data List", viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -147,7 +161,13 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "$$@");
             var viewModel = new XPathDesignerViewModel(mi);
-
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -165,7 +185,13 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec().set]]");
             var viewModel = new XPathDesignerViewModel(mi);
-
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
@@ -182,12 +208,18 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec(-1).set]]");
             var viewModel = new XPathDesignerViewModel(mi);
-
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "XML' - Invalid expression: Recordset index is invalid.");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' - Recordset index [ -1 ] is not greater than zero");
         }
 
         [TestMethod]
@@ -200,12 +232,19 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec(@).set]]");
             var viewModel = new XPathDesignerViewModel(mi);
-
+           
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "XML' - Invalid expression: Recordset index is invalid.");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' - Recordset index [ @ ] is not numeric");
         }
 
 

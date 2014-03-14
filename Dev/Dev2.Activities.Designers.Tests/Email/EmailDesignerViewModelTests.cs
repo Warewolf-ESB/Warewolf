@@ -998,7 +998,17 @@ namespace Dev2.Activities.Designers.Tests.Email
             environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
                 .Returns(resourceModel);
 
-            return new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher);
+            var testEmailDesignerViewModel = new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher);
+
+            testEmailDesignerViewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
+
+            return testEmailDesignerViewModel;
         }
     }
 }

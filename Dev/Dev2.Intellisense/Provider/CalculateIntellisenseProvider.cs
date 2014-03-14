@@ -1,4 +1,5 @@
-﻿using Dev2.MathOperations;
+﻿using Dev2.Common;
+using Dev2.MathOperations;
 using Dev2.Studio.Core.Interfaces;
 using Infragistics.Calculations.CalcManager;
 using System;
@@ -8,7 +9,6 @@ using System.Parsing;
 using System.Parsing.Intellisense;
 using System.Text;
 using System.Windows.Data;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.InterfaceImplementors
 {
@@ -647,11 +647,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
                 if (allowUserCalculateMode && text.Length > 0)
                 {
-                    if (text.StartsWith(DsfMultiAssignActivity.CalculateTextConvertPrefix))
+                    if(text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
                     {
-                        if (text.EndsWith(DsfMultiAssignActivity.CalculateTextConvertSuffix))
+                        if(text.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
                         {
-                            text = "=" + text.Substring(DsfMultiAssignActivity.CalculateTextConvertPrefix.Length, text.Length - (DsfMultiAssignActivity.CalculateTextConvertSuffix.Length + DsfMultiAssignActivity.CalculateTextConvertPrefix.Length));
+                            text = "=" + text.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, text.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
                         }
                     }
                 }
@@ -673,7 +673,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 {
                     if (text[0] == '=')
                     {
-                        text = String.Format(DsfMultiAssignActivity.CalculateTextConvertFormat, text.Substring(1));
+                        text = String.Format(GlobalConstants.CalculateTextConvertFormat, text.Substring(1));
                     }
                 }
 

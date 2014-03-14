@@ -44,12 +44,12 @@ namespace Dev2.TO
             return false;
         }
 
-        public virtual bool Validate(string propertyName)
+        public virtual bool Validate(string propertyName, string datalist)
         {
-            var ruleSet = GetRuleSet(propertyName);
+            var ruleSet = GetRuleSet(propertyName, datalist);
             return Validate(propertyName, ruleSet);
         }
 
-        public abstract IRuleSet GetRuleSet(string propertyName);
+        public abstract IRuleSet GetRuleSet(string propertyName, string datalist);
     }
 }

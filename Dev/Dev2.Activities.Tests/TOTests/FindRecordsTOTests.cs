@@ -261,7 +261,7 @@ namespace Dev2.Tests.Activities.TOTests
         static void VerifyCorrectRulesForEachField(FindRecordsTO findRecordsTO, string fieldName)
         {
             //------------Execute Test---------------------------
-            var rulesSet = findRecordsTO.GetRuleSet(fieldName);
+            var rulesSet = findRecordsTO.GetRuleSet(fieldName, "");
             //------------Assert Results-------------------------
             Assert.IsNotNull(rulesSet);
             Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));

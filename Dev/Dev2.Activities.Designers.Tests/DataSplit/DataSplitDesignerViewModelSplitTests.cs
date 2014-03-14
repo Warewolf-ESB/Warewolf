@@ -137,7 +137,13 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "a,b,c");
             var viewModel = new DataSplitDesignerViewModel(mi);
-
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -156,7 +162,13 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", " ");
             var viewModel = new DataSplitDesignerViewModel(mi);
-
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
             //------------Execute Test---------------------------
             viewModel.Validate();
 
@@ -184,10 +196,17 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             // ReSharper restore PossibleNullReferenceException
 
             var viewModel = new DataSplitDesignerViewModel(mi);
+            viewModel.GetDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
 
             //------------Execute Test---------------------------
             viewModel.Validate();
-
+            
             //------------Assert Results-------------------------
             Assert.AreEqual(2, viewModel.Errors.Count);
 

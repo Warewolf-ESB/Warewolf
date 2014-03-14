@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
@@ -5,6 +6,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -13,6 +15,7 @@ namespace Dev2.Activities.Designers2.XPath
 {
     public class XPathDesignerViewModel : ActivityCollectionDesignerViewModel<XPathDTO>
     {
+        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
         public XPathDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -53,8 +56,8 @@ namespace Dev2.Activities.Designers2.XPath
                     {
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
                     }
-                    
-                    var outputExprRule = new IsValidExpressionRule(() => SourceString, "1");
+
+                    var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
                     ruleSet.Add(outputExprRule);
 
                     break;
@@ -70,11 +73,11 @@ namespace Dev2.Activities.Designers2.XPath
                 yield break;
             }
 
-            foreach(var error in dto.GetRuleSet("OutputVariable").ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("XPath").ValidateRules("'XPath'", () => mi.SetProperty("IsXpathVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("XPath", GetDatalistString()).ValidateRules("'XPath'", () => mi.SetProperty("IsXpathVariableFocused", true)))
             {
                 yield return error;
             }

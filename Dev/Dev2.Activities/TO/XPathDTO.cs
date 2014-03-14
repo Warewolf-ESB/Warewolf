@@ -119,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath);
         }
 
-        public override IRuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
 
@@ -131,9 +131,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1");
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
 
                     if(!string.IsNullOrEmpty(XPath))
                     {

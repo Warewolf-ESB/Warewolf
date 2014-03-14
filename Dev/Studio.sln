@@ -197,9 +197,6 @@ Global
 		SccProjectName35 = Dev2.Instrumentation
 		SccLocalPath35 = Dev2.Instrumentation
 	EndGlobalSection
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = 04ac71e6-ff81-4985-b90e-34f731c329ef
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
 	EndGlobalSection
@@ -881,6 +878,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 04ac71e6-ff81-4985-b90e-34f731c329ef
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = b2ad4c5e-f65e-4c30-8d20-7dca2104fceb
