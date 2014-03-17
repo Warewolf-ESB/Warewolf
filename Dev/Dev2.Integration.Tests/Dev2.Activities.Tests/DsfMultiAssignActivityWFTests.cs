@@ -105,11 +105,15 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void MutiAssign_ARecordUsingFixedIndex_IndexMustHaveBeenDeleted_WillAssingNothingForTheIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "Assign Debug With Empty");
-            const string expected = @"<DataList><rec rowID=""2""><row>NOT EMPTY</row></rec></DataList>";
+        
+            Guid id = Guid.NewGuid();
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
 
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            StringAssert.Contains(ResponseData, expected);
+            Assert.AreEqual(3, debugItems.Count);
+            Assert.AreEqual("[[rec().row]]", debugItems[2].Outputs[0].ResultsList[1].Variable);
+            Assert.AreEqual("", debugItems[2].Outputs[0].ResultsList[1].Value);
         }
         #endregion
 
