@@ -254,7 +254,6 @@
     <Compile Include="Utilities\WorkflowHelper.cs" />
     <Compile Include="Utilities\GeneralSettings.cs" />
     <Compile Include="Utilities\IActivityPropertyAttribute.cs" />
-    <Compile Include="Utilities\IEnvironmentModel.cs" />
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />

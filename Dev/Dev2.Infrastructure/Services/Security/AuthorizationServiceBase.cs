@@ -102,7 +102,9 @@ namespace Dev2.Services.Security
                 // THIS IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
                 isInRole = principal.IsInRole(p.WindowsGroup);
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch { }
+            // ReSharper restore EmptyGeneralCatchClause
 
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
@@ -118,7 +120,7 @@ namespace Dev2.Services.Security
         {
             if(!_isLocalConnection)
             {
-                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals("BuiltIn\\Administrators"));
+                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(GlobalConstants.BuiltInAdministrator));
                 if(adminGroup != null)
                 {
                     groupPermissions.Remove(adminGroup);

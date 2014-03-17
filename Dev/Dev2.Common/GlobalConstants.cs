@@ -181,6 +181,8 @@ namespace Dev2.Common
         public static int ResourceCatalogCapacity = 150;
         public static int ResourceCatalogPruneAmt = 15;
 
+        // Security
+        public static String BuiltInAdministrator = "BuiltIn\\Administrators";
 
         // GAC
         public static readonly string GACPrefix = "GAC:";
