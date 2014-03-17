@@ -37,7 +37,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new AuthorizeWebAttribute(null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -81,6 +83,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, null);
         }
+
 
         static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string expectedMessage)
         {
