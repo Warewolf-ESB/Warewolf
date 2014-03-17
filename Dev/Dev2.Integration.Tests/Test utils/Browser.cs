@@ -61,7 +61,9 @@ namespace Dev2.Integration.Tests.Utils
         {
             if(response != null)
             {
+                // ReSharper disable AssignNullToNotNullAttribute
                 using(var streamReader = new StreamReader(response.GetResponseStream()))
+                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     var result = streamReader.ReadToEnd();
                     return result;
