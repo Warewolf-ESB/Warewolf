@@ -540,7 +540,7 @@ namespace Dev2.Studio.InterfaceImplementors
                     results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorExpressionStartingWithANumber));
                 }
 
-                if(results.Count < 0)
+                if(results.Count == 0)
                 {
                     var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
                     tmpResults.ToList().ForEach(r =>

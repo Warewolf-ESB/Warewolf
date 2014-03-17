@@ -85,7 +85,7 @@ namespace Dev2.Core.Tests
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, getResults.Count);
+            Assert.AreEqual(1, getResults.Count);
 
         }
 
@@ -561,24 +561,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[2].ToString());
         }
 
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_InRecSetIndex_AndWithField_Expected_ScalarVarInResults()
-        // ReSharper restore InconsistentNaming
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 10,
-                InputText = "City([[sca).Name]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual("[[Scalar]]", getResults[0].ToString());
-        }
-
+    
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_OpenRegion_AndInRecSetIndex_AndWithField_Expected_RecSetVarInResults()

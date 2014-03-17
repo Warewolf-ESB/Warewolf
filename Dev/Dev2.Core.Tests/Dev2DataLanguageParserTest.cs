@@ -7,7 +7,8 @@ using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework
+// ReSharper disable InconsistentNaming
+namespace Dev2.Tests
 {
     //<summary>
     //Summary description for Dev2DataLanguageParser
@@ -22,21 +23,21 @@ namespace Unlimited.UnitTest.Framework
         //</summary>
         public TestContext TestContext { get; set; }
 
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool IsFromIntellisense = false)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool isFromIntellisense = false)
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, false, null, IsFromIntellisense);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, false, null, isFromIntellisense);
         }
 
         // ReSharper disable MethodOverloadWithOptionalParameter
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, bool IsFromIntellisense = false)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, bool isFromIntellisense = false)
         // ReSharper restore MethodOverloadWithOptionalParameter
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, null, IsFromIntellisense);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, null, isFromIntellisense);
         }
 
-        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, IntellisenseFilterOpsTO filterOps, bool IsFromIntellisense = false)
+        private IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string transform, string dataList, bool addCompleteParts, IntellisenseFilterOpsTO filterOps, bool isFromIntellisense = false)
         {
-            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, filterOps, IsFromIntellisense);
+            return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, filterOps, isFromIntellisense);
         }
 
         private IList<IIntellisenseResult> ParseForMissingDataListItems(IList<IDataListVerifyPart> parts, string dataList)
@@ -45,10 +46,11 @@ namespace Unlimited.UnitTest.Framework
         }
 
         #region Pos Test
-
+        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Dev2LanuageParser_Parse")]
+
         public void Dev2LanuageParser_Parse_WhenCommaDelimited_ExpectThreeValidParts()
         {
             //------------Setup for test--------------------------
@@ -256,6 +258,17 @@ namespace Unlimited.UnitTest.Framework
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
 
             Assert.IsTrue(results.Count == 1 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.NeitherRecordsetNorFieldFound);
+        }
+
+        [TestMethod]
+        public void InvalidExpression_Recordset_With_Closed_Variable()
+        {
+            const string dl = "<ADL><cars><reg/><colour/><year/></cars><cool/></ADL>";
+            const string payload = "[[cars(1.reg]]";
+
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
+
+            Assert.IsTrue(results.Count == 1 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
         }
 
         [TestMethod]
@@ -680,7 +693,6 @@ namespace Unlimited.UnitTest.Framework
         #endregion
 
         #region IntellisenseFactory Tests
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

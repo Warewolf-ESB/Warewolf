@@ -16,8 +16,8 @@ namespace Dev2.Data.Parsers
     /// </summary>
     public class Dev2DataLanguageParser : IDev2DataLanguageParser, IDev2StudioDataLanguageParser
     {
-        private const string _cdataStart = "<![CDATA[";
-        private const string _cdataEnd = "]]>";
+        private const string CdataStart = "<![CDATA[";
+        private const string CdataEnd = "]]>";
 
         #region Public Methods
 
@@ -136,11 +136,11 @@ namespace Dev2.Data.Parsers
             try
             {
                 // remove the CDATA region first ;)
-                if(payload.Contains(_cdataStart))
+                if(payload.Contains(CdataStart))
                 {
-                    payload = payload.Replace(_cdataStart, "");
+                    payload = payload.Replace(CdataStart, "");
 
-                    int idx = payload.LastIndexOf(_cdataEnd, StringComparison.Ordinal);
+                    int idx = payload.LastIndexOf(CdataEnd, StringComparison.Ordinal);
 
                     payload = payload.Substring(0, idx);
                 }
@@ -203,7 +203,8 @@ namespace Dev2.Data.Parsers
                             IList<IIntellisenseResult> tmp;
                             if(isFromIntellisense)
                             {
-                                tmp = ExtractActualIntellisenseOptions(evalPart, parts, false);
+                                tmp = ExtractIntellisenseOptions(evalPart, parts, false);
+                                //tmp = ExtractActualIntellisenseOptions(evalPart, parts, false);
                             }
                             else
                             {
@@ -616,12 +617,12 @@ namespace Dev2.Data.Parsers
                         string[] parts = tmp.ToString().Split('.');
                         string search = parts[0].ToLower();
                         string rawSearch = search;
-                        bool isRS = false;
+                        bool isRs = false;
 
                         // remove ()
                         if(search.Contains("("))
                         {
-                            isRS = true;
+                            isRs = true;
                             int pos = search.IndexOf("(", StringComparison.Ordinal);
                             search = search.Substring(0, (search.Length - (search.Length - pos)));
                         }
@@ -696,7 +697,7 @@ namespace Dev2.Data.Parsers
                                                 }
                                             }
                                         }
-                                        else if(match == search && isRS)
+                                        else if(match == search && isRs)
                                         {
                                             if(rawSearch.Contains("(") && rawSearch.Contains(")"))
                                             {
@@ -806,7 +807,7 @@ namespace Dev2.Data.Parsers
                                                 }
                                                 else
                                                 {
-                                                    if(isRS && payload.Child == null)
+                                                    if(isRs && payload.Child == null)
                                                     {
                                                         // allow the user to 
                                                         IDataListVerifyPart prt;
@@ -826,7 +827,7 @@ namespace Dev2.Data.Parsers
                                                 }
                                             }
                                         }
-                                        else if(match == search && !isRS)
+                                        else if(match == search && !isRs)
                                         {
 
                                             // check to see if match is a recordset and return it as such
@@ -911,7 +912,7 @@ namespace Dev2.Data.Parsers
                                         IDataListVerifyPart part;
 
                                         enIntellisenseErrorCode code = enIntellisenseErrorCode.RecordsetNotFound;
-                                        if(!isRS)
+                                        if(!isRs)
                                         {
                                             if(display.IndexOf(' ') >= 0)
                                             {
@@ -948,7 +949,7 @@ namespace Dev2.Data.Parsers
                             }
                             catch(Dev2DataLanguageParseError e)
                             {
-                                result.Add(AddErrorToResults(isRS, parts[0], e, (!payload.HangingOpen)));
+                                result.Add(AddErrorToResults(isRs, parts[0], e, (!payload.HangingOpen)));
                             }
 
                         }
@@ -964,7 +965,7 @@ namespace Dev2.Data.Parsers
                             }
                             catch(Dev2DataLanguageParseError e)
                             {
-                                result.Add(AddErrorToResults(isRS, parts[0], e, (!payload.HangingOpen)));
+                                result.Add(AddErrorToResults(isRs, parts[0], e, (!payload.HangingOpen)));
                             }
 
                             IDev2DataLanguageIntellisensePart recordsetPart = refParts.FirstOrDefault(c => c.Name.ToLower() == search && c.Children != null);
@@ -1089,16 +1090,16 @@ namespace Dev2.Data.Parsers
         /// <summary>
         /// Adds the error to results.
         /// </summary>
-        /// <param name="isRS">if set to <c>true</c> [is RS].</param>
+        /// <param name="isRs">if set to <c>true</c> [is RS].</param>
         /// <param name="part">The part.</param>
         /// <param name="e">The e.</param>
         /// <param name="isOpen">if set to <c>true</c> [is open].</param>
         /// <returns></returns>
-        private IIntellisenseResult AddErrorToResults(bool isRS, string part, Dev2DataLanguageParseError e, bool isOpen)
+        private IIntellisenseResult AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
         {
             // add error
             IDataListVerifyPart pTO;
-            if(isRS)
+            if(isRs)
             {
                 int start = part.IndexOf("(", StringComparison.Ordinal);
                 string rs = part;
@@ -1188,6 +1189,11 @@ namespace Dev2.Data.Parsers
                                 string message = "Recordset index [ " + part + " ] is not numeric";
                                 throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
                             }
+                        }
+                        if(end<0)
+                        {
+                            string message = "Recordset [ " + raw + " ] does not contain a matching ')'";
+                            throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.InvalidRecordsetNotation);
                         }
                     }
                     else if(start > 0 && end > start)

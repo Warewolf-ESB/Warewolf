@@ -3,7 +3,9 @@ using System.Globalization;
 using System.Threading;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -182,15 +184,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
-            // ReSharper disable UnusedVariable
-            var thread = new Thread(() =>
-            // ReSharper restore UnusedVariable
-            {
-                var textBox = new IntellisenseTextBox();
-                textBox.FilterType = enIntellisensePartType.RecordsetFields;
-                textBox.Text = "[[var]]";
-                Assert.IsTrue(textBox.HasError);
-            });
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
+            Assert.IsTrue(textBox.HasError);
         }
 
         [TestMethod]
@@ -198,16 +195,68 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
+            Assert.IsFalse(textBox.HasError);
+        }
 
-            // ReSharper disable UnusedVariable
-            var thread = new Thread(() =>
-            // ReSharper restore UnusedVariable
-            {
-                var textBox = new IntellisenseTextBox();
-                textBox.FilterType = enIntellisensePartType.RecordsetFields;
-                textBox.Text = "[[var()]]";
-                Assert.IsFalse(textBox.HasError);
-            });
+        [TestMethod]
+        public void InsertItemExpectedTextboxTextChanged_InvalidSyntax_ErrorStatusUpdated()
+        {
+            const string ExpectedText = "[[City(1.Name]]";
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
+
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            DataListSingleton.SetDataList(dataListViewModel);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(
+                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.InsertItem(intellisenseProviderResult, true);
+
+            Thread.Sleep(250);
+            Thread.Sleep(100);
+
+            Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+            Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
+        }
+
+        [TestMethod]
+        public void InsertItemExpectedTextboxTextChanged_SpaceInFieldName_ErrorStatusUpdated()
+        {
+            const string ExpectedText = "[[City(). Name]]";
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<ADL><City><Name></Name></City></ADL>");
+
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            DataListSingleton.SetDataList(dataListViewModel);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);
+            intellisenseProvider.Setup(
+                a => a.PerformResultInsertion(It.IsAny<string>(), It.IsAny<IntellisenseProviderContext>())).Returns(ExpectedText);
+
+            IntellisenseProviderResult intellisenseProviderResult =
+                new IntellisenseProviderResult(intellisenseProvider.Object, ExpectedText, "cake");
+
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.InsertItem(intellisenseProviderResult, true);
+
+            Thread.Sleep(250);
+            Thread.Sleep(100);
+
+            Assert.AreEqual(ExpectedText, textBox.Text, "Expected [ " + ExpectedText + " ] But got [ " + textBox.Text + " ]");
+            Assert.IsTrue(textBox.HasError, "Expected [ True ] But got [ " + textBox.HasError + " ]");
         }
 
         [TestMethod]
@@ -215,15 +264,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
-            // ReSharper disable UnusedVariable
-            var thread = new Thread(() =>
-            // ReSharper restore UnusedVariable
-            {
-                var textBox = new IntellisenseTextBox();
-                textBox.FilterType = enIntellisensePartType.ScalarsOnly;
-                textBox.Text = "[[var]]";
-                Assert.IsFalse(textBox.HasError);
-            });
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
+            Assert.IsFalse(textBox.HasError);
         }
 
         [TestMethod]
@@ -231,16 +275,10 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
-            // ReSharper disable UnusedVariable
-            var thread = new Thread(() =>
-            // ReSharper restore UnusedVariable
-            {
-                var textBox = new IntellisenseTextBox();
-                textBox.FilterType = enIntellisensePartType.ScalarsOnly;
-                textBox.Text = "[[var()]]";
-                Thread.Sleep(250);
-                Assert.IsTrue(textBox.HasError);
-            });
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
+            Assert.IsTrue(textBox.HasError);
 
         }
 

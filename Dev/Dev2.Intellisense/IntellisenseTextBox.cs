@@ -645,9 +645,9 @@ namespace Dev2.UI
         public IntellisenseTextBox()
         {
             Observable.FromEventPattern(this, "TextChanged")
-                .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
-                .ObserveOn(SynchronizationContext.Current)
-                .Subscribe(pattern => TheTextHasChanged());
+                     .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
+                     .ObserveOn(SynchronizationContext.Current)
+                     .Subscribe(pattern => TheTextHasChanged());
 
             Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);
@@ -933,7 +933,7 @@ namespace Dev2.UI
             return new DefaultIntellisenseProvider();
         }
 
-        void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
+        public void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
         {
             if(!DesignerProperties.GetIsInDesignMode(this))
             {
