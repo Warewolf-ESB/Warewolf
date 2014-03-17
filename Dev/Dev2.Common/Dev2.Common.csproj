@@ -69,11 +69,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vestris.ResourceLib">
+      <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DeleteHelper.cs" />
     <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
+    <Compile Include="Utils\VersionInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

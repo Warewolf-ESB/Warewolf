@@ -180,12 +180,12 @@ namespace Dev2.Data.Operations
         #region NewLineMergeOp
 
         /// <summary>
-        /// Merge data to the class string using a NewLine merge, which will merge the data with a new line inbetween
+        /// Merge data to the class string using a NewLine merge, which will merge the data with a new line in between
         /// </summary>
         /// <param name="value">The value that will be merged to the class string</param>
         private void NewLineMergeOp(string value)
         {
-            MergeData.Append(value).Append("\n");
+            MergeData.Append(value).Append("\r\n");
         }
 
         #endregion

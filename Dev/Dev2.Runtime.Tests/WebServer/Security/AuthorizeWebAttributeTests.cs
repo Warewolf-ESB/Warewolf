@@ -84,6 +84,49 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Verify_OnAuthorization_Response(true, null, true, HttpStatusCode.OK, null);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
+        public void AuthorizeWebAttribute_OnAuthorization_WhenInternalService_UserIsAuthenticated()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            Verify_OnAuthorization_Response(true, "ping", true, HttpStatusCode.OK, null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
+        public void AuthorizeWebAttribute_OnAuthorization_WhenInternalService_UserIsNotAuthenticated()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            Verify_OnAuthorization_Response(false, "ping", true, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
+        public void AuthorizeWebAttribute_OnAuthorization_WhenNotInternalService_UserIsNotAuthenticated()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            Verify_OnAuthorization_Response(false, "pingme", true, HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AuthorizeWebAttribute_OnAuthorization")]
+        public void AuthorizeWebAttribute_OnAuthorization_WhenNotInternalService_UserIsAuthenticated()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            Verify_OnAuthorization_Response(true, "pingme", true, HttpStatusCode.Forbidden, null);
+            //------------Assert Results-------------------------
+        }
 
         static void Verify_OnAuthorization_Response(bool isAuthenticated, string actionName, bool isAuthorized, HttpStatusCode expectedStatusCode, string expectedMessage)
         {
@@ -98,7 +141,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             attribute.OnAuthorization(actionContext);
 
             //------------Assert Results-------------------------
-            if(isAuthorized)
+            if(isAuthorized && isAuthenticated)
             {
                 Assert.IsNull(actionContext.Response);
             }
@@ -121,11 +164,16 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var actionDescriptor = new Mock<HttpActionDescriptor>();
             actionDescriptor.Setup(ad => ad.ActionName).Returns(actionName);
 
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8080/content/site.css");
+            if(!string.IsNullOrEmpty(actionName))
+            {
+                httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, string.Format("http://localhost:8080/services/{0}", actionName));
+            }
             var actionContext = new HttpActionContext
             {
                 ControllerContext = new HttpControllerContext
                 {
-                    Request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8080/content/site.css"),
+                    Request = httpRequestMessage,
                     RequestContext = new HttpRequestContext { Principal = user.Object }
                 },
                 ActionDescriptor = actionDescriptor.Object

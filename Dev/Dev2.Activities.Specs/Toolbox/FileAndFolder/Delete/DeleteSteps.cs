@@ -1,5 +1,5 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using System.Activities.Statements;
+﻿using System.Activities.Statements;
+using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -19,7 +19,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-
 
             var delete = new DsfPathDelete
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities.Expressions;
 using System.ComponentModel;
 using System.Net;
 using Dev2.Studio.Core.Helpers;
@@ -17,7 +16,7 @@ namespace Dev2.Helpers
 
         public string DownloadString(string address)
         {
-            using (var client = _webClient)
+            using(var client = _webClient)
             {
                 if(!String.IsNullOrEmpty(address))
                 {
@@ -49,7 +48,9 @@ namespace Dev2.Helpers
                 _webClient.DownloadFileCompleted -= value;
             }
         }
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public bool IsBusy { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
         public void DownloadFileAsync(Uri address, string fileName, string userToken)
         {
             _webClient.DownloadFileAsync(address, fileName, userToken);

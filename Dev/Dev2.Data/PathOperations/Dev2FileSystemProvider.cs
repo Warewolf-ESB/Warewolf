@@ -119,9 +119,9 @@ namespace Dev2.PathOperations
 
             return result;
         }
-        
+
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             int result = -1;
             using(src)
@@ -137,8 +137,6 @@ namespace Dev2.PathOperations
                     }
                 }
 
-
-
                 if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
                 {
                     if(!RequiresAuth(dst))
@@ -151,45 +149,37 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        try
+                        // handle UNC path
+                        SafeTokenHandle safeTokenHandle;
+                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+
+                        if(loginOk)
                         {
-                            // handle UNC path
-                            SafeTokenHandle safeTokenHandle;
-                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-
-                            if(loginOk)
+                            using(safeTokenHandle)
                             {
-                                using(safeTokenHandle)
+
+                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                 {
+                                    // Do the operation here
 
-                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                    using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                    using(src)
                                     {
-                                        // Do the operation here
-
-                                        using(src)
-                                        {
-                                            File.WriteAllBytes(dst.Path, src.ToByteArray());
-                                            result = (int)src.Length;
-                                        }
-
-
-                                        // remove impersonation now
-                                        impersonatedUser.Undo();
+                                        File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                        result = (int)src.Length;
                                     }
+
+
+                                    // remove impersonation now
+                                    impersonatedUser.Undo();
                                 }
                             }
-                            else
-                            {
-                                // login failed
-                                throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
-                            }
                         }
-                        catch(Exception ex)
+                        else
                         {
-                            this.LogError(ex);
-                            throw;
+                            // login failed
+                            throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
                         }
                     }
                 }
@@ -201,137 +191,43 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool Delete(IActivityIOPath src)
         {
-            bool result = false;
-            try
+            bool result;
+            if(!RequiresAuth(src))
             {
-
-                if(!RequiresAuth(src))
-                {
-                    if(File.Exists(src.Path))
-                    {
-                        File.Delete(src.Path);
-                        result = true;
-                    }
-                    else if(Directory.Exists(src.Path))
-                    {
-                        DisplayAndWriteError(src.Path);
-                        DirectoryHelper.CleanUp(src.Path);
-                        result = true;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        // handle UNC path
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-                        if(loginOk)
-                        {
-                            using(safeTokenHandle)
-                            {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-
-                                    if(PathIs(src) == enPathType.File)
-                                    {
-                                        if(File.Exists(src.Path))
-                                        {
-                                            File.Delete(src.Path);
-                                            result = true;
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        if(Directory.Exists(src.Path))
-                                        {
-                                            DirectoryHelper.CleanUp(src.Path);
-                                            result = true;
-                                        }
-                                    }
-
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // login failed
-                            throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        this.LogError(ex);
-                        throw;
-                    }
-                }
+                // We need sense check the value passed in ;)
+                result = DeleteHelper.Delete(src.Path);
             }
-            catch(Exception)
+            else
             {
-                // might be a directory instead
-                if(!RequiresAuth(src))
+                // handle UNC path
+                SafeTokenHandle safeTokenHandle;
+                bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                if(loginOk)
                 {
-                    DisplayAndWriteError(src.Path);
-                    DirectoryHelper.CleanUp(src.Path);
-                    result = true;
+                    using(safeTokenHandle)
+                    {
+
+                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        {
+                            // Do the operation here
+                            result = DeleteHelper.Delete(src.Path);
+
+                            // remove impersonation now
+                            impersonatedUser.Undo();
+                        }
+                    }
                 }
                 else
                 {
-                    try
-                    {
-                        // handle unc
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-
-                        if(loginOk)
-                        {
-                            using(safeTokenHandle)
-                            {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-
-                                    DirectoryHelper.CleanUp(src.Path);
-                                    result = true;
-
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
-                                }
-                                newID.Dispose();
-                            }
-                        }
-                        else
-                        {
-                            // login failed
-                            throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        this.LogError(ex);
-                        throw;
-                    }
+                    // login failed
+                    throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
                 }
             }
 
 
             return result;
-        }
-
-        static void DisplayAndWriteError(string path)
-        {
-            var msg = string.Format("Attempt to delete: {0}", path);
-            ServerLogger.LogTrace(msg);
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]

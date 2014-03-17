@@ -311,7 +311,6 @@
     <Compile Include="Enums\Activities.cs" />
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
-    <Compile Include="Helpers\AssemblyResolver.cs" />
     <Compile Include="Internal Services\GetCurrentLogFileServicesTest.cs" />
     <Compile Include="Internal Services\RenameResourceCategoryServicesTest.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />

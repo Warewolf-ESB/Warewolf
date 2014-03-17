@@ -1,10 +1,9 @@
-﻿using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using ActivityUnitTests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -154,7 +153,7 @@ Ashley,Lewis
 Sashen,Naidoo
 Wallis,Buchan
 ";
-            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion New Line Merge Tests
@@ -209,7 +208,7 @@ SNaidoo
 WBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -238,7 +237,7 @@ Sashen0000Naidoo
 Wallis0000Buchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -267,7 +266,7 @@ Wallis0000Buchan
 0000WallisBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+            Assert.AreEqual(expected, actual);
         }
 
         //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
@@ -297,7 +296,7 @@ SashenNaidoo
 WallisBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion Index Tests

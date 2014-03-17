@@ -277,7 +277,9 @@ namespace Dev2.PathOperations
 
                             using(var s = src.Get(src.IOPath, _filesToDelete))
                             {
-                                dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? new FileInfo(src.IOPath.Path).Directory : null, _filesToDelete);
+
+                                // for flips sake quite putting short-hand notation in-line it causes bugs!!! ;)
+                                dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? Path.GetDirectoryName(src.IOPath.Path) : null, _filesToDelete);
                                 s.Close();
                                 s.Dispose();
                             }
@@ -292,7 +294,10 @@ namespace Dev2.PathOperations
 
                             using(var s = src.Get(src.IOPath, _filesToDelete))
                             {
-                                dst.Put(s, dst.IOPath, args, sourceFile.Directory, _filesToDelete);
+                                if(sourceFile.Directory != null)
+                                {
+                                    dst.Put(s, dst.IOPath, args, sourceFile.Directory.ToString(), _filesToDelete);
+                                }
                             }
                         }
                         return ResultOk;
@@ -321,7 +326,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(RemoveTmpFile);    
+                _filesToDelete.ForEach(RemoveTmpFile);
             }
 
             return result;
@@ -379,7 +384,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(RemoveTmpFile);    
+                _filesToDelete.ForEach(RemoveTmpFile);
             }
 
             return status;
@@ -753,15 +758,16 @@ namespace Dev2.PathOperations
             }
         }
 
-        static DirectoryInfo GetWhereToPut(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
+        static string GetWhereToPut(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
         {
             if(src.IOPath.PathType == enActivityIOPathType.FileSystem)
             {
-                return new FileInfo(src.IOPath.Path).Directory;
+                // some silly chicken is not getting the directory correctly ?!
+                return Path.GetDirectoryName(src.IOPath.Path);
             }
             if(dst.IOPath.PathType == enActivityIOPathType.FileSystem)
             {
-                return new FileInfo(dst.IOPath.Path).Directory;
+                return Path.GetDirectoryName(src.IOPath.Path);
             }
             return null; // this means that neither the src or destination where local files
         }
@@ -855,7 +861,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
-                _filesToDelete.ForEach(RemoveTmpFile);    
+                _filesToDelete.ForEach(RemoveTmpFile);
             }
             return status;
         }
@@ -971,7 +977,7 @@ namespace Dev2.PathOperations
                     var fileInfo = new FileInfo(src.IOPath.Path);
                     if(fileInfo.Directory != null && Path.IsPathRooted(fileInfo.Directory.ToString()))
                     {
-                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory, _filesToDelete) < 0)
+                        if(dst.Put(s2, dst.IOPath, zipTransferArgs, fileInfo.Directory.ToString(), _filesToDelete) < 0)
                         {
                             result = ResultBad;
                         }

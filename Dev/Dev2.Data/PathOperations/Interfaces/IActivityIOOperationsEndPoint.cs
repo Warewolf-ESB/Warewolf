@@ -26,9 +26,13 @@ namespace Dev2.PathOperations {
         /// <summary>
         /// Put a stream into a location as per dst based upon the value of args
         /// </summary>
-        /// <param name="src"></param>
-        /// <param name="args"></param>
-        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup);
+        /// <param name="src">The source.</param>
+        /// <param name="dst">The DST.</param>
+        /// <param name="args">The arguments.</param>
+        /// <param name="whereToPut">The where automatic put.</param>
+        /// <param name="filesToCleanup">The files automatic cleanup.</param>
+        /// <returns></returns>
+        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup);
 
         /// <summary>
         /// Delete a file/folder at a location

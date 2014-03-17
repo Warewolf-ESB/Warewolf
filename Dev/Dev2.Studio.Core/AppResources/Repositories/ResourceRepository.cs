@@ -494,7 +494,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected virtual void LoadResources()
         {
-
+            this.Warning("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
             comsController.AddPayloadArgument("ResourceType", string.Empty);
@@ -508,6 +508,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
+            this.Warning("Loading Resources - End");
         }
 
         public void RemoveFromCache(Guid id)
@@ -563,6 +564,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 catch
                 // ReSharper restore EmptyGeneralCatchClause
                 {
+                    this.Warning(string.Format("Resource Not Loaded - {0} - {1}", item.ResourceName, item.ResourceID));
                     // Ignore malformed resource
                 }
             }
@@ -612,7 +614,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.IsNewWorkflow = isNewWorkflow;
                 try
                 {
-                resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
+                    resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
                 }
                 catch(SystemException exception)
                 {

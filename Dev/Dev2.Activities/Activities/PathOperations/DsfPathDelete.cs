@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
@@ -66,7 +66,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while(colItr.HasMoreData())
             {
-                string error = string.Empty;
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
 
                 try

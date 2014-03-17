@@ -24,7 +24,7 @@ namespace Dev2.Studio.Core.Helpers
 
         public VersionChecker(IDev2WebClient webClient)
         {
-            if (webClient == null)
+            if(webClient == null)
             {
                 throw new ArgumentNullException("webClient");
             }
@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core.Helpers
             get
             {
                 Check();
-                return Latest == Current ? StringResources.Warewolf_Homepage_Take5 : StringResources.Warewolf_Homepage_Start;
+                return Latest == Current ? StringResources.Warewolf_Homepage_New : StringResources.Warewolf_Homepage_Start;
             }
         }
 
@@ -84,15 +84,15 @@ namespace Dev2.Studio.Core.Helpers
                 latestGetter.GetLatest(StartPageUri, path);
             }
 
-            if (Latest > Current)
+            if(Latest > Current)
             {
                 // TESTING : "grepWin-1.6.0-64.msi"
-                path = FileHelper.GetFullPath(string.Format("Installers\\"+"Warewolf-{0}.exe", Latest));
+                path = FileHelper.GetFullPath(string.Format("Installers\\" + "Warewolf-{0}.exe", Latest));
                 result = false;
                 if(!File.Exists(path))
                 {
                     var downloadMessageBoxResult = ShowDownloadPopUp();
-                    if (downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
+                    if(downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
                     {
                         FileHelper.CreateDirectoryFromString(path);
                         // TESTING : "https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi"
@@ -102,7 +102,7 @@ namespace Dev2.Studio.Core.Helpers
                 else
                 {
                     var setupMessageBoxResult = ShowStartNowPopUp();
-                    if (setupMessageBoxResult == MessageBoxResult.Yes)
+                    if(setupMessageBoxResult == MessageBoxResult.Yes)
                     {
                         downloader.StartUpdate(path, false);
                     }
@@ -127,7 +127,7 @@ namespace Dev2.Studio.Core.Helpers
 
         protected virtual void Check()
         {
-            if (!_isDone)
+            if(!_isDone)
             {
                 _isDone = true;
                 _latest = GetLatestVersion();

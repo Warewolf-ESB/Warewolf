@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             var feedbackViewModel = new FeedbackViewModel();
-            string versionNumber = VersionInfo.FetchVersionInfo(); ;
+            string versionNumber = VersionInfo.FetchVersionInfo();
             StringAssert.Contains(feedbackViewModel.Comment, @"Comments : 
 
 
@@ -228,7 +228,7 @@ OS version : ");
             feedbackViewModel.Send();
 
             popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
-       }
+        }
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
@@ -258,7 +258,7 @@ OS version : ");
         //    feedbackViewModel.BrowserPopupController = popupController.Object;
         //    var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
         //    object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
-           
+
         //    //Assert that the outlook is the default mail client only if its installed on the machine
         //    if(isOutlookInstalled)
         //    {
@@ -323,7 +323,7 @@ OS version : ");
             Assert.AreEqual(attachmentPath3, viewModel.StudioLogAttachmentPath);
             Assert.IsTrue(viewModel.HasServerLogAttachment);
             Assert.IsTrue(viewModel.HasRecordingAttachment);
-           
+
             viewModel.Send(mockCommService.Object);
             mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
                                  , Times.Once()

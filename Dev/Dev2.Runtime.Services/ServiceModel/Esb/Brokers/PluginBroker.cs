@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public NamespaceList GetNamespaces(PluginSource pluginSource)
         {
             // BUG 9500 - 2013.05.31 - TWR : added check to avoid nulling AssemblyLocation/Name in tests 
-            if (string.IsNullOrEmpty(pluginSource.AssemblyLocation))
+            if(string.IsNullOrEmpty(pluginSource.AssemblyLocation))
             {
                 pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
             }
@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         public List<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
         {
-            AppDomain tmpDomain = AppDomain.CreateDomain("FindNamespaces");
+            AppDomain tmpDomain = AppDomain.CreateDomain("FindNamespaces" + Guid.NewGuid());
             var result = new List<NamespaceItem>();
             var list = GetDetail(assemblyLocation, assemblyName).ToList();
             list.ForEach(fullName =>
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if(TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
@@ -108,21 +108,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             bool result = true;
             error = null;
 
-            if (toLoad.StartsWith(GlobalConstants.GACPrefix))
+            if(toLoad.StartsWith(GlobalConstants.GACPrefix))
             {
                 try
                 {
                     var readlLoad = toLoad.Remove(0, GlobalConstants.GACPrefix.Length);
                     Assembly.Load(readlLoad);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     result = false;
                     this.LogError(e);
                     error = e.Message;
                 }
             }
-            else if (toLoad.EndsWith(".dll"))
+            else if(toLoad.EndsWith(".dll"))
             {
                 try
                 {
@@ -134,7 +134,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     {
                         Assembly.UnsafeLoadFrom(toLoad);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         result = false;
                         this.LogError(e);
@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             Assembly loadedAssembly;
             IEnumerable<string> namespaces = new string[0];
-            if (TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+            if(TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
             {
                 // ensure we flush out the rubbish that GAC brings ;)
                 namespaces = loadedAssembly.GetTypes()
@@ -177,19 +177,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         /// <summary>
-        /// Loads the depencencies.
+        /// Loads the dependencies.
         /// </summary>
         /// <param name="asm">The asm.</param>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <exception cref="System.Exception">Could not locate Assembly [  + assemblyLocation +  ]</exception>
         private void LoadDepencencies(Assembly asm, string assemblyLocation)
         {
-            // load depencencies ;)
-            if (asm != null)
+            // load dependencies ;)
+            if(asm != null)
             {
                 var toLoadAsm = asm.GetReferencedAssemblies();
 
-                foreach (var toLoad in toLoadAsm)
+                foreach(var toLoad in toLoadAsm)
                 {
                     // TODO : Detect GAC or File System Load ;)
                     try
@@ -199,8 +199,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     catch
                     {
                         var path = Path.GetDirectoryName(assemblyLocation);
-                        var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                        Assembly.UnsafeLoadFrom(myLoad);
+                        if(path != null)
+                        {
+                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
+                            Assembly.UnsafeLoadFrom(myLoad);
+                        }
                     }
                 }
             }
@@ -223,7 +226,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // GAC:ISymWrapper - LOCATION
 
             loadedAssembly = null;
-            if (assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+            if(assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
             {
 
                 // Culture=neutral, PublicKeyToken=b77a5c561934e089
@@ -234,7 +237,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     this.LogError(e.Message);
                 }
@@ -255,7 +258,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                         LoadDepencencies(loadedAssembly, assemblyLocation);
                         return true;
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         this.LogError(e);
                     }
@@ -268,7 +271,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     this.LogError(e);
                 }
@@ -303,7 +306,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var dataBrowser = DataBrowserFactory.CreateDataBrowser();
             var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
 
-            if (pluginResult != null)
+            if(pluginResult != null)
             {
                 var tmpData = dataBrowser.Map(pluginResult);
                 dataSourceShape.Paths.AddRange(tmpData);
@@ -325,7 +328,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             Assembly loadedAssembly;
 
-            if (!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+            if(!TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
             {
                 return null;
             }
@@ -349,7 +352,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         private object[] BuildParameterList(List<MethodParameter> parameters)
         {
 
-            if (parameters.Count == 0) return new object[] { };
+            if(parameters.Count == 0) return new object[] { };
             var parameterValues = new object[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>
@@ -368,7 +371,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         private Type[] BuildTypeList(List<MethodParameter> parameters)
         {
 
-            if (parameters.Count == 0) return new Type[] { };
+            if(parameters.Count == 0) return new Type[] { };
             var typeList = new Type[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>

@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find all registered plugins
     /// </summary>
-    public class PluginRegistry 
+    public class PluginRegistry
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(asmLoc) || string.IsNullOrEmpty(nameSpace) || string.IsNullOrEmpty(methodName))
             {
-                throw new InvalidDataContractException("AssemblyLoation or NameSpace or MethodName is missing");   
+                throw new InvalidDataContractException("AssemblyLoation or NameSpace or MethodName is missing");
             }
 
             var pluginData = new StringBuilder();
@@ -48,18 +48,18 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             AppDomain pluginDomain = AppDomain.CreateDomain("PluginMetaDataDiscoveryDomain", null, setup);
 
-            string baseLocation = string.Empty;
+            string baseLocation;
             string gacQualifiedName = String.Empty;
 
-            if (asmLoc == string.Empty || asmLoc.StartsWith("Plugins"))
+            if(asmLoc == string.Empty || asmLoc.StartsWith("Plugins"))
             {
                 setup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
 
                 baseLocation = @"Plugins\";
 
-                if (asmLoc == string.Empty)
+                if(asmLoc == string.Empty)
                 {
-                    // now interigate the file system and build up a list of plugins and data
+                    // now interrogate the file system and build up a list of plugins and data
                     plugins = Directory.EnumerateFiles(pluginDomain.BaseDirectory);
                 }
                 else
@@ -69,34 +69,34 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                if (asmLoc.StartsWith(GlobalConstants.GACPrefix))
+                if(asmLoc.StartsWith(GlobalConstants.GACPrefix))
                 {
                     baseLocation = GlobalConstants.GACPrefix;
-                        // we have a plugin loaded into the global assembly cache
-                        gacQualifiedName = asmLoc.Substring(4);
-                    }
-                    else
-                    {
-                        baseLocation = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(asmLoc);
-                        // we have a plugin relative to the file system
-                        plugins = new[] { asmLoc };
-                    }
+                    // we have a plugin loaded into the global assembly cache
+                    gacQualifiedName = asmLoc.Substring(4);
                 }
+                else
+                {
+                    baseLocation = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(asmLoc);
+                    // we have a plugin relative to the file system
+                    plugins = new[] { asmLoc };
+                }
+            }
 
             bool includePublic = true;
             bool includePrivate = true;
 
             // default to all if no params
-            if (protectionLevel != string.Empty)
+            if(protectionLevel != string.Empty)
             {
                 // only include public methods
-                if (protectionLevel != null && protectionLevel.ToLower() == "public")
+                if(protectionLevel != null && protectionLevel.ToLower() == "public")
                 {
                     includePrivate = false;
                 }
             }
 
-            if (plugins != null)
+            if(plugins != null)
             {
                 plugins
                     .ToList()
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         string shortName = plugin.Substring(pos, (plugin.Length - pos));
 
                         // only attempt to load assemblies
-                        if (shortName.EndsWith(".dll"))
+                        if(shortName.EndsWith(".dll"))
                         {
                             try
                             {
@@ -122,12 +122,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 {
                                     Assembly.UnsafeLoadFrom(plugin);
                                 }
-                                catch (Exception ex)
+                                catch(Exception ex)
                                 {
                                     this.LogError(ex);
                                 }
                             }
-                            catch (Exception ex)
+                            catch(Exception ex)
                             {
                                 this.LogError(ex);
                                 pluginData.Append("<Dev2Plugin><Dev2PluginName>" + shortName + "</Dev2PluginName>");
@@ -143,15 +143,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
             }
-            else if (!String.IsNullOrEmpty(gacQualifiedName))
+            else if(!String.IsNullOrEmpty(gacQualifiedName))
             {
                 GACAssemblyName gacName = GAC.TryResolveGACAssembly(gacQualifiedName);
 
-                if (gacName == null)
-                    if (GAC.RebuildGACAssemblyCache(true))
+                if(gacName == null)
+                    if(GAC.RebuildGACAssemblyCache(true))
                         gacName = GAC.TryResolveGACAssembly(gacQualifiedName);
 
-                if (gacName != null)
+                if(gacName != null)
                 {
                     try
                     {
@@ -159,7 +159,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         InterogatePluginAssembly(pluginData, asm, gacName.Name, baseLocation + gacName, includePublic,
                                                  includePrivate, methodName, nameSpace);
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         this.LogError(ex);
                         pluginData.Append("<Dev2Plugin><Dev2PluginName>" + gacName.Name + "</Dev2PluginName>");
@@ -174,6 +174,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
+            AppDomain.Unload(pluginDomain);
 
             string theResult = "<Dev2PluginRegistration>" + pluginData + "</Dev2PluginRegistration>";
 
@@ -212,18 +213,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             bool found = false;
             bool defaultNameSpace = false;
             // take all namespaces 
-            if (nameSpace == string.Empty)
+            if(nameSpace == string.Empty)
             {
                 defaultNameSpace = true;
             }
 
-            while (pos < types.Length && !found)
+            while(pos < types.Length && !found)
             {
                 Type t = types[pos];
                 string classString = t.FullName;
                 // ensure no funny xml fragments are present
 
-                if (classString.IndexOf("<") < 0 && (defaultNameSpace || (classString == nameSpace)))
+                if(classString.IndexOf("<") < 0 && (defaultNameSpace || (classString == nameSpace)))
                 {
                     var exposedMethodsXML = new StringBuilder();
 
@@ -233,32 +234,32 @@ namespace Dev2.Runtime.ESB.Management.Services
                     IList<string> methodSignatures = new List<string>();
 
                     int pos1 = 0;
-                    while (pos1 < methods.Length && !found)
+                    while(pos1 < methods.Length && !found)
                     {
                         MethodInfo m = methods[pos1];
 
                         ParameterInfo[] p = m.GetParameters();
 
-                        if (m.IsPublic && includePublic)
+                        if(m.IsPublic && includePublic)
                         {
-                            if (!exposedMethods.Contains(m.Name) && methodName == string.Empty)
+                            if(!exposedMethods.Contains(m.Name) && methodName == string.Empty)
                             {
                                 exposedMethods.Add(m.Name);
                             }
-                            else if (methodName == m.Name)
+                            else if(methodName == m.Name)
                             {
                                 exposedMethods.Add(m.Name);
                                 methodSignatures.Add(BuildMethodSignature(m.GetParameters(), m.Name));
                                 found = true;
                             }
                         }
-                        else if (m.IsPrivate && includePrivate)
+                        else if(m.IsPrivate && includePrivate)
                         {
-                            if (!exposedMethods.Contains(m.Name) && methodName == string.Empty)
+                            if(!exposedMethods.Contains(m.Name) && methodName == string.Empty)
                             {
                                 exposedMethods.Add(m.Name);
                             }
-                            else if (methodName == m.Name)
+                            else if(methodName == m.Name)
                             {
                                 exposedMethods.Add(m.Name);
                                 methodSignatures.Add(BuildMethodSignature(m.GetParameters(), m.Name));
@@ -271,7 +272,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     exposedMethods.ToList().Sort((x, y) => x.ToLower().CompareTo(y.ToLower()));
 
-                    foreach (string m in exposedMethods)
+                    foreach(string m in exposedMethods)
                     {
                         exposedMethodsXML = exposedMethodsXML.Append("<Dev2PluginExposedMethod>");
                         exposedMethodsXML = exposedMethodsXML.Append(m);
@@ -280,12 +281,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     var methodSigsXML = new StringBuilder();
 
-                    foreach (string ms in methodSignatures)
+                    foreach(string ms in methodSignatures)
                     {
                         methodSigsXML.Append(ms);
                     }
 
-                    if (!classString.Contains("+"))
+                    if(!classString.Contains("+"))
                     {
                         pluginData.Append("<Dev2Plugin><Dev2PluginName>" + shortName + "</Dev2PluginName>");
                         pluginData.Append("<Dev2PluginStatus>Registered</Dev2PluginStatus>");
@@ -293,7 +294,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         pluginData.Append("<Dev2PluginSourceLocation>" + sourceLocation + "</Dev2PluginSourceLocation>");
                         pluginData.Append(exposedMethodsXML);
                         pluginData.Append("<Dev2PluginSourceExposedMethodSignatures>");
-                        if (methodSignatures.Count > 0)
+                        if(methodSignatures.Count > 0)
                         {
                             pluginData.Append(methodSigsXML);
                         }
@@ -321,12 +322,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             toAdd.Append(methodName);
             toAdd.Append("</Dev2PluginMethod>");
 
-            foreach (ParameterInfo p in args)
+            foreach(ParameterInfo p in args)
             {
                 string t = p.ParameterType.Name;
                 string name = p.Name;
                 toAdd.Append("<Dev2PluginArg>");
-                if (t != null && !t.Contains("<"))
+                if(t != null && !t.Contains("<"))
                 {
                     t = t.Replace("`", "");
                     var r = new Regex("(?<!\\.[0-9a-z]*)[0-9]");

@@ -458,7 +458,6 @@
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
     <Compile Include="Utils\StudioCompileMessageRepo.cs" />
-    <Compile Include="Utils\VersionInfo.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
     <Compile Include="ViewModels\Base\ValidationController.cs" />

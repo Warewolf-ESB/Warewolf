@@ -96,7 +96,7 @@ namespace Dev2.Data.Parsers
         }
 
         /// <summary>
-        /// Return a list of data list parts from the evalauted region
+        /// Return a list of data list parts from the evaluated region
         /// </summary>
         /// <param name="payload"></param>
         /// <returns></returns>

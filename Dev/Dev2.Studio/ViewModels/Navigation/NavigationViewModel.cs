@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -80,11 +81,13 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public enDsfActivityType DsfActivityType { get { return _activityType; } set { _activityType = value; } }
 
-        public IEventAggregator EventAggregator {
+        public IEventAggregator EventAggregator
+        {
             get { return _eventPublisher; }
         }
 
-        public IAsyncWorker AsyncWorker {
+        public IAsyncWorker AsyncWorker
+        {
             get { return _asyncWorker; }
         }
 
@@ -320,6 +323,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void LoadEnvironmentResources(IEnvironmentModel environment)
         {
+            this.Warning("Navigation Resources Load - Start");
             LoadResourcesAsync(environment);
         }
 
@@ -771,6 +775,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                             }
                         }
                     }
+                    catch(Exception ex)
+                    {
+                        Logger.LogError(this, ex);
+                    }
                     finally
                     {
                         UpdateIsRefreshing(environment, false);
@@ -793,6 +801,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void OnLoadResourcesCompleted()
         {
+            this.Warning("Navigation Resources Load - End");
             if(LoadResourcesCompleted != null)
             {
                 LoadResourcesCompleted(this, EventArgs.Empty);
@@ -829,8 +838,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             Iterate((node =>
             {
                 node.IsOverwrite = false;
-                
-              
+
+
             }));
 
 
@@ -840,7 +849,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// perform some kind of action on all children of a node
         /// </summary>
         /// <param name="action"></param>
-    
+
         private void Iterate(Action<ITreeNode> action)
         {
             Iterate(action, _root);
@@ -852,11 +861,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <param name="node"></param>
         private void Iterate(Action<ITreeNode> action, ITreeNode node)
         {
-            if (node != null)
+            if(node != null)
             {
                 action(node);
-                if (node.Children != null)
-                    foreach (var child in node.Children)
+                if(node.Children != null)
+                    foreach(var child in node.Children)
                     {
                         Iterate(action, child);
                     }

@@ -191,7 +191,7 @@ namespace Dev2.Data.PathOperations
             return "";
         }
 
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut, List<string> filesToCleanup)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             var result = -1;
 

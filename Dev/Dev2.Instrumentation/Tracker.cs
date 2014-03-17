@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dev2.Studio.Utils;
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation
@@ -50,8 +51,8 @@ namespace Dev2.Instrumentation
                 var productVersion = "0.0.9999.0";
                 // ReSharper restore ConvertToConstant.Local
 #else
-                var fvi = FileVersionInfo.GetVersionInfo(location);
-                var productVersion = fvi.FileVersion;
+                var fvi = VersionInfo.FetchVersionInfo();
+                var productVersion = fvi;
 #endif
                 TBConfig.SetFilePath(filePath);
                 //TBConfig.SetProductEdition("LITE");                      
@@ -118,16 +119,16 @@ namespace Dev2.Instrumentation
         {
             try
             {
-            if(async)
-            {
-                Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                if(async)
+                {
+                    Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                }
+                else
+                {
+                    var result = action();
+                    WriteError(result);
+                }
             }
-            else
-            {
-                var result = action();
-                WriteError(result);
-            }
-        }
             // ReSharper disable EmptyGeneralCatchClause
             catch
             // ReSharper restore EmptyGeneralCatchClause

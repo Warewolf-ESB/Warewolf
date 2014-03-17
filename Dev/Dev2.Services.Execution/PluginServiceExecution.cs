@@ -9,10 +9,11 @@ namespace Dev2.Services.Execution
     public class PluginServiceExecution : ServiceExecutionAbstract<PluginService, PluginSource>
     {
         readonly RemoteObjectHandler _remoteHandler;
-      
-        #region Constuctors
 
-        public PluginServiceExecution(IDSFDataObject dataObj,bool handlesFormatting) :base(dataObj,handlesFormatting)
+        #region Constructors
+
+        public PluginServiceExecution(IDSFDataObject dataObj, bool handlesFormatting)
+            : base(dataObj, handlesFormatting)
         {
             var handler = new RemoteObjectHandler();
             _remoteHandler = handler;
@@ -36,11 +37,11 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             _remoteHandler.Errors.ClearErrors();
 
-            foreach (var parameter in Service.Method.Parameters)
+            foreach(var parameter in Service.Method.Parameters)
             {
                 dataBuilder.Append("<Arg>");
                 dataBuilder.Append("<TypeOf>");
-                if (parameter.Type == null)
+                if(parameter.Type == null)
                 {
                     //if Type is null we have big issues ;(
                     throw new Exception("Null Type");
@@ -48,14 +49,14 @@ namespace Dev2.Services.Execution
                 dataBuilder.Append(parameter.Type.Name.ToLower());
                 dataBuilder.Append("</TypeOf>");
                 dataBuilder.Append("<Value>");
-                
+
                 var tmpInjectValue = parameter.Value;
-                
-                if (parameter.Value == null)
+
+                if(parameter.Value == null)
                 {
                     tmpInjectValue = GlobalConstants.NullPluginValue;
                 }
-                
+
                 dataBuilder.Append(tmpInjectValue);
 
                 dataBuilder.Append("</Value>");
