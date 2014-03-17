@@ -154,22 +154,25 @@ namespace Dev2.Studio.Core.Models
 
         void ReceivePermissionsModified(PermissionsModifiedMemo memo)
         {
-            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID==Guid.Empty).ToList();
-            if(modifiedPermissions.Count > 0)
+            if(memo.ServerID == Environment.Connection.ServerID)
             {
-                try
+                var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID == Guid.Empty).ToList();
+                if(modifiedPermissions.Count > 0)
                 {
-                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+                    try
+                    {
+                        UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+                    }
+                    catch(SystemException exception)
+                    {
+                        HelperUtils.ShowTrustRelationshipError(exception);
+                    }
                 }
-                catch(SystemException exception)
-                {
-                    HelperUtils.ShowTrustRelationshipError(exception);
-                }
-            }
 
-            if(OnPermissionsModifiedReceived != null)
-            {
-                OnPermissionsModifiedReceived(this, memo);
+                if(OnPermissionsModifiedReceived != null)
+                {
+                    OnPermissionsModifiedReceived(this, memo);
+                }
             }
         }
 

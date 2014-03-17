@@ -956,6 +956,89 @@ namespace Dev2.Core.Tests
             eventPublisher.Publish(pubMemo);
         }
 
+        [TestMethod]
+        [TestCategory("ResourceModel_PermissionsModifiedService")]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ResourceModel_PermissionsModifiedService_MemoIDEqualsEnvironmentServerId_UserPermissionChanges()
+        {
+            //------------Setup for test--------------------------
+            const Permissions ExpectedPermissions = Permissions.Contribute;
+
+            var resourceID = Guid.NewGuid();
+            //var connectionServerId = Guid.NewGuid();
+            var memoServerID = Guid.NewGuid();
+
+            var pubMemo = new PermissionsModifiedMemo();
+            
+            pubMemo.ServerID = memoServerID;
+            pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.Execute });
+            pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.DeployTo });
+
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+            connection.SetupGet(c => c.ServerID).Returns(memoServerID);
+
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(m => m.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Contribute);
+            environmentModel.Setup(e => e.AuthorizationService).Returns(authorizationService.Object);
+
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = resourceID,
+                UserPermissions = ExpectedPermissions
+            };
+            Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
+
+            model.OnPermissionsModifiedReceived += (sender, memo) => Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
+
+            //------------Execute Test---------------------------
+            eventPublisher.Publish(pubMemo);
+        }
+
+        [TestMethod]
+        [TestCategory("ResourceModel_PermissionsModifiedService")]
+        [Owner("Tshepo Ntlhokoa")]
+        public void ResourceModel_PermissionsModifiedService_MemoIDNotEqualsEnvironmentServerId_UserPermissionDoesNotChange()
+        {
+            //------------Setup for test--------------------------
+            const Permissions ExpectedPermissions = Permissions.DeployFrom;
+
+            var resourceID = Guid.NewGuid();
+            //var connectionServerId = Guid.NewGuid();
+            var memoServerID = Guid.NewGuid();
+
+            var pubMemo = new PermissionsModifiedMemo();
+
+            pubMemo.ServerID = memoServerID;
+            pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.Execute });
+            pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.DeployTo });
+
+            var eventPublisher = new EventPublisher();
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+            connection.SetupGet(c => c.ServerID).Returns(Guid.NewGuid());
+
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(m => m.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Contribute);
+            environmentModel.Setup(e => e.AuthorizationService).Returns(authorizationService.Object);
+
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = resourceID,
+                UserPermissions = ExpectedPermissions
+            };
+            Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
+
+            model.OnPermissionsModifiedReceived += (sender, memo) => Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
+
+            //------------Execute Test---------------------------
+            eventPublisher.Publish(pubMemo);
+        }
 
         void Verify_PermissionsModifiedService_ModifiedPermissionsDoesMatchResourceID(Guid instanceID)
         {

@@ -35,7 +35,11 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            var permissionsMemo = new PermissionsModifiedMemo { ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions };
+            var permissionsMemo = new PermissionsModifiedMemo
+                {
+                    ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions,
+                    ServerID = HostSecurityProvider.Instance.ServerID
+                };
             var serializedMemo = JsonConvert.SerializeObject(permissionsMemo);
             var hubCallerConnectionContext = Clients;
             hubCallerConnectionContext.All.SendPermissionsMemo(serializedMemo);
