@@ -11,6 +11,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         public int RaisePermissionsChangedHitCount { get; private set; }
+        public int RaisePermissionsModifiedHitCount { get; private set; }
 
         public IPrincipal User { get; set; }
 
@@ -18,6 +19,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
             RaisePermissionsChangedHitCount++;
             base.RaisePermissionsChanged();
+        }
+
+        protected override void OnPermissionsModified(PermissionsModifiedEventArgs e)
+        {
+            RaisePermissionsModifiedHitCount++;
+            base.OnPermissionsModified(e);
         }
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)

@@ -77,12 +77,15 @@ namespace Dev2.Network
 
         protected void InitializeEsbProxy()
         {
-            EsbProxy = HubConnection.CreateHubProxy("esb");
-            EsbProxy.On<string>("SendMemo", OnMemoReceived);
-            EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
-            EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
-            EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
-            EsbProxy.On<Guid>("SendServerID", OnServerIDReceived);
+            if(EsbProxy == null)
+            {
+                EsbProxy = HubConnection.CreateHubProxy("esb");
+                EsbProxy.On<string>("SendMemo", OnMemoReceived);
+                EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
+                EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
+                EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
+                EsbProxy.On<Guid>("SendServerID", OnServerIDReceived);
+            }
         }
 
         void HubConnectionOnClosed()

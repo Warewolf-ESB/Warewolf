@@ -23,7 +23,23 @@ namespace Dev2.Services.Security
         }
 
         public event EventHandler PermissionsChanged;
-        public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
+        private EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
+        public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
+        {
+            add
+            {
+                if(_permissionsModifedHandler == null)
+                {
+                    _permissionsModifedHandler += value;
+                }
+            }
+            remove
+            {
+                // ReSharper disable DelegateSubtraction
+                _permissionsModifedHandler -= value;
+                // ReSharper restore DelegateSubtraction
+            }
+        }
 
         public Permissions GetResourcePermissions(Guid resourceID)
         {
@@ -50,10 +66,9 @@ namespace Dev2.Services.Security
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
-            var handler = PermissionsModified;
-            if(handler != null)
+            if(_permissionsModifedHandler != null)
             {
-                handler(this, e);
+                _permissionsModifedHandler(this, e);
             }
         }
 

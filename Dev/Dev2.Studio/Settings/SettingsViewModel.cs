@@ -1,13 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Instrumentation;
 using Dev2.Messages;
+using Dev2.Security;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
@@ -16,6 +13,11 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Dev2.Settings
 {
@@ -53,12 +55,13 @@ namespace Dev2.Settings
             _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             _parentWindow = parentWindow;
-
-            SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
+            
+            SaveCommand = new AuthorizeCommand(AuthorizationContext.Administrator, o => SaveSettings(), o => IsDirty);
+            SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
         }
 
-        public ICommand SaveCommand { get; private set; }
+        public AuthorizeCommand SaveCommand { get; private set; }
 
         public ICommand ServerChangedCommand { get; private set; }
 
@@ -247,6 +250,7 @@ namespace Dev2.Settings
             }
 
             CurrentEnvironment = server;
+            SaveCommand.UpdateContext(CurrentEnvironment);
             LoadSettings();
         }
 

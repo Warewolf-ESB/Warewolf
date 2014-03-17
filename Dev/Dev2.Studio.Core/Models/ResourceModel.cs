@@ -154,13 +154,13 @@ namespace Dev2.Studio.Core.Models
 
         void ReceivePermissionsModified(PermissionsModifiedMemo memo)
         {
-            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID == Guid.Empty).ToList();
+            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID==Guid.Empty).ToList();
             if(modifiedPermissions.Count > 0)
             {
                 try
                 {
-                UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
-            }
+                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+                }
                 catch(SystemException exception)
                 {
                     HelperUtils.ShowTrustRelationshipError(exception);
@@ -585,8 +585,8 @@ namespace Dev2.Studio.Core.Models
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     if(msg != null && msg.Message != null)
                     {
-                    xaml = msg.Message;
-                }
+                        xaml = msg.Message;
+                    }
                 }
 
                 var service = CreateWorkflowXElement(xaml);

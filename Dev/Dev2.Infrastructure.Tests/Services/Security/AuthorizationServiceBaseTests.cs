@@ -46,6 +46,24 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AuthorizationServiceBase_Constructor")]
+        public void AuthorizationServiceBase_Constructor_PermissionsModifiedEventSubscribedTwice_OnlyOneEventIsWiredUp()
+        {
+            //------------Setup for test--------------------------
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
+            authorizationService.PermissionsModified += (sender, args) => { };
+            authorizationService.PermissionsModified += (sender, args) => { };
+            //------------Execute Test---------------------------
+            securityService.Raise(m => m.PermissionsModified += null, EventArgs.Empty, null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, authorizationService.RaisePermissionsModifiedHitCount);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndResourceToBeVerifiedIsNull_False()
