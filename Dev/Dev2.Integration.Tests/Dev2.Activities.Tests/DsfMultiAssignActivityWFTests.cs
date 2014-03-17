@@ -98,6 +98,21 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #endregion Recursive Nature Tests
 
+        #region Assign After Delete
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        public void MutiAssign_ARecordUsingFixedIndex_IndexMustHaveBeenDeleted_WillAssingNothingForTheIndex()
+        {
+            string PostData = String.Format("{0}{1}", WebserverURI, "Assign Debug With Empty");
+            const string expected = @"<DataList><rec rowID=""2""><row>NOT EMPTY</row></rec></DataList>";
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+
+            StringAssert.Contains(ResponseData, expected);
+        }
+        #endregion
+
         #region Calculation Mode Tests
 
 
