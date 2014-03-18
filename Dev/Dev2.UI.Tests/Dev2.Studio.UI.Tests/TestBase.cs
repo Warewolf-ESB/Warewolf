@@ -1,9 +1,7 @@
-﻿using System.Globalization;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -125,7 +123,7 @@ namespace Dev2.CodedUI.Tests
             // Drag a Calculate control on
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
 
-            MouseCommands.WaitAndClick(500);
+            MouseCommands.WaitAndClick(1500);
 
             KeyboardCommands.SendKey("sum{(}");
 
@@ -136,7 +134,7 @@ namespace Dev2.CodedUI.Tests
             WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
 
             UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            Playback.Wait(150);
+            Playback.Wait(350);
             WpfEdit realfxBox = new WpfEdit();
             foreach(WpfEdit theBox in boxCollection)
             {
@@ -147,7 +145,7 @@ namespace Dev2.CodedUI.Tests
                 }
             }
 
-            Playback.Wait(3000);
+            Playback.Wait(1000);
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
 
