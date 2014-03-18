@@ -601,8 +601,8 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
-                                                theStartButton.BoundingRectangle.Y + 200);
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X-100,
+                                                theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
@@ -662,7 +662,7 @@ namespace Dev2.Studio.UI.Tests
             // Get some variables
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
-            Point point = new Point(startPoint.X, startPoint.Y + 200);
+            Point point = new Point(startPoint.X - 100, startPoint.Y + 100);
 
             // Drag the tool onto the workflow
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, point);

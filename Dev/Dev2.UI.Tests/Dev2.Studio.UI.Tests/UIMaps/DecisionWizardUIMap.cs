@@ -17,8 +17,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// <summary>
         /// ClickCancel
         /// </summary>
-        public void CancelWizard()
+        public void CancelWizard(int waitAmt = 2500)
         {
+            Playback.Wait(waitAmt);
             KeyboardCommands.SendEsc(250);
         }
 

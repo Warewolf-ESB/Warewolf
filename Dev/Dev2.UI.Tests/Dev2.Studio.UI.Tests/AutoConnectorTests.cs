@@ -173,18 +173,23 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("AutoConnectorTests")]
         public void AutoConnectorTests_DragADecisionOnStartAutoConnectorNode_ASecondConnectorIsCreated()
         {
+
+            Mouse.MouseMoveSpeed = 500;
+            Mouse.MouseDragSpeed = 500;
+
             CreateWorkflow();
 
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, point);
-            DecisionWizardUIMap.ClickDone(2000);
+            DecisionWizardUIMap.ClickDone(2500);
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             if(point != newPoint)
             {
                 WorkflowDesignerUIMap.DragControl("Decision", newPoint);
             }
+
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
             Assert.AreEqual(1, connectors.Count, "Start auto connector doesnt work");

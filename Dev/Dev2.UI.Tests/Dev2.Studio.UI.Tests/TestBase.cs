@@ -123,8 +123,7 @@ namespace Dev2.CodedUI.Tests
             // Drag a Calculate control on
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
 
-            MouseCommands.WaitAndClick(1500);
-
+            KeyboardCommands.SendTabs(3, 100);
             KeyboardCommands.SendKey("sum{(}");
 
             // Find the control
@@ -145,7 +144,7 @@ namespace Dev2.CodedUI.Tests
                 }
             }
 
-            Playback.Wait(1000);
+            Playback.Wait(500);
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
 

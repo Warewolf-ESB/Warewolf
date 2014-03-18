@@ -76,6 +76,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             UITestControl theControl = FindToolboxItemByAutomationId(tool, searchID);
             theControl.WaitForControlEnabled();
+            Playback.Wait(100);
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }
