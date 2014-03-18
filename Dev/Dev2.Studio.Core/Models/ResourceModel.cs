@@ -547,7 +547,6 @@ namespace Dev2.Studio.Core.Models
             ResourceName = resourceModel.ResourceName;
             ResourceType = resourceModel.ResourceType;
             Tags = resourceModel.Tags;
-            WorkflowXaml = resourceModel.WorkflowXaml;
             DataList = resourceModel.DataList;
             UpdateIconPath(resourceModel.IconPath);
             Version = resourceModel.Version;
@@ -557,6 +556,7 @@ namespace Dev2.Studio.Core.Models
             UserPermissions = resourceModel.UserPermissions;
             Inputs = resourceModel.Inputs;
             Outputs = resourceModel.Outputs;
+            WorkflowXaml = resourceModel.WorkflowXaml;
             _errors.Clear();
             if(resourceModel.Errors != null)
             {

@@ -706,15 +706,5 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #endregion
 
         #endregion
-
-        public void SaveToWorkspaceIfUnsavedWorkflow()
-        {
-            //if(ContextualResourceModel != null && ContextualResourceModel.IsNewWorkflow)
-            //{
-            //    BindToModel();
-            //    _workspaceItemRepository.UpdateWorkspaceItem(ContextualResourceModel, true);
-            //    ContextualResourceModel.Environment.ResourceRepository.Save(ContextualResourceModel);
-            //}
-        }
     }
 }
