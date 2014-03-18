@@ -2443,7 +2443,20 @@ namespace Dev2.Server.Datalist
 
                         if(payload.IsDebug && !payload.IsIterativePayload())
                         {
-                            debugOutputTO.Expression = frameItem.Expression;
+                            var recIndexType = DataListUtil.GetRecordsetIndexType(frameItem.Expression);
+                            switch(recIndexType)
+                            {
+                                case enRecordsetIndexType.Blank:
+                                    debugOutputTO.Expression = frameItem.Expression.Replace("()", "(" + debugOutputTO.UsedRecordsetIndex + ")");
+                                    break;
+                                case enRecordsetIndexType.Star:
+                                    debugOutputTO.Expression = frameItem.Expression.Replace("(*)", "(" + debugOutputTO.UsedRecordsetIndex + ")");
+                                    break;
+                                case enRecordsetIndexType.Numeric:
+                                    debugOutputTO.Expression = frameItem.Expression;
+                                    break;
+                            }
+
                             payload.DebugOutputs.Add(debugOutputTO);
                             _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
                         }

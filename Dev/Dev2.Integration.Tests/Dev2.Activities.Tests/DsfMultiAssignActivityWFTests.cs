@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
     /// <summary>
@@ -26,8 +27,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "MutiAssignWithStarTestWorkFlow");
             string expected = "<testScalar>testScalarData</testScalar>";
-            string expected2 = "<recset2>      <field2>world1</field2>    </recset2>    <recset2>      <field2>world2</field2>    </recset2>    <recset2>      <field2>world3</field2>    </recset2>    <recset2>      <field2>world4</field2>    </recset2>";
-            string expected3 = "<recset1>      <rec>testScalarData</rec>      <field>world1</field>    </recset1>    <recset1>      <rec>hello1</rec>      <field>world2</field>    </recset1>    <recset1>      <rec>hello2</rec>      <field>world3</field>    </recset1>    <recset1>      <rec>hello3</rec>      <field>world4</field>    </recset1>    <recset1>      <rec>hello4</rec>      <field />    </recset1>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -35,8 +34,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             Regex regex = new Regex(@">\s*<");
 
             expected = regex.Replace(expected, "><");
-            expected2 = regex.Replace(expected, "><");
-            expected3 = regex.Replace(expected, "><");
+            string expected2 = regex.Replace(expected, "><");
+            string expected3 = regex.Replace(expected, "><");
             ResponseData = regex.Replace(ResponseData, "><");
 
             StringAssert.Contains(ResponseData, expected);
@@ -105,14 +104,14 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void MutiAssign_ARecordUsingFixedIndex_IndexMustHaveBeenDeleted_WillAssingNothingForTheIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "Assign Debug With Empty");
-        
+
             Guid id = Guid.NewGuid();
             TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
             Assert.AreEqual(3, debugItems.Count);
-            Assert.AreEqual("[[rec().row]]", debugItems[2].Outputs[0].ResultsList[1].Variable);
+            Assert.AreEqual("[[rec(1).row]]", debugItems[2].Outputs[0].ResultsList[1].Variable);
             Assert.AreEqual("", debugItems[2].Outputs[0].ResultsList[1].Value);
         }
         #endregion
@@ -127,13 +126,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string responseData = TestHelper.PostDataToWebserver(postData);
 
 
-            int index = responseData.IndexOf("<CalcResult>");
+            int index = responseData.IndexOf("<CalcResult>", StringComparison.Ordinal);
             string actualCalcResult = null;
             string actualNoCalcResult = null;
 
             if(index != -1)
             {
-                int next = responseData.IndexOf("</CalcResult>", index + 1);
+                int next = responseData.IndexOf("</CalcResult>", index + 1, StringComparison.Ordinal);
 
                 if(next != -1)
                 {
@@ -141,11 +140,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
                 }
             }
 
-            index = responseData.IndexOf("<NoCalcResult>");
+            index = responseData.IndexOf("<NoCalcResult>", StringComparison.Ordinal);
 
             if(index != -1)
             {
-                int next = responseData.IndexOf("</NoCalcResult>", index + 1);
+                int next = responseData.IndexOf("</NoCalcResult>", index + 1, StringComparison.Ordinal);
 
                 if(next != -1)
                 {
