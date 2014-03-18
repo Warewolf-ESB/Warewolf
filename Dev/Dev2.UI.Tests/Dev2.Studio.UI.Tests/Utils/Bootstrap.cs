@@ -20,8 +20,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
-        private const int ServerTimeOut = 5000;
-        private const int StudioTimeOut = 5000;
+        private const int ServerTimeOut = 2000;
+        private const int StudioTimeOut = 10000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
         public static string ServerLocation;
