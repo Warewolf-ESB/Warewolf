@@ -1,7 +1,3 @@
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
@@ -9,13 +5,17 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Validation;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.XPath
 {
     public class XPathDesignerViewModel : ActivityCollectionDesignerViewModel<XPathDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
+        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public XPathDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {

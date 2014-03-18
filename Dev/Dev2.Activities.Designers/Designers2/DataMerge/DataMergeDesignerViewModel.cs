@@ -13,7 +13,7 @@ namespace Dev2.Activities.Designers2.DataMerge
 {
     public class DataMergeDesignerViewModel : ActivityCollectionDesignerViewModel<DataMergeDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
+        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
         public IList<string> AlignmentTypes { get; private set; }
 

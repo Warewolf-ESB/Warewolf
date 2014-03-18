@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Dev2.Data.Enums;
+﻿using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Dev2.Validation
 {
@@ -50,29 +51,27 @@ namespace Dev2.Validation
 
             var intellisenseResults = parser.ParseDataLanguageForIntellisense(value, _datalist);
 
-            if(intellisenseResults != null && intellisenseResults.Count > 0)
+            var error = intellisenseResults.FirstOrDefault(e => e.ErrorCode != enIntellisenseErrorCode.None);
+
+            if(error != null)
             {
-                var message = intellisenseResults[0].Message;
-                var errorCode = intellisenseResults[0].ErrorCode;
-
-                if(errorCode != enIntellisenseErrorCode.None)
+                if(string.Equals(value, _outputValue))
                 {
-
-                    if(string.Equals(value, _outputValue))
-                    {
-                        _outputValue = _variableValue;
-                    }
-
-                    return new ActionableErrorInfo(DoError)
-                    {
-                        ErrorType = ErrorType.Critical,
-                        Message = (string.IsNullOrEmpty(LabelText) ? "" : LabelText + " - ")
-                                  + message
-                    };
+                    _outputValue = _variableValue;
                 }
-            }
 
+                return new ActionableErrorInfo(DoError)
+                {
+                    ErrorType = ErrorType.Critical,
+                    Message = (string.IsNullOrEmpty(LabelText) ? "" : LabelText + " - ")
+                              + error.Message
+                };
+            }
             return null;
         }
+
+
+
+
     }
 }

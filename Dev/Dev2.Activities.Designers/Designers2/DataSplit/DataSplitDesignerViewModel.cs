@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 {
     public class DataSplitDesignerViewModel : ActivityCollectionDesignerViewModel<DataSplitDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
+        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
 
         public DataSplitDesignerViewModel(ModelItem modelItem)

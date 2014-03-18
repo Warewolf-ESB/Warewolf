@@ -1,10 +1,3 @@
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
@@ -23,6 +16,13 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Validation;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.Email
 {
@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.Email
         readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
-        public Func<string> GetDatalistString = () => DataListSingleton.DataListAsXmlString;
+        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -359,7 +359,7 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsNullRule(() => EmailSource));
                     break;
                 case "FromAccount":
-                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist,"user@test.com");
+                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist, "user@test.com");
                     ruleSet.Add(fromExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => fromExprRule.ExpressionValue));
                     break;
@@ -367,7 +367,7 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsRequiredWhenOtherIsNotEmptyRule(() => Password, () => FromAccount));
                     break;
                 case "To":
-                    var toExprRule = new IsValidExpressionRule(() => To,datalist, "user@test.com");
+                    var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com");
                     ruleSet.Add(toExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => toExprRule.ExpressionValue));
                     break;
@@ -377,12 +377,12 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsValidEmailAddressRule(() => ccExprRule.ExpressionValue));
                     break;
                 case "Bcc":
-                    var bccExprRule = new IsValidExpressionRule(() => Bcc,datalist, "user@test.com");
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc, datalist, "user@test.com");
                     ruleSet.Add(bccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => bccExprRule.ExpressionValue));
                     break;
                 case "Attachments":
-                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments,datalist, @"c:\test.txt");
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, datalist, @"c:\test.txt");
                     ruleSet.Add(attachmentsExprRule);
                     ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;
@@ -401,6 +401,6 @@ namespace Dev2.Activities.Designers2.Email
             var selectedSource = new EmailSource(message.ResourceModel.WorkflowXaml.ToXElement());
             EmailSource = selectedSource;
         }
-        
+
     }
 }

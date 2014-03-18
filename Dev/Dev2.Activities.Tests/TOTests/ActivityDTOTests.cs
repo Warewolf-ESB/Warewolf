@@ -358,9 +358,8 @@ namespace Dev2.Tests.Activities.TOTests
             var rulesSet = activityDto.GetRuleSet("FieldValue", "");
             //------------Assert Results-------------------------
             Assert.IsNotNull(rulesSet);
-            Assert.AreEqual(2, rulesSet.Rules.Count);
-            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsStringEmptyRule));
-            Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
+            Assert.AreEqual(1, rulesSet.Rules.Count);
+            Assert.IsInstanceOfType(rulesSet.Rules[0], typeof(IsValidExpressionRule));
         }
 
 

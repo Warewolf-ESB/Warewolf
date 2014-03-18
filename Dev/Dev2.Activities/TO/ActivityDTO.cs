@@ -254,9 +254,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ruleSet.Add(new IsStringEmptyRule(() => FieldName));
                     ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1"));
                     break;
-                case "FieldValue":
-                    ruleSet.Add(new IsStringEmptyRule(() => FieldValue));
-                   // ruleSet.Add(new IsValidCalculateRule(() => FieldValue));
+                case "FieldValue":                    
                     ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1"));
                     break;
 
