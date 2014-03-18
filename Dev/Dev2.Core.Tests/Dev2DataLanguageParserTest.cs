@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
@@ -45,6 +46,135 @@ namespace Dev2.Tests
             return DataListFactory.CreateLanguageParser().ParseForMissingDataListItems(parts, dataList);
         }
 
+        #region recordset test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenMalformedRecordsetWithInvalidIndex_Expect2Errors()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+
+            const string data = @"[[rec(&&,.a]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            if(bdl != null)
+            {
+                var intillisenseParts = bdl.FetchIntellisenseParts();
+
+                //------------Execute Test---------------------------
+                var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(2, parts.Count);
+                StringAssert.Contains(parts[1].Message, "[[rec(&&,]] is a malformed recordset");
+                StringAssert.Contains(parts[0].Message, "Recordset index [ &&, ] is not numeric");
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenRecordsetWithInvalidIndex_Expect2Errors()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+
+            const string data = @"[[rec(a,*).a]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            if(bdl != null)
+            {
+                var intillisenseParts = bdl.FetchIntellisenseParts();
+
+                //------------Execute Test---------------------------
+                var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(2, parts.Count);
+                StringAssert.Contains(parts[0].Message, "Recordset index [ a,* ] is not numeric");
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenRecordsetWithInvalidIndexAndExtractCloseRegion_Expect2Errors()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+
+            const string data = @"[[rec(23).[[var}]]]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            if(bdl != null)
+            {
+                var intillisenseParts = bdl.FetchIntellisenseParts();
+
+                //------------Execute Test---------------------------
+                var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, parts.Count);
+                StringAssert.Contains(parts[0].Message, "Invalid syntax - You have a close ( ]] ) without a related open ( [[ )");
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenMissingVariable_Expect1Error()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+
+            const string data = @"[[]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            if(bdl != null)
+            {
+                var intillisenseParts = bdl.FetchIntellisenseParts();
+
+                //------------Execute Test---------------------------
+                var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, parts.Count);
+                StringAssert.Contains(parts[0].Message, " [[]] is missing a variable");
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        #endregion
+
         #region Pos Test
         // ReSharper disable InconsistentNaming
         [TestMethod]
@@ -57,10 +187,7 @@ namespace Dev2.Tests
             var dev2LanuageParser = new Dev2DataLanguageParser();
             const string data = @" [[rec().s]], [[rec().e]], [[rec().t]]";
 
-            //var list = new List<IDev2DataLanguageIntellisensePart>();
-
             //------------Execute Test---------------------------
-            //var parts = dev2LanuageParser.ParseExpressionIntoParts(data, list);
             var parts = dev2LanuageParser.ParseForActivityDataItems(data);
 
             //------------Assert Results-------------------------
@@ -268,7 +395,7 @@ namespace Dev2.Tests
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
 
-            Assert.IsTrue(results.Count == 1 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
+            Assert.IsTrue(results.Count == 2 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
         }
 
         [TestMethod]
@@ -460,6 +587,7 @@ namespace Dev2.Tests
         #endregion
 
         #region Negative Test
+
         [TestMethod]
         public void Fail_To_Find_Recordset_And_Field_With_Simular_Name()
         {

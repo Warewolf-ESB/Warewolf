@@ -145,6 +145,13 @@ namespace Dev2.Data.Parsers
                     payload = payload.Substring(0, idx);
                 }
 
+                // short-circuit this case ;)
+                if(payload.Equals("[[]]"))
+                {
+                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, " [[]] is missing a variable", enIntellisenseErrorCode.SyntaxError, false));
+                    return result;
+                }
+
                 if(payload.Contains("[["))
                 {
 
@@ -991,11 +998,19 @@ namespace Dev2.Data.Parsers
                                     // add error
                                     IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, parts[1], "");
 
-
                                     result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, (parts[0].Length - 1), part, "[[" + display + "]] does not exist in your Data List", enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, (!payload.HangingOpen)));
                                 }
                                 else if(recordsetPart.Children != null && recordsetPart.Children.Count > 0)
                                 {
+                                    // its a malformed recordset
+                                    if(parts[0].IndexOf(")", StringComparison.Ordinal) <= 0)
+                                    {
+                                        // its an error ;)
+                                        IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(parts[0], "." + parts[1], true);
+                                        result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] is a malformed recordset", enIntellisenseErrorCode.InvalidRecordsetNotation, (!payload.HangingOpen)));
+                                    }
+                                    else
+                                    {
                                     // search for matching children
                                     search = parts[1].ToLower();
                                     foreach(IDev2DataLanguageIntellisensePart t in recordsetPart.Children)
@@ -1017,7 +1032,6 @@ namespace Dev2.Data.Parsers
                                             }
 
                                             IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
-
                                             result.Add(IntellisenseFactory.CreateSelectableResult((parts[0].Length), payload.EndIndex, part, part.Description));
                                         }
                                         else if(match == search)
@@ -1025,6 +1039,7 @@ namespace Dev2.Data.Parsers
                                             emptyOk = true;
                                         }
                                     }
+                                }
                                 }
 
                                 if(result.Count == 0 && !emptyOk)
@@ -1139,16 +1154,16 @@ namespace Dev2.Data.Parsers
             int end = raw.IndexOf(")", StringComparison.Ordinal);
 
             // for ranges
-            if(raw.IndexOf(":", StringComparison.Ordinal) > 0)
-            {
-                result = true;
-            }
-            else if(raw.IndexOf(",", StringComparison.Ordinal) > 0)
-            {
-                result = true; // added for calc operations
-            }
-            else
-            {
+            //if(raw.IndexOf(":", StringComparison.Ordinal) > 0)
+            //{
+            //    result = true;
+            //}
+            //else if(raw.IndexOf(",", StringComparison.Ordinal) > 0)
+            //{
+            //    result = true; // added for calc operations
+            //}
+            //else
+            //{
 
                 // no index
                 if((end - start) == 1)
@@ -1228,7 +1243,7 @@ namespace Dev2.Data.Parsers
                         }
                     }
                 }
-            }
+            //}
 
             return result;
         }
