@@ -65,7 +65,7 @@ namespace Dev2.CodedUI.Tests
 
             const string ResourceName = "NewForeachUpgradeDifferentExecutionTests";
             // Open the workflow
-            ExplorerUIMap.DoubleClickWorkflow(ResourceName, "INTEGRATION TEST SERVICES");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", ResourceName);
 
             //Edit the inputs and outputs
             VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Input);
