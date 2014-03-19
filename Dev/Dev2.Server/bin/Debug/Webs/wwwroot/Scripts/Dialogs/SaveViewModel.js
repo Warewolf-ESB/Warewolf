@@ -178,7 +178,12 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
     self.isResourceNameValid = function () {
        
         var name = self.data.resourceName() != null ? self.data.resourceName().toLowerCase() : "";
-        
+
+        // if a blank name is can never be valid
+        if(name == "") {
+            return false;
+        }
+
         if (self.HasKeyPressed) {
             var isValid = name !== "" && self.isValidName(name);
             if (!self.isEditing() && isValid) {

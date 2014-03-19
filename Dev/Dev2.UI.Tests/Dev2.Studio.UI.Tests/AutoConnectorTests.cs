@@ -108,24 +108,29 @@ namespace Dev2.Studio.UI.Tests
             //Drag an activity to the design surface
             var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "BUGS");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
+
+            // slow it down so it works ;)
+            Mouse.MouseMoveSpeed = 500;
+            Mouse.MouseDragSpeed = 500;
+
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
             if(control != null)
             {
-                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 140);
                 ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "COMMUNICATION", ServiceType.Services, "localhost", point);
                 if(WorkflowDesignerUIMap.TryCloseMappings("Email Service"))
                 {
                     //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 140);
                     if(point != newPoint)
                     {
-                        WorkflowDesignerUIMap.DragControl("Email Service", new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 50));
+                        WorkflowDesignerUIMap.DragControl("Email Service", new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 40));
                     }
                 }
                 else
                 {
                     //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
+                    var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 140);
                     if(point != newPoint)
                     {
                         WorkflowDesignerUIMap.DragControl("Email Service", newPoint);
