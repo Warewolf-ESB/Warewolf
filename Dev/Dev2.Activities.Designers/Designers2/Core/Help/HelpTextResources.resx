@@ -1773,4 +1773,21 @@ Leaving the Archive Password blank will result in no password being required to 
   <data name="FindRecordsRequireAllMatchesTrueToolTip" xml:space="preserve">
     <value>Should each criteria be met?</value>
   </data>
+  <data name="RecordsLengthHelpRecordset" xml:space="preserve">
+    <value>To get recordset's length, put the recordset name in here. E.g. [[Customer()]]</value>
+  </data>
+  <data name="RecordsLengthHelpResult" xml:space="preserve">
+    <value>Only variables go in here. Returns a number specifying the length of a recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="RecordsLengthToolTipRecordset" xml:space="preserve">
+    <value>[[Recordset()]]</value>
+  </data>
+  <data name="RecordsLengthToolTipResult" xml:space="preserve">
+    <value>[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
 </root>

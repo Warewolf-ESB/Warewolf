@@ -60,8 +60,8 @@ Scenario: Count a number of records in a recordset with 0 rows
 	Then the result count should be 0
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Recordset |
-	|           |
+	| Recordset  |
+	| [[rs()]] = |
 	And the debug output as 
 	|                |
 	| [[result]] = 0 |

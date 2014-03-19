@@ -29,5 +29,32 @@ namespace Dev2.Activities.Debug
             expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
             return new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID);
         }
+
+        public static DebugOutputBase EvaluateEmptyRecordsetBeforeAddingToDebugOutput(string expression, string labelText, Guid executionID, IBinaryDataListEntry expressionsEntry)
+        {
+            if(DataListUtil.IsValueRecordset(expression))
+            {
+                return new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID);
+            }
+
+            return new DebugItemVariableParams(expression, labelText, expressionsEntry, executionID);
+        }
+
+        public static IBinaryDataListEntry EvaluateBinaryDataListEntry(string expression, Guid executionID)
+        {
+            ErrorResultTO errors;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var dataList = compiler.FetchBinaryDataList(executionID, out errors);
+
+            if(DataListUtil.IsValueRecordset(expression))
+            {
+                IBinaryDataListEntry expressionsEntry;
+                string error;
+                dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression), out expressionsEntry, out error);
+                return compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
+            }
+
+            return compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
+        }
     }
 }

@@ -1,24 +1,26 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Dev2.Common;
+using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace Dev2.Activities.Debug
 {
     public abstract class DebugOutputBase
     {
-
         // I need to cache recordset data to build up later iterations ;)
-        private readonly IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
+        readonly IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
         public abstract string LabelText { get; }
+
         public abstract List<DebugItemResult> GetDebugItemResult();
+
         protected ErrorResultTO ErrorsTo;
 
         public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
@@ -28,8 +30,7 @@ namespace Dev2.Activities.Debug
 
         public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, string labelText, int indexToUse = -1)
         {
-            List<DebugItemResult> results = new List<DebugItemResult>();
-
+            var results = new List<DebugItemResult>();
 
             if(
                 !(expression.Contains(GlobalConstants.CalculateTextConvertPrefix) &&
@@ -38,11 +39,11 @@ namespace Dev2.Activities.Debug
                 if(!expression.ContainsSafe("[["))
                 {
                     results.Add(new DebugItemResult
-                    {
-                        Label = labelText,
-                        Type = DebugItemResultType.Value,
-                        Value = expression
-                    });
+                        {
+                            Label = labelText,
+                            Type = DebugItemResultType.Value,
+                            Value = expression
+                        });
                     return results;
                 }
             }
@@ -58,21 +59,31 @@ namespace Dev2.Activities.Debug
             // handle our standard debug output ;)
             if(dlEntry.ComplexExpressionAuditor == null)
             {
-
                 // string groupName = null;
                 int groupIndex = 0;
-                var rsType = DataListUtil.GetRecordsetIndexType(expression);
+                enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
                     if(!dlEntry.IsEmpty())
                     {
-                        var collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1, labelText);
+                        IList<DebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1, labelText);
                         if(collection.Count < 2 && collection.Count > 0)
                         {
                             collection[0].GroupName = "";
                         }
                         results.AddRange(collection);
+                    }
+                    else
+                    {
+                        results.Add(new DebugItemResult
+                            {
+                                Type = DebugItemResultType.Variable,
+                                Label = labelText,
+                                Variable = expression,
+                                Operator = string.IsNullOrEmpty(expression) ? "" : "=",
+                                Value = "",
+                            });
                     }
                 }
                 else
@@ -90,7 +101,7 @@ namespace Dev2.Activities.Debug
                                                  out tmpEntry, out error);
                             if(tmpEntry != null)
                             {
-                                var index = tmpEntry.FetchAppendRecordsetIndex() - 1;
+                                int index = tmpEntry.FetchAppendRecordsetIndex() - 1;
                                 if(index > 0)
                                 {
                                     groupIndex = index;
@@ -110,15 +121,15 @@ namespace Dev2.Activities.Debug
             else
             {
                 // Complex expressions are handled differently ;)
-                var auditor = dlEntry.ComplexExpressionAuditor;
+                ComplexExpressionAuditor auditor = dlEntry.ComplexExpressionAuditor;
 
                 int idx = 1;
 
-                foreach(var item in auditor.FetchAuditItems())
+                foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
                 {
-                    var grpIdx = idx;
-                    var groupName = item.RawExpression;
-                    var displayExpression = item.RawExpression;
+                    int grpIdx = idx;
+                    string groupName = item.RawExpression;
+                    string displayExpression = item.RawExpression;
                     if(displayExpression.Contains("()."))
                     {
                         displayExpression = displayExpression.Replace("().", string.Concat("(", auditor.GetMaxIndex(), ")."));
@@ -129,18 +140,17 @@ namespace Dev2.Activities.Debug
                     }
 
                     results.Add(new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Variable,
-                        Label = labelText,
-                        Variable = displayExpression,
-                        Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
-                        GroupName = groupName,
-                        Value = item.BoundValue,
-                        GroupIndex = grpIdx
-                    });
+                        {
+                            Type = DebugItemResultType.Variable,
+                            Label = labelText,
+                            Variable = displayExpression,
+                            Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
+                            GroupName = groupName,
+                            Value = item.BoundValue,
+                            GroupIndex = grpIdx
+                        });
 
                     idx++;
-
                 }
             }
 
@@ -149,20 +159,20 @@ namespace Dev2.Activities.Debug
 
         public List<DebugItemResult> CreateDebugItemFromDebugOutputTO(DebugOutputTO debugOutputTO, string labelText, List<string> regions)
         {
-            List<DebugItemResult> results = new List<DebugItemResult>();
+            var results = new List<DebugItemResult>();
             if(debugOutputTO.TargetEntry != null)
             {
-                var auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
+                ComplexExpressionAuditor auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
                 if(auditor != null)
                 {
-                    var grpIdx = 0;
-                    var complexExpressionAuditItems = auditor.FetchAuditItems();
+                    int grpIdx = 0;
+                    IList<ComplexExpressionAuditItem> complexExpressionAuditItems = auditor.FetchAuditItems();
 
-                    foreach(var item in complexExpressionAuditItems)
+                    foreach(ComplexExpressionAuditItem item in complexExpressionAuditItems)
                     {
                         string groupName = null;
-                        var displayExpression = item.Expression;
-                        var rawExpression = item.RawExpression;
+                        string displayExpression = item.Expression;
+                        string rawExpression = item.RawExpression;
                         if(regions != null && regions.Count > 0)
                         {
                             //    
@@ -178,14 +188,14 @@ namespace Dev2.Activities.Debug
                         {
                             if(regions != null && regions.Count > 0)
                             {
-                                var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
                                 int indexForRecset;
                                 int.TryParse(indexRegionFromRecordset, out indexForRecset);
 
                                 if(indexForRecset > 0)
                                 {
-                                    var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                                    var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
 
                                     if(regions.Contains(@group))
                                     {
@@ -196,36 +206,36 @@ namespace Dev2.Activities.Debug
                             }
                         }
 
-                        var count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
+                        int count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
                         if(count < 2)
                         {
                             groupName = "";
                         }
 
                         results.Add(new DebugItemResult
-                        {
-                            Type = DebugItemResultType.Variable,
-                            Label = labelText,
-                            Variable = displayExpression,
-                            Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
-                            GroupName = groupName,
-                            Value = item.BoundValue,
-                            GroupIndex = grpIdx
-                        });
+                            {
+                                Type = DebugItemResultType.Variable,
+                                Label = labelText,
+                                Variable = displayExpression,
+                                Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
+                                GroupName = groupName,
+                                Value = item.BoundValue,
+                                GroupIndex = grpIdx
+                            });
                     }
                 }
                 else
                 {
                     //Could not evaluate
                     results.Add(new DebugItemResult
-                    {
-                        Type = DebugItemResultType.Value,
-                        Label = labelText,
-                        Variable = debugOutputTO.Expression,
-                        Operator = "=",
-                        GroupName = "",
-                        Value = ""
-                    });
+                        {
+                            Type = DebugItemResultType.Value,
+                            Label = labelText,
+                            Variable = debugOutputTO.Expression,
+                            Operator = "=",
+                            GroupName = "",
+                            Value = ""
+                        });
                 }
             }
             return results;
@@ -302,7 +312,7 @@ namespace Dev2.Activities.Debug
             return resultsToPush.ToList();
         }
 
-        private IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, string label, IList<DebugItemResult> results = null, string groupName = null, int groupIndex = 0)
+        IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, string label, IList<DebugItemResult> results = null, string groupName = null, int groupIndex = 0)
         {
             if(results == null)
             {
@@ -310,27 +320,27 @@ namespace Dev2.Activities.Debug
             }
 
             results.Add(new DebugItemResult
-            {
-                Type = DebugItemResultType.Variable,
-                Variable = expression,
-                Operator = string.IsNullOrEmpty(expression) ? "" : "=",
-                Label = label,
-                GroupIndex = groupIndex,
-                GroupName = groupName,
-                Value = value
-            });
+                {
+                    Type = DebugItemResultType.Variable,
+                    Variable = expression,
+                    Operator = string.IsNullOrEmpty(expression) ? "" : "=",
+                    Label = label,
+                    GroupIndex = groupIndex,
+                    GroupName = groupName,
+                    Value = value
+                });
 
             return results;
         }
 
-        private IList<DebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt, string labelText)
+        IList<DebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt, string labelText)
         {
             var results = new List<DebugItemResult>();
             if(dlEntry.ComplexExpressionAuditor == null)
             {
                 string initExpression = expression;
 
-                var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
+                string fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
                 enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
                 if(indexType == enRecordsetIndexType.Blank && string.IsNullOrEmpty(fieldName))
                 {
@@ -338,7 +348,7 @@ namespace Dev2.Activities.Debug
                 }
                 if(indexType == enRecordsetIndexType.Star)
                 {
-                    var idxItr = dlEntry.FetchRecordsetIndexes();
+                    IIndexIterator idxItr = dlEntry.FetchRecordsetIndexes();
                     while(idxItr.HasMore())
                     {
                         GetValues(dlEntry, value, iterCnt, idxItr, indexType, results, initExpression, labelText, fieldName);
@@ -348,27 +358,27 @@ namespace Dev2.Activities.Debug
             else
             {
                 // Complex expressions are handled differently ;)
-                var auditor = dlEntry.ComplexExpressionAuditor;
+                ComplexExpressionAuditor auditor = dlEntry.ComplexExpressionAuditor;
                 enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
 
-                foreach(var item in auditor.FetchAuditItems())
+                foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
                 {
-                    var grpIdx = -1;
+                    int grpIdx = -1;
 
                     try
                     {
                         grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                     catch(Exception)
-                    // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Best effort ;)
                     }
 
                     if(indexType == enRecordsetIndexType.Star)
                     {
-                        var displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
+                        string displayExpression = item.Expression.Replace(item.Token, item.RawExpression);
                         results.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = displayExpression, GroupName = displayExpression, GroupIndex = grpIdx });
                         results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression, GroupName = displayExpression, GroupIndex = grpIdx });
                         results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = item.BoundValue, GroupName = displayExpression, GroupIndex = grpIdx });
@@ -379,23 +389,23 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        private void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string labelText, string fieldName = null)
+        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string labelText, string fieldName = null)
         {
             string error;
-            var index = idxItr.FetchNextIndex();
+            int index = idxItr.FetchNextIndex();
             if(string.IsNullOrEmpty(fieldName))
             {
-                var record = dlEntry.FetchRecordAt(index, out error);
+                IList<IBinaryDataListItem> record = dlEntry.FetchRecordAt(index, out error);
                 // ReSharper disable LoopCanBeConvertedToQuery
-                foreach(var recordField in record)
-                // ReSharper restore LoopCanBeConvertedToQuery
+                foreach(IBinaryDataListItem recordField in record)
+                    // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, false, labelText);
                 }
             }
             else
             {
-                var recordField = dlEntry.TryFetchRecordsetColumnAtIndex(fieldName, index, out error);
+                IBinaryDataListItem recordField = dlEntry.TryFetchRecordsetColumnAtIndex(fieldName, index, out error);
                 bool ignoreCompare = false;
 
                 if(recordField == null)
@@ -411,9 +421,8 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, bool ignoreCompare, string labelText)
+        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, bool ignoreCompare, string labelText)
         {
-
             if(!ignoreCompare)
             {
                 OldGetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, labelText);
@@ -425,8 +434,8 @@ namespace Dev2.Activities.Debug
         }
 
         /// <summary>
-        /// A new version of GetValue since Evaluate will now handle complex expressions it is now possible to create gnarly looking debug items
-        /// This method handles these ;)
+        ///     A new version of GetValue since Evaluate will now handle complex expressions it is now possible to create gnarly looking debug items
+        ///     This method handles these ;)
         /// </summary>
         /// <param name="dlEntry">The dl entry.</param>
         /// <param name="indexType">Type of the index.</param>
@@ -435,49 +444,45 @@ namespace Dev2.Activities.Debug
         /// <param name="recordField">The record field.</param>
         /// <param name="index">The index.</param>
         /// <param name="labelText"></param>
-        private void NewGetValue(IBinaryDataListEntry dlEntry, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
+        void NewGetValue(IBinaryDataListEntry dlEntry, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
         {
-
             string injectVal = string.Empty;
-            var auditorObj = dlEntry.ComplexExpressionAuditor;
+            ComplexExpressionAuditor auditorObj = dlEntry.ComplexExpressionAuditor;
 
             if(indexType == enRecordsetIndexType.Star && auditorObj != null)
             {
                 string instanceData;
-                var auditData = auditorObj.FetchAuditItems();
+                IList<ComplexExpressionAuditItem> auditData = auditorObj.FetchAuditItems();
                 if(index <= auditData.Count && index > 0)
                 {
-                    var useData = auditData[index - 1];
+                    ComplexExpressionAuditItem useData = auditData[index - 1];
                     instanceData = useData.TokenBinding;
                     injectVal = useData.BoundValue;
-
                 }
                 else
                 {
                     string recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
-                    recordField.FieldName,
-                    index.ToString(CultureInfo.InvariantCulture));
+                                                                                 recordField.FieldName,
+                                                                                 index.ToString(CultureInfo.InvariantCulture));
                     instanceData = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
                 }
 
                 results.Add(new DebugItemResult
-                {
-                    Label = labelText,
-                    Type = DebugItemResultType.Variable,
-                    Value = injectVal,
-                    Operator = string.IsNullOrEmpty(instanceData) ? "" : "=",
-                    Variable = instanceData,
-                    GroupName = initExpression,
-                    GroupIndex = index
-                });
-
+                    {
+                        Label = labelText,
+                        Type = DebugItemResultType.Variable,
+                        Value = injectVal,
+                        Operator = string.IsNullOrEmpty(instanceData) ? "" : "=",
+                        Variable = instanceData,
+                        GroupName = initExpression,
+                        GroupIndex = index
+                    });
             }
             else
             {
-
                 injectVal = recordField.TheValue;
 
-                var displayValue = recordField.DisplayValue;
+                string displayValue = recordField.DisplayValue;
 
                 if(displayValue.IndexOf(GlobalConstants.NullEntryNamespace, StringComparison.Ordinal) >= 0)
                 {
@@ -485,18 +490,18 @@ namespace Dev2.Activities.Debug
                 }
 
                 results.Add(new DebugItemResult
-                {
-                    Type = DebugItemResultType.Variable,
-                    Variable = DataListUtil.AddBracketsToValueIfNotExist(displayValue),
-                    Operator = string.IsNullOrEmpty(displayValue) ? "" : "=",
-                    GroupName = initExpression,
-                    Value = injectVal,
-                    GroupIndex = index
-                });
+                    {
+                        Type = DebugItemResultType.Variable,
+                        Variable = DataListUtil.AddBracketsToValueIfNotExist(displayValue),
+                        Operator = string.IsNullOrEmpty(displayValue) ? "" : "=",
+                        GroupName = initExpression,
+                        Value = injectVal,
+                        GroupIndex = index
+                    });
             }
         }
 
-        private void OldGetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
+        void OldGetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
         {
             if((string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase)))
             {
@@ -519,8 +524,8 @@ namespace Dev2.Activities.Debug
                 if(indexType == enRecordsetIndexType.Star)
                 {
                     recsetName = DataListUtil.CreateRecordsetDisplayValue(dlEntry.Namespace,
-                        recordField.FieldName,
-                        index.ToString(CultureInfo.InvariantCulture));
+                                                                          recordField.FieldName,
+                                                                          index.ToString(CultureInfo.InvariantCulture));
                     recsetName = DataListUtil.AddBracketsToValueIfNotExist(recsetName);
                 }
                 else

@@ -44,6 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             if(category != null)
             {
                 category.Add(new ToolboxItemWrapper(typeof(DsfCountRecordsetActivity), "/images/ToolCountRecords-32.png", "Count"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfRecordsetLengthActivity), "/images/ToolCountRecords-32.png", "Length"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDeleteRecordActivity), "/images/ToolDeleteRecord-32.png", "Delete"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfFindRecordsMultipleCriteriaActivity), "/images/ToolFindRecords-32.png", "Find"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSortRecordsActivity), "/images/ToolSortRecords-32.png", "Sort"));

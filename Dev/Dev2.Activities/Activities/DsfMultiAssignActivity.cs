@@ -117,12 +117,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var debugItem = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
 
-                                var dataList = compiler.FetchBinaryDataList(executionID, out errors);
-
-
                                 if(DataListUtil.IsEvaluated(t.FieldName))
                                 {
-                                    EvaluateEmptyRecordsetBeforeAddingToDebugOutput(dataList, t.FieldName, VariableLabelText, debugItem, compiler, executionID);
+                                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(t.FieldName, VariableLabelText, executionID), debugItem);
                                 }
                                 else
                                 {
@@ -168,12 +165,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     compiler.Upsert(executionID, toUpsert, out errors);
-
                     allErrors.MergeErrors(errors);
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugTos(toUpsert);
+                        AddDebugTos(toUpsert, executionID);
                     }
                     allErrors.MergeErrors(errors);
                 }
@@ -201,39 +197,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void EvaluateEmptyRecordsetBeforeAddingToDebugOutput(IBinaryDataList dataList, string field, string labelText, DebugItem debugItem, IDataListCompiler compiler, Guid executionID)
-        {
-            ErrorResultTO errors;
-            string error;
-            IBinaryDataListEntry expressionsEntry;
-
-            if(DataListUtil.IsValueRecordset(field))
-            {
-                var found = dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(field), out expressionsEntry, out error);
-                if((found && expressionsEntry.IsEmpty()) || !found)
-                {
-                    AddDebugItem(new DebugItemStaticDataParams("", field, labelText), debugItem);
-                }
-                else
-                {
-                    expressionsEntry = compiler.Evaluate(executionID, enActionType.User, field, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(field, labelText, expressionsEntry, executionID), debugItem);
-                }
-            }
-            else
-            {
-                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, field, false, out errors);
-                AddDebugItem(new DebugItemVariableParams(field, labelText, expressionsEntry, executionID), debugItem);
-            }
-        }
-
-        void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert)
+        void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert, Guid executionID)
         {
             int innerCount = 1;
 
             foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
             {
                 var debugItem = new DebugItem();
+                //AddDebugItem(new DebugItemVariableParams(debugOutputTO.Expression, "Variable", debugOutputTO.FromEntry, executionID), debugItem);
+                //AddDebugItem(new DebugItemVariableParams(debugOutputTO.Value, "New Value", debugOutputTO.ValueEntry, executionID), debugItem);
+                //_debugInputs.Add(debugItem);
+
+                //debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                 AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
                 innerCount++;

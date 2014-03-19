@@ -1,0 +1,86 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.RecordsLength.Small"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.RecordsLength"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               Width="200"
+                               MaxWidth="200"
+                               Padding="7"
+                               mc:Ignorable="d"
+                               d:DesignWidth="200"
+                               d:DataContext="{d:DesignInstance local:RecordsLengthDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary x:Name="TheResources"
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+    </core:ActivityDesignerTemplate.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0"
+               Grid.Row="0"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Recordset" />
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.ColumnSpan="2"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                DefaultText="[[Recordset()]]"
+                                FilterType="RecorsetsOnly"
+                                ToolTip="{x:Static help:HelpTextResources.RecordsLengthToolTipRecordset}"
+                                WrapInBrackets="True"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.RecordsLengthHelpRecordset}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="RecordsetNameValue"
+                                     SourcePropertyValue="{Binding RecordsetNameValue, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <Label Grid.Column="0"
+               Grid.Row="1"
+               Style="{StaticResource ActivityLabelStyle}"
+               Content="Result" />
+
+        <ui:IntellisenseTextBox Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="0,2,1,2"
+                                DefaultText="[[Length]]"
+                                ToolTip="{x:Static help:HelpTextResources.RecordsLengthToolTipResult}"
+                                WrapInBrackets="True"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Text="{Binding Path=ModelItem.RecordsLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowUserInsertLine="False"
+                                AllowMultilinePaste="False"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.RecordsLengthHelpResult}"
+                                 DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.RecordsLength"
+                                     SourcePropertyValue="{Binding ModelItem.RecordsLength, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+    </Grid>
+</core:ActivityDesignerTemplate>

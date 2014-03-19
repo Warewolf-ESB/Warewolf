@@ -14,6 +14,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
         protected const string ResultVariable = "[[result]]";
+        private int _lastAddedIndex;
 
         protected abstract void BuildDataList();
 
@@ -34,7 +35,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 foreach(dynamic variable in variableList)
                 {
-                    Build(variable, shape, data);
+                    Build(variable, shape, data, row);
                     row++;
                 }
             }
@@ -58,7 +59,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             TestData = data.ToString();
         }
 
-        private void Build(dynamic variable, StringBuilder shape, StringBuilder data)
+        private void Build(dynamic variable, StringBuilder shape, StringBuilder data, int rowIndex)
         {
             if(DataListUtil.IsValueRecordset(variable.Item1))
             {
@@ -91,11 +92,38 @@ namespace Dev2.Activities.Specs.BaseTypes
                     addedRecordsets.Add(recordset);
                     addedFieldset.Add(recordField);
                 }
+
+                 var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(variable.Item1);
+
+                 if(!string.IsNullOrEmpty(indexRegionFromRecordset))
+                 {
+                     int indexForRecset;
+                     int.TryParse(indexRegionFromRecordset, out indexForRecset);
+
+                     var blankRowsToAdd = rowIndex == 0 ? 0 : (indexForRecset -1) - _lastAddedIndex;
+                     
+                     if(blankRowsToAdd > 0)
+                     {
+                         for(int i = 0; i < blankRowsToAdd; i++)
+                         {
+                             if(!String.IsNullOrEmpty(variable.Item2))
+                             {
+                                 data.Append(string.Format("<{0}>", recordset));
+                                 data.Append(string.Format("<{0}></{0}>", recordField));
+                                 data.Append(string.Format("</{0}>", recordset));
+                             }
+                             _lastAddedIndex++;
+                         }
+                     }
+                 }
+
+
                 if(!String.IsNullOrEmpty(variable.Item2))
                 {
                     data.Append(string.Format("<{0}>", recordset));
                     data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
                     data.Append(string.Format("</{0}>", recordset));
+                    _lastAddedIndex++;
                 }
                 string rec;
                 ScenarioContext.Current.TryGetValue("recordset", out rec);

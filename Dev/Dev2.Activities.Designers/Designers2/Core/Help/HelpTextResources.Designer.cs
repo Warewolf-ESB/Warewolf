@@ -2466,6 +2466,47 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To get recordset&apos;s length, put the recordset name in here. E.g. [[Customer()]].
+        /// </summary>
+        public static string RecordsLengthHelpRecordset {
+            get {
+                return ResourceManager.GetString("RecordsLengthHelpRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the length of a recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record..
+        /// </summary>
+        public static string RecordsLengthHelpResult {
+            get {
+                return ResourceManager.GetString("RecordsLengthHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Recordset()]].
+        /// </summary>
+        public static string RecordsLengthToolTipRecordset {
+            get {
+                return ResourceManager.GetString("RecordsLengthToolTipRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string RecordsLengthToolTipResult {
+            get {
+                return ResourceManager.GetString("RecordsLengthToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string RenameHelpDestinationPassword {

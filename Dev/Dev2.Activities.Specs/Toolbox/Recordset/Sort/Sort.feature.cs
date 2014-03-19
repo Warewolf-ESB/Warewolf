@@ -582,7 +582,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Sort Field",
                         "Sort Order"});
             table19.AddRow(new string[] {
-                        "",
+                        "[[rs(*).row]] =",
                         "Forward"});
 #line 183
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
@@ -630,7 +630,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Sort Field",
                         "Sort Order"});
             table23.AddRow(new string[] {
-                        "",
+                        "[[rs(*).row]] =",
                         "Backwards"});
 #line 199
  testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
@@ -638,7 +638,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table24.AddRow(new string[] {
-                        ""});
+                        "[[rs(*).row]] ="});
 #line 202
  testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden

@@ -181,11 +181,11 @@ Scenario: Sort a recordset forwards empty recordset
 	| rs       | value    |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Sort Field | Sort Order |
-	|            | Forward    |
+	| Sort Field      | Sort Order |
+	| [[rs(*).row]] = | Forward    |
 	And the debug output as
-    |         |
-    |        |
+    |  |
+    |  |
 	
 Scenario: Sort a recordset backwards empty recordset
 	Given I have the following recordset to sort
@@ -197,11 +197,11 @@ Scenario: Sort a recordset backwards empty recordset
 	| rs       | row    |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Sort Field | Sort Order |
-	|            | Backwards  |
+	| Sort Field      | Sort Order |
+	| [[rs(*).row]] = | Backwards  |
 	And the debug output as
-    |         |
-    |        |
+    |                 |
+    | [[rs(*).row]] = |
 			
 Scenario: Sort a recordset forwards with one row
 	Given I have the following recordset to sort
@@ -234,7 +234,7 @@ Scenario: Sort a recordset backwards recordset  with one row
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Sort Field               | Sort Order |
-	| [[rs(1).row]] = Warewolf | Backwards    |
+	| [[rs(1).row]] = Warewolf | Backwards  |
 	And the debug output as
-    |                           |
+    |                          |
     | [[rs(1).row]] = Warewolf |	

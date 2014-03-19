@@ -18,9 +18,7 @@ Scenario: Delete last record in a recordset
 	| rs().row | 2   |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Records         |
-	| [[rs(1).row]] = 1 |
-	| [[rs(2).row]] = 2 |
+	| Records           |
 	| [[rs(3).row]] = 3 |
 	And the debug output as  
 	|                       |

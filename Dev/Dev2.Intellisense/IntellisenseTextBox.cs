@@ -169,6 +169,7 @@ namespace Dev2.UI
             }
             set
             {
+              
                 SetValue(HasErrorProperty, value);
             }
         }
