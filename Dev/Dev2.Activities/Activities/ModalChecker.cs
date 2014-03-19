@@ -9,7 +9,7 @@ namespace Dev2.Activities
     {
         public static Boolean IsWaitingForUserInput(Process process)
         {
-            if (process == null)
+            if(process == null)
                 throw new Exception("No process found matching the search criteria");
             // for thread safety
             if(process.HasExited) return false;
@@ -63,13 +63,13 @@ namespace Dev2.Activities
         {
             get
             {
-                WindowEnum(_process.MainWindowHandle,0);
+                WindowEnum(_process.MainWindowHandle, 0);
                 if(!_waiting)
                 {
                     _waiting = ThreadWindows(_process.MainWindowHandle);
                 }
                 return _waiting;
-            }            
+            }
         }
 
         private static bool ThreadWindows(IntPtr handle)
@@ -85,15 +85,17 @@ namespace Dev2.Activities
 
         }
 
+        // ReSharper disable UnusedMethodReturnValue.Local
         private int WindowEnum(IntPtr hWnd, int lParam)
+        // ReSharper restore UnusedMethodReturnValue.Local
         {
             IntPtr processId;
-          
+
             GetWindowThreadProcessId(hWnd, out processId);
-            if (processId.ToInt32() != _process.Id)
+            if(processId.ToInt32() != _process.Id)
                 return 1;
             uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
-            if ((style & WS_EX_DLGMODALFRAME) != 0)
+            if((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;
                 return 0; // stop searching further
