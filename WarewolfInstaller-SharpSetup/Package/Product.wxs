@@ -2,10 +2,10 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?include Product.Defines.wxi ?>
   <Product Id="$(var.AppProductCode)" Name="$(var.AppCode)" Language="!(loc.LANGUAGE)" Version="$(var.AppVersion)" Manufacturer="$(var.AppManufacturer)" UpgradeCode="$(var.AppUpgradeCode)">
-    <Package Id="*" InstallerVersion="400" Compressed="yes" InstallPrivileges="elevated" AdminImage="yes"/>
+    <Package Id="*" InstallerVersion="400" Compressed="yes" InstallPrivileges="limited" AdminImage="yes"/> <!-- elevated -->
     <Media Id="1" Cabinet="media1.cab" EmbedCab="no" CompressionLevel="high" />
     <Property Id="INSTALLLEVEL" Value="100" />
-    <Property Id="ALLUSERS" Value="1" />
+    <Property Id="ALLUSERS" Value="2" /> <!-- was 1, trying 2 for installer issues ;) -->
     <Property Id="TEST" Value="NO" />
     <Property Id="INSTALLSHORTCUT" Value="1" /> <!-- Set from installer for shortcut creation -->
     <Icon Id="icon.ico" SourceFile="..\ProductBuild\Warewolf.ico" />
