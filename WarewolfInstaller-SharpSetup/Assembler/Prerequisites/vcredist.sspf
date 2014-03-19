@@ -10,7 +10,9 @@
   <files>
     <file name="vcredist2008sp1_x86.exe">
       <provider name="local" type="retrieve" />
-      <provider name="download" type="retrieve" />
+      <provider name="download" type="retrieve">
+        <location path="http://download.microsoft.com/download/1/1/1/1116b75a-9ec3-481a-a3c8-1777b5381140/vcredist_x86.exe" />
+      </provider>
     </file>
   </files>
 </prerequisite>
