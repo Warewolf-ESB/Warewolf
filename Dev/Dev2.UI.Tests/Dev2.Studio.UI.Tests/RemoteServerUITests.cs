@@ -28,7 +28,6 @@ namespace Dev2.Studio.UI.Tests
         [TestInitialize]
         public void TestInit()
         {
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
             Init();
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
         }
