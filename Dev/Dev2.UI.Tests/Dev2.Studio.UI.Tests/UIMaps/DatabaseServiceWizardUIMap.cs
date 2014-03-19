@@ -90,7 +90,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             SendKeys.SendWait(sourceName);
             Playback.Wait(10);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(2500);
+            Playback.Wait(5500);
         }
 
         public void CreateDbService(string serviceName, string category)

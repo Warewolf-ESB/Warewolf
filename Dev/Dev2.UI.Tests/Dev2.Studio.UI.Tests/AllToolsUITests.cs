@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            ExplorerUIMap.DoubleClickWorkflow("AllTools", "MOCAKE");
             Playback.Wait(1500); // Sorted with framework ;)
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 

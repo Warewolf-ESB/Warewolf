@@ -601,12 +601,12 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X-100,
+            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X - 100,
                                                 theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse, workflowPoint1);
+            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, resourceToUse, "INTEGRATION TEST SERVICES", ServiceType.Workflows);
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse, 100);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
