@@ -225,4 +225,7 @@
   <data name="DsfSqlBulkInsertActivity" xml:space="preserve">
     <value>Recordset - SQL Bulk Insert</value>
   </data>
+  <data name="DsfRecordsetLengthActivity" xml:space="preserve">
+    <value>Recordset - Records Length</value>
+  </data>
 </root>
