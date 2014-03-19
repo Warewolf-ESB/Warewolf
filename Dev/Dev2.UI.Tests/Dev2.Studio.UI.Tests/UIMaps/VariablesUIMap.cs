@@ -58,7 +58,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
             string helpText = theBox.GetProperty("HelpText").ToString();
 
-            if(helpText == "Variable names can only contain letters.")
+            if (helpText!= "")
             {
                 return false;
             }

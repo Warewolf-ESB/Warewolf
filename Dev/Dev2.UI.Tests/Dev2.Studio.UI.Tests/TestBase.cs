@@ -62,6 +62,7 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
+            RibbonUIMap.CreateNewWorkflow();
 
             const string ResourceName = "NewForeachUpgradeDifferentExecutionTests";
             // Open the workflow
@@ -158,12 +159,15 @@ namespace Dev2.CodedUI.Tests
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow
-            ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
+
+            ExplorerUIMap.DoubleClickWorkflow("CalculateTaxReturns", "MO");
+
+            //ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
 
             // flakey bit of code, we need to wait ;)
-            Playback.Wait(1500);
+            //Playback.Wait(1500);
 
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
+            //ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MO", "CalculateTaxReturns");
 
             VariablesUIMap.ClickScalarVariableName(5);
             SendKeys.SendWait("codedUITestVar");
@@ -182,7 +186,7 @@ namespace Dev2.CodedUI.Tests
         public void ValidDatalistSearchTest()
         {
             // Create the workflow
-            RibbonUIMap.CreateNewWorkflow(1000);
+            RibbonUIMap.CreateNewWorkflow();
 
             // Open the Variables tab, and enter the invalid value
             VariablesUIMap.ClickScalarVariableName(0);
