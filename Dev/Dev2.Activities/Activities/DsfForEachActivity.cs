@@ -222,6 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
+                        dataObject.IsDataListScoped = false;
                         IterateIOMapping(idx, context);
                     }
                     else

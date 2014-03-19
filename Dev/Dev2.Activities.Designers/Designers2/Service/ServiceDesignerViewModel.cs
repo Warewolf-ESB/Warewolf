@@ -387,26 +387,35 @@ namespace Dev2.Activities.Designers2.Service
                 var resourceID = ResourceID;
                 if(resourceID != Guid.Empty)
                 {
-
-                    // TODO : Fetch service data here ;)
-
                     ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceID, true) as IContextualResourceModel;
-                    if(ResourceModel == null)
+
+                }
+                else
+                {
+                    if(!String.IsNullOrEmpty(ServiceName))
                     {
-                        if(environmentModel.IsConnected)
-                        {
-                            UpdateLastValidationMemoWithDeleteError();
-                            return false;
-                        }
-                        // BUG 9634 - 2013.07.17 - TWR : added connection check
-                        environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
+                        ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName, true) as IContextualResourceModel;
                     }
                     else
                     {
-                        if(!CheckSourceMissing())
-                        {
-                            return false;
-                        }
+                        return true;
+                    }
+                }
+                if(ResourceModel == null)
+                {
+                    if(environmentModel.IsConnected)
+                    {
+                        UpdateLastValidationMemoWithDeleteError();
+                        return false;
+                    }
+                    // BUG 9634 - 2013.07.17 - TWR : added connection check
+                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
+                }
+                else
+                {
+                    if(!CheckSourceMissing())
+                    {
+                        return false;
                     }
                 }
             }

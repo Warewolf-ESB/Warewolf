@@ -3,6 +3,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
     /// <summary>
@@ -37,7 +38,7 @@ Michael's surname name is Cullen
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            StringAssert.Contains(ResponseData.Unescape(), expected.Replace("\r\n", "\n"));
+            StringAssert.Contains(ResponseData.Unescape(), expected);
         }
 
         [TestMethod]

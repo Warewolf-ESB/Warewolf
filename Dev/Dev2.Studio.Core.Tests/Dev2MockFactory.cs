@@ -12,6 +12,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
+using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -299,6 +300,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>())).Callback(() => { });
 
             return mockEnvironmentModel;
         }

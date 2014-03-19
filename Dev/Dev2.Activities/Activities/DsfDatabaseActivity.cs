@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -25,7 +26,7 @@ namespace Dev2.Activities
             errors.MergeErrors(execErrors);
 
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            if (databaseServiceExecution != null)
+            if(databaseServiceExecution != null)
             {
                 databaseServiceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
             }
@@ -36,7 +37,7 @@ namespace Dev2.Activities
             // Adjust the remaining output mappings ;)
             compiler.SetParentID(dataObject.DataListID, oldID);
 
-            if (remainingMappings != null)
+            if(remainingMappings != null)
             {
                 var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
                 compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value, out execErrors);
@@ -47,6 +48,11 @@ namespace Dev2.Activities
                 compiler.Shape(dataObject.DataListID, enDev2ArgumentType.DB_ForEach, outputs, out execErrors);
                 errors.MergeErrors(execErrors);
             }
+
+            compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out execErrors);
+            errors.MergeErrors(execErrors);
+            compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out execErrors);
+            errors.MergeErrors(execErrors);
 
             return result;
         }

@@ -192,41 +192,51 @@ namespace Dev2.PathOperations
         public bool Delete(IActivityIOPath src)
         {
             bool result;
-            if(!RequiresAuth(src))
+            try
             {
-                // We need sense check the value passed in ;)
-                result = DeleteHelper.Delete(src.Path);
-            }
-            else
-            {
-                // handle UNC path
-                SafeTokenHandle safeTokenHandle;
-                bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
-                if(loginOk)
+                if(!RequiresAuth(src))
                 {
-                    using(safeTokenHandle)
-                    {
-
-                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                        {
-                            // Do the operation here
-                            result = DeleteHelper.Delete(src.Path);
-
-                            // remove impersonation now
-                            impersonatedUser.Undo();
-                        }
-                    }
+                    // We need sense check the value passed in ;)
+                    result = DeleteHelper.Delete(src.Path);
                 }
                 else
                 {
-                    // login failed
-                    throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
+                    // handle UNC path
+                    SafeTokenHandle safeTokenHandle;
+                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+                    if(loginOk)
+                    {
+                        using(safeTokenHandle)
+                        {
+
+                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            {
+                                // Do the operation here
+
+                                result = DeleteHelper.Delete(src.Path);
+
+
+                                // remove impersonation now
+                                impersonatedUser.Undo();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // login failed
+                        throw new Exception("Failed to authenticate with user [ " + src.Username + " ] for resource [ " + src.Path + " ] ");
+                    }
                 }
+
             }
-
-
+            catch(Exception)
+            {
+                //File is not found problem during delete
+                result = false;
+            }
             return result;
         }
 

@@ -152,7 +152,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
 
                     // some silly chicken thinks web request where a good idea for debug ;(
-                    if(!dataObject.IsDebugMode())
+                    if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                     {
                         executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
                         allErrors.MergeErrors(errors);

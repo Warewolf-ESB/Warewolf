@@ -59,7 +59,8 @@ namespace Dev2.Runtime.Hosting
 
             if(tmp != null)
             {
-                return tmp.Value;
+                var extractValue = tmp.Value;
+                return extractValue;
             }
 
             return string.Empty;
@@ -85,7 +86,7 @@ namespace Dev2.Runtime.Hosting
         }
     }
 
-#endregion
+    #endregion
 
     public class ServiceDefinitionLoader
     {
@@ -146,7 +147,7 @@ namespace Dev2.Runtime.Hosting
 
                 var actions = xe.Element("Actions");
                 XElement action;
-                if (actions != null)
+                if(actions != null)
                 {
                     action = actions.Element("Action");
                 }
@@ -157,7 +158,7 @@ namespace Dev2.Runtime.Hosting
 
                 if(action != null)
                 {
-                    ServiceAction sa = new ServiceAction {Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData};
+                    ServiceAction sa = new ServiceAction { Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData };
 
                     // Set service action ;)
                     enActionType actionType;
@@ -168,7 +169,7 @@ namespace Dev2.Runtime.Hosting
                     }
 
                     var element = action.Element("Outputs");
-                    if (element != null)
+                    if(element != null)
                     {
                         sa.OutputSpecification = element.Value;
                     }
@@ -178,11 +179,11 @@ namespace Dev2.Runtime.Hosting
                     var id = ServiceMetaData.SetID(ref xe);
                     ds.ID = id;
 
-                    if (IsWorkflow(serviceData))
+                    if(IsWorkflow(serviceData))
                     {
                         // Convert to StringBuilder
                         var xElement = action.Element("XamlDefinition");
-                        if (xElement != null)
+                        if(xElement != null)
                         {
                             var def = xElement.ToStringBuilder();
                             def = def.Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "");
@@ -190,7 +191,7 @@ namespace Dev2.Runtime.Hosting
                         }
 
                         var dataList = xe.Element("DataList");
-                        if (dataList != null)
+                        if(dataList != null)
                         {
                             ds.DataListSpecification = dataList.ToString();
                         }
@@ -213,11 +214,11 @@ namespace Dev2.Runtime.Hosting
                         // process inputs and outputs ;)
                         var inputs = action.Element("Inputs");
 
-                        if (inputs != null)
+                        if(inputs != null)
                         {
                             var inputCollection = inputs.Elements("Input");
 
-                            foreach (var inputItem in inputCollection)
+                            foreach(var inputItem in inputCollection)
                             {
                                 bool emptyToNull;
                                 bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out emptyToNull);
@@ -231,14 +232,14 @@ namespace Dev2.Runtime.Hosting
                                     NativeType = inputItem.AttributeSafe("NativeType")
                                 };
 
-                                if (string.IsNullOrEmpty(sai.NativeType))
+                                if(string.IsNullOrEmpty(sai.NativeType))
                                 {
                                     sai.NativeType = "object";
                                 }
 
                                 // handle validators ;)
                                 var validators = inputItem.Elements("Validator");
-                                foreach (var validator in validators)
+                                foreach(var validator in validators)
                                 {
                                     Validator v = new Validator();
 
@@ -279,7 +280,7 @@ namespace Dev2.Runtime.Hosting
         {
 
             var startIdx = serviceData.IndexOf("<XamlDefinition>", 0, false);
-            if (startIdx >= 0)
+            if(startIdx >= 0)
             {
                 var endIdx = serviceData.IndexOf("</XamlDefinition>", startIdx, false);
                 var dif = endIdx - startIdx;

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Activities;
-using System.Activities.Statements;
 using System.Text.RegularExpressions;
 using ActivityUnitTests;
-using Dev2.Data.Enums;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
 
@@ -37,8 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             const string expected = @"<innerScalar>11</innerScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
+            StringAssert.Contains(ResponseData, expected);
         }
 
         [TestMethod]
@@ -46,11 +43,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachWithStarAndStaticIndex");
-            const string expected = @"DataList><results><res>50</res></results></DataList";
+            const string expected = "DataList><results rowID=\"1\"><res>50</res></results></DataList";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
+            StringAssert.Contains(ResponseData, expected);
         }
 
         #endregion ForEach Behaviour Tests
@@ -61,10 +57,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachNumber()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
-            const string expected = "<Rec><Each>1</Each></Rec><Rec><Each>2</Each></Rec><Rec><Each>4</Each></Rec><Rec><Each>8</Each></Rec><Rec><Each>16</Each></Rec>";
+            const string expected = "<DataList><Rec rowID=\"1\"><Each>1</Each></Rec><Rec rowID=\"2\"><Each>2</Each></Rec><Rec rowID=\"3\"><Each>4</Each></Rec><Rec rowID=\"4\"><Each>8</Each></Rec><Rec rowID=\"5\"><Each>16</Each></Rec></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
+            StringAssert.Contains(expected, ResponseData);
         }
 
 
@@ -95,11 +91,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachInputOutputMappingTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
-            const string expected = @"<var>5</var><recset><rec1>1</rec1></recset><recset><rec1>2</rec1></recset><recset><rec1>3</rec1></recset><recset><rec1>4</rec1></recset><recset><rec1>5</rec1></recset><recset><rec1>6</rec1></recset>";
+            const string expected = "<DataList><var>5</var><recset rowID=\"1\"><rec1>1</rec1></recset><recset rowID=\"2\"><rec1>2</rec1></recset><recset rowID=\"3\"><rec1>3</rec1></recset><recset rowID=\"4\"><rec1>4</rec1></recset><recset rowID=\"5\"><rec1>5</rec1></recset><recset rowID=\"6\"><rec1>6</rec1></recset></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
+            StringAssert.Contains(ResponseData, expected);
         }
 
         #endregion Scalar Tests
@@ -110,11 +105,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachAllToolsTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachUpgradeTest");
-            string expected = @"PASS";
+            const string expected = @"PASS";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected), "Expected [ " + expected + "] Got [ " + ResponseData + " ]");
+            StringAssert.Contains(ResponseData, expected);
         }
 
         #endregion Scalar Tests
@@ -153,38 +147,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
 
             return activity;
-        }
-
-        private void SetupArguments(string currentDL, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
-        {
-            var activityFunction = new ActivityFunc<string, bool>();
-            DsfActivity activity;
-            if(inputMapping != null)
-            {
-                activity = CreateWorkflow(inputMapping, isInputMapping);
-            }
-            else
-            {
-                activity = CreateWorkflow();
-            }
-
-            activityFunction.Handler = activity;
-
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfForEachActivity
-                {
-                    DataFunc = activityFunction,
-                    ForEachType = type,
-                    NumOfExections = numberExecutions,
-                    From = from,
-                    To = to,
-                    CsvIndexes = csvIndexes,
-                }
-            };
-
-            CurrentDl = testData;
-            TestData = currentDL;
         }
 
         #endregion

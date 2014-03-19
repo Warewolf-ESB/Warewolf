@@ -143,7 +143,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataMerge.{0}",
                                                 fileName);
             string value = ReadFile(resourceName);
-            value = value.Replace("\r\n", "\n");
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
