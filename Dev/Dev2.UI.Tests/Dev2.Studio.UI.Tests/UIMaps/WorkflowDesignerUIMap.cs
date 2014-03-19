@@ -21,7 +21,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         VisualTreeWalker vstw = new VisualTreeWalker();
 
 
-        public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
+        public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
         {
             var scrollViewer = GetScrollViewer(theTab);
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
@@ -33,6 +33,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     foreach(var scrollChild in getVericalScrollBarChildren)
                     {
                         if(scrollChild.FriendlyName == "thumb")
+                        {
+                            return scrollChild;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public UITestControl ScrollViewer_GetHorizontalScrollBar(UITestControl theTab)
+        {
+            var scrollViewer = GetScrollViewer(theTab);
+            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
+            foreach (var scrollViewerChild in scrollViewerChildren)
+            {
+                if (scrollViewerChild.FriendlyName == "HorizontalScrollBar")
+                {
+                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
+                    foreach (var scrollChild in getVericalScrollBarChildren)
+                    {
+                        if (scrollChild.FriendlyName == "thumb")
                         {
                             return scrollChild;
                         }
@@ -1122,55 +1143,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        /// <summary>
-        /// Scrolls the viewer_ get vertical scroll bar.
-        /// </summary>
-        /// <param name="theTab">The tab.</param>
-        /// <returns></returns>
-        public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
-        {
-            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
-            foreach(var scrollViewerChild in scrollViewerChildren)
-            {
-                if(scrollViewerChild.FriendlyName == "VerticalScrollBar")
-                {
-                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
-                    foreach(var scrollChild in getVericalScrollBarChildren)
-                    {
-                        if(scrollChild.FriendlyName == "thumb")
-                        {
-                            return scrollChild;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Scrolls the viewer_ get horizontal scroll bar.
-        /// </summary>
-        /// <param name="theTab">The tab.</param>
-        /// <returns></returns>
-        public UITestControl ScrollViewer_GetHorizontalScrollBar(UITestControl theTab)
-        {
-            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
-            foreach(var scrollViewerChild in scrollViewerChildren)
-            {
-                if(scrollViewerChild.FriendlyName == "HorizontalScrollBar")
-                {
-                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
-                    foreach(var scrollChild in getVericalScrollBarChildren)
-                    {
-                        if(scrollChild.FriendlyName == string.Empty)
-                        {
-                            return scrollChild;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
 
         /// <summary>
         /// Scrolls the viewer_ get scroll down.

@@ -36,11 +36,8 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Ashley Lewis")]
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
         {
-            ExplorerUIMap.EnterExplorerSearchText("AllTools");
-
             // Open the Workflow
             ExplorerUIMap.DoubleClickWorkflow("AllTools", "MOCAKE");
-            Playback.Wait(1500); // Sorted with framework ;)
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible
@@ -49,13 +46,15 @@ namespace Dev2.Studio.UI.Tests
 
             #region Scroll All Items Into View
 
-            var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-            //Look low
-            Mouse.StartDragging(scrollBar);
+            var scrollBarV = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
+            var scrollBarH = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
+            
+            // Look low
+            Mouse.StartDragging(scrollBarV);
             Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
 
-            //Look high
-            Mouse.StartDragging(scrollBar);
+            // Look high
+            Mouse.StartDragging(scrollBarV);
             Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
 
             #endregion
