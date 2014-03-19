@@ -383,7 +383,7 @@
     <value>The recordset name is a duplicate of an existing recordset. Recordset names must be unique.</value>
   </data>
   <data name="ErrorMessageInvalidChar" xml:space="preserve">
-    <value>Variable names can only contain letters.</value>
+    <value>Variable name contains invalid character(s).</value>
   </data>
   <data name="User_Interface_Layouts_Directory" xml:space="preserve">
     <value>UserInterfaceLayouts</value>

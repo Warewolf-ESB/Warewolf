@@ -1,6 +1,7 @@
 ﻿using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using System;
 using System.Activities.Presentation.Model;
@@ -83,7 +84,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             var result = new List<IActionableErrorInfo>();
             result.AddRange(ValidateThis());
-            ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
+
+            var errorCount = result.Count;
+
+            ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItemDataList(mi)));
+
+            if(result.Count == errorCount)
+            {
+                ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
+            }
 
             Errors = result.Count == 0 ? null : result;
         }
@@ -91,6 +100,52 @@ namespace Dev2.Activities.Designers2.Core
         protected abstract IEnumerable<IActionableErrorInfo> ValidateThis();
 
         protected abstract IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi);
+
+        private IEnumerable<IActionableErrorInfo> ValidateCollectionItemDataList(ModelItem mi)
+        {
+            if(DataListSingleton.ActiveDataList == null)
+            {
+                yield break;
+            }
+
+            DataListSingleton.ActiveDataList.RemoveUnusedDataListItems();
+
+            if(string.IsNullOrEmpty(DataListSingleton.ActiveDataList.DataListErrorMessage))
+            {
+                yield break;
+            }
+
+            var dto = mi.GetCurrentValue() as ActivityDTO;
+            if(dto == null)
+            {
+                yield break;
+            }
+            
+            var fieldInError = DataListSingleton.ActiveDataList.DataList.FirstOrDefault(d => !string.IsNullOrEmpty(d.ErrorMessage));
+
+            if(fieldInError != null)
+            {
+                if(dto.FieldName.Contains(fieldInError.DisplayName))
+                {
+                    yield return new ActionableErrorInfo(() => mi.SetProperty("IsFieldNameFocused", true))
+                    {
+                        ErrorType = ErrorType.Critical,
+                        Message = fieldInError.ErrorMessage
+                    };
+
+                    yield break;
+                }
+
+                if(dto.FieldValue.Contains(fieldInError.DisplayName))
+                {
+                    yield return new ActionableErrorInfo(() => mi.SetProperty("IsFieldValueFocused", true))
+                    {
+                        ErrorType = ErrorType.Critical,
+                        Message = fieldInError.ErrorMessage
+                    };
+                }
+            }
+        }
 
         public override bool CanRemoveAt(int indexNumber)
         {

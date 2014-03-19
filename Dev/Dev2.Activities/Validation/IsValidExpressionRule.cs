@@ -1,5 +1,5 @@
-﻿using Dev2.Data.Enums;
-using Dev2.Data.Parsers;
+﻿using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using System;
@@ -47,14 +47,15 @@ namespace Dev2.Validation
                 return result;
             }
 
-            var parser = new Dev2DataLanguageParser();
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var datalitsId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _datalist, out errors);
 
-            var intellisenseResults = parser.ParseDataLanguageForIntellisense(value, _datalist);
-
-            var error = intellisenseResults.FirstOrDefault(e => e.ErrorCode != enIntellisenseErrorCode.None);
-
-            if(error != null)
+            if(errors != null && errors.HasErrors())
             {
+                compiler.ForceDeleteDataListByID(datalitsId);
+                var errorList = errors.FetchErrors();
+
                 if(string.Equals(value, _outputValue))
                 {
                     _outputValue = _variableValue;
@@ -64,14 +65,32 @@ namespace Dev2.Validation
                 {
                     ErrorType = ErrorType.Critical,
                     Message = (string.IsNullOrEmpty(LabelText) ? "" : LabelText + " - ")
-                              + error.Message
+                              + errorList.Last()
                 };
             }
+
+            compiler.Evaluate(datalitsId, enActionType.User, value, false, out errors);
+            compiler.ForceDeleteDataListByID(datalitsId);
+
+            if(errors != null && errors.HasErrors())
+            {
+                var errorList = errors.FetchErrors();
+                var message = errorList.First().Contains("Data List") ? errorList.Last() : errorList.First();
+
+                if(string.Equals(value, _outputValue))
+                {
+                    _outputValue = _variableValue;
+                }
+
+                return new ActionableErrorInfo(DoError)
+                {
+                    ErrorType = ErrorType.Critical,
+                    Message = (string.IsNullOrEmpty(LabelText) ? "" : LabelText + " - ")
+                              + message
+                };
+            }
+
             return null;
         }
-
-
-
-
     }
 }

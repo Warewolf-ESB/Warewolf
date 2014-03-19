@@ -112,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'Results' -  [[a$]] does not exist in your Data List", viewModel.Errors[0].Message);
+            Assert.AreEqual("'Results' - Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.", viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -232,7 +232,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec(@).set]]");
             var viewModel = new XPathDesignerViewModel(mi);
-           
+
             viewModel.GetDatalistString = () =>
             {
                 const string trueString = "True";

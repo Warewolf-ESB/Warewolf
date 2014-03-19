@@ -537,7 +537,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable names can only contain letters..
+        ///   Looks up a localized string similar to Variable name contains invalid character(s)..
         /// </summary>
         public static string ErrorMessageInvalidChar {
             get {
