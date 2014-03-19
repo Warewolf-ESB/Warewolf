@@ -148,7 +148,7 @@ namespace Dev2.Data.Parsers
                 // short-circuit this case ;)
                 if(payload.Equals("[[]]"))
                 {
-                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, " [[]] is missing a variable", enIntellisenseErrorCode.SyntaxError, false));
+                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, " [[]] is missing a variable", enIntellisenseErrorCode.SyntaxError, true));
                     return result;
                 }
 

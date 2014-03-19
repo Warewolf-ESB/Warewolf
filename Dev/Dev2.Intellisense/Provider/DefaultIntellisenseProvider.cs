@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -283,59 +284,66 @@ namespace Dev2.Studio.InterfaceImplementors
             // Use language parser to find open parts!
             var languageParser = new Dev2DataLanguageParser();
 
-            var parts = languageParser.MakeParts(value);
-
-            // continue to la-la land if we need do ;)
-            if(parts.Any(c => c.HangingOpen))
+            try
             {
-                if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
-                    {
-                        result = getBetweenBraces(result, pos, out newPos);
-                        pos = newPos;
-                    }
+                var parts = languageParser.MakeParts(value);
 
-                // if empty default back to original value ;)
-                if(string.IsNullOrEmpty(result))
+                // continue to la-la land if we need do ;)
+                if(parts.Any(c => c.HangingOpen))
                 {
-                    result = value;
+                    if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
+                        {
+                            result = getBetweenBraces(result, pos, out newPos);
+                            pos = newPos;
+                        }
+
+                    // if empty default back to original value ;)
+                    if(string.IsNullOrEmpty(result))
+                    {
+                        result = value;
+                    }
+
+                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
+
+                    // is it recordset notation and the only value present?
+                    if(!String.IsNullOrEmpty(rsName))
+                    {
+                        var case1Len = 1;
+                        var case2Len = 2;
+
+                        if(result.Length == pos && !result.StartsWith("[["))
+                        {
+                            result = string.Concat("[[", result);
+                            newPos += 2;
+                        }
+                        else
+                        {
+                            // adjust len checks for when [[ already exist ;)
+                            case1Len += 2;
+                            case2Len += 3;
+                        }
+
+                        // we have a rs( case ;)
+                        if(rsName.Length + case1Len == value.Length)
+                        {
+                            // fake it to get recordset field data ;)
+                            result = string.Concat(result, ").");
+                            newPos += 2;
+                        }
+
+                        // we have a rs() case ;)
+                        if(rsName.Length + case2Len == value.Length)
+                        {
+                            // fake it to get recordset field data ;)
+                            result = string.Concat(result, ".");
+                            newPos += 1;
+                        }
+                    }
                 }
-
-                var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
-
-                // is it recordset notation and the only value present?
-                if(!String.IsNullOrEmpty(rsName))
-                {
-                    var case1Len = 1;
-                    var case2Len = 2;
-
-                    if(result.Length == pos && !result.StartsWith("[["))
-                    {
-                        result = string.Concat("[[", result);
-                        newPos += 2;
-                    }
-                    else
-                    {
-                        // adjust len checks for when [[ already exist ;)
-                        case1Len += 2;
-                        case2Len += 3;
-                    }
-
-                    // we have a rs( case ;)
-                    if(rsName.Length + case1Len == value.Length)
-                    {
-                        // fake it to get recordset field data ;)
-                        result = string.Concat(result, ").");
-                        newPos += 2;
-                    }
-
-                    // we have a rs() case ;)
-                    if(rsName.Length + case2Len == value.Length)
-                    {
-                        // fake it to get recordset field data ;)
-                        result = string.Concat(result, ".");
-                        newPos += 1;
-                    }
-                }
+            }
+            catch
+            {
+                result = value;
             }
 
             return result;
@@ -393,7 +401,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                             if(char.IsWhiteSpace(letter))
                             {
-                                results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
+                               results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
                             }
                             else
                             {
@@ -404,18 +412,14 @@ namespace Dev2.Studio.InterfaceImplementors
                         {
                             //consider csv input
                             var csv = inputText.Split(',');
-                            string removeCsv;
-                            if(csv.Count() < 2)
+                            var index = inputText.IndexOf(',');
+
+                            if(index < 4 || inputText.ElementAt(index - 1).ToString(CultureInfo.InvariantCulture) != "]" || inputText.ElementAt(index - 1).ToString(CultureInfo.InvariantCulture) != "]")
                             {
-                                //non csv 
-                                removeCsv = inputText;
+                                csv = new[] { inputText };
                             }
-                            else
-                            {
-                                //only handle the last csv
-                                removeCsv = csv.Last();
-                            }
-                            results = GetIntellisenseResultsImpl(removeCsv, filterType);
+                            
+                            results = GetIntellisenseResultsImpl(csv.Last(), filterType);
                         }
 
                         if(results == null || results.Count == 0 && HandlesResultInsertion)
@@ -507,14 +511,17 @@ namespace Dev2.Studio.InterfaceImplementors
                     {
                         if(currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
                         {
-                            trueResults.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Message, currentResult.Message, true));
+                            var displayValue = currentResult.Option == null ? string.Empty : currentResult.Option.DisplayValue;
+                            trueResults.Add(new IntellisenseProviderResult(this, displayValue, currentResult.Message, currentResult.Message, true));
                         }
                     }
 
 
                     if(currentResult.Type == enIntellisenseResultType.Selectable)
                     {
-                        trueResults.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Option.Description, currentResult.Option.Description, false));
+                        var displayValue = currentResult.Option == null ? string.Empty : currentResult.Option.DisplayValue;
+                        var description = currentResult.Option == null ? string.Empty : currentResult.Option.Description;
+                        trueResults.Add(new IntellisenseProviderResult(this, displayValue, description, description, false));
                     }
                 }
             }
