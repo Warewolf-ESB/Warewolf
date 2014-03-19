@@ -886,7 +886,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.IsRequiredChanged, FixData = xml };
 
-            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError,worstError);
+            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError, worstError);
 
             var actualInputs = vm.DataMappingViewModel.Inputs;
 
@@ -1005,6 +1005,42 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[a1]]\" /></Inputs>", inputMapping);
             Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[b1]]\" /></Outputs>", outputMapping);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_InitializeResourceIDNull_StillCOrrectlySetsUp()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+
+            var modelItem = CreateModelItem(activity);
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ResourceModel);
+            var inputMapping = viewModel.ModelItem.GetProperty<string>("InputMapping");
+            var outputMapping = viewModel.ModelItem.GetProperty<string>("OutputMapping");
+
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+
         }
 
         ///////////////////////////////////////////////
