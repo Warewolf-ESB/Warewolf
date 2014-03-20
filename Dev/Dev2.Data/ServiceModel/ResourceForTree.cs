@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <param name="other">An object to compare with this object.</param>
         public int CompareTo(ResourceForTree other)
         {
-            return this.ResourceID.CompareTo(other.ResourceID);
+            return ResourceID.CompareTo(other.ResourceID);
         }
 
         #endregion

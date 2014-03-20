@@ -9,11 +9,11 @@ namespace Dev2.DataList.Contract
         {
             if(ComparePart.DisplayValue == Comparator.DisplayValue)
             {
-                return true;
-            }
+                    return true;
+                }
 
-            return false;
-        }
+                    return false;
+            }
 
         public override int GetHashCode(IDataListVerifyPart PartToVerify)
         {
