@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.Services
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
             //------------Execute Test---------------------------
-            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("SqlBulkInsertSpecFlowTestTable") } }, mockWorkspace.Object);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("TestTransactions") } }, mockWorkspace.Object);
             //------------Assert Results-------------------------
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));

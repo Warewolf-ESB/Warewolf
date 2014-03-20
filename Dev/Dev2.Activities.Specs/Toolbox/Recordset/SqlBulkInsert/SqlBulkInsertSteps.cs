@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             ScenarioContext.Current.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
-            sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable";
+            sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
             var dataColumnMappings = new List<DataColumnMapping>
                 {
                     new DataColumnMapping
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q2 = "update SqlBulkInsertSpecFlowTestTableForeign " +
+                var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_') + " " +
                                   "set Col2 = 0 " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using(var cmd = new SqlCommand(q2, connection))
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string Query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable";
+                var Query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
 
                 using(var cmd = new SqlCommand(Query, connection))
                 {
@@ -188,7 +188,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable";
+                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
 
                 using(var cmd = new SqlCommand(q1, connection))
                 {
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable";
+                var q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q1, connection))
                 {
                     numberOfRowsInDb = cmd.ExecuteScalar();
@@ -243,7 +243,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q2 = "truncate table SqlBulkInsertSpecFlowTestTable";
+                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -301,7 +301,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign " +
+                var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_') + " " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using(var cmd = new SqlCommand(q1, connection))
                 {
@@ -312,7 +312,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q2 = "truncate table SqlBulkInsertSpecFlowTestTable";
+                var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
                 using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();

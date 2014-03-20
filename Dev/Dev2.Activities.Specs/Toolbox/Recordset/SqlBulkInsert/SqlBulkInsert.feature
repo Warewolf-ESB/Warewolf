@@ -171,7 +171,7 @@ Given I have this data
 	| [[result]] = Success |
 
 Scenario: Import data into Table with fire triggers disabled
-#A trigger exists in the table [SqlBulkInsertSpecFlowTestTable] against the column [Col2] to add a default value of XXXXXXXX.
+#A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_disabled] against the column [Col2] to add a default value of XXXXXXXX.
 Given I have this data
 	| Col1 | Col2     | Col3                                 |
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
@@ -202,7 +202,7 @@ Given I have this data
 	| [[result]] = Success |	
 
 Scenario: Import data into Table with fire triggers enabled
-#A trigger exists in the table [SqlBulkInsertSpecFlowTestTable] against the column [Col2] to add a default value of XXXXXXXX.
+#A trigger exists in the table [SqlBulkInsertSpecFlowTestTable_for_Import_data_into_Table_with_fire_triggers_enabled] against the column [Col2] to add a default value of XXXXXXXX.
 Given I have this data
 	| Col1 | Col2     | Col3                                 |
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
