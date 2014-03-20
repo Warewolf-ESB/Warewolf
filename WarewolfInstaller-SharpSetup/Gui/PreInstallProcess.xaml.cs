@@ -196,7 +196,7 @@ namespace Gui
                 {
                     // enable the next button
                     CanGoNext = true;
-                    SetSuccessMessasgeForDependencies("Dependencies Installed");
+                    SetSuccessMessasgeForDependencies("Dependencies installed");
                 }
                 else
                 {
