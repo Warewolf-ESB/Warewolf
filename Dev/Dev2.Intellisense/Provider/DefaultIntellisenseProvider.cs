@@ -84,24 +84,25 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Datalist Handling
-        private void CreateDataList(IList<IIntellisenseResult> results = null)
+        private bool CreateDataList(string input = "", IList<IIntellisenseResult> results = null)
         {
+            bool succeeded = false;
+
             StringBuilder result = new StringBuilder("<ADL>");
             ObservableCollection<IDataListItemModel> dataList = null;
 
-            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
-            {
-                dataList = DataListSingleton.ActiveDataList.DataList;
-            }
+            var activeDataList = DataListSingleton.ActiveDataList;
+            var activeDataListViewModels = activeDataList.DataList;
 
-            bool wasRebuilt = false;
+            if(activeDataList != null && activeDataListViewModels != null)
+            {
+                dataList = activeDataListViewModels;
+            }
 
             if(dataList != null)
             {
                 if(!_hasCachedDatalist || _isUpdated)
                 {
-                    wasRebuilt = true;
-
                     _hasCachedDatalist = true;
                     _isUpdated = false;
                 }
@@ -109,23 +110,34 @@ namespace Dev2.Studio.InterfaceImplementors
 
             result.Append("</ADL>");
 
-            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
-                  DataListSingleton.ActiveDataList.Resource.DataList != null)
+            if(activeDataList != null && activeDataList.Resource != null && activeDataList.Resource.DataList != null)
             {
-                if(DataListSingleton.ActiveDataList.HasErrors && results != null)
+                if(activeDataList.HasErrors)
                 {
-                    var errors = DataListSingleton.ActiveDataList.DataListErrorMessage.Split(Environment.NewLine.ToCharArray());
-                    foreach(var error in errors)
+                    if(activeDataListViewModels != null && results != null)
                     {
-                        results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error, enIntellisenseErrorCode.SyntaxError, true));
+                        var error = activeDataListViewModels
+                            .FirstOrDefault(d => d.HasError && input.Contains(d.DisplayName.Replace("()", "")));
+
+                        if(error != null)
+                        {
+                            results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error.ErrorMessage, enIntellisenseErrorCode.SyntaxError, true));
+                        }
+                        else
+                        {
+                            _cachedDataList = activeDataList.Resource.DataList;
+                            succeeded = true;
+                        }
                     }
                 }
-
-                if(wasRebuilt)
+                else
                 {
-                    _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
+                    _cachedDataList = activeDataList.Resource.DataList;
+                    succeeded = true;
                 }
             }
+
+            return succeeded;
         }
     
         #endregion
@@ -542,9 +554,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
 
-            CreateDataList(results);
-
-            if(results.Count > 0)
+            if(!CreateDataList(input, results))
             {
                 return results;
             }

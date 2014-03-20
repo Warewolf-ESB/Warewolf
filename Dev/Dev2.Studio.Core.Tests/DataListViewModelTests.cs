@@ -522,7 +522,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, _dataListViewModel.ScalarCollection.Count);
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].DisplayName == "Country");
             Assert.IsTrue(_dataListViewModel.ScalarCollection[1].DisplayName == "Country");
-            StringAssert.Contains(xmlDataList, "Country");
+            Assert.IsFalse(xmlDataList.Contains("Country"));
         }
 
         [TestMethod]

@@ -995,7 +995,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
 
             IList<IDataListItemModel> filledScalars =
-                ScalarCollection != null ? ScalarCollection.Where(scalar => !scalar.IsBlank).ToList() : new List<IDataListItemModel>();
+                ScalarCollection != null ? ScalarCollection.Where(scalar => !scalar.IsBlank && !scalar.HasError).ToList() : new List<IDataListItemModel>();
             foreach(var scalar in filledScalars)
             {
                 result.TryCreateScalarTemplate
