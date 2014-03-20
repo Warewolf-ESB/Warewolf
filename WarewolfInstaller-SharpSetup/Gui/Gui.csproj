@@ -67,7 +67,7 @@
     </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\WiX Toolset v3.8\SDK\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
+      <HintPath>..\Debug\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
     </Reference>
     <Reference Include="SharpSetup, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SharpSetup.Wpf, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
