@@ -23,7 +23,6 @@ namespace Gui
     {
 
         private bool _serviceInstalled;
-        private bool _serviceInstallException;
 
         public PostInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
@@ -472,6 +471,8 @@ namespace Gui
                 if(!trans.Rollback())
                 {
                     ShowCancelError();
+                    InstallVariables.StartStudioOnExit = false;
+                    InstallVariables.ViewReadMe = false;
                 }
                 else
                 {
@@ -526,8 +527,7 @@ namespace Gui
 
                 worker.RunWorkerCompleted += delegate
                 {
-
-                    if(_serviceInstalled && !_serviceInstallException)
+                    if(_serviceInstalled)
                     {
                         // verify ports opened
                         if(!isFirewallOpen)
