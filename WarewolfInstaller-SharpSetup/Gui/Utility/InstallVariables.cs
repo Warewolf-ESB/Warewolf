@@ -77,5 +77,6 @@
 
         // VC++ 2k8 SP1
         public static readonly string Vcplusplus2k8sp1x86Key = @"{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4}";
+
     }
 }

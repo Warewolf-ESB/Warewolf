@@ -18,6 +18,7 @@ namespace Gui
     public partial class PreInstallProcess
     {
         private bool _vcInstalled;
+        private bool _detNet45Installed;
 
         public PreInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
@@ -61,8 +62,6 @@ namespace Gui
                                         UriKind.RelativeOrAbsolute));
             btnRerun.Visibility = Visibility.Collapsed;
 
-            // all good allow next to be enabled ;)
-            CanGoNext = true;
         }
 
 
@@ -137,7 +136,13 @@ namespace Gui
         {
             try
             {
-                CheckForAndInstallVCPlusPlus2k8sp1();
+                // disable the next button ;)
+                CanGoNext = false;
+
+                CheckForAndInstallDependencies();
+
+                CanGoNext = true;
+
             }
             catch(Exception e1)
             {
@@ -147,45 +152,110 @@ namespace Gui
             StopServerService();
         }
 
-        /// <summary>
-        /// Checks for and install vc++ 2k8 sp1.
-        /// </summary>
-        private void CheckForAndInstallVCPlusPlus2k8sp1()
+        private void CheckForAndInstallDotNet45()
         {
-            // check registry key for vc++ 2k8 sp1
-            if(!IsVCPlusPlus2k8Sp1Installed())
+            if(!IsDotNet45Installed())
             {
-                // disable the next button ;)
-                CanGoNext = false;
 
-                // Get the BackgroundWorker that raised this event.
-                BackgroundWorker worker = new BackgroundWorker();
-                worker.DoWork += delegate
-                {
-                    InstallVCPlusPlus2k8Sp1();
-                };
-
-                worker.RunWorkerCompleted += delegate
-                {
-                    if(_vcInstalled)
-                    {
-                        SetSuccessMessasgeForDependencies("Dependencies Installed");
-                    }
-                    else
-                    {
-                        SetFailureMessage();
-                    }
-                };
-
-                worker.RunWorkerAsync();
-
-            }
-            else
-            {
-                SetSuccessMessasgeForDependencies("Dependencies Verified");
             }
         }
 
+        /// <summary>
+        /// Checks for and install vc++ 2k8 sp1.
+        /// </summary>
+        private void CheckForAndInstallDependencies()
+        {
+
+            // Get the BackgroundWorker that raised this event.
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate
+            {
+                // check registry key for vc++ 2k8 sp1
+                if(!IsVCPlusPlus2k8Sp1Installed())
+                {
+                    InstallVCPlusPlus2k8Sp1();
+                }
+                else
+                {
+                    _vcInstalled = true;
+                }
+
+                if(!IsDotNet45Installed())
+                {
+                    InstallDotNet45();
+                }
+                else
+                {
+                    _detNet45Installed = true;
+                }
+            };
+
+            worker.RunWorkerCompleted += delegate
+            {
+                if(_vcInstalled && _detNet45Installed)
+                {
+                    // enable the next button
+                    CanGoNext = true;
+                    SetSuccessMessasgeForDependencies("Dependencies Installed");
+                }
+                else
+                {
+                    SetFailureMessage();
+                }
+            };
+
+            worker.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// Installs the dot net45.
+        /// </summary>
+        private void InstallDotNet45()
+        {
+            var stream = ResourceExtractor.FetchDependency("dotNetFx45_Full_setup.exe");
+
+            if(stream == null)
+            {
+                return;
+            }
+
+            var fileName = Path.GetTempFileName();
+            var streamLength = stream.Length;
+            var bytes = new byte[streamLength];
+
+            using(stream)
+            {
+                stream.Read(bytes, 0, (int)streamLength);
+                // TODO : Write stream to TMP directory and run ;)
+                File.WriteAllBytes(fileName, bytes);
+            }
+
+            // now move so it has an msi name ;)
+            var newName = fileName + ".exe";
+            File.Move(fileName, newName);
+
+            // Now run the installer in /q mode
+            ProcessStartInfo psi = new ProcessStartInfo(newName, "/q");
+            var vcProc = Process.Start(psi);
+
+            // wait for up to a minute
+            vcProc.WaitForExit(60000);
+
+            // remove tmp file
+            File.Delete(newName);
+
+            _detNet45Installed = true;
+
+            // check that it installed
+            if(vcProc.ExitCode != 0)
+            {
+                _detNet45Installed = false;
+            }
+        }
+
+        /// <summary>
+        /// Installs the vc++ 2k8 SP1.
+        /// </summary>
         private void InstallVCPlusPlus2k8Sp1()
         {
 
@@ -230,11 +300,33 @@ namespace Gui
             }
         }
 
+        /// <summary>
+        /// Determines whether vc++ 2k8 sp1 x86 is installed
+        /// </summary>
+        /// <returns></returns>
         public static bool IsVCPlusPlus2k8Sp1Installed()
         {
             ProductInstallation productInstallation = new ProductInstallation(InstallVariables.Vcplusplus2k8sp1x86Key, null, UserContexts.Machine);
 
             return productInstallation.IsInstalled;
+        }
+
+        /// <summary>
+        /// Determines whether vc++ 2k8 sp1 x86 is installed
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsDotNet45Installed()
+        {
+
+            var ver = Environment.Version;
+            var checkVer = new Version("4.0.30319.17929");
+
+            if(ver >= checkVer)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
