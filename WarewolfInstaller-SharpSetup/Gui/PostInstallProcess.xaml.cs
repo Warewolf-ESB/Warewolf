@@ -237,51 +237,17 @@ namespace Gui
                 catch
                 {
                     _serviceInstallException = true;
-                    MessageBox.Show(e.Message);
+                    //MessageBox.Show(e.Message);
                 }
 
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Restarts the service.
-        /// </summary>
-        private void RestartService()
-        {
-            ServiceController sc = new ServiceController(InstallVariables.ServerService);
-
-
-            if(sc.Status == ServiceControllerStatus.Running)
-            {
-                sc.Stop();
-                sc.WaitForStatus(ServiceControllerStatus.Stopped,
-                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
-
-            }
-
-            try
-            {
-
-                // maybe it is already installed, just try and start it ;)
-                sc.Start();
-                sc.WaitForStatus(ServiceControllerStatus.Running,
-                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                //MessageBox.Show(e.Message);
                 if(sc.Status == ServiceControllerStatus.Running)
                 {
                     _serviceInstalled = true;
                 }
-                else
-                {
-                    _serviceInstallException = true;
-                }
-                sc.Dispose();
             }
-            catch(Exception e2)
-            {
-                _serviceInstallException = true;
-                MessageBox.Show(e2.Message);
-            }
+
+
         }
 
         /// <summary>
