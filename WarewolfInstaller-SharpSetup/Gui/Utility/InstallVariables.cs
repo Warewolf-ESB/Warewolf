@@ -22,6 +22,11 @@
         public static int DefaultWaitInSeconds = 300;
 
         /// <summary>
+        /// The default wait information parameters
+        /// </summary>
+        public static int DefaultWaitInMs = 30000;
+
+        /// <summary>
         /// Gets or sets the install root.
         /// </summary>
         /// <value>

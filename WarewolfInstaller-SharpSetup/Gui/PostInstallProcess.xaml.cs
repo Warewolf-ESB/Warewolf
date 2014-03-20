@@ -169,7 +169,7 @@ namespace Gui
 
                 Process p = Process.Start(psi);
 
-                p.WaitForExit(InstallVariables.DefaultWaitInSeconds);
+                p.WaitForExit(InstallVariables.DefaultWaitInMs);
 
                 // now try and start the service ;)
                 if(sc.Status == ServiceControllerStatus.Stopped)
