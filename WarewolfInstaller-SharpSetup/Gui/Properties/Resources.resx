@@ -299,4 +299,7 @@ service manager.</value>
   <data name="PostInstallProcess_MessageSamples" xml:space="preserve">
     <value>Installing Examples</value>
   </data>
+  <data name="PreInstall_CheckDependencies" xml:space="preserve">
+    <value>Verifying Dependencies</value>
+  </data>
 </root>

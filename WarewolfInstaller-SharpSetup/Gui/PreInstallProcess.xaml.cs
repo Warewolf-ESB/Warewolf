@@ -43,6 +43,23 @@ namespace Gui
             PreInstallStep_Entered(sender, null);
         }
 
+
+        /// <summary>
+        /// Sets the success message.
+        /// </summary>
+        /// <param name="msg">The MSG.</param>
+        private void SetSuccessMessasgeForDependencies(string msg)
+        {
+            PreInstallMsgVCPlusPlus.Text = msg;
+            preInstallStatusImgVCPlusPlus.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBarVCPlusPlus.Visibility = Visibility.Collapsed;
+            preInstallStatusImgVCPlusPlus.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
+                                        UriKind.RelativeOrAbsolute));
+            btnRerun.Visibility = Visibility.Collapsed;
+        }
+
+
         /// <summary>
         /// Sets the success message.
         /// </summary>
@@ -64,6 +81,21 @@ namespace Gui
             preInstallStatusImg.Visibility = Visibility.Collapsed;
             postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Sets the failure message.
+        /// </summary>
+        private void SetFailureMessageForDependencies(string msg = null)
+        {
+            PreInstallMsgVCPlusPlus.Text = msg ?? "Cannot install VC++ 2008 SP1 x86";
+            preInstallStatusImgVCPlusPlus.Source =
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
+                                        UriKind.RelativeOrAbsolute));
+            preInstallStatusImgVCPlusPlus.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBarVCPlusPlus.Visibility = Visibility.Collapsed;
+            CanGoNext = false;
+            btnRerun.Visibility = Visibility.Visible;
         }
 
 
@@ -103,7 +135,7 @@ namespace Gui
             }
             catch(Exception e1)
             {
-                MessageBox.Show(e1.Message);
+                SetFailureMessageForDependencies(e1.Message);
             }
 
             StopServerService();
@@ -148,8 +180,14 @@ namespace Gui
                 // check that it installed
                 if(vcProc.ExitCode != 0)
                 {
-                    throw new Exception("Failed to install dependency");
+                    throw new Exception("Failed to install dependencies");
                 }
+
+                SetSuccessMessasgeForDependencies("Dependencies Verified");
+            }
+            else
+            {
+                SetSuccessMessasgeForDependencies("Dependencies Verified");
             }
         }
 
