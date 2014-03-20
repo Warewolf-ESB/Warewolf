@@ -186,9 +186,7 @@ namespace Gui
                     else
                     {
                         // wait a bit more ;)
-
-                        sc.WaitForStatus(ServiceControllerStatus.Running,
-                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                        sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
 
                         if(sc.Status == ServiceControllerStatus.Running)
                         {
@@ -204,8 +202,7 @@ namespace Gui
                 {
                     sc.Start();
                     // wait some more ;)
-                    sc.WaitForStatus(ServiceControllerStatus.Running,
-                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
 
                     if(sc.Status == ServiceControllerStatus.Running)
                     {
@@ -222,8 +219,7 @@ namespace Gui
                     ServiceController sc = new ServiceController(InstallVariables.ServerService);
                     // maybe it is already installed, just try and start it ;)
                     sc.Start();
-                    sc.WaitForStatus(ServiceControllerStatus.Running,
-                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                    sc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                     if(sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
