@@ -283,7 +283,7 @@ namespace Dev2.Runtime.ESB.WF
 
             void OnAborted(WorkflowApplicationAbortedEventArgs obj)
             {
-                
+
             }
 
             #endregion
@@ -296,6 +296,20 @@ namespace Dev2.Runtime.ESB.WF
             }
             public Guid ParentID { get; set; }
 
+            /// <summary>
+            /// Waits for slot.
+            /// Waits for up to 10 minutes before it aborts
+            /// </summary>
+            private void WaitForSlot()
+            {
+                int waitCnt = 0;
+                while(!ExecutableServiceRepository.Instance.DoesQueueHaveSpace() && waitCnt < GlobalConstants.MaxNumberOfWorkflowWaits)
+                {
+                    Thread.Sleep(GlobalConstants.WorkflowWaitTime);
+                    waitCnt++;
+                }
+            }
+
             public void Run()
             {
                 Guid id;
@@ -303,13 +317,25 @@ namespace Dev2.Runtime.ESB.WF
                 ID = DataTransferObject.ResourceID;
                 ParentID = DataTransferObject.ParentID;
                 WorkspaceID = DataTransferObject.WorkspaceID;
-                ExecutableServiceRepository.Instance.Add(this);
-                var wfappUtils = new WfApplicationUtils();
-                wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors);
-                _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
-                DataTransferObject.NumberOfSteps = 0;
-                _instance.Run();
 
+                // handle queuing 
+                WaitForSlot();
+
+                // abort the execution - no space at the inn
+                if(!ExecutableServiceRepository.Instance.DoesQueueHaveSpace())
+                {
+                    _instance.Abort();
+                }
+                else
+                {
+                    ExecutableServiceRepository.Instance.Add(this);
+                    // here is space at the inn ;)
+                    var wfappUtils = new WfApplicationUtils();
+                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors);
+                    _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
+                    DataTransferObject.NumberOfSteps = 0;
+                    _instance.Run();
+                }
             }
 
             public void Terminate()

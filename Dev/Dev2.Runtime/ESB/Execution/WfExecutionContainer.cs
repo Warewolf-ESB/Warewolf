@@ -44,13 +44,13 @@ namespace Dev2.Runtime.ESB.Execution
             IBinaryDataListEntry tmp = compiler.Evaluate(DataObject.DataListID,
                                                              enActionType.System,
                                                              enSystemTag.Bookmark.ToString(), false, out errors);
-            if (tmp != null)
+            if(tmp != null)
             {
                 bookmark = tmp.FetchScalar().TheValue;
             }
 
             tmp = compiler.Evaluate(DataObject.DataListID, enActionType.System, enSystemTag.InstanceId.ToString(), false, out errors);
-            if (tmp != null)
+            if(tmp != null)
             {
                 Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);
             }
@@ -58,28 +58,28 @@ namespace Dev2.Runtime.ESB.Execution
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
 
-            // Set server ID, only if not set yet - origininal server;
-            if (DataObject.ServerID == Guid.Empty)
+            // Set server ID, only if not set yet - original server;
+            if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
-            // Set resource ID, only if not set yet - origininal resource;
-            if (DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
+            // Set resource ID, only if not set yet - original resource;
+            if(DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
 
-            // Set original instance ID, only if not set yet - origininal resource;
-            if (DataObject.OriginalInstanceID == Guid.Empty)
+            // Set original instance ID, only if not set yet - original resource;
+            if(DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
 
             //Set execution origing
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if (DataObject.IsDebug)
+            else if(DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -103,21 +103,21 @@ namespace Dev2.Runtime.ESB.Execution
 
                 result = exeResult.DataListID;
             }
-            catch (InvalidWorkflowException iwe)
+            catch(InvalidWorkflowException iwe)
             {
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
 
                 // trap the no start node error so we can replace it with something nicer ;)
-                if (start > 0)
+                if(start > 0)
                 {
                     errors.AddError(GlobalConstants.NoStartNodeError);
                 }
                 else
                 {
                     errors.AddError(iwe.Message);
-                } 
+                }
             }
             catch(Exception ex)
             {
