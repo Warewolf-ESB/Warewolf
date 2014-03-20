@@ -6,8 +6,6 @@ namespace Dev2.Common.Common
     {
         public static bool Delete(string path)
         {
-            // DirectoryHelper.CleanUp(src.Path);
-
             if(path == null)
             {
                 return false;

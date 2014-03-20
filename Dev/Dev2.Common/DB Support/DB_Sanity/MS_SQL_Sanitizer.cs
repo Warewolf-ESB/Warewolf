@@ -19,16 +19,19 @@ namespace Dev2.Common.DB
             XmlNodeList nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
             int foundXMLFrags = 0;
 
-            foreach (XmlNode n in nl)
+            if(nl != null)
             {
-                string tmp = n.InnerXml;
-                result = result.Append(tmp);
-                foundXMLFrags++;
+                foreach(XmlNode n in nl)
+                {
+                    string tmp = n.InnerXml;
+                    result = result.Append(tmp);
+                    foundXMLFrags++;
+                }
             }
 
             string res = result.ToString();
 
-            if (foundXMLFrags >= 1)
+            if(foundXMLFrags >= 1)
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }

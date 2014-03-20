@@ -69,11 +69,6 @@ namespace Dev2.Common.Common
 
         static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
-            //var fileAttributes = fsi.Attributes & FileAttributes.System;
-            //if(fileAttributes == FileAttributes.System)
-            //{
-            //    throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));
-            //}
             if(fsi.FullName.ToLower() == @"C:\".ToLower())
             {
                 throw new NotSupportedException(string.Format("Not allowed to delete system files/directories. {0}", fsi.FullName));

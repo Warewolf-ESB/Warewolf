@@ -23,7 +23,7 @@ namespace Dev2.Common.Common
         {
             get
             {
-                if (CurrentComputerNames == null)
+                if(CurrentComputerNames == null)
                 {
                     GetComputerNamesList();
                 }
@@ -40,7 +40,7 @@ namespace Dev2.Common.Common
         {
             WindowsIdentity wi = WindowsIdentity.GetCurrent();
 
-            if (wi != null)
+            if(wi != null)
             {
                 var serverUserName = wi.Name;
 
@@ -49,7 +49,7 @@ namespace Dev2.Common.Common
                 var queryStr = "WinNT://";
 
                 // query with domain appended ;)
-                if (parts.Length == 2)
+                if(parts.Length == 2)
                 {
                     queryStr += parts[0];
                 }
@@ -66,12 +66,14 @@ namespace Dev2.Common.Common
 
                         var itr = tmp.GetEnumerator();
 
-                        if (itr.MoveNext())
+                        if(itr.MoveNext())
                         {
                             queryStr += itr.Current["Workgroup"] as string;
                         }
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // best effort ;)
                     }
@@ -83,11 +85,11 @@ namespace Dev2.Common.Common
                 var kids = root.Children;
 
                 List<string> result = new List<string>();
-                foreach (DirectoryEntry node in kids)
+                foreach(DirectoryEntry node in kids)
                 {
-                    if (node.SchemaClassName == "Computer")
+                    if(node.SchemaClassName == "Computer")
                     {
-                        result.Add(node.Name);   
+                        result.Add(node.Name);
                     }
                 }
 
@@ -95,7 +97,7 @@ namespace Dev2.Common.Common
             }
 
             // big problems, add this computer and return
-            return new List<string>() { Environment.MachineName };
+            return new List<string> { Environment.MachineName };
         }
     }
 }
