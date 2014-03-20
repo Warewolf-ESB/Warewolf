@@ -94,6 +94,29 @@ namespace Gui
         public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
 
+            CheckForAndInstallVCPlusPlus2k8sp1();
+
+            StopServerService();
+
+        }
+
+        /// <summary>
+        /// Checks for and install vc++ 2k8 sp1.
+        /// </summary>
+        private void CheckForAndInstallVCPlusPlus2k8sp1()
+        {
+            // check registry key
+
+            // if not found, install
+
+            // if found skip
+        }
+
+        /// <summary>
+        /// Stops the server service.
+        /// </summary>
+        private void StopServerService()
+        {
             // Setup a cancel action ;)
             Cancel += OnCancel;
 
@@ -144,7 +167,6 @@ namespace Gui
                 // Service not present ;)
                 SetSuccessMessasge("Scan for server services complete");
             }
-
 
         }
 

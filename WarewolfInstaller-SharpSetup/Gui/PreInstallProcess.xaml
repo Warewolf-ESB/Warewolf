@@ -60,6 +60,31 @@
                                                             Height="20"
                                                             Width="20" />
                     </StackPanel>
+                    
+                    <!-- VC++ 2k8 SP1 -->
+                    <StackPanel Orientation="Horizontal"
+                                Height="20">
+                        <TextBlock Style="{StaticResource TextBlockStyle}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Name="PreInstallMsgVCPlusPlus"
+                                   TextWrapping="Wrap"
+                                   Text="{x:Static props:Resources.PreInstallProcess_MessageMain}"
+                                   Width="269"
+                                   Height="25" />
+                        <Image Visibility="Visible"
+                               Source="pack://application:,,,/Resourcefiles/Images/tick.png"
+                               Name="preInstallStatusImgVCPlusPlus"
+                               Margin="0,-2,0,0"
+                               Width="16"
+                               Height="16"
+                               RenderTransformOrigin="1.651,2.784" />
+                        <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBarVCPlusPlus"
+                                                            Margin="0,-2,0,0"
+                                                            Height="20"
+                                                            Width="20" />
+                    </StackPanel>
+                    <!-- End VC++ 2k8 SP1 -->
                     <StackPanel Orientation="Vertical"
                                 Margin="0,10,0,5">
                         <CheckBox Style="{StaticResource CheckBoxStyle}"
