@@ -84,7 +84,7 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Datalist Handling
-        private void CreateDataList()
+        private void CreateDataList(IList<IIntellisenseResult> results = null)
         {
             StringBuilder result = new StringBuilder("<ADL>");
             ObservableCollection<IDataListItemModel> dataList = null;
@@ -109,16 +109,25 @@ namespace Dev2.Studio.InterfaceImplementors
 
             result.Append("</ADL>");
 
-            if(wasRebuilt)
+            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
+                  DataListSingleton.ActiveDataList.Resource.DataList != null)
             {
-                //   _cachedDataList = result.ToString();
-                if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
-                    DataListSingleton.ActiveDataList.Resource.DataList != null)
+                if(DataListSingleton.ActiveDataList.HasErrors && results != null)
+                {
+                    var errors = DataListSingleton.ActiveDataList.DataListErrorMessage.Split(Environment.NewLine.ToCharArray());
+                    foreach(var error in errors)
+                    {
+                        results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error, enIntellisenseErrorCode.SyntaxError, true));
+                    }
+                }
+
+                if(wasRebuilt)
                 {
                     _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
                 }
             }
         }
+    
         #endregion
 
         #region Result Handling
@@ -533,7 +542,12 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             IList<IIntellisenseResult> results = new List<IIntellisenseResult>();
 
-            CreateDataList();
+            CreateDataList(results);
+
+            if(results.Count > 0)
+            {
+                return results;
+            }
 
             IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO { FilterType = filterType, FilterCondition = FilterCondition };
 
