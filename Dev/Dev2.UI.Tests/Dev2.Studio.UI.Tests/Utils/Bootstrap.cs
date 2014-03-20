@@ -265,17 +265,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                 try
                 {
                     process.Get();
-                }
-                catch
-                {
-                    // Do nothing
-                }
-                var pid = process.Properties["ProcessID"].Value.ToString();
-
-                var proc = Process.GetProcessById(Int32.Parse(pid));
-
-                try
-                {
+                    var pid = process.Properties["ProcessID"].Value.ToString();
+                    var proc = Process.GetProcessById(Int32.Parse(pid));
                     proc.Kill();
                 }
                 catch
