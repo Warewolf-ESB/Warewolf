@@ -167,15 +167,19 @@ namespace Gui
                     File.WriteAllBytes(fileName, bytes);
                 }
 
+                // now move so it has an msi name ;)
+                var newName = fileName + ".msi";
+                File.Move(fileName, newName);
+
                 // Now run the installer in /q mode
-                ProcessStartInfo psi = new ProcessStartInfo(fileName, "/q");
+                ProcessStartInfo psi = new ProcessStartInfo(newName, "/q");
                 var vcProc = Process.Start(psi);
 
                 // wait for up to a minute
                 vcProc.WaitForExit(60000);
 
                 // remove tmp file
-                File.Delete(fileName);
+                File.Delete(newName);
 
                 // check that it installed
                 if(vcProc.ExitCode != 0)
