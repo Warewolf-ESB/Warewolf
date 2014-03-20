@@ -48,6 +48,9 @@
             <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618EE58912}">
                 <File Id="filD16B434756BC4373AB0857E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.Tracker.dll" />
             </Component>
+            <Component Id="cmp26CB4A13CD472B8C7EA7DB6D14D1B084" Directory="dirServerRoot" Guid="{2AB10AFE-5D87-4FBC-98AA-554CDA24BA81}">
+                <File Id="filBF12C5483BDDA7EA52161ACDE3FD4FFC" KeyPath="yes" Source="..\ProductBuild\Server\Vestris.ResourceLib.dll" />
+            </Component>
             <Component Id="cmpE9EC7D9921B14EE5BA2FB1817B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8171-1D1B-9C4E-DF618EE58912}">
                 <File Id="filD16B434756BC4373AB0857E4FAFA516C" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.x64.dll" />
             </Component>
