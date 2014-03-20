@@ -170,12 +170,7 @@ namespace Gui
 
                 Process p = Process.Start(psi);
 
-                int cnt = 0;
-                while(p != null && (cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited))
-                {
-                    Thread.Sleep(1000);
-                    cnt++;
-                }
+                p.WaitForExit(InstallVariables.DefaultWaitInSeconds);
 
                 // now try and start the service ;)
                 if(sc.Status == ServiceControllerStatus.Stopped)
@@ -192,15 +187,13 @@ namespace Gui
                     else
                     {
                         // wait a bit more ;)
-                        cnt = 0;
-                        while(cnt < InstallVariables.DefaultWaitInSeconds && !_serviceInstalled)
+
+                        sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+
+                        if(sc.Status == ServiceControllerStatus.Running)
                         {
-                            Thread.Sleep(1000);
-                            if(sc.Status == ServiceControllerStatus.Running)
-                            {
-                                _serviceInstalled = true;
-                            }
-                            cnt++;
+                            _serviceInstalled = true;
                         }
                     }
                 }
