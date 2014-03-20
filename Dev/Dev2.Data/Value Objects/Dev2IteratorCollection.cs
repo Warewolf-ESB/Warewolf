@@ -1,12 +1,14 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract.Value_Objects
 {
     public class Dev2IteratorCollection : IDev2IteratorCollection
     {
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
         private IList<IDev2DataListEvaluateIterator> _itrCollection = new List<IDev2DataListEvaluateIterator>();
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         internal Dev2IteratorCollection() { }
 
@@ -20,12 +22,12 @@ namespace Dev2.DataList.Contract.Value_Objects
         public IBinaryDataListItem FetchNextRow(IDev2DataListEvaluateIterator itr)
         {
             IBinaryDataListItem result = null;
-            IList<IBinaryDataListItem> tmp = new List<IBinaryDataListItem>();
+            IList<IBinaryDataListItem> tmp;
 
             int idx = _itrCollection.IndexOf(itr);
-            if (idx >= 0)
+            if(idx >= 0)
             {
-                if (_itrCollection[idx].HasMoreRecords())
+                if(_itrCollection[idx].HasMoreRecords())
                 {
                     tmp = _itrCollection[idx].FetchNextRowData();
                     if(tmp != null)
@@ -47,9 +49,9 @@ namespace Dev2.DataList.Contract.Value_Objects
                 else
                 {
                     tmp = _itrCollection[idx].FetchNextRowData();
-                    if (tmp != null)
+                    if(tmp != null)
                     {
-                        result = tmp[0];    
+                        result = tmp[0];
                     }
                 }
             }
@@ -61,9 +63,9 @@ namespace Dev2.DataList.Contract.Value_Objects
         {
             bool result = false;
 
-            foreach (IDev2DataListEvaluateIterator itr in _itrCollection)
+            foreach(IDev2DataListEvaluateIterator itr in _itrCollection)
             {
-                if (itr.HasMoreRecords())
+                if(itr.HasMoreRecords())
                 {
                     result = true;
                 }

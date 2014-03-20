@@ -41,7 +41,9 @@ namespace Dev2.DataList
         private static void SortRecordsetOptions()
         {
             Dictionary<string, IFindRecsetOptions> tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(string findRecordsOperation in GlobalConstants.FindRecordsOperations)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType() == findRecordsOperation);
                 if(!string.IsNullOrEmpty(firstOrDefault.Key))
@@ -63,7 +65,7 @@ namespace Dev2.DataList
             IFindRecsetOptions result;
             if(!_options.TryGetValue(expressionType, out result))
             {
-                result = null;
+                return null;
             }
 
             return result;
@@ -72,7 +74,6 @@ namespace Dev2.DataList
         /// <summary>
         /// Find all AbstractRecsetSearchValidation objects
         /// </summary>
-        /// <param name="expressionType"></param>
         /// <returns></returns>
         public static IList<IFindRecsetOptions> FindAll()
         {

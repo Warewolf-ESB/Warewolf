@@ -10,11 +10,6 @@ namespace Dev2.BussinessLogic
 {
     public class RsOpNotBinary : AbstractRecsetSearchValidation
     {
-        public RsOpNotBinary()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
@@ -22,7 +17,7 @@ namespace Dev2.BussinessLogic
 
             result = () =>
             {
-                ErrorResultTO err = new ErrorResultTO();
+                ErrorResultTO err;
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 

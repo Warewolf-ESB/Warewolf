@@ -2,11 +2,12 @@
 
 namespace Dev2.DataList.Contract
 {
-    public class DataListVerifyPart : IDataListVerifyPart {
+    public class DataListVerifyPart : IDataListVerifyPart
+    {
 
         public string DisplayValue { get; private set; }
 
-        public string Recordset { get; private set;  }
+        public string Recordset { get; private set; }
 
         public string Field { get; private set; }
 
@@ -14,17 +15,21 @@ namespace Dev2.DataList.Contract
 
         public string RecordsetIndex { get; private set; }
 
-        public bool HasRecordsetIndex {
+        public bool HasRecordsetIndex
+        {
 
-            get{
+            get
+            {
                 return (RecordsetIndex != string.Empty);
             }
 
         }
 
-        public bool IsScalar {
+        public bool IsScalar
+        {
 
-            get {
+            get
+            {
                 return (Recordset.Length == 0);
             }
         }
@@ -36,12 +41,15 @@ namespace Dev2.DataList.Contract
         internal DataListVerifyPart(string recordset, string field, string description) : this(recordset, field, description, string.Empty) { }
 
 
-        internal DataListVerifyPart(string recordset, string field, string description, string index, bool useRaw = false) {
+        internal DataListVerifyPart(string recordset, string field, string description, string index, bool useRaw = false)
+        {
             Recordset = recordset;
             RecordsetIndex = index;
 
-             if (recordset != null) {
-                if (recordset.Contains("[") && recordset.Contains("]")) {
+            if(recordset != null)
+            {
+                if(recordset.Contains("[") && recordset.Contains("]"))
+                {
                     int start = recordset.IndexOf("(", System.StringComparison.Ordinal);
                     if(start != -1)
                     {
@@ -58,9 +66,9 @@ namespace Dev2.DataList.Contract
             Description = description;
 
 
-            if (useRaw)
+            if(useRaw)
             {
-                if (field.Length > 0)
+                if(field.Length > 0)
                 {
                     DisplayValue = "[[" + recordset + field + "]]";
                 }
@@ -71,10 +79,10 @@ namespace Dev2.DataList.Contract
             }
             else
             {
-                if (string.IsNullOrEmpty(Recordset))
+                if(string.IsNullOrEmpty(Recordset))
                 {
                     Recordset = string.Empty;
-                    if (field.Contains("(") && !field.Contains(")"))
+                    if(field.Contains("(") && !field.Contains(")"))
                     {
                         DisplayValue = "[[" + field;
                     }
@@ -85,9 +93,9 @@ namespace Dev2.DataList.Contract
                 }
                 else
                 {
-                    if (field.Length > 0)
+                    if(field.Length > 0)
                     {
-                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
 
@@ -100,7 +108,7 @@ namespace Dev2.DataList.Contract
                     }
                     else
                     {
-                        if (recordset.Contains("(") && recordset.Contains(")"))
+                        if(recordset != null && (recordset.Contains("(") && recordset.Contains(")")))
                         {
                             string tmp = recordset.Substring(0, recordset.IndexOf("(", System.StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";

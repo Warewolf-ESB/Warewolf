@@ -16,8 +16,6 @@ namespace Dev2.Activities
 
         protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
-
             var execErrors = new ErrorResultTO();
             var compiler = DataListFactory.CreateDataListCompiler();
             var oldID = dataObject.DataListID;

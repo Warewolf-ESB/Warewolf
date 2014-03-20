@@ -12,11 +12,6 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpLessThan : AbstractRecsetSearchValidation
     {
-        public RsOpLessThan()
-        {
-
-        }
-
         // Bug 8725 - Fixed to be double rather than int
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
@@ -25,7 +20,7 @@ namespace Dev2.DataList
 
             result = () =>
             {
-                ErrorResultTO err = new ErrorResultTO();
+                ErrorResultTO err;
 
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();

@@ -1,9 +1,10 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.DataList
 {
@@ -12,26 +13,26 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpIsAlphanumeric : AbstractRecsetSearchValidation
     {
-        public RsOpIsAlphanumeric()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
+            // ReSharper disable RedundantAssignment
+            Func<IList<string>> result = () => null;
+            // ReSharper restore RedundantAssignment
 
-            result = () => {
-                ErrorResultTO err = new ErrorResultTO();
+            result = () =>
+            {
+                ErrorResultTO err;
 
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
-                   
-                    if (p.Payload.IsAlphaNumeric()) {
-                        fnResult.Add(p.Index.ToString());
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
+
+                    if(p.Payload.IsAlphaNumeric())
+                    {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {

@@ -13,18 +13,13 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpIsNumeric : AbstractRecsetSearchValidation
     {
-        public RsOpIsNumeric()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
             result = () => {
-                ErrorResultTO err = new ErrorResultTO();
+                ErrorResultTO err;
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 

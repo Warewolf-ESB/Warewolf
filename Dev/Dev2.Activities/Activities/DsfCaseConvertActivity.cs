@@ -1,4 +1,11 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
@@ -10,13 +17,6 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
-using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -25,15 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        /// <summary>
-        /// The property that holds all the convertions
-        /// </summary>
-        private IList<ICaseConvertTO> _wtf;
-        public IList<ICaseConvertTO> ConvertCollection
-        {
-            get { return _wtf; }
-            set { _wtf = value; }
-        }
+        public IList<ICaseConvertTO> ConvertCollection { get; set; }
 
         #endregion Properties
 
@@ -205,9 +197,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(openResultParts.Count() == closedResultParts.Count() && openResultParts.Count() > 2 && closedResultParts.Count() > 2)
                 {
                     string cleanResult;
-                    if(openResultParts[1].IndexOf("]]") + 2 < openResultParts[1].Length)
+                    if(openResultParts[1].IndexOf("]]", StringComparison.Ordinal) + 2 < openResultParts[1].Length)
                     {
-                        cleanResult = "[[" + openResultParts[1].Remove(openResultParts[1].IndexOf("]]") + 2);
+                        cleanResult = "[[" + openResultParts[1].Remove(openResultParts[1].IndexOf("]]", StringComparison.Ordinal) + 2);
                     }
                     else
                     {
@@ -218,7 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     //Add back data after line break
                     ICaseConvertTO splitLineBreak = new CaseConvertTO();
-                    splitLineBreak.Result = result.Substring(result.IndexOf(openResultParts[2]) - 2, result.Length - result.IndexOf(openResultParts[2]) + 2);
+                    splitLineBreak.Result = result.Substring(result.IndexOf(openResultParts[2], StringComparison.Ordinal) - 2, result.Length - result.IndexOf(openResultParts[2], StringComparison.Ordinal) + 2);
                     splitLineBreak.StringToConvert = splitLineBreak.Result;
 
                     //Add back to the end to avoid disturbing index numbering
@@ -229,7 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else if(openInputParts.Count() == closedInputParts.Count() && openInputParts.Count() > 2 && closedInputParts.Count() > 2)
                 {
                     //Handle corrupted result
-                    ConvertCollection[count].Result += input.Substring(input.IndexOf("]]") + 2, input.Length - input.IndexOf("]]") - 2);
+                    ConvertCollection[count].Result += input.Substring(input.IndexOf("]]", StringComparison.Ordinal) + 2, input.Length - input.IndexOf("]]", StringComparison.Ordinal) - 2);
                 }
                 else if(string.IsNullOrWhiteSpace(ConvertCollection[count].StringToConvert))
                 {
@@ -242,45 +234,53 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                List<ICaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                if(listOfValidRows.Count > 0)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
-                    foreach(string s in listToAdd)
+                    List<ICaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                    if(listOfValidRows.Count > 0)
                     {
-                        mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
-                        startIndex++;
+                        int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
+                        foreach(string s in listToAdd)
+                        {
+                            mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+                            startIndex++;
+                        }
+                        CleanUpCollection(mic, modelItem, startIndex);
                     }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
-                else
-                {
-                    AddToCollection(listToAdd, modelItem);
+                    else
+                    {
+                        AddToCollection(listToAdd, modelItem);
+                    }
                 }
             }
         }
 
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                int startIndex = 0;
-                string firstRowConvertType = ConvertCollection[0].ConvertType;
-                mic.Clear();
-                foreach(string s in listToAdd)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    mic.Add(new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
-                    startIndex++;
+                    int startIndex = 0;
+                    string firstRowConvertType = ConvertCollection[0].ConvertType;
+                    mic.Clear();
+                    foreach(string s in listToAdd)
+                    {
+                        mic.Add(new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
             }
         }
 
@@ -291,25 +291,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new CaseConvertTO(string.Empty, "UPPER", string.Empty, startIndex + 1));
-            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            }
         }
 
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
             {
-                if(currentName.Contains(" ("))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    if(currentName.Contains(" ("))
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
+
+            return string.Empty;
         }
 
         #endregion Private Methods
@@ -381,7 +391,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var item in ConvertCollection)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(!string.IsNullOrEmpty(item.StringToConvert) && item.StringToConvert.Contains("[["))
                 {
@@ -396,7 +408,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var item in ConvertCollection)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(!string.IsNullOrEmpty(item.StringToConvert) && item.StringToConvert.Contains("[["))
                 {

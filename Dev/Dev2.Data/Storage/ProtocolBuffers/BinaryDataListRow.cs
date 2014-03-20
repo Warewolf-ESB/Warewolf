@@ -270,12 +270,6 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                         if(candiateLen > len)
                         {
 
-                            // first clear the old storage location ;)
-                            //for(int i = start; i < len; i++)
-                            //{
-                            //    _rowData[i] = '\0';
-                            //}
-
                             // do we have space
                             int requiredSize = (_usedStorage + candiateLen);
                             if(requiredSize >= _storageCapacity)

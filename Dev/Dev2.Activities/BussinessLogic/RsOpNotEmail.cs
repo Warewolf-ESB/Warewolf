@@ -12,11 +12,6 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpNotEmail : AbstractRecsetSearchValidation
     {
-        public RsOpNotEmail()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
 
@@ -24,7 +19,7 @@ namespace Dev2.DataList
             Func<IList<string>> result = () => { return null; };
 
             result = () => {
-                ErrorResultTO err = new ErrorResultTO();
+                ErrorResultTO err;
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 

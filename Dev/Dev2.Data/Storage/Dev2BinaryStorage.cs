@@ -92,8 +92,6 @@ namespace Dev2.Data.Storage
     {
         public static InternalStorageBuffer scrubBuffer;
 
-        //private static readonly object _lock = new object();
-
         public static void Init(int bufCap)
         {
             scrubBuffer = new InternalStorageBuffer { Buffer = new byte[bufCap], Capacity = bufCap, UsedStorage = 0 };
@@ -106,8 +104,6 @@ namespace Dev2.Data.Storage
         /// <param name="indexs">The indexes.</param>
         public static void Compact(ref InternalStorageBuffer fromBuffer, ref ConcurrentDictionary<string, BinaryStorageKey> indexs)
         {
-            // lock(_lock)
-            //{
             scrubBuffer.ResetBuffer();
 
             foreach(var storageKey in indexs.Keys)
@@ -127,15 +123,12 @@ namespace Dev2.Data.Storage
 
                     indexs[storageKey] = tmpKey;
                 }
-
-                //Thread.Sleep(10);
             }
 
             // now copy over the data ;)
             fromBuffer.ResetBuffer();
             scrubBuffer.TransferTo(ref fromBuffer);
         }
-        // }
     }
 
     /// <summary>

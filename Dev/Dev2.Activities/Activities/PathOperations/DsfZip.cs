@@ -1,4 +1,7 @@
-﻿using Dev2.Activities;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
@@ -6,9 +9,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -68,7 +68,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void AddDebugInputItems(Guid executionId)
         {
-            //AddDebugInputItemPassword("Archive Password", ArchivePassword);
             AddDebugInputItem(CompressionRatio, "Compression Ratio", _compressionRatioEntry, executionId);
         }
 
@@ -109,29 +108,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
-                if (t.Item1 == ArchiveName)
+                if(t.Item1 == ArchiveName)
                 {
                     ArchiveName = t.Item2;
                 }
 
-                if (t.Item1 == ArchivePassword)
+                if(t.Item1 == ArchivePassword)
                 {
                     ArchivePassword = t.Item2;
                 }
 
-                if (t.Item1 == CompressionRatio)
+                if(t.Item1 == CompressionRatio)
                 {
                     CompressionRatio = t.Item2;
                 }
 
-                if (t.Item1 == InputPath)
+                if(t.Item1 == InputPath)
                 {
                     InputPath = t.Item2;
                 }
 
-                if (t.Item1 == OutputPath)
+                if(t.Item1 == OutputPath)
                 {
                     OutputPath = t.Item2;
                 }
@@ -140,7 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

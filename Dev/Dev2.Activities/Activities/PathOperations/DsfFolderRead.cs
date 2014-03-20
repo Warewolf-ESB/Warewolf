@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -41,7 +42,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
@@ -95,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 foreach(IActivityIOPath pa in ListOfDir)
                                 {
                                     string FullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                        indexToUpsertTo.ToString());
+                                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(FullRecsetName), pa.Path));
                                     indexToUpsertTo++;
                                 }

@@ -28,13 +28,11 @@ namespace Dev2.Activities
 
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
-        //        private new List<DebugItem> _debugInputs = new List<DebugItem>();
-        //        private new List<DebugItem> _debugOutputs = new List<DebugItem>();
 
         #endregion
 
         /// <summary>
-        /// The property that holds all the convertions
+        /// The property that holds all the conversions
         /// </summary>
 
         public EmailSource SelectedEmailSource { get; set; }
@@ -185,7 +183,7 @@ namespace Dev2.Activities
                             if(String.IsNullOrEmpty(fromAccount))
                             {
                                 fromAccount = runtimeSource.UserName;
-                                AddDebugInputItem(fromAccount, "From Account" );
+                                AddDebugInputItem(fromAccount, "From Account");
                             }
                             else
                             {

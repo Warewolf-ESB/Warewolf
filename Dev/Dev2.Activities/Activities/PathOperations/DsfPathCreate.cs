@@ -63,7 +63,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(new DebugItemVariableParams(OutputPath, "File or Folder", outputPathEntry, executionId));
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                //                AddDebugInputItem(new DebugItemVariableParams(Username, "Username", usernameEntry, executionId));
             }
 
             while(colItr.HasMoreData())

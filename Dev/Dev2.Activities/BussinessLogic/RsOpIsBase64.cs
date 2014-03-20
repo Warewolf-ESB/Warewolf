@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList;
@@ -10,25 +11,25 @@ namespace Dev2.BussinessLogic
 {
     public class RsOpIsBase64 : AbstractRecsetSearchValidation
     {
-        public RsOpIsBase64()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
+            // ReSharper disable RedundantAssignment
+            Func<IList<string>> result = () => null;
+            // ReSharper restore RedundantAssignment
 
-            result = () => {
-                ErrorResultTO err = new ErrorResultTO();
+            result = () =>
+            {
+                ErrorResultTO err;
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
 
-                    if (p.Payload.IsBase64()) {
-                        fnResult.Add(p.Index.ToString());
+                    if(p.Payload.IsBase64())
+                    {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {

@@ -1,4 +1,10 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -10,12 +16,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -197,18 +197,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        // ReSharper disable UnusedParameter.Local
         void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert, Guid executionID)
+        // ReSharper restore UnusedParameter.Local
         {
             int innerCount = 1;
 
             foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
             {
                 var debugItem = new DebugItem();
-                //AddDebugItem(new DebugItemVariableParams(debugOutputTO.Expression, "Variable", debugOutputTO.FromEntry, executionID), debugItem);
-                //AddDebugItem(new DebugItemVariableParams(debugOutputTO.Value, "New Value", debugOutputTO.ValueEntry, executionID), debugItem);
-                //_debugInputs.Add(debugItem);
-
-                //debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                 AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
                 innerCount++;

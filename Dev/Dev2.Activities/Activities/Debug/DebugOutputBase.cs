@@ -59,7 +59,6 @@ namespace Dev2.Activities.Debug
             // handle our standard debug output ;)
             if(dlEntry.ComplexExpressionAuditor == null)
             {
-                // string groupName = null;
                 int groupIndex = 0;
                 enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
                 if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
@@ -90,7 +89,6 @@ namespace Dev2.Activities.Debug
                 {
                     if(DataListUtil.IsValueRecordset(expression) && (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                     {
-                        //groupName = expression;
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                         IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
                         if(indexToUse == -1)
@@ -369,9 +367,9 @@ namespace Dev2.Activities.Debug
                     {
                         grpIdx = Int32.Parse(DataListUtil.ExtractIndexRegionFromRecordset(item.TokenBinding));
                     }
-                        // ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch(Exception)
-                        // ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Best effort ;)
                     }
@@ -398,7 +396,7 @@ namespace Dev2.Activities.Debug
                 IList<IBinaryDataListItem> record = dlEntry.FetchRecordAt(index, out error);
                 // ReSharper disable LoopCanBeConvertedToQuery
                 foreach(IBinaryDataListItem recordField in record)
-                    // ReSharper restore LoopCanBeConvertedToQuery
+                // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     GetValue(dlEntry, value, iterCnt, fieldName, indexType, results, initExpression, recordField, index, false, labelText);
                 }
