@@ -15,5 +15,12 @@ namespace Gui.Utility
             var assembly = Assembly.GetExecutingAssembly();
             return assembly.GetManifestResourceStream(resourceName);
         }
+
+        public static Stream FetchDependency(string name)
+        {
+            var resourceName = string.Format("Gui.UnpackResources.Dependencies.{0}", name);
+            var assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetManifestResourceStream(resourceName);   
+        }
     }
 }

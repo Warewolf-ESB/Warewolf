@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Gui.Utility;
+using Microsoft.Deployment.WindowsInstaller;
 using SharpSetup.UI.Wpf.Base;
 
 namespace Gui
@@ -93,11 +97,16 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-
-            CheckForAndInstallVCPlusPlus2k8sp1();
+            try
+            {
+                CheckForAndInstallVCPlusPlus2k8sp1();
+            }
+            catch(Exception e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
 
             StopServerService();
-
         }
 
         /// <summary>
@@ -105,11 +114,50 @@ namespace Gui
         /// </summary>
         private void CheckForAndInstallVCPlusPlus2k8sp1()
         {
-            // check registry key
+            // check registry key for vc++ 2k8 sp1
+            if(!IsVCPlusPlus2k8Sp1Installed())
+            {
+                var stream = ResourceExtractor.FetchDependency("vc_2k8_sp1_x86_red_2.msi");
 
-            // if not found, install
+                if(stream == null)
+                {
+                    return;
+                }
 
-            // if found skip
+                var fileName = Path.GetTempFileName();
+                var streamLength = stream.Length;
+                var bytes = new byte[streamLength];
+
+                using(stream)
+                {
+                    stream.Read(bytes, 0, (int)streamLength);
+                    // TODO : Write stream to TMP directory and run ;)
+                    File.WriteAllBytes(fileName, bytes);
+                }
+
+                // Now run the installer in /q mode
+                ProcessStartInfo psi = new ProcessStartInfo(fileName, "/q");
+                var vcProc = Process.Start(psi);
+
+                // wait for up to a minute
+                vcProc.WaitForExit(60000);
+
+                // remove tmp file
+                File.Delete(fileName);
+
+                // check that it installed
+                if(vcProc.ExitCode != 0)
+                {
+                    throw new Exception("Failed to install dependency");
+                }
+            }
+        }
+
+        public static bool IsVCPlusPlus2k8Sp1Installed()
+        {
+            ProductInstallation productInstallation = new ProductInstallation(InstallVariables.Vcplusplus2k8sp1x86Key, null, UserContexts.Machine);
+
+            return productInstallation.IsInstalled;
         }
 
         /// <summary>
