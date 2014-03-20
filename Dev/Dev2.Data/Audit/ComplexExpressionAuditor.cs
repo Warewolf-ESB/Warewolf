@@ -47,14 +47,14 @@ namespace Dev2.Data.Audit
         public void AddAuditStep(string currentExpression, string boundPart, string token, int pass, string boundValue, string rawExpression)
         {
             _auditItems.Add(new ComplexExpressionAuditItem
-                {
-                    Expression = currentExpression,
-                    Token = token,
-                    TokenBinding = boundPart,
-                    PassNumber = pass,
-                    BoundValue = boundValue,
-                    RawExpression = rawExpression,
-                });
+            {
+                Expression = currentExpression,
+                Token = token,
+                TokenBinding = boundPart,
+                PassNumber = pass,
+                BoundValue = boundValue,
+                RawExpression = rawExpression,
+            });
         }
 
         /// <summary>
@@ -76,9 +76,9 @@ namespace Dev2.Data.Audit
                 return result.ToList();
             }
 
-            // single pass generation, skip the compile phase ;)
-            return _auditItems;
-        }
+                // single pass generation, skip the compile phase ;)
+                return _auditItems;
+            }
 
         public void SetMaxIndex(int expIdx)
         {

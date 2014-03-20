@@ -1,40 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.IO;
+using System.Text;
 
-namespace Dev2.PathOperations {
-    
+namespace Dev2.PathOperations
+{
+
     /// <summary>
     /// PBI : 1172
     /// Status : New
     /// Purpose : To provide common utilty function to the IOPath classes
     /// </summary>
-    public static class Dev2ActivityIOPathUtils {
+    public static class Dev2ActivityIOPathUtils
+    {
 
         /// <summary>
         /// Extract the full directory portion of a URI
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string ExtractFullDirectoryPath(string path) {
+        public static string ExtractFullDirectoryPath(string path)
+        {
             string result = path;
             StringBuilder tmpBuilder = new StringBuilder();
 
-            if (!IsDirectory(path)) {
+            if(!IsDirectory(path))
+            {
                 char spliter = '/';
 
                 string[] tmp = path.Split(spliter);
 
 
-                if (tmp.Length == 1) {
+                if(tmp.Length == 1)
+                {
                     spliter = '\\';
                     tmp = path.Split(spliter);
                 }
 
-                for (int i = 0; i < (tmp.Length - 1); i++) {
+                for(int i = 0; i < (tmp.Length - 1); i++)
+                {
                     tmpBuilder.Append(tmp[i] + spliter);
                 }
 
@@ -49,8 +53,9 @@ namespace Dev2.PathOperations {
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string ExtractFileName(string path) {
-            string result = string.Empty;
+        public static string ExtractFileName(string path)
+        {
+            string result;
 
             try
             {
@@ -78,14 +83,16 @@ namespace Dev2.PathOperations {
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool IsStarWildCard(string path) {
+        public static bool IsStarWildCard(string path)
+        {
             bool result = false;
 
             Uri uri = new Uri(path);
-           
+
             string fileName = Path.GetFileName(uri.LocalPath);
 
-            if (fileName.Contains("*") || fileName.Contains("?")) {
+            if(fileName != null && (fileName.Contains("*") || fileName.Contains("?")))
+            {
                 result = true;
             }
 
@@ -97,7 +104,8 @@ namespace Dev2.PathOperations {
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool IsDirectory(string path) {
+        public static bool IsDirectory(string path)
+        {
             bool result = false;
 
             if(path.Contains("ftp://") || path.Contains("ftps://") || path.Contains("sftp://"))
@@ -107,21 +115,28 @@ namespace Dev2.PathOperations {
                 return !isFile;
             }
 
-            if (path.EndsWith("\\") || path.EndsWith("/")) {
+            if(path.EndsWith("\\") || path.EndsWith("/"))
+            {
                 result = true;
             }
-            else {
-                int idx = path.LastIndexOf("\\");
+            else
+            {
+                int idx = path.LastIndexOf("\\", StringComparison.Ordinal);
 
-                if (idx > 0) {
-                    if (!path.Substring(idx).Contains(".")) {
+                if(idx > 0)
+                {
+                    if(!path.Substring(idx).Contains("."))
+                    {
                         result = true;
                     }
                 }
-                else {
-                    idx = path.LastIndexOf("/");
-                    if (idx > 0) {
-                        if (!path.Substring(idx).Contains(".")) {
+                else
+                {
+                    idx = path.LastIndexOf("/", StringComparison.Ordinal);
+                    if(idx > 0)
+                    {
+                        if(!path.Substring(idx).Contains("."))
+                        {
                             result = true;
                         }
                     }
@@ -136,28 +151,33 @@ namespace Dev2.PathOperations {
         /// </summary>
         /// <param name="pathList"></param>
         /// <returns></returns>
-        public static string ConvertDirectoryListToXML(IList<IActivityIOPath> pathList) {
+        public static string ConvertDirectoryListToXML(IList<IActivityIOPath> pathList)
+        {
 
             StringBuilder result = new StringBuilder();
 
-            foreach (IActivityIOPath p in pathList) {
+            foreach(IActivityIOPath p in pathList)
+            {
                 result.Append(p.ToXML());
             }
 
             return result.ToString();
         }
 
-        public static enActivityIOPathType ExtractPathType(string path) {
+        public static enActivityIOPathType ExtractPathType(string path)
+        {
             enActivityIOPathType result = enActivityIOPathType.Invalid;
 
             Array vals = Enum.GetValues(typeof(enActivityIOPathType));
 
             int pos = 0;
 
-            while (pos < vals.Length && result == enActivityIOPathType.Invalid) {
-                string toCheck = vals.GetValue(pos).ToString() + ":";
+            while(pos < vals.Length && result == enActivityIOPathType.Invalid)
+            {
+                string toCheck = vals.GetValue(pos) + ":";
                 string checkPath = path.ToUpper();
-                if ( checkPath.StartsWith(toCheck) ) {
+                if(checkPath.StartsWith(toCheck))
+                {
                     result = (enActivityIOPathType)vals.GetValue(pos);
                 }
 
