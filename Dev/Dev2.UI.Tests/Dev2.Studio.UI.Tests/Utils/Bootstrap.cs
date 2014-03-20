@@ -83,12 +83,12 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     CleanWarewolfAppData();
 
-                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
+                    ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
                     StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + StudioName;
                     if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
-                        {
-                            //Try start
-                            StartServer();
+                    {
+                        //Try start
+                        StartServer();
                         ServerLocation = GetProcessPath(serverProcess);
                         if(buildLabel.LoggingURL != string.Empty)
                         {
@@ -262,7 +262,14 @@ namespace Dev2.Studio.UI.Tests.Utils
             foreach(ManagementObject process in processes)
             {
                 //print process properties
-                process.Get();
+                try
+                {
+                    process.Get();
+                }
+                catch
+                {
+                    // Do nothing
+                }
                 var pid = process.Properties["ProcessID"].Value.ToString();
 
                 var proc = Process.GetProcessById(Int32.Parse(pid));
