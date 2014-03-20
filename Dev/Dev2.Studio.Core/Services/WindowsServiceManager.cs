@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.Services
 
         public bool Start()
         {
-            bool result = true;
+            bool result;
 
             try
             {
@@ -58,15 +58,9 @@ namespace Dev2.Studio.Core.Services
                 if(controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
-                    int pollCount = 0;
-                    controller.Refresh();
-                    while(controller.Status != ServiceControllerStatus.Running || pollCount > 60)
-                    {
-                        controller.Refresh();
-                        pollCount++;
-                        Thread.Sleep(500);
-                    }
+                    controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(120));
                 }
+                result = controller.Status == ServiceControllerStatus.Running;
             }
             catch(InvalidOperationException)
             {
