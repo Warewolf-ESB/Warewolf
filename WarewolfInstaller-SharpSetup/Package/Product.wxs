@@ -5,7 +5,7 @@
     <Package Id="*" InstallerVersion="400" Compressed="yes" InstallPrivileges="elevated" AdminImage="yes"/> <!-- limited -->
     <Media Id="1" Cabinet="media1.cab" EmbedCab="no" CompressionLevel="high" />
     <Property Id="INSTALLLEVEL" Value="100" />
-    <Property Id="ALLUSERS" Value="1" /> <!-- was 1, trying 2 for installer issues ;) -->
+    <Property Id="ALLUSERS" Value="2" /> <!-- was 1, trying 2 for installer issues ;) -->
     <Property Id="TEST" Value="NO" />
     <Property Id="INSTALLSHORTCUT" Value="1" /> <!-- Set from installer for shortcut creation -->
     <Icon Id="icon.ico" SourceFile="..\ProductBuild\Warewolf.ico" />
