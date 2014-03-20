@@ -1774,12 +1774,10 @@ Leaving the Archive Password blank will result in no password being required to 
     <value>Should each criteria be met?</value>
   </data>
   <data name="RecordsLengthHelpRecordset" xml:space="preserve">
-    <value>To get recordset's length, put the recordset name in here. E.g. [[Customer()]]</value>
+    <value>To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
   </data>
   <data name="RecordsLengthHelpResult" xml:space="preserve">
-    <value>Only variables go in here. Returns a number specifying the length of a recordset.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+    <value>Only variables go in here. Returns a number specifying the highest index / max index in the recordset.</value>
   </data>
   <data name="RecordsLengthToolTipRecordset" xml:space="preserve">
     <value>[[Recordset()]]</value>

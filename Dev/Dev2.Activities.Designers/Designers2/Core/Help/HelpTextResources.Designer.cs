@@ -2466,7 +2466,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To get recordset&apos;s length, put the recordset name in here. E.g. [[Customer()]].
+        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
         /// </summary>
         public static string RecordsLengthHelpRecordset {
             get {
@@ -2475,9 +2475,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the length of a recordset.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset..
         /// </summary>
         public static string RecordsLengthHelpResult {
             get {
