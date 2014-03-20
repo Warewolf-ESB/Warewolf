@@ -149,7 +149,7 @@ namespace Gui
             // check registry key for vc++ 2k8 sp1
             if(!IsVCPlusPlus2k8Sp1Installed())
             {
-                var stream = ResourceExtractor.FetchDependency("vc_2k8_sp1_x86_red_2.msi");
+                var stream = ResourceExtractor.FetchDependency("vcredist_x86.exe");
 
                 if(stream == null)
                 {
@@ -168,7 +168,7 @@ namespace Gui
                 }
 
                 // now move so it has an msi name ;)
-                var newName = fileName + ".msi";
+                var newName = fileName + ".exe";
                 File.Move(fileName, newName);
 
                 // Now run the installer in /q mode
