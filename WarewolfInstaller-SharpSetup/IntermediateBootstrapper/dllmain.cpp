@@ -19,8 +19,8 @@ public:
 		if(!isInstalledDotNet(&pm, L"4.5"))
 			installDotNet(&pm, L"4.5", 2);*/
 
-		pm.getFiles();
-		pm.performInstall();
+		//pm.getFiles();
+		//pm.performInstall();
 		
 		return pm.finalize();
 	}
