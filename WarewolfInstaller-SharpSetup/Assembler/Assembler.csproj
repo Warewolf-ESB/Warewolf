@@ -72,4 +72,9 @@
     <IncludeInCab Include="Files\Microsoft.Deployment.WindowsInstaller.dll" />
     <IncludeInCab Include="Files\Microsoft.Deployment.WindowsInstaller.Package.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Prerequisite Include="Prerequisites\dotnet.sspf">
+      <SubType>Designer</SubType>
+    </Prerequisite>
+  </ItemGroup>
 </Project>
