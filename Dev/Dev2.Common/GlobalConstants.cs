@@ -268,7 +268,7 @@ namespace Dev2.Common
 
 
         // Limit WF execution
-        public static int MaxWorkflowsToExecute = 4;
+        public static int MaxWorkflowsToExecute = 10;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
     }
