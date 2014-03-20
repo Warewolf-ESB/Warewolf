@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.ServiceProcess;
@@ -16,6 +17,8 @@ namespace Gui
     /// </summary>
     public partial class PreInstallProcess
     {
+        private bool _vcInstalled;
+
         public PreInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
@@ -149,49 +152,75 @@ namespace Gui
             // check registry key for vc++ 2k8 sp1
             if(!IsVCPlusPlus2k8Sp1Installed())
             {
-                var stream = ResourceExtractor.FetchDependency("vcredist_x86.exe");
-
-                if(stream == null)
+                // Get the BackgroundWorker that raised this event.
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += delegate
                 {
-                    return;
-                }
+                    InstallVCPlusPlus2k8Sp1();
+                };
 
-                var fileName = Path.GetTempFileName();
-                var streamLength = stream.Length;
-                var bytes = new byte[streamLength];
-
-                using(stream)
+                worker.RunWorkerCompleted += delegate
                 {
-                    stream.Read(bytes, 0, (int)streamLength);
-                    // TODO : Write stream to TMP directory and run ;)
-                    File.WriteAllBytes(fileName, bytes);
-                }
+                    if(_vcInstalled)
+                    {
+                        SetSuccessMessasgeForDependencies("Dependencies Installed");
+                    }
+                    else
+                    {
+                        SetFailureMessage();
+                    }
+                };
 
-                // now move so it has an msi name ;)
-                var newName = fileName + ".exe";
-                File.Move(fileName, newName);
+                worker.RunWorkerAsync();
 
-                // Now run the installer in /q mode
-                ProcessStartInfo psi = new ProcessStartInfo(newName, "/q");
-                var vcProc = Process.Start(psi);
-
-                // wait for up to a minute
-                vcProc.WaitForExit(60000);
-
-                // remove tmp file
-                File.Delete(newName);
-
-                // check that it installed
-                if(vcProc.ExitCode != 0)
-                {
-                    throw new Exception("Failed to install dependencies");
-                }
-
-                SetSuccessMessasgeForDependencies("Dependencies Verified");
             }
             else
             {
                 SetSuccessMessasgeForDependencies("Dependencies Verified");
+            }
+        }
+
+        private void InstallVCPlusPlus2k8Sp1()
+        {
+
+            var stream = ResourceExtractor.FetchDependency("vcredist_x86.exe");
+
+            if(stream == null)
+            {
+                return;
+            }
+
+            var fileName = Path.GetTempFileName();
+            var streamLength = stream.Length;
+            var bytes = new byte[streamLength];
+
+            using(stream)
+            {
+                stream.Read(bytes, 0, (int)streamLength);
+                // TODO : Write stream to TMP directory and run ;)
+                File.WriteAllBytes(fileName, bytes);
+            }
+
+            // now move so it has an msi name ;)
+            var newName = fileName + ".exe";
+            File.Move(fileName, newName);
+
+            // Now run the installer in /q mode
+            ProcessStartInfo psi = new ProcessStartInfo(newName, "/q");
+            var vcProc = Process.Start(psi);
+
+            // wait for up to a minute
+            vcProc.WaitForExit(60000);
+
+            // remove tmp file
+            File.Delete(newName);
+
+            _vcInstalled = true;
+
+            // check that it installed
+            if(vcProc.ExitCode != 0)
+            {
+                _vcInstalled = false;
             }
         }
 
