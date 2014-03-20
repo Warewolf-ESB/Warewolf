@@ -105,7 +105,6 @@ namespace Dev2.Runtime.ESB.WF
 
             if(wfApp != null)
             {
-
                 wfApp.InstanceStore = InstanceStore;
 
                 if(executionExtensions != null)
