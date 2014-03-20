@@ -63,11 +63,6 @@
     </Prerequisite>
   </ItemGroup>
   <ItemGroup>
-    <Prerequisite Include="Prerequisites\vcredist.sspf">
-      <SubType>Designer</SubType>
-    </Prerequisite>
-  </ItemGroup>
-  <ItemGroup>
     <IncludeInCab Include="Files\Ionic.Zip.Reduced.dll" />
   </ItemGroup>
   <ItemGroup>

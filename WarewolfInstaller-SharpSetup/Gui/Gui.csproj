@@ -161,7 +161,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ResourceFiles\Depdencies\vc_red.msi" />
+    <None Include="ResourceFiles\Depdencies\vc_2k8_sp1_x86_red.msi" />
     <None Include="ResourceFiles\PrivacyStatement.rtf" />
     <None Include="ResourceFiles\WAREWOLF_EULA_EN.rtf" />
     <EmbeddedResource Include="UnpackResources\Samples.zip" />
