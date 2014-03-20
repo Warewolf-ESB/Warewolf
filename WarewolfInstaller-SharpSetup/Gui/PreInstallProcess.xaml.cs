@@ -134,6 +134,7 @@ namespace Gui
         {
             try
             {
+                
                 CheckForAndInstallVCPlusPlus2k8sp1();
             }
             catch(Exception e1)
