@@ -202,6 +202,7 @@ namespace Gui
                 }
                 else
                 {
+                    sc.Start();
                     // wait some more ;)
                     sc.WaitForStatus(ServiceControllerStatus.Running,
                                      TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
