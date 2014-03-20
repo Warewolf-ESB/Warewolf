@@ -237,17 +237,9 @@ namespace Gui
                 catch
                 {
                     _serviceInstallException = true;
-                    //MessageBox.Show(e.Message);
-                }
 
-                //MessageBox.Show(e.Message);
-                if(sc.Status == ServiceControllerStatus.Running)
-                {
-                    _serviceInstalled = true;
                 }
             }
-
-
         }
 
         /// <summary>
