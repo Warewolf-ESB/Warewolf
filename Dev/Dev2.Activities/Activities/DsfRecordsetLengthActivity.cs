@@ -20,44 +20,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Fields
 
-        private string _recordsetName;
-        private string _recordsLength;
-
         #endregion
 
         /// <summary>
         /// Gets or sets the name of the recordset.
         /// </summary>  
-        [Inputs("RecordsetName")]
-        [FindMissing]
-        public string RecordsetName
-        {
-            get
-            {
-                return _recordsetName;
-            }
-            set
-            {
-                _recordsetName = value;
-            }
-        }
+        [Inputs("RecordsetName"), FindMissing]
+        public string RecordsetName { get; set; }
 
         /// <summary>
         /// Gets or sets the count number.
         /// </summary>  
-        [Outputs("Length")]
-        [FindMissing]
-        public string RecordsLength
-        {
-            get
-            {
-                return _recordsLength;
-            }
-            set
-            {
-                _recordsLength = value;
-            }
-        }
+        [Outputs("Length"), FindMissing]
+        public string RecordsLength { get; set; }
 
         public DsfRecordsetLengthActivity()
             : base("Length")
