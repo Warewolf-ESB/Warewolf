@@ -68,4 +68,8 @@
   <ItemGroup>
     <IncludeInCab Include="Files\FirewallAPI.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\Microsoft.Deployment.WindowsInstaller.dll" />
+    <Content Include="Files\Microsoft.Deployment.WindowsInstaller.Package.dll" />
+  </ItemGroup>
 </Project>
