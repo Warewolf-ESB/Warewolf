@@ -60,6 +60,9 @@ namespace Gui
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
             btnRerun.Visibility = Visibility.Collapsed;
+
+            // all good allow next to be enabled ;)
+            CanGoNext = true;
         }
 
 
@@ -134,7 +137,6 @@ namespace Gui
         {
             try
             {
-                
                 CheckForAndInstallVCPlusPlus2k8sp1();
             }
             catch(Exception e1)
@@ -153,6 +155,9 @@ namespace Gui
             // check registry key for vc++ 2k8 sp1
             if(!IsVCPlusPlus2k8Sp1Installed())
             {
+                // disable the next button ;)
+                CanGoNext = false;
+
                 // Get the BackgroundWorker that raised this event.
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.DoWork += delegate
