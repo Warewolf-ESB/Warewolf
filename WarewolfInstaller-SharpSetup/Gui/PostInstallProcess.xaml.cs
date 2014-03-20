@@ -228,16 +228,12 @@ namespace Gui
                     {
                         _serviceInstalled = true;
                     }
-                    else
-                    {
-                        _serviceInstallException = true;
-                    }
                     sc.Dispose();
                 }
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
-                    _serviceInstallException = true;
-
                 }
             }
         }
@@ -548,13 +544,9 @@ namespace Gui
                             SetSuccessMessasge("Started server service");
                         }
                     }
-                    else if(!_serviceInstalled && _serviceInstallException)
+                    else if(!_serviceInstalled)
                     {
-                        SetFailureMessage("Cannot install server as service");
-                    }
-                    else if(!_serviceInstalled && !_serviceInstallException)
-                    {
-                        SetFailureMessage("Cannot start server service");
+                        SetFailureMessage("Cannot Start Server Service");
                     }
 
                     InstallVariables.IsInstallMode = true;
