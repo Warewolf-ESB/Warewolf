@@ -1027,6 +1027,7 @@ namespace Dev2
             {
                 if(inspected.Add(toLoad.ToString()))
                 {
+                    WriteLine("Loading [ " + toLoad.FullName + " ]");
                     Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
                     LoadReferences(loaded, inspected);
                 }
@@ -1061,6 +1062,7 @@ namespace Dev2
                             {
                                 try
                                 {
+                                    WriteLine("Loading [ " + gacName + " ]");
                                     asm = Assembly.Load(gacName);
                                 }
                                 catch(Exception e)
@@ -1085,6 +1087,7 @@ namespace Dev2
                             {
                                 try
                                 {
+                                    WriteLine("Loading [ " + currentReference.Name + " ]");
                                     asm = Assembly.LoadFrom(fullPath);
                                 }
                                 catch(Exception e)
