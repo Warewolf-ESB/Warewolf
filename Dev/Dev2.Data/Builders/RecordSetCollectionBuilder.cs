@@ -3,35 +3,39 @@ using Dev2.Data.Util;
 
 namespace Dev2.DataList.Contract
 {
-    public class RecordSetCollectionBuilder {
+    public class RecordSetCollectionBuilder
+    {
 
         private IList<IDev2Definition> _parsedOutput;
 
         public bool IsOutput { get; set; }
 
-        public void setParsedOutput(IList<IDev2Definition> parsedOutput) {
+        public void setParsedOutput(IList<IDev2Definition> parsedOutput)
+        {
             _parsedOutput = parsedOutput;
         }
 
-        public IRecordSetCollection Generate() {
-            IRecordSetCollection result;
-
+        public IRecordSetCollection Generate()
+        {
             IDictionary<string, IList<IDev2Definition>> tmpCollections = new Dictionary<string, IList<IDev2Definition>>();
             IList<string> tmpNames = new List<string>();
 
-            for (int i = 0; i < _parsedOutput.Count; i++) {
-                IDev2Definition tmp = _parsedOutput[i];
+            foreach(IDev2Definition tmp in _parsedOutput)
+            {
                 var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value); // last .Name
                 var scanRsName = tmp.RecordSetName;
 
-                if (IsOutput)
+                if(IsOutput)
                 {
                     if(!string.IsNullOrEmpty(rsName))
                     {
                         scanRsName = rsName;
-                    }else
+                    }
+                    else
                     {
+                        // ReSharper disable RedundantAssignment
                         rsName = scanRsName;
+                        // ReSharper restore RedundantAssignment
                     }
                 }
                 else
@@ -39,12 +43,15 @@ namespace Dev2.DataList.Contract
                     scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 }
 
-                if (tmp.IsRecordSet) {
+                if(tmp.IsRecordSet)
+                {
                     // is already present in the record set?
-                    if (tmpCollections.ContainsKey(scanRsName)) {
+                    if(tmpCollections.ContainsKey(scanRsName))
+                    {
                         tmpCollections[scanRsName].Add(tmp);
                     }
-                    else { // first time adding for this record set
+                    else
+                    { // first time adding for this record set
                         IList<IDev2Definition> newList = new List<IDev2Definition>();
                         newList.Add(tmp);
                         tmpCollections.Add(scanRsName, newList);
@@ -70,12 +77,15 @@ namespace Dev2.DataList.Contract
             }
             IList<IRecordSetDefinition> tmpDefs = new List<IRecordSetDefinition>();
 
-            foreach (string setName in tmpNames) {
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(string setName in tmpNames)
+            {
+                // ReSharper restore LoopCanBeConvertedToQuery
                 IList<IDev2Definition> tmpOutput = tmpCollections[setName];
                 tmpDefs.Add(new RecordSetDefinition(setName, tmpOutput));
             }
 
-            result = new RecordSetCollection(tmpDefs, tmpNames);
+            IRecordSetCollection result = new RecordSetCollection(tmpDefs, tmpNames);
 
             return result;
         }

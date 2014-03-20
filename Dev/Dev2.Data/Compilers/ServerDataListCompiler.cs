@@ -2167,7 +2167,6 @@ namespace Dev2.Server.Datalist
 
                                 if(payload.IsDebug && (!payload.IsIterativePayload() || debugOutputTO.TargetEntry == null))
                                 {
-                                    //debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                     debugOutputTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
                                     debugOutputTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
                                 }

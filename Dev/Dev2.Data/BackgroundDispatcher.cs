@@ -7,10 +7,10 @@ namespace Dev2.Data
     public class BackgroundDispatcher
     {
         // The Guid is the workspace ID of the writer
-        private static ConcurrentQueue<IBinaryDataList> _binaryDataListQueue = new ConcurrentQueue<IBinaryDataList>();
-        private static Thread _waitThread = new Thread(WriteLoop);
-        private static ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
-        private static object _waitHandleGuard = new object();
+        private static readonly ConcurrentQueue<IBinaryDataList> _binaryDataListQueue = new ConcurrentQueue<IBinaryDataList>();
+        private static readonly Thread _waitThread = new Thread(WriteLoop);
+        private static readonly ManualResetEventSlim _writeWaithandle = new ManualResetEventSlim(false);
+        private static readonly object _waitHandleGuard = new object();
         private static bool _shutdownRequested;
 
         #region Singleton Instance
@@ -69,9 +69,9 @@ namespace Dev2.Data
         /// <returns>The task that was created.</returns>
         public void Add(IBinaryDataList binaryDataList)
         {
-            if (binaryDataList != null)
+            if(binaryDataList != null)
             {
-                lock (_waitHandleGuard)
+                lock(_waitHandleGuard)
                 {
                     _binaryDataListQueue.Enqueue(binaryDataList);
                     _writeWaithandle.Set();
@@ -85,26 +85,25 @@ namespace Dev2.Data
 
         private static void WriteLoop()
         {
-            while (true)
+            while(true)
             {
                 _writeWaithandle.Wait();
 
-                if (_shutdownRequested)
+                if(_shutdownRequested)
                 {
                     return;
                 }
 
                 IBinaryDataList binaryDataList;
 
-                if (_binaryDataListQueue.TryDequeue(out binaryDataList))
+                if(_binaryDataListQueue.TryDequeue(out binaryDataList))
                 {
                     binaryDataList.Dispose();
-                    binaryDataList = null;
                 }
 
-                lock (_waitHandleGuard)
+                lock(_waitHandleGuard)
                 {
-                    if (_binaryDataListQueue.Count == 0)
+                    if(_binaryDataListQueue.Count == 0)
                     {
                         _writeWaithandle.Reset();
                     }

@@ -11,7 +11,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            DateTime date = DateTime.MinValue;
+            DateTime date;
 
             return !(DateTime.TryParse(cols[0], out date));
         }

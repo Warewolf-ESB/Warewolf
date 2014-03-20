@@ -211,7 +211,6 @@ namespace Dev2.Data.Parsers
                             if(isFromIntellisense)
                             {
                                 tmp = ExtractIntellisenseOptions(evalPart, parts, false);
-                                //tmp = ExtractActualIntellisenseOptions(evalPart, parts, false);
                             }
                             else
                             {
@@ -1011,35 +1010,35 @@ namespace Dev2.Data.Parsers
                                     }
                                     else
                                     {
-                                    // search for matching children
-                                    search = parts[1].ToLower();
-                                    foreach(IDev2DataLanguageIntellisensePart t in recordsetPart.Children)
-                                    {
-                                        string match = t.Name.ToLower();
-                                        if(match.Contains(search) && ((match != search) || (match == search && addCompleteParts)))
+                                        // search for matching children
+                                        search = parts[1].ToLower();
+                                        foreach(IDev2DataLanguageIntellisensePart t in recordsetPart.Children)
                                         {
-                                            string index;
-
-                                            // set recordset index
-                                            if(payload.Child != null)
+                                            string match = t.Name.ToLower();
+                                            if(match.Contains(search) && ((match != search) || (match == search && addCompleteParts)))
                                             {
-                                                index = payload.Child.Payload;
-                                            }
-                                            else
-                                            {
-                                                // we have an * or int index
-                                                index = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
-                                            }
+                                                string index;
 
-                                            IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
-                                            result.Add(IntellisenseFactory.CreateSelectableResult((parts[0].Length), payload.EndIndex, part, part.Description));
-                                        }
-                                        else if(match == search)
-                                        {
-                                            emptyOk = true;
+                                                // set recordset index
+                                                if(payload.Child != null)
+                                                {
+                                                    index = payload.Child.Payload;
+                                                }
+                                                else
+                                                {
+                                                    // we have an * or int index
+                                                    index = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
+                                                }
+
+                                                IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
+                                                result.Add(IntellisenseFactory.CreateSelectableResult((parts[0].Length), payload.EndIndex, part, part.Description));
+                                            }
+                                            else if(match == search)
+                                            {
+                                                emptyOk = true;
+                                            }
                                         }
                                     }
-                                }
                                 }
 
                                 if(result.Count == 0 && !emptyOk)
@@ -1153,97 +1152,84 @@ namespace Dev2.Data.Parsers
             int start = raw.IndexOf("(", StringComparison.Ordinal);
             int end = raw.IndexOf(")", StringComparison.Ordinal);
 
-            // for ranges
-            //if(raw.IndexOf(":", StringComparison.Ordinal) > 0)
-            //{
-            //    result = true;
-            //}
-            //else if(raw.IndexOf(",", StringComparison.Ordinal) > 0)
-            //{
-            //    result = true; // added for calc operations
-            //}
-            //else
-            //{
+            // no index
+            if((end - start) == 1)
+            {
+                result = true;
+            }
+            else if((start > 0 && end < 0) && ((raw.Length - 1) == start))
+            { // another no index case
+                result = true;
+            }
+            else
+            {
+                if(start > 0 && end < 0)
+                {
+                    // we have index, just no )
+                    string part = raw.Substring((start + 1), (raw.Length - (start + 1)));
 
-                // no index
-                if((end - start) == 1)
-                {
-                    result = true;
-                }
-                else if((start > 0 && end < 0) && ((raw.Length - 1) == start))
-                { // another no index case
-                    result = true;
-                }
-                else
-                {
-                    if(start > 0 && end < 0)
+                    if(part.Contains("[["))
                     {
-                        // we have index, just no )
-                        string part = raw.Substring((start + 1), (raw.Length - (start + 1)));
-
-                        if(part.Contains("[["))
+                        result = true;
+                    }
+                    else
+                    {
+                        int partAsInt;
+                        if(int.TryParse(part, out partAsInt))
                         {
-                            result = true;
-                        }
-                        else
-                        {
-                            int partAsInt;
-                            if(int.TryParse(part, out partAsInt))
+                            if(partAsInt >= 1)
                             {
-                                if(partAsInt >= 1)
-                                {
-                                    result = true;
-                                }
-                                else
-                                {
-                                    throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
-                                }
+                                result = true;
                             }
                             else
                             {
-                                string message = "Recordset index [ " + part + " ] is not numeric";
-                                throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
+                                throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                             }
-                        }
-                        if(end<0)
-                        {
-                            string message = "Recordset [ " + raw + " ] does not contain a matching ')'";
-                            throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.InvalidRecordsetNotation);
-                        }
-                    }
-                    else if(start > 0 && end > start)
-                    {
-                        // we have index with ( and )
-                        start += 1;
-                        string part = raw.Substring(start, (raw.Length - (start + 1)));
-
-                        if(part.Contains("[[") || part == "*")
-                        {
-                            result = true;
                         }
                         else
                         {
-                            int partAsInt;
-                            if(int.TryParse(part, out partAsInt))
+                            string message = "Recordset index [ " + part + " ] is not numeric";
+                            throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
+                        }
+                    }
+                    if(end < 0)
+                    {
+                        string message = "Recordset [ " + raw + " ] does not contain a matching ')'";
+                        throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.InvalidRecordsetNotation);
+                    }
+                }
+                else if(start > 0 && end > start)
+                {
+                    // we have index with ( and )
+                    start += 1;
+                    string part = raw.Substring(start, (raw.Length - (start + 1)));
+
+                    if(part.Contains("[[") || part == "*")
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        int partAsInt;
+                        if(int.TryParse(part, out partAsInt))
+                        {
+                            if(partAsInt >= 1)
                             {
-                                if(partAsInt >= 1)
-                                {
-                                    result = true;
-                                }
-                                else
-                                {
-                                    throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
-                                }
+                                result = true;
                             }
                             else
                             {
-                                string message = "Recordset index [ " + part + " ] is not numeric";
-                                throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
+                                throw new Dev2DataLanguageParseError("Recordset index [ " + part + " ] is not greater than zero", (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonPositiveRecordsetIndex);
                             }
+                        }
+                        else
+                        {
+                            string message = "Recordset index [ " + part + " ] is not numeric";
+                            throw new Dev2DataLanguageParseError(message, (to.StartIndex + start), (to.EndIndex + end), enIntellisenseErrorCode.NonNumericRecordsetIndex);
                         }
                     }
                 }
-            //}
+            }
 
             return result;
         }

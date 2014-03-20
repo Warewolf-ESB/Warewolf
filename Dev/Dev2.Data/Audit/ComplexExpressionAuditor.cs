@@ -70,7 +70,7 @@ namespace Dev2.Data.Audit
                 var len = _auditItems.Count;
                 var max = _auditItems[len - 1].PassNumber;
 
-                // now find all the finaly items we need to compile ;)
+                // now find all the finally items we need to compile ;)
                 var result = _auditItems.Where(c => c.PassNumber == max);
 
                 return result.ToList();

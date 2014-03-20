@@ -15,24 +15,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private bool _isRecordset;
         private string _recordsetIndex;
         private string _value;
-        private string _description;
         private enRecordsetIndexType _recordsetIndexType;
 
         #endregion Fields
 
         #region Properties
 
-        public string Description
-        {
-            get
-            {
-                return _description;
-            }
-            set
-            {
-                _description = value;
-            }
-        }
+        public string Description { get; set; }
 
         public string Field
         {
@@ -127,15 +116,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #endregion Properties
 
-        #region Ctor
-
-        public DataListItem()
-        {
-
-        }
-
-        #endregion Ctor
-
         #region Methods
 
 
@@ -153,7 +133,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         protected void OnNotifyPropertyChange(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
