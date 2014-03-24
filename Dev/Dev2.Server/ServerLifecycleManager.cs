@@ -40,6 +40,9 @@ namespace Dev2
 
         const string DefaultConfigFileName = "LifecycleConfig.xml";
 
+        // set to true when in trace mode ;)
+        const bool LogDllsLoaded = false;
+
         #endregion
 
         #region Static Members
@@ -1027,7 +1030,16 @@ namespace Dev2
             {
                 if(inspected.Add(toLoad.ToString()))
                 {
-                    WriteLine("Loading [ " + toLoad.FullName + " ]");
+                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                    if(LogDllsLoaded)
+                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                    // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                    {
+                        WriteLine("Loading [ " + toLoad.FullName + " ]");
+                    }
+#pragma warning restore 162
+                    // ReSharper restore HeuristicUnreachableCode
                     Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
                     LoadReferences(loaded, inspected);
                 }
@@ -1062,7 +1074,16 @@ namespace Dev2
                             {
                                 try
                                 {
-                                    WriteLine("Loading [ " + gacName + " ]");
+                                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                                    if(LogDllsLoaded)
+                                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                    // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                                    {
+                                        WriteLine("Loading [ " + gacName + " ]");
+                                    }
+#pragma warning restore 162
+                                    // ReSharper restore HeuristicUnreachableCode
                                     asm = Assembly.Load(gacName);
                                 }
                                 catch(Exception e)
@@ -1087,7 +1108,16 @@ namespace Dev2
                             {
                                 try
                                 {
-                                    WriteLine("Loading [ " + currentReference.Name + " ]");
+                                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                                    if(LogDllsLoaded)
+                                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                    // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                                    {
+                                        WriteLine("Loading [ " + currentReference.Name + " ]");
+                                    }
+#pragma warning restore 162
+                                    // ReSharper restore HeuristicUnreachableCode
                                     asm = Assembly.LoadFrom(fullPath);
                                 }
                                 catch(Exception e)
