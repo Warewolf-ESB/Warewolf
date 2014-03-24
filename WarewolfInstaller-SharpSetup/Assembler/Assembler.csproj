@@ -78,8 +78,8 @@
     </Prerequisite>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Files\Microsoft.Deployment.Compression.Cab.dll" />
-    <Content Include="Files\Microsoft.Deployment.Compression.dll" />
-    <Content Include="Files\Microsoft.Deployment.Compression.Zip.dll" />
+    <IncludeInCab Include="Files\Microsoft.Deployment.Compression.Cab.dll" />
+    <IncludeInCab Include="Files\Microsoft.Deployment.Compression.dll" />
+    <IncludeInCab Include="Files\Microsoft.Deployment.Compression.Zip.dll" />
   </ItemGroup>
 </Project>
