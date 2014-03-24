@@ -33,11 +33,11 @@ namespace Gui
 
                 InstallVariables.InstallRoot = instLoc;
 
-                if(mode == InstallationMode.Uninstall)
+                if (mode == InstallationMode.Uninstall)
                 {
                     MsiConnection.Instance.Uninstall();
 
-                    if(File.Exists(Properties.Resources.MainMsiFile))
+                    if (File.Exists(Properties.Resources.MainMsiFile))
                         MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
 
                     CleanUp(instLoc);
@@ -63,7 +63,7 @@ namespace Gui
                     TerminateFiles(instDir);
 
                 }
-                else if(mode == InstallationMode.Install)
+                else if (mode == InstallationMode.Install)
                 {
                     PrerequisiteManager.Instance.Install();
 
@@ -71,7 +71,7 @@ namespace Gui
                     {
                         CleanUp(instLoc);
                     }
-                    catch(Exception e1)
+                    catch (Exception e1)
                     {
                         MessageBox.Show("Installation failed: " + e1.Message);
                     }
@@ -88,10 +88,15 @@ namespace Gui
                     MessageBox.Show("Unknown mode");
                 }
             }
-            catch(MsiException mex)
+            catch (MsiException mex)
             {
-                if(mex.ErrorCode != (uint)InstallError.UserExit)
+                if (mex.ErrorCode != (uint)InstallError.UserExit)
                     MessageBox.Show("Installation failed: " + mex.Message);
+                Wizard.Finish();
+            }
+            catch (Exception e1)
+            {
+                MessageBox.Show(e1.Message);
                 Wizard.Finish();
             }
 
@@ -109,7 +114,9 @@ namespace Gui
             {
                 Directory.Delete(loc, true);
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Best Effort ;)
             }
@@ -133,18 +140,20 @@ namespace Gui
         {
             var dir = baseLoc + "/Studio/";
 
-            if(Directory.Exists(dir))
+            if (Directory.Exists(dir))
             {
 
                 var files = Directory.GetFiles(dir);
 
-                foreach(var file in files)
+                foreach (var file in files)
                 {
                     try
                     {
                         File.Delete(file);
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // best effort ;)
                     }
@@ -160,21 +169,23 @@ namespace Gui
         {
             var dir = baseLoc + "/Server/";
 
-            if(Directory.Exists(dir))
+            if (Directory.Exists(dir))
             {
 
                 var files = Directory.GetFiles(dir);
 
-                foreach(var file in files)
+                foreach (var file in files)
                 {
                     // avoid removing config files ;)
-                    if(CanDelete(file.ToLower()))
+                    if (CanDelete(file.ToLower()))
                     {
                         try
                         {
                             File.Delete(file);
                         }
+                        // ReSharper disable EmptyGeneralCatchClause
                         catch
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                             // best effort ;)
                         }
@@ -192,7 +203,7 @@ namespace Gui
         /// </returns>
         private bool CanDelete(string file)
         {
-            if(file.IndexOf("secureconfig", StringComparison.Ordinal) < 0
+            if (file.IndexOf("secureconfig", StringComparison.Ordinal) < 0
                 && file.IndexOf("lifecycle", StringComparison.Ordinal) < 0
                 && file.IndexOf("serverlog", StringComparison.Ordinal) < 0
                 && !IsSSLCert(file))
@@ -200,7 +211,7 @@ namespace Gui
                 return true;
             }
 
-            if(file.IndexOf("runtime.config", StringComparison.Ordinal) > 0)
+            if (file.IndexOf("runtime.config", StringComparison.Ordinal) > 0)
             {
                 return true;
             }
@@ -216,7 +227,7 @@ namespace Gui
         /// <returns></returns>
         private bool IsSSLCert(string file)
         {
-            if(file.IndexOf(".cer", StringComparison.Ordinal) >= 0
+            if (file.IndexOf(".cer", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".crt", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".der", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".csr", StringComparison.Ordinal) >= 0
