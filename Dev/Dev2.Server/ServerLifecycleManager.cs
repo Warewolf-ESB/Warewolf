@@ -41,7 +41,7 @@ namespace Dev2
         const string DefaultConfigFileName = "LifecycleConfig.xml";
 
         // set to true when in trace mode ;)
-        const bool LogDllsLoaded = true;
+        const bool LogTraceInfo = true;
 
         #endregion
 
@@ -517,7 +517,7 @@ namespace Dev2
                 builder.AppendLine("\t\t<Error Enabled=\"true\" />");
                 builder.AppendLine("\t\t<Info Enabled=\"true\" />");
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if(!LogDllsLoaded)
+                if(!LogTraceInfo)
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
@@ -1051,7 +1051,7 @@ namespace Dev2
                 if(inspected.Add(toLoad.ToString()))
                 {
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                    if(LogDllsLoaded)
+                    if(LogTraceInfo)
                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
@@ -1095,7 +1095,7 @@ namespace Dev2
                                 try
                                 {
                                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                                    if(LogDllsLoaded)
+                                    if(LogTraceInfo)
                                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
                                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
@@ -1129,7 +1129,7 @@ namespace Dev2
                                 try
                                 {
                                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                                    if(LogDllsLoaded)
+                                    if(LogTraceInfo)
                                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
                                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
