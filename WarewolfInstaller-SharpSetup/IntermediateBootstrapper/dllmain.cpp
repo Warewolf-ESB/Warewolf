@@ -11,7 +11,7 @@ public:
 	virtual DWORD OnUnpackingComplete()
 	{
 		PrerequisiteManager pm(*this);
-		
+
 		// Comment out to avoid doing .NET prereq here ;)
 		if(!isInstalledMsi(L"3.1"))
 			installMsi(&pm, L"3.1");
