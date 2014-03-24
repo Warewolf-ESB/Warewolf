@@ -72,10 +72,10 @@ inline void installDotNet(SharpSetup::PrerequisiteManager* prerequisiteManager, 
 		filename += L"sp" + SharpSetup::Utilities::toString(spLevel);
 	// NetFx 3.5 and 4.0 do not specify architecture
 	if(version == L"4.0" && profile == DotNetProfileClient){
-		filename += L"dotNetFx40_Client_x86_x64";
+		filename = L"dotNetFx40_Client_x86_x64";
 		//filename += L"_client";
 	}else if(version == L"4.0"){
-		filename += L"dotNetFx40_Client_x86_x64";
+		filename = L"dotNetFx40_Client_x86_x64";
 		//filename += L"_full";
 	}else if (version == L"3.5" || version == L"4.5"){
 		filename += L"";
