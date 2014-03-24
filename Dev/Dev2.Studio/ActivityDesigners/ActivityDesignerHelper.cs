@@ -57,7 +57,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
                 { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
-                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
+//                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
