@@ -6,6 +6,7 @@
   </type>
   <prerequisiteObject>
     <VersionRequired>DotNet40Client</VersionRequired>
+    <ServicePackRequired>2</ServicePackRequired>
     <VersionToInstall>DotNet40Client</VersionToInstall>
     <Reboot>Never</Reboot>
 </prerequisiteObject>
