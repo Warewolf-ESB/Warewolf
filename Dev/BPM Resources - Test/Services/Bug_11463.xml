@@ -1,0 +1,46 @@
+
+<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Version="1.0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_FetchPeople" Type="InvokeStoredProc" SourceID="6f46efe3-f4a9-464e-b173-9b931418f68b" SourceName="DemoDBSrc" SourceMethod="dbo.FetchPeople">
+      <Inputs>
+        <Input Name="pplCnt" Source="pplCnt" EmptyToNull="false" DefaultValue="" NativeType="" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="ID" Name="ID" MapsTo="ID" Value="[[dbo_FetchPeople().ID]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="dbo_FetchPeople" Recordset="dbo_FetchPeople" />
+        <Output OriginalName="Name" Name="Name" MapsTo="Name" Value="[[dbo_FetchPeople().Name]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="dbo_FetchPeople" Recordset="dbo_FetchPeople" />
+        <Output OriginalName="Surname" Name="Surname" MapsTo="Surname" Value="[[dbo_FetchPeople().Surname]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="dbo_FetchPeople" Recordset="dbo_FetchPeople" />
+        <Output OriginalName="Username" Name="Username" MapsTo="Username" Value="[[dbo_FetchPeople().Username]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="dbo_FetchPeople" Recordset="dbo_FetchPeople" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">ID</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">ID</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_FetchPeople().ID]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1__COMMA__2__COMMA__3__COMMA__4__COMMA__5__COMMA__6__COMMA__7__COMMA__8__COMMA__9__COMMA__10</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Name</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Name</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_FetchPeople().Name]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Bob__COMMA__Jane__COMMA__Fred__COMMA__Greg__COMMA__Brad__COMMA__Travis__COMMA__Mo__COMMA__Jurie__COMMA__Trevor__COMMA__Ashley</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Surname</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Surname</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_FetchPeople().Surname]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Smith__COMMA__Jones__COMMA__Taylor__COMMA__Nixon__COMMA__Smith__COMMA__Fry__COMMA__Jones__COMMA__Smith__COMMA__Williams__COMMA__Lewis</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Username</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Username</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_FetchPeople().Username]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Bob.Smith__COMMA__Jane.Jones__COMMA__Fred.Taylor__COMMA__Greg.Nixon__COMMA__Brad.Smith__COMMA__Travis.Fry__COMMA__Mo.Jones__COMMA__Jurie.Smith__COMMA__Trevor.Williams__COMMA__Ashley.Lewis</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>Bug_11463</DisplayName>
+  <Category>TEST</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>GszX8PSYL7aFgBiSP60RnEUBkhE=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Az1sWQ1SG3OOqDrsRfe47hhaiYTI44j/bLAORYw4YLXd7BwtUuEobVguS8hhlPuNvjer2HTA1Q6HYgIBIa5z+6a4hRozu/mtQUH4gZ8XXCDXmz84Mu08kGQnDoidQzUy+sVIvCPt+DYPg0aAes0SsjUQt1pJvGEwjcV/UjNKXeE=</SignatureValue>
+  </Signature>
+</Service>
