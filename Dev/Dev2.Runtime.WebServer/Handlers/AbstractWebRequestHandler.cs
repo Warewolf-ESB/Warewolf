@@ -71,6 +71,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             // now process headers ;)
             if(headers != null)
             {
+                ServerLogger.LogTrace("Remote Invoke");
+
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
                 var remoteID = headers.Get(HttpRequestHeader.From.ToString());
 
@@ -130,6 +132,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Build EsbExecutionRequest - Internal Services Require This ;)
             EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
+            ServerLogger.LogTrace("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+
             var executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
             allErrors.MergeErrors(errors);
 
@@ -177,7 +181,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         executePayload = msg.Message.ToString();
                     }
 
-                    // out fail safe to return differnt types of data from services ;)
+                    // out fail safe to return different types of data from services ;)
                     if(string.IsNullOrEmpty(executePayload))
                     {
                         executePayload = esbExecuteRequest.ExecuteResult.ToString();
@@ -190,7 +194,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
 
                     executePayload =
-                        "<FatalError> <Message> An internal error occured while executing the service request </Message>";
+                        "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
                     executePayload += allErrors.MakeDataListReady();
                     executePayload += "</FatalError>";
                 }
@@ -198,12 +202,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     // convert output to JSON ;)
                     executePayload =
-                        "{ \"FatalError\": \"An internal error occured while executing the service request\",";
+                        "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
                     executePayload += allErrors.MakeDataListReady(false);
                     executePayload += "}";
                 }
             }
 
+
+            ServerLogger.LogTrace("Execution Result [ " + executePayload + " ]");
 
             // Clean up the datalist from the server
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)

@@ -52,6 +52,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public async Task AddDebugWriter(Guid workspaceID)
         {
+            this.LogTrace("Added Debug Writer For Workspace [ " + workspaceID + " ]");
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceID, this));
             task.Start();
             await task;
@@ -148,6 +149,9 @@ namespace Dev2.Runtime.WebServer.Hubs
                             MessageCache.TryRemove(messageID, out sb);
                             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                             EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
+
+                            this.LogTrace("Execute Command Invoked For [ " + Context.User + " ] For Service [ " + request.ServiceName + " ]");
+
                             var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceID, dataListID, Context.ConnectionId);
                             // Convert to chunked msg store for fetch ;)
                             var length = processRequest.Length;
@@ -231,17 +235,22 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var serializedMemo = JsonConvert.SerializeObject(memo);
             var hubCallerConnectionContext = Clients;
+
+            this.LogTrace("Send Memo [ " + serializedMemo + " ]");
+
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-
         }
 
         public void SendDebugState(DebugState debugState)
         {
             var debugSerializated = JsonConvert.SerializeObject(debugState);
             var hubCallerConnectionContext = Clients;
+
+            this.LogTrace("Send Debug State For [ " + Context.User.Identity.Name + " ]");
+
             var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendDebugState(debugSerializated);
         }
@@ -266,7 +275,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, CompileMessageTO>> groupings, Action<TMemo, CompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
+
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
+
+            this.LogTrace("Write Event Provider Client Message [ " + memo.ServerID + " ]");
+
             foreach(var grouping in groupings)
             {
                 if(grouping.Key == Guid.Empty)
@@ -279,6 +292,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     memo.WorkspaceID = message.WorkspaceID;
                     coalesceErrors(memo, message);
                 }
+
                 WriteEventProviderClientMessage(memo);
             }
         }
@@ -300,6 +314,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="debugState">The state to be written.</param>
         public void Write(IDebugState debugState)
         {
+            this.LogTrace("Write DebugState Message [ " + debugState.Message + " ] Name [ " + debugState.Name + " ] ServerID [ " + debugState.Server + " ]");
             SendDebugState(debugState as DebugState);
         }
 
