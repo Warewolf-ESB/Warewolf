@@ -159,17 +159,20 @@ namespace Gui
         /// <summary>
         /// Starts the service.
         /// </summary>
-        private void StartService(string serverInstallLocation)
+        private void StartService(string serverInstallLocation, bool install = true)
         {
             try
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-                ProcessStartInfo psi = new ProcessStartInfo { FileName = serverInstallLocation, Arguments = "-i", WindowStyle = ProcessWindowStyle.Hidden, UseShellExecute = true };
+                if(install)
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo { FileName = serverInstallLocation, Arguments = "-i", WindowStyle = ProcessWindowStyle.Hidden, UseShellExecute = true };
 
-                Process p = Process.Start(psi);
+                    Process p = Process.Start(psi);
 
-                p.WaitForExit(InstallVariables.DefaultWaitInMs);
+                    p.WaitForExit(InstallVariables.DefaultWaitInMs);
+                }
 
                 // now try and start the service ;)
                 if(sc.Status == ServiceControllerStatus.Stopped)
@@ -255,6 +258,7 @@ namespace Gui
 
             // Start the service
             StartService(serverInstallLocation);
+            StartService(serverInstallLocation, false);
 
             // clean up any log files and junk ;)
             var serverRoot = Path.Combine(installRoot, "Server");

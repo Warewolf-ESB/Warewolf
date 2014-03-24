@@ -9,7 +9,7 @@
     <?define AppVersionMajor = "0" ?>
     <?define AppVersionMinor = "4" ?>
     <?define AppVersionPatch = "6" ?>
-    <?define AppVersionBuild = "1" ?>
+    <?define AppVersionBuild = "2" ?>
     <?define AppVersion = "$(var.AppVersionMajor).$(var.AppVersionMinor).$(var.AppVersionPatch).$(var.AppVersionBuild)" ?>
     <?define AppManufacturer = "Warewolf" ?>
     <?define DefaultCulture = "en" ?>
