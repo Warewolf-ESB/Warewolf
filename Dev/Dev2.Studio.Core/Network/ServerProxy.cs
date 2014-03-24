@@ -269,6 +269,7 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
+            this.LogTrace("Memo Received [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
@@ -277,6 +278,7 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
+            this.LogTrace("Permissions Received [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
             ServerEvents.PublishObject(obj);
             RaisePermissionsChanged();
@@ -308,6 +310,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
+            this.LogTrace("UpdateIsAuthorized [ " + isAuthorized + " ]");
             if(IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
@@ -330,6 +333,8 @@ namespace Dev2.Network
             {
                 throw new ArgumentNullException("payload");
             }
+
+            this.LogTrace("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
             var length = payload.Length;
