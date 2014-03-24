@@ -14,10 +14,10 @@ public:
 		
 		// Comment out to avoid doing .NET prereq here ;)
 
-		if(!isInstalledMsi(L"3.1"))
+		/*if(!isInstalledMsi(L"3.1"))
 			installMsi(&pm, L"3.1");
 		if(!isInstalledDotNet(&pm, L"4.0"))
-			installDotNet(&pm, L"4.0", 2);
+			installDotNet(&pm, L"4.0", 2);*/
 
 		pm.getFiles();
 		pm.performInstall();
