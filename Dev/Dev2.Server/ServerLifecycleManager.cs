@@ -41,7 +41,7 @@ namespace Dev2
         const string DefaultConfigFileName = "LifecycleConfig.xml";
 
         // set to true when in trace mode ;)
-        const bool LogDllsLoaded = false;
+        const bool LogDllsLoaded = true;
 
         #endregion
 
@@ -516,7 +516,27 @@ namespace Dev2
                 builder.AppendLine("\t\t<Debug Enabled=\"true\" />");
                 builder.AppendLine("\t\t<Error Enabled=\"true\" />");
                 builder.AppendLine("\t\t<Info Enabled=\"true\" />");
-                builder.AppendLine("\t\t<Trace Enabled=\"false\" />");
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                if(!LogDllsLoaded)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                {
+                    builder.AppendLine("\t\t<Trace Enabled=\"false\" />");
+                }
+#pragma warning restore 162
+                // ReSharper restore HeuristicUnreachableCode
+                // ReSharper disable RedundantIfElseBlock
+                else
+                // ReSharper restore RedundantIfElseBlock
+                // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                {
+                    builder.AppendLine("\t\t<Trace Enabled=\"true\" />");
+                }
+#pragma warning restore 162
+                // ReSharper restore HeuristicUnreachableCode
+
                 builder.AppendLine("\t</Logging>");
                 // end logging info
 
