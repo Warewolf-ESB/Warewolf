@@ -311,21 +311,25 @@ namespace Gui
         /// </summary>
         private void CleanupOperation(string installLocation)
         {
-            // two install log files
-            var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
-            var path2 = Path.Combine(installLocation, "Warewolf Server.InstallState");
 
-            var paths = new[] { path, path2 };
-
-            foreach(var p in paths)
+            if (InstallVariables.RemoveLogFile)
             {
-                try
+                // two install log files
+                var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
+                var path2 = Path.Combine(installLocation, "Warewolf Server.InstallState");
+
+                var paths = new[] { path, path2 };
+
+                foreach (var p in paths)
                 {
-                    File.Delete(p);
+                    try
+                    {
+                        File.Delete(p);
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch { }
+                    // ReSharper restore EmptyGeneralCatchClause
                 }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch { }
-                // ReSharper restore EmptyGeneralCatchClause
             }
 
         }
