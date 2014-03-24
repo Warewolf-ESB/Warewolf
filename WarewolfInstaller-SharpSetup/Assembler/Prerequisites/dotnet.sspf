@@ -10,7 +10,7 @@
     <Reboot>Never</Reboot>
 </prerequisiteObject>
   <files>
-    <file name="dotnet20sp2_x86.exe">
+    <file name="dotnet40client.exe">
       <provider name="download" type="retrieve" executeOn="build" />
       <provider name="local" type="store" executeOn="build" />
       <provider name="local" type="retrieve" />
