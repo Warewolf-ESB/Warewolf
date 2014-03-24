@@ -22,9 +22,7 @@
   <PropertyGroup>
     <RootNamespace>Assembler</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <Import Project="$(SharpSetupTargetsPath)\SharpSetup.Assembler.targets" />
   <ItemGroup>
     <IncludeInCab Include="..\Debug\Gui.exe">
@@ -84,8 +82,5 @@
     <IncludeInCab Include="Files\Microsoft.Deployment.Compression.Cab.dll" />
     <IncludeInCab Include="Files\Microsoft.Deployment.Compression.dll" />
     <IncludeInCab Include="Files\Microsoft.Deployment.Compression.Zip.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <IncludeInCabExtracted Include="app.manifest" />
   </ItemGroup>
 </Project>
