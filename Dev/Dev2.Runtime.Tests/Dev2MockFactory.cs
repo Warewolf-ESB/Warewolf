@@ -1,11 +1,10 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Network.Execution;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Network;
 
 namespace Dev2.DynamicServices.Test
 {
@@ -16,7 +15,7 @@ namespace Dev2.DynamicServices.Test
             Mock<IDataListServer> mockDataListServer = new Mock<IDataListServer>();
             ErrorResultTO errors;
 
-            if (readCausesException)
+            if(readCausesException)
             {
                 mockDataListServer.Setup(e => e.ReadDatalist(It.IsAny<Guid>(), out errors)).Throws(new Exception());
             }
@@ -26,7 +25,7 @@ namespace Dev2.DynamicServices.Test
                 mockDataListServer.Setup(e => e.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(readResult);
             }
 
-            if (writeCausesException)
+            if(writeCausesException)
             {
                 mockDataListServer.Setup(e => e.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
             }
@@ -37,7 +36,7 @@ namespace Dev2.DynamicServices.Test
             }
 
 
-            if (deleteCausesException)
+            if(deleteCausesException)
             {
                 mockDataListServer.Setup(e => e.DeleteDataList(It.IsAny<Guid>(), It.IsAny<bool>())).Throws(new Exception());
             }
@@ -66,13 +65,15 @@ namespace Dev2.DynamicServices.Test
             return mockExecutionStatusCallbackDispatcher;
         }
 
-       
+
 
         public static Mock<IDataReader> SetupDataReader(List<object[]> results)
         {
             int readCount = 0;
             var reader = new Mock<IDataReader>();
+            // ReSharper disable ImplicitlyCapturedClosure
             reader.Setup(r => r.Read()).Returns(() => readCount < results.Count).Callback(() =>
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 readCount++;
             });
@@ -103,10 +104,10 @@ namespace Dev2.DynamicServices.Test
         {
             List<object[]> results = new List<object[]>();
 
-            for (int j = 0; j < rows; j++)
+            for(int j = 0; j < rows; j++)
             {
                 object[] row = new object[columns];
-                for (int i = 0; i < columns; i++)
+                for(int i = 0; i < columns; i++)
                 {
                     row[i] = i;
                 }

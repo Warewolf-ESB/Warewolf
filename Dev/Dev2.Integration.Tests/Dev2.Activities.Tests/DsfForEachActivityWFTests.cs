@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using ActivityUnitTests;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
@@ -113,42 +112,24 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
         #endregion Scalar Tests
 
-        #region Private Test Methods
+        #region Bugs
 
-        private DsfActivity CreateWorkflow()
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ForEach_WithDbData")]
+        public void ClassName_MethodName_Scenerio_Result()
         {
-            DsfActivity activity = new DsfActivity
-            {
-                ServiceName = "MyTestService",
-                InputMapping = TestResource.ForEach_Input_Mapping,
-                OutputMapping = TestResource.ForEach_Output_Mapping
-            };
+            //------------Setup for test--------------------------
+            const string expected = @"<Result>PASS</Result><FetchPeople rowID=""1""><ID>1</ID><UserName>Bob.Smith</UserName></FetchPeople><FetchPeople rowID=""2""><ID>2</ID><UserName>Jane.Jones</UserName></FetchPeople><FetchPeople rowID=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></FetchPeople><FetchPeople rowID=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></FetchPeople><FetchPeople rowID=""5""><ID>5</ID><UserName>Brad.Smith</UserName></FetchPeople><FetchPeople rowID=""6""><ID>6</ID><UserName>Travis.Fry</UserName></FetchPeople><FetchPeople rowID=""7""><ID>7</ID><UserName>Mo.Jones</UserName></FetchPeople><FetchPeople rowID=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></FetchPeople><FetchPeople rowID=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></FetchPeople><FetchPeople rowID=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></FetchPeople><dbo_FetchPeople rowID=""1""><ID>1</ID><UserName>Bob.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""2""><ID>2</ID><UserName>Jane.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""5""><ID>5</ID><UserName>Brad.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""6""><ID>6</ID><UserName>Travis.Fry</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""7""><ID>7</ID><UserName>Mo.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></dbo_FetchPeople>";
 
-            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
+            //------------Execute Test---------------------------
+            string PostData = String.Format("{0}{1}", WebserverURI, "Bug_11463_WF");
 
-            return activity;
+            //------------Assert Results-------------------------
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            StringAssert.Contains(ResponseData, expected);
         }
-
-        private DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
-        {
-            DsfActivity activity = new DsfActivity();
-            if(isInputMapping)
-            {
-                activity.InputMapping = mapping;
-                activity.OutputMapping = TestResource.ForEach_Output_Mapping;
-            }
-            else
-            {
-                activity.InputMapping = TestResource.ForEach_Input_Mapping;
-                activity.OutputMapping = mapping;
-            }
-            activity.ServiceName = "MyTestService";
-
-            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
-
-            return activity;
-        }
-
         #endregion
+
     }
 }

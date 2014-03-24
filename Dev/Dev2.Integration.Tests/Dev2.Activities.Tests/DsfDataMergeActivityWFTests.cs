@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void DataMergeRecordsetsUsingStarAndCharMerge()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataMergeRecordsetsUsingStarAndCharMerge");
-            string expected = @"<res>Wallis's surname name is Buchan
+            const string expected = @"<res>Wallis's surname name is Buchan
 Barney's surname name is Buchan
 Trevor's surname name is Williams-Ros
 Travis's surname name is Frisinger

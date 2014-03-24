@@ -253,9 +253,10 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         // Using a DependencyProperty as the backing store for ButtonDisplayValue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonDisplayValueProperty =
-            DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
         IEnvironmentModel _environment;
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()
         {
