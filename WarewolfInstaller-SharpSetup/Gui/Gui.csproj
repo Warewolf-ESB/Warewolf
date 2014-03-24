@@ -63,7 +63,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>..\..\Release 0.4.1.x\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+      <HintPath>C:\Development\WarewolfInstaller-SharpSetup\Debug\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
