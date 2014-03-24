@@ -4,7 +4,7 @@
     <!-- TODO : when releasing please change AppProductCode and adjust AppVersion information ;) -->
     <!-- ALWAYS UPDATE PRODUCT CODE -->
     <!-- http://www.guidgenerator.com/online-guid-generator.aspx -->
-    <?define AppProductCode = "{62c3f373-6a87-4b8d-8040-54805da9e524}" ?>
+    <?define AppProductCode = "{c279454f-a602-45f9-98fd-3e8278c5e8f6}" ?>
     <?define AppUpgradeCode = "{b395a097-b71a-4850-a5d5-93f402586bd0}" ?>
     <?define AppVersionMajor = "0" ?>
     <?define AppVersionMinor = "4" ?>

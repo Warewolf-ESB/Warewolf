@@ -159,7 +159,7 @@ namespace Gui
         /// <summary>
         /// Starts the service.
         /// </summary>
-        private void StartService(string serverInstallLocation, bool install = true)
+        private void StartService(string serverInstallLocation, int waitAmt = 10000, bool install = true)
         {
             try
             {
@@ -172,10 +172,10 @@ namespace Gui
                     Process p = Process.Start(psi);
 
                     p.WaitForExit(InstallVariables.DefaultWaitInMs);
-
-                    // give it some time to wait
-                    Thread.Sleep(500);
                 }
+
+
+                Thread.Sleep(waitAmt);
 
                 // now try and start the service ;)
                 if(sc.Status == ServiceControllerStatus.Stopped)
@@ -218,8 +218,10 @@ namespace Gui
 
                 sc.Dispose();
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                Thread.Sleep(waitAmt);
+
                 try
                 {
                     ServiceController sc = new ServiceController(InstallVariables.ServerService);
@@ -261,8 +263,10 @@ namespace Gui
 
             // Start the service
             StartService(serverInstallLocation);
-            StartService(serverInstallLocation, false);
-
+            if (!_serviceInstalled)
+            {
+                StartService(serverInstallLocation, 20000, false);
+            }
             // clean up any log files and junk ;)
             var serverRoot = Path.Combine(installRoot, "Server");
             CleanupOperation(serverRoot);
