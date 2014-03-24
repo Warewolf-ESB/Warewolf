@@ -13,7 +13,6 @@ public:
 		PrerequisiteManager pm(*this);
 		
 		// Comment out to avoid doing .NET prereq here ;)
-
 		if(!isInstalledMsi(L"3.1"))
 			installMsi(&pm, L"3.1");
 		if(!isInstalledDotNet(&pm, L"4.0"))
