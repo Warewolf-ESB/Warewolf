@@ -26,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Store To Scalar Tests
 
         [TestMethod]
-        public void CountOutputToScalar_Expected_ScalarValueCorrectlySetToRecordSetCount()
+        public void RecordsetLengthOutputToScalar_Expected_ScalarValueCorrectlySetToRecordSetCount()
         {
 
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //Bug 7853
         [TestMethod]
-        public void CountOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
+        public void RecordsetLengthOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
         {
 
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
         [TestMethod]
-        public void CountOutputToMultipleScalars_Expected_AllScalarValuesCorrectlySetToRecordSetCount()
+        public void RecordsetLengthOutputToMultipleScalars_Expected_AllScalarValuesCorrectlySetToRecordSetCount()
         {
 
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]], [[AnotherTestCountvar]]");
@@ -92,7 +92,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Store To RecordSet Tests
 
         [TestMethod]
-        public void CountOutputToRecset()
+        public void RecordsetLengthOutputToRecset()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
             IDSFDataObject result = ExecuteProcess();
@@ -112,7 +112,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //2013.02.12: Ashley Lewis - Bug 8725, Task 8831 DONE
         [TestMethod]
-        public void CountTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
+        public void RecordsetLengthTwiceWithEmptyRecsetExpectedOutputToRecsetsSelf()
         {
             SetupArguments("<root></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
             IDSFDataObject result = ExecuteProcess();
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Error Test Cases
 
         [TestMethod]
-        public void CountWithNoRecsetName_Expected_ErrorPopulatedFromDataList()
+        public void RecordsetLengthWithNoRecsetName_Expected_ErrorPopulatedFromDataList()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", string.Empty, "[[TestCountvar]]");
             IDSFDataObject result = ExecuteProcess();
@@ -158,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void CountWithNoOutputVariable()
+        public void RecordsetLengthWithNoOutputVariable()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", string.Empty);
             IDSFDataObject result = ExecuteProcess();
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void CountOnScalar()
+        public void RecordsetLengthOnScalar()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[TestCountVar]]", "[[TestCountVar]]");
             IDSFDataObject result = ExecuteProcess();
@@ -187,7 +187,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
-        public void CountRecords_ErrorHandeling_Expected_ErrorTag()
+        public void RecordsetLengthRecords_ErrorHandeling_Expected_ErrorTag()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[//().rec]]");
 
@@ -206,7 +206,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Get Input/Output Tests
 
         [TestMethod]
-        public void CountRecordsetActivity_GetInputs_Expected_One_Input()
+        public void RecordsetLengthRecordsetActivity_GetInputs_Expected_One_Input()
         {
             DsfRecordsetLengthActivity testAct = new DsfRecordsetLengthActivity();
 
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void CountRecordsetActivity_GetOutputs_Expected_One_Output()
+        public void RecordsetLengthRecordsetActivity_GetOutputs_Expected_One_Output()
         {
             DsfRecordsetLengthActivity testAct = new DsfRecordsetLengthActivity();
 

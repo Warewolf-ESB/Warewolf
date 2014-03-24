@@ -89,7 +89,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         if(recset.Columns != null && RecordsLength != string.Empty)
                         {
-                            // Travis.Frisinger - Re-did work for bug 7853 
                             if(recset.IsEmpty())
                             {
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
