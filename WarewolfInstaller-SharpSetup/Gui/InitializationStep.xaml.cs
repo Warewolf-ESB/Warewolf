@@ -26,8 +26,14 @@ namespace Gui
                 MsiConnection.Instance.Open(SetupHelper.GetProductGuidFromPath(), true);
             }
 
-            var installLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
-            var logFileName = Path.Combine(installLoc, "Warewolf_Install.log");
+            // if we want logging, here it is ;)
+            if (!InstallVariables.RemoveLogFile)
+            {
+                // set log file location ;)
+                var installLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+                var logFileName = Path.Combine(installLoc, "Warewolf_Install.log");
+                MsiConnection.Instance.LogFile = logFileName;
+            }
 
             Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
             Wizard.NextStep();
