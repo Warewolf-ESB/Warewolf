@@ -18,7 +18,6 @@ namespace Gui
     public partial class PreInstallProcess
     {
         private bool _vcInstalled;
-        private bool _detNet45Installed;
 
         public PreInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
@@ -152,13 +151,6 @@ namespace Gui
             StopServerService();
         }
 
-        private void CheckForAndInstallDotNet45()
-        {
-            if(!IsDotNet45Installed())
-            {
-
-            }
-        }
 
         /// <summary>
         /// Checks for and install vc++ 2k8 sp1.
@@ -180,19 +172,11 @@ namespace Gui
                     _vcInstalled = true;
                 }
 
-                if(!IsDotNet45Installed())
-                {
-                    InstallDotNet45();
-                }
-                else
-                {
-                    _detNet45Installed = true;
-                }
             };
 
             worker.RunWorkerCompleted += delegate
             {
-                if(_vcInstalled && _detNet45Installed)
+                if(_vcInstalled)
                 {
                     // enable the next button
                     CanGoNext = true;
@@ -205,52 +189,6 @@ namespace Gui
             };
 
             worker.RunWorkerAsync();
-        }
-
-        /// <summary>
-        /// Installs the dot net45.
-        /// </summary>
-        private void InstallDotNet45()
-        {
-            var stream = ResourceExtractor.FetchDependency("dotNetFx45_Full_setup.exe");
-
-            if(stream == null)
-            {
-                return;
-            }
-
-            var fileName = Path.GetTempFileName();
-            var streamLength = stream.Length;
-            var bytes = new byte[streamLength];
-
-            using(stream)
-            {
-                stream.Read(bytes, 0, (int)streamLength);
-                // TODO : Write stream to TMP directory and run ;)
-                File.WriteAllBytes(fileName, bytes);
-            }
-
-            // now move so it has an msi name ;)
-            var newName = fileName + ".exe";
-            File.Move(fileName, newName);
-
-            // Now run the installer in /q mode
-            ProcessStartInfo psi = new ProcessStartInfo(newName, "/q");
-            var vcProc = Process.Start(psi);
-
-            // wait for up to a minute
-            vcProc.WaitForExit(60000);
-
-            // remove tmp file
-            File.Delete(newName);
-
-            _detNet45Installed = true;
-
-            // check that it installed
-            if(vcProc.ExitCode != 0)
-            {
-                _detNet45Installed = false;
-            }
         }
 
         /// <summary>
@@ -309,24 +247,6 @@ namespace Gui
             ProductInstallation productInstallation = new ProductInstallation(InstallVariables.Vcplusplus2k8sp1x86Key, null, UserContexts.Machine);
 
             return productInstallation.IsInstalled;
-        }
-
-        /// <summary>
-        /// Determines whether vc++ 2k8 sp1 x86 is installed
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsDotNet45Installed()
-        {
-
-            var ver = Environment.Version;
-            var checkVer = new Version("4.0.30319.17929");
-
-            if(ver >= checkVer)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
