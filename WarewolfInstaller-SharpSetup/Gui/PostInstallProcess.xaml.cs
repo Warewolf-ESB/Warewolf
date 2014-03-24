@@ -172,6 +172,9 @@ namespace Gui
                     Process p = Process.Start(psi);
 
                     p.WaitForExit(InstallVariables.DefaultWaitInMs);
+
+                    // give it some time to wait
+                    Thread.Sleep(500);
                 }
 
                 // now try and start the service ;)
