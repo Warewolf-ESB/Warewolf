@@ -1,59 +1,59 @@
 ﻿<DataList>
-    <Locales rowID="1">
+    <Locales index="1">
         <LocationID>1</LocationID>
         <Address>19 Pineside Road, New Germany</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="2">
+    <Locales index="2">
         <LocationID>2</LocationID>
         <Address>1244 Old North Coast Rd, Redhill</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="3">
+    <Locales index="3">
         <LocationID>3</LocationID>
         <Address>Westmead Road, Westmead</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="4">
+    <Locales index="4">
         <LocationID>4</LocationID>
         <Address>Turquoise Road, Queensmead</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="5">
+    <Locales index="5">
         <LocationID>5</LocationID>
         <Address>Old Main Road, Isipingo</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="6">
+    <Locales index="6">
         <LocationID>7</LocationID>
         <Address>2 Brook Street North, Warwick Junction</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="7">
+    <Locales index="7">
         <LocationID>8</LocationID>
         <Address>Bellair Road, Corner Bellair &amp; Edwin Swales/Sarnia Arterial</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="8">
+    <Locales index="8">
         <LocationID>9</LocationID>
         <Address>Riverside Road, Durban North</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="9">
+    <Locales index="9">
         <LocationID>10</LocationID>
         <Address>Malacca Road, Durban North</Address>
         <Lat></Lat>
         <Long></Long>
     </Locales>
-    <Locales rowID="10">
+    <Locales index="10">
         <LocationID>11</LocationID>
         <Address>Glanville Road, Woodlands</Address>
         <Lat></Lat>

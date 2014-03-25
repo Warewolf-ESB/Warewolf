@@ -27,15 +27,14 @@ namespace Dev2.Data.Tests.BinaryDataList
         private static readonly DataListFormat XmlFormatWithoutSystemTags = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
         private static readonly DataListFormat XmlFormatInputsOnly = DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only);
 
-
-        private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
-        private static readonly string _dataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
-        private static readonly string _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
+        const string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
+        const string _dataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
+        const string _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
         //private static readonly string _dataListWellformedMultData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2/></DataList>";
-        private static readonly string _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
+        const string _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
         //private static readonly string _dataListMalformedData = "<DataList><scalar1/>abc<rs1><f1/><f2/><f3/><scalar2/></DataList>";
-        private static readonly string _dataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>";
-        private static readonly string _dataListWellformedDataWithDesc = "<DataList><scalar1 Description=\"Test scalar description\"/>s1</scalar1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.1</f1></rs1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.2</f1></rs1><scalar2/></DataList>";
+        const string _dataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>";
+        const string _dataListWellformedDataWithDesc = "<DataList><scalar1 Description=\"Test scalar description\"/>s1</scalar1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.1</f1></rs1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.2</f1></rs1><scalar2/></DataList>";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -447,7 +446,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             actual = actual.Replace("\r", "").Replace("\n", "");
 
             //------------Assert Results-------------------------
-            const string expected = "<rs rowID=\"1\"><val>1</val></rs>";
+            const string expected = "<rs index=\"1\"><val>1</val></rs>";
 
             StringAssert.Contains(actual, expected, "rowID attribute not present");
         }
@@ -474,7 +473,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             actual = actual.Replace("\r", "").Replace("\n", "");
 
             //------------Assert Results-------------------------
-            const string expected = "<rs rowID=\"1\"><val>1</val></rs><rs rowID=\"3\"><val>3</val></rs>";
+            const string expected = "<rs index=\"1\"><val>1</val></rs><rs index=\"3\"><val>3</val></rs>";
 
             StringAssert.Contains(actual, expected, "rowID attribute not present");
         }
@@ -482,7 +481,6 @@ namespace Dev2.Data.Tests.BinaryDataList
         #endregion
 
         #endregion
-
 
         #region ConvertTo
 

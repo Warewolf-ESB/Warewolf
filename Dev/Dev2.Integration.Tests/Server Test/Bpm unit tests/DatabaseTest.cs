@@ -25,7 +25,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         {
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_10247_Outter");
-            string expected = @"<rs  rowID=""1""><result>2</result></rs><rs rowID=""2""><result>3</result></rs>";
+            string expected = @"<rs  index=""1""><result>2</result></rs><rs index=""2""><result>3</result></rs>";
 
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -45,7 +45,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9490");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            const string expected1 = "<result rowID=\"1\"><val>abc_def_hij</val></result><result rowID=\"2\"><val>ABC_DEF_HIJ</val></result>";
+            const string expected1 = "<result index=\"1\"><val>abc_def_hij</val></result><result index=\"2\"><val>ABC_DEF_HIJ</val></result>";
 
             StringAssert.Contains(ResponseData, expected1, "But Got [ " + ResponseData + " ]");
         }
@@ -127,10 +127,10 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------
-            const string expectedReturnValue = @"<Countries rowID=""1""><CountryID>127</CountryID><Description>Solomon Islands</Description></Countries><Countries rowID=""2""><CountryID>128</CountryID><Description>Somalia</Description></Countries><Countries rowID=""3""><CountryID>129</CountryID><Description>South Africa</Description></Countries>";
+            const string expectedReturnValue = @"<Countries index=""1""><CountryID>127</CountryID><Description>Solomon Islands</Description></Countries><Countries index=""2""><CountryID>128</CountryID><Description>Somalia</Description></Countries><Countries index=""3""><CountryID>129</CountryID><Description>South Africa</Description></Countries>";
             StringAssert.Contains(result, expectedReturnValue);
-        }  
-        
+        }
+
 
     }
 }

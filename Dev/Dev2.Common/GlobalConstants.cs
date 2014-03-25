@@ -94,7 +94,7 @@ namespace Dev2.Common
         public const string AllColumns = null;
         public const string NaughtyTextNode = "#text";
         public const char EvaluationToken = '[';
-        public const string RowAnnotation = "rowID";
+        public const string RowAnnotation = "index";
 
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;

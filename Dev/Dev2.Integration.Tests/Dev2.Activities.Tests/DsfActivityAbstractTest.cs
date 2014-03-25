@@ -14,10 +14,10 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void LastRecordSetNotionUpdatesEntry_Expected_RecordsCreated()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "LastRecordSetNotationUpdatesEntry");
-            string expected = @"<nameSetrowID=""1""><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
-                                <nameSetrowID=""2""><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
-                                <nameSetrowID=""3""><Name>MASSIMO</Name><Surname></Surname></nameSet>
-                                <nameSetrowID=""4""><Name>0x4d415353494d4f</Name><Surname></Surname></nameSet>";
+            string expected = @"<nameSetindex=""1""><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
+                                <nameSetindex=""2""><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
+                                <nameSetindex=""3""><Name>MASSIMO</Name><Surname></Surname></nameSet>
+                                <nameSetindex=""4""><Name>0x4d415353494d4f</Name><Surname></Surname></nameSet>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

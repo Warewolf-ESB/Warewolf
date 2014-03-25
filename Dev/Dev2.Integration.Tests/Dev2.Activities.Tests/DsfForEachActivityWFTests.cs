@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachWithStarAndStaticIndex");
-            const string expected = "DataList><results rowID=\"1\"><res>50</res></results></DataList";
+            const string expected = "DataList><results index=\"1\"><res>50</res></results></DataList";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(ResponseData, expected);
@@ -56,7 +56,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachNumber()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
-            const string expected = "<DataList><Rec rowID=\"1\"><Each>1</Each></Rec><Rec rowID=\"2\"><Each>2</Each></Rec><Rec rowID=\"3\"><Each>4</Each></Rec><Rec rowID=\"4\"><Each>8</Each></Rec><Rec rowID=\"5\"><Each>16</Each></Rec></DataList>";
+            const string expected = "<DataList><Rec index=\"1\"><Each>1</Each></Rec><Rec index=\"2\"><Each>2</Each></Rec><Rec index=\"3\"><Each>4</Each></Rec><Rec index=\"4\"><Each>8</Each></Rec><Rec index=\"5\"><Each>16</Each></Rec></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(expected, ResponseData);
@@ -90,7 +90,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachInputOutputMappingTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
-            const string expected = "<DataList><var>5</var><recset rowID=\"1\"><rec1>1</rec1></recset><recset rowID=\"2\"><rec1>2</rec1></recset><recset rowID=\"3\"><rec1>3</rec1></recset><recset rowID=\"4\"><rec1>4</rec1></recset><recset rowID=\"5\"><rec1>5</rec1></recset><recset rowID=\"6\"><rec1>6</rec1></recset></DataList>";
+            const string expected = "<DataList><var>5</var><recset index=\"1\"><rec1>1</rec1></recset><recset index=\"2\"><rec1>2</rec1></recset><recset index=\"3\"><rec1>3</rec1></recset><recset index=\"4\"><rec1>4</rec1></recset><recset index=\"5\"><rec1>5</rec1></recset><recset index=\"6\"><rec1>6</rec1></recset></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(ResponseData, expected);
@@ -120,7 +120,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ClassName_MethodName_Scenerio_Result()
         {
             //------------Setup for test--------------------------
-            const string expected = @"<Result>PASS</Result><FetchPeople rowID=""1""><ID>1</ID><UserName>Bob.Smith</UserName></FetchPeople><FetchPeople rowID=""2""><ID>2</ID><UserName>Jane.Jones</UserName></FetchPeople><FetchPeople rowID=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></FetchPeople><FetchPeople rowID=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></FetchPeople><FetchPeople rowID=""5""><ID>5</ID><UserName>Brad.Smith</UserName></FetchPeople><FetchPeople rowID=""6""><ID>6</ID><UserName>Travis.Fry</UserName></FetchPeople><FetchPeople rowID=""7""><ID>7</ID><UserName>Mo.Jones</UserName></FetchPeople><FetchPeople rowID=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></FetchPeople><FetchPeople rowID=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></FetchPeople><FetchPeople rowID=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></FetchPeople><dbo_FetchPeople rowID=""1""><ID>1</ID><UserName>Bob.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""2""><ID>2</ID><UserName>Jane.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""5""><ID>5</ID><UserName>Brad.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""6""><ID>6</ID><UserName>Travis.Fry</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""7""><ID>7</ID><UserName>Mo.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></dbo_FetchPeople><dbo_FetchPeople rowID=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></dbo_FetchPeople>";
+            const string expected = @"<Result>PASS</Result><FetchPeople index=""1""><ID>1</ID><UserName>Bob.Smith</UserName></FetchPeople><FetchPeople index=""2""><ID>2</ID><UserName>Jane.Jones</UserName></FetchPeople><FetchPeople index=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></FetchPeople><FetchPeople index=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></FetchPeople><FetchPeople index=""5""><ID>5</ID><UserName>Brad.Smith</UserName></FetchPeople><FetchPeople index=""6""><ID>6</ID><UserName>Travis.Fry</UserName></FetchPeople><FetchPeople index=""7""><ID>7</ID><UserName>Mo.Jones</UserName></FetchPeople><FetchPeople index=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></FetchPeople><FetchPeople index=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></FetchPeople><FetchPeople index=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></FetchPeople><dbo_FetchPeople index=""1""><ID>1</ID><UserName>Bob.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""2""><ID>2</ID><UserName>Jane.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople index=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></dbo_FetchPeople><dbo_FetchPeople index=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></dbo_FetchPeople><dbo_FetchPeople index=""5""><ID>5</ID><UserName>Brad.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""6""><ID>6</ID><UserName>Travis.Fry</UserName></dbo_FetchPeople><dbo_FetchPeople index=""7""><ID>7</ID><UserName>Mo.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople index=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></dbo_FetchPeople><dbo_FetchPeople index=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></dbo_FetchPeople>";
 
             //------------Execute Test---------------------------
             string PostData = String.Format("{0}{1}", WebserverURI, "Bug_11463_WF");

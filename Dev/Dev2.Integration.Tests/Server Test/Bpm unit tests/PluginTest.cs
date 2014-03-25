@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLfromXML");
 
-            const string expected = @"<Names rowID=""1""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names rowID=""2""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names rowID=""3""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names rowID=""4""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names>";
+            const string expected = @"<Names index=""1""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names index=""2""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names index=""3""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names index=""4""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void TestPluginsReturningXMLFromComplexType()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLFromComplexType");
-            const string expected = @"<Names rowID=""1""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names rowID=""2""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names rowID=""3""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names rowID=""4""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Jo</EmployeeName></Names>";
+            const string expected = @"<Names index=""1""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Names index=""2""><CompanyName>Dev2</CompanyName><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Names index=""3""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Names index=""4""><CompanyName>Dev2</CompanyName><DepartmentName>Accounts</DepartmentName><EmployeeName>Jo</EmployeeName></Names>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
@@ -61,7 +61,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void TestPluginsReturningXMLFromJson()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PluginsReturningXMLFromJson");
-            string expected = @"<ScalarName>Dev2</ScalarName><NamesrowID=""1""><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><NamesrowID=""2""><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><NamesrowID=""3""><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><NamesrowID=""4""><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names><OtherNamesrowID=""1""><Name>RandomData</Name></OtherNames><OtherNamesrowID=""2""><Name>RandomData1</Name></OtherNames>";
+            string expected = @"<ScalarName>Dev2</ScalarName><Namesindex=""1""><DepartmentName>Dev</DepartmentName><EmployeeName>Brendon</EmployeeName></Names><Namesindex=""2""><DepartmentName>Dev</DepartmentName><EmployeeName>Jayd</EmployeeName></Names><Namesindex=""3""><DepartmentName>Accounts</DepartmentName><EmployeeName>Bob</EmployeeName></Names><Namesindex=""4""><DepartmentName>Accounts</DepartmentName><EmployeeName>Joe</EmployeeName></Names><OtherNamesindex=""1""><Name>RandomData</Name></OtherNames><OtherNamesindex=""2""><Name>RandomData1</Name></OtherNames>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 

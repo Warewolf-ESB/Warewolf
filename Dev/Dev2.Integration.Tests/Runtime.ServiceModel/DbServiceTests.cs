@@ -503,7 +503,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
-            Assert.IsFalse(result.HasErrors);           
+            Assert.IsFalse(result.HasErrors);
         }
         #endregion
 
@@ -527,7 +527,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         {
 
             string postData = String.Format("{0}{1}", _webserverURI, "Bug9490");
-            const string expected = @"<result rowID=""1""><val>abc_def_hij</val></result><result rowID=""2""><val>ABC_DEF_HIJ</val></result>";
+            const string expected = @"<result index=""1""><val>abc_def_hij</val></result><result index=""2""><val>ABC_DEF_HIJ</val></result>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
@@ -544,7 +544,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", _webserverURI, "Bug 10475 Outer WF");
-            const string expected = @"<Row rowID=""1""><ID>1</ID></Row>";
+            const string expected = @"<Row index=""1""><ID>1</ID></Row>";
 
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(postData);
