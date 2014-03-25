@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio;
@@ -48,6 +49,7 @@ namespace Dev2
         #region Fields
 
         private CompositionContainer _container;
+        bool _serverServiceStartedFromStudio = false;
 
         #endregion
 
@@ -72,6 +74,24 @@ namespace Dev2
 
             ClassRoutedEventHandlers.RegisterEvents();
         }
+
+        #region Overrides of BootstrapperBase
+
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            if(_serverServiceStartedFromStudio)
+            {
+                var app = Application.Current as IApp;
+                if(app != null)
+                {
+                    app.ShouldRestart = true;
+                }
+            }
+        }
+
+        #endregion
+
 
         protected override object GetInstance(Type serviceType, string key)
         {
@@ -174,6 +194,10 @@ namespace Dev2
                 {
                     popup.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
+                }
+                else
+                {
+                    _serverServiceStartedFromStudio = true;
                 }
             }
 
