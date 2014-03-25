@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml;
-using Dev2.Activities.Preview;
+﻿using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml;
 
 namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
@@ -146,7 +148,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty VariableListStringProperty =
-            DependencyProperty.Register("VariableListString", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUIStateChanged));
+            DependencyProperty.Register("VariableListString", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUiStateChanged));
 
         public string SplitType
         {
@@ -170,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty SplitTokenProperty =
-            DependencyProperty.Register("SplitToken", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUIStateChanged));
+            DependencyProperty.Register("SplitToken", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUiStateChanged));
 
         public string Prefix
         {
@@ -179,7 +181,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty PrefixProperty =
-            DependencyProperty.Register("Prefix", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUIStateChanged));
+            DependencyProperty.Register("Prefix", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUiStateChanged));
 
         public string Suffix
         {
@@ -188,7 +190,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty SuffixProperty =
-            DependencyProperty.Register("Suffix", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUIStateChanged));
+            DependencyProperty.Register("Suffix", typeof(string), typeof(QuickVariableInputViewModel), new PropertyMetadata(null, OnUiStateChanged));
 
         public bool Overwrite
         {
@@ -206,7 +208,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty IsOverwriteEnabledProperty =
-            DependencyProperty.Register("IsOverwriteEnabled", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));       
+            DependencyProperty.Register("IsOverwriteEnabled", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));
 
         public bool IsSplitTokenEnabled
         {
@@ -233,7 +235,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         }
 
         public static readonly DependencyProperty RemoveEmptyEntriesProperty =
-            DependencyProperty.Register("RemoveEmptyEntries", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));        
+            DependencyProperty.Register("RemoveEmptyEntries", typeof(bool), typeof(QuickVariableInputViewModel), new PropertyMetadata(true));
 
         public PreviewViewModel PreviewViewModel
         {
@@ -243,10 +245,10 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             }
         }
 
-        static void OnUIStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void OnUiStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (QuickVariableInputViewModel)d;
-            viewModel.UpdateUIState();
+            viewModel.UpdateUiState();
         }
 
         #endregion
@@ -313,7 +315,9 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             UpdatePreviewViewModelInputs();
 
             var inputs = PreviewViewModel.Inputs.Select(input => input.Key);
-            _addToCollection(inputs, Overwrite);
+            var enumerable  = inputs as IList<string> ?? inputs.ToList();
+            EventPublishers.Aggregator.Publish(new AddStringListToDataListMessage(enumerable.ToList()));
+            _addToCollection(enumerable, Overwrite);
             DoClear(o);
         }
 
@@ -562,10 +566,10 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                     IsSplitTokenEnabled = false;
                 }
             }
-            UpdateUIState();
+            UpdateUiState();
         }
 
-        void UpdateUIState()
+        void UpdateUiState()
         {
             CanAdd = !string.IsNullOrWhiteSpace(VariableListString) && (!IsSplitTokenEnabled || !string.IsNullOrEmpty(SplitToken));
             if(PreviewViewModel != null)
