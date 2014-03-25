@@ -27,6 +27,7 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
         {
+
             try
             {
                 var instLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
@@ -39,6 +40,9 @@ namespace Gui
 
                     if (File.Exists(Properties.Resources.MainMsiFile))
                         MsiConnection.Instance.Open(Properties.Resources.MainMsiFile, true);
+
+                    // change log file location before this
+                    MsiConnection.Instance.EnableLogging = false;
 
                     CleanUp(instLoc);
 

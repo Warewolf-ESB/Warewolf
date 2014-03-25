@@ -32,6 +32,13 @@ namespace Gui
                 // set log file location ;)
                 var installLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
                 var logFileName = Path.Combine(installLoc, "Warewolf_Install.log");
+
+                // create directory to avoid issues ;)
+                if (!Directory.Exists(installLoc))
+                {
+                    Directory.CreateDirectory(installLoc);
+                }
+
                 MsiConnection.Instance.LogFile = logFileName;
             }
 

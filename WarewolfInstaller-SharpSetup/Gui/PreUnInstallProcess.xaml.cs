@@ -29,6 +29,7 @@ namespace Gui
                 // set the shortcut variable ;)
                 MsiConnection.Instance.SetProperty("INSTALLSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
             }
+
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
