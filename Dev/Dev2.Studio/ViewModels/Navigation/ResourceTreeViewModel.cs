@@ -354,7 +354,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public override bool CanDelete { get { return CanDo(AuthorizationContext.Contribute); } }
 
         bool CanDo(AuthorizationContext authorizationContext)
-            {
+        {
             return DataContext != null
                    && (DataContext.ResourceType == ResourceType.WorkflowService ||
                         DataContext.ResourceType == ResourceType.Service ||
@@ -504,6 +504,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
+
+                // DoExecute
                 return _executeCommand ?? (_executeCommand = new RelayCommand(param => DoExecute(), param => CanExecute));
             }
         }
@@ -1124,7 +1126,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             if(DataContext.ResourceType == ResourceType.WorkflowService)
             {
-                if(DataContext.UserPermissions.HasFlag(Permissions.Contribute))
+                if(DataContext.UserPermissions.HasFlag(Permissions.Execute) || DataContext.UserPermissions.HasFlag(Permissions.Contribute))
                 {
                     ShowDebugWindowOnLoad = true;
                     Edit();

@@ -267,12 +267,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             this.TraceInfo(message.GetType().Name);
-            //ContextualResourceModel.ServiceDefinition = ContextualResourceModel.ServiceDefinition
-            //        .Replace("x:Class=\"" + ContextualResourceModel.ResourceName, "x:Class=\"" + message.NewName)
-            //        .Replace("Name=\"" + ContextualResourceModel.ResourceName, "Name=\"" + message.NewName)
-            //        .Replace("ToolboxFriendlyName=\"" + ContextualResourceModel.ResourceName, "ToolboxFriendlyName=\"" + message.NewName)
-            //        .Replace("<DisplayName>" + ContextualResourceModel.ResourceName + "</DisplayName>", "<DisplayName>" + message.NewName + "</DisplayName>")
-            //        .Replace("DisplayName=\"" + ContextualResourceModel.ResourceName, "DisplayName=\"" + message.NewName);
             NotifyOfPropertyChange("ContextualResourceModel");
         }
 
@@ -424,11 +418,17 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            var succesfulSave = Save(resourceModel, true);
-            if(!succesfulSave)
+            // only try saving if I can debug and contribute, else I should just debug what I have
+            if(resourceModel.UserPermissions.IsContributor())
             {
-                return;
+
+                var succesfulSave = Save(resourceModel, true);
+                if(!succesfulSave)
+                {
+                    return;
+                }
             }
+
             SetDebugStatus(DebugStatus.Configure);
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
             _windowManager.ShowDialog(inputDataViewModel);
@@ -628,13 +628,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             if(message != null && message.Message != null)
             {
-            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-            if(_debugOutputViewModel != null)
-            {
-                debugstate.SessionID = _debugOutputViewModel.SessionID;
-                _debugOutputViewModel.Append(debugstate);
+                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+                if(_debugOutputViewModel != null)
+                {
+                    debugstate.SessionID = _debugOutputViewModel.SessionID;
+                    _debugOutputViewModel.Append(debugstate);
+                }
             }
-        }
         }
 
         public virtual void Debug()

@@ -1591,6 +1591,7 @@ namespace Dev2.Core.Tests
         }
 
 
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ResourceTreeViewModel_ExecuteCommand")]
@@ -1605,7 +1606,9 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
             resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Execute);
 
+#pragma warning disable 219
             WorkflowInputDataViewModel workflowInputDataViewModel = null;
+#pragma warning restore 219
 
             var windowManager = new Mock<IWindowManager>();
             windowManager.Setup(w => w.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()))
@@ -1622,9 +1625,7 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
             Assert.IsFalse(tvm.ShowDebugWindowOnLoad);
-            eventAggregator.Verify(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
-            windowManager.Verify(w => w.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()));
-            Assert.IsFalse(workflowInputDataViewModel.CanDebug);
+            eventAggregator.Verify(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
 
             tvm.Dispose();
         }

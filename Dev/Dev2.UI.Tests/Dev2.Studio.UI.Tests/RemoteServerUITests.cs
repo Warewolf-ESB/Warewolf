@@ -15,6 +15,7 @@ namespace Dev2.Studio.UI.Tests
     /// </summary>
     [CodedUITest]
     // ALL TEST HAVE Item with same key bug when reselecting server in connect control
+    [Ignore]
     public class RemoteServerUiTests : UIMapBase
     {
         #region Fields
