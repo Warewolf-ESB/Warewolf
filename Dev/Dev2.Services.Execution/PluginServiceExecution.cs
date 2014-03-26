@@ -30,7 +30,7 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
 
-            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Method = Service.Method.Name, Parameters = Service.Method.Parameters };
+            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Fullname = Service.Namespace, Method = Service.Method.Name, Parameters = Service.Method.Parameters };
 
             object result = null;
 
