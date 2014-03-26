@@ -14,6 +14,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
+
         /// <summary>
         /// Runs the specified setup information.
         /// </summary>

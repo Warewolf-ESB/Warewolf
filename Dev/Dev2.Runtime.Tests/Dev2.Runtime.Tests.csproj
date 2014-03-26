@@ -151,7 +151,6 @@
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
     <Compile Include="ESB\DatabaseServiceContainerMock.cs" />
     <Compile Include="ESB\PluginServiceContainerMock.cs" />
-    <Compile Include="ESB\RemoteObjectHandlerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MockNetworkHost.cs" />

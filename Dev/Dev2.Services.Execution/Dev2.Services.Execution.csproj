@@ -62,7 +62,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteObjectHandler.cs" />
     <Compile Include="ServiceExecutionAbstract.cs" />
     <Compile Include="WebserviceExecution.cs" />
   </ItemGroup>
