@@ -23,6 +23,7 @@ namespace System.Parsing.Intellisense
 
         public static readonly TokenKind Plus = CreateOperator("+", "Plus");
         public static readonly TokenKind Minus = CreateOperator("-", "Minus");
+        public static readonly TokenKind Mod = CreateOperator("%", "Mod");
 
         public static readonly TokenKind Iteration = CreateOperator("", "Iteration", false);
         public static readonly TokenKind Asterisk = CreateOperator("*", "Asterisk");
@@ -143,7 +144,7 @@ namespace System.Parsing.Intellisense
         private static TokenKind CreateOperator(string identifier, string name, bool add)
         {
             TokenKind toReturn = new TokenKind(name, identifier, TokenClassification.Operator);
-            if (add) Operators.Add(toReturn);
+            if(add) Operators.Add(toReturn);
             return toReturn;
         }
 
@@ -204,7 +205,7 @@ namespace System.Parsing.Intellisense
             : base(name, identifier)
         {
             _kind = classification;
-            if (_kind == TokenClassification.Unknown) _isKeyword = true;
+            if(_kind == TokenClassification.Unknown) _isKeyword = true;
         }
 
         private TokenKind(string name, string identifier, TokenClassification classification, bool isKeyword)

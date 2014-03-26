@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
+using System.Text;
 
 namespace System.Parsing.Intellisense
 {
@@ -17,10 +17,10 @@ namespace System.Parsing.Intellisense
         private static readonly int[] _operatorPrecedenceLookup = BuildOperatorPrecedenceLookup();
 
         public static readonly GrammerGroup CalcGrammerGroup = new GrammerGroup("Infrigistics");
-        
+
         private static readonly Tokenization.TokenDefinitionMask _evaluationOperators = new Tokenization.TokenDefinitionMask(TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality);
-        private static readonly Tokenization.TokenDefinitionMask _binaryOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Comma, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon);
-        private static readonly Tokenization.TokenDefinitionMask _statementOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality);
+        private static readonly Tokenization.TokenDefinitionMask _binaryOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Comma, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.Mod);
+        private static readonly Tokenization.TokenDefinitionMask _statementOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality, TokenKind.Mod);
         #endregion
 
         #region Static Members
@@ -53,6 +53,7 @@ namespace System.Parsing.Intellisense
             triggerRegistry.Register(TokenKind.LeftParenthesis);
 
             triggerRegistry.Register(TokenKind.Plus);
+            triggerRegistry.Register(TokenKind.Mod);
             triggerRegistry.Register(TokenKind.Minus);
             triggerRegistry.Register(TokenKind.Comma);
             triggerRegistry.Register(TokenKind.Asterisk);
@@ -60,7 +61,7 @@ namespace System.Parsing.Intellisense
             triggerRegistry.Register(TokenKind.Ampersand);
             triggerRegistry.Register(TokenKind.Circumflex);
             triggerRegistry.Register(TokenKind.Colon);
-            
+
             triggerRegistry.Register(TokenKind.LessThanOrEqual);
             triggerRegistry.Register(TokenKind.GreaterThanOrEqual);
             triggerRegistry.Register(TokenKind.Inequality);
@@ -89,6 +90,7 @@ namespace System.Parsing.Intellisense
             operators.Add(TokenKind.Ampersand);
             operators.Add(TokenKind.Circumflex);
             operators.Add(TokenKind.Colon);
+            operators.Add(TokenKind.Mod);
 
             operators.Add(TokenKind.LessThanOrEqual);
             operators.Add(TokenKind.GreaterThanOrEqual);
@@ -114,39 +116,39 @@ namespace System.Parsing.Intellisense
 
         protected internal override void PostProcessTokens(Tokenizer<Token, TokenKind> tokenizer, IList<Token> rawTokens, int phase)
         {
-            if (phase != 1) return;
+            if(phase != 1) return;
             ExposedList<Token> tokens = rawTokens as ExposedList<Token>;
 
             // get underlying array of tokens and number of elements used
             Token[] underlying = tokens.UnderlyingArray;
             int length = tokens.Count;
 
-            for (int i = 0; i < length; i++)
+            for(int i = 0; i < length; i++)
             {
                 Token current = underlying[i];
 
                 TokenKind definition = current.Definition;
 
                 // check if token is literal number
-                if (definition.IsIntegerLiteral || definition.IsRealLiteral)
+                if(definition.IsIntegerLiteral || definition.IsRealLiteral)
                 {
                     Token sign = current.PreviousNWS;
                     // check if previous token exists and is a plus or minus sign
-                    if (sign == null || (sign.Definition != TokenKind.Plus && sign.Definition != TokenKind.Minus)) continue;
+                    if(sign == null || (sign.Definition != TokenKind.Plus && sign.Definition != TokenKind.Minus)) continue;
 
                     Token temp = sign.PreviousNWS;
 
-                    if (temp != null)
+                    if(temp != null)
                     {
                         // if token before sign is text, then this is a binary operator
-                        if (definition.IsUnknown) continue;
-                        if (!_signConcatenationMask[temp.Definition] && !_statementOperators[temp.Definition]) continue;
+                        if(definition.IsUnknown) continue;
+                        if(!_signConcatenationMask[temp.Definition] && !_statementOperators[temp.Definition]) continue;
                     }
 
                     // create a set of the tokens we need to remove
                     HashSet<Token> pendingRemoval = new HashSet<Token>();
-                    for (temp = current; temp != sign; temp = temp.Previous) pendingRemoval.Add(temp);
-                    
+                    for(temp = current; temp != sign; temp = temp.Previous) pendingRemoval.Add(temp);
+
                     // get first token before sign that has any reference to sign or the tokens after
                     // sign, also get last token after literal number that has any reference to literal number
                     // or the tokens before literal number
@@ -154,19 +156,19 @@ namespace System.Parsing.Intellisense
                     Token lastAffected = current.Next == null ? current : (current.NextNWS > current.Next ? (current.NextNWS > current.NextWS ? current.NextNWS : current.NextWS) : (current.Next > current.NextWS ? current.Next : current.NextWS));
 
                     // remap references to point to tokens after literal number
-                    while (firstAffected != sign)
+                    while(firstAffected != sign)
                     {
-                        if (pendingRemoval.Contains(firstAffected.NextWS)) firstAffected.NextWS = current.NextWS;
+                        if(pendingRemoval.Contains(firstAffected.NextWS)) firstAffected.NextWS = current.NextWS;
                         firstAffected = firstAffected.Next;
                     }
 
                     // remap references to point to tokens before and including sign
-                    while (lastAffected != current)
+                    while(lastAffected != current)
                     {
                         temp = lastAffected.Previous;
-                        if (pendingRemoval.Contains(lastAffected.Previous)) lastAffected.Previous = firstAffected;
-                        if (pendingRemoval.Contains(lastAffected.PreviousNWS)) lastAffected.PreviousNWS = firstAffected;
-                        if (pendingRemoval.Contains(lastAffected.PreviousWS)) lastAffected.PreviousWS = sign.PreviousWS;
+                        if(pendingRemoval.Contains(lastAffected.Previous)) lastAffected.Previous = firstAffected;
+                        if(pendingRemoval.Contains(lastAffected.PreviousNWS)) lastAffected.PreviousNWS = firstAffected;
+                        if(pendingRemoval.Contains(lastAffected.PreviousWS)) lastAffected.PreviousWS = sign.PreviousWS;
                         lastAffected = temp;
                     }
 
@@ -181,7 +183,7 @@ namespace System.Parsing.Intellisense
                     // remap TokenIndex of all tokens after sign and keep track of new length
                     length = sign.TokenIndex + 1;
 
-                    while (temp != null)
+                    while(temp != null)
                     {
                         underlying[temp.TokenIndex = length++] = temp;
                         temp = temp.Next;
@@ -199,32 +201,32 @@ namespace System.Parsing.Intellisense
         #region Build Handling
         protected internal override Node BuildNode(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Token start, Token last)
         {
-            if (start == null) return Fail<Node>(RuntimeFailureReason.ArgumentNullException, "start");
+            if(start == null) return Fail<Node>(RuntimeFailureReason.ArgumentNullException, "start");
 
-            switch (start.Definition.Kind)
+            switch(start.Definition.Kind)
             {
                 case TokenClassification.Unknown:
                     {
-                        if (start.NextNWS != null && start.NextNWS.Definition == TokenKind.LeftParenthesis) return BuildMethodInvocation(builder, start, last);
+                        if(start.NextNWS != null && start.NextNWS.Definition == TokenKind.LeftParenthesis) return BuildMethodInvocation(builder, start, last);
                         return null;
                     }
                 case TokenClassification.Operator:
                     {
-                        if (_binaryOperators[start.Definition])
+                        if(_binaryOperators[start.Definition])
                         {
                             PlaceholderOperatorNode node = new PlaceholderOperatorNode();
                             node.Identifier = start;
                             node.Declaration = start;
                             return node;
                         }
-                        else if (_evaluationOperators[start.Definition])
+                        else if(_evaluationOperators[start.Definition])
                         {
                             PlaceholderOperatorNode node = new PlaceholderOperatorNode();
                             node.Identifier = start;
                             node.Declaration = start;
                             return node;
                         }
-                        else if (start.Definition == TokenKind.LeftParenthesis)
+                        else if(start.Definition == TokenKind.LeftParenthesis)
                         {
                             return BuildParenthesisGroup(start, last);
                         }
@@ -241,8 +243,8 @@ namespace System.Parsing.Intellisense
         private Node BuildParenthesisGroup(Token start, Token last)
         {
             TokenPair body = TokenUtility.BuildGroupSimple(start, TokenKind.RightParenthesis);
-            if (body.End == null) return Fail<ParenthesisGroupNode>(SyntaxFailureReason.ExpectedExitScope, start, TokenKind.RightParenthesis);
-            if (body.End.PreviousNWS == body.Start) return Fail<ParenthesisGroupNode>(SyntaxFailureReason.ExpectedIdentifier, body.Start, TokenKind.Unknown);
+            if(body.End == null) return Fail<ParenthesisGroupNode>(SyntaxFailureReason.ExpectedExitScope, start, TokenKind.RightParenthesis);
+            if(body.End.PreviousNWS == body.Start) return Fail<ParenthesisGroupNode>(SyntaxFailureReason.ExpectedIdentifier, body.Start, TokenKind.Unknown);
             ParenthesisGroupNode result = new ParenthesisGroupNode();
             result.Declaration = body;
             result.Identifier = body;
@@ -253,9 +255,9 @@ namespace System.Parsing.Intellisense
         #region Method Handling
         private Node BuildMethodInvocation(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Token start, Token last)
         {
-            if (start.NextNWS == null || start.NextNWS.Definition != TokenKind.LeftParenthesis) return Fail<Node>(SyntaxFailureReason.ExpectedEnterScope, start, TokenKind.LeftParenthesis);
+            if(start.NextNWS == null || start.NextNWS.Definition != TokenKind.LeftParenthesis) return Fail<Node>(SyntaxFailureReason.ExpectedEnterScope, start, TokenKind.LeftParenthesis);
             TokenPair body = TokenUtility.BuildGroupSimple(start.NextNWS, TokenKind.RightParenthesis);
-            if (body.End == null) return Fail<Node>(SyntaxFailureReason.ExpectedExitScope, start.NextNWS, TokenKind.RightParenthesis);
+            if(body.End == null) return Fail<Node>(SyntaxFailureReason.ExpectedExitScope, start.NextNWS, TokenKind.RightParenthesis);
 
             ParameterCollectionNode parameters = new ParameterCollectionNode();
             parameters.Identifier = start;
@@ -268,14 +270,14 @@ namespace System.Parsing.Intellisense
         #region Transform Handling
         protected internal override Node[] TransformNodes(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node container, Node[] nodes)
         {
-            if (container is ParameterCollectionNode)
+            if(container is ParameterCollectionNode)
             {
                 return PerformParameterTransform(builder, container, nodes);
             }
             else
             {
                 int length = nodes.Length;
-                if (length == 0) return new Node[0];
+                if(length == 0) return new Node[0];
                 return new Node[] { PerformStatementTransform(builder, nodes, 0, length) };
             }
         }
@@ -286,11 +288,11 @@ namespace System.Parsing.Intellisense
             List<ParameterNode> parameters = new List<ParameterNode>();
             int index = 0;
 
-            for (int i = 0; i < nodes.Length; i++)
-                if (nodes[i].Declaration.Start.Definition == TokenKind.Comma)
+            for(int i = 0; i < nodes.Length; i++)
+                if(nodes[i].Declaration.Start.Definition == TokenKind.Comma)
                 {
                     int count = i - index;
-                    if (count == 0) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, nodes[i].Declaration.Start, TokenKind.Unknown);
+                    if(count == 0) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, nodes[i].Declaration.Start, TokenKind.Unknown);
 
                     {
                         TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
@@ -303,7 +305,7 @@ namespace System.Parsing.Intellisense
                     index = i + 1;
                 }
 
-            if (index != nodes.Length)
+            if(index != nodes.Length)
             {
                 int count = nodes.Length - index;
                 TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
@@ -312,14 +314,14 @@ namespace System.Parsing.Intellisense
                 currentParameter.Identifier = currentParameter.Declaration;
                 parameters.Add(currentParameter);
             }
-            else if (end.PreviousNWS.Definition == TokenKind.Comma) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, end.PreviousNWS, TokenKind.Unknown);
+            else if(end.PreviousNWS.Definition == TokenKind.Comma) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, end.PreviousNWS, TokenKind.Unknown);
 
             return parameters.ToArray();
         }
 
         private Node PerformStatementTransform(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node[] nodes, int index, int length)
         {
-            if (length == 0) return null;
+            if(length == 0) return null;
 
             Node currentNode = null;
             BitVector availableLevels = new BitVector();
@@ -329,20 +331,20 @@ namespace System.Parsing.Intellisense
             int maxAvailable = 0, minAvailable = 32;
             int totalNonTerminals = 0;
 
-            if (!nodes[index].IsTerminal) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[index].Declaration.Start);
+            if(!nodes[index].IsTerminal) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[index].Declaration.Start);
 
-            for (int i = index + 1; i < end; i += 2)
+            for(int i = index + 1; i < end; i += 2)
             {
-                if (!(currentNode = nodes[i]).IsTerminal)
+                if(!(currentNode = nodes[i]).IsTerminal)
                 {
-                    if (!_statementOperators[currentNode.Declaration.Start.Definition]) return Fail<Node>(SyntaxFailureReason.UnexpectedToken, currentNode.Declaration.Start);
+                    if(!_statementOperators[currentNode.Declaration.Start.Definition]) return Fail<Node>(SyntaxFailureReason.UnexpectedToken, currentNode.Declaration.Start);
                     defSerial = currentNode.Declaration.Start.Definition.Serial;
                     defPrecedence = _operatorPrecedenceLookup[defSerial];
                     availableLevels[defPrecedence] = true;
-                    if (defPrecedence > maxAvailable) maxAvailable = defPrecedence;
-                    if (defPrecedence < minAvailable) minAvailable = defPrecedence;
-                    if (i + 1 >= end) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, currentNode.Declaration.Start);
-                    if (!nodes[i + 1].IsTerminal) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[i + 1].Declaration.Start);
+                    if(defPrecedence > maxAvailable) maxAvailable = defPrecedence;
+                    if(defPrecedence < minAvailable) minAvailable = defPrecedence;
+                    if(i + 1 >= end) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, currentNode.Declaration.Start);
+                    if(!nodes[i + 1].IsTerminal) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[i + 1].Declaration.Start);
                     totalNonTerminals++;
                 }
                 else return Fail<Node>(SyntaxFailureReason.ExpectedNonTerminal, currentNode.Declaration.Start);
@@ -350,19 +352,19 @@ namespace System.Parsing.Intellisense
 
             Node result = null;
 
-            if (defPrecedence != -1)
+            if(defPrecedence != -1)
             {
-                for (int targetPrecedence = maxAvailable; targetPrecedence >= minAvailable; targetPrecedence--)
+                for(int targetPrecedence = maxAvailable; targetPrecedence >= minAvailable; targetPrecedence--)
                 {
-                    if (!availableLevels[targetPrecedence]) continue;
+                    if(!availableLevels[targetPrecedence]) continue;
 
-                    for (int i = index + 1; i < end; i += 2)
+                    for(int i = index + 1; i < end; i += 2)
                     {
-                        if (!(currentNode = nodes[i]).IsTerminal)
+                        if(!(currentNode = nodes[i]).IsTerminal)
                         {
                             defSerial = currentNode.Declaration.Start.Definition.Serial;
                             defPrecedence = _operatorPrecedenceLookup[defSerial];
-                            if (defPrecedence != targetPrecedence) continue;
+                            if(defPrecedence != targetPrecedence) continue;
                             Node left = nodes[i - 1].TransientReference;
                             Node right = nodes[i + 1].TransientReference;
 
@@ -370,7 +372,7 @@ namespace System.Parsing.Intellisense
                             left.GetLeftMostNode().TransientReference = currentNode;
                             right.GetRightMostNode().TransientReference = currentNode;
 
-                            if (--totalNonTerminals == 0)
+                            if(--totalNonTerminals == 0)
                             {
                                 result = currentNode;
                                 targetPrecedence = -1;
@@ -382,7 +384,7 @@ namespace System.Parsing.Intellisense
             }
             else result = nodes[index];
 
-            if (result == null) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[index].Declaration.Start);
+            if(result == null) return Fail<Node>(SyntaxFailureReason.ExpectedTerminal, nodes[index].Declaration.Start);
             return result;
         }
         #endregion
@@ -418,7 +420,7 @@ namespace System.Parsing.Intellisense
 
         public override string GetEvaluatedValue()
         {
-            if (EvaluatedValue == null) return GetRepresentationForEvaluation();
+            if(EvaluatedValue == null) return GetRepresentationForEvaluation();
             return EvaluatedValue;
         }
 
@@ -429,12 +431,12 @@ namespace System.Parsing.Intellisense
 
         public override Node GetNodeAt(int sourceIndex)
         {
-            if (Left != null)
-                if (Left.Declaration.Contains(sourceIndex))
+            if(Left != null)
+                if(Left.Declaration.Contains(sourceIndex))
                     return Left.GetNodeAt(sourceIndex);
 
-            if (Right != null)
-                if (Right.Declaration.Contains(sourceIndex))
+            if(Right != null)
+                if(Right.Declaration.Contains(sourceIndex))
                     return Right.GetNodeAt(sourceIndex);
 
             return this;
@@ -453,22 +455,22 @@ namespace System.Parsing.Intellisense
         public override void CollectNodes(ICollection<Node> nodes)
         {
             base.CollectNodes(nodes);
-            if (Left != null) Left.CollectNodes(nodes);
-            if (Right != null) Right.CollectNodes(nodes);
+            if(Left != null) Left.CollectNodes(nodes);
+            if(Right != null) Right.CollectNodes(nodes);
         }
 
         protected override void OnVisit(VisitPurpose purpose, AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder)
         {
             base.OnVisit(purpose, builder);
-            if (Left != null) Left.Visit(purpose, builder);
-            if (Right != null) Right.Visit(purpose, builder);
+            if(Left != null) Left.Visit(purpose, builder);
+            if(Right != null) Right.Visit(purpose, builder);
         }
 
         public override void AppendText(StringBuilder text, int indent)
         {
             base.AppendText(text, indent);
-            if (Left != null) Left.AppendText(text, indent + 1);
-            if (Right != null) Right.AppendText(text, indent + 1);
+            if(Left != null) Left.AppendText(text, indent + 1);
+            if(Right != null) Right.AppendText(text, indent + 1);
         }
     }
 
@@ -477,14 +479,14 @@ namespace System.Parsing.Intellisense
         public Node Statement;
 
         public ParenthesisGroupNode()
-        { 
+        {
         }
 
         public override Node GetNodeAt(int sourceIndex)
         {
-            if (Statement != null)
+            if(Statement != null)
             {
-                if (Statement.Declaration.Contains(sourceIndex)) return Statement.GetNodeAt(sourceIndex);
+                if(Statement.Declaration.Contains(sourceIndex)) return Statement.GetNodeAt(sourceIndex);
                 return this;
             }
             else return base.GetNodeAt(sourceIndex);
@@ -497,15 +499,15 @@ namespace System.Parsing.Intellisense
 
         public override string GetRepresentationForEvaluation()
         {
-            if (EvaluatedValue != null) return TokenKind.LeftParenthesis.Identifier + EvaluatedValue + TokenKind.RightParenthesis.Identifier;
+            if(EvaluatedValue != null) return TokenKind.LeftParenthesis.Identifier + EvaluatedValue + TokenKind.RightParenthesis.Identifier;
 
-            if (Statement == null)
+            if(Statement == null)
             {
-                if (Items != null)
+                if(Items != null)
                 {
                     StringBuilder builder = new StringBuilder();
                     builder.Append(TokenKind.LeftParenthesis.Identifier);
-                    for (int i = 0; i < Items.Length; i++) builder.Append(Items[0].GetEvaluatedValue());
+                    for(int i = 0; i < Items.Length; i++) builder.Append(Items[0].GetEvaluatedValue());
                     builder.Append(TokenKind.RightParenthesis.Identifier);
                     return builder.ToString();
                 }
@@ -518,7 +520,7 @@ namespace System.Parsing.Intellisense
 
         public override void CollectNodes(ICollection<Node> nodes)
         {
-            if (Statement != null)
+            if(Statement != null)
             {
                 nodes.Add(this);
                 Statement.CollectNodes(nodes);
@@ -529,13 +531,13 @@ namespace System.Parsing.Intellisense
         protected override void OnVisit(VisitPurpose purpose, AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder)
         {
             base.OnVisit(purpose, builder);
-            if (Statement != null) Statement.Visit(purpose, builder);
+            if(Statement != null) Statement.Visit(purpose, builder);
         }
 
         public override void AppendText(StringBuilder text, int indent)
         {
             base.AppendText(text, indent);
-            if (Statement != null) Statement.AppendText(text, indent + 1);
+            if(Statement != null) Statement.AppendText(text, indent + 1);
         }
     }
 
@@ -559,8 +561,8 @@ namespace System.Parsing.Intellisense
 
         public override Node GetNodeAt(int sourceIndex)
         {
-            if (Statement != null)
-                if (Statement.Declaration.Contains(sourceIndex)) 
+            if(Statement != null)
+                if(Statement.Declaration.Contains(sourceIndex))
                     return Statement.GetNodeAt(sourceIndex);
 
             return this;
@@ -569,19 +571,19 @@ namespace System.Parsing.Intellisense
         public override void CollectNodes(ICollection<Node> nodes)
         {
             base.CollectNodes(nodes);
-            if (Statement != null) Statement.CollectNodes(nodes);
+            if(Statement != null) Statement.CollectNodes(nodes);
         }
 
         protected override void OnVisit(VisitPurpose purpose, AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder)
         {
             base.OnVisit(purpose, builder);
-            if (Statement != null) Statement.Visit(purpose, builder);
+            if(Statement != null) Statement.Visit(purpose, builder);
         }
 
         public override void AppendText(StringBuilder text, int indent)
         {
             base.AppendText(text, indent);
-            if (Statement != null) Statement.AppendText(text, indent + 1);
+            if(Statement != null) Statement.AppendText(text, indent + 1);
         }
     }
 
@@ -598,14 +600,14 @@ namespace System.Parsing.Intellisense
 
         public override string GetRepresentationForEvaluation()
         {
-            if (Items != null)
+            if(Items != null)
             {
                 StringBuilder builder = new StringBuilder();
                 builder.Append(TokenKind.LeftParenthesis.Identifier);
 
-                for (int i = 0; i < Items.Length; i++)
+                for(int i = 0; i < Items.Length; i++)
                 {
-                    if (i > 0) builder.Append(TokenKind.Comma.Identifier);
+                    if(i > 0) builder.Append(TokenKind.Comma.Identifier);
                     builder.Append(Items[i].GetEvaluatedValue());
                 }
 
@@ -643,8 +645,8 @@ namespace System.Parsing.Intellisense
 
         public override Node GetNodeAt(int sourceIndex)
         {
-            if (Parameters != null)
-                if (Parameters.Declaration.Contains(sourceIndex))
+            if(Parameters != null)
+                if(Parameters.Declaration.Contains(sourceIndex))
                     return Parameters.GetNodeAt(sourceIndex);
 
             return this;
@@ -653,19 +655,19 @@ namespace System.Parsing.Intellisense
         public override void CollectNodes(ICollection<Node> nodes)
         {
             base.CollectNodes(nodes);
-            if (Parameters != null) Parameters.CollectNodes(nodes);
+            if(Parameters != null) Parameters.CollectNodes(nodes);
         }
 
         protected override void OnVisit(VisitPurpose purpose, AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder)
         {
             base.OnVisit(purpose, builder);
-            if (Parameters != null) Parameters.Visit(purpose, builder);
+            if(Parameters != null) Parameters.Visit(purpose, builder);
         }
 
         public override void AppendText(StringBuilder text, int indent)
         {
             base.AppendText(text, indent);
-            if (Parameters != null) Parameters.AppendText(text, indent + 1);
+            if(Parameters != null) Parameters.AppendText(text, indent + 1);
         }
     }
 }

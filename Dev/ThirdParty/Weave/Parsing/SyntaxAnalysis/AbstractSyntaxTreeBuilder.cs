@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Parsing.Tokenization;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
+using System.Parsing.Tokenization;
 
 namespace System.Parsing.SyntaxAnalysis
 {
@@ -54,10 +50,10 @@ namespace System.Parsing.SyntaxAnalysis
         #region Registration Handling
         public void RegisterGrammer(AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode> grammer)
         {
-            if (grammer == null) throw new ArgumentNullException("grammer");
-            if (grammer.RegistryIndex != -1) throw new ArgumentException("AbstractSyntaxTreeGrammer cannot be registered to multiple AbstractSyntaxTreeBuilder's", "grammer");
-            if (_initStore == null) throw new InvalidOperationException("AbstractSyntaxTreeGrammer cannot be registered after any build requests have been made.");
-            if (!_initStore.GrammerGroups.Add(grammer.GrammerGroup)) throw new ArgumentException("This AbstractSyntaxTreeBuilder already has a grammer registered from " + grammer.GrammerGroup.ToString(), "grammer");
+            if(grammer == null) throw new ArgumentNullException("grammer");
+            if(grammer.RegistryIndex != -1) throw new ArgumentException("AbstractSyntaxTreeGrammer cannot be registered to multiple AbstractSyntaxTreeBuilder's", "grammer");
+            if(_initStore == null) throw new InvalidOperationException("AbstractSyntaxTreeGrammer cannot be registered after any build requests have been made.");
+            if(!_initStore.GrammerGroups.Add(grammer.GrammerGroup)) throw new ArgumentException("This AbstractSyntaxTreeBuilder already has a grammer registered from " + grammer.GrammerGroup.ToString(), "grammer");
             grammer.RegistryIndex = _initStore.GrammerLookup.Count;
             _initStore.GrammerLookup.Add(grammer);
         }
@@ -66,86 +62,86 @@ namespace System.Parsing.SyntaxAnalysis
         #region Initialization Handling
         private void EnsureInitialized()
         {
-            if (_initStore == null) return;
+            if(_initStore == null) return;
 
             int totalGrammers = 0;
-            
+
             do
             {
                 totalGrammers = _initStore.GrammerLookup.Count;
 
-                for (int i = 0; i < totalGrammers; i++)
+                for(int i = 0; i < totalGrammers; i++)
                 {
                     _initStore.GrammerLookup[i].OnRegisterSubGrammers(_initStore.GrammerGroups, this);
                 }
             }
-            while (totalGrammers < _initStore.GrammerLookup.Count);
+            while(totalGrammers < _initStore.GrammerLookup.Count);
 
             _tokenizer = CreateTokenizerInstance();
             _eventLog = _tokenizer.EventLog;
             ASTGrammerBehaviourRegistry registry = new ASTGrammerBehaviourRegistry(TokenDefinition.GetTotalDefinitionsOfType(typeof(TokenKind)), typeof(ASTNode));
             _grammerLookup = _initStore.GrammerLookup.ToArray();
 
-            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> prepends = new List<AbstractSyntaxTreeGrammer<Token,TokenKind,ASTNode>>();
-            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> appends = new List<AbstractSyntaxTreeGrammer<Token,TokenKind,ASTNode>>();
-            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> postprocess = new List<AbstractSyntaxTreeGrammer<Token,TokenKind,ASTNode>>();
+            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> prepends = new List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>>();
+            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> appends = new List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>>();
+            List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>> postprocess = new List<AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>>();
 
-            for (int i = 0; i < _grammerLookup.Length; i++)
+            for(int i = 0; i < _grammerLookup.Length; i++)
             {
                 registry.GrammerRegistryIndex = i;
                 _grammerLookup[i].OnRegisterTriggers(registry);
 
                 ASTGrammerBehaviour flags = _grammerLookup[i].Behaviour;
 
-                if ((flags & ASTGrammerBehaviour.DoesPrependTokens) == ASTGrammerBehaviour.DoesPrependTokens) prepends.Add(_grammerLookup[i]);
-                if ((flags & ASTGrammerBehaviour.DoesAppendTokens) == ASTGrammerBehaviour.DoesAppendTokens) appends.Add(_grammerLookup[i]);
-                if ((flags & ASTGrammerBehaviour.DoesPostProcessTokens) == ASTGrammerBehaviour.DoesPostProcessTokens) postprocess.Add(_grammerLookup[i]);
+                if((flags & ASTGrammerBehaviour.DoesPrependTokens) == ASTGrammerBehaviour.DoesPrependTokens) prepends.Add(_grammerLookup[i]);
+                if((flags & ASTGrammerBehaviour.DoesAppendTokens) == ASTGrammerBehaviour.DoesAppendTokens) appends.Add(_grammerLookup[i]);
+                if((flags & ASTGrammerBehaviour.DoesPostProcessTokens) == ASTGrammerBehaviour.DoesPostProcessTokens) postprocess.Add(_grammerLookup[i]);
             }
 
             registry.GrammerRegistryIndex = -1;
 
-            if (prepends.Count > 0) _grammerPrepends = prepends.ToArray();
-            if (appends.Count > 0) _grammerAppends = appends.ToArray();
-            if (postprocess.Count > 0) _grammerPostProcess = postprocess.ToArray();
-            
+            if(prepends.Count > 0) _grammerPrepends = prepends.ToArray();
+            if(appends.Count > 0) _grammerAppends = appends.ToArray();
+            if(postprocess.Count > 0) _grammerPostProcess = postprocess.ToArray();
 
-            for (int i = 0; i < _grammerLookup.Length; i++) _grammerLookup[i].OnConfigureTokenizer(_tokenizer);
+
+            for(int i = 0; i < _grammerLookup.Length; i++) _grammerLookup[i].OnConfigureTokenizer(_tokenizer);
             _definitionTriggers = new AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[registry.DefinitionTriggers.Length][];
             _nodeTriggers = new Dictionary<Type, AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[]>();
 
-            foreach (TokenDefinition keyword in registry.KeywordDefinitions) _tokenizer.Keywords.Add(keyword.Identifier, (TokenKind)keyword);
+            foreach(TokenDefinition keyword in registry.KeywordDefinitions) _tokenizer.Keywords.Add(keyword.Identifier, (TokenKind)keyword);
 
-            
+
 
             List<TokenizationHandler<Token, TokenKind>> orderedHandlers = new List<TokenizationHandler<Token, TokenKind>>();
             TokenizationHandler<Token, TokenKind> currentHandler = null;
             HashSet<Type> uniqueHandlers = new HashSet<Type>();
 
-            for (int i = 0; i < _tokenizer.Handlers.Count; i++)
+            for(int i = 0; i < _tokenizer.Handlers.Count; i++)
             {
-                if ((currentHandler = _tokenizer.Handlers[i]).IdentifyBeforeUnaryTokens) orderedHandlers.Add(currentHandler);
+                if((currentHandler = _tokenizer.Handlers[i]).IdentifyBeforeUnaryTokens) orderedHandlers.Add(currentHandler);
                 Type hType = currentHandler.GetType();
 
-                if (hType != typeof(UnaryTokenizationHandler<Token, TokenKind>))
-                    if (!uniqueHandlers.Add(hType))
+                if(hType != typeof(UnaryTokenizationHandler<Token, TokenKind>))
+                    if(!uniqueHandlers.Add(hType))
                         throw new InvalidOperationException("Multiple grammers have registered the same type of a non-unary TokenizationHandler.");
             }
 
             int unaryPlaceholder = orderedHandlers.Count;
             orderedHandlers.Add(null);
 
-            for (int i = 0; i < _tokenizer.Handlers.Count; i++)
-                if ((currentHandler = _tokenizer.Handlers[i]).IdentifyAfterUnaryTokens)
+            for(int i = 0; i < _tokenizer.Handlers.Count; i++)
+                if((currentHandler = _tokenizer.Handlers[i]).IdentifyAfterUnaryTokens)
                     orderedHandlers.Add(currentHandler);
 
-            for (int i = 0; i < _tokenizer.Handlers.Count; i++)
-                if (!(currentHandler = _tokenizer.Handlers[i]).IdentifyBeforeUnaryTokens && !currentHandler.IdentifyAfterUnaryTokens)
+            for(int i = 0; i < _tokenizer.Handlers.Count; i++)
+                if(!(currentHandler = _tokenizer.Handlers[i]).IdentifyBeforeUnaryTokens && !currentHandler.IdentifyAfterUnaryTokens)
                 {
-                    if (currentHandler is UnaryTokenizationHandler<Token, TokenKind>)
+                    if(currentHandler is UnaryTokenizationHandler<Token, TokenKind>)
                     {
                         UnaryTokenizationHandler<Token, TokenKind> existingUnary = currentHandler as UnaryTokenizationHandler<Token, TokenKind>;
 
-                        foreach (KeyValuePair<string, TokenKind> kvp in existingUnary.Definitions)
+                        foreach(KeyValuePair<string, TokenKind> kvp in existingUnary.Definitions)
                             registry.UnaryDefinitions.Add(kvp.Value);
                     }
                     else orderedHandlers.Add(currentHandler);
@@ -153,37 +149,37 @@ namespace System.Parsing.SyntaxAnalysis
 
             TokenKind[] unaryDefinitions;
 
-            if (registry.UnaryDefinitions.Count > 0)
+            if(registry.UnaryDefinitions.Count > 0)
             {
                 int index = 0;
                 unaryDefinitions = new TokenKind[registry.UnaryDefinitions.Count];
-                foreach (TokenDefinition currentUnaryDefinition in registry.UnaryDefinitions) unaryDefinitions[index++] = (TokenKind)currentUnaryDefinition;
+                foreach(TokenDefinition currentUnaryDefinition in registry.UnaryDefinitions) unaryDefinitions[index++] = (TokenKind)currentUnaryDefinition;
             }
             else unaryDefinitions = new TokenKind[0];
 
             orderedHandlers[unaryPlaceholder] = new UnaryTokenizationHandler<Token, TokenKind>(unaryDefinitions);
 
-            for (int i = 0; i < _definitionTriggers.Length; i++)
+            for(int i = 0; i < _definitionTriggers.Length; i++)
             {
                 List<int> mapping = registry.DefinitionTriggers[i];
 
-                if (mapping == null) _definitionTriggers[i] = _emptyGrammer;
+                if(mapping == null) _definitionTriggers[i] = _emptyGrammer;
                 else
                 {
                     AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] row = new AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[mapping.Count];
-                    for (int k = 0; k < row.Length; k++) row[k] = _grammerLookup[mapping[k]];
+                    for(int k = 0; k < row.Length; k++) row[k] = _grammerLookup[mapping[k]];
                     _definitionTriggers[i] = row;
                 }
             }
 
-            foreach (KeyValuePair<Type, List<int>> kvp in registry.NodeTriggers)
+            foreach(KeyValuePair<Type, List<int>> kvp in registry.NodeTriggers)
             {
                 List<int> mapping = kvp.Value;
 
-                if (mapping != null && mapping.Count > 0)
+                if(mapping != null && mapping.Count > 0)
                 {
                     AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] row = new AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[mapping.Count];
-                    for (int i = 0; i < row.Length; i++) row[i] = _grammerLookup[mapping[i]];
+                    for(int i = 0; i < row.Length; i++) row[i] = _grammerLookup[mapping[i]];
                     _nodeTriggers.Add(kvp.Key, row);
                 }
             }
@@ -223,6 +219,12 @@ namespace System.Parsing.SyntaxAnalysis
             return Build(input, expectPartialTokens, out tokens);
         }
 
+        static string SanitizeInput(string input)
+        {
+            input = input.Replace("]][[", "]]+[[");
+            return input;
+        }
+
         /// <summary>
         /// Builds an abstract syntax tree from <paramref name="input"/>
         /// </summary>
@@ -244,37 +246,38 @@ namespace System.Parsing.SyntaxAnalysis
         /// <returns>A sequence of nodes that represent the top level of the abstract syntax tree</returns>
         public ASTNode[] Build(string input, bool expectPartialTokens, out Token[] tokens)
         {
+            input = SanitizeInput(input);
             EnsureInitialized();
             _eventLog.Clear();
             tokens = null;
 
-            if (String.IsNullOrEmpty(input))
+            if(String.IsNullOrEmpty(input))
                 tokens = _tokenizer.Tokenize(input);
             else
             {
                 TokenizationExecutionStore<Token, TokenKind> executionStore = new TokenizationExecutionStore<Token, TokenKind>(_tokenizer, input, expectPartialTokens);
                 ITokenBuilder tBuilder = executionStore.Builder;
 
-                if (_grammerPrepends != null)
-                    for (int i = 0; i < _grammerPrepends.Length; i++)
+                if(_grammerPrepends != null)
+                    for(int i = 0; i < _grammerPrepends.Length; i++)
                         _grammerPrepends[i].PrependTokens(tBuilder);
 
                 bool success = _tokenizer.TokenizeCore(input, executionStore);
 
-                if (success)
+                if(success)
                 {
-                    if (_grammerAppends != null)
-                        for (int i = 0; i < _grammerAppends.Length; i++)
+                    if(_grammerAppends != null)
+                        for(int i = 0; i < _grammerAppends.Length; i++)
                             _grammerAppends[i].AppendTokens(tBuilder);
 
-                    if (_grammerPostProcess != null)
+                    if(_grammerPostProcess != null)
                     {
                         IList<Token> deltaTokens = executionStore.Builder.Contents;
 
-                        for (int i = 0; i < _grammerPostProcess.Length; i++)
+                        for(int i = 0; i < _grammerPostProcess.Length; i++)
                             _grammerPostProcess[i].PostProcessTokens(_tokenizer, deltaTokens, 0);
 
-                        for (int i = 0; i < _grammerPostProcess.Length; i++)
+                        for(int i = 0; i < _grammerPostProcess.Length; i++)
                             _grammerPostProcess[i].PostProcessTokens(_tokenizer, deltaTokens, 1);
                     }
                 }
@@ -284,7 +287,7 @@ namespace System.Parsing.SyntaxAnalysis
 
             ASTNode[] result = null;
 
-            if (tokens != null)
+            if(tokens != null)
             {
                 result = BuildNodes(null, tokens[0], tokens[tokens.Length - 1]);
             }
@@ -296,17 +299,17 @@ namespace System.Parsing.SyntaxAnalysis
         {
             AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers = null;
             ASTNode[] result = BuildNodeDeclarations(container, start, last);
-            if (_eventLog.HasEventLogs) return result;
+            if(_eventLog.HasEventLogs) return result;
 
-            if (_hasNodeTriggers && container != null)
+            if(_hasNodeTriggers && container != null)
             {
-                if (_nodeTriggers.TryGetValue(container.GetType(), out subscribers))
+                if(_nodeTriggers.TryGetValue(container.GetType(), out subscribers))
                 {
                     ASTNode[] current = null;
 
-                    for (int k = 0; k < subscribers.Length; k++)
+                    for(int k = 0; k < subscribers.Length; k++)
                     {
-                        if ((current = subscribers[k].TransformNodes(this, container, result, false)) != null)
+                        if((current = subscribers[k].TransformNodes(this, container, result, false)) != null)
                         {
                             result = current;
                             break;
@@ -314,15 +317,15 @@ namespace System.Parsing.SyntaxAnalysis
                     }
                 }
 
-                if (_eventLog.HasEventLogs) return result;
+                if(_eventLog.HasEventLogs) return result;
             }
 
             ASTNode currentNode = null;
 
-            for (int i = 0; i < result.Length; i++)
+            for(int i = 0; i < result.Length; i++)
             {
                 (currentNode = result[i]).Visit(VisitPurpose.BuildNodeDeclarations, this);
-                if (_eventLog.HasEventLogs) return result;
+                if(_eventLog.HasEventLogs) return result;
             }
 
             return result;
@@ -341,14 +344,14 @@ namespace System.Parsing.SyntaxAnalysis
             List<ASTNode> allNamespaces = new List<ASTNode>();
             ASTNode current = null;
 
-            for (Token token = start; token != null && token.TokenIndex <= last.TokenIndex; token = token.NextNWS)
+            for(Token token = start; token != null && token.TokenIndex <= last.TokenIndex; token = token.NextNWS)
             {
                 subscribers = _definitionTriggers[token.Definition.Serial];
                 current = null;
 
-                for (int k = 0; k < subscribers.Length; k++)
+                for(int k = 0; k < subscribers.Length; k++)
                 {
-                    if ((current = subscribers[k].BuildNode(this, container, token, last, false)) != null)
+                    if((current = subscribers[k].BuildNode(this, container, token, last, false)) != null)
                     {
                         allNamespaces.Add(current);
                         token = current.End;
@@ -356,14 +359,14 @@ namespace System.Parsing.SyntaxAnalysis
                     }
                 }
 
-                if (_eventLog.HasEventLogs) break;
+                if(_eventLog.HasEventLogs) break;
 
-                if (current == null)
+                if(current == null)
                 {
-                    if (!token.Definition.IsEndOfFile)
+                    if(!token.Definition.IsEndOfFile)
                     {
                         OnUnhandledTokenEncountered(container, token);
-                        if (_eventLog.HasEventLogs) break;
+                        if(_eventLog.HasEventLogs) break;
                     }
                 }
             }
@@ -437,16 +440,16 @@ namespace System.Parsing.SyntaxAnalysis
         /// <exception cref="ReadOnlyException">Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers</exception>
         public void Register(TokenDefinition triggeringDefinition)
         {
-            if (triggeringDefinition == null) throw new ArgumentNullException("triggeringDefinition");
-            if (_grammerRegistryIndex == -1) throw new ReadOnlyException("Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers");
+            if(triggeringDefinition == null) throw new ArgumentNullException("triggeringDefinition");
+            if(_grammerRegistryIndex == -1) throw new ReadOnlyException("Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers");
             int index = triggeringDefinition.Serial;
             (_definitionTriggers[index] ?? (_definitionTriggers[index] = new List<int>())).Add(_grammerRegistryIndex);
 
-            if (!triggeringDefinition.IsUnknown && !triggeringDefinition.IsWhitespace && !triggeringDefinition.IsEndOfFile)
+            if(!triggeringDefinition.IsUnknown && !triggeringDefinition.IsWhitespace && !triggeringDefinition.IsEndOfFile)
             {
-                if (!String.IsNullOrEmpty(triggeringDefinition.Identifier))
+                if(!String.IsNullOrEmpty(triggeringDefinition.Identifier))
                 {
-                    if (triggeringDefinition.IsKeyword) _keywordDefinitions.Add(triggeringDefinition);
+                    if(triggeringDefinition.IsKeyword) _keywordDefinitions.Add(triggeringDefinition);
                     else _unaryDefinitions.Add(triggeringDefinition);
                 }
             }
@@ -461,12 +464,12 @@ namespace System.Parsing.SyntaxAnalysis
         /// <exception cref="ReadOnlyException">Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers</exception>
         public void Register(Type triggeringNodeType)
         {
-            if (triggeringNodeType == null) throw new ArgumentNullException("triggeringNodeType");
-            if (!_baseNodeType.IsAssignableFrom(triggeringNodeType)) throw new ArgumentException("triggeringNodeType must be a descendant of \"" + _baseNodeType.Name + "\"");
-            if (_grammerRegistryIndex == -1) throw new ReadOnlyException("Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers");
+            if(triggeringNodeType == null) throw new ArgumentNullException("triggeringNodeType");
+            if(!_baseNodeType.IsAssignableFrom(triggeringNodeType)) throw new ArgumentException("triggeringNodeType must be a descendant of \"" + _baseNodeType.Name + "\"");
+            if(_grammerRegistryIndex == -1) throw new ReadOnlyException("Triggers may only be registered from within AbstractSyntaxTreeGrammer.OnRegisterTriggers");
 
             List<int> existing;
-            if (!_nodeTriggers.TryGetValue(triggeringNodeType, out existing)) _nodeTriggers.Add(triggeringNodeType, existing = new List<int>());
+            if(!_nodeTriggers.TryGetValue(triggeringNodeType, out existing)) _nodeTriggers.Add(triggeringNodeType, existing = new List<int>());
             existing.Add(_grammerRegistryIndex);
         }
         #endregion
