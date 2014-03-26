@@ -137,7 +137,7 @@ namespace Dev2.Activities
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                    foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -165,7 +165,7 @@ namespace Dev2.Activities
                     if(hasErrors)
                     {
                         int innerCount = 1;
-                        foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);

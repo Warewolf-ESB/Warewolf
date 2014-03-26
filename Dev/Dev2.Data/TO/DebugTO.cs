@@ -2,19 +2,19 @@
 
 namespace Dev2.Data.TO
 {
-    public class DebugOutputTO
+    public class DebugTO
     {
         #region Ctor
 
-        public DebugOutputTO()
+        public DebugTO()
         {
 
         }
 
-        public DebugOutputTO(IBinaryDataListEntry targetEntry,IBinaryDataListEntry fromEntry, string expression)
+        public DebugTO(IBinaryDataListEntry targetEntry, IBinaryDataListEntry leftEntry, string expression)
         {
             TargetEntry = targetEntry;
-            FromEntry = fromEntry;
+            LeftEntry = leftEntry;
             Expression = expression;
         }
 
@@ -23,7 +23,8 @@ namespace Dev2.Data.TO
         #region Properties
 
         public IBinaryDataListEntry TargetEntry { get; set; }
-        public IBinaryDataListEntry FromEntry { get; set; }
+        public IBinaryDataListEntry LeftEntry { get; set; }
+        public IBinaryDataListEntry RightEntry { get; set; }
         public string Expression { get; set; }
         /// <summary>
         /// Gets or sets the index of the used recordset.

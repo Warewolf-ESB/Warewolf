@@ -80,20 +80,20 @@ namespace Dev2.Server.Datalist
             errors = new ErrorResultTO();
             string error;
 
-            IBinaryDataList theDL = TryFetchDataList(curDLID, out error);
+            IBinaryDataList theDl = TryFetchDataList(curDLID, out error);
             IBinaryDataListEntry result = null;
-            if(theDL != null)
+            if(theDl != null)
             {
                 if(typeOf == enActionType.User)
                 {
-                    result = InternalEvaluate(expression, theDL, out errors);
+                    result = InternalEvaluate(expression, theDl, out errors);
                     allErrors.MergeErrors(errors);
                 }
                 else if(typeOf == enActionType.System)
                 {
                     // prefix eval with Dev2System
                     string realExpression = BuildSystemTag(expression);
-                    if(!theDL.TryGetEntry(realExpression, out result, out error))
+                    if(!theDl.TryGetEntry(realExpression, out result, out error))
                     {
                         allErrors.AddError(error);
                     }
@@ -104,7 +104,7 @@ namespace Dev2.Server.Datalist
                     IBinaryDataListEntry tmpEntry;
                     string recsetName = DataListUtil.ExtractRecordsetNameFromValue(expression);
                     bool res = false;
-                    if(theDL.TryGetEntry(recsetName, out tmpEntry, out error))
+                    if(theDl.TryGetEntry(recsetName, out tmpEntry, out error))
                     {
                         string recsetIndexStr = DataListUtil.ExtractIndexRegionFromRecordset(expression);
 
@@ -134,10 +134,10 @@ namespace Dev2.Server.Datalist
                         res = tmpEntry.TryDeleteRows(recsetIndexStr, out error);
                     }
                     allErrors.AddError(error);
-                    TryPushDataList(theDL, out error);
+                    TryPushDataList(theDl, out error);
                     allErrors.AddError(error);
 
-                    IBinaryDataListEntry newDlEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDL.UID);
+                    IBinaryDataListEntry newDlEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDl.UID);
 
                     allErrors.AddError(error);
                     if(res)
@@ -159,7 +159,7 @@ namespace Dev2.Server.Datalist
 
                     // Break the expression up by , and sub in values?
                     IDev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                    IList<IIntellisenseResult> myParts = parser.ParseExpressionIntoParts(expression, theDL.FetchIntellisenseParts());
+                    IList<IIntellisenseResult> myParts = parser.ParseExpressionIntoParts(expression, theDl.FetchIntellisenseParts());
 
                     // Fetch each DL expression in the master expression and evalaute
                     // Then build up the correct string to sub in ;)
@@ -172,7 +172,7 @@ namespace Dev2.Server.Datalist
                             && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
                             && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0)
                         {
-                            IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDL, out errors);
+                            IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDl, out errors);
                             if(bde != null)
                             {
                                 if(bde.IsRecordset)
@@ -220,7 +220,7 @@ namespace Dev2.Server.Datalist
 
                     allErrors.MergeErrors(errors);
 
-                    IBinaryDataListEntry calcResult = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDL.UID);
+                    IBinaryDataListEntry calcResult = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDl.UID);
                     IBinaryDataListItem calcItem = Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar);
                     calcResult.TryPutScalar(calcItem, out error);
                     allErrors.AddError(error);
@@ -449,8 +449,8 @@ namespace Dev2.Server.Datalist
             HashSet<int> outputRemoveIdx = new HashSet<int>();
 
             ErrorResultTO invokeErrors;
-            var childDL = FetchBinaryDataList(ctx, childDLID, out invokeErrors);
-            var parentDL = FetchBinaryDataList(ctx, parentDLID, out invokeErrors);
+            var childDl = FetchBinaryDataList(ctx, childDLID, out invokeErrors);
+            var parentDl = FetchBinaryDataList(ctx, parentDLID, out invokeErrors);
 
             errors.MergeErrors(invokeErrors);
 
@@ -480,12 +480,12 @@ namespace Dev2.Server.Datalist
                             {
                                 IBinaryDataListEntry entry;
                                 string error;
-                                childDL.TryGetEntry(def.RecordSetName, out entry, out error);
+                                childDl.TryGetEntry(def.RecordSetName, out entry, out error);
                                 errors.AddError(error);
 
                                 // fetch parent entry now ;)
                                 IBinaryDataListEntry parentEntry;
-                                parentDL.TryGetEntry(rsName, out parentEntry, out error);
+                                parentDl.TryGetEntry(rsName, out parentEntry, out error);
                                 errors.AddError(error);
 
                                 // adjust the column view so it propagates down to row ;)
@@ -504,7 +504,7 @@ namespace Dev2.Server.Datalist
                             {
                                 IBinaryDataListEntry entry;
                                 string error;
-                                childDL.TryGetEntry(def.RecordSetName, out entry, out error);
+                                childDl.TryGetEntry(def.RecordSetName, out entry, out error);
                                 errors.AddError(error);
 
                                 entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
@@ -541,7 +541,7 @@ namespace Dev2.Server.Datalist
                     string error;
 
                     // NOTE : This is a problem when the RecordsetName differs from the rsName?!
-                    childDL.TryGetEntry(rsName, out entry, out error);
+                    childDl.TryGetEntry(rsName, out entry, out error);
                     errors.AddError(error);
 
                     if(entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
@@ -678,14 +678,14 @@ namespace Dev2.Server.Datalist
             else
             {
                 Guid pID = tmp.ParentUID;
-                IBinaryDataList parentDL = TryFetchDataList(pID, out error);
+                IBinaryDataList parentDl = TryFetchDataList(pID, out error);
                 if(error != string.Empty)
                 {
                     errors.AddError(error);
                 }
                 else
                 {
-                    tmp = parentDL.Merge(tmp, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
+                    tmp = parentDl.Merge(tmp, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out errors);
                     TryPushDataList(tmp, out error);
                     if(error != string.Empty)
                     {
@@ -1116,7 +1116,7 @@ namespace Dev2.Server.Datalist
                 {
                     var inputExpr = rsGroup.InputExpressionExtractor(d);
                     var outputExpr = rsGroup.OutputExpressionExtractor(d);
-                    bool isRS = true;
+                    bool isRs = true;
                     var field = DataListUtil.ExtractFieldNameFromValue(outputExpr);
 
                     var val = field;
@@ -1128,10 +1128,10 @@ namespace Dev2.Server.Datalist
                     if(string.IsNullOrEmpty(field))
                     {
                         val = DataListUtil.RemoveLanguageBrackets(outputExpr);
-                        isRS = false;
+                        isRs = false;
                     }
 
-                    return new KeyValuePair<string, TransientRecordsetProcessGroup>(inputExpr, new TransientRecordsetProcessGroup(val, idx, isRS));
+                    return new KeyValuePair<string, TransientRecordsetProcessGroup>(inputExpr, new TransientRecordsetProcessGroup(val, idx, isRs));
                 });
 
             foreach(var targetRecordSetName in targetRecordSetNames)
@@ -1150,7 +1150,7 @@ namespace Dev2.Server.Datalist
                     var sourceItems = rsGroup.SourceEntry.FetchRowAt(sourceIndex, out error);
                     var targetItems = new List<IBinaryDataListItem>();
 
-                    bool isRS = true;
+                    bool isRs = true;
                     enRecordsetIndexType idxType = enRecordsetIndexType.Error;
                     ErrorResultTO tmpErrors;
 
@@ -1159,7 +1159,7 @@ namespace Dev2.Server.Datalist
                         var inputFieldName = DataListUtil.ExtractFieldNameFromValue(targetDef.Key);
                         var outputFieldName = targetDef.Value.TargetValue;
 
-                        isRS = targetDef.Value.IsTargetRecordSet;
+                        isRs = targetDef.Value.IsTargetRecordSet;
 
                         // -- check for notation changes ;)
 
@@ -1167,7 +1167,7 @@ namespace Dev2.Server.Datalist
                         if(targetDef.Value.IdxType != idxType && idxType != enRecordsetIndexType.Error)
                         {
 
-                            FlushToEntry(isRS, targetEntry, targetItems, targetIndex, out tmpErrors);
+                            FlushToEntry(isRs, targetEntry, targetItems, targetIndex, out tmpErrors);
                             errors.MergeErrors(tmpErrors);
 
                             // now clear things up for the next round ;)
@@ -1193,7 +1193,7 @@ namespace Dev2.Server.Datalist
                     }//st
 
                     // flush the last bits or entire operation ;)
-                    FlushToEntry(isRS, targetEntry, targetItems, targetIndex, out tmpErrors);
+                    FlushToEntry(isRs, targetEntry, targetItems, targetIndex, out tmpErrors);
                     errors.MergeErrors(tmpErrors);
                 }
             }
@@ -1205,17 +1205,17 @@ namespace Dev2.Server.Datalist
         /// <summary>
         /// Flushes the automatic entry.
         /// </summary>
-        /// <param name="isRS">if set to <c>true</c> [is rs].</param>
+        /// <param name="isRs">if set to <c>true</c> [is rs].</param>
         /// <param name="targetEntry">The target entry.</param>
         /// <param name="targetItems">The target items.</param>
         /// <param name="targetIndex">Index of the target.</param>
         /// <param name="errors">The errors.</param>
-        private void FlushToEntry(bool isRS, IBinaryDataListEntry targetEntry, IList<IBinaryDataListItem> targetItems, int targetIndex, out ErrorResultTO errors)
+        private void FlushToEntry(bool isRs, IBinaryDataListEntry targetEntry, IList<IBinaryDataListItem> targetItems, int targetIndex, out ErrorResultTO errors)
         {
             string error;
             errors = new ErrorResultTO();
 
-            if(isRS)
+            if(isRs)
             {
                 targetEntry.TryPutRecordRowAt(targetItems, targetIndex, out error);
                 errors.AddError(error);
@@ -1336,7 +1336,7 @@ namespace Dev2.Server.Datalist
             else
             {
                 // now we have a IBinaryDataList, we need to set the ParentID and populate with data
-                IBinaryDataList childDL = FetchBinaryDataList(ctx, shellId, out errors);
+                IBinaryDataList childDl = FetchBinaryDataList(ctx, shellId, out errors);
                 if(errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
@@ -1346,21 +1346,21 @@ namespace Dev2.Server.Datalist
                     // set parentID on input shape
                     if(typeOf == enDev2ArgumentType.Input)
                     {
-                        childDL.ParentUID = curDLID;
+                        childDl.ParentUID = curDLID;
                         string error;
-                        TryPushDataList(childDL, out error);
+                        TryPushDataList(childDl, out error);
                         allErrors.AddError(error);
                     }
 
                     // now set the Func to execute depending upon direction ;)
                     Guid extractFromId = curDLID;
-                    Guid pushToId = childDL.UID;
+                    Guid pushToId = childDl.UID;
 
                     if(typeOf != enDev2ArgumentType.Input)
                     {
                         // swap extract from and pushTo around for output shaping
-                        extractFromId = childDL.UID;
-                        pushToId = childDL.ParentUID;
+                        extractFromId = childDl.UID;
+                        pushToId = childDl.ParentUID;
                     }
 
                     var inputExpressionExtractor = BuildInputExpressionExtractor(typeOf);
@@ -1989,7 +1989,7 @@ namespace Dev2.Server.Datalist
             {
                 // Fetch will force a commit if any frames are hanging ;)
                 string error;
-                DebugOutputTO debugOutputTO = new DebugOutputTO();
+                DebugTO debugTO = new DebugTO();
                 foreach(IDataListPayloadIterationFrame<T> f in payload.FetchFrames())
                 {
                     IBinaryDataListEntry entryUsed = null;
@@ -2006,7 +2006,7 @@ namespace Dev2.Server.Datalist
 
                         if(!payload.IsIterativePayload())
                         {
-                            debugOutputTO = new DebugOutputTO();
+                            debugTO = new DebugTO();
                         }
                         DataListPayloadFrameTO<T> frameItem = f.FetchNextFrameItem();
 
@@ -2105,7 +2105,15 @@ namespace Dev2.Server.Datalist
                             }
 
                             allErrors.MergeErrors(errors);
-
+                            if(payload.IsDebug)
+                            {
+                                var leftSide = InternalEvaluate(frameItem.Expression, bdl, out errors);
+                                debugTO.LeftEntry = leftSide.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                debugTO.LeftEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                debugTO.RightEntry = evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                BuildComplexExpressionsForFromEntryDebug(debugTO, frameItem, bdl);
+                            }
                             // check entry cache based upon type ;)
                             IBinaryDataListEntry entry;
                             if(part.Option.IsScalar)
@@ -2115,7 +2123,7 @@ namespace Dev2.Server.Datalist
 
                                 if(payload.IsDebug && entry != null)
                                 {
-                                    debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                    debugTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                 }
 
 
@@ -2130,7 +2138,7 @@ namespace Dev2.Server.Datalist
                                         tmpI.UpdateField(field);
                                         entry.TryPutScalar(tmpI, out error);
                                         allErrors.AddError(error);
-                                        BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
 
                                     }
                                     else
@@ -2146,7 +2154,7 @@ namespace Dev2.Server.Datalist
                                             allErrors.AddError(error);
 
                                             allErrors.AddError(error);
-                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                         }
                                         else
                                         {
@@ -2155,7 +2163,7 @@ namespace Dev2.Server.Datalist
                                             tmpI.UpdateField(field);
                                             entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
-                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                         }
                                     }
                                 } // else do nothing
@@ -2165,10 +2173,10 @@ namespace Dev2.Server.Datalist
                             {
                                 bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
 
-                                if(payload.IsDebug && (!payload.IsIterativePayload() || debugOutputTO.TargetEntry == null))
+                                if(payload.IsDebug && (!payload.IsIterativePayload() || debugTO.TargetEntry == null))
                                 {
-                                    debugOutputTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
-                                    debugOutputTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
+                                    debugTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
+                                    debugTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
                                 }
 
                                 allErrors.AddError(error);
@@ -2204,7 +2212,7 @@ namespace Dev2.Server.Datalist
                                                                 tmpI.UpdateField(field);
                                                                 entry.TryPutRecordItemAtIndex(tmpI, next, out error);
                                                                 allErrors.AddError(error);
-                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
+                                                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
                                                             }
                                                         }
                                                         else
@@ -2220,7 +2228,7 @@ namespace Dev2.Server.Datalist
                                                             entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
 
                                                             allErrors.AddError(error);
-                                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                                         }
                                                         break;
 
@@ -2240,7 +2248,7 @@ namespace Dev2.Server.Datalist
                                                         tmpI.UpdateIndex(idx);
                                                         entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
                                                         allErrors.AddError(error);
-                                                        BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                                         break;
                                                 }
                                             }
@@ -2302,7 +2310,7 @@ namespace Dev2.Server.Datalist
                                                                 tmpI.UpdateIndex(index);
                                                                 entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                                 allErrors.AddError(error);
-                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                                             }
                                                             else if(itms != null && itms.Count > 1)
                                                             {
@@ -2318,7 +2326,7 @@ namespace Dev2.Server.Datalist
 
                                                                     entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                                     allErrors.AddError(error);
-                                                                    BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+                                                                    BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
                                                                 }
                                                             }
                                                         }
@@ -2361,7 +2369,7 @@ namespace Dev2.Server.Datalist
                                                             foreach(IBinaryDataListItem i in itms)
                                                             {
                                                                 entry.TryPutRecordItemAtIndex(i, i.ItemCollectionIndex, out error);
-                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, i, i.DisplayValue);
+                                                                BuildComplexExpressionsForDebug(debugTO, part, i, i.DisplayValue);
                                                                 allErrors.AddError(error);
                                                             }
                                                         }
@@ -2390,8 +2398,8 @@ namespace Dev2.Server.Datalist
 
                             if(payload.IsDebug)
                             {
-                                debugOutputTO.UsedRecordsetIndex = debugIdx;
-                                debugOutputTO.FromEntry = evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                debugTO.UsedRecordsetIndex = debugIdx;
+
                                 // reset debug index ;)
                                 debugIdx = -1;
                             }
@@ -2446,17 +2454,17 @@ namespace Dev2.Server.Datalist
                             switch(recIndexType)
                             {
                                 case enRecordsetIndexType.Blank:
-                                    debugOutputTO.Expression = frameItem.Expression.Replace("()", "(" + debugOutputTO.UsedRecordsetIndex + ")");
+                                    debugTO.Expression = frameItem.Expression.Replace("()", "(" + debugTO.UsedRecordsetIndex + ")");
                                     break;
                                 case enRecordsetIndexType.Star:
-                                    debugOutputTO.Expression = frameItem.Expression.Replace("(*)", "(" + debugOutputTO.UsedRecordsetIndex + ")");
+                                    debugTO.Expression = frameItem.Expression.Replace("(*)", "(" + debugTO.UsedRecordsetIndex + ")");
                                     break;
                                 case enRecordsetIndexType.Numeric:
-                                    debugOutputTO.Expression = frameItem.Expression;
+                                    debugTO.Expression = frameItem.Expression;
                                     break;
                             }
 
-                            payload.DebugOutputs.Add(debugOutputTO);
+                            payload.DebugOutputs.Add(debugTO);
                             _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
                         }
                     }
@@ -2469,7 +2477,7 @@ namespace Dev2.Server.Datalist
                 }
                 if(payload.IsIterativePayload())
                 {
-                    payload.DebugOutputs.Add(debugOutputTO);
+                    payload.DebugOutputs.Add(debugTO);
                 }
                 // Now flush all the entries to the bdl for this iteration ;)
                 if(TryPushDataList(bdl, out error))
@@ -2485,15 +2493,101 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-        static void BuildComplexExpressionsForDebug(DebugOutputTO debugOutputTO, IIntellisenseResult part, IBinaryDataListItem tmpI, string displayValue)
+        static void BuildComplexExpressionsForDebug(DebugTO debugTO, IIntellisenseResult part, IBinaryDataListItem tmpI, string displayValue)
         {
-            if(debugOutputTO.TargetEntry != null)
+            if(debugTO.TargetEntry != null)
             {
-                if(debugOutputTO.TargetEntry.ComplexExpressionAuditor == null)
+                if(debugTO.TargetEntry.ComplexExpressionAuditor == null)
                 {
-                    debugOutputTO.TargetEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                    debugTO.TargetEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
                 }
-                debugOutputTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, tmpI.TheValue, DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+                debugTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, tmpI.TheValue, DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+            }
+        }
+
+        void BuildComplexExpressionsForFromEntryDebug<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
+        {
+            if(debugTO.LeftEntry != null)
+            {
+                ProcessRightSide(debugTO, frame, bdl);
+                ProcessLeftSide(debugTO, frame);
+            }
+        }
+
+        static void ProcessLeftSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame)
+        {
+            var leftSide = frame.Expression;
+            var leftEntry = debugTO.LeftEntry;
+            if(DataListUtil.IsValueRecordset(leftSide))
+            {
+                if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Star)
+                {
+
+                    ProcessStarEntry(leftEntry, leftSide);
+                }
+                else
+                {
+                    var leftValue = leftEntry.FetchScalar().TheValue;
+                    if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Blank)
+                    {
+                        leftValue = "";
+                    }
+                    leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftValue, leftSide);
+                }
+            }
+            else
+            {
+                leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftEntry.FetchScalar().TheValue, leftSide);
+            }
+        }
+
+        void ProcessRightSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
+        {
+            var rightSide = "";
+            var boundValue = debugTO.RightEntry.FetchScalar().TheValue;
+            if(typeof(T) == typeof(string))
+            {
+                rightSide = frame.Value as string;
+
+                string calculationExpression;
+                if(DataListUtil.IsCalcEvaluation(rightSide, out calculationExpression))
+                {
+                    rightSide = string.Format("={0}", calculationExpression);
+                    ErrorResultTO errors;
+                    var binaryDataListEntry = InternalEvaluate(rightSide, bdl, out errors);
+                    boundValue = binaryDataListEntry.FetchScalar().TheValue;
+                }
+            }
+
+            var rightEntry = debugTO.RightEntry;
+            if(DataListUtil.IsValueRecordset(rightSide))
+            {
+                if(DataListUtil.GetRecordsetIndexType(rightSide) == enRecordsetIndexType.Star)
+                {
+                    ProcessStarEntry(rightEntry, rightSide);
+                }
+                else
+                {
+                    rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
+                }
+            }
+            else
+            {
+                rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
+            }
+        }
+
+        static void ProcessStarEntry(IBinaryDataListEntry rightEntry, string rightSide)
+        {
+            var rightSideItr = rightEntry.FetchRecordsetIndexes();
+            while(rightSideItr.HasMore())
+            {
+                var fetchNextIndex = rightSideItr.FetchNextIndex();
+                string error;
+                var binaryDataListItems = rightEntry.FetchRecordAt(fetchNextIndex, DataListUtil.ExtractFieldNameFromValue(rightSide), out error);
+                var singleItem = binaryDataListItems[0];
+                var displayValue = DataListUtil.ReplaceStarWithFixedIndex(rightSide, fetchNextIndex);
+                rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, singleItem.TheValue, displayValue);
             }
         }
 

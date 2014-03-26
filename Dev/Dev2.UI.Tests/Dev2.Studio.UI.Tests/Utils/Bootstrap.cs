@@ -20,8 +20,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
-        private const int ServerTimeOut = 2000;
-        private const int StudioTimeOut = 10000;
+        private const int ServerTimeOut = 5000;
+        private const int StudioTimeOut = 5000;
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
         public static string ServerLocation;
@@ -83,30 +83,30 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     CleanWarewolfAppData();
 
-                    ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
+                        ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
                     StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + StudioName;
                     if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
                     {
-                        //Try start
-                        StartServer();
+                            //Try start
+                            StartServer();
                         ServerLocation = GetProcessPath(serverProcess);
-                        if(buildLabel.LoggingURL != string.Empty)
-                        {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
                             BuildEventLogger.LogBuildEvent(buildLabel, "Server restarted for Coded UI Test");
-                        }
+                            }
 
-                        //Try start
-                        StartStudio();
+                            //Try start
+                            StartStudio();
                         StudioLocation = GetProcessPath(studioProcess);
-                        if(buildLabel.LoggingURL != string.Empty)
-                        {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
                             BuildEventLogger.LogBuildEvent(buildLabel, "Studio restarted for Coded UI Test");
+                            }
                         }
-                    }
-                    else
-                    {
-                        if(buildLabel.LoggingURL != string.Empty)
+                        else
                         {
+                            if(buildLabel.LoggingURL != string.Empty)
+                            {
                             BuildEventLogger.LogBuildEvent(buildLabel, "Error! Build not found to restart server and studio for coded ui test!");
                         }
                         throw new Exception("Cannot run coded UI test pack because no build is available to restart.");
@@ -264,9 +264,9 @@ namespace Dev2.Studio.UI.Tests.Utils
                 //print process properties
                 try
                 {
-                    process.Get();
-                    var pid = process.Properties["ProcessID"].Value.ToString();
-                    var proc = Process.GetProcessById(Int32.Parse(pid));
+                process.Get();
+                var pid = process.Properties["ProcessID"].Value.ToString();
+                var proc = Process.GetProcessById(Int32.Parse(pid));
                     proc.Kill();
                 }
                 catch

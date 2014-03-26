@@ -155,87 +155,119 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        public List<DebugItemResult> CreateDebugItemFromDebugOutputTO(DebugOutputTO debugOutputTO, string labelText, List<string> regions)
+        public List<DebugItemResult> CreateDebugItemForOutput(DebugTO debugTO, string labelText, List<string> regions)
         {
             var results = new List<DebugItemResult>();
-            if(debugOutputTO.TargetEntry != null)
+            if(debugTO.TargetEntry != null)
             {
-                ComplexExpressionAuditor auditor = debugOutputTO.TargetEntry.ComplexExpressionAuditor;
-                if(auditor != null)
-                {
-                    int grpIdx = 0;
-                    IList<ComplexExpressionAuditItem> complexExpressionAuditItems = auditor.FetchAuditItems();
+                GetValue(debugTO.TargetEntry, debugTO, labelText, regions, results);
+            }
+            return results;
+        }
 
-                    foreach(ComplexExpressionAuditItem item in complexExpressionAuditItems)
+        static void GetValue(IBinaryDataListEntry entry, DebugTO debugTO, string labelText, List<string> regions, List<DebugItemResult> results)
+        {
+            ComplexExpressionAuditor auditor = entry.ComplexExpressionAuditor;
+            if(auditor != null)
+            {
+                int grpIdx = 0;
+                IList<ComplexExpressionAuditItem> complexExpressionAuditItems = auditor.FetchAuditItems();
+
+                foreach(ComplexExpressionAuditItem item in complexExpressionAuditItems)
+                {
+                    string groupName = null;
+                    string displayExpression = item.Expression;
+                    string rawExpression = item.RawExpression;
+                    if(regions != null && regions.Count > 0)
                     {
-                        string groupName = null;
-                        string displayExpression = item.Expression;
-                        string rawExpression = item.RawExpression;
+                        //    
+                    }
+
+                    if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                    {
+                        grpIdx++;
+                        groupName = displayExpression;
+                        displayExpression = rawExpression;
+                    }
+                    else
+                    {
                         if(regions != null && regions.Count > 0)
                         {
-                            //    
-                        }
+                            string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                            int indexForRecset;
+                            int.TryParse(indexRegionFromRecordset, out indexForRecset);
 
-                        if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
-                        {
-                            grpIdx++;
-                            groupName = displayExpression;
-                            displayExpression = rawExpression;
-                        }
-                        else
-                        {
-                            if(regions != null && regions.Count > 0)
+                            if(indexForRecset > 0)
                             {
-                                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                                int indexForRecset;
-                                int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                                int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                                string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
 
-                                if(indexForRecset > 0)
+                                if(regions.Contains(@group))
                                 {
-                                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
-
-                                    if(regions.Contains(@group))
-                                    {
-                                        grpIdx++;
-                                        groupName = @group;
-                                    }
+                                    grpIdx++;
+                                    groupName = @group;
                                 }
                             }
                         }
-
-                        int count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
-                        if(count < 2)
-                        {
-                            groupName = "";
-                        }
-
-                        results.Add(new DebugItemResult
-                            {
-                                Type = DebugItemResultType.Variable,
-                                Label = labelText,
-                                Variable = displayExpression,
-                                Operator = string.IsNullOrEmpty(displayExpression) ? "" : "=",
-                                GroupName = groupName,
-                                Value = item.BoundValue,
-                                GroupIndex = grpIdx
-                            });
                     }
-                }
-                else
-                {
-                    //Could not evaluate
+
+                    int count = complexExpressionAuditItems.Count(i => i.Expression.Equals(item.Expression));
+                    if(count < 2)
+                    {
+                        groupName = "";
+                    }
+
+                    var debugOperator = "";
+                    var debugType = DebugItemResultType.Value;
+                    if(DataListUtil.IsEvaluated(displayExpression))
+                    {
+                        debugOperator = "=";
+                        debugType = DebugItemResultType.Variable;
+                    }
+                    else
+                    {
+                        displayExpression = null;
+                    }
                     results.Add(new DebugItemResult
-                        {
-                            Type = DebugItemResultType.Value,
-                            Label = labelText,
-                            Variable = debugOutputTO.Expression,
-                            Operator = "=",
-                            GroupName = "",
-                            Value = ""
-                        });
+                    {
+                        Type = debugType,
+                        Label = labelText,
+                        Variable = displayExpression,
+                        Operator = debugOperator,
+                        GroupName = groupName,
+                        Value = item.BoundValue,
+                        GroupIndex = grpIdx
+                    });
                 }
             }
+            else
+            {
+                //Could not evaluate
+                results.Add(new DebugItemResult
+                {
+                    Type = DebugItemResultType.Value,
+                    Label = labelText,
+                    Variable = debugTO.Expression,
+                    Operator = "=",
+                    GroupName = "",
+                    Value = ""
+                });
+            }
+        }
+
+        public List<DebugItemResult> CreateDebugItemForInput(DebugTO debugTO, string labelText, string leftLabel, string rightLabel, List<string> regions)
+        {
+            var results = new List<DebugItemResult>();
+            if(debugTO.LeftEntry != null)
+            {
+                GetValue(debugTO.LeftEntry, debugTO, leftLabel, regions, results);
+            }
+
+            if(debugTO.RightEntry != null)
+            {
+                GetValue(debugTO.RightEntry, debugTO, rightLabel, regions, results);
+            }
+
             return results;
         }
 

@@ -356,7 +356,7 @@
     <Compile Include="TO\DataListVerifyPart.cs" />
     <Compile Include="TO\DataValue.cs" />
     <Compile Include="TO\DateTimeVerifyPart.cs" />
-    <Compile Include="TO\DebugOutputTO.cs" />
+    <Compile Include="TO\DebugTO.cs" />
     <Compile Include="TO\Dev2DataLanguageIntellisensePart.cs" />
     <Compile Include="TO\Dev2Definition.cs" />
     <Compile Include="TO\ErrorResultTO.cs" />

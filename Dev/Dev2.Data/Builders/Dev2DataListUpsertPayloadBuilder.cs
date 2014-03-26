@@ -53,7 +53,7 @@ namespace Dev2.Data.Builders
     internal class UpsertPayloadBuilderIndexIterator
     {
         readonly IDictionary<string, int> _keys = new Dictionary<string, int>(5);
- 
+
         public void MoveIndexesForward()
         {
 
@@ -99,7 +99,7 @@ namespace Dev2.Data.Builders
     /// <typeparam name="T"></typeparam>
     internal class Dev2DataListUpsertPayloadBuilder<T> : IDev2DataListUpsertPayloadBuilder<T>
     {
-        private IList<DebugOutputTO> _debugOutputs = new List<DebugOutputTO>();
+        private IList<DebugTO> _debugOutputs = new List<DebugTO>();
         private readonly IList<IDataListPayloadIterationFrame<T>> _data = new List<IDataListPayloadIterationFrame<T>>();
         private IDataListPayloadIterationFrame<T> _scopedFrame = new PayloadIterationFrame<T>();
         private readonly bool _iterativePayload;
@@ -129,7 +129,7 @@ namespace Dev2.Data.Builders
         /// <value>
         /// The list of DebugOutputTO's.
         /// </value>
-        public IList<DebugOutputTO> DebugOutputs
+        public IList<DebugTO> DebugOutputs
         {
             get
             {
@@ -153,12 +153,12 @@ namespace Dev2.Data.Builders
             set
             {
 
-                _replaceStar = value; 
+                _replaceStar = value;
                 if(_idxScope == null)
                 {
                     _idxScope = new UpsertPayloadBuilderIndexIterator();
-                } 
-            } 
+                }
+            }
         }
 
         /// <summary>

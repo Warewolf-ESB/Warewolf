@@ -56,7 +56,7 @@ namespace Dev2.DataList.Contract.Builders
         /// <value>
         /// The list of DebugOutputTO's.
         /// </value>
-        IList<DebugOutputTO> DebugOutputs { get; set;}
+        IList<DebugTO> DebugOutputs { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [record set data as CSV to scalar].

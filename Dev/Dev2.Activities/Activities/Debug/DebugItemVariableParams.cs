@@ -14,7 +14,7 @@ namespace Dev2.Activities.Debug
         readonly IBinaryDataListEntry _valueEntry;
         readonly Guid _executionId;
         readonly bool _groupedItem;
-        readonly DebugOutputTO _debugOutputTO;
+        readonly DebugTO _debugTO;
         readonly List<string> _regions;
 
         public DebugItemVariableParams(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId, bool groupedItem = false)
@@ -26,9 +26,9 @@ namespace Dev2.Activities.Debug
             _groupedItem = groupedItem;
         }
 
-        public DebugItemVariableParams(DebugOutputTO debugOutputTO, List<string> regions = null)
+        public DebugItemVariableParams(DebugTO debugTO, List<string> regions = null)
         {
-            _debugOutputTO = debugOutputTO;
+            _debugTO = debugTO;
             _labelText = "";
             _regions = regions;
         }
@@ -71,20 +71,20 @@ namespace Dev2.Activities.Debug
         }
 
 
-        public DebugOutputTO DebugOutputTO
+        public DebugTO DebugTO
         {
             get
             {
-                return _debugOutputTO;
+                return _debugTO;
             }
         }
 
         public override List<DebugItemResult> GetDebugItemResult()
         {
             List<DebugItemResult> debugItemsResults;
-            if(DebugOutputTO != null)
+            if(DebugTO != null)
             {
-                debugItemsResults = CreateDebugItemFromDebugOutputTO(DebugOutputTO, LabelText, _regions);
+                debugItemsResults = CreateDebugItemForOutput(DebugTO, LabelText, _regions);
             }
             else
             {

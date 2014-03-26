@@ -105,52 +105,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(!errors.HasErrors())
                 {
-                    var index = 1;
                     foreach(ActivityDTO t in FieldsCollection)
                     {
-                        if(dataObject.IsDebugMode())
-                        {
-                            const string VariableLabelText = "Variable";
-                            const string NewFieldLabelText = "New Value";
-                            if(!string.IsNullOrEmpty(t.FieldName))
-                            {
-                                var debugItem = new DebugItem();
-                                AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
-
-                                if(DataListUtil.IsEvaluated(t.FieldName))
-                                {
-                                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(t.FieldName, VariableLabelText, executionID), debugItem);
-                                }
-                                else
-                                {
-                                    AddDebugItem(new DebugItemStaticDataParams(t.FieldName, VariableLabelText), debugItem);
-                                }
-
-                                string calculationExpression;
-                                if(DataListUtil.IsCalcEvaluation(t.FieldValue, out calculationExpression))
-                                {
-                                    var expression = string.Format("={0}", calculationExpression);
-                                    var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
-                                    AddDebugItem(new DebugItemVariableParams(expression, NewFieldLabelText, expressionsEntry, executionID), debugItem);
-                                }
-                                else
-                                {
-                                    if(DataListUtil.IsEvaluated(t.FieldValue))
-                                    {
-                                        var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, t.FieldValue, false, out errors);
-                                        AddDebugItem(new DebugItemVariableParams(t.FieldValue, NewFieldLabelText, expressionsEntry, executionID), debugItem);
-                                    }
-                                    else
-                                    {
-                                        AddDebugItem(new DebugItemStaticDataParams(t.FieldValue, NewFieldLabelText), debugItem);
-                                    }
-                                }
-
-                                _debugInputs.Add(debugItem);
-                                index++;
-                            }
-                        }
-
                         if(!string.IsNullOrEmpty(t.FieldName))
                         {
                             string eval = t.FieldValue;
@@ -191,6 +147,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugTos(toUpsert, executionID);
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -202,14 +162,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // ReSharper restore UnusedParameter.Local
         {
             int innerCount = 1;
-
-            foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+            const string VariableLabelText = "Variable";
+            const string NewFieldLabelText = "New Value";
+            foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
             {
                 var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-                AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
+                AddDebugItem(new DebugTOParams(debugOutputTO, true, VariableLabelText, NewFieldLabelText), debugItem);
                 innerCount++;
-                _debugOutputs.Add(debugItem);
+                _debugInputs.Add(debugItem);
+            }
+
+            innerCount = 1;
+
+            foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
+            {
+                if(debugOutputTO != null && debugOutputTO.TargetEntry.ComplexExpressionAuditor != null)
+                {
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
+                    innerCount++;
+                    _debugOutputs.Add(debugItem);
+                }
             }
         }
 

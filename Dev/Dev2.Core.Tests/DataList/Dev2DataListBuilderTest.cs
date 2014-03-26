@@ -11,6 +11,7 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.DataList
 {
     /// <summary>
@@ -41,7 +42,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[scalar]]", "zzz");
             tmp.Add("[[scalar2]]", "aaa");
             tmp.FlushIterationFrame();
-            
+
             Assert.AreEqual(1, tmp.FetchFrames().Count);
         }
 
@@ -83,27 +84,28 @@ namespace Dev2.Tests.DataList
             IList<IDataListPayloadIterationFrame<string>> frames = tmp.FetchFrames();
 
             int frameID = 1;
-            foreach (IDataListPayloadIterationFrame<string> f in frames)
+            foreach(IDataListPayloadIterationFrame<string> f in frames)
             {
 
-                while(f.HasData()){
+                while(f.HasData())
+                {
                     DataListPayloadFrameTO<string> t2 = f.FetchNextFrameItem();
 
-                    expressions.Add(t2.Expression+"."+frameID);
-                    values.Add(t2.Value+"."+frameID);
+                    expressions.Add(t2.Expression + "." + frameID);
+                    values.Add(t2.Value + "." + frameID);
                 }
 
                 frameID++;
             }
 
-            IList<string> expectedExpressions = new List<string>() { "[[scalar]].1", "[[scalar2]].2" };
+            IList<string> expectedExpressions = new List<string> { "[[scalar]].1", "[[scalar2]].2" };
 
 
             CollectionAssert.AreEqual(expectedExpressions.ToArray(), expressions.ToArray());
             CollectionAssert.AreEqual(expectedExpressions.ToArray(), expressions.ToArray());
         }
 
-        
+
         #endregion
 
         #region Compiler Test
@@ -139,7 +141,56 @@ namespace Dev2.Tests.DataList
             // we have a single scalar
             Assert.AreEqual("myScalar", res1);
             Assert.AreEqual(2, res2);
+            Assert.IsNull(tmp.DebugOutputs[0].TargetEntry);
+            Assert.IsNull(tmp.DebugOutputs[0].RightEntry);
+            Assert.IsNull(tmp.DebugOutputs[0].LeftEntry);
 
+        }
+
+        [TestMethod]
+        public void UpsertBuilder_AssignStyleAppend_Expect_2RecordSetEntries_And_Scalar_AsDebug()
+        {
+            IDev2DataListUpsertPayloadBuilder<string> tmp = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            tmp.IsDebug = true;
+            tmp.Add("[[scalar]]", "myScalar");
+            tmp.FlushIterationFrame();
+            tmp.Add("[[recset().f1]]", "field1_value1");
+            tmp.Add("[[recset().f2]]", "field2_value1");
+            tmp.FlushIterationFrame();
+            tmp.Add("[[recset().f1]]", "field1_value2");
+            tmp.Add("[[recset().f2]]", "field2_value2");
+
+            ErrorResultTO errors;
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _dlShape, out errors);
+
+            _compiler.Upsert(id, tmp, out errors);
+            IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
+
+            // Else we good to go, normal asserts ;)
+            IBinaryDataListEntry recset;
+            string error;
+            bdl.TryGetEntry("recset", out recset, out error);
+
+            IBinaryDataListEntry scalar;
+            bdl.TryGetEntry("scalar", out scalar, out error);
+
+            var res1 = scalar.FetchScalar().TheValue;
+            var res2 = recset.FetchLastRecordsetIndex();
+
+            // we have a single scalar
+            Assert.AreEqual("myScalar", res1);
+            Assert.AreEqual(2, res2);
+
+            Assert.IsNotNull(tmp.DebugOutputs);
+            Assert.IsNotNull(tmp.DebugOutputs[0].LeftEntry);
+            Assert.IsNotNull(tmp.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(tmp.DebugOutputs[0].TargetEntry);
+            Assert.IsNotNull(tmp.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            Assert.IsNotNull(tmp.DebugOutputs[0].LeftEntry.ComplexExpressionAuditor);
+            Assert.IsNotNull(tmp.DebugOutputs[0].TargetEntry.ComplexExpressionAuditor);
+            Assert.AreEqual(1, tmp.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems().Count);
+            Assert.AreEqual(1, tmp.DebugOutputs[0].LeftEntry.ComplexExpressionAuditor.FetchAuditItems().Count);
+            Assert.AreEqual(5, tmp.DebugOutputs[0].TargetEntry.ComplexExpressionAuditor.FetchAuditItems().Count);
 
         }
 

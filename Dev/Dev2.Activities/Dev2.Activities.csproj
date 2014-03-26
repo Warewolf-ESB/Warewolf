@@ -108,6 +108,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Debug\DebugTOParams.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />

@@ -241,7 +241,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 foreach(var debugOutputTo in toUpsert.DebugOutputs)
                                 {
-                                    if(debugOutputTo.FromEntry != null && debugOutputTo.TargetEntry != null)
+                                    if(debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
                                     {
                                         AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                                     }
@@ -270,7 +270,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("",Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
