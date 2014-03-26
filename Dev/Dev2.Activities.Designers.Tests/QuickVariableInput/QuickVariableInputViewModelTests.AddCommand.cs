@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
@@ -89,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         {
             var qviViewModel = new QuickVariableInputViewModelMock();
             qviViewModel.Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() };
-            
+
             qviViewModel.AddCommand.Execute(null);
             Assert.AreEqual(0, qviViewModel.ValidateHitCount);
         }
@@ -99,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_IncompleteVariableList_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -121,7 +125,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithChars_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -143,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithChars_SplitTokenSpace_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -168,7 +172,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithIndex_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -205,7 +209,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithSpace_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -228,7 +232,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_AddCommand")]
         public void QuickVariableInputViewModel_AddCommand_SplitTypeWithTab_CorrectResultsReturned()
         {
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -259,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
                 expectedPreviewOutput += string.Format("{0}2 [[Customer().LName]]{0}3 [[Customer().TelNo]]{0}...", Environment.NewLine);
             }
 
-            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
+            var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => { })
             {
                 Suffix = "",
                 Prefix = "Customer().",
@@ -329,6 +333,34 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             var expected = new List<string> { "[[Customer().FName]]", "", "[[Customer().TelNo]]", "[[Customer().Email]]" };
 
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("QuickVariableInputViewModel_AddCommand")]
+        public void QuickVariableInputViewModel_AddCommand_PublishesAAddStringListToDataListMessage()
+        {
+            var qviViewModel = new QuickVariableInputViewModelMock();
+            var workflowdesignerVm = new FakeWorkflowDesignerViewModel(EventPublishers.Aggregator);
+            qviViewModel.AddCommand.Execute(null);
+            Assert.AreEqual(1, workflowdesignerVm.WasHandled);
+        }
+    }
+
+    internal class FakeWorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
+                                       IHandle<AddStringListToDataListMessage>
+    {
+        public int WasHandled = 0;
+
+        public FakeWorkflowDesignerViewModel(IEventAggregator eventPublisher)
+            : base(eventPublisher)
+        {
+
+        }
+
+        public void Handle(AddStringListToDataListMessage message)
+        {
+            WasHandled++;
         }
     }
 }

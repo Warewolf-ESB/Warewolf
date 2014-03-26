@@ -1,17 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.MathOperations;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -1154,6 +1158,75 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
 
             Assert.AreEqual("[[rs().Val]]", result);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_GetIntellisenseResults")]
+        public void DefaultIntellisenseProvider_GetIntellisenseResults_ActiviDataListIsInErrorAndInPutTextMatchesVariable_ResultIsInError()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 0,
+                InputText = "[[Country]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            CreateActiveDataListViewModel();
+
+            //------------Execute Test---------------------------
+            var result = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(1, result.Count);
+            Assert.IsTrue(result[0].IsError);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_GetIntellisenseResults")]
+        public void DefaultIntellisenseProvider_GetIntellisenseResults_ActiviDataListIsInErrorButInPutTextDoesNotMatchesVariable_ResultIsNotInError()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 5,
+                InputText = "[[num]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            CreateActiveDataListViewModel();
+
+            //------------Execute Test---------------------------
+            var result = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual(1, result.Count);
+            Assert.IsFalse(result[0].IsError);
+        }
+
+        static void CreateActiveDataListViewModel()
+        {
+            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
+            dataListViewModel.RecsetCollection.Clear();
+            dataListViewModel.ScalarCollection.Clear();
+
+            var scalarDataListItemWithError = DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both);
+            var scalarDataListItemWithNoError = DataListItemModelFactory.CreateDataListModel("var", "Random Variable", enDev2ColumnArgumentDirection.Both);
+            scalarDataListItemWithError.HasError = true;
+            scalarDataListItemWithError.ErrorMessage = "This is an Error";
+            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
+            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithNoError);
+            dataListViewModel.WriteToResourceModel();
+            DataListSingleton.SetDataList(dataListViewModel);
         }
 
         [TestMethod]
