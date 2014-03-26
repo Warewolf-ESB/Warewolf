@@ -187,6 +187,10 @@
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\PluginServices.cs" />
     <Compile Include="ServiceModel\Data\RecordsetNode.cs" />

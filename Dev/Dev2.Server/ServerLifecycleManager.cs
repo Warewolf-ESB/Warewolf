@@ -1056,7 +1056,7 @@ namespace Dev2
                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                     {
-                        WriteLine("Loading [ " + toLoad.FullName + " ]");
+                        WriteLine("Loading Reference [ " + toLoad.FullName + " ]");
                     }
 #pragma warning restore 162
                     // ReSharper restore HeuristicUnreachableCode
@@ -1100,7 +1100,7 @@ namespace Dev2
                                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                                     {
-                                        WriteLine("Loading [ " + gacName + " ]");
+                                        WriteLine("Loading Dependencies [ " + gacName + " ]");
                                     }
 #pragma warning restore 162
                                     // ReSharper restore HeuristicUnreachableCode

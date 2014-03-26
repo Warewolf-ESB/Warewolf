@@ -3,6 +3,10 @@ using System;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    /// <summary>
+    /// A Method Parameter
+    /// </summary>
+    [Serializable]
     public class MethodParameter
     {
         public string Name { get; set; }

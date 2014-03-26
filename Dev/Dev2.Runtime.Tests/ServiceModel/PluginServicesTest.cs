@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void PluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            var services = new PluginServices(null, null);
+            new PluginServices(null, null);
         }
 
         #endregion
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
             var services = new PluginServicesMock();
-            var result = services.DeserializeService(null);
+            services.DeserializeService(null);
         }
 
         [TestMethod]

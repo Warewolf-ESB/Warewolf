@@ -157,23 +157,23 @@ namespace Dev2.Studio.Core.Models
             if(memo.ServerID == Environment.Connection.ServerID)
             {
                 var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID == Guid.Empty).ToList();
-                if(modifiedPermissions.Count > 0)
+            if(modifiedPermissions.Count > 0)
+            {
+                try
                 {
-                    try
-                    {
-                        UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
-                    }
-                    catch(SystemException exception)
-                    {
-                        HelperUtils.ShowTrustRelationshipError(exception);
-                    }
+                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
                 }
-
-                if(OnPermissionsModifiedReceived != null)
+                catch(SystemException exception)
                 {
-                    OnPermissionsModifiedReceived(this, memo);
+                    HelperUtils.ShowTrustRelationshipError(exception);
                 }
             }
+
+            if(OnPermissionsModifiedReceived != null)
+            {
+                OnPermissionsModifiedReceived(this, memo);
+            }
+        }
         }
 
         public Guid ServerID { get; set; }

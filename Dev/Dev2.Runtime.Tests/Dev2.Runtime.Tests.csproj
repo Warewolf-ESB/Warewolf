@@ -140,6 +140,8 @@
   <ItemGroup>
     <Compile Include="ESB\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
+    <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
+    <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Security\ServerSecurityServiceTests.cs" />
     <Compile Include="Security\TestServerSecurityService.cs" />
     <Compile Include="Json\JsonResource.cs" />

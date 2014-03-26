@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -7,6 +8,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [DataContract]
+    [Serializable]
     public class ServiceMethod
     {
         #region CTOR
@@ -51,8 +53,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<MethodParameter> Parameters { get; set; }
 
         [DataMember]
-        public string SourceCode { get; set; } 
-        
+        public string SourceCode { get; set; }
+
         [DataMember]
         public string FullName { get; set; }
 

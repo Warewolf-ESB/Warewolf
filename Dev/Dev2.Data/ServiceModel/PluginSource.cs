@@ -6,7 +6,7 @@ using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    // BUG 9500 - 2013.05.31 - TWR : removed FullName property
+    [Serializable]
     public class PluginSource : Resource
     {
         #region CTOR

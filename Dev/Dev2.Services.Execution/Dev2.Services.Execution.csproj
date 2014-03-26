@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServiceExecution.cs" />
-    <Compile Include="PluginServiceExecution.cs" />
     <Compile Include="DatabaseServiceExecution.cs" />
+    <Compile Include="PluginServiceExecution.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteObjectHandler.cs" />
     <Compile Include="ServiceExecutionAbstract.cs" />

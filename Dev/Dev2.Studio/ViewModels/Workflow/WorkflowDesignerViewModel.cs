@@ -1863,7 +1863,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
             }
             NewWorkflowNames.Instance.Remove(unsavedName);
-
+            
         }
 
         void PublishMessages(IContextualResourceModel resourceModel)

@@ -16,6 +16,7 @@ using Exception = System.Exception;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    [Serializable]
     public class Resource : IResource
     {
         #region _rootElements

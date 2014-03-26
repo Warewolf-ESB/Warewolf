@@ -1,8 +1,10 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
 using System.Xml.Linq;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
+    [Serializable]
     public class MethodOutput : IDev2Definition
     {
         #region Properties
