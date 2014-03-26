@@ -1,0 +1,6 @@
+
+<Source ID="774c1be9-17fc-426b-a31c-b53d686038c9" Name="Azure Public" Type="Dev2Server" ConnectionString="AppServerUri=http://dev2-warewolf.cloudapp.net:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Unknown" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <TypeOf>Dev2Server</TypeOf>
+  <DisplayName>Azure Public</DisplayName>
+  <Category>SERVERS</Category>
+</Source>
