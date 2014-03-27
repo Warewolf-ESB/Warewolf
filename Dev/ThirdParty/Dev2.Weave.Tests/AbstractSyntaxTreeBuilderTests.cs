@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Parsing.Intellisense;
 
 namespace Dev2.Weave.Tests
@@ -23,6 +24,17 @@ namespace Dev2.Weave.Tests
         {
             SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
             builder.Build("[[entry]][[var]]");
+            Assert.IsFalse(builder.EventLog.HasEventLogs);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo")]
+        [TestCategory("SyntaxTreeBuilder_Build")]
+        public void SyntaxTreeBuilder_Build_VariablesSideBySideWithNewLine_HasEventLogsIsFalse()
+        {
+            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+            var input = "[[entry]]" + Environment.NewLine + "[[var]]";  
+            builder.Build(input);
             Assert.IsFalse(builder.EventLog.HasEventLogs);
         }
 

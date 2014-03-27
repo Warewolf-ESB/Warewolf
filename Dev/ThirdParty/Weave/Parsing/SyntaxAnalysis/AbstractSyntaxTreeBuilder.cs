@@ -221,7 +221,12 @@ namespace System.Parsing.SyntaxAnalysis
 
         static string SanitizeInput(string input)
         {
-            input = input.Replace("]][[", "]]+[[");
+            if(!string.IsNullOrEmpty(input))
+            {
+                input = input.Replace("\r", string.Empty);
+                input = input.Replace("\n", string.Empty);
+                input = input.Replace("]][[", "]]+[[");
+            }
             return input;
         }
 

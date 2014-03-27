@@ -366,6 +366,17 @@ namespace Unlimited.UnitTest.Framework.Parsing
 
         [TestMethod]
         [Owner("Tshepo")]
+        [TestCategory("SyntaxTreeBuilder_Build")]
+        public void SyntaxTreeBuilder_Build_VariablesSideBySideWithNewLine_HasEventLogsIsFalse()
+        {
+            SyntaxTreeBuilder builder = new SyntaxTreeBuilder();
+            var input = "[[entry]]" + Environment.NewLine + "[[var]]";
+            builder.Build(input);
+            Assert.IsFalse(builder.EventLog.HasEventLogs);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo")]
         [TestCategory("DataListGrammer_IsolationGrammer")]
         public void DataListGrammer_IsolationGrammer_VariablesSideBySideWithAnAdditionOperator_HasEventLogsIsFalse()
         {
@@ -589,8 +600,7 @@ namespace Unlimited.UnitTest.Framework.Parsing
             {
                 if(_operation == 1)
                 {
-                    TokenDefinition nullDefinition = null;
-                    triggerRegistry.Register(nullDefinition);
+                    triggerRegistry.Register((TokenDefinition)null);
                 }
                 else if(_operation == 2)
                 {

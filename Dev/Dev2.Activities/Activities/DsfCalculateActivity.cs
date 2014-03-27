@@ -71,7 +71,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(executionId);
                 }
                 IFunctionEvaluator functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
-                IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(Expression);
+
+                string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+                IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(input);
 
                 string result = functionEvaluator.EvaluateFunction(evaluationFunctionTO, executionId, out errors);
                 allErrors.MergeErrors(errors);
