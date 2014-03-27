@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
+    [Serializable]
     public class XmlPath : BasePath
     {
         #region Class Members

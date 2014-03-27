@@ -9,6 +9,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 // ReSharper restore CheckNamespace
 {
+    [Serializable]
     public class XmlMapper : IMapper
     {
         #region Constructors

@@ -1,7 +1,9 @@
-﻿using Unlimited.Framework.Converters.Graph.Interfaces;
+﻿using System;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
+    [Serializable]
     internal class PocoPathSegment : IPathSegment
     {
         #region Constructors
@@ -31,7 +33,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public override string ToString()
         {
-            if (IsEnumarable)
+            if(IsEnumarable)
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }
@@ -43,7 +45,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public string ToString(bool considerEnumerable)
         {
-            if (considerEnumerable && IsEnumarable)
+            if(considerEnumerable && IsEnumarable)
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }

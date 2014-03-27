@@ -2,6 +2,7 @@
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Services.Execution
 {
@@ -26,11 +27,11 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors)
+        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
 
-            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Fullname = Service.Namespace, Method = Service.Method.Name, Parameters = Service.Method.Parameters };
+            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Fullname = Service.Namespace, Method = Service.Method.Name, Parameters = Service.Method.Parameters, OutputFormatter = formater};
 
             object result = null;
 

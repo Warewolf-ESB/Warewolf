@@ -9,6 +9,7 @@ using Dev2.Common.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Services.Execution
 {
@@ -93,7 +94,7 @@ namespace Dev2.Services.Execution
             DestroySqlServer();
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors)
+        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
@@ -113,13 +114,18 @@ namespace Dev2.Services.Execution
                 {
                     var parameters = GetSqlParameters(Service.Method.Parameters);
 
-                    using(var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
+                    if(parameters != null)
                     {
-                        ApplyColumnMappings(dataSet);
-                        IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                        // ReSharper disable CoVariantArrayConversion
+                        using(var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
+                        // ReSharper restore CoVariantArrayConversion
+                        {
+                            ApplyColumnMappings(dataSet);
+                            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                        executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
-                        return true;
+                            executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
+                            return true;
+                        }
                     }
                 }
             }
@@ -132,7 +138,7 @@ namespace Dev2.Services.Execution
         }
 
         #endregion
-        
+
         #region GetSqlParameters
         static List<SqlParameter> GetSqlParameters(IList<MethodParameter> methodParameters)
         {
@@ -140,7 +146,9 @@ namespace Dev2.Services.Execution
 
             if(methodParameters.Count > 0)
             {
+#pragma warning disable 219
                 var pos = 0;
+#pragma warning restore 219
                 foreach(var parameter in methodParameters)
                 {
 

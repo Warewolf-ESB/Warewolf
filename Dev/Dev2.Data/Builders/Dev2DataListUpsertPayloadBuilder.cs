@@ -27,7 +27,9 @@ namespace Dev2.Data.Builders
         {
             bool result = false;
 
+            // ReSharper disable CompareNonConstrainedGenericWithNull
             if(val != null && exp != null && exp != string.Empty)
+            // ReSharper restore CompareNonConstrainedGenericWithNull
             {
                 _cache.Add(new DataListPayloadFrameTO<T>(exp, val));
                 result = true;

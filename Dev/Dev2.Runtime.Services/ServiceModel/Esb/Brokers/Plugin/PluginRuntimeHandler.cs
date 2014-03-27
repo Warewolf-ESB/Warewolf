@@ -6,6 +6,8 @@ using System.Reflection;
 using Dev2.Common;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -37,7 +39,48 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var instance = Activator.CreateInstance(type);
             var pluginResult = methodToRun.Invoke(instance, parameters);
 
+            // do formating here to avoid object serialization issues ;)
+            var formater = setupInfo.OutputFormatter;
+            if(formater != null)
+            {
+                return formater.Format(pluginResult).ToString();
+            }
+
             return pluginResult;
+        }
+
+
+        public IOutputDescription Test(PluginInvokeArgs setupInfo)
+        {
+            Assembly loadedAssembly;
+
+            if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            {
+                return null;
+            }
+
+            var parameters = BuildParameterList(setupInfo.Parameters);
+            var typeList = BuildTypeList(setupInfo.Parameters);
+
+            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var methodToRun = type.GetMethod(setupInfo.Method, typeList);
+            var instance = Activator.CreateInstance(type);
+            var pluginResult = methodToRun.Invoke(instance, parameters);
+
+            // do formating here to avoid object serialization issues ;)
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+
+            if(pluginResult != null)
+            {
+                var tmpData = dataBrowser.Map(pluginResult);
+                dataSourceShape.Paths.AddRange(tmpData);
+            }
+
+            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            result.DataSourceShapes.Add(dataSourceShape);
+
+            return result;
         }
 
         /// <summary>

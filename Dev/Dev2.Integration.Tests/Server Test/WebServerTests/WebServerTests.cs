@@ -99,7 +99,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_ServiceAsJson_CannotExecuteServiceErrorAsJson()
         {
-            const string Expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
+            const string Expected = "{ \"FatalError\": \"An internal error occurred while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
                 new Tuple<string, string, AssertType>("CaseSP.json", Expected, AssertType.Equals)
@@ -109,7 +109,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestMethod]
         public void WebServer_ServicesGet_NonExistingServiceAsJson_InternalErrorsAsJson()
         {
-            const string Expected = "{ \"FatalError\": \"An internal error occured while executing the service request\",\"errors\": [ \"Service [ BugXXXX ] not found.\"]}";
+            const string Expected = "{ \"FatalError\": \"An internal error occurred while executing the service request\",\"errors\": [ \"Service [ BugXXXX ] not found.\"]}";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
                 new Tuple<string, string, AssertType>("BugXXXX.json", Expected, AssertType.Equals)
@@ -120,7 +120,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_NonExistingServiceAsXml_InternalErrorAsXml()
         {
-            const string Expected = "<FatalError> <Message> An internal error occured while executing the service request </Message><InnerError>Service [ BugXXXX ] not found.</InnerError></FatalError>";
+            const string Expected = "<FatalError> <Message> An internal error occurred while executing the service request </Message><InnerError>Service [ BugXXXX ] not found.</InnerError></FatalError>";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
                 new Tuple<string, string, AssertType>("BugXXXX.xml", Expected, AssertType.Equals)

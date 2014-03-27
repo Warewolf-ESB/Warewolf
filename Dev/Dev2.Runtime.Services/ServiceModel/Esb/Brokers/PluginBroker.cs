@@ -1,6 +1,5 @@
 ﻿using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
-using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
@@ -63,31 +62,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                                         Parameters = pluginService.Method.Parameters
                                     };
 
-            var pluginResult = PluginServiceExecutionFactory.InvokePlugin(args);
+            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args);
 
-            return TestPluginResult(pluginResult);
-        }
-
-        /// <summary>
-        /// Tests the plugin result.
-        /// </summary>
-        /// <param name="pluginResult">The plugin result.</param>
-        /// <returns></returns>
-        public IOutputDescription TestPluginResult(object pluginResult)
-        {
-            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-
-            if(pluginResult != null)
-            {
-                var tmpData = dataBrowser.Map(pluginResult);
-                dataSourceShape.Paths.AddRange(tmpData);
-            }
-
-            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-            result.DataSourceShapes.Add(dataSourceShape);
-
-            return result;
+            return pluginResult;
         }
     }
 }

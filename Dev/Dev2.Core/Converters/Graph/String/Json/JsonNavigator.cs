@@ -10,6 +10,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
+    [Serializable]
     public class JsonNavigator : NavigatorBase, INavigator
     {
         #region Constructor

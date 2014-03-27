@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Dev2;
@@ -6,6 +7,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
+    [Serializable]
     public class PocoPath : BasePath
     {
         #region Class Members

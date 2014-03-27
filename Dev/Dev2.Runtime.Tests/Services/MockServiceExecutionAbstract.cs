@@ -1,11 +1,13 @@
 ﻿using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Services.Execution
 {
     public class MockServiceExecutionAbstract<TService, TSource> : ServiceExecutionAbstract<TService, TSource>
-        where TService : Service, new() where TSource : Resource, new()
+        where TService : Service, new()
+        where TSource : Resource, new()
     {
 
         public bool DidExecuteServiceInvoke { get; private set; }
@@ -25,7 +27,7 @@ namespace Dev2.Services.Execution
         {
         }
 
-        protected override object ExecuteService(out ErrorResultTO errors)
+        protected override object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             DidExecuteServiceInvoke = true;
@@ -45,7 +47,7 @@ namespace Dev2.Services.Execution
         {
             ExecuteImpl(compiler, out errors);
         }
-        
+
         #endregion
     }
 }

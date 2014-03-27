@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2;
 using Newtonsoft.Json.Linq;
@@ -6,6 +7,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
+    [Serializable]
     public class JsonPath : BasePath
     {
         #region Class Members

@@ -2520,18 +2520,6 @@ namespace Dev2.Server.Datalist
             }
         }
 
-        //        void BuildComplexExpressionsForFromEntryDebug<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
-        //        {
-        //            if(debugTO.LeftEntry != null)
-        //            {
-        //                ProcessLeftSide(debugTO, frame);
-        //            }
-        //            if(debugTO.RightEntry!=null)
-        //            {
-        //                ProcessRightSide(debugTO, frame, bdl);
-        //            }
-        //        }
-
         static void ProcessLeftSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame)
         {
             var leftSide = frame.Expression;

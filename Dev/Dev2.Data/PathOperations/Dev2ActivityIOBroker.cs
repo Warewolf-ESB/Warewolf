@@ -38,6 +38,9 @@ namespace Dev2.PathOperations
             string result;
             try
             {
+
+                // TODO : we need to chunk this in
+
                 if(!deferredRead)
                 {
                     byte[] bytes;

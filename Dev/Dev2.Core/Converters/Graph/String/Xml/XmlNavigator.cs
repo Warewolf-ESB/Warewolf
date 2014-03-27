@@ -7,6 +7,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
+    [Serializable]
     public class XmlNavigator : NavigatorBase, INavigator
     {
         #region Constructor

@@ -4,6 +4,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph
 {
+    [Serializable]
     public class DataBrowser : IDataBrowser
     {
         #region Methods
@@ -13,7 +14,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             IMapper mapper = interrogator.CreateMapper(data);
 
-            if (mapper == null)
+            if(mapper == null)
             {
                 throw new Exception(string.Concat("Couldn't create a mapper for '", data.ToString(), "'."));
             }
@@ -26,7 +27,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
 
-            if (navigator == null)
+            if(navigator == null)
             {
                 throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
             }
@@ -43,7 +44,7 @@ namespace Unlimited.Framework.Converters.Graph
             IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
             INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
 
-            if (navigator == null)
+            if(navigator == null)
             {
                 throw new Exception(string.Concat("Couldn't create a navigator for the path '", path.ToString(), "'."));
             }
@@ -59,12 +60,12 @@ namespace Unlimited.Framework.Converters.Graph
         {
             Dictionary<IPath, IList<object>> values;
 
-            if (paths.Count > 0)
+            if(paths.Count > 0)
             {
                 IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
                 INavigator navigator = interrogator.CreateNavigator(data, paths[0].GetType());
 
-                if (navigator == null)
+                if(navigator == null)
                 {
                     throw new Exception(string.Concat("Couldn't create a navigator for the path '", paths[0].ToString(), "'."));
                 }

@@ -42,7 +42,7 @@ namespace Dev2.Activities
 
         protected virtual PluginServiceExecution GetNewPluginServiceExecution(IDSFDataObject context)
         {
-            return new PluginServiceExecution(context, false);
+            return new PluginServiceExecution(context, true);
         }
 
         #endregion

@@ -10,6 +10,7 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.Framework.Converters.Graph.String
 {
+    [Serializable]
     public class StringInterrogator : IInterrogator
     {
         #region Methods
@@ -37,7 +38,7 @@ namespace Unlimited.Framework.Converters.Graph.String
         {
             if(!pathType.GetInterfaces().Contains(typeof(IPath)))
             {
-                throw new Exception("'" + pathType.ToString() + "' doesn't implement '" + typeof(IPath).ToString() + "'");
+                throw new Exception("'" + pathType + "' doesn't implement '" + typeof(IPath) + "'");
             }
 
             INavigator navigator;
@@ -72,7 +73,9 @@ namespace Unlimited.Framework.Converters.Graph.String
 
             try
             {
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
                 XDocument.Parse(data);
+// ReSharper restore ReturnValueOfPureMethodIsNotUsed
             }
             catch(Exception ex)
             {

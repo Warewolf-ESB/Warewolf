@@ -90,7 +90,7 @@ namespace Dev2.Services.Execution
 
         public TSource Source { get; set; }
 
-        protected abstract object ExecuteService(out ErrorResultTO errors);
+        protected abstract object ExecuteService(out ErrorResultTO errors, IOutputFormatter formater = null);
 
         #region ExecuteImpl
 
@@ -180,13 +180,14 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
 
-            var response = ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors);
+            var response = ExecuteService(Service.Method.Parameters, itrCollection, itrs, out invokeErrors, outputFormatter);
             errors.MergeErrors(invokeErrors);
             if(errors.HasErrors())
             {
                 return;
             }
 
+            // TODO : This needs to move to the other side of the Marshaled Invoke
             MergeResultIntoDataList(compiler, outputFormatter, response, out invokeErrors);
             errors.MergeErrors(invokeErrors);
         }
@@ -195,7 +196,7 @@ namespace Dev2.Services.Execution
 
         #region ExecuteService
 
-        object ExecuteService(IList<MethodParameter> methodParameters, IDev2IteratorCollection itrCollection, IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors)
+        object ExecuteService(IList<MethodParameter> methodParameters, IDev2IteratorCollection itrCollection, IEnumerable<IDev2DataListEvaluateIterator> itrs, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             if(methodParameters.Any())
@@ -218,7 +219,7 @@ namespace Dev2.Services.Execution
             try
             {
                 ErrorResultTO invokeErrors;
-                var result = ExecuteService(out invokeErrors);
+                var result = ExecuteService(out invokeErrors, formater);
                 errors.MergeErrors(invokeErrors);
                 return result;
             }
@@ -252,7 +253,12 @@ namespace Dev2.Services.Execution
 
                     errors = new ErrorResultTO();
                     ErrorResultTO invokeErrors;
-                    var formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
+                    var formattedPayload = result.ToString();
+
+                    if(!HandlesOutputFormatting)
+                    {
+                        formattedPayload = outputFormatter != null ? outputFormatter.Format(result).ToString() : result.ToString();
+                    }
 
                     // Create a shape from the service action outputs
                     var dlShape = compiler.ShapeDev2DefinitionsToDataList(Service.OutputSpecification, enDev2ArgumentType.Output, false, out invokeErrors);

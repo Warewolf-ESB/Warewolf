@@ -1,7 +1,9 @@
-﻿using Unlimited.Framework.Converters.Graph.Interfaces;
+﻿using System;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
+    [Serializable]
     public class XmlPathSegment : IPathSegment
     {
         #region Constructors
@@ -39,7 +41,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         public override string ToString()
         {
-            if (IsEnumarable)
+            if(IsEnumarable)
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }
@@ -51,7 +53,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         public string ToString(bool considerEnumerable)
         {
-            if (considerEnumerable && IsEnumarable)
+            if(considerEnumerable && IsEnumarable)
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }

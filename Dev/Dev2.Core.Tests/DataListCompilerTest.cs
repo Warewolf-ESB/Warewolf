@@ -34,7 +34,7 @@ namespace Dev2.Tests
 
         #region Additional test attributes
         //Use TestInitialize to run code before running each test 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             string error;
@@ -141,7 +141,7 @@ namespace Dev2.Tests
         {
             // Iteration evaluation is tested via the shape method ;)
             var compiler = DataListFactory.CreateDataListCompiler();
-            const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>"; ;
+            const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>";
             Guid id = compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(id, out _errors);
@@ -221,9 +221,9 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
 
-            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
-                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
-                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Input);
             //------------Assert Results-------------------------
@@ -235,9 +235,9 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
-                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
-                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
@@ -249,9 +249,9 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
-                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
-                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
             //------------Assert Results-------------------------
@@ -263,9 +263,9 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            var dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
-                                     "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
-                                     "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
@@ -425,10 +425,10 @@ namespace Dev2.Tests
         public void Can_Sub_Recordset_With_Index_Expect()
         {
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors = new ErrorResultTO();
-            IBinaryDataListEntry entry = dataListCompiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
+            ErrorResultTO errors;
+            IBinaryDataListEntry binaryDataListEntry = dataListCompiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
 
-            Assert.AreEqual("r1.f1.value", entry.FetchScalar().TheValue);
+            Assert.AreEqual("r1.f1.value", binaryDataListEntry.FetchScalar().TheValue);
         }
 
         #endregion

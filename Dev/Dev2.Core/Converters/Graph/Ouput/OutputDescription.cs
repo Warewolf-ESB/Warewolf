@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -8,6 +9,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
     /// Stores the information necessary for an implementation of IOutputFormatter to format data coming form a source
     /// </summary>
     [DataContract(Name="OutputDescription")]
+    [Serializable]
     public class OutputDescription : IOutputDescription
     {
         #region Constructors

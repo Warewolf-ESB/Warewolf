@@ -10,6 +10,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
     /// <summary>
     /// Fromats data from a source to shaped XML as defined by an output description
     /// </summary>
+    [Serializable]
     public class ShapedXmlOutputFormatter : IOutputFormatter
     {
 

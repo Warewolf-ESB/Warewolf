@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Runtime.ServiceModel.Data;
+using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -35,6 +36,26 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         #endregion
 
         #region Public Interface
+
+        public static IOutputDescription TestPlugin(PluginInvokeArgs args)
+        {
+            AppDomain childDomain = null;
+
+            try
+            {
+                var runtime = CreateInvokeAppDomain(out childDomain);
+
+                // start the runtime.  call will marshal into the child runtime app domain
+                return runtime.Test(args);
+            }
+            finally
+            {
+                if(childDomain != null)
+                {
+                    AppDomain.Unload(childDomain);
+                }
+            }
+        }
 
         public static object InvokePlugin(PluginInvokeArgs args)
         {

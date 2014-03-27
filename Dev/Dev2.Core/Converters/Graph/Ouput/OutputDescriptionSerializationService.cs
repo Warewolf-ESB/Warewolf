@@ -12,6 +12,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
     /// <summary>
     /// A serialization service which uses the DataContractSerializer to serialize to XML
     /// </summary>
+    [Serializable]
     public class OutputDescriptionSerializationService : IOutputDescriptionSerializationService
     {
         #region Class Members
@@ -40,9 +41,9 @@ namespace Unlimited.Framework.Converters.Graph.Output
 
             string data;
 
-            using (StringWriter stringWriter = new StringWriter())
+            using(StringWriter stringWriter = new StringWriter())
             {
-                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter))
+                using(XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter))
                 {
                     dataContractSerializer.WriteObject(xmlTextWriter, outputDescription);
 
@@ -63,23 +64,23 @@ namespace Unlimited.Framework.Converters.Graph.Output
         {
             IOutputDescription outputDescription = null;
 
-            if (!string.IsNullOrWhiteSpace(data))
+            if(!string.IsNullOrWhiteSpace(data))
             {
                 data = data.Replace("<![CDATA[", "");
                 data = data.Replace("]]>", "");
 
                 DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(IOutputDescription), _knownTypes);
 
-                using (StringReader stringReader = new StringReader(StripKnownLegacyTags(data)))
+                using(StringReader stringReader = new StringReader(StripKnownLegacyTags(data)))
                 {
-                    using (XmlTextReader xmlTextReader = new XmlTextReader(stringReader))
+                    using(XmlTextReader xmlTextReader = new XmlTextReader(stringReader))
                     {
 
                         try
                         {
                             outputDescription = dataContractSerializer.ReadObject(xmlTextReader) as IOutputDescription;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
                             this.LogError(ex);
                             // we want to return null                    
