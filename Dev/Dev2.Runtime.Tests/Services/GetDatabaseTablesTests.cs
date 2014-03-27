@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
-using System.Text;
-using Dev2.DynamicServices;
+﻿using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -11,6 +6,11 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
+using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
@@ -105,6 +105,14 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbTableList>(value);
             Assert.IsTrue(result.Items.Count > 2);
+            var duplicateTables = result.Items.FindAll(table => table.TableName.Contains("City"));
+            Assert.AreEqual(2, duplicateTables.Count);
+            var dboCityTable = duplicateTables.Find(table => table.Schema == "dbo");
+            var warewolfCityTable = duplicateTables.Find(table => table.Schema == "Warewolf");
+            Assert.IsNotNull(dboCityTable);
+            Assert.AreEqual("dbo", dboCityTable.Schema);
+            Assert.IsNotNull(warewolfCityTable);
+            Assert.AreEqual("Warewolf", warewolfCityTable.Schema);
         }
 
         DbSource CreateDev2TestingDbSource()

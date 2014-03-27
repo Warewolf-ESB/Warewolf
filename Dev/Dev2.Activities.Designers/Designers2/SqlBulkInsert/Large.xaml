@@ -89,7 +89,7 @@
                   Grid.Row="1"
                   Style="{StaticResource ActivityMapppingComboBoxStyle}"
                   ItemsSource="{Binding Tables}"
-                  DisplayMemberPath="TableName"
+                  DisplayMemberPath="FullName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

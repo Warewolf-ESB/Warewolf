@@ -321,8 +321,6 @@ namespace BusinessDesignStudio.Unit.Tests
             int resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(1));
-
-
         }
 
         /// <summary>
@@ -2210,6 +2208,36 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Test case for creating a resource and saving the resource model in resource factory
+        /// </summary>
+        [TestMethod]
+        public void GetDatabaseTableColumns_DBTableHasSchema_ShouldAddSchemaToPayload()
+        {
+            //Arrange
+            Setup();
+            var conn = SetupConnection();
+
+
+            //int callCnt = 0;
+            StringBuilder sentPayLoad = new StringBuilder();
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid g1, Guid g2) =>
+                {
+                    sentPayLoad = o;
+                });
+            
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+            _repo.GetDatabaseTableColumns(new DbSource{DatabaseName = "TestDB", ConnectionString = "MyConn", Server = "AzureServer"}, new DbTable{Schema = "Master", TableName = "Transactions"});
+
+            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var esbExecuteRequest = jsonSerializer.Deserialize<EsbExecuteRequest>(sentPayLoad);
+            StringAssert.Contains(esbExecuteRequest.Args["Schema"].ToString(),"Master");
+            StringAssert.Contains(esbExecuteRequest.Args["TableName"].ToString(), "Transactions");
+            StringAssert.Contains(esbExecuteRequest.Args["Database"].ToString(), "TestDB");
+        }
+
 
         static Mock<IEnvironmentConnection> CreateEnvironmentConnection()
         {

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using System.Text;
-using Dev2.Communication;
+﻿using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -57,11 +57,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             DbSource dbSource;
-            DbSource runtimeDbSource=null;
+            DbSource runtimeDbSource = null;
             try
             {
                 dbSource = JsonConvert.DeserializeObject<DbSource>(database);
-                
+
                 if(dbSource.ResourceID != Guid.Empty)
                 {
                     runtimeDbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
-            if(runtimeDbSource==null)
+            if(runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
                 return serializer.SerializeToBuilder(res);
@@ -97,10 +97,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     foreach(DataRow row in columnInfo.Rows)
                     {
                         var tableName = row["TABLE_NAME"] as string;
-                        var dbTable = tables.Items.Find(table => table.TableName == tableName);
+                        var schema = row["TABLE_SCHEMA"] as string;
+                        var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
                         if(dbTable == null)
                         {
-                            dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
+                            dbTable = new DbTable();
+                            dbTable.Schema = schema;
+                            dbTable.TableName = tableName;
+                            dbTable.Columns = new List<DbColumn>();
                             tables.Items.Add(dbTable);
                         }
                     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
-using System.Text;
-using Dev2.DynamicServices;
+﻿using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -11,6 +6,11 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
+using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("GetDatabaseTables_Execute")]
+        [TestCategory("GetDatabaseColumnsForTable_Execute")]
         public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource()
         {
             //------------Setup for test--------------------------
@@ -128,12 +128,12 @@ namespace Dev2.Tests.Runtime.Services
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
             //------------Execute Test---------------------------
-            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("TestTransactions") } }, mockWorkspace.Object);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("City") }, { "Schema", new StringBuilder("Warewolf") } }, mockWorkspace.Object);
             //------------Assert Results-------------------------
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
-            Assert.IsTrue(result.Items.Count > 2);
+            Assert.AreEqual(4, result.Items.Count);
         }
 
         DbSource CreateDev2TestingDbSource()

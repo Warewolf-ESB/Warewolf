@@ -1,12 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
@@ -19,6 +11,14 @@ using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
@@ -334,7 +334,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.SelectedTable = dbTable;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(dbTable.TableName, viewModel.TableName);
+            Assert.AreEqual(dbTable.FullName, viewModel.TableName);
 
             Assert.IsTrue(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedTableChangedHitCount);
@@ -364,7 +364,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             viewModel.SelectedTable = dbTable;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(dbTable.TableName, viewModel.TableName);
+            Assert.AreEqual(dbTable.FullName, viewModel.TableName);
 
             Assert.IsTrue(viewModel.IsTableSelected);
             Assert.AreEqual(1, viewModel.OnSelectedTableChangedHitCount);
@@ -981,7 +981,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                         }
                     }
 
-                    tables.Add(new DbTable { TableName = dbName + "_Table_" + j, Columns = columns });
+                    tables.Add(new DbTable { Schema = "MySchema", TableName = dbName + "_Table_" + j, Columns = columns });
                 }
 
                 var tableList = new DbTableList();

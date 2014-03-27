@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using System.Text;
-using Dev2.Communication;
+﻿using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -42,6 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             string database = null;
             string tableName = null;
+            string schema = null;
             StringBuilder tmp;
             values.TryGetValue("Database", out tmp);
             if(tmp != null)
@@ -52,6 +53,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(tmp != null)
             {
                 tableName = tmp.ToString();
+            }
+
+            values.TryGetValue("Schema", out tmp);
+            if(tmp != null)
+            {
+                schema = tmp.ToString();
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -80,10 +87,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
                     var restrictions = new string[4];
                     restrictions[0] = runtTimedbSource.DatabaseName;
-                    if(tableName != null)
+                    if(!string.IsNullOrEmpty(schema))
                     {
-                        restrictions[2] = tableName.Trim(new[] { '"' });
+                        restrictions[1] = schema.Trim(new[] { '"' });
                     }
+                    restrictions[2] = tableName.Trim(new[] { '"' });
                     columnInfo = connection.GetSchema("Columns", restrictions);
                 }
 
