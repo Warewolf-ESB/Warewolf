@@ -14,7 +14,7 @@ namespace Dev2.Runtime.ESB.Execution
         public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _pluginServiceExecution = new PluginServiceExecution(dataObj, false);
+            _pluginServiceExecution = new PluginServiceExecution(dataObj, true);
         }
 
         public PluginServiceContainer(IServiceExecution pluginServiceExecution)
@@ -24,6 +24,9 @@ namespace Dev2.Runtime.ESB.Execution
         }
         public override Guid Execute(out ErrorResultTO errors)
         {
+            // set the output definition ;)
+            _pluginServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
+
             var result = _pluginServiceExecution.Execute(out errors);
             return result;
         }

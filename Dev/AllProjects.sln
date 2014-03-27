@@ -267,9 +267,6 @@ Global
 		SccProjectName45 = Dev2.Instrumentation
 		SccLocalPath45 = Dev2.Instrumentation
 	EndGlobalSection
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.0
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
