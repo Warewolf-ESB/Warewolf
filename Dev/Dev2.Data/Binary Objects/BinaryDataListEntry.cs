@@ -10,7 +10,9 @@ using Dev2.Data.Storage.ProtocolBuffers;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract.Binary_Objects
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     internal class BinaryDataListEntry : IBinaryDataListEntry
@@ -714,12 +716,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-        public IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error)
+        public IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error, string field = "")
         {
 
             int idx = FetchLastRecordsetIndex(true);
-
-            return InternalFetchIndexedRecordsetUpsertPayload(idx, out error);
+            return !string.IsNullOrEmpty(field) ? TryFetchRecordsetColumnAtIndex(field, idx, out error) : InternalFetchIndexedRecordsetUpsertPayload(idx, out error);
         }
 
         public IBinaryDataListItem TryFetchIndexedRecordsetUpsertPayload(int idx, out string error)

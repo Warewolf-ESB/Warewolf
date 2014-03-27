@@ -2104,16 +2104,26 @@ namespace Dev2.Server.Datalist
                                 }
                             }
 
-                            allErrors.MergeErrors(errors);
                             if(payload.IsDebug)
                             {
-                                var leftSide = InternalEvaluate(frameItem.Expression, bdl, out errors);
-                                debugTO.LeftEntry = leftSide.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                IBinaryDataListEntry leftSide;
+                                IBinaryDataListEntry tmpEntry;
+                                if(part.Option.IsScalar)
+                                {
+                                    bdl.TryGetEntry(field, out tmpEntry, out error);
+                                    leftSide = tmpEntry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                }
+                                else
+                                {
+                                    bdl.TryGetEntry(part.Option.Recordset, out tmpEntry, out error);
+                                    leftSide = tmpEntry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+                                }
+                                debugTO.LeftEntry = leftSide;
                                 debugTO.LeftEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                debugTO.RightEntry = evaluatedValue.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
-                                debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                BuildComplexExpressionsForFromEntryDebug(debugTO, frameItem, bdl);
+                                ProcessLeftSide(debugTO, frameItem);
                             }
+                            allErrors.MergeErrors(errors);
+
                             // check entry cache based upon type ;)
                             IBinaryDataListEntry entry;
                             if(part.Option.IsScalar)
@@ -2395,7 +2405,12 @@ namespace Dev2.Server.Datalist
                                     }
                                 }
                             }
-
+                            if(payload.IsDebug)
+                            {
+                                debugTO.RightEntry = evaluatedValue;
+                                debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                ProcessRightSide(debugTO, frameItem, bdl);
+                            }
                             if(payload.IsDebug)
                             {
                                 debugTO.UsedRecordsetIndex = debugIdx;
@@ -2505,14 +2520,17 @@ namespace Dev2.Server.Datalist
             }
         }
 
-        void BuildComplexExpressionsForFromEntryDebug<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
-        {
-            if(debugTO.LeftEntry != null)
-            {
-                ProcessRightSide(debugTO, frame, bdl);
-                ProcessLeftSide(debugTO, frame);
-            }
-        }
+        //        void BuildComplexExpressionsForFromEntryDebug<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
+        //        {
+        //            if(debugTO.LeftEntry != null)
+        //            {
+        //                ProcessLeftSide(debugTO, frame);
+        //            }
+        //            if(debugTO.RightEntry!=null)
+        //            {
+        //                ProcessRightSide(debugTO, frame, bdl);
+        //            }
+        //        }
 
         static void ProcessLeftSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame)
         {
@@ -2522,15 +2540,17 @@ namespace Dev2.Server.Datalist
             {
                 if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Star)
                 {
-
                     ProcessStarEntry(leftEntry, leftSide);
                 }
                 else
                 {
-                    var leftValue = leftEntry.FetchScalar().TheValue;
-                    if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Blank)
+                    string error;
+                    var leftValue = "";
+                    if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Numeric)
                     {
-                        leftValue = "";
+                        var stringIndexValue = DataListUtil.ExtractIndexRegionFromRecordset(leftSide);
+                        var idx = int.Parse(stringIndexValue);
+                        leftValue = leftEntry.TryFetchRecordsetColumnAtIndex(DataListUtil.ExtractFieldNameFromValue(leftSide), idx, out error).TheValue;
                     }
                     leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftValue, leftSide);
                 }
@@ -2545,6 +2565,7 @@ namespace Dev2.Server.Datalist
         {
             var rightSide = "";
             var boundValue = debugTO.RightEntry.FetchScalar().TheValue;
+
             if(typeof(T) == typeof(string))
             {
                 rightSide = frame.Value as string;

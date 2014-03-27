@@ -235,9 +235,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Tries the fetch indexed recordset upsert payload.
         /// </summary>
+        /// <param name="field"></param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error);
+        IBinaryDataListItem TryFetchLastIndexedRecordsetUpsertPayload(out string error, string field ="");
 
         /// <summary>
         /// Tries the fetch indexed recordset upsert payload.

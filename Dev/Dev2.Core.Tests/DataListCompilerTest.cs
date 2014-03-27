@@ -360,6 +360,31 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
+        public void TryFetchLastIndexedRecordsetUpsertPayload_ColumnName_FetchesForColumn()
+        {
+            //------------Setup for test--------------------------
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            toUpsert.Add("[[rec().f1]]", new List<string> { "test11", "test12" });
+            toUpsert.Add("[[rec().f2]]", new List<string> { "test21", "test22" });
+            IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
+            string creationError;
+            dataList.TryCreateRecordsetTemplate("rec", "recset", new List<Dev2Column> { DataListFactory.CreateDev2Column("f1", "f1"), DataListFactory.CreateDev2Column("f2", "f2") }, true, out creationError);
+            ErrorResultTO localErrors;
+            compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
+            compiler.Upsert(dataList.UID, toUpsert, out _errors);
+            IBinaryDataListEntry recEntry;
+            string error;
+            dataList.TryGetEntry("rec", out recEntry, out error);
+            //------------Assert Preconditions-------------------
+            Assert.IsNotNull(recEntry);
+            //------------Execute Test---------------------------
+            var listItem = recEntry.TryFetchLastIndexedRecordsetUpsertPayload(out error, "f2");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("test22", listItem.TheValue);
+        }
+
+        [TestMethod]
         public void UpsertWhereListStringExpectUpsertCorrectlyMultipleRecordset()
         {
             //------------Setup for test--------------------------

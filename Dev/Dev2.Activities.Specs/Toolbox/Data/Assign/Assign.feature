@@ -105,6 +105,57 @@ Scenario: Assign multiple variables to the end of a recordset
     | 3 | [[rec(3).set]] = 30 |
     | 4 | [[value]] = 30      |
 
+Scenario: Assign scalars to 
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value 20 to a variable "[[rec().set]]"
+	And I assign the value 30 to a variable "[[rec().set]]"
+	And I assign the value [[rec(3).set]] to a variable "[[value]]"
+	When the assign tool is executed
+	Then the value of "[[value]]" equals 30
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable        | New Value           |
+	| 1 | [[rec().set]] = | 10                  |
+	| 2 | [[rec().set]] = | 20                  |
+	| 3 | [[rec().set]] = | 30                  |
+	| 4 | [[value]]     = | [[rec(3).set]] = 30 |
+	And the debug output as
+    | # |                     |
+    | 1 | [[rec(1).set]] = 10 |
+    | 2 | [[rec(2).set]] = 20 |
+    | 3 | [[rec(3).set]] = 30 |
+    | 4 | [[value]] = 30      |
+
+
+Scenario: Assign values to different columns in a reccord set
+	Given I assign the value 10 to a variable "[[rec().a]]"	
+	And I assign the value 20 to a variable "[[rec().b]]"
+	And I assign the value 30 to a variable "[[rec().c]]"
+	And I assign the value [[rec().a]] to a variable "[[d]]"
+	And I assign the value [[rec().b]] to a variable "[[e]]"
+	And I assign the value [[rec().c]] to a variable "[[f]]"
+	When the assign tool is executed
+	Then the value of "[[d]]" equals 10
+	And the value of "[[e]]" equals 20
+	And the value of "[[f]]" equals 30
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable      | New Value        |
+	| 1 | [[rec().a]] = | 10               |
+	| 2 | [[rec().b]] = | 20               |
+	| 3 | [[rec().c]] = | 30               |
+	| 4 | [[d]]     =   | [[rec().a]] = 10 |
+	| 5 | [[e]]     =   | [[rec().b]] = 20 |
+	| 6 | [[f]]     =   | [[rec().c]] = 30 |
+	And the debug output as
+    | # |                 |
+    | 1 | [[rec(1).a]] = 10 |
+    | 2 | [[rec(1).b]] = 20 |
+    | 3 | [[rec(1).c]] = 30 |
+    | 4 | [[d]] = 10       |
+    | 5 | [[e]] = 20       |
+    | 6 | [[f]] = 30       |
+
 Scenario: Assign all recordset values to a single variable
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
 	And I assign the value 20 to a variable "[[rec(2).set]]"
