@@ -112,6 +112,11 @@
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
+    <Compile Include="Language Parser\Language Parser.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language Parser.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -374,6 +379,10 @@
     <None Include="App.config" />
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Language Parser\Language Parser.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />
