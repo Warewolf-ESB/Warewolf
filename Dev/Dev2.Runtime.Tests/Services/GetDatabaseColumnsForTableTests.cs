@@ -1,4 +1,5 @@
-﻿using Dev2.DynamicServices;
+﻿using System.Linq;
+using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -118,7 +119,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetDatabaseColumnsForTable_Execute")]
-        public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource()
+        public void GetDatabaseColumnsForTable_Execute_ValidDatabaseSource_WithSchema_OnlyReturnsForThatSchema()
         {
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
@@ -133,7 +134,49 @@ namespace Dev2.Tests.Runtime.Services
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
-            Assert.AreEqual(4, result.Items.Count);
+            Assert.AreEqual(4, result.Items.Count);            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetDatabaseColumnsForTable_Execute")]
+        public void GetDatabaseColumnsForTable_Execute_NullSchema_ValidDatabaseSource_ReturnsFromAllSchemas()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource();
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var esb = new GetDatabaseColumnsForTable();
+            var mockWorkspace = new Mock<IWorkspace>();
+            mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
+            //------------Execute Test---------------------------
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("City") }, { "Schema", null } }, mockWorkspace.Object);
+            //------------Assert Results-------------------------
+            var value = actual.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            Assert.AreEqual(7, result.Items.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetDatabaseColumnsForTable_Execute")]
+        public void GetDatabaseColumnsForTable_Execute_EmptySchema_ValidDatabaseSource_ReturnsFromAllSchemas()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource();
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var esb = new GetDatabaseColumnsForTable();
+            var mockWorkspace = new Mock<IWorkspace>();
+            mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
+            //------------Execute Test---------------------------
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) }, { "TableName", new StringBuilder("City") }, { "Schema", new StringBuilder("") } }, mockWorkspace.Object);
+            //------------Assert Results-------------------------
+            var value = actual.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            Assert.AreEqual(7, result.Items.Count);
         }
 
         DbSource CreateDev2TestingDbSource()

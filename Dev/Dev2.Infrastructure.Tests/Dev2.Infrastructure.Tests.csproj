@@ -133,6 +133,7 @@
     <Compile Include="Services\Security\WindowsGroupPermissionComparerTests.cs" />
     <Compile Include="Services\SubscriptionServiceTests.cs" />
     <Compile Include="Services\MemoSubscriptionServiceTests.cs" />
+    <Compile Include="DbTableTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
