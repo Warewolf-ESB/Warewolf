@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
-            if(ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            if(ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
             {
                 IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
                     ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
@@ -60,8 +60,8 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     if(dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
                     {
-                    broker.Delete(dstEndPoint);
-                }
+                        broker.Delete(dstEndPoint);
+                    }
                 }
                 catch(Exception)
                 {
@@ -69,27 +69,27 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
 
-             string sourceLocation;
-             if(ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
-             {
-                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
-                     ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                     ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                     true);
-                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-                 try
-                 {
+            string sourceLocation;
+            if(ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+            {
+                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
+                    ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                    ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                    true);
+                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                try
+                {
                     if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                     {
-                     broker.Delete(sourceEndPoint);
-                 }
+                        broker.Delete(sourceEndPoint);
+                    }
                 }
-                 catch(Exception)
-                 {
-                     //The file may already be deleted
-                 }
-             }
-            
+                catch(Exception)
+                {
+                    //The file may already be deleted
+                }
+            }
+
             // SOME SILLY CHICKEN BUNDLED TWO DIS-JOIN OPERATIONS IN THIS METHOD. 
             // THIS CAUSED THE SFTP SERVER TO NEVER SHUTDOWN WHEN THE COMMONSTEPS.ACTUALSOURCEHOLDER KEY WAS NOT PRESENT! 
             // ;)
@@ -97,18 +97,18 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected static void ShutdownSftpServer()
         {
-             try
-             {
-                 if(Server != null)
-                 {
-                     Server.Bindings.Clear();
-                     Server.Stop();
-                 }
-             }
-             catch
-             {
-                 //Server may already be stopped
-             }
+            try
+            {
+                if(Server != null)
+                {
+                    Server.Bindings.Clear();
+                    Server.Stop();
+                }
+            }
+            catch
+            {
+                //Server may already be stopped
+            }
 
             Server = null;
         }
