@@ -6,7 +6,7 @@
 
 
 Scenario Outline: Variable with scalar language parsor 
-	Given I have a variable '<variable>'	
+	Given I have a variable '<variable>' as output
     When I validate
 	Then has error will be '<error>'.
 	And the error message will be '<message>'
@@ -79,7 +79,7 @@ Examples:
 
 
 Scenario Outline: Variable with Recordset language parsor 
-	Given I have a variable '<variable>'	
+	Given I have a variable '<variable>' as output
     When I validate
 	Then has error will be '<error>'.
 	And the error message will be '<message>'
@@ -101,6 +101,7 @@ Examples:
 	| [[rec(1)]]              | true  | 1) Variable name contains invalid character(s)                                                                           |
 	| [[rec(1).[[zar().1]]]]  | true  | 1) Invalid syntax - You have close (]]) without related open([[)                                                         |
 	| [[rec(a).[[zar().a]]]]  | true  | 1) Invalid syntax - You have close (]]) without related open([[)                                                         |
+	| [[rec().[[zar().a]]]]   | false |                                                                                                                          |
 	| [[rec().[[b]]]]         | true  | 1) Invalid syntax - You have close (]]) without related open([[)                                                         |
 	| [[{{rec(_).a}}]]]       | true  | 1) Invalid syntax - You have close (]]) without related open([[)                                                         |
 	| [[*[{{rec(_).a}}]]]     | true  | 1) Invalid syntax - You have close (]]) without related open([[)                                                         |
@@ -144,6 +145,35 @@ Examples:
 	| [[rec{a]]               | true  | 1) Variable name contains invalid character(s)                                                                           |
 	| [[rec{a}]]              | true  | 1) Variable name contains invalid character(s)                                                                           |
 	| [[rec()*.a]]            | tru   | 1) Variable name contains invalid character(s)                                                                           |
+	| [[rec().a[[a]]          | true  |                                                                                                                          |
+	| [[rec().a]][[a]]        | false |                                                                                                                          |
+	| [[rec().a]].[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]*[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]@[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]![[a]]       | false |                                                                                                                          |
+	| [[rec().a]]#[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]$[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]%[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]^[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]&[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]([[a]]       | false |                                                                                                                          |
+	| [[rec().a]])[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]_[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]+[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]-[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]`[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]2[[a]]       | false |                                                                                                                          |
+	| [[rec().a]],[[a]]       | false |                                                                                                                          |
+	| [[rec().a]]?[[a]]       | false |                                                                                                                          |
+	
+
+
+
+
+
+
+
+
 
 
 
