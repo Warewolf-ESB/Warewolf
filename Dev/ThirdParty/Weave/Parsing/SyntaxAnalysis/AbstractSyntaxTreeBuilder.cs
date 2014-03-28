@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Parsing.Tokenization;
-
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace System.Parsing.SyntaxAnalysis
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// An implementation of an LR Parser
@@ -12,7 +14,9 @@ namespace System.Parsing.SyntaxAnalysis
     /// <typeparam name="Token">The concrete Token type.</typeparam>
     /// <typeparam name="TokenKind">The concrete TokenDefinition type.</typeparam>
     /// <typeparam name="ASTNode">The concrete ASTNode type.</typeparam>
+#pragma warning disable 693
     public abstract class AbstractSyntaxTreeBuilder<Token, TokenKind, ASTNode>
+#pragma warning restore 693
         where Token : Token<Token, TokenKind>, new()
         where TokenKind : TokenDefinition
         where ASTNode : ASTNode<Token, TokenKind, ASTNode>
@@ -53,7 +57,7 @@ namespace System.Parsing.SyntaxAnalysis
             if(grammer == null) throw new ArgumentNullException("grammer");
             if(grammer.RegistryIndex != -1) throw new ArgumentException("AbstractSyntaxTreeGrammer cannot be registered to multiple AbstractSyntaxTreeBuilder's", "grammer");
             if(_initStore == null) throw new InvalidOperationException("AbstractSyntaxTreeGrammer cannot be registered after any build requests have been made.");
-            if(!_initStore.GrammerGroups.Add(grammer.GrammerGroup)) throw new ArgumentException("This AbstractSyntaxTreeBuilder already has a grammer registered from " + grammer.GrammerGroup.ToString(), "grammer");
+            if(!_initStore.GrammerGroups.Add(grammer.GrammerGroup)) throw new ArgumentException("This AbstractSyntaxTreeBuilder already has a grammer registered from " + grammer.GrammerGroup, "grammer");
             grammer.RegistryIndex = _initStore.GrammerLookup.Count;
             _initStore.GrammerLookup.Add(grammer);
         }
@@ -64,7 +68,7 @@ namespace System.Parsing.SyntaxAnalysis
         {
             if(_initStore == null) return;
 
-            int totalGrammers = 0;
+            int totalGrammers;
 
             do
             {
@@ -114,7 +118,7 @@ namespace System.Parsing.SyntaxAnalysis
 
 
             List<TokenizationHandler<Token, TokenKind>> orderedHandlers = new List<TokenizationHandler<Token, TokenKind>>();
-            TokenizationHandler<Token, TokenKind> currentHandler = null;
+            TokenizationHandler<Token, TokenKind> currentHandler;
             HashSet<Type> uniqueHandlers = new HashSet<Type>();
 
             for(int i = 0; i < _tokenizer.Handlers.Count; i++)
@@ -254,7 +258,6 @@ namespace System.Parsing.SyntaxAnalysis
             input = SanitizeInput(input);
             EnsureInitialized();
             _eventLog.Clear();
-            tokens = null;
 
             if(String.IsNullOrEmpty(input))
                 tokens = _tokenizer.Tokenize(input);
@@ -302,7 +305,7 @@ namespace System.Parsing.SyntaxAnalysis
 
         public ASTNode[] BuildNodes(ASTNode container, Token start, Token last)
         {
-            AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers = null;
+            AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers;
             ASTNode[] result = BuildNodeDeclarations(container, start, last);
             if(_eventLog.HasEventLogs) return result;
 
@@ -310,7 +313,7 @@ namespace System.Parsing.SyntaxAnalysis
             {
                 if(_nodeTriggers.TryGetValue(container.GetType(), out subscribers))
                 {
-                    ASTNode[] current = null;
+                    ASTNode[] current;
 
                     for(int k = 0; k < subscribers.Length; k++)
                     {
@@ -325,11 +328,9 @@ namespace System.Parsing.SyntaxAnalysis
                 if(_eventLog.HasEventLogs) return result;
             }
 
-            ASTNode currentNode = null;
-
             for(int i = 0; i < result.Length; i++)
             {
-                (currentNode = result[i]).Visit(VisitPurpose.BuildNodeDeclarations, this);
+                (result[i]).Visit(VisitPurpose.BuildNodeDeclarations, this);
                 if(_eventLog.HasEventLogs) return result;
             }
 
@@ -345,9 +346,9 @@ namespace System.Parsing.SyntaxAnalysis
         /// <returns>A sequence of nodes that represent the top level of the nodes within <paramref name="container"/></returns>
         private ASTNode[] BuildNodeDeclarations(ASTNode container, Token start, Token last)
         {
-            AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers = null;
+            AbstractSyntaxTreeGrammer<Token, TokenKind, ASTNode>[] subscribers;
             List<ASTNode> allNamespaces = new List<ASTNode>();
-            ASTNode current = null;
+            ASTNode current;
 
             for(Token token = start; token != null && token.TokenIndex <= last.TokenIndex; token = token.NextNWS)
             {
@@ -405,7 +406,6 @@ namespace System.Parsing.SyntaxAnalysis
     {
         #region Instance Fields
         private List<int>[] _definitionTriggers;
-        private int _length;
         private int _grammerRegistryIndex;
         private HashSet<TokenDefinition> _unaryDefinitions;
         private HashSet<TokenDefinition> _keywordDefinitions;
@@ -427,7 +427,7 @@ namespace System.Parsing.SyntaxAnalysis
         internal ASTGrammerBehaviourRegistry(int maxUniqueDefinitions, Type baseNodeType)
         {
             _grammerRegistryIndex = -1;
-            _definitionTriggers = new List<int>[_length = maxUniqueDefinitions];
+            _definitionTriggers = new List<int>[maxUniqueDefinitions];
             _unaryDefinitions = new HashSet<TokenDefinition>();
             _keywordDefinitions = new HashSet<TokenDefinition>();
             _baseNodeType = baseNodeType;

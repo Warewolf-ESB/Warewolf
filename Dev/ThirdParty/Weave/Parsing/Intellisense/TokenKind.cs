@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Parsing.Tokenization;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace System.Parsing.Intellisense
+// ReSharper restore CheckNamespace
 {
     public sealed class TokenKind : TokenDefinition
     {
@@ -206,13 +209,6 @@ namespace System.Parsing.Intellisense
         {
             _kind = classification;
             if(_kind == TokenClassification.Unknown) _isKeyword = true;
-        }
-
-        private TokenKind(string name, string identifier, TokenClassification classification, bool isKeyword)
-            : base(name, identifier)
-        {
-            _kind = classification;
-            _isKeyword = isKeyword;
         }
     }
 

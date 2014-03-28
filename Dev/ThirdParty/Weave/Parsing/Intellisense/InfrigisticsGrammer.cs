@@ -3,6 +3,8 @@ using System.Parsing.SyntaxAnalysis;
 using System.Parsing.Tokenization;
 using System.Text;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace System.Parsing.Intellisense
 {
     public class InfrigisticsGrammer : AbstractSyntaxTreeGrammer<Token, TokenKind, Node>
@@ -12,15 +14,15 @@ namespace System.Parsing.Intellisense
         #endregion
 
         #region Readonly Members
-        private static readonly ParameterCollectionNode[] EmptyParameters = new ParameterCollectionNode[0];
+
         private static readonly TokenDefinitionMask _signConcatenationMask = new TokenDefinitionMask(TokenKind.LeftCurlyBracket, TokenKind.LeftParenthesis, TokenKind.Plus, TokenKind.Minus, TokenKind.Comma);
         private static readonly int[] _operatorPrecedenceLookup = BuildOperatorPrecedenceLookup();
 
         public static readonly GrammerGroup CalcGrammerGroup = new GrammerGroup("Infrigistics");
 
-        private static readonly Tokenization.TokenDefinitionMask _evaluationOperators = new Tokenization.TokenDefinitionMask(TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality);
-        private static readonly Tokenization.TokenDefinitionMask _binaryOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Comma, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.Mod);
-        private static readonly Tokenization.TokenDefinitionMask _statementOperators = new Tokenization.TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality, TokenKind.Mod);
+        private static readonly TokenDefinitionMask _evaluationOperators = new TokenDefinitionMask(TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality);
+        private static readonly TokenDefinitionMask _binaryOperators = new TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Comma, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.Mod);
+        private static readonly TokenDefinitionMask _statementOperators = new TokenDefinitionMask(TokenKind.Plus, TokenKind.Minus, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Inequality, TokenKind.Equality, TokenKind.Mod);
         #endregion
 
         #region Static Members
@@ -35,7 +37,9 @@ namespace System.Parsing.Intellisense
             result[TokenKind.Asterisk.Serial] = precedence;
             result[TokenKind.ForwardSlash.Serial] = precedence++;
             result[TokenKind.Circumflex.Serial] = precedence++;
+            // ReSharper disable RedundantAssignment
             result[TokenKind.Colon.Serial] = precedence++;
+            // ReSharper restore RedundantAssignment
 
             return result;
         }
@@ -73,33 +77,13 @@ namespace System.Parsing.Intellisense
             triggerRegistry.Register(typeof(ParameterCollectionNode));
         }
 
-        protected internal override void OnConfigureTokenizer(Tokenization.Tokenizer<Token, TokenKind> tokenizer)
+        protected internal override void OnConfigureTokenizer(Tokenizer<Token, TokenKind> tokenizer)
         {
             base.OnConfigureTokenizer(tokenizer);
 
-            List<TokenKind> operators = new List<TokenKind>();
+            List<TokenKind> operators = new List<TokenKind> { TokenKind.LeftParenthesis, TokenKind.RightParenthesis, TokenKind.Plus, TokenKind.Minus, TokenKind.Comma, TokenKind.Asterisk, TokenKind.ForwardSlash, TokenKind.Ampersand, TokenKind.Circumflex, TokenKind.Colon, TokenKind.Mod, TokenKind.LessThanOrEqual, TokenKind.GreaterThanOrEqual, TokenKind.Inequality, TokenKind.LessThan, TokenKind.GreaterThan, TokenKind.Equality };
 
-            operators.Add(TokenKind.LeftParenthesis);
-            operators.Add(TokenKind.RightParenthesis);
-
-            operators.Add(TokenKind.Plus);
-            operators.Add(TokenKind.Minus);
-            operators.Add(TokenKind.Comma);
-            operators.Add(TokenKind.Asterisk);
-            operators.Add(TokenKind.ForwardSlash);
-            operators.Add(TokenKind.Ampersand);
-            operators.Add(TokenKind.Circumflex);
-            operators.Add(TokenKind.Colon);
-            operators.Add(TokenKind.Mod);
-
-            operators.Add(TokenKind.LessThanOrEqual);
-            operators.Add(TokenKind.GreaterThanOrEqual);
-            operators.Add(TokenKind.Inequality);
-            operators.Add(TokenKind.LessThan);
-            operators.Add(TokenKind.GreaterThan);
-            operators.Add(TokenKind.Equality);
-
-            tokenizer.Handlers.Add(new Tokenization.UnaryTokenizationHandler<Token, TokenKind>(operators));
+            tokenizer.Handlers.Add(new UnaryTokenizationHandler<Token, TokenKind>(operators));
         }
         #endregion
 
@@ -120,81 +104,84 @@ namespace System.Parsing.Intellisense
             ExposedList<Token> tokens = rawTokens as ExposedList<Token>;
 
             // get underlying array of tokens and number of elements used
-            Token[] underlying = tokens.UnderlyingArray;
-            int length = tokens.Count;
-
-            for(int i = 0; i < length; i++)
+            if(tokens != null)
             {
-                Token current = underlying[i];
+                Token[] underlying = tokens.UnderlyingArray;
+                int length = tokens.Count;
 
-                TokenKind definition = current.Definition;
-
-                // check if token is literal number
-                if(definition.IsIntegerLiteral || definition.IsRealLiteral)
+                for(int i = 0; i < length; i++)
                 {
-                    Token sign = current.PreviousNWS;
-                    // check if previous token exists and is a plus or minus sign
-                    if(sign == null || (sign.Definition != TokenKind.Plus && sign.Definition != TokenKind.Minus)) continue;
+                    Token current = underlying[i];
 
-                    Token temp = sign.PreviousNWS;
+                    TokenKind definition = current.Definition;
 
-                    if(temp != null)
+                    // check if token is literal number
+                    if(definition.IsIntegerLiteral || definition.IsRealLiteral)
                     {
-                        // if token before sign is text, then this is a binary operator
-                        if(definition.IsUnknown) continue;
-                        if(!_signConcatenationMask[temp.Definition] && !_statementOperators[temp.Definition]) continue;
+                        Token sign = current.PreviousNWS;
+                        // check if previous token exists and is a plus or minus sign
+                        if(sign == null || (sign.Definition != TokenKind.Plus && sign.Definition != TokenKind.Minus)) continue;
+
+                        Token temp = sign.PreviousNWS;
+
+                        if(temp != null)
+                        {
+                            // if token before sign is text, then this is a binary operator
+                            if(definition.IsUnknown) continue;
+                            if(!_signConcatenationMask[temp.Definition] && !_statementOperators[temp.Definition]) continue;
+                        }
+
+                        // create a set of the tokens we need to remove
+                        HashSet<Token> pendingRemoval = new HashSet<Token>();
+                        for(temp = current; temp != sign; temp = temp.Previous) pendingRemoval.Add(temp);
+
+                        // get first token before sign that has any reference to sign or the tokens after
+                        // sign, also get last token after literal number that has any reference to literal number
+                        // or the tokens before literal number
+                        Token firstAffected = sign.Previous == null ? sign : (sign.PreviousNWS < sign.Previous ? (sign.PreviousNWS < sign.PreviousWS ? sign.PreviousNWS : sign.PreviousWS) : (sign.Previous < sign.PreviousWS ? sign.Previous : sign.PreviousWS));
+                        Token lastAffected = current.Next == null ? current : (current.NextNWS > current.Next ? (current.NextNWS > current.NextWS ? current.NextNWS : current.NextWS) : (current.Next > current.NextWS ? current.Next : current.NextWS));
+
+                        // remap references to point to tokens after literal number
+                        while(firstAffected != sign)
+                        {
+                            if(pendingRemoval.Contains(firstAffected.NextWS)) firstAffected.NextWS = current.NextWS;
+                            firstAffected = firstAffected.Next;
+                        }
+
+                        // remap references to point to tokens before and including sign
+                        while(lastAffected != current)
+                        {
+                            temp = lastAffected.Previous;
+                            if(pendingRemoval.Contains(lastAffected.Previous)) lastAffected.Previous = firstAffected;
+                            if(pendingRemoval.Contains(lastAffected.PreviousNWS)) lastAffected.PreviousNWS = firstAffected;
+                            if(pendingRemoval.Contains(lastAffected.PreviousWS)) lastAffected.PreviousWS = sign.PreviousWS;
+                            lastAffected = temp;
+                        }
+
+                        // remap sign references
+                        sign.Next = temp = current.Next;
+                        sign.NextNWS = current.NextNWS;
+                        sign.NextWS = current.NextWS;
+                        // remap sign content and definition
+                        sign.SourceLength = (current.SourceIndex - sign.SourceIndex) + current.SourceLength;
+                        sign.Definition = current.Definition;
+
+                        // remap TokenIndex of all tokens after sign and keep track of new length
+                        length = sign.TokenIndex + 1;
+
+                        while(temp != null)
+                        {
+                            underlying[temp.TokenIndex = length++] = temp;
+                            temp = temp.Next;
+                        }
+
+                        // set i to index of sign, so that next loop will be token after sign
+                        i = sign.TokenIndex;
                     }
-
-                    // create a set of the tokens we need to remove
-                    HashSet<Token> pendingRemoval = new HashSet<Token>();
-                    for(temp = current; temp != sign; temp = temp.Previous) pendingRemoval.Add(temp);
-
-                    // get first token before sign that has any reference to sign or the tokens after
-                    // sign, also get last token after literal number that has any reference to literal number
-                    // or the tokens before literal number
-                    Token firstAffected = sign.Previous == null ? sign : (sign.PreviousNWS < sign.Previous ? (sign.PreviousNWS < sign.PreviousWS ? sign.PreviousNWS : sign.PreviousWS) : (sign.Previous < sign.PreviousWS ? sign.Previous : sign.PreviousWS));
-                    Token lastAffected = current.Next == null ? current : (current.NextNWS > current.Next ? (current.NextNWS > current.NextWS ? current.NextNWS : current.NextWS) : (current.Next > current.NextWS ? current.Next : current.NextWS));
-
-                    // remap references to point to tokens after literal number
-                    while(firstAffected != sign)
-                    {
-                        if(pendingRemoval.Contains(firstAffected.NextWS)) firstAffected.NextWS = current.NextWS;
-                        firstAffected = firstAffected.Next;
-                    }
-
-                    // remap references to point to tokens before and including sign
-                    while(lastAffected != current)
-                    {
-                        temp = lastAffected.Previous;
-                        if(pendingRemoval.Contains(lastAffected.Previous)) lastAffected.Previous = firstAffected;
-                        if(pendingRemoval.Contains(lastAffected.PreviousNWS)) lastAffected.PreviousNWS = firstAffected;
-                        if(pendingRemoval.Contains(lastAffected.PreviousWS)) lastAffected.PreviousWS = sign.PreviousWS;
-                        lastAffected = temp;
-                    }
-
-                    // remap sign references
-                    sign.Next = temp = current.Next;
-                    sign.NextNWS = current.NextNWS;
-                    sign.NextWS = current.NextWS;
-                    // remap sign content and definition
-                    sign.SourceLength = (current.SourceIndex - sign.SourceIndex) + current.SourceLength;
-                    sign.Definition = current.Definition;
-
-                    // remap TokenIndex of all tokens after sign and keep track of new length
-                    length = sign.TokenIndex + 1;
-
-                    while(temp != null)
-                    {
-                        underlying[temp.TokenIndex = length++] = temp;
-                        temp = temp.Next;
-                    }
-
-                    // set i to index of sign, so that next loop will be token after sign
-                    i = sign.TokenIndex;
                 }
-            }
 
-            tokens.Count = length;
+                tokens.Count = length;
+            }
         }
         #endregion
 
@@ -207,7 +194,7 @@ namespace System.Parsing.Intellisense
             {
                 case TokenClassification.Unknown:
                     {
-                        if(start.NextNWS != null && start.NextNWS.Definition == TokenKind.LeftParenthesis) return BuildMethodInvocation(builder, start, last);
+                        if(start.NextNWS != null && start.NextNWS.Definition == TokenKind.LeftParenthesis) return BuildMethodInvocation(start);
                         return null;
                     }
                 case TokenClassification.Operator:
@@ -219,16 +206,16 @@ namespace System.Parsing.Intellisense
                             node.Declaration = start;
                             return node;
                         }
-                        else if(_evaluationOperators[start.Definition])
+                        if(_evaluationOperators[start.Definition])
                         {
                             PlaceholderOperatorNode node = new PlaceholderOperatorNode();
                             node.Identifier = start;
                             node.Declaration = start;
                             return node;
                         }
-                        else if(start.Definition == TokenKind.LeftParenthesis)
+                        if(start.Definition == TokenKind.LeftParenthesis)
                         {
-                            return BuildParenthesisGroup(start, last);
+                            return BuildParenthesisGroup(start);
                         }
 
                         break;
@@ -240,7 +227,7 @@ namespace System.Parsing.Intellisense
         #endregion
 
         #region Parenthesis Handling
-        private Node BuildParenthesisGroup(Token start, Token last)
+        private Node BuildParenthesisGroup(Token start)
         {
             TokenPair body = TokenUtility.BuildGroupSimple(start, TokenKind.RightParenthesis);
             if(body.End == null) return Fail<ParenthesisGroupNode>(SyntaxFailureReason.ExpectedExitScope, start, TokenKind.RightParenthesis);
@@ -253,7 +240,7 @@ namespace System.Parsing.Intellisense
         #endregion
 
         #region Method Handling
-        private Node BuildMethodInvocation(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Token start, Token last)
+        private Node BuildMethodInvocation(Token start)
         {
             if(start.NextNWS == null || start.NextNWS.Definition != TokenKind.LeftParenthesis) return Fail<Node>(SyntaxFailureReason.ExpectedEnterScope, start, TokenKind.LeftParenthesis);
             TokenPair body = TokenUtility.BuildGroupSimple(start.NextNWS, TokenKind.RightParenthesis);
@@ -263,7 +250,7 @@ namespace System.Parsing.Intellisense
             parameters.Identifier = start;
             parameters.Declaration = body;
 
-            return new MethodInvocationNode() { Declaration = new TokenPair(start, body.End), Identifier = start, Parameters = parameters };
+            return new MethodInvocationNode { Declaration = new TokenPair(start, body.End), Identifier = start, Parameters = parameters };
         }
         #endregion
 
@@ -272,17 +259,14 @@ namespace System.Parsing.Intellisense
         {
             if(container is ParameterCollectionNode)
             {
-                return PerformParameterTransform(builder, container, nodes);
+                return PerformParameterTransform(container, nodes);
             }
-            else
-            {
-                int length = nodes.Length;
-                if(length == 0) return new Node[0];
-                return new Node[] { PerformStatementTransform(builder, nodes, 0, length) };
-            }
+            int length = nodes.Length;
+            if(length == 0) return new Node[0];
+            return new[] { PerformStatementTransform(nodes, 0, length) };
         }
 
-        private Node[] PerformParameterTransform(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node collection, Node[] nodes)
+        private Node[] PerformParameterTransform(Node collection, Node[] nodes)
         {
             Token end = collection.Declaration.End;
             List<ParameterNode> parameters = new List<ParameterNode>();
@@ -296,8 +280,8 @@ namespace System.Parsing.Intellisense
 
                     {
                         TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
-                        Node statement = PerformStatementTransform(builder, nodes, index, count);
-                        ParameterNode currentParameter = new ParameterNode() { Statement = statement, Declaration = decl };
+                        Node statement = PerformStatementTransform(nodes, index, count);
+                        ParameterNode currentParameter = new ParameterNode { Statement = statement, Declaration = decl };
                         currentParameter.Identifier = currentParameter.Declaration;
                         parameters.Add(currentParameter);
                     }
@@ -309,24 +293,26 @@ namespace System.Parsing.Intellisense
             {
                 int count = nodes.Length - index;
                 TokenPair decl = new TokenPair(nodes[index].Declaration.Start, nodes[index + count - 1].End);
-                Node statement = PerformStatementTransform(builder, nodes, index, count);
-                ParameterNode currentParameter = new ParameterNode() { Statement = statement, Declaration = decl };
+                Node statement = PerformStatementTransform(nodes, index, count);
+                ParameterNode currentParameter = new ParameterNode { Statement = statement, Declaration = decl };
                 currentParameter.Identifier = currentParameter.Declaration;
                 parameters.Add(currentParameter);
             }
             else if(end.PreviousNWS.Definition == TokenKind.Comma) return Fail<Node[]>(SyntaxFailureReason.ExpectedIdentifier, end.PreviousNWS, TokenKind.Unknown);
 
+            // ReSharper disable CoVariantArrayConversion
             return parameters.ToArray();
+            // ReSharper restore CoVariantArrayConversion
         }
 
-        private Node PerformStatementTransform(AbstractSyntaxTreeBuilder<Token, TokenKind, Node> builder, Node[] nodes, int index, int length)
+        private Node PerformStatementTransform(Node[] nodes, int index, int length)
         {
             if(length == 0) return null;
 
-            Node currentNode = null;
+            Node currentNode;
             BitVector availableLevels = new BitVector();
             int end = index + length;
-            int defSerial = 0;
+            int defSerial;
             int defPrecedence = -1;
             int maxAvailable = 0, minAvailable = 32;
             int totalNonTerminals = 0;
@@ -393,10 +379,6 @@ namespace System.Parsing.Intellisense
     public class PlaceholderOperatorNode : Node
     {
         public override bool IsTerminal { get { return false; } }
-
-        public PlaceholderOperatorNode()
-        {
-        }
     }
 
     public class BinaryOperatorNode : Node
@@ -478,10 +460,6 @@ namespace System.Parsing.Intellisense
     {
         public Node Statement;
 
-        public ParenthesisGroupNode()
-        {
-        }
-
         public override Node GetNodeAt(int sourceIndex)
         {
             if(Statement != null)
@@ -489,7 +467,7 @@ namespace System.Parsing.Intellisense
                 if(Statement.Declaration.Contains(sourceIndex)) return Statement.GetNodeAt(sourceIndex);
                 return this;
             }
-            else return base.GetNodeAt(sourceIndex);
+            return base.GetNodeAt(sourceIndex);
         }
 
         public override string GetEvaluatedValue()
@@ -545,10 +523,6 @@ namespace System.Parsing.Intellisense
     {
         public Node Statement;
 
-        public ParameterNode()
-        {
-        }
-
         public override string GetEvaluatedValue()
         {
             return Statement.GetEvaluatedValue();
@@ -589,10 +563,6 @@ namespace System.Parsing.Intellisense
 
     public class ParameterCollectionNode : CollectionNode
     {
-        public ParameterCollectionNode()
-        {
-        }
-
         public override string GetEvaluatedValue()
         {
             return GetRepresentationForEvaluation();
