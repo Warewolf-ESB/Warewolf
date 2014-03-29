@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Security;
-using System.Network;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
@@ -21,6 +11,16 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Security;
+using System.Network;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -97,7 +97,7 @@ namespace Dev2.Network
         {
             this.LogTrace("*********** Hub connection down");
             IsConnected = false;
-            UpdateIsAuthorized(true);
+            UpdateIsAuthorized(false);
             StartReconnectTimer();
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
         }
@@ -131,6 +131,7 @@ namespace Dev2.Network
                 case ConnectionState.Connecting:
                 case ConnectionState.Reconnecting:
                     IsConnected = false;
+                    UpdateIsAuthorized(false);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
                 case ConnectionState.Disconnected:

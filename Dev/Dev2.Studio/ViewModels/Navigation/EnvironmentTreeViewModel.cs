@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
@@ -11,8 +8,13 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Threading;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -34,6 +36,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand<string> _newResourceCommand;
         private RelayCommand _refreshCommand;
         private readonly IAsyncWorker _asyncWorker;
+        bool _isAuthorized;
+        bool _isAuthorizeDeployFrom;
+        bool _isAuthorizeDeployTo;
 
         #endregion
 
@@ -44,6 +49,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             _asyncWorker = asyncWorker;
             EnvironmentModel = environmentModel;
             IsExpanded = true;
+            _isAuthorized = IsAuthorized;
+            _isAuthorizeDeployFrom = IsAuthorizedDeployFrom;
+            _isAuthorizeDeployTo = IsAuthorizedDeployTo;
+
         }
 
         #endregion
@@ -105,9 +114,31 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return (EnvironmentModel != null) && EnvironmentModel.IsConnected; }
         }
 
-        public override bool IsAuthorized { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorized; } }
-        public override bool IsAuthorizedDeployFrom { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorizedDeployFrom; } }
-        public override bool IsAuthorizedDeployTo { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorizedDeployTo; } }
+        public override bool IsAuthorized
+        {
+            get
+            {
+                return (EnvironmentModel != null) && EnvironmentModel.IsAuthorized;
+            }
+        }
+        public override bool IsAuthorizedDeployFrom
+        {
+            get
+            {
+                return EnvironmentModel != null
+                    && (EnvironmentModel.AuthorizationService != null
+                    && EnvironmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null));
+            }
+        }
+        public override bool IsAuthorizedDeployTo
+        {
+            get
+            {
+                return EnvironmentModel != null
+                    && (EnvironmentModel.AuthorizationService != null
+                    && EnvironmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null));
+            }
+        }
 
         /// <summary>
         /// Gets or sets the environment model for this instance.
@@ -143,6 +174,66 @@ namespace Dev2.Studio.ViewModels.Navigation
         void OnEnvironmentModelPermissionsChanged(object sender, EventArgs eventArgs)
         {
             NotifyOfPropertyChange(() => IsAuthorized);
+            NotifyOfPropertyChange(() => IsAuthorizedDeployFrom);
+            NotifyOfPropertyChange(() => IsAuthorizedDeployTo);
+
+            var rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
+            if(rootNavigationViewModel != null)
+            {
+                switch(rootNavigationViewModel.NavigationViewModelType)
+                {
+                    case NavigationViewModelType.Explorer:
+                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorized, IsAuthorized);
+                        break;
+                    case NavigationViewModelType.DeployFrom:
+                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorizeDeployFrom, IsAuthorizedDeployFrom);
+                        break;
+                    case NavigationViewModelType.DeployTo:
+                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorizeDeployTo, IsAuthorizedDeployTo);
+                        break;
+                }
+            }
+        }
+
+        void UpdateBasedOnPermission(NavigationViewModel rootNavigationViewModel, ref bool previousAuthorizations, bool isAuthorized)
+        {
+            if(previousAuthorizations != isAuthorized)
+            {
+                UpdateCollection(rootNavigationViewModel, isAuthorized);
+                previousAuthorizations = isAuthorized;
+            }
+        }
+
+        void UpdateCollection(NavigationViewModel rootNavigationViewModel, bool isAuthorized)
+        {
+            if(!isAuthorized)
+            {
+                PerformActionOnCorrectDispatcher(() => Children.Clear());
+            }
+            else
+            {
+                PerformActionOnCorrectDispatcher(() => rootNavigationViewModel.LoadEnvironmentResources(EnvironmentModel));
+            }
+        }
+
+        void PerformActionOnCorrectDispatcher(System.Action actionToPerform)
+        {
+            try
+            {
+                if(Application.Current != null && Application.Current.Dispatcher != null)
+                {
+                    Application.Current.Dispatcher.Invoke(actionToPerform, DispatcherPriority.Send);
+                }
+                else
+                {
+                    actionToPerform();
+                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            {
+                //TO PREVENT TESTING ISSUES
+            }
         }
 
         void OnEnvironmentModelIsConnectedChanged(object sender, ConnectedEventArgs args)
@@ -157,9 +248,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     IsRefreshing = false;
                 }
-            
             }
-     
+
         }
 
         /// <summary>

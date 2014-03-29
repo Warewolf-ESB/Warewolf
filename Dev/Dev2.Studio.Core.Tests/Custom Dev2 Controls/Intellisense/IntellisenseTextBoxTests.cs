@@ -5,6 +5,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +27,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestInitialize]
         public void MyTestInitialize()
         {
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
         }
 
@@ -159,6 +163,9 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void InsertItemExpectedTextboxTextChangedAndErrorStatusUpdated()
         {
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
             const string ExpectedText = "[[City()";
             Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
             intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(true);

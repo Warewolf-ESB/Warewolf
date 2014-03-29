@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -136,6 +135,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 return _refreshMenuCommand ??
                        (_refreshMenuCommand = new RelayCommand(param => UpdateWorkspaces(), param => true));
+            }
+        }
+        public NavigationViewModelType NavigationViewModelType
+        {
+            get
+            {
+                return _navigationViewModelType;
             }
         }
 
@@ -755,7 +761,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                             //
                             // Build the resources into a tree
                             //
-                            switch(_navigationViewModelType)
+                            switch(NavigationViewModelType)
                             {
                                 case NavigationViewModelType.Explorer:
                                     BuildNavigationItemViewModels(environment);

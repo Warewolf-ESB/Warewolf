@@ -21,17 +21,20 @@ namespace Dev2.Services
 
 
             // Don't observe on dispatcher if this is a background thread!
-            var dispatcher = Dispatcher.CurrentDispatcher;
-            if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
+            try
             {
-                try
+                var dispatcher = Dispatcher.CurrentDispatcher;
+                if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
                 {
+
                     _events = _events.ObserveOnDispatcher();
                 }
-                catch
-                {
-                    // FOR TESTING FUNNIES!!
-                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                // FOR TESTING FUNNIES!!
             }
         }
 

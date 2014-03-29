@@ -1,12 +1,5 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Communication;
@@ -29,10 +22,18 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 #endregion
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
 {
     /// <summary>
@@ -59,8 +60,6 @@ namespace Dev2.Core.Tests
         ServiceTypeTreeViewModel _serviceTypeVm;
         ServiceTypeTreeViewModel _serviceTypeVm2;
 
-        private static readonly object TestGuard = new object();
-
         #endregion
 
         /// <summary>
@@ -74,23 +73,15 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            // Monitor.Enter(TestGuard);
-
             _eventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = _eventAggregator.Object;
             _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
-
             _testConnection = new ServerProxy(new Uri("http://127.0.0.1:77/dsf"));
-
-            //            ImportService.CurrentContext =
-            //                CompositionInitializer.InializeWithEventAggregator();
-
 
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
             _mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             _mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
             _mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
             _mockResourceModel = new Mock<IContextualResourceModel>();
             _mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             _mockResourceModel.Setup(r => r.Category).Returns("Testing");
@@ -104,6 +95,7 @@ namespace Dev2.Core.Tests
             _mockResourceModel2.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             _rootVm = new RootTreeViewModel(_eventAggregator.Object);
+
             _environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, _rootVm, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.WorkflowService);
             _serviceTypeVm2 = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.Service);
@@ -115,11 +107,6 @@ namespace Dev2.Core.Tests
             _resourceVm2 = new ResourceTreeViewModel(_eventAggregator.Object, _categoryVm2, _mockResourceModel2.Object);
         }
 
-        [TestCleanup]
-        public void TestCleanUp()
-        {
-            //Monitor.Exit(TestGuard);
-        }
 
         #endregion
 
@@ -200,7 +187,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void TestGetChildCount_WherePredicateIsNull_Expected_AllChildren()
         {
-            var childCount = _rootVm.GetChildren(null).ToList().Count;
+            var childCount = _rootVm.GetChildren(null).Count();
             Assert.IsTrue(childCount == 7);
         }
 
@@ -218,9 +205,7 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>().Object;
             ITreeNode parent = new CategoryTreeViewModel(eventAggregator, null, "More", ResourceType.WorkflowService);
 
-            var checkedNonMatchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake").Object);
-
-            checkedNonMatchingNode.IsChecked = true;
+            var checkedNonMatchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake").Object) { IsChecked = true };
 
             var nonMatchingNode = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, parent, Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1111").Object);
 
@@ -294,6 +279,222 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(e => e.IsConnected).Returns(true);
             Assert.IsTrue(_environmentVm.CanConnect);
         }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedFalse_ChildrenCleared()
+        //        {
+        //            
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //            
+        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            connection.Setup(environmentConnection => environmentConnection.IsAuthorized).Returns(false);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(false);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(0, environmentVm.Children.Count);
+        //        }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedTrue_ChildrenNotCleared()
+        //        {
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            _mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            _mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            _mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(3, environmentVm.Children.Count);
+        //        }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_DeployFromFalse_ChildrenCleared()
+        //        {
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployFrom);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(false);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(0, environmentVm.Children.Count);
+        //        }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_DeployFromTrue_ChildrenNotClearedCleared()
+        //        {
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployFrom);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(3, environmentVm.Children.Count);
+        //        }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_DeployToFalse_ChildrenCleared()
+        //        {
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployTo);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(0, environmentVm.Children.Count);
+        //        }
+        //
+        //        [TestMethod]
+        //        [Owner("Tshepo Ntlhokoa")]
+        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        //        public void EnvironmentTreeViewModel_PermissionsChanged_DeployToTrue_ChildrenIsNotCleared()
+        //        {
+        //            var connection = CreateConnection();
+        //            connection.Setup(c => c.IsAuthorized).Returns(true);
+        //            var authorizationService = new Mock<IAuthorizationService>();
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+        //            var eventPublisher = new Mock<IEventAggregator>();
+        //            var environmentRepository = new Mock<IEnvironmentRepository>();
+        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //
+        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployTo);
+        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //
+        //            var child = new Mock<ITreeNode>().Object;
+        //
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //            environmentVm.Children.Add(child);
+        //
+        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+        //
+        //            Assert.AreEqual(3, environmentVm.Children.Count);
+        //        }
+
+        static Mock<IEnvironmentConnection> CreateConnection()
+        {
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            return conn;
+        }
 
         [TestMethod]
         public void EnvironmentNodeCanConnectWhenNotConnected()
@@ -355,7 +556,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
             _mockEnvironmentModel.SetupGet(c => c.Connection).Returns(_testConnection);
             _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
-            Assert.IsTrue(_environmentVm.CanDisconnect == true);
+            Assert.IsTrue(_environmentVm.CanDisconnect);
         }
 
         [TestMethod]
@@ -479,6 +680,7 @@ namespace Dev2.Core.Tests
             var toRemove = _categoryVm2.GetChildren(c => true).FirstOrDefault();
             _categoryVm2.Remove(toRemove);
             Assert.IsTrue(_categoryVm2.ChildrenCount == count - 1);
+            Assert.IsNotNull(toRemove);
             Assert.IsTrue(toRemove.TreeParent == null);
         }
 
@@ -731,7 +933,9 @@ namespace Dev2.Core.Tests
             mockResource3.Setup(r => r.ResourceName).Returns("Mock3");
             mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
-            var toAdd = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
+            // ReSharper disable ObjectCreationAsStatement
+            new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, _categoryVm2, mockResource3.Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             _categoryVm2.IsChecked = true;
             Assert.IsTrue(_categoryVm2.Children.Count(c => c.IsChecked == true) == 2);
@@ -763,14 +967,14 @@ namespace Dev2.Core.Tests
 
             toAdd.IsChecked = true;
             _rootVm.FilterText = "Mock3";
-            _rootVm.NotifyOfFilterPropertyChanged(false);
+            _rootVm.NotifyOfFilterPropertyChanged();
 
             Thread.Sleep(100);
 
             Assert.IsTrue(_categoryVm2.IsChecked == true);
 
             _rootVm.FilterText = "";
-            _rootVm.NotifyOfFilterPropertyChanged(false);
+            _rootVm.NotifyOfFilterPropertyChanged();
 
             Thread.Sleep(100);
 
@@ -796,7 +1000,7 @@ namespace Dev2.Core.Tests
 
             var displayName = vm["DisplayName"];
             //assert on execute
-            Assert.AreEqual("Test IDataErrorInfo Message", vm["DisplayName"], "ResourceTreeViewModel was not able to return its error message correctly");
+            Assert.AreEqual("Test IDataErrorInfo Message", displayName, "ResourceTreeViewModel was not able to return its error message correctly");
         }
 
         [TestMethod]
@@ -833,9 +1037,12 @@ namespace Dev2.Core.Tests
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
+
             new EnvironmentTreeViewModel(eventAggregator, vmRoot, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             new ServiceTypeTreeViewModel(eventAggregator, vmRoot.Children[0], ResourceType.WorkflowService);
             new CategoryTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0], "TESTCATEGORY", ResourceType.WorkflowService);
+
+
 
             var mockResource3 = new Mock<IContextualResourceModel>();
             mockResource3.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -863,6 +1070,8 @@ namespace Dev2.Core.Tests
             //Mock resource repository
             var mockedResourceRepo = new Mock<IResourceRepository>();
             var mockedEnvironment = new Mock<IEnvironmentModel>();
+            mockedEnvironment.Setup(e => e.IsAuthorized).Returns(true);
+            mockedEnvironment.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             var allExistingResources = new Collection<IResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
@@ -896,6 +1105,8 @@ namespace Dev2.Core.Tests
             //Mock resource repository
             var mockedResourceRepo = new Mock<IResourceRepository>();
             var mockedEnvironment = new Mock<IEnvironmentModel>();
+            mockedEnvironment.Setup(e => e.IsAuthorized).Returns(true);
+            mockedEnvironment.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
             mockedResourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -915,7 +1126,7 @@ namespace Dev2.Core.Tests
             resourcetreeviewmodel.TestRename(newResourceName);
 
             // Assert Resource Repository Rename Called
-            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params"); ;
+            mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
         }
 
         [TestMethod]
@@ -930,14 +1141,18 @@ namespace Dev2.Core.Tests
             //Mock resource repository
             var mockedResourceRepo = new Mock<IResourceRepository>();
             var mockedEnvironment = new Mock<IEnvironmentModel>();
+
             var mockedResourceModel = new Mock<IContextualResourceModel>();
             mockedResourceModel.Setup(res => res.ID).Returns(oldResourceID);
             mockedResourceModel.Setup(res => res.ResourceName).Returns(oldResourceName);
             mockedResourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             mockedResourceRepo.Setup(repo => repo.All()).Returns(new Collection<IResourceModel>());
+            // ReSharper disable ImplicitlyCapturedClosure
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), oldResourceName)).Verifiable();
+            // ReSharper restore ImplicitlyCapturedClosure
+
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
             mockedEnvironment.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
@@ -952,8 +1167,10 @@ namespace Dev2.Core.Tests
             resourcetreeviewmodel.TestRename(oldResourceName);
 
             // Assert resource renamed both times
+            // ReSharper disable ImplicitlyCapturedClosure
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), newResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), oldResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
+            // ReSharper restore ImplicitlyCapturedClosure
         }
 
         [TestMethod]
@@ -991,7 +1208,9 @@ namespace Dev2.Core.Tests
         public void ResourceTreeViewModel_Constructor_NullEventAggregator_ThrowsException()
         // ReSharper restore InconsistentNaming
         {
-            var tvm = new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
+            // ReSharper disable ObjectCreationAsStatement
+            new ResourceTreeViewModel(null, null, new Mock<IContextualResourceModel>().Object);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -1002,7 +1221,9 @@ namespace Dev2.Core.Tests
         public void ResourceTreeViewModel_Constructor_NullDataContext_ThrowsException()
         // ReSharper restore InconsistentNaming
         {
-            var tvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -1145,13 +1366,12 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.IsAuthorized).Returns(true);
+            envModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             envModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
             var envTreeViewModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, _rootVm, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            envTreeViewModel.PropertyChanged += (sender, args) =>
-            {
-                Assert.AreEqual("IsConnected", args.PropertyName, "EnvironmentTreeViewModel did not raise IsConnected property changed event.");
-            };
+            envTreeViewModel.PropertyChanged += (sender, args) => Assert.AreEqual("IsConnected", args.PropertyName, "EnvironmentTreeViewModel did not raise IsConnected property changed event.");
             envModel.Raise(c => c.IsConnectedChanged += null, new ConnectedEventArgs());
 
         }
@@ -1348,8 +1568,7 @@ namespace Dev2.Core.Tests
             parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
             parent.Setup(p => p.DisplayName).Returns(displayName);
 
-            var tvm = new CategoryTreeViewModel(new Mock<IEventAggregator>().Object, null, "test", resourceType);
-            tvm.TreeParent = parent.Object;
+            var tvm = new CategoryTreeViewModel(new Mock<IEventAggregator>().Object, null, "test", resourceType) { TreeParent = parent.Object };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -1433,8 +1652,7 @@ namespace Dev2.Core.Tests
             var parent = new Mock<ITreeNode>();
             parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
 
-            var tvm = new ServiceTypeTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceType);
-            tvm.TreeParent = parent.Object;
+            var tvm = new ServiceTypeTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceType) { TreeParent = parent.Object };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -1482,6 +1700,8 @@ namespace Dev2.Core.Tests
             environmentModel.Setup(e => e.IsAuthorizedDeployFrom).Returns(isAuthorized);
             environmentModel.Setup(e => e.IsConnected).Returns(true);
             environmentModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+            environmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            environmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
 
             var parent = new Mock<ITreeNode>();
             parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
@@ -1577,6 +1797,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            environmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             environmentModel.Setup(e => e.IsConnected).Returns(true);
             environmentModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 

@@ -1,4 +1,17 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices;
+using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
@@ -7,20 +20,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
-using Dev2.Providers.Events;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -1030,6 +1032,11 @@ namespace Dev2.Core.Tests.Environments
         {
 
             var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsAuthorized).Returns(true);
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+            env.Setup(model => model.AuthorizationService).Returns(mockAuthorizationService.Object);
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1071,6 +1078,8 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateMockConnection(rand, null);
 
             var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsAuthorized).Returns(true);
+            env.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             env.Setup(e => e.Connection).Returns(connection.Object);
 
             env.Setup(e => e.IsConnected).Returns(true);

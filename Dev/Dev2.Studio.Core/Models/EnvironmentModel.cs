@@ -1,10 +1,4 @@
-﻿using System;
-using System.Network;
-using System.Text;
-using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Security;
@@ -14,9 +8,15 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Workspaces;
+using System;
+using System.Network;
+using System.Text;
+using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
 using Action = System.Action;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -308,7 +308,7 @@ namespace Dev2.Studio.Core.Models
 
         protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
-            var isLocalConnection = environmentConnection.WebServerUri != null && !string.IsNullOrEmpty(environmentConnection.WebServerUri.AbsoluteUri) &&  environmentConnection.WebServerUri.AbsoluteUri.Contains("localhost");
+            var isLocalConnection = environmentConnection.WebServerUri != null && !string.IsNullOrEmpty(environmentConnection.WebServerUri.AbsoluteUri) && environmentConnection.WebServerUri.AbsoluteUri.Contains("localhost");
             return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), isLocalConnection);
         }
 
@@ -317,7 +317,7 @@ namespace Dev2.Studio.Core.Models
             IsAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
             IsAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
         }
-         
+
         #region Overrides of Object
 
         /// <summary>
