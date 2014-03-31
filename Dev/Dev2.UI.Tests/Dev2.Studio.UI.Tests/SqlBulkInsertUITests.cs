@@ -1,11 +1,12 @@
-﻿using System.Drawing;
-using System.Linq;
-using Dev2.Studio.UI.Tests.Enums;
+﻿using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
+using System.Linq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace Dev2.Studio.UI.Tests
     public class SqlBulkInsertUiTests : UIMapBase
     {
         #region Fields
-        const string TestingDB = "GetCities";
+        const string TestingDb = "GetCities";
         const int TableIndex = 1;
         #endregion
 
@@ -112,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
             if(dbDropDown != null)
             {
                 var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
+                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDb));
                 Mouse.Click(databaseName, new Point(5, 5));
             }
             WaitForControlLoad();
@@ -129,17 +130,12 @@ namespace Dev2.Studio.UI.Tests
             }
             WaitForControlLoad();
 
-            //Open the large view
+
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
-            Mouse.Move(controlOnWorkflow, new Point(5, 5));
-            var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DsfSqlBulkInsertActivity", "Open Large View") as WpfToggleButton;
 
-            if(toggleButton == null)
-            {
-                Assert.Fail("Could not find mapping button");
-            }
+            //Open the large view using context menu
+            WorkflowDesignerUIMap.OpenCloseLargeViewUsingContextMenu(theTab, "DsfSqlBulkInsertActivity");
 
-            Mouse.Click(toggleButton);
             WaitForControlLoad();
 
             //Enter a few mappings
@@ -183,9 +179,11 @@ namespace Dev2.Studio.UI.Tests
             KeyboardCommands.SendKey("^a^x200");
 
             MouseCommands.ClickControlAtPoint(done, new Point(5, 5));
-            toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "DsfSqlBulkInsertActivity", "Open Large View") as WpfToggleButton;
+            batchErrorMessage = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Batch size must be a number");
+            timeoutErrorMessage = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Timeout must be a number");
 
-            Assert.IsNotNull(toggleButton);
+            Assert.IsNull(batchErrorMessage);
+            Assert.IsNull(timeoutErrorMessage);
         }
 
         [TestMethod]
@@ -244,7 +242,7 @@ namespace Dev2.Studio.UI.Tests
             if(dbDropDown != null)
             {
                 var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
+                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDb));
                 MouseCommands.ClickControlAtPoint(databaseName, new Point(5, 5));
             }
 

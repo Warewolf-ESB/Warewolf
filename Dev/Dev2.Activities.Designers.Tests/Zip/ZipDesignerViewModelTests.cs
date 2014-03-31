@@ -9,6 +9,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class ZipDesignerViewModelTests
     {
         [TestMethod]
@@ -27,9 +28,8 @@ namespace Dev2.Activities.Designers.Tests.Zip
             Assert.IsNull(viewModel.InputPathValue);
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
-            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Large");
-            StringAssert.Contains(viewModel.TitleBarToggles[1].ExpandToolTip, "Help");
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
+            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Help");
         }
 
         [TestMethod]
@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
             //------------Execute Test---------------------------
             viewModel.Validate();
             //------------Assert Results-------------------------            
-            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount); ;
+            Assert.AreEqual(1, viewModel.ValidateInputPathHitCount); 
             Assert.AreEqual(1, viewModel.ValidateUserNameAndPasswordHitCount);
             Assert.AreEqual(1, viewModel.ValidateDestinationUsernameAndPasswordHitCount);
         }

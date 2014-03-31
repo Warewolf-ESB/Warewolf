@@ -7,6 +7,7 @@ namespace Dev2.Activities.Designers.Tests.Create
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class CreateDesignerViewModelTests
     {
         [TestMethod]
@@ -25,9 +26,8 @@ namespace Dev2.Activities.Designers.Tests.Create
             Assert.IsNull(viewModel.InputPathValue);
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
-            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Large");
-            StringAssert.Contains(viewModel.TitleBarToggles[1].ExpandToolTip, "Help");
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
+            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Help");
         }
 
         [TestMethod]

@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.UI.Tests
 {
     [CodedUITest]
@@ -72,13 +73,8 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
-                                                                           "Open Large View");
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
-
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType,theTab);
+            
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
                                                                                   "Password must have a value");
@@ -164,12 +160,7 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
-                                                                           "Open Large View");
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType, theTab);
 
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
@@ -256,12 +247,7 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
-                                                                           "Open Large View");
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType, theTab);
 
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
@@ -346,12 +332,7 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
-                                                                           "Open Large View");
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType, theTab);
 
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
@@ -438,12 +419,7 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, ToolName,
-                                                                           "Open Large View");
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType, theTab);
 
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
@@ -601,7 +577,9 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X - 100,
+// ReSharper disable ObjectCreationAsStatement
+            new Point(theStartButton.BoundingRectangle.X - 100,
+// ReSharper restore ObjectCreationAsStatement
                                                 theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow

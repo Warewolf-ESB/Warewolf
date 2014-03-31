@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Dev2.CodedUI.Tests;
+using Dev2.Studio.UI.Tests.Enums;
+using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.CodedUI.Tests;
-using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
+    // ReSharper disable InconsistentNaming
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
         VisualTreeWalker vstw = new VisualTreeWalker();
@@ -23,7 +25,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
         {
-            var scrollViewer = GetScrollViewer(theTab);
+            GetScrollViewer(theTab);
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
             foreach(var scrollViewerChild in scrollViewerChildren)
             {
@@ -44,16 +46,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public UITestControl ScrollViewer_GetHorizontalScrollBar(UITestControl theTab)
         {
-            var scrollViewer = GetScrollViewer(theTab);
+            GetScrollViewer(theTab);
             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
-            foreach (var scrollViewerChild in scrollViewerChildren)
+            foreach(var scrollViewerChild in scrollViewerChildren)
             {
-                if (scrollViewerChild.FriendlyName == "HorizontalScrollBar")
+                if(scrollViewerChild.FriendlyName == "HorizontalScrollBar")
                 {
                     var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
-                    foreach (var scrollChild in getVericalScrollBarChildren)
+                    foreach(var scrollChild in getVericalScrollBarChildren)
                     {
-                        if (scrollChild.FriendlyName == "thumb")
+                        if(scrollChild.FriendlyName == "thumb")
                         {
                             return scrollChild;
                         }
@@ -68,6 +70,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
         /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
+        /// <param name="waitAmt"></param>
         /// <returns>Returns the control as a UITestControl object</returns>
         public UITestControl FindControlByAutomationId(UITestControl theTab, string controlAutomationId, int waitAmt = 0)
         {
@@ -90,7 +93,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// Finds controls on the Workflow Designer
         /// </summary>
         /// <param name="theTab"></param>
-        /// <param name="controlAutomationId"></param>
         /// <returns></returns>
         public UITestControlCollection GetAllControlsOnDesignSurface(UITestControl theTab)
         {
@@ -150,16 +152,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             Point p = new Point(theControl.BoundingRectangle.X + 25, theControl.BoundingRectangle.Y + 25);
             Mouse.Click(p);
-        }
-
-        /// <summary>
-        /// Clicks a control on the Workflow Designer
-        /// </summary>
-        /// <param name="theControl">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
-        public void DoubleClickControl(UITestControl theControl)
-        {
-            Point p = new Point(theControl.BoundingRectangle.X + 25, theControl.BoundingRectangle.Y + 25);
-            Mouse.DoubleClick();
         }
 
         /// <summary>
@@ -238,7 +230,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 if(theControl.FriendlyName == "Service Working Normaly")
                 {
-                    Point newPoint = new Point();
+                    Point newPoint;
                     return theControl.TryGetClickablePoint(out newPoint);
                 }
             }
@@ -328,6 +320,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+        public void DoubleClickOnActivity(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl activity = FindControlByAutomationId(theTab, controlAutomationId);
+            Mouse.DoubleClick(new Point(activity.BoundingRectangle.X + 5, activity.BoundingRectangle.Y + 5));
+        }
+
+        public void OpenCloseLargeView(ToolType tool, UITestControl theTab)
+        {
+            DoubleClickOnActivity(theTab, tool.ToString());
+        }
+
+        public void OpenCloseLargeView(string tool, UITestControl theTab)
+        {
+            DoubleClickOnActivity(theTab, tool);
+        }
+
+        public void OpenCloseLargeView(UITestControl activity)
+        {
+            Mouse.DoubleClick(new Point(activity.BoundingRectangle.X + 5, activity.BoundingRectangle.Y + 5));
+        }
+
         public int Adorner_CountInputMappings(UITestControl theTab, string controlAutomationId)
         {
             int rowCounter = 0;
@@ -367,20 +380,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                         if(potentialRow.ControlType.ToString() == "Row")
                         {
                             var theRow = (potentialRow as WpfRow);
-                            foreach(var cell in theRow.Cells)
+                            if(theRow != null)
                             {
-                                if(cell is WpfEdit)
+                                foreach(var cell in theRow.Cells)
                                 {
-                                    if((cell as WpfEdit).Text == text)
+                                    if(cell is WpfEdit)
                                     {
-                                        return true;
+                                        if((cell as WpfEdit).Text == text)
+                                        {
+                                            return true;
+                                        }
                                     }
-                                }
-                                else if((cell is WpfText))
-                                {
-                                    if((cell as WpfText).DisplayText == text)
+                                    else if((cell is WpfText))
                                     {
-                                        return true;
+                                        if((cell as WpfText).DisplayText == text)
+                                        {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
@@ -412,6 +428,32 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Point pointAtTopOfControl = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, pointAtTopOfControl);
 
+            Playback.Wait(500);
+            SendKeys.SendWait("{UP}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{UP}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{UP}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{UP}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(500);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
+        /// <param name="controlAutomationId">A control from WorkflowDesignerUIMap.FindControlByAutomationID</param>
+        public void OpenCloseLargeViewUsingContextMenu(UITestControl theTab, string controlAutomationId)
+        {
+            UITestControl theControl = FindControlByAutomationId(theTab, controlAutomationId);
+            Point pointAtTopOfControl = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, pointAtTopOfControl);
+
+            Playback.Wait(500);
+            SendKeys.SendWait("{UP}");
             Playback.Wait(500);
             SendKeys.SendWait("{UP}");
             Playback.Wait(500);
@@ -566,15 +608,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl assignControl = FindControlByAutomationId(theTab, controlAutomationId);
             WpfTable middleBox = (WpfTable)assignControl.GetChildren()[2];
             //UITestControl rowSearcher = new UITestControl(middleBox);
-            Point p = new Point();
+            Point p;
             if(middleBox.Rows[row].GetChildren()[2].GetChildren()[0].TryGetClickablePoint(out p))
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public string AssignControl_GetVariableName(UITestControl theTab, string controlAutomationId, int itemInList)
@@ -597,9 +636,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 #region Search Criteria
 
-                this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf";
-                this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                this.WindowTitles.Add("Warewolf");
+                SearchProperties[UITestControl.PropertyNames.Name] = "Warewolf";
+                SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                WindowTitles.Add("Warewolf");
 
                 #endregion
             }
@@ -610,11 +649,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 get
                 {
-                    if((this.mUIFlowchartCustom == null))
+                    if((mUIFlowchartCustom == null))
                     {
-                        this.mUIFlowchartCustom = new UIFlowchartCustom4(this);
+                        mUIFlowchartCustom = new UIFlowchartCustom4(this);
                     }
-                    return this.mUIFlowchartCustom;
+                    return mUIFlowchartCustom;
                 }
             }
 
@@ -637,9 +676,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 #region Search Criteria
 
-                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                this.SearchProperties["AutomationId"] = "Unsaved 1(FlowchartDesigner)";
-                this.WindowTitles.Add("Warewolf");
+                SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                SearchProperties["AutomationId"] = "Unsaved 1(FlowchartDesigner)";
+                WindowTitles.Add("Warewolf");
 
                 #endregion
             }
@@ -650,11 +689,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 get
                 {
-                    if((this.mUIDsfMultiAssignActiviCustom == null))
+                    if((mUIDsfMultiAssignActiviCustom == null))
                     {
-                        this.mUIDsfMultiAssignActiviCustom = new UIDsfMultiAssignActiviCustom(this);
+                        mUIDsfMultiAssignActiviCustom = new UIDsfMultiAssignActiviCustom(this);
                     }
-                    return this.mUIDsfMultiAssignActiviCustom;
+                    return mUIDsfMultiAssignActiviCustom;
                 }
             }
 
@@ -677,9 +716,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 #region Search Criteria
 
-                this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-                this.SearchProperties["AutomationId"] = "MultiAssignDesigner";
-                this.WindowTitles.Add("Warewolf");
+                SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
+                SearchProperties["AutomationId"] = "MultiAssignDesigner";
+                WindowTitles.Add("Warewolf");
 
                 #endregion
             }
@@ -690,18 +729,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 get
                 {
-                    if((this.mUIUI_Assign_QuickVariaToggleButton == null))
+                    if((mUIUI_Assign_QuickVariaToggleButton == null))
                     {
-                        this.mUIUI_Assign_QuickVariaToggleButton = new WpfToggleButton(this);
+                        mUIUI_Assign_QuickVariaToggleButton = new WpfToggleButton(this);
 
                         #region Search Criteria
 
-                        this.mUIUI_Assign_QuickVariaToggleButton.SearchProperties[WpfToggleButton.PropertyNames.AutomationId] = "[UI_Assign_QuickVariableAddBtn_AutoID]";
-                        this.mUIUI_Assign_QuickVariaToggleButton.WindowTitles.Add("Warewolf");
+                        mUIUI_Assign_QuickVariaToggleButton.SearchProperties[PropertyNames.AutomationId] = "[UI_Assign_QuickVariableAddBtn_AutoID]";
+                        mUIUI_Assign_QuickVariaToggleButton.WindowTitles.Add("Warewolf");
 
                         #endregion
                     }
-                    return this.mUIUI_Assign_QuickVariaToggleButton;
+                    return mUIUI_Assign_QuickVariaToggleButton;
                 }
             }
 
@@ -929,13 +968,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             // Get the Studio
             WpfWindow theStudio = new WpfWindow();
-            theStudio.SearchProperties[WpfWindow.PropertyNames.Name] = TestBase.GetStudioWindowName();
-            theStudio.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            theStudio.SearchProperties[UITestControl.PropertyNames.Name] = TestBase.GetStudioWindowName();
+            theStudio.SearchProperties.Add(new PropertyExpression(UITestControl.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             theStudio.WindowTitles.Add(TestBase.GetStudioWindowName());
             theStudio.Find();
 
             UITestControl itelliList = new UITestControl(theStudio);
-            itelliList.SearchProperties[WpfTree.PropertyNames.AutomationId] = "PART_ItemList";
+            itelliList.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ItemList";
             itelliList.Find();
 
             UITestControl itelliListItem = itelliList.GetChildren()[id];
@@ -1314,9 +1353,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             if(theControl.BoundingRectangle.Y > workSurface.Height)
             {
                 //might already be scrolled
+
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                 WpfControl getTop = scrollBar as WpfControl;
-                if(getTop.Top < 200)
+                if(getTop != null && getTop.Top < 200)
                 {
                     //Scoll bar is at the top, scroll down
                     Mouse.StartDragging(scrollBar);
@@ -1328,7 +1368,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 //might already be scrolled
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                 WpfControl getTop = scrollBar as WpfControl;
-                if(getTop.Top > 200)
+                if(getTop != null && getTop.Top > 200)
                 {
                     //Scroll bar is at the bottom, scroll up
                     Mouse.StartDragging(scrollBar);
@@ -1340,7 +1380,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 //might already be scrolled
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
                 WpfControl getLeft = scrollBar as WpfControl;
-                if(getLeft.Left < 2084)
+                if(getLeft != null && getLeft.Left < 2084)
                 {
                     //Scoll bar is at the left, scroll right
                     Mouse.StartDragging(scrollBar);
@@ -1352,7 +1392,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 //might already be scrolled
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                 WpfControl getLeft = scrollBar as WpfControl;
-                if(getLeft.Left > 2084)
+                if(getLeft != null && getLeft.Left > 2084)
                 {
                     //Scroll bar is at the right, scroll left
                     Mouse.StartDragging(scrollBar);

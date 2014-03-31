@@ -348,9 +348,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                     var resourceNode = child as ResourceTreeViewModel;
                     if(resourceNode != null)
                     {
-                        UpdateSearchFilter(_searchFilter);
+                        // TODO: Add to tree now to ;)
+                        AddChild(child, resource);
                     }
                 }
+
+                UpdateSearchFilter(_searchFilter);
             }
         }
 
@@ -421,21 +424,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             CategoryTreeViewModel oldCategoryNode;
             ServiceTypeTreeViewModel serviceTypeNode;
             TryGetResourceCategoryAndServiceTypeNodes(resourceModel, out oldCategoryNode, out serviceTypeNode);
-            if(oldCategoryNode == null && serviceTypeNode == null)
-            {
-                //wrong environment
-                return null;
-            }
-
-            if(oldCategoryNode != null)
-            {
-                // Remove resource from old category
-                var oldResourceNode = oldCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName);
-                if(oldResourceNode != null)
-                {
-                    oldCategoryNode.Remove(oldResourceNode);
-                }
-            }
 
             // I am sick of this null point lazyness!
             var resourceModelCategory = resourceModel.Category;
@@ -444,6 +432,26 @@ namespace Dev2.Studio.ViewModels.Navigation
                 resourceModelCategory = resourceModelCategory.ToUpper();
             }
 
+            if(oldCategoryNode == null && serviceTypeNode == null)
+            {
+                //wrong environment
+                return null;
+            }
+
+            bool wasRemoved = false;
+            if((oldCategoryNode != null && !string.IsNullOrEmpty(resourceModelCategory)) && (oldCategoryNode.DisplayName.ToUpper() != resourceModelCategory))
+            {
+                // Remove resource from old category
+                var oldResourceNode = oldCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName);
+                if(oldResourceNode != null)
+                {
+                    oldCategoryNode.Remove(oldResourceNode);
+                    wasRemoved = true;
+                }
+            }
+
+            if(wasRemoved || oldCategoryNode == null)
+            {
             var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
 
             var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
@@ -453,6 +461,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                                   ?? new ResourceTreeViewModel(_eventPublisher, newCategoryNode, resourceModel);
 
             return newResourceNode;
+
+            }
+
+            return null;
         }
 
         /// <summary>

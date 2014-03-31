@@ -1,16 +1,19 @@
-﻿using System;
-using System.Activities.Presentation;
-using System.Activities.Presentation.View;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
+﻿using System.Windows.Media.Imaging;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
+using System;
+using System.Activities.Presentation;
+using System.Activities.Presentation.View;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -28,6 +31,7 @@ namespace Dev2.Activities.Designers2.Core
         protected TViewModel _dataContext;
         // ReSharper restore InconsistentNaming
         bool _isSetFocusActionSet;
+         MenuItem _showCollapseLargeView;
 
         public ActivityDesigner()
         {
@@ -48,11 +52,44 @@ namespace Dev2.Activities.Designers2.Core
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
+            ToggleView(e.OriginalSource);
             if(!(e.OriginalSource is IScrollInfo))
             {
                 e.Handled = true;
             }
             base.OnPreviewMouseDoubleClick(e);
+        }
+
+        void ToggleView(object originalSource)
+        {
+            var fe = originalSource as FrameworkElement;
+            if(fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
+            {
+                return;
+            }
+
+            if((originalSource is Panel) ||
+               (originalSource is Shape) ||
+               (originalSource is Decorator) ||
+               (originalSource is ScrollViewer))
+            {
+                ShowCollapseLargeView();
+            }
+        }
+
+        void ShowCollapseLargeView()
+        {
+            if(ViewModel != null && ViewModel.HasLargeView)
+            {
+                if(ViewModel.ShowSmall)
+                {
+                    ViewModel.Expand();
+                }
+                else if(ViewModel.ShowLarge)
+                {
+                    ViewModel.Collapse();
+                }
+            }
         }
 
         protected override void OnMouseEnter(MouseEventArgs e)
@@ -83,7 +120,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             _dataContext = CreateViewModel();
             DataContext = _dataContext;
-
+            BuildInitialContextMenu();
             ApplyBindings(_dataContext);
             ApplyEventHandlers(_dataContext);
         }
@@ -262,5 +299,45 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         #endregion
+
+        protected void BuildInitialContextMenu()
+        {
+            ContextMenu = new ContextMenu();
+
+            if(ViewModel != null && ViewModel.HasLargeView)
+            {
+                _showCollapseLargeView = new MenuItem { Header = "Show Large View" };
+                _showCollapseLargeView.Click += ShowCollapseFromContextMenu;
+                ContextMenu.Items.Add(_showCollapseLargeView);
+            }
+
+        }
+
+        void ShowCollapseFromContextMenu(object sender, RoutedEventArgs e)
+        {
+            ShowCollapseLargeView();
+        }
+
+
+        protected override void OnContextMenuOpening(ContextMenuEventArgs e)
+        {
+            base.OnContextMenuOpening(e);
+
+            if(ViewModel != null && ViewModel.HasLargeView)
+            {
+                if(ViewModel.ShowLarge)
+                {
+                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png")), Height = 16, Width = 16};
+                    _showCollapseLargeView.Header = "Collapse Large View";
+                    _showCollapseLargeView.Icon = icon;
+                }
+                else if(ViewModel.ShowSmall)
+                {
+                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png")), Height = 16, Width = 16};
+                    _showCollapseLargeView.Header = "Show Large View";
+                    _showCollapseLargeView.Icon = icon;
+                }
+            }
+        }
     }
 }

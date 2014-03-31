@@ -87,37 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(ActivityDesignerToggle.IsCheckedProperty.Name, binding.Path.Path);
             Assert.AreEqual(BindingMode.TwoWay, binding.Mode);
         }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ActivityDesignerViewModel_AddTitleBarLargeToggle")]
-        public void ActivityDesignerViewModel_AddTitleBarLargeToggle_Added()
-        {
-            //------------Setup for test--------------------------
-            var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-
-            //------------Execute Test---------------------------
-            viewModel.TestAddTitleBarLargeToggle();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
-
-            var toggle = viewModel.TitleBarToggles[0];
-
-            Assert.AreEqual("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png", toggle.CollapseImageSourceUri);
-            Assert.AreEqual("Close Large View", toggle.CollapseToolTip);
-            Assert.AreEqual("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png", toggle.ExpandImageSourceUri);
-            Assert.AreEqual("Open Large View", toggle.ExpandToolTip);
-            Assert.AreEqual("LargeViewToggle", toggle.AutomationID);
-
-            var binding = BindingOperations.GetBinding(viewModel, ActivityDesignerViewModel.ShowLargeProperty);
-            Assert.IsNotNull(binding);
-            Assert.AreEqual(toggle, binding.Source);
-            Assert.AreEqual(ActivityDesignerToggle.IsCheckedProperty.Name, binding.Path.Path);
-            Assert.AreEqual(BindingMode.TwoWay, binding.Mode);
-        }
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityDesignerViewModel_Collapse")]

@@ -61,18 +61,14 @@ namespace Dev2.Activities.Designers2.Core
 
         void InitializeContextMenu()
         {
-            var ctxMenu = new ContextMenu();
-
             _insertRowMenuItem = new MenuItem { Header = "Insert Row" };
             _insertRowMenuItem.Click += InsertDataGridRow;
 
             _deleteRowMenuItem = new MenuItem { Header = "Delete Row" };
             _deleteRowMenuItem.Click += DeleteDataGridRow;
 
-            ctxMenu.Items.Add(_insertRowMenuItem);
-            ctxMenu.Items.Add(_deleteRowMenuItem);
-
-            ContextMenu = ctxMenu;
+            ContextMenu.Items.Add(_insertRowMenuItem);
+            ContextMenu.Items.Add(_deleteRowMenuItem);
         }
 
         protected void DeleteDataGridRow(object sender, RoutedEventArgs e)

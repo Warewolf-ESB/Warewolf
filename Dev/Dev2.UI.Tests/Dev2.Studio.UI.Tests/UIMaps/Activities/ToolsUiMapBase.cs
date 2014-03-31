@@ -22,12 +22,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void ClickOpenLargeView()
         {
-            ClickButton("Open Large View");
+            WorkflowDesignerUIMap.OpenCloseLargeView(Activity);
         }
 
         public void ClickCloseLargeView()
         {
-            ClickButton("Close Large View");
+            WorkflowDesignerUIMap.OpenCloseLargeView(Activity);
         }
 
         public void ClickOpenQuickVariableInput()

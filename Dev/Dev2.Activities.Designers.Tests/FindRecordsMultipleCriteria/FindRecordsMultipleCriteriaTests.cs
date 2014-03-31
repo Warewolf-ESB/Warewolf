@@ -196,7 +196,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.ModelItemCollection);
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]

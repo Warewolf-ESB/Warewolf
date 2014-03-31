@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.Studio.UI.Tests.Enums;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests
@@ -15,6 +15,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
+    // ReSharper disable InconsistentNaming
     public class WorkflowDesignerUITests : UIMapBase
     {
         #region Init/Cleanup
@@ -51,12 +52,8 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("Hello");
 
             //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
-                                                                           "Open Large View");
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType.Assign, theTab);
 
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X - 15, button.BoundingRectangle.Y));
-            Mouse.Click();
 
             //------------Execute Test---------------------------
 

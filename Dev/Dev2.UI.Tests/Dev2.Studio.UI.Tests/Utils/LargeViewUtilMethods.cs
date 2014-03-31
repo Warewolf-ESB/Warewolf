@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
-using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+﻿using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Dev2.Studio.UI.Tests.Utils
 {
@@ -22,13 +22,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             // Drag the tool onto the workflow               
             ToolboxUIMap.DragControlToWorkflowDesigner(tool, workflowPoint1);
 
-            //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, tool.ToString(),
-                                                                           "Open Large View");
-
-            // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            WorkflowDesignerUIMap.OpenCloseLargeView(tool, theTab);
 
             // Add the data!
 
@@ -49,9 +43,14 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
+       
         public void EnterDataIntoPasswordBoxes(List<UITestControl> allTextboxes)
         {
-            List<UITestControl> passwordboxes = allTextboxes.Where(c => (c as WpfEdit).IsPassword).ToList();
+            List<UITestControl> passwordboxes = allTextboxes.Where(c =>
+                {
+                    var wpfEdit = c as WpfEdit;
+                    return wpfEdit != null && wpfEdit.IsPassword;
+                }).ToList();
 
             int passCounter = 0;
 
@@ -104,7 +103,9 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         #region Dock Manager UI Map
 
+// ReSharper disable InconsistentNaming
         public DocManagerUIMap DockManagerUIMap
+// ReSharper restore InconsistentNaming
         {
             get
             {
@@ -116,13 +117,17 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
+// ReSharper disable InconsistentNaming
         private DocManagerUIMap _dockManagerUIMap;
+// ReSharper restore InconsistentNaming
 
         #endregion Dock Manager UI Map
 
         #region Toolbox UI Map
 
+// ReSharper disable InconsistentNaming
         public ToolboxUIMap ToolboxUIMap
+// ReSharper restore InconsistentNaming
         {
             get
             {
@@ -133,13 +138,17 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         }
 
+// ReSharper disable InconsistentNaming
         private ToolboxUIMap _toolboxUIMap;
+// ReSharper restore InconsistentNaming
 
         #endregion Toolbox UI Map
 
         #region Workflow Designer UI Map
 
+// ReSharper disable InconsistentNaming
         public WorkflowDesignerUIMap WorkflowDesignerUIMap
+// ReSharper restore InconsistentNaming
         {
             get
             {
@@ -149,7 +158,9 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
+// ReSharper disable InconsistentNaming
         private WorkflowDesignerUIMap _workflowDesignerUIMap;
+// ReSharper restore InconsistentNaming
 
         #endregion Workflow Designer UI Map
 

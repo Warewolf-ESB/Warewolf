@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests
@@ -12,6 +12,7 @@ namespace Dev2.Studio.UI.Tests
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
+// ReSharper disable InconsistentNaming
     public class AllToolsUITests : UIMapBase
     {
 
@@ -47,8 +48,8 @@ namespace Dev2.Studio.UI.Tests
             #region Scroll All Items Into View
 
             var scrollBarV = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
-            var scrollBarH = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
-            
+            WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
+
             // Look low
             Mouse.StartDragging(scrollBarV);
             Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
@@ -127,22 +128,10 @@ namespace Dev2.Studio.UI.Tests
                 Mouse.Move(child, new Point(15, 15));
                 Playback.Wait(2500); // Sorted with framework ;)
 
-                var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
-                if(toggleButton == null)
-                {
-                    Assert.Fail("Could not find open large view button [ " + child.ClassName + " ]");
-                }
-
-                Mouse.Click(toggleButton);
-                Playback.Wait(2500); // Sorted with framework ;)
-
-                toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
-                if(toggleButton == null)
-                {
-                    Assert.Fail("Could not find close large view button for [ " + child.ClassName + " ]");
-                }
-
-                Mouse.Click(toggleButton);
+                WorkflowDesignerUIMap.OpenCloseLargeView(child.Name, theTab);
+                Playback.Wait(500);
+                WorkflowDesignerUIMap.OpenCloseLargeView(child.Name, theTab);
+                Playback.Wait(500);
             }
         }
 

@@ -1,3 +1,11 @@
+using Dev2.Activities.Designers2.Core.Converters;
+using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Activities.Designers2.Service;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Utils;
+using Dev2.Utils;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -8,14 +16,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using Dev2.Activities.Designers2.Core.Converters;
-using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Activities.Designers2.Service;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Utils;
-using Dev2.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -290,17 +290,10 @@ namespace Dev2.Activities.Designers2.Core
 
         protected void AddTitleBarLargeToggle()
         {
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png",
-                collapseToolTip: "Close Large View",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png",
-                expandToolTip: "Open Large View",
-                automationID: "LargeViewToggle",
-                target: this,
-                dp: ShowLargeProperty
-                );
-            TitleBarToggles.Add(toggle);
+            HasLargeView = true;
         }
+
+        public bool HasLargeView { get; set; }
 
         bool IsSelectedOrMouseOver { get { return IsSelected || IsMouseOver; } }
 

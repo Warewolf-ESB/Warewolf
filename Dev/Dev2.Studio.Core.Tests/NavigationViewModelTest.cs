@@ -377,6 +377,9 @@ namespace Dev2.Core.Tests
             new ResourceTreeViewModel(eventAggregator, null, newResource.Object);
             // ReSharper restore ObjectCreationAsStatement
 
+            // Pre-Assert
+            Assert.AreEqual(0, _vm.Root.Children[0].Children.Count);
+
             //------------Execute Test---------------------------
             _vm.UpdateResource(newResource.Object);
 
@@ -384,6 +387,49 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName, "New service type not created for new resource");
             Assert.AreEqual("EXPECTED CATEGORY", _vm.Root.Children[0].Children[0].Children[0].DisplayName, "New category not created for new resource");
             Assert.AreEqual("Expected Resource Name", _vm.Root.Children[0].Children[0].Children[0].Children[0].DisplayName, "New resource not added to the tree");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("NavigationViewModel_UpdateResource")]
+        public void NavigationViewModel_UpdateResource_CategoryNotChanged_OriginalResource()
+        {
+            // ReSharper disable ObjectCreationAsStatement
+            Init();
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
+            var environment = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(conn => conn.Alias).Returns("Expected Environment");
+            mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
+            environment.Setup(env => env.Connection).Returns(mockConnection.Object);
+            environment.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+
+            new EnvironmentTreeViewModel(eventAggregator, _vm.Root, environment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var newResource = new Mock<IContextualResourceModel>();
+            newResource.Setup(res => res.Category).Returns("Expected Category");
+            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
+            newResource.Setup(res => res.Environment).Returns(environment.Object);
+            new ResourceTreeViewModel(eventAggregator, null, newResource.Object);
+            // ReSharper restore ObjectCreationAsStatement
+
+            _vm.UpdateResource(newResource.Object);
+
+            // pre-assert it was inserted into tree ;)
+            Assert.AreEqual(1, _vm.Root.Children[0].Children[0].Children.Count);
+            var insertedNode = _vm.Root.Children[0].Children[0].Children[0];
+
+            //------------Execute Test---------------------------
+            _vm.UpdateResource(newResource.Object);
+
+            // Assert Category Node And Type Node Removed
+            Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName, "New service type not created for new resource");
+            Assert.AreEqual("EXPECTED CATEGORY", _vm.Root.Children[0].Children[0].Children[0].DisplayName, "New category not created for new resource");
+            Assert.AreEqual("Expected Resource Name", _vm.Root.Children[0].Children[0].Children[0].Children[0].DisplayName, "New resource not added to the tree");
+
+            // ensure same node remains
+            Assert.AreEqual(insertedNode, _vm.Root.Children[0].Children[0].Children[0]);
         }
 
         [TestMethod]
@@ -1472,16 +1518,16 @@ namespace Dev2.Core.Tests
         public void ClearConflicts_Expects_AllItemsHaveNoConflicts()
         {
             // base case
-            Init(false, true);    
+            Init(false, true);
             _vm.Root.IsOverwrite = true;
             _vm.Root.Children[0].IsOverwrite = true;
             _vm.Root.IsOverwrite = true;
             _vm.Root.Children[0].Children[0].IsOverwrite = true;
             _vm.ClearConflictingNodesNodes();
-            Assert.AreEqual(false,_vm.Root.IsOverwrite);
+            Assert.AreEqual(false, _vm.Root.IsOverwrite);
             Assert.AreEqual(false, _vm.Root.Children[0].IsOverwrite);
             Assert.AreEqual(false, _vm.Root.Children[0].Children[0].IsOverwrite);
-           
+
 
 
         }

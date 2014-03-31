@@ -5,6 +5,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Unzip
 {
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class UnzipDesignerViewModelTests
     {
         [TestMethod]
@@ -23,9 +24,8 @@ namespace Dev2.Activities.Designers.Tests.Unzip
             Assert.IsNull(viewModel.InputPathValue);
             Assert.IsNull(viewModel.OutputPathValue);
             Assert.IsNull(viewModel.Errors);
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
-            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Large");
-            StringAssert.Contains(viewModel.TitleBarToggles[1].ExpandToolTip, "Help");
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
+            StringAssert.Contains(viewModel.TitleBarToggles[0].ExpandToolTip, "Help");
         }
 
         [TestMethod]
