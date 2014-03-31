@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -767,13 +768,13 @@ namespace Dev2.Studio.ViewModels.Navigation
                                     BuildNavigationItemViewModels(environment);
                                     break;
                                 case NavigationViewModelType.DeployFrom:
-                                    if(environment.IsAuthorizedDeployFrom)
+                                    if(environment.AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null))
                                     {
                                         BuildNavigationItemViewModels(environment);
                                     }
                                     break;
                                 case NavigationViewModelType.DeployTo:
-                                    if(environment.IsAuthorizedDeployTo)
+                                    if(environment.AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null))
                                     {
                                         BuildNavigationItemViewModels(environment);
                                     }

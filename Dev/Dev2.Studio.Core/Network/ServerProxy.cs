@@ -97,7 +97,6 @@ namespace Dev2.Network
         {
             this.LogTrace("*********** Hub connection down");
             IsConnected = false;
-            UpdateIsAuthorized(false);
             StartReconnectTimer();
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
         }

@@ -77,28 +77,6 @@ namespace Dev2.Core.Tests.Network
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_StateChange")]
-        public void ServerProxy_StateChange_FromConnectedToDisconnected_IsAuthorizedFalse()
-        {
-            //------------Setup for test--------------------------
-            bool _permissionsChangedFired = false;
-
-            var serverProxy = new TestServerProxy();
-            serverProxy.PermissionsChanged += (sender, args) =>
-                {
-                    _permissionsChangedFired = true;
-                };
-            bool authorisedBeforeStateChange = serverProxy.IsAuthorized;
-            //------------Execute Test---------------------------
-            serverProxy.CallHubConnectionChanged(new StateChange(ConnectionState.Connected, ConnectionState.Disconnected));
-            //------------Assert Results-------------------------
-            Assert.IsTrue(authorisedBeforeStateChange);
-            Assert.IsFalse(serverProxy.IsAuthorized);
-            Assert.IsTrue(_permissionsChangedFired);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ServerProxy_StateChange")]
         public void ServerProxy_StateChange_FromConnectedToReconnecting_IsAuthorizedFalse()
         {
             //------------Setup for test--------------------------
