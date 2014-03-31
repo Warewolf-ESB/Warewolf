@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
@@ -11,14 +19,6 @@ using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
@@ -27,6 +27,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
     [ExcludeFromCodeCoverage]
     public class SqlBulkInsertDesignerViewModelTests
     {
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_Constructor")]
@@ -36,7 +37,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), null, null, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -50,7 +53,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -64,7 +69,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
