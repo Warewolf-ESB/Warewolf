@@ -177,6 +177,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             NotifyOfPropertyChange(() => IsAuthorizedDeployFrom);
             NotifyOfPropertyChange(() => IsAuthorizedDeployTo);
 
+            DoUpdateBasedOnPermissions();
+        }
+
+        public void DoUpdateBasedOnPermissions()
+        {
             var rootNavigationViewModel = FindRootNavigationViewModel() as NavigationViewModel;
             if(rootNavigationViewModel != null)
             {
@@ -208,7 +213,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(!isAuthorized)
             {
-                PerformActionOnCorrectDispatcher(() => Children.Clear());
+                PerformActionOnCorrectDispatcher(() =>
+                {
+                    SetupCollection();
+                    NotifyOfPropertyChange(() => Children);
+                });
             }
             else
             {
@@ -222,10 +231,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(Application.Current != null && Application.Current.Dispatcher != null)
                 {
+                    Console.WriteLine("Has Dispatcher");
                     Application.Current.Dispatcher.Invoke(actionToPerform, DispatcherPriority.Send);
                 }
                 else
                 {
+                    Console.WriteLine("Has No Dispatcher");
                     actionToPerform();
                 }
             }
@@ -333,8 +344,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(_children == null)
                 {
-                    _children = new SortedObservableCollection<ITreeNode>();
-                    _children.CollectionChanged += ChildrenOnCollectionChanged;
+                    SetupCollection();
                 }
                 return _children;
             }
@@ -342,10 +352,20 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(_children == value) return;
 
-                _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
+                _children = value;
                 _children.CollectionChanged += ChildrenOnCollectionChanged;
             }
+        }
+
+        void SetupCollection()
+        {
+            if(_children != null)
+            {
+                _children.CollectionChanged -= ChildrenOnCollectionChanged;
+            }
+            _children = new SortedObservableCollection<ITreeNode>();
+            _children.CollectionChanged += ChildrenOnCollectionChanged;
         }
 
         public override ICommand RenameCommand

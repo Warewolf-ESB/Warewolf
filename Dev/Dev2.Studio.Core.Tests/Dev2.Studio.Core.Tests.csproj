@@ -199,6 +199,7 @@
     <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
     <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
+    <Compile Include="EnvironmentTreeViewModelTests.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="MainViewModelMock.cs" />
