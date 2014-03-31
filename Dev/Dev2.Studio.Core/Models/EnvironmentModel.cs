@@ -104,8 +104,20 @@ namespace Dev2.Studio.Core.Models
         public bool IsConnected { get { return Connection.IsConnected; } }
 
         public bool IsAuthorized { get { return Connection.IsAuthorized; } }
-        public bool IsAuthorizedDeployFrom { get; private set; }
-        public bool IsAuthorizedDeployTo { get; private set; }
+        public bool IsAuthorizedDeployFrom
+        {
+            get
+            {
+                return AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
+            }
+        }
+        public bool IsAuthorizedDeployTo
+        {
+            get
+            {
+                return AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
+            }
+        }
 
         public IResourceRepository ResourceRepository { get; private set; }
 
@@ -314,8 +326,10 @@ namespace Dev2.Studio.Core.Models
 
         void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)
         {
-            IsAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
-            IsAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
+            // ReSharper disable ExplicitCallerInfoArgument
+            OnPropertyChanged("IsAuthorizedDeployTo");
+            OnPropertyChanged("IsAuthorizedDeployFrom");
+
         }
 
         #region Overrides of Object

@@ -9,17 +9,28 @@ namespace Dev2.Core.Tests.Environments
 {
     public class TestEnvironmentModel : EnvironmentModel
     {
+        Mock<IAuthorizationService> _authorizationServiceMock;
+
         public TestEnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
             : base(eventPublisher, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread)
         {
         }
 
-        public Mock<IAuthorizationService> AuthorizationServiceMock { get; set; }
+        public Mock<IAuthorizationService> AuthorizationServiceMock
+        {
+            get
+            {
+                return _authorizationServiceMock;
+            }
+            set
+            {
+                _authorizationServiceMock = value;
+            }
+        }
 
         protected override IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
         {
-            AuthorizationServiceMock = new Mock<IAuthorizationService>();
-
+            _authorizationServiceMock = new Mock<IAuthorizationService>();
             return AuthorizationServiceMock.Object;
         }
     }

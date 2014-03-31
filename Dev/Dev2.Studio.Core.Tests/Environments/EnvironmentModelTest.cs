@@ -427,6 +427,48 @@ namespace Dev2.Core.Tests.Environments
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connection")]
+        public void EnvironmentModel_Connection_PermissionsChanged_IsDeployFromChanged()
+        {
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+
+            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            
+            Assert.IsFalse(envModel.IsAuthorizedDeployFrom);
+
+            //------------Execute Test---------------------------
+            envModel.AuthorizationServiceMock.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(envModel.IsAuthorizedDeployFrom);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connection")]
+        public void EnvironmentModel_Connection_PermissionsChanged_IsDeployToChanged()
+        {
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+
+            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+
+            Assert.IsFalse(envModel.IsAuthorizedDeployTo);
+
+            //------------Execute Test---------------------------
+            envModel.AuthorizationServiceMock.Setup(service => service.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(envModel.IsAuthorizedDeployTo);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_AuthorizationService")]
         public void EnvironmentModel_AuthorizationService_PermissionsChanged_IsAuthorizedDeployToAndIsAuthorizedDeployFromChanged()
         {
@@ -435,13 +477,15 @@ namespace Dev2.Core.Tests.Environments
 
             var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
 
-            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true).Verifiable();
-            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true).Verifiable();
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(false).Verifiable();
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false).Verifiable();
 
             Assert.IsFalse(envModel.IsAuthorizedDeployFrom);
             Assert.IsFalse(envModel.IsAuthorizedDeployTo);
 
             //------------Execute Test---------------------------
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true).Verifiable();
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true).Verifiable();
             envModel.AuthorizationServiceMock.Raise(a => a.PermissionsChanged += null, EventArgs.Empty);
 
             //------------Assert Results-------------------------
