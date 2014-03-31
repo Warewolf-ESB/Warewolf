@@ -263,7 +263,7 @@ namespace Gui
 
             // Start the service
             StartService(serverInstallLocation);
-            if (!_serviceInstalled)
+            if(!_serviceInstalled)
             {
                 StartService(serverInstallLocation, 20000, false);
             }
@@ -312,7 +312,7 @@ namespace Gui
         private void CleanupOperation(string installLocation)
         {
 
-            if (InstallVariables.RemoveLogFile)
+            if(InstallVariables.RemoveLogFile)
             {
                 // two install log files
                 var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
@@ -320,7 +320,7 @@ namespace Gui
 
                 var paths = new[] { path, path2 };
 
-                foreach (var p in paths)
+                foreach(var p in paths)
                 {
                     try
                     {
@@ -476,21 +476,28 @@ namespace Gui
             // Setup a cancel action ;)
             Cancel += delegate
             {
-                SetCleanupMessage();
-                List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
-                var trans = new PreUnInstallProcess(2, listOfStepNames);
+                try
+                {
+                    SetCleanupMessage();
+                    List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
+                    var trans = new PreUnInstallProcess(2, listOfStepNames);
 
-                if(!trans.Rollback())
-                {
-                    ShowCancelError();
-                    InstallVariables.StartStudioOnExit = false;
-                    InstallVariables.ViewReadMe = false;
+                    if(!trans.Rollback())
+                    {
+                        ShowCancelError();
+                        InstallVariables.StartStudioOnExit = false;
+                        InstallVariables.ViewReadMe = false;
+                    }
+                    else
+                    {
+                        // Now uninstall?!
+                        MsiConnection.Instance.Uninstall();
+                        SetSuccessMessasge("Rollback complete");
+                    }
                 }
-                else
+                catch(Exception e1)
                 {
-                    // Now uninstall?!
-                    MsiConnection.Instance.Uninstall();
-                    SetSuccessMessasge("Rollback complete");
+                    MessageBox.Show(e1.Message);
                 }
             };
 
