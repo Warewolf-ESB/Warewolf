@@ -526,18 +526,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void AddTitleBarMappingToggle()
         {
-            // ReSharper disable RedundantArgumentName
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png",
-                collapseToolTip: "Close Mapping",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png",
-                expandToolTip: "Open Mapping",
-                automationID: "LargeViewToggle",
-                target: this,
-                dp: ShowLargeProperty
-                );
-            // ReSharper restore RedundantArgumentName
-            TitleBarToggles.Add(toggle);
+            HasLargeView = true;
         }
 
         void DoShowParent()
