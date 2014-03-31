@@ -213,11 +213,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(!isAuthorized)
             {
-                PerformActionOnCorrectDispatcher(() =>
-                {
-                    SetupCollection();
-                    NotifyOfPropertyChange(() => Children);
-                });
+                PerformActionOnCorrectDispatcher(() => Children.Clear());
             }
             else
             {
@@ -231,12 +227,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(Application.Current != null && Application.Current.Dispatcher != null)
                 {
-                    Console.WriteLine("Has Dispatcher");
                     Application.Current.Dispatcher.Invoke(actionToPerform, DispatcherPriority.Send);
                 }
                 else
                 {
-                    Console.WriteLine("Has No Dispatcher");
                     actionToPerform();
                 }
             }
@@ -344,7 +338,12 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(_children == null)
                 {
-                    SetupCollection();
+                    if(_children != null)
+                    {
+                        _children.CollectionChanged -= ChildrenOnCollectionChanged;
+                    }
+                    _children = new SortedObservableCollection<ITreeNode>();
+                    _children.CollectionChanged += ChildrenOnCollectionChanged;
                 }
                 return _children;
             }
@@ -358,15 +357,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        void SetupCollection()
-        {
-            if(_children != null)
-            {
-                _children.CollectionChanged -= ChildrenOnCollectionChanged;
-            }
-            _children = new SortedObservableCollection<ITreeNode>();
-            _children.CollectionChanged += ChildrenOnCollectionChanged;
-        }
 
         public override ICommand RenameCommand
         {
