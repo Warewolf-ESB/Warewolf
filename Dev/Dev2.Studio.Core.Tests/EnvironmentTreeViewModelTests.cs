@@ -9,7 +9,7 @@ using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable once InconsistentNaming
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -120,103 +120,106 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(3, environmentVm.Children.Count);
         }
 
-        //
-        //        [TestMethod]
-        //        [Owner("Tshepo Ntlhokoa")]
-        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
-        //        public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedFalse_ChildrenCleared()
-        //        {
-        //
-        //            var connection = CreateConnection();
-        //            connection.Setup(c => c.IsAuthorized).Returns(true);
-        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-        //
-        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
-        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
-        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
-        //            var eventPublisher = new Mock<IEventAggregator>();
-        //            var environmentRepository = new Mock<IEnvironmentRepository>();
-        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-        //
-        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
-        //            var environmentVm = new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, mockEnvironmentModel.Object, asyncWorker.Object);
-        //
-        //            var child = new Mock<ITreeNode>().Object;
-        //
-        //            environmentVm.Children.Add(child);
-        //            environmentVm.Children.Add(child);
-        //            environmentVm.Children.Add(child);
-        //
-        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(false);
-        //            environmentVm.DoUpdateBasedOnPermissions();
-        //            Assert.AreEqual(0, environmentVm.Children.Count);
-        //        }
-        //
-        //                [TestMethod]
-        //                [Owner("Tshepo Ntlhokoa")]
-        //                [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
-        //                public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedTrue_ChildrenNotCleared()
-        //                {
-        //                    var connection = CreateConnection();
-        //                    connection.Setup(c => c.IsAuthorized).Returns(true);
-        //                    var authorizationService = new Mock<IAuthorizationService>();
-        //                    _mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
-        //                    _mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
-        //                    var eventPublisher = new Mock<IEventAggregator>();
-        //                    var environmentRepository = new Mock<IEnvironmentRepository>();
-        //                    var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-        //        
-        //                    var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
-        //                    var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-        //        
-        //                    var child = new Mock<ITreeNode>().Object;
-        //        
-        //                    environmentVm.Children.Add(child);
-        //                    environmentVm.Children.Add(child);
-        //                    environmentVm.Children.Add(child);
-        //        
-        //                    _mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
-        //                    connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
-        //        
-        //                    Assert.AreEqual(3, environmentVm.Children.Count);
-        //                }
 
-        //        [TestMethod]
-        //        [Owner("Tshepo Ntlhokoa")]
-        //        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
-        //        public void EnvironmentTreeViewModel_PermissionsChanged_DeployToFalse_ChildrenCleared()
-        //        {
-        //            var connection = CreateConnection();
-        //            connection.Setup(c => c.IsAuthorized).Returns(true);
-        //            var authorizationService = new Mock<IAuthorizationService>();
-        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
-        //            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-        //            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-        //            mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
-        //            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-        //            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
-        //            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
-        //            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
-        //            var eventPublisher = new Mock<IEventAggregator>();
-        //            var environmentRepository = new Mock<IEnvironmentRepository>();
-        //            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-        //
-        //            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployTo);
-        //            var environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-        //
-        //            var child = new Mock<ITreeNode>().Object;
-        //
-        //            environmentVm.Children.Add(child);
-        //            environmentVm.Children.Add(child);
-        //            environmentVm.Children.Add(child);
-        //
-        //            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false);
-        //            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
-        //
-        //            Assert.AreEqual(0, environmentVm.Children.Count);
-        //        }
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedFalse_ChildrenCleared()
+        {
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+            var environmentVm = new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, mockEnvironmentModel.Object, asyncWorker.Object);
+
+            var child = new Mock<ITreeNode>().Object;
+
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+
+            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(false);
+            environmentVm.DoUpdateBasedOnPermissions();
+            Assert.AreEqual(0, environmentVm.Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        public void EnvironmentTreeViewModel_PermissionsChanged_IsAuthorizedTrue_ChildrenNotCleared()
+        {
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+            var environmentVm = new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+
+            var child = new Mock<ITreeNode>().Object;
+
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+
+            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+
+            Assert.AreEqual(3, environmentVm.Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
+        public void EnvironmentTreeViewModel_PermissionsChanged_DeployToFalse_ChildrenCleared()
+        {
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+            mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
+            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, navigationViewModelType: NavigationViewModelType.DeployTo);
+            var environmentVm = new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+
+            var child = new Mock<ITreeNode>().Object;
+
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+            environmentVm.Children.Add(child);
+
+            authorizationService.Setup(e => e.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false);
+            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+
+            Assert.AreEqual(0, environmentVm.Children.Count);
+        }
 
         static Mock<IEnvironmentConnection> CreateConnection()
         {
