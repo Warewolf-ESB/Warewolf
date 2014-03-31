@@ -218,7 +218,7 @@ namespace Gui
 
                 sc.Dispose();
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 Thread.Sleep(waitAmt);
 
