@@ -119,17 +119,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             setupResourceModelMock.Setup(c => c.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo> { errorInfo });
             var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object);
 
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
 
             viewModel.ShowLarge = true;
 
-            Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
 
             //------------Execute Test---------------------------
             viewModel.Collapse();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]

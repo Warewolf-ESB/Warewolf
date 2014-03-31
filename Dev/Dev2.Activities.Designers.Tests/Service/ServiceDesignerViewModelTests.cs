@@ -211,7 +211,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.ResourceModel);
             Assert.IsNotNull(viewModel.ImageSource);
 
-            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]
