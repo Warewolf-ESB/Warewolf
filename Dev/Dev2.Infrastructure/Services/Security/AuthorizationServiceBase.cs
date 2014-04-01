@@ -85,7 +85,18 @@ namespace Dev2.Services.Security
         public void DumpPermissionsOnError(IPrincipal principal)
         {
             //var permissions = GetGroupPermissions(principal);
-            this.LogError("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            if(principal.Identity != null)
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            {
+                this.LogError("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+            }
+            else
+            // ReSharper disable HeuristicUnreachableCode
+            {
+                this.LogError("PERM DUMP FOR [ NULL USER ]");
+            }
+            // ReSharper restore HeuristicUnreachableCode
 
             foreach(var perm in _securityService.Permissions)
             {

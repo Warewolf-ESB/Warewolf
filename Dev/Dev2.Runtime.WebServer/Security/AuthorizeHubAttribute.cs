@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR;
@@ -26,7 +27,16 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
             VerifyArgument.IsNotNull("request", request);
-            return request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
+            var result = request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
+
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            if(request.User.Identity != null)
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            {
+                ServerLogger.LogTrace("AuthorizeHubConnection For [ " + request.User.Identity.Name + " ]");
+            }
+
+            return result;
         }
 
         public bool AuthorizeHubMethodInvocation(IHubIncomingInvokerContext context, bool appliesToMethod)

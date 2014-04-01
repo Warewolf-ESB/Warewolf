@@ -51,6 +51,7 @@ namespace Dev2.Runtime.Security
 
         bool IsAuthorizedImpl(IAuthorizationRequest request)
         {
+            var result = false;
             switch(request.RequestType)
             {
                 case WebServerRequestType.WebGetDecisions:
@@ -58,33 +59,33 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebGetServices:
                 case WebServerRequestType.WebGetSources:
                 case WebServerRequestType.WebGetSwitch:
-                    return IsAuthorized(request.User, AuthorizationContext.View, GetResource(request));
+                    result = IsAuthorized(request.User, AuthorizationContext.View, GetResource(request));
+                    break;
 
                 case WebServerRequestType.WebGet:
                 case WebServerRequestType.WebGetContent:
                 case WebServerRequestType.WebGetImage:
                 case WebServerRequestType.WebGetScript:
                 case WebServerRequestType.WebGetView:
-                    return IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    break;
 
                 case WebServerRequestType.WebInvokeService:
                     var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? AuthorizationContext.Contribute : AuthorizationContext.View;
-                    return IsAuthorized(request.User, authorizationContext, GetResource(request));
+                    result = IsAuthorized(request.User, authorizationContext, GetResource(request));
+                    break;
 
                 case WebServerRequestType.WebExecuteWorkflow:
                 case WebServerRequestType.WebBookmarkWorkflow:
-                    return IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+                    break;
 
                 case WebServerRequestType.WebExecuteInternalService:
-                    return IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+                    break;
                 case WebServerRequestType.HubConnect:
-                    var result = IsAuthorizedToConnect(request.User);
-                    if(!result)
-                    {
-                        this.LogError("AUTH ERROR FOR USER : " + request.User.Identity.Name);
-                        DumpPermissionsOnError(request.User);
-                    }
-                    return result;
+                    result = IsAuthorizedToConnect(request.User);
+                    break;
                 case WebServerRequestType.EsbSendMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:
@@ -93,10 +94,27 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbOnConnected:
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                 case WebServerRequestType.ResourcesSendMemo:
-                    return IsAuthorizedToConnect(request.User);
+                    result = IsAuthorizedToConnect(request.User);
+                    break;
             }
 
-            return false;
+            if(!result)
+            {
+                var user = "NULL USER";
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+
+                if(request.User.Identity != null)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                {
+                    user = request.User.Identity.Name;
+                    DumpPermissionsOnError(request.User);
+                }
+
+                this.LogError("AUTH ERROR FOR USER : " + user);
+
+            }
+
+            return result;
         }
 
         static string GetResource(IAuthorizationRequest request)
