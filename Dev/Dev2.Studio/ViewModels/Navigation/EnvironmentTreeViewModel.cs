@@ -188,25 +188,26 @@ namespace Dev2.Studio.ViewModels.Navigation
                 switch(rootNavigationViewModel.NavigationViewModelType)
                 {
                     case NavigationViewModelType.Explorer:
-                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorized, IsAuthorized);
+                        _isAuthorized = UpdateBasedOnPermission(rootNavigationViewModel, _isAuthorized, IsAuthorized);
                         break;
                     case NavigationViewModelType.DeployFrom:
-                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorizeDeployFrom, IsAuthorizedDeployFrom);
+                        _isAuthorizeDeployFrom = UpdateBasedOnPermission(rootNavigationViewModel, _isAuthorizeDeployFrom, IsAuthorizedDeployFrom);
                         break;
                     case NavigationViewModelType.DeployTo:
-                        UpdateBasedOnPermission(rootNavigationViewModel, ref _isAuthorizeDeployTo, IsAuthorizedDeployTo);
+                        _isAuthorizeDeployTo = UpdateBasedOnPermission(rootNavigationViewModel, _isAuthorizeDeployTo, IsAuthorizedDeployTo);
                         break;
                 }
             }
         }
 
-        void UpdateBasedOnPermission(NavigationViewModel rootNavigationViewModel, ref bool previousAuthorizations, bool isAuthorized)
+        bool UpdateBasedOnPermission(NavigationViewModel rootNavigationViewModel, bool previousAuthorizations, bool isAuthorized)
         {
             if(previousAuthorizations != isAuthorized)
             {
                 UpdateCollection(rootNavigationViewModel, isAuthorized);
-                previousAuthorizations = isAuthorized;
+                return isAuthorized;
             }
+            return previousAuthorizations;
         }
 
         void UpdateCollection(NavigationViewModel rootNavigationViewModel, bool isAuthorized)
