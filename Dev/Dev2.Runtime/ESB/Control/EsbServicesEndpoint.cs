@@ -213,7 +213,6 @@ namespace Dev2.Runtime.ESB.Control
                 // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
-                //dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
 

@@ -1,13 +1,13 @@
-﻿using Dev2.Common.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Dev2.Common.Enums;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Dev2.Server.Datalist
 {
@@ -50,7 +50,9 @@ namespace Dev2.Server.Datalist
         /// <summary>
         /// Fetches the binary data list.
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         IBinaryDataList FetchBinaryDataList(NetworkContext ctx, Guid curDLID, out ErrorResultTO errors);
 
@@ -166,10 +168,13 @@ namespace Dev2.Server.Datalist
         /// <summary>
         /// Merges the specified left ID with the right ID
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="leftID">The left ID.</param>
         /// <param name="rightID">The right ID.</param>
         /// <param name="mergeType">Type of the merge.</param>
-        /// <param name="error">The error.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="createNewList">if set to <c>true</c> [create new list].</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Merge(NetworkContext ctx, Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors);
 
@@ -188,6 +193,7 @@ namespace Dev2.Server.Datalist
         /// <summary>
         /// Transfer system tags from parent into child if parentToChild = true, else child to Parent if false
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="parentDLID">The parent DLID.</param>
         /// <param name="childDLID">The child DLID.</param>
         /// <param name="parentToChild">if set to <c>true</c> [parent to child].</param>
@@ -322,6 +328,7 @@ namespace Dev2.Server.Datalist
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="val">The val.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors);
 

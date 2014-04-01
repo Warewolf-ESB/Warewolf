@@ -738,10 +738,14 @@ namespace Dev2.DataList.Contract
             ErrorResultTO errors;
             IBinaryDataList bdl = FetchBinaryDataList(curDLID, out errors);
             // Loop each expression to find the total number of executions ;)
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var exp in expressions)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 IList<IIntellisenseResult> parts = Parser.ParseExpressionIntoParts(exp, bdl.FetchIntellisenseParts());
+                // ReSharper disable LoopCanBeConvertedToQuery
                 foreach(IIntellisenseResult p in parts)
+                // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     result = Math.Max(result, FetchNumberOfExecutions(p, bdl));
                 }

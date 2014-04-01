@@ -257,17 +257,15 @@ namespace Dev2.Server.Datalist
                 // Ensure we have a non-null tmpDL
 
                 IBinaryDataList result = tmpDl.Clone(enTranslationDepth.Data, out errors, false);
-                if(errors.HasErrors())
+                if(result != null)
                 {
                     allErrors.MergeErrors(errors);
-                }
-                TryPushDataList(result, out error);
-                if(error != string.Empty)
-                {
+                    TryPushDataList(result, out error);
                     allErrors.AddError(error);
+
+                    res = result.UID;
                 }
 
-                res = result.UID;
             }
 
             errors = allErrors;
@@ -2532,12 +2530,12 @@ namespace Dev2.Server.Datalist
                 }
                 else
                 {
-                    string error;
                     var leftValue = "";
                     if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Numeric)
                     {
                         var stringIndexValue = DataListUtil.ExtractIndexRegionFromRecordset(leftSide);
                         var idx = int.Parse(stringIndexValue);
+                        string error;
                         leftValue = leftEntry.TryFetchRecordsetColumnAtIndex(DataListUtil.ExtractFieldNameFromValue(leftSide), idx, out error).TheValue;
                     }
                     leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftValue, leftSide);

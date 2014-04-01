@@ -150,7 +150,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                             EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
 
-                            this.LogTrace("Execute Command Invoked For [ " + Context.User + " ] For Service [ " + request.ServiceName + " ]");
+                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                            if(Context.User.Identity != null)
+                            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                            {
+                                this.LogTrace("Execute Command Invoked For [ " + Context.User.Identity.Name + " ] For Service [ " + request.ServiceName + " ]");
+                            }
 
                             var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceID, dataListID, Context.ConnectionId);
                             // Convert to chunked msg store for fetch ;)

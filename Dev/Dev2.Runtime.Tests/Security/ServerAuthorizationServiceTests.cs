@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-using Dev2.Tests.Runtime.WebServer.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
