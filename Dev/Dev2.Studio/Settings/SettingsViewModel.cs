@@ -56,7 +56,7 @@ namespace Dev2.Settings
             _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             _parentWindow = parentWindow;
-            
+
             SaveCommand = new AuthorizeCommand(AuthorizationContext.Administrator, o => SaveSettings(), o => IsDirty);
             SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
@@ -331,7 +331,7 @@ namespace Dev2.Settings
         public bool DoDeactivate()
         {
             var messageBoxResult = SaveSettings();
-            if(messageBoxResult == MessageBoxResult.Cancel)
+            if(messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
             {
                 return false;
             }
@@ -355,7 +355,7 @@ namespace Dev2.Settings
                 var messageBoxResult = _popupController.Show();
                 return messageBoxResult;
             }
-            return MessageBoxResult.None;
+            return !SecurityViewModel.IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
         }
 
         #endregion
@@ -371,22 +371,22 @@ namespace Dev2.Settings
             var saveResult = GetSaveResult();
             if(saveResult == MessageBoxResult.Yes)
             {
-            ResetIsDirtyForChildren();
-            ClearErrors();
+                ResetIsDirtyForChildren();
+                ClearErrors();
 
-            SecurityViewModel.Save(Settings.Security);
+                SecurityViewModel.Save(Settings.Security);
 
-            var isWritten = WriteSettings();
-            if(isWritten)
-            {
-                IsSaved = true;
-                IsDirty = false;
-            }
-            else
-            {
-                IsSaved = false;
-                IsDirty = true;
-            }
+                var isWritten = WriteSettings();
+                if(isWritten)
+                {
+                    IsSaved = true;
+                    IsDirty = false;
+                }
+                else
+                {
+                    IsSaved = false;
+                    IsDirty = true;
+                }
             }
             return saveResult;
         }
