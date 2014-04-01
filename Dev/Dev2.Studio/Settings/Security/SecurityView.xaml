@@ -265,7 +265,8 @@
                                             SortMemberPath="WindowsGroup"
                                             Width="*"
                                             HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"                                            
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
+                                            CellStyle="{StaticResource PermissionsGridCellServerStyle}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
