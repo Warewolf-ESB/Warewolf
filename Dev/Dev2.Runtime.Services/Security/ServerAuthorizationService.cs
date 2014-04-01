@@ -33,8 +33,6 @@ namespace Dev2.Runtime.Security
 
         public override bool IsAuthorized(IAuthorizationRequest request)
         {
-            ServerLogger.LogTrace("IsAuthorized Request Entered");
-
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
             Tuple<bool, DateTime> authorizedRequest;
@@ -53,7 +51,6 @@ namespace Dev2.Runtime.Security
 
         bool IsAuthorizedImpl(IAuthorizationRequest request)
         {
-            var result = false;
             switch(request.RequestType)
             {
                 case WebServerRequestType.WebGetDecisions:
@@ -61,29 +58,33 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.WebGetServices:
                 case WebServerRequestType.WebGetSources:
                 case WebServerRequestType.WebGetSwitch:
-                    result = IsAuthorized(request.User, AuthorizationContext.View, GetResource(request));
-                    break;
+                    return IsAuthorized(request.User, AuthorizationContext.View, GetResource(request));
+
                 case WebServerRequestType.WebGet:
                 case WebServerRequestType.WebGetContent:
                 case WebServerRequestType.WebGetImage:
                 case WebServerRequestType.WebGetScript:
                 case WebServerRequestType.WebGetView:
-                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
-                    break;
+                    return IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
+
                 case WebServerRequestType.WebInvokeService:
                     var authorizationContext = IsWebInvokeServiceSave(request.Url.AbsolutePath) ? AuthorizationContext.Contribute : AuthorizationContext.View;
-                    result = IsAuthorized(request.User, authorizationContext, GetResource(request));
-                    break;
+                    return IsAuthorized(request.User, authorizationContext, GetResource(request));
+
                 case WebServerRequestType.WebExecuteWorkflow:
                 case WebServerRequestType.WebBookmarkWorkflow:
-                    result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
-                    break;
+                    return IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
+
                 case WebServerRequestType.WebExecuteInternalService:
-                    result = IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
-                    break;
+                    return IsAuthorized(request.User, AuthorizationContext.Any, GetResource(request));
                 case WebServerRequestType.HubConnect:
-                    result = IsAuthorizedToConnect(request.User);
-                    break;
+                    var result = IsAuthorizedToConnect(request.User);
+                    if(!result)
+                    {
+                        this.LogError("AUTH ERROR FOR USER : " + request.User.Identity.Name);
+                        DumpPermissionsOnError(request.User);
+                    }
+                    return result;
                 case WebServerRequestType.EsbSendMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:
@@ -92,17 +93,10 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.EsbOnConnected:
                 case WebServerRequestType.EsbFetchExecutePayloadFragment:
                 case WebServerRequestType.ResourcesSendMemo:
-                    result = IsAuthorizedToConnect(request.User);
-                    break;
-
+                    return IsAuthorizedToConnect(request.User);
             }
 
-            if(!result)
-            {
-                DumpPermissionsOnError(request.User);
-            }
-
-            return result;
+            return false;
         }
 
         static string GetResource(IAuthorizationRequest request)

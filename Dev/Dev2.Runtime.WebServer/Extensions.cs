@@ -11,11 +11,6 @@ namespace Dev2.Runtime.WebServer
     {
         public static bool IsAuthenticated(this IPrincipal user)
         {
-            if(user == null)
-            {
-                ServerLogger.LogTrace("Null User Object");
-            }
-
             return user != null && user.Identity.IsAuthenticated;
         }
 
