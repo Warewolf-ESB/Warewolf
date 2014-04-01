@@ -327,17 +327,17 @@ IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
 :getDebugResources
-xcopy /Y /E /F "$(SolutionDir)BPM Resources - Debug" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Debug" "$(TargetDir)"
 GOTO exit
 :getTestResources
-xcopy /Y /E /F "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
-xcopy /Y /E /F "$(SolutionDir)Dev2.Server\bin\Debug\Webs" "$(TargetDir)Webs\"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs" "$(TargetDir)Webs\"
 GOTO exit
 :getReleaseResources
-xcopy /Y /E /F "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
-xcopy /Y /E /F "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Debug\Webs\Properties\"
-xcopy /Y /E /F "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Tests" "$(TargetDir)Webs\Tests\"
-xcopy /Y /E /F "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Debug\Webs\Properties\"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Tests" "$(TargetDir)Webs\Tests\"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
 :exit</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
@@ -346,8 +346,8 @@ attrib -R /S
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
 copy /Y "$(SolutionDir)Binaries\Vestris.ResourceLib.dll" "$(TargetDir)"
-xcopy /Y /E /F "$(SolutionDir)Binaries\CefSharp" "$(TargetDir)CefSharp\"
-xcopy /Y /E /F "$(SolutionDir)Binaries\ActiveDirectory" "$(TargetDir)ActiveDirectory\"</PreBuildEvent>
+xcopy /Y /E /F /D "$(SolutionDir)Binaries\CefSharp" "$(TargetDir)CefSharp\"
+xcopy /Y /E /F /D "$(SolutionDir)Binaries\ActiveDirectory" "$(TargetDir)ActiveDirectory\"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
