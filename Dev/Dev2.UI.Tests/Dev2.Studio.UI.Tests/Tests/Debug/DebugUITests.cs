@@ -175,9 +175,74 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                     UITestControl lastStep = OutputUIMap.GetLastStep();
                     string workflowStepName = OutputUIMap.GetStepName(lastStep);
                     Assert.AreEqual("TravsTestFlow", workflowStepName);
+            
                 }
             }
             catch(Exception e)
+            {
+                Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DebugOutput_ContainsWorkflowOutput")]
+        public void DebugOutput_WhenRunWithOutputs_ContainsWorkflowOutput()
+        {
+            try
+            {
+                //------------Setup for test--------------------------
+                //Open the correct workflow
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
+
+                //------------Assert Results-------------------------
+
+                // Check for valid input in the input boxes ;)
+  
+                    RibbonUIMap.ClickDebug();
+
+                    DebugUIMap.ClickExecute();
+                    OutputUIMap.WaitForExecution(2500);
+                    UITestControl lastStep = OutputUIMap.GetLastStep();
+                    string workflowStepName = OutputUIMap.GetStepName(lastStep);
+                    Assert.AreEqual("TravsTestFlow", workflowStepName);
+                    Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(lastStep, new[] { "Outputs :", "[[a]]","=","1" }));
+                    
+                
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DebugOutput_ContainsWorkflowOutput")]
+        public void DebugOutput_WhenRunWithOutputs_ContainsWorkflowInput()
+        {
+            try
+            {
+                //------------Setup for test--------------------------
+                //Open the correct workflow
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
+
+                //------------Assert Results-------------------------
+
+                // Check for valid input in the input boxes ;)
+
+                RibbonUIMap.ClickDebug();
+
+                DebugUIMap.ClickExecute();
+                OutputUIMap.WaitForExecution(2500);
+                UITestControl lastStep = OutputUIMap.GetStep(1);
+                string workflowStepName = OutputUIMap.GetStepName(lastStep);
+                Assert.AreEqual("TravsTestFlow", workflowStepName);
+                Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(lastStep, new[] { "Inputs :", "[[a]]", "=" }));
+
+
+            }
+            catch (Exception e)
             {
                 Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
             }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Dev2.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable once CheckNamespace
@@ -7,21 +7,17 @@ namespace Dev2.Studio.Core.Messages
     public class AddServerToDeployMessage
     {
         public IEnvironmentModel Server { get; set; }
-        public bool IsSource { get; set; }
-        public bool IsDestination { get; set; }
-        public Guid? Context { get; set; }
+        public ConnectControlInstanceType ConnectControlInstanceType { get; set; }
 
-        public AddServerToDeployMessage(IEnvironmentModel server, bool isSource, bool isDestination)
+        public AddServerToDeployMessage(IEnvironmentModel server)
         {
             Server = server;
-            IsSource = isSource;
-            IsDestination = isDestination;
         }
 
-        public AddServerToDeployMessage(IEnvironmentModel server, Guid? context)
+        public AddServerToDeployMessage(IEnvironmentModel server, ConnectControlInstanceType connectControlInstanceType)
         {
             Server = server;
-            Context = context;
+            ConnectControlInstanceType = connectControlInstanceType;
         }
     }
 }

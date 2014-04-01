@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1B229665-1631-4275-AFBD-CB5B7775E4CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.TaskScheduler.Wrappers</RootNamespace>
+    <AssemblyName>Dev2.TaskScheduler.Wrappers</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.19911, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor">
+      <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dev2Action.cs" />
+    <Compile Include="Dev2ActionCollection.cs" />
+    <Compile Include="Dev2RepetitionPattern.cs" />
+    <Compile Include="Dev2Task.cs" />
+    <Compile Include="Dev2TaskCollection.cs" />
+    <Compile Include="Dev2TaskDefinition.cs" />
+    <Compile Include="Dev2TaskFolder.cs" />
+    <Compile Include="Dev2TaskService.cs" />
+    <Compile Include="Dev2TaskSettings.cs" />
+    <Compile Include="Dev2Trigger.cs" />
+    <Compile Include="Dev2DailyTrigger.cs" />
+    <Compile Include="Dev2EventTrigger.cs" />
+    <Compile Include="Dev2IdleTrigger.cs" />
+    <Compile Include="Dev2LogonTrigger.cs" />
+    <Compile Include="Dev2TimeTrigger.cs" />
+    <Compile Include="Dev2WeeklyTrigger.cs" />
+    <Compile Include="Dev2RegistrationTrigger.cs" />
+    <Compile Include="Dev2MonthlyTrigger.cs" />
+    <Compile Include="Dev2ExecAction.cs" />
+    <Compile Include="Dev2TaskEvent.cs" />
+    <Compile Include="Dev2TaskEventLog.cs" />
+    <Compile Include="Interfaces\IAction.cs" />
+    <Compile Include="Interfaces\IActionCollection.cs" />
+    <Compile Include="Interfaces\IConcreteTriggers.cs" />
+    <Compile Include="Interfaces\IDev2Task.cs" />
+    <Compile Include="Interfaces\IDev2TaskDefinition.cs" />
+    <Compile Include="Interfaces\IDev2TaskService.cs" />
+    <Compile Include="Interfaces\IExecAction.cs" />
+    <Compile Include="Interfaces\ITaskEvent.cs" />
+    <Compile Include="Interfaces\ITaskEventLog.cs" />
+    <Compile Include="Interfaces\ITaskServiceConvertorFactory.cs" />
+    <Compile Include="Interfaces\IRepetitionPattern.cs" />
+    <Compile Include="Interfaces\ITaskCollection.cs" />
+    <Compile Include="Interfaces\ITaskFolder.cs" />
+    <Compile Include="Interfaces\ITaskSettings.cs" />
+    <Compile Include="Interfaces\ITrigger.cs" />
+    <Compile Include="Interfaces\ITriggerCollection.cs" />
+    <Compile Include="Interfaces\IWrappedObject.cs" />
+    <Compile Include="Dev2MonthlyDowTrigger.cs" />
+    <Compile Include="TaskServiceConvertorFactory.cs" />
+    <Compile Include="TriggerCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dev2\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -39,12 +39,11 @@
                 <Dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
                                      LabelText="Source Server:"                                    
-                                     NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
-                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
-                                     IngoreSelectionChangedMessage="False"
+                                     ConnectButtonAutomationID="UI_SourceConnectServerbtn_AutoID"
+                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"                                     
                                      ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"                                     
                                      BindToActiveEnvironment="False"
-                                     Context="{Binding SourceContext}" >
+                                     ConnectControlInstanceType="DeploySource">
                     <Dev2:ConnectControl.IsDropDownEnabled>
                         <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
                             <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>
@@ -157,13 +156,12 @@
 
                 <Dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
-                                     LabelText="Destination Server:"
-                                     Context="{Binding DestinationContext}"
-                                     IngoreSelectionChangedMessage="False"
-                                     NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
+                                     LabelText="Destination Server:"                                     
+                                     ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                      EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
                                      ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"
-                                     BindToActiveEnvironment="False">
+                                     BindToActiveEnvironment="False"
+                                     ConnectControlInstanceType="DeployTarget">
                     <Dev2:ConnectControl.IsDropDownEnabled>
                         <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
                             <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>

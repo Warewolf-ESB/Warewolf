@@ -43,7 +43,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public InOutArgument<List<string>> AmbientDataList { get; set; }
 
         // Moved into interface ;)
-        public string InputMapping { get; set; }
+        public string InputMapping
+        {
+            get { return _inputMapping; }
+            set { 
+                _inputMapping = value; 
+
+            }
+        }
+
         public string OutputMapping { get; set; }
 
         public bool IsWorkflow { get; set; }
@@ -78,6 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
+        private string _inputMapping;
 
         protected IDebugState DebugState { get { return _debugState; } } // protected for testing!
 

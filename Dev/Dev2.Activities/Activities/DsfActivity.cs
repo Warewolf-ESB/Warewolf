@@ -517,6 +517,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
+        
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();

@@ -25,13 +25,12 @@ namespace Dev2.Webs.Callbacks
     {
         protected readonly IEventAggregator EventPublisher;
 
-        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null, IShowDependencyProvider showDependencyProvider = null)
+        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IShowDependencyProvider showDependencyProvider = null)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("currentEnvironmentRepository", currentEnvironmentRepository);
             EventPublisher = eventPublisher;
 
-            Context = context;
             CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
             ShowDependencyProvider = showDependencyProvider ?? new ShowDependencyProvider();
@@ -44,7 +43,6 @@ namespace Dev2.Webs.Callbacks
         public Window Owner { get; set; }
 
         public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }
-        public Guid? Context { get; private set; }
 
         #endregion
 

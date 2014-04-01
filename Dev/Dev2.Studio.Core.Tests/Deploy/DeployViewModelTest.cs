@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
+using Dev2.AppResources.Enums;
 using Dev2.Composition;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
@@ -283,9 +284,7 @@ namespace Dev2.Core.Tests
 
             var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
 
-            var sourceCtx = vm.SourceContext;
-
-            var msg = new AddServerToDeployMessage(server, sourceCtx);
+            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeploySource);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
         }
@@ -300,9 +299,7 @@ namespace Dev2.Core.Tests
 
             var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
 
-            var destCtx = vm.DestinationContext;
-
-            var msg = new AddServerToDeployMessage(server, destCtx) { IsDestination = true, IsSource = false };
+            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeployTarget);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
         }
@@ -314,7 +311,7 @@ namespace Dev2.Core.Tests
             DeployViewModel vm;
             var envID = SetupVmForMessages(out server, out vm);
 
-            var msg = new AddServerToDeployMessage(server, true, false);
+            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeploySource);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
         }
@@ -326,7 +323,7 @@ namespace Dev2.Core.Tests
             DeployViewModel vm;
             var envID = SetupVmForMessages(out server, out vm);
 
-            var msg = new AddServerToDeployMessage(server, false, true);
+            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeployTarget);
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
         }
@@ -451,7 +448,8 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is connected.");
 
             destEnv.Setup(e => e.IsConnected).Returns(false);
-            Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is true when server is disconnected.");
+            //Changed to true because it was showing the error when not connected which isnt right
+            Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is disconnected.");
         }
 
         [TestMethod]

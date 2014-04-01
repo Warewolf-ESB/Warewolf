@@ -63,6 +63,14 @@
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.18776, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dev2.Server\bin\Debug\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -109,14 +117,18 @@
     <Compile Include="Compiler\CompileRules\DBService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
+    <Compile Include="ESB\Management\Services\SaveScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
+    <Compile Include="ESB\Management\Services\DeleteScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDefintition.cs" />
     <Compile Include="ESB\Management\Services\FindDirectory.cs" />
     <Compile Include="ESB\Management\Services\FindDrive.cs" />
     <Compile Include="ESB\Management\Services\FindResourceHelper.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseColumnsForTable.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseTables.cs" />
+    <Compile Include="ESB\Management\Services\GetScheduledResourceHistory.cs" />
+    <Compile Include="ESB\Management\Services\GetScheduledResources.cs" />
     <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
     <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />
     <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
@@ -281,6 +293,10 @@
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
@@ -291,6 +307,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Security\Security.cd" />
     <None Include="SSL Generation\CreateCertificate.bat">

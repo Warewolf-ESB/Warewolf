@@ -20,7 +20,7 @@ namespace Dev2.Settings.Security
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource
     {
         readonly IResourcePickerDialog _resourcePicker;
-        readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
+        readonly DirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
@@ -30,7 +30,7 @@ namespace Dev2.Settings.Security
         {
         }
 
-        public SecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
+        public SecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
         {
             VerifyArgument.IsNotNull("resourcePicker", resourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
@@ -210,17 +210,27 @@ namespace Dev2.Settings.Security
 
         DirectoryObject PickWindowsGroup()
         {
-            var dialogResult = _directoryObjectPicker.ShowDialog(_parentWindow);
+            var dialogResult = ShowDirectoryObjectPickerDialog(_parentWindow);
             if(dialogResult != DialogResult.OK)
             {
                 return null;
             }
-            var results = _directoryObjectPicker.SelectedObjects;
+            var results = GetSelectedObjectsFromDirectoryObjectPickerDialog();
             if(results == null || results.Length == 0)
             {
                 return null;
             }
             return results[0];
+        }
+
+        public virtual DialogResult ShowDirectoryObjectPickerDialog(IWin32Window parentWindow)
+        {
+            return _directoryObjectPicker.ShowDialog(parentWindow);
+        }
+
+        public virtual DirectoryObject[] GetSelectedObjectsFromDirectoryObjectPickerDialog()
+        {
+            return _directoryObjectPicker.SelectedObjects;
         }
 
         void RegisterPropertyChanged(WindowsGroupPermission permission)

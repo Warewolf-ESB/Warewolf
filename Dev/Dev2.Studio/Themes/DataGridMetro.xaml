@@ -8,7 +8,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <BooleanToVisibilityConverter x:Key="bool2VisibilityConverter" />
-
+  
     <Style TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Background" Value="{StaticResource DataGridBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />

@@ -450,15 +450,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(wasRemoved || oldCategoryNode == null)
             {
-                var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
+            var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
 
-                var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
-                                      ?? new CategoryTreeViewModel(_eventPublisher, serviceTypeNode, categoryDisplayName, resourceModel.ResourceType);
+            var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
+                                  ?? new CategoryTreeViewModel(_eventPublisher, serviceTypeNode, categoryDisplayName, resourceModel.ResourceType);
 
-                var newResourceNode = newCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName)
-                                      ?? new ResourceTreeViewModel(_eventPublisher, newCategoryNode, resourceModel);
+            var newResourceNode = newCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName)
+                                  ?? new ResourceTreeViewModel(_eventPublisher, newCategoryNode, resourceModel);
 
-                return newResourceNode;
+            return newResourceNode;
 
             }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -126,6 +127,8 @@ namespace Dev2.Runtime.ESB.WF
             return wfApp;
         }
 
+       
+
         /// <summary>
         /// Invokes the workflow impl.
         /// </summary>
@@ -222,7 +225,8 @@ namespace Dev2.Runtime.ESB.WF
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject.Clone();
                     var wfappUtils = new WfApplicationUtils();
-                    wfappUtils.DispatchDebugState(run.DataTransferObject, StateType.End, AllErrors, _runTime);
+                   
+                    wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors, _runTime,false,true);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
@@ -331,7 +335,8 @@ namespace Dev2.Runtime.ESB.WF
                     ExecutableServiceRepository.Instance.Add(this);
                     // here is space at the inn ;)
                     var wfappUtils = new WfApplicationUtils();
-                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors);
+
+                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors,null,true,false);
                     _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                     DataTransferObject.NumberOfSteps = 0;
                     _instance.Run();

@@ -163,7 +163,6 @@
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
-    <Compile Include="TestAsyncWorker.cs" />
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
@@ -230,6 +229,7 @@
     <Folder Include="MultiAssignTests\Stubs\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.AppResources.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Providers.Logs;
@@ -17,22 +18,29 @@ namespace Dev2.Studio.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
+        #region Fields
+
+        ConnectControlInstanceType _connectControlInstanceType;
+
+        #endregion
+
 
         #region CTOR
 
-        public ConnectCallbackHandler(Guid? context = null)
-            : this(EnvironmentRepository.Instance, context)
+        public ConnectCallbackHandler(ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
+            : this(EnvironmentRepository.Instance, connectControlInstanceType)
         {
         }
 
-        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
-            : this(EventPublishers.Aggregator, currentEnvironmentRepository, context)
+        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
+            : this(EventPublishers.Aggregator, currentEnvironmentRepository, connectControlInstanceType)
         {
         }
 
-        public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
-            : base(eventPublisher, currentEnvironmentRepository, context)
+        public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
+            : base(eventPublisher, currentEnvironmentRepository)
         {
+            _connectControlInstanceType = connectControlInstanceType;
         }
 
         #endregion
@@ -82,9 +90,9 @@ namespace Dev2.Studio.Webs.Callbacks
 
             CurrentEnvironmentRepository.Save(newEnvironment);
             this.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
-            EventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, Context, true));
+            EventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, true));
             this.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
-            EventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, Context));
+            EventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, _connectControlInstanceType));
         }
 
         #endregion

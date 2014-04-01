@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Security;
@@ -138,6 +139,7 @@ namespace Dev2.Studio.Core.Models
 
             this.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
+            _eventPublisher.Publish(new SelectedServerConnectedMessage(this));
         }
 
         public void Connect(IEnvironmentModel other)
@@ -168,7 +170,7 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected)
             {
                 Connection.Disconnect();
-
+                _eventPublisher.Publish(new SelectedServerConnectedMessage(this));
             }
         }
 
@@ -331,7 +333,7 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsAuthorizedDeployFrom");
 
         }
-
+         
         #region Overrides of Object
 
         /// <summary>

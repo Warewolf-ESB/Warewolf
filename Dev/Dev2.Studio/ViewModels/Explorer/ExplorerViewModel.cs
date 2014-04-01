@@ -110,21 +110,26 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
         {
-            _asyncWorker.Start(
-                () =>
-                {
-                    if(forceConnect)
+            if(environmentModel != null)
+            {
+                _asyncWorker.Start(
+                    () =>
                     {
-                        environmentModel.Connect();
-                    }
-                },
-                () =>
-                {
-                    NavigationViewModel.AddEnvironment(environmentModel);
-                    SaveEnvironment(environmentModel);
-                    this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                    EventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
-                });
+                        if(forceConnect)
+                        {
+                            environmentModel.Connect();
+                        }
+                    },
+                    () =>
+                    {
+                        if(!NavigationViewModel.Environments.Contains(environmentModel))
+                        {
+                            NavigationViewModel.AddEnvironment(environmentModel);
+                            SaveEnvironment(environmentModel);
+                            this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                        }
+                    });
+            }
         }
 
         private void SaveEnvironment(IEnvironmentModel environmentModel)
@@ -160,7 +165,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         /// <summary>
         ///     Loads the environments from the resource repository
         /// </summary>
-        public void LoadEnvironments()
+        public void LoadEnvironments(bool setActiveEnvironment = true)
         {
             if(EnvironmentRepository == null) return;
 
@@ -173,7 +178,10 @@ namespace Dev2.Studio.ViewModels.Explorer
             // Load the default environment
             NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
             this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-            EventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
+            if(setActiveEnvironment)
+            {
+                EventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
+            }
 
             //
             // Add last session's environments to the navigation view model

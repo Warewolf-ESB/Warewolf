@@ -164,16 +164,9 @@ namespace Dev2.Core.Tests.Webs
             environment.Setup(e => e.ID).Returns(environmentId);
             currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
 
-            var ctx = Guid.NewGuid();
-            var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
 
-            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()))
-                            .Callback<Object>(m =>
-                                {
-                                    var msg = (AddServerToExplorerMessage)m;
-                                    Assert.IsTrue(msg.Context.Equals(ctx));
-                                })
-                             .Verifiable();
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>())).Verifiable();
 
             handler.Save(ConnectionJson, null);
 
@@ -205,8 +198,7 @@ namespace Dev2.Core.Tests.Webs
             environment.Setup(e => e.ID).Returns(environmentId);
             currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
 
-            var ctx = Guid.NewGuid();
-            var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
             IEnvironmentModel newEnvironment = null;
             aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()))
                             .Callback<Object>(m =>
@@ -242,14 +234,12 @@ namespace Dev2.Core.Tests.Webs
             var environment = new Mock<IEnvironmentModel>();
             currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
 
-            var ctx = Guid.NewGuid();
-            var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
 
             aggregator.Setup(e => e.Publish(It.IsAny<AddServerToDeployMessage>()))
                             .Callback<Object>(m =>
                             {
                                 var msg = (AddServerToDeployMessage)m;
-                                Assert.IsTrue(msg.Context.Equals(ctx));
                                 Assert.IsTrue(msg.Server.ID.ToString()
                                                  .Equals(ConnectionID.ToString(CultureInfo.InvariantCulture),
                                                          StringComparison.InvariantCultureIgnoreCase));

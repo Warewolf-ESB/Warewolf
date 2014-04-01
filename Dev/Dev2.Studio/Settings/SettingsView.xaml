@@ -74,11 +74,12 @@
                            Width="400"
                            Margin="0,0,0,10"
                            HorizontalAlignment="Left"  
-                           IngoreSelectionChangedMessage="True"
                            LabelText="Server:"                           
-                           NewButtonAutomationID="UI_SettingsServerNewButton_AutoID"
+                           ConnectButtonAutomationID="UI_SettingsServerConnectButton_AutoID"
                            EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
-                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID" />
+                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"
+                           BindToActiveEnvironment="False"
+                           ConnectControlInstanceType="Settings"/>
 
         <customControls:CircularProgressBar Grid.Row="1"
                                             Grid.Column="0"

@@ -4,32 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="clr-namespace:Dev2.UI"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              x:Name="ConnectUserControl"
-             mc:Ignorable="d"
+             mc:Ignorable="d"             
              d:DataContext="{d:DesignInstance ui:ConnectControlViewModel}"
-             >
+             IsEnabled="{Binding IsEnabled,Mode=TwoWay}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>                 
-        <TextBlock Grid.Column="0" Text="{Binding Path=LabelText}"
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Path=LabelText}"
                    VerticalAlignment="Center" />
-        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
-                  Grid.Column="1" x:Name="TheServerComboBox"                    
-                  SelectedItem="{Binding SelectedServer,Mode=TwoWay}"                  
-                  ItemsSource="{Binding Servers}"        
-                  Margin="5,0,0,0" 
+        <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}"
+                  Grid.Column="1"
+                  x:Name="TheServerComboBox"
+                  SelectedItem="{Binding SelectedServer,Mode=TwoWay}"
+                  ItemsSource="{Binding Servers}"
+                  Margin="5,0,0,0"
                   VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsDropDownEnabled}">
             <ComboBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                <Style TargetType="{x:Type ListBoxItem}"
+                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="AutomationProperties.AutomationId">
                         <Setter.Value>
                             <MultiBinding StringFormat="U_{0}_{1}">
-                                <Binding Path="ServerComboBoxAutomationID" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}"/>
+                                <Binding Path="ServerComboBoxAutomationID"
+                                         RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}" />
                                 <Binding Path="Name" />
                             </MultiBinding>
                         </Setter.Value>
@@ -40,20 +45,46 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}"/>
-                        <TextBlock Text="   (Connected)" Grid.Column="1" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisConverter}}"></TextBlock>
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text="   (Connected)"
+                                   Grid.Column="1"
+                                   Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisConverter}}"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
-                Grid.Column="2" Content="..." Margin="2,0,0,0" Click="OnEditClick" 
-                IsEnabled="{Binding SelectedServer.IsLocalHost, Mode=OneWay,Converter={StaticResource BooleanInvertConverter}}"/>
-        <Button AutomationProperties.AutomationId="{Binding NewButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
-                Grid.Column="3" Content="New" Margin="2,0,0,0" Click="OnNewClick" 
-                IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
+        <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
+                Grid.Column="2"
+                Content="..."
+                Margin="2,0,0,0"
+                Command="{Binding EditCommand}">
+            <Button.IsEnabled>
+                <MultiBinding Converter="{StaticResource ConnectControlMultiValueBoolConverter}">
+                    <Binding Path="SelectedServer" />
+                    <Binding Path="IsDropDownEnabled" />
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
+        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
+                Grid.Column="3"
+                Content="{Binding SelectedServer.IsConnected,Converter={StaticResource IsConnectedToTextConverter}}"
+                Margin="2,0,0,0"
+                Command="{Binding ConnectCommand}"
+                Visibility="{Binding IsConnectButtonSpinnerVisible,Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Button.IsEnabled>
+            <MultiBinding Converter="{StaticResource ConnectControlMultiValueBoolConverter}">
+                <Binding Path="SelectedServer" />
+                <Binding Path="IsDropDownEnabled" />
+            </MultiBinding>
+        </Button.IsEnabled>
+        </Button>
+        <customControls:CircularProgressBar Grid.Column="3" Height="22" Width="22" 
+                                                 Margin="0,0,2,0" 
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    Visibility="{Binding IsConnectButtonSpinnerVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                    AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID"/>
     </Grid>
 </UserControl>

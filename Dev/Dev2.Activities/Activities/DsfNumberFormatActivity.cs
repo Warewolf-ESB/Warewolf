@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     int decimalPlacesToShowValue;
                     var tmpDecimalPlacesToShow = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue;
-                    var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsWholeNumber(out decimalPlacesToShowValue);
+                    var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsRealNumber(out decimalPlacesToShowValue);
                     if(!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
                         throw new Exception("Decimals to show is not valid");
@@ -127,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     var tmpDecimalPlaces = colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue;
                     var roundingDecimalPlacesValue = 0;
-                    if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsWholeNumber(out roundingDecimalPlacesValue))
+                    if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsRealNumber(out roundingDecimalPlacesValue))
                     {
                         throw new Exception("Rounding decimal places is not valid");
                     }

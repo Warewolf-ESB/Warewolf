@@ -115,5 +115,23 @@ namespace Dev2.Studio.Controller
             ImageType = MessageBoxImage.Error;
             return Show();
         }
+
+        public MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted)
+        {
+            Buttons = MessageBoxButton.YesNo;
+            Header = "Are you sure?";
+            Description = "Are you sure you want to delete " + nameOfItemBeingDeleted + "?";
+            ImageType = MessageBoxImage.Information;
+            return Show();
+        }
+
+        public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
+        {
+            Buttons = MessageBoxButton.YesNoCancel;
+            Header = "Rename conflict";
+            Description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task. Would you like to save the new name?";
+            ImageType = MessageBoxImage.Information;
+            return Show();
+        }
     }
 }

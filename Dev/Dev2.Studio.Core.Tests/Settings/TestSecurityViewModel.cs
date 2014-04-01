@@ -10,8 +10,13 @@ namespace Dev2.Core.Tests.Settings
 {
     public class TestSecurityViewModel : SecurityViewModel
     {
+        public TestSecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
+            : base(securitySettings, resourcePicker, directoryObjectPicker, parentWindow, environment)
+        {
+        }
+
         public TestSecurityViewModel()
-            : base(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object)
+            : base(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object)
         {
         }
 
@@ -21,5 +26,21 @@ namespace Dev2.Core.Tests.Settings
             SaveHitCount++;
             base.Save(securitySettings);
         }
+
+        #region Overrides of SecurityViewModel
+
+        public DialogResult Result;
+        public override DialogResult ShowDirectoryObjectPickerDialog(IWin32Window parentWindow)
+        {
+            return Result;
+        }
+
+        public DirectoryObject[] SelectedObjects;
+        public override DirectoryObject[] GetSelectedObjectsFromDirectoryObjectPickerDialog()
+        {
+            return SelectedObjects;
+        }
+
+        #endregion
     }
 }

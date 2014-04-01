@@ -19,6 +19,7 @@ namespace Dev2.Dialogs
     {
         readonly enDsfActivityType _activityType;
         readonly ExplorerViewModel _explorerViewModel;
+        readonly IAsyncWorker _asyncWorker;
 
         /// <summary>
         /// Creates a picker suitable for dropping from the toolbox.
@@ -42,13 +43,21 @@ namespace Dev2.Dialogs
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
+            _asyncWorker = asyncWorker;
             _activityType = activityType;
             _explorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, isFromDrop, activityType);
-
-            asyncWorker.Start(() => { }, () => _explorerViewModel.LoadEnvironments());
+            LoadEnvironments();
         }
 
         public IResourceModel SelectedResource { get; set; }
+
+        public void LoadEnvironments()
+        {
+            if(_explorerViewModel.EnvironmentRepository.Source != null && _explorerViewModel.EnvironmentRepository.Source.IsConnected)
+            {
+                _asyncWorker.Start(() => { }, () => _explorerViewModel.LoadEnvironments(false));
+            }
+        }
 
         public bool ShowDialog()
         {

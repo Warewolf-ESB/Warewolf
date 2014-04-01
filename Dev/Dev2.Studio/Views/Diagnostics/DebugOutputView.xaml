@@ -456,7 +456,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TreeView Grid.Row="0" 
-                      ItemsSource="{Binding RootItems}" 
+                      ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       BorderBrush="Transparent"

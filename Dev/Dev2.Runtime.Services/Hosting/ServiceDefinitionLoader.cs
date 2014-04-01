@@ -39,7 +39,7 @@ namespace Dev2.Runtime.Hosting
             tmp = ExtractValue(xe, "HelpLink");
             obj.HelpLink = tmp;
 
-            tmp = ExtractValue(xe, "DataList");
+            tmp = ExtractValue(xe, "DataList", true);
             obj.DataListSpecification = tmp;
 
             obj.Name = xe.AttributeSafe("Name");
@@ -52,14 +52,20 @@ namespace Dev2.Runtime.Hosting
         /// </summary>
         /// <param name="xe">The executable.</param>
         /// <param name="elementName">Name of the element.</param>
+        /// <param name="useElementSafe">if set to <c>true</c> [use element safe].</param>
         /// <returns></returns>
-        public static string ExtractValue(XElement xe, string elementName)
+        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe = false)
         {
             var tmp = xe.Element(elementName);
 
             if(tmp != null)
             {
                 var extractValue = tmp.Value;
+                if (useElementSafe)
+                {
+                    extractValue = xe.ElementStringSafe(elementName);
+                }
+
                 return extractValue;
             }
 

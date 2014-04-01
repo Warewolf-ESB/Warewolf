@@ -156,7 +156,7 @@ namespace Dev2.Core.Tests
             var secondEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             repo.Save(secondEnvironment.Object);
 
-            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, vm.Context);
+            var msg = new AddServerToExplorerMessage(secondEnvironment.Object);
             vm.Handle(msg);
 
             //------Assert---------
@@ -180,7 +180,7 @@ namespace Dev2.Core.Tests
             secondEnvironment.Setup(c => c.Connect()).Verifiable();
             repo.Save(secondEnvironment.Object);
 
-            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, vm.Context, true);
+            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, true);
             vm.Handle(msg);
 
             //------Assert---------
@@ -228,7 +228,7 @@ namespace Dev2.Core.Tests
             newServer.Setup(e => e.ID).Returns(Guid.NewGuid);
             newServer.Setup(e => e.IsConnected).Returns(true); // so that we load resources
 
-            var newServerMessage = new AddServerToExplorerMessage(newServer.Object, viewModel.Context);
+            var newServerMessage = new AddServerToExplorerMessage(newServer.Object);
             viewModel.Handle(newServerMessage);
 
             Assert.AreEqual(1, actionHitCount, "NavigationViewModel.LoadResourcesCompleted Event handler did not unsubscribe itself.");

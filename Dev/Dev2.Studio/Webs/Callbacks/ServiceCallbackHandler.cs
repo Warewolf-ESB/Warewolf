@@ -29,7 +29,7 @@ namespace Dev2.Studio.Webs.Callbacks
         }
 
         public ServiceCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IShowDependencyProvider provider)
-            : base(eventPublisher, currentEnvironmentRepository, null, provider)
+            : base(eventPublisher, currentEnvironmentRepository, provider)
         {
         }
 

@@ -24,6 +24,10 @@ namespace Dev2.Studio.Core.AppResources.Enums
         ReportsManager,
         WebserverManager,
 
+        [IconLocation("pack://application:,,,/images/TaskScheduler-32.png")]
+        [Description("Scheduler")]
+        Scheduler,
+
         [IconLocation("pack://application:,,,/images/Settings-32.png")]
         [Description("Settings")]
         Settings,

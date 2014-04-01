@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
@@ -143,14 +144,14 @@ namespace Dev2.Studio.Webs
                 srcID = xe.AttributeSafe("SourceID");
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID, null, resourceModel.ResourceName);
+            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, Guid? context = null, string resourceName = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
         {
             const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
@@ -191,7 +192,7 @@ namespace Dev2.Studio.Webs
                     case ResourceType.Server:
                         workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
                         pageName = "sources/server";
-                        pageHandler = new ConnectCallbackHandler(context);
+                        pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
                         if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;

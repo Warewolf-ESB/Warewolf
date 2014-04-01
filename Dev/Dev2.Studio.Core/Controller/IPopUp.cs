@@ -14,5 +14,7 @@ namespace Dev2.Studio.Core.Controller
         string DontShowAgainKey { get; set; }
         MessageBoxResult Show();
         MessageBoxResult ShowNotConnected();
+        MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
+        MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
     }
 }

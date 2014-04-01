@@ -24,7 +24,7 @@ namespace Dev2.Infrastructure.Tests.Communication
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer js = new Dev2JsonSerializer();
-            EsbExecuteRequest request = new EsbExecuteRequest {ServiceName = "Foobar"};
+            EsbExecuteRequest request = new EsbExecuteRequest { ServiceName = "Foobar" };
             request.AddArgument("key1", new StringBuilder("value1"));
             request.AddArgument("key2", new StringBuilder("value2"));
 
@@ -32,9 +32,9 @@ namespace Dev2.Infrastructure.Tests.Communication
             var result = js.SerializeToBuilder(request);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(348, result.Length);
+            Assert.AreEqual(679, result.Length);
             var resultObj = js.Deserialize<EsbExecuteRequest>(result);
-            
+
             // check service name hydration
             Assert.AreEqual(request.ServiceName, resultObj.ServiceName);
 
@@ -56,7 +56,7 @@ Knowledge nay estimable questions repulsive daughters boy. Solicitude gay way un
 
 Why end might ask civil again spoil.";
 
-            ExecuteMessage msg = new ExecuteMessage {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(theMessage);
 
             StringBuilder buffer = new StringBuilder(JsonConvert.SerializeObject(msg));

@@ -81,10 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5045.24397, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5058.16094, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\ActiveDirectory\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,10 +103,14 @@
       <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.18776, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -175,13 +178,14 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
+    <Compile Include="ConverterTests\GridRowNumberConverterTests.cs" />
     <Compile Include="ConverterTests\PaddingThicknessConverterTests.cs" />
     <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
     <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />
     <Compile Include="ConverterTests\TestNonResourceTreeViewModel.cs" />
     <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
-    <Compile Include="Custom Dev2 Controls\ConnectControlTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
     <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
@@ -218,6 +222,8 @@
     <Compile Include="DependencyGraph\DependencyGraphGeneratorTest.cs" />
     <Compile Include="ResourceModelFactoryTests.cs" />
     <Compile Include="Settings\SettingsItemViewModelTests.cs" />
+    <Compile Include="Settings\ClientScheduledResourceTests.cs" />
+    <Compile Include="Settings\SchedulerViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
@@ -315,7 +321,6 @@
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
-    <Compile Include="ViewModelTests\Configuration\RuntimeConfigurationViewModelTests.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
@@ -368,7 +373,7 @@
       <Name>Dev2.Composition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
-      <Project>{F5162BDB-D3DB-480E-92E4-FD732904A247}</Project>
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
       <Name>Dev2.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
@@ -407,6 +412,10 @@
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
@@ -414,6 +423,10 @@
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
+      <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
+      <Name>Dev2.TaskScheduler.Wrappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632e4898-1b1b-474c-a028-d13a5c914f11}</Project>
@@ -434,11 +447,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />

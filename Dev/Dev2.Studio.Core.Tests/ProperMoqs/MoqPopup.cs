@@ -2,7 +2,8 @@
 using System.ComponentModel.Composition;
 using System.Windows;
 
-namespace Dev2.Core.Tests.ProperMoqs {
+namespace Dev2.Core.Tests.ProperMoqs
+{
     [Export(typeof(IPopupController))]
     public class MoqPopup : IPopupController
     {
@@ -14,7 +15,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
         MessageBoxResult _result;
         string _dontShowAgainKey;
 
-        public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons) {
+        public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
+        {
             Header = headerText;
             Description = discriptionText;
             ImageType = imageType;
@@ -32,47 +34,62 @@ namespace Dev2.Core.Tests.ProperMoqs {
             _result = result;
         }
 
-        public string Header {
-            get {
+        public string Header
+        {
+            get
+            {
                 return _header;
             }
-            set {
+            set
+            {
                 _header = value;
             }
         }
 
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return _discripton;
             }
-            set {
+            set
+            {
                 _discripton = value;
             }
         }
 
-        public string Question {
-            get {
+        public string Question
+        {
+            get
+            {
                 return _question;
             }
-            set {
+            set
+            {
                 _question = value;
             }
         }
 
-        public MessageBoxImage ImageType {
-            get {
+        public MessageBoxImage ImageType
+        {
+            get
+            {
                 return _imageType;
             }
-            set {
+            set
+            {
                 _imageType = value;
             }
         }
 
-        public MessageBoxButton Buttons {
-            get {
+        public MessageBoxButton Buttons
+        {
+            get
+            {
                 return _buttons;
             }
-            set {
+            set
+            {
                 _buttons = value;
             }
         }
@@ -85,6 +102,16 @@ namespace Dev2.Core.Tests.ProperMoqs {
         public int ShowHitCount { get; private set; }
 
         public MessageBoxResult ShowNotConnected()
+        {
+            return _result;
+        }
+
+        public MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted)
+        {
+            return _result;
+        }
+
+        public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
         {
             return _result;
         }

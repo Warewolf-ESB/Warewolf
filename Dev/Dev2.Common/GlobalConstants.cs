@@ -261,6 +261,10 @@ namespace Dev2.Common
                 "Not XML"                
         };
 
+        public const string SchedulerFolderId = "Warewolf";
+        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
+        public const string SchedulerDebugPath = @"DebugOutPut\";
+
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
 

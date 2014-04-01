@@ -12,23 +12,33 @@ namespace Dev2.Communication
     /// </summary>
     public class Dev2JsonSerializer : ISerializer
     {
+        const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
+        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            };
+        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
         public string Serialize<T>(T message)
         {
             VerifyArgument.IsNotNull("message", message);
-            return JsonConvert.SerializeObject(message);
+            return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
         }
 
         public T Deserialize<T>([NotNull] string message)
         {
             VerifyArgument.IsNotNull("message", message);
-            return JsonConvert.DeserializeObject<T>(message);
+            return JsonConvert.DeserializeObject<T>(message, _deSerializerSettings);
         }
 
         public object Deserialize(string message, Type type)
         {
             VerifyArgument.IsNotNull("message", message);
             VerifyArgument.IsNotNull("type", type);
-            return JsonConvert.DeserializeObject(message, type);
+            return JsonConvert.DeserializeObject(message, type, _deSerializerSettings);
         }
 
         public StringBuilder SerializeToBuilder(object obj)
@@ -38,7 +48,8 @@ namespace Dev2.Communication
             using(StringWriter sw = new StringWriter(result))
             {
                 var jsonSerializer = new JsonSerializer();
-
+                jsonSerializer.TypeNameHandling = _serializerSettings.TypeNameHandling;
+                jsonSerializer.TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat;
                 using(var jsonTextWriter = new JsonTextWriter(sw))
                 {
                     jsonSerializer.Serialize(jsonTextWriter, obj);
@@ -56,6 +67,7 @@ namespace Dev2.Communication
             if(message != null && message.Length > 0)
             {
                 JsonSerializer serializer = new JsonSerializer();
+                serializer.TypeNameHandling = _deSerializerSettings.TypeNameHandling;
                 using(MemoryStream ms = new MemoryStream(message.Length))
                 {
                     // now load the stream ;)

@@ -1018,6 +1018,8 @@ namespace Dev2
         /// </summary>
         bool PreloadReferences()
         {
+            try
+            {
             if(!LoadExternalDependencies())
             {
                 return false;
@@ -1036,6 +1038,12 @@ namespace Dev2
             }
 
             return Result;
+        }
+            catch(Exception e)
+            {
+                LogException(e);
+                return false;
+            }
         }
 
         /// <summary>

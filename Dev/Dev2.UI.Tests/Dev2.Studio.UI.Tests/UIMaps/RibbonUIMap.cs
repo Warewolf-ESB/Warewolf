@@ -169,7 +169,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void DebugShortcutKeyPress()
         {
+            StudioWindow.SetFocus();
             SendKeys.SendWait("{F6}");
+        }
+
+        public void SchedulerShortcutKeyPress()
+        {
+            StudioWindow.SetFocus();
+            KeyboardCommands.SendKey("{ALT}S", 2000);
         }
     }
 }

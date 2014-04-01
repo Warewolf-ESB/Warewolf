@@ -145,6 +145,7 @@ namespace Dev2.Runtime.ESB
 
                             ErrorResultTO invokeErrors;
                             // Invoke based upon type ;)
+                            theStart.DataListSpecification = theService.DataListSpecification;
                             EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
                             result = container.Execute(out invokeErrors);
                             errors.MergeErrors(invokeErrors);

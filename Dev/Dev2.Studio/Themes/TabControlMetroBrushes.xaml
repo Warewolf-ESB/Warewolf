@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Button Brushes -->
+    <SolidColorBrush x:Key="WarewolfLight" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="WarewolfWhi" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="WarewolfDark" Color="{StaticResource WarewolfDarkGrey}" />
+    <SolidColorBrush x:Key="WarewolfOr" Color="{StaticResource WarewolfOrange}" />
+
+</ResourceDictionary>

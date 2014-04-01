@@ -270,6 +270,7 @@
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Workflow" Key="W" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Source" Key="C" Modifiers="Alt" />
         <KeyBinding Command="{Binding NewResourceCommand}" CommandParameter="Service" Key="N" Modifiers="Alt" />
+        <KeyBinding Command="{Binding SchedulerCommand}" Key="S" Modifiers="Alt" />
     </Window.InputBindings>
 
     <Grid x:Name="LayoutRoot"
@@ -423,7 +424,7 @@
                             </Grid>
                         </Border>
 
-                        <!--Tools-->
+                        <!--Execute-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -434,20 +435,18 @@
                                     <TextBlock Text="Execute"
                                                Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding ViewInBrowserCommand}"
+                                <StackPanel Orientation="Horizontal"> 
+                                    <!--<Button Command="{Binding SchedulerCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            >
+                                            AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource ExecuteViewInBrowser-32}"
-                                                   ToolTip="View in Browser"
-                                                   />
-                                            <Image
-                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
-                                                   Visibility="{Binding ViewInBrowserCommand.UnauthorizedVisibility}"/>
+                                                   Source="{StaticResource TaskScheduler-32}"
+                                                   ToolTip="Scheduler" />
+                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
                                         </Grid>
-                                    </Button>
+                                    </Button>-->
                                     <Button Command="{Binding DebugCommand}"
                                             AutomationProperties.AutomationId="UI_RibbonDebugBtn_AutoID"
                                             Style="{DynamicResource ButtonStyleRibbon}">
@@ -461,40 +460,39 @@
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding DebugCommand.UnauthorizedVisibility}"/>
                                         </Grid>
-                                    </Button>
+                                    </Button>                                    
+                                </StackPanel>
+                            </Grid>
+                        </Border>                                              
+
+                        <!--Settings-->
+                        <Border Style="{StaticResource BorderStyleRibbon}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1">
+                                    <TextBlock Text="Settings"
+                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
+                                </Border>
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal">
+                                    <Button Command="{Binding SettingsCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
+                                        <Grid>
+                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                                   Source="{StaticResource Settings-32}"
+                                                   ToolTip="Manage Settings" />
+                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
+                                        </Grid>
+                                    </Button>                                                                      
                                 </StackPanel>
                             </Grid>
                         </Border>
-
-                        <!--Window-->
-                        <!--<Border Style="{StaticResource BorderStyleRibbon}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Window" Style="{StaticResource TextBlockStyleRibbonHeader}"/>
-                                </Border>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding ResetLayoutCommand}" 
-                                            CommandParameter="{Binding ElementName=dockManager}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Image Style="{StaticResource ImageStyleRibbon}" 
-                                                   Source="pack://application:,,,/Warewolf Studio;component/Images/ToolReplace-32.png"
-                                                   ToolTip="Reset Layout"/>
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>-->
-
+                        
                         <!--Help-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
@@ -545,34 +543,6 @@
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpAbout-32}"
                                                    ToolTip="About" />
-                                        </Grid>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-
-                        <!--Settings-->
-                        <Border Style="{StaticResource BorderStyleRibbon}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Settings"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal">
-                                    <Button Command="{Binding SettingsCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
-                                            AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource Settings-32}"
-                                                   ToolTip="Manage Settings" />
-                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
-                                                   Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>

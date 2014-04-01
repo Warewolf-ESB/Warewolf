@@ -16,12 +16,25 @@ namespace Dev2.DataList.Contract
         /// Adds the error.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        public void AddError(string msg)
+        /// <param name="checkForDuplicates"></param>
+        public void AddError(string msg, bool checkForDuplicates = false)
         {
             if(!string.IsNullOrEmpty(msg))
             {
-                _errorList.Add(msg);
+                if((checkForDuplicates && !_errorList.Contains(msg)) || !checkForDuplicates)
+                {
+                    _errorList.Add(msg);
+                }
             }
+        }
+
+        /// <summary>
+        /// Remove the error from the list
+        /// </summary>
+        /// <param name="msg"></param>
+        public void RemoveError(string msg)
+        {
+            _errorList.Remove(msg);
         }
 
         /// <summary>

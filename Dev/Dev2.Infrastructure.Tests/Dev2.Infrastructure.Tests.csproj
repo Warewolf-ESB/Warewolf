@@ -140,10 +140,6 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
-      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
-      <Name>Dev2.Intellisense</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

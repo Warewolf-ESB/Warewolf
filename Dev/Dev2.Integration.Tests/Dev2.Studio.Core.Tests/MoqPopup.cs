@@ -103,6 +103,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted)
+        {
+            return _result;
+        }
+
+        public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
+        {
+            return _result;
+        }
+
         public string DontShowAgainKey
         {
             get

@@ -131,6 +131,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return null;
         }
 
+
+        public bool AssertDebugOutputContains(UITestControl workflowStep, string [] outputs)
+        {
+
+            UITestControlCollection coll = workflowStep.GetChildren();
+            return outputs.All(a => coll.Any(b => b.FriendlyName.Contains(a)));
+        }
+
+
         public static UITestControlCollection GetInputDetailsDetails(UITestControl outputWindow)
         {
             var coll = outputWindow.GetChildren();

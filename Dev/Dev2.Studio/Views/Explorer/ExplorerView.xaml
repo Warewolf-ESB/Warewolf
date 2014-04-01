@@ -36,13 +36,12 @@
         <Dev2:ConnectControl Grid.ColumnSpan="2"
                              Margin="2,2,2,0"
                              LabelText="Connect:"
-                             Context="{Binding Context}"
                              EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
-                             NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
-                             IngoreSelectionChangedMessage="False"                             
+                             ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"                                                 
                              IsDropDownEnabled="{Binding DataContext.NavigationViewModel.IsRefreshing, ElementName=Explorer,Mode=TwoWay,Converter={StaticResource BooleanInvertConverter}}"
                              ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
-                             BindToActiveEnvironment="True" />
+                             BindToActiveEnvironment="True"
+                             ConnectControlInstanceType="Explorer"/>
 
         <NavigationViews:NavigationView x:Name="TheNavigationView"
                                         DataContext="{Binding NavigationViewModel}"

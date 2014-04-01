@@ -105,7 +105,7 @@
                                     <Storyboard>                                        
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Stroke">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonHoverBorderBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
+                                        </ObjectAnimationUsingKeyFrames>                                        
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
@@ -157,7 +157,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
     <Style x:Key="DesignSurfaceDataGrid"
            TargetType="{x:Type DataGrid}">
         <Setter Property="HorizontalScrollBarVisibility"

@@ -184,7 +184,7 @@ namespace Dev2.Core.Tests
             newServer.Setup(e => e.ID).Returns(Guid.NewGuid);
             newServer.Setup(e => e.IsConnected).Returns(true); // so that we load resources
 
-            var newServerMessage = new AddServerToExplorerMessage(newServer.Object, viewModel.ExplorerViewModel.Context);
+            var newServerMessage = new AddServerToExplorerMessage(newServer.Object);
             viewModel.ExplorerViewModel.Handle(newServerMessage);
 
             Assert.AreEqual(1, viewModel.AddWorkspaceItemsHitCount, "AddWorkspaceItems was invoked more than once.");
@@ -380,7 +380,6 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             //-------------------Assert-----------------------------
             Assert.IsNull(mvm);
-            Assert.IsNotNull(mvm.FlowController);
         }
 
         [TestMethod]

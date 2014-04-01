@@ -1,0 +1,667 @@
+﻿<UserControl x:Class="Dev2.Settings.Scheduler.SchedulerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="clr-namespace:Dev2.UI"
+             xmlns:scheduler="clr-namespace:Dev2.Settings.Scheduler"
+             xmlns:interfaces="clr-namespace:Dev2.Scheduler.Interfaces;assembly=Dev2.Scheduler"
+             xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"
+             xmlns:help1="clr-namespace:Dev2.Help"
+             Padding="10"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance scheduler:SchedulerViewModel}"
+             AutomationProperties.AutomationId="UI_ShcedulerView_AutoID">
+
+    <UserControl.Resources>
+        <Style x:Key="SchedulerDataGridStyle"
+               TargetType="{x:Type DataGrid}">
+            <Setter Property="GridLinesVisibility"
+                    Value="All" />
+            <Setter Property="HorizontalGridLinesBrush"
+                    Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="VerticalGridLinesBrush"
+                    Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="HeadersVisibility"
+                    Value="Column" />
+            <Setter Property="BorderThickness"
+                    Value="1,1,0,0" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="AutoGenerateColumns"
+                    Value="False" />
+            <Setter Property="CanUserAddRows"
+                    Value="False" />
+            <Setter Property="CanUserDeleteRows"
+                    Value="False" />
+            <Setter Property="CanUserReorderColumns"
+                    Value="True" />
+            <Setter Property="CanUserResizeColumns"
+                    Value="True" />
+            <Setter Property="CanUserResizeRows"
+                    Value="False" />
+            <Setter Property="CanUserSortColumns"
+                    Value="True" />
+            <Setter Property="Background"
+                    Value="White" />
+        </Style>
+
+        <Style x:Key="SchedulerDataGridHeaderStyle"
+               TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background"
+                    Value="{StaticResource ShellBarViewBackground}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="3,0" />
+            <Setter Property="BorderThickness"
+                    Value="0,0,1,1" />
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource BrushDarkForeground}" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+            <Setter Property="Height"
+                    Value="Auto" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Cursor"
+                            Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>              
+
+        <Style x:Key="PermissionsGridTextBlockStyle"
+               TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource TextBlockStyle}">
+            <Setter Property="FontWeight"
+                    Value="{StaticResource DefaultFontWeight}" />
+            <Setter Property="Padding"
+                    Value="3,1,3,1" />
+        </Style>
+
+        <Style x:Key="ReadOnlyTextBoxStyle"
+               TargetType="TextBox"
+               BasedOn="{StaticResource TextBoxStyle}">
+            <Setter Property="Background"
+                    Value="Transparent"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Name="Bd"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                            <ScrollViewer Name="PART_ContentHost"
+                                          Background="{TemplateBinding Background}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsReadOnly"
+                                     Value="True">
+                                <Setter Value="Transparent"
+                                        Property="Background" />
+                                <Setter Value="Black"
+                                        Property="Foreground" />
+                                <Setter TargetName="PART_ContentHost"
+                                        Property="Background"
+                                        Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"
+                              MinWidth="100" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0"
+              Grid.Row="0"
+              Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ui:ConnectControl Grid.Row="0"
+                               Grid.Column="0"
+                               Width="310"
+                               LabelText="Server: "
+                               HorizontalAlignment="Left"
+                               ConnectButtonAutomationID="UI_SettingsServerConnectButton_AutoID"
+                               EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
+                               ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"
+                               BindToActiveEnvironment="False"
+                               ConnectControlInstanceType="Scheduler" />
+            <StackPanel Grid.Row="1"
+                        Grid.Column="0"
+                        Orientation="Horizontal">
+                <Button Content="New"
+                        Height="30"
+                        Width="100"
+                        Command="{Binding NewCommand}"></Button>
+                <Button Content="Save"
+                        Height="30"
+                        Width="100"
+                        Command="{Binding SaveCommand}">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource MultipleBoolToEnabledConverter}">
+                            <Binding Path="SelectedTask"
+                                     Converter="{StaticResource NullToBoolConvert}" />
+                            <Binding Path="IsSaveEnabled" />
+                            <Binding Path="SelectedTask.IsDirty" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
+                <Button Content="Delete"
+                        Height="30"
+                        Width="100"
+                        IsEnabled="{Binding SelectedTask,Converter={StaticResource NullToBoolConvert}}"
+                        Command="{Binding DeleteCommand}"></Button>
+            </StackPanel>
+            <DataGrid Grid.Row="2"
+                      Grid.Column="0"
+                      Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative},Mode=OneWay}"
+                      Style="{StaticResource SchedulerDataGridStyle}"
+                      ItemsSource="{Binding TaskList}"
+                      SelectedItem="{Binding SelectedTask,Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Name"
+                                            Width="120"
+                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Text="{Binding Name,Mode=OneWay}"
+                                             Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                             IsReadOnly="True"
+                                             BorderThickness="0"
+                                             Width="Auto" />
+                                    <TextBlock Text="*"
+                                               Visibility="{Binding IsDirty,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                               Style="{StaticResource PermissionsGridTextBlockStyle}"
+                                               Width="10" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Status"
+                                            Width="60"
+                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Status,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                         IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Style="{StaticResource ReadOnlyTextBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Next Execution"
+                                            Width="140"
+                                            HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding NextRunDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}"
+                                         IsReadOnly="True"
+                                         BorderThickness="0"
+                                         Style="{StaticResource ReadOnlyTextBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <customControls:CircularProgressBar Grid.Row="2"
+                                                Grid.Column="0"
+                                                Height="30"
+                                                Width="30"
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,10,0,0"
+                                                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterPositive},Mode=OneWay}"
+                                                AutomationProperties.AutomationId="UI_SettingsProgress_Indicator" />
+        </Grid>
+
+        <core:ActivityDesignerToggleButton x:Name="ServerHelpToggleButton"
+                                           Grid.Row="0"
+                                           Grid.Column="1"
+                                           Width="20"
+                                           Height="20"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Top"
+                                           Margin="0,-5,-5,-10"
+                                           ToolTip="{Binding HelpToggle.ToolTip}"
+                                           IsChecked="{Binding HelpToggle.IsChecked, Mode=TwoWay}"
+                                           Content="{Binding HelpToggle.Image, Mode=TwoWay}"
+                                           Style="{StaticResource ActivityToggleButtonStyle}">
+        </core:ActivityDesignerToggleButton>
+
+        <TabControl Grid.Column="1"
+                    Grid.Row="1"
+                    Background="White"
+                    SelectedItem="{Binding ActiveItem, Mode=OneWayToSource}">
+
+            <TabItem Header="Settings">
+                <Grid Visibility="{Binding SelectedTask,Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Row="0"
+                          Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="0">
+                                <TextBlock Text="Trigger: "
+                                           Style="{StaticResource PermissionsGridTextBlockStyle}"
+                                           FontWeight="Bold" />
+                                <TextBlock Text="{Binding TriggerText}"
+                                           Style="{StaticResource PermissionsGridTextBlockStyle}"
+                                           TextWrapping="WrapWithOverflow"
+                                           FontWeight="Bold"
+                                           MaxWidth="315"
+                                           HorizontalAlignment="Left"
+                                           Width="Auto">
+                                    <i:Interaction.Behaviors>
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextTrigger}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                </TextBlock>
+                                <Button Content="Edit Trigger"
+                                        ToolTip="When should the workflow run?"
+                                        Command="{Binding EditTriggerCommand}">
+                                    <i:Interaction.Behaviors>
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextTrigger}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <Rectangle Grid.Row="1"
+                                   Height="2"
+                                   VerticalAlignment="Center"
+                                   Fill="#7F7F7F" />
+
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal">
+                            <TextBlock Text="Name: "
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}" />
+                            <TextBox VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipName}"
+                                     Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                     Width="220">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextName}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="3">
+                            <TextBlock Text="Status: "
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextStatus}"
+                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                            </TextBlock>
+                            <RadioButton x:Name="EnabledRadioButton"
+                                         Content="Enabled"
+                                         Margin="0,0,5,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         GroupName="Status"
+                                         IsChecked="{Binding Status,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource SchedulerStatusToCheckedConverter},ConverterParameter=true}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextStatus}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </RadioButton>
+                            <RadioButton x:Name="DisabledRadioButton"
+                                         Content="Disabled"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         GroupName="Status"
+                                         IsChecked="{Binding Status,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource SchedulerStatusToCheckedConverter},ConverterParameter=false}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextStatus}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </RadioButton>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="4">
+                            <TextBlock Text="Workflow: "
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}">
+                            </TextBlock>
+                            <TextBox Text="{Binding WorkflowName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                     ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipWorkFlow}"
+                                     HorizontalAlignment="Left"
+                                     Width="220"
+                                     IsReadOnly="True">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextWorkFlow}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <Button Content="..."
+                                    ToolTip="Select a workflow to be triggered"
+                                    Command="{Binding AddWorkflowCommand}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextWorkFlow}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </Button>
+
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="5">
+                            <CheckBox IsChecked="{Binding RunAsapIfScheduleMissed,Mode=TwoWay}"
+                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipRun}"
+                                      VerticalAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextRun}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </CheckBox>
+                            <TextBlock Text="Run task as soon as possible after a scheduled start is missed"
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextRun}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="6">
+                            <TextBlock Text="Number of History records to load (0 = all): "
+                                       Style="{StaticResource PermissionsGridTextBlockStyle}" />
+                            <TextBox Width="60"
+                                     Text="{Binding NumberOfRecordsToKeep,Mode=TwoWay}"
+                                     ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipHistoryRecords}"
+                                     VerticalAlignment="Center">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextHistoryRecords}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical"
+                                    Grid.Row="7">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Run as the following user account: "
+                                           Style="{StaticResource PermissionsGridTextBlockStyle}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="15,0,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="220" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Username: "
+                                               Grid.Row="0"
+                                               Grid.Column="0"
+                                               ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipUsername}"
+                                               Style="{StaticResource PermissionsGridTextBlockStyle}">
+                                               <i:Interaction.Behaviors>
+                                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
+                                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                               </i:Interaction.Behaviors>
+                                    </TextBlock>
+                                    <TextBox Width="220"
+                                             Margin="0,1,0,1"
+                                             Grid.Row="0"
+                                             Grid.Column="1"
+                                             ToolTip="Schedule should execute as this user"
+                                             VerticalAlignment="Center"
+                                             Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                        <i:Interaction.Behaviors>
+                                            <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <TextBlock Text="Password: "
+                                               Grid.Row="1"
+                                               Grid.Column="0"
+                                               Style="{StaticResource PermissionsGridTextBlockStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </TextBlock>
+                                    <PasswordBox Width="220"
+                                                 Margin="0,1,0,1"
+                                                 Grid.Row="1"
+                                                 Grid.Column="1"
+                                                 ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipPassword}"
+                                                 attachedProperties:PasswordBoxAssistant.BindPassword="true"
+                                                 attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <i:Interaction.Behaviors>
+                                            <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextPassword}"
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </PasswordBox>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="8">
+                            <TextBlock Foreground="{StaticResource ValidationErrorElement}"
+                                       Text="{Binding Error}"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Right"
+                                       Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                            </TextBlock>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <help1:HelpControl Grid.Row="0"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Top"
+                                       Width="175"
+                                       Visibility="{Binding HelpToggle.IsChecked, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="History">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextHistoryView}"
+                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </i:Interaction.Behaviors>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <customControls:CircularProgressBar Grid.Column="0"
+                                                        Height="150"
+                                                        Width="150"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                    <DataGrid ItemsSource="{Binding History}"
+                              Grid.Column="0"
+                              SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
+                              Style="{StaticResource SchedulerDataGridStyle}"
+                              RowHeight="22"
+                              Visibility="{Binding IsHistoryTabVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="27"
+                                                    IsReadOnly="True"
+                                                    Header="#"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 BorderThickness="0"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource GridRowNumberConverter}, Mode=OneWay}"></TextBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Start Time"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding TaskHistoryOutput.StartDate, Mode=OneWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource DateTimeFormatConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Duration"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding TaskHistoryOutput.Duration, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="End Time"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding TaskHistoryOutput.EndDate, Mode=OneWay,Converter={StaticResource DateTimeFormatConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Status"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding TaskHistoryOutput.Success, Converter={StaticResource BoolToStringConvert}, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Width="*"
+                                                    IsReadOnly="True"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    Header="Event Id"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding TaskHistoryOutput.EventId, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Width="*"
+                                                    HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
+                                                    IsReadOnly="True"
+                                                    Header="User Context"
+                                                    d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox IsReadOnly="True"
+                                                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                                                 BorderThickness="0"
+                                                 Text="{Binding UserName, Mode=OneWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <help1:HelpControl Grid.Column="1"
+                                       VerticalAlignment="Top"
+                                       Width="175"
+                                       Visibility="{Binding HelpToggle.IsChecked, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</UserControl>

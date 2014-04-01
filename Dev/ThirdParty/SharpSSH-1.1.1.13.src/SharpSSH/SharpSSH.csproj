@@ -91,11 +91,11 @@
   <ItemGroup>
     <Reference Include="DiffieHellman">
       <Name>DiffieHellman</Name>
-      <HintPath>lib\DiffieHellman.dll</HintPath>
+      <HintPath>..\..\..\Binaries\DiffieHellman.dll</HintPath>
     </Reference>
     <Reference Include="Org.Mentalis.Security">
       <Name>Org.Mentalis.Security</Name>
-      <HintPath>lib\Org.Mentalis.Security.dll</HintPath>
+      <HintPath>..\..\..\Binaries\Org.Mentalis.Security.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>

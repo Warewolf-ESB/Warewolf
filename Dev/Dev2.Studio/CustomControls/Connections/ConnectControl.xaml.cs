@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using Caliburn.Micro;
-using Dev2.Data.ServiceModel;
+using Dev2.AppResources.Enums;
 using Dev2.Services.Events;
 using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.Webs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.UI
@@ -62,6 +60,26 @@ namespace Dev2.UI
 
         #endregion
 
+        #region ConnectControlInstanceType
+
+        public ConnectControlInstanceType ConnectControlInstanceType
+        {
+            get
+            {
+                return (ConnectControlInstanceType)GetValue(ConnectControlInstanceTypeProperty);
+            }
+            set
+            {
+                SetValue(ConnectControlInstanceTypeProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for ConnectControlInstanceType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConnectControlInstanceTypeProperty =
+            DependencyProperty.Register("ConnectControlInstanceType", typeof(ConnectControlInstanceType), typeof(ConnectControl), new PropertyMetadata(ConnectControlInstanceType.Explorer));
+
+        #endregion
+
         #region BindToActiveEnvironment
 
         public bool BindToActiveEnvironment
@@ -100,16 +118,16 @@ namespace Dev2.UI
             DependencyProperty.Register("EditButtonAutomationID", typeof(string), typeof(ConnectControl),
                 new PropertyMetadata("UI_ServerEditBtn_AutoID"));
 
-        public string NewButtonAutomationID
+        public string ConnectButtonAutomationID
         {
-            get { return (string)GetValue(NewButtonAutomationIDProperty); }
-            set { SetValue(NewButtonAutomationIDProperty, value); }
+            get { return (string)GetValue(ConnectButtonAutomationIDProperty); }
+            set { SetValue(ConnectButtonAutomationIDProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ConnectButtonAutomationID.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty NewButtonAutomationIDProperty =
-            DependencyProperty.Register("NewButtonAutomationID", typeof(string), typeof(ConnectControl),
-                new PropertyMetadata("UI_NewServerBtn_AutoID"));
+        public static readonly DependencyProperty ConnectButtonAutomationIDProperty =
+            DependencyProperty.Register("ConnectButtonAutomationID", typeof(string), typeof(ConnectControl),
+                new PropertyMetadata("UI_ConnectServerBtn_AutoID"));
 
         #endregion
 
@@ -128,56 +146,18 @@ namespace Dev2.UI
 
         #endregion
 
-        #region IngoreSelectionChangedMessage
-
-        public bool IngoreSelectionChangedMessage
-        {
-            get { return (bool)GetValue(IngoreSelectionChangedMessageProperty); }
-            set { SetValue(IngoreSelectionChangedMessageProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IngoreSelectionChangedMessageProperty =
-            DependencyProperty.Register("IngoreSelectionChangedMessage", typeof(bool),
-                typeof(ConnectControl), new PropertyMetadata(false));
-
-        #endregion
-
-        #region Context
-
-        public Guid? Context
-        {
-            get { return (Guid?)GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContextProperty =
-            DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
-
-        #endregion
-
-        void OnEditClick(object sender, RoutedEventArgs e)
-        {
-            RootWebSite.ShowDialog(ViewModel.SelectedServer, ResourceType.Server, null, ViewModel.SelectedServer.ID.ToString(), null, Context);
-            ViewModel.LoadServers();
-        }
-
-        void OnNewClick(object sender, RoutedEventArgs e)
-        {
-            IEnvironmentModel localHost = ViewModel.Servers.FirstOrDefault(c => c.IsLocalHost);
-            if(localHost != null)
-            {
-                RootWebSite.ShowDialog(localHost, ResourceType.Server, null, null, null, Context);
-                ViewModel.LoadServers();
-            }
-        }
-
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             var connectControlViewModel = ViewModel;
             if(connectControlViewModel != null)
             {
                 #region Bindings
+                BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.ConnectControlInstanceTypeProperty, new Binding(ConnectControlInstanceTypeProperty.Name)
+                {
+                    Source = this,
+                    Mode = BindingMode.TwoWay,
+                });
+
                 BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.IsDropDownEnabledProperty, new Binding(IsDropDownEnabledProperty.Name)
                 {
                     Source = this,
@@ -196,24 +176,12 @@ namespace Dev2.UI
                     Mode = BindingMode.TwoWay,
                 });
 
-                BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.ContextProperty, new Binding(ContextProperty.Name)
-                {
-                    Source = this,
-                    Mode = BindingMode.TwoWay,
-                });
-
-                BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.IngoreSelectionChangedMessageProperty, new Binding(IngoreSelectionChangedMessageProperty.Name)
-                {
-                    Source = this,
-                    Mode = BindingMode.TwoWay,
-                });
-
                 #endregion
 
                 connectControlViewModel.LoadServers();
 
                 IMainViewModel mainViewModel = _mainApp.MainWindow.DataContext as IMainViewModel;
-                if(ViewModel.IsSourceServer || ViewModel.BindToActiveEnvironment || IngoreSelectionChangedMessage)
+                if(ViewModel.BindToActiveEnvironment)
                 {
                     if(mainViewModel != null)
                     {

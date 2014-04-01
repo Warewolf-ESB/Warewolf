@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.AppResources.Enums;
 using Dev2.Instrumentation;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -165,12 +166,20 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         bool SelectedDestinationServerIsValid()
         {
-            return SelectedDestinationServer != null && SelectedDestinationServer.IsConnected && SelectedDestinationServer.IsAuthorizedDeployTo;
+            if(SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
+            {
+                return SelectedDestinationServer.IsAuthorizedDeployTo;
+            }
+            return true;
         }
 
         bool SelectedSourceServerIsValid()
         {
-            return SelectedSourceServer != null && SelectedSourceServer.IsConnected && SelectedSourceServer.IsAuthorizedDeployFrom;
+            if(SelectedSourceServer != null && SelectedSourceServer.IsConnected)
+            {
+                return SelectedSourceServer.IsAuthorizedDeployFrom;
+            }
+            return true;
         }
 
         public bool SourceItemsSelected
@@ -556,32 +565,41 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Adds a new server
         /// </summary>
-        private void AddServer(IEnvironmentModel server, bool connectSource, bool connectTarget)
+        private void AddServer(IEnvironmentModel server, ConnectControlInstanceType connectControlInstanceType)
         {
 
-            _asyncWorker.Start(
-                // ReSharper disable ImplicitlyCapturedClosure
-                // ReSharper disable ConvertClosureToMethodGroup
-                () =>
-                // ReSharper restore ImplicitlyCapturedClosure
-                {
-                    server.Connect();
-                },
-                // ReSharper restore ConvertClosureToMethodGroup
-                () =>
-                {
-                    Servers.Add(server);
+            if(connectControlInstanceType == ConnectControlInstanceType.DeploySource)
+            {
+                SelectedSourceServer = server;
+            }
+            if(connectControlInstanceType == ConnectControlInstanceType.DeployTarget)
+            {
+                SelectedDestinationServer = server;
+            }
+
+            //_asyncWorker.Start(
+            //    // ReSharper disable ImplicitlyCapturedClosure
+            //    // ReSharper disable ConvertClosureToMethodGroup
+            //    () =>
+            //    // ReSharper restore ImplicitlyCapturedClosure
+            //    {
+            //        server.Connect();
+            //    },
+            //    // ReSharper restore ConvertClosureToMethodGroup
+            //    () =>
+            //    {
+            //        Servers.Add(server);
 
 
-                    if(connectSource)
-                    {
-                        SelectedSourceServer = server;
-                    }
-                    if(connectTarget)
-                    {
-                        SelectedDestinationServer = server;
-                    }
-                });
+            //        if(connectSource)
+            //        {
+            //            SelectedSourceServer = server;
+            //        }
+            //        if(connectTarget)
+            //        {
+            //            SelectedDestinationServer = server;
+            //        }
+            //    });
         }
 
         /// <summary>
@@ -857,22 +875,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         public void Handle(AddServerToDeployMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            if(message.Context != null)
-            {
-                var ctx = message.Context;
-                if(ctx.Equals(SourceContext))
-                {
-                    AddServer(message.Server, true, false);
-                }
-                else if(ctx.Equals(DestinationContext))
-                {
-                    AddServer(message.Server, false, true);
-                }
-            }
-            else
-            {
-                AddServer(message.Server, message.IsSource, message.IsDestination);
-            }
+
+            AddServer(message.Server, message.ConnectControlInstanceType);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

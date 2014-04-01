@@ -184,8 +184,11 @@
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
+    <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToDisabledFontColorConverter.cs" />
+    <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
+    <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverter.cs" />
@@ -223,6 +226,7 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
+    <Compile Include="AppResources\Enums\ConnectControlInstanceType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
@@ -332,8 +336,10 @@
     <Compile Include="Messages\ConfigureCaseExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureDecisionExpressionMessage.cs" />
     <Compile Include="Messages\ConfigureSwitchExpressionMessage.cs" />
+    <Compile Include="Messages\DebugOutputMessage.cs" />
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
+    <Compile Include="Messages\SelectedServerConnectedMessage.cs" />
     <Compile Include="Messages\ServerSelectionChangedMessage.cs" />
     <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
@@ -554,7 +560,9 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

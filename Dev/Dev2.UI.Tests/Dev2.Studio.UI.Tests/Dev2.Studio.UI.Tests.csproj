@@ -128,6 +128,7 @@
     <Compile Include="Tests\Activities\PluginServiceTests.cs" />
     <Compile Include="Tests\Activities\WebServiceTests.cs" />
     <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />
+    <Compile Include="Tests\Scheduler\SchedulerUiTests.cs" />
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
     <Compile Include="Enums\Dev2MappingType.cs" />
     <Compile Include="Tests\VariableList\VariableListUITests.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="UIMaps\Activities\DsfFindRecordsUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfMultiAssignUiMap.cs" />
     <Compile Include="UIMaps\Activities\ToolsUiMapBase.cs" />
+    <Compile Include="UIMaps\Scheduler\SchedulerUiMap.cs" />
     <Compile Include="Utils\MouseCommands.cs" />
     <Compile Include="UIMaps\Settings\SecuritySettingsUiMap.cs" />
     <Compile Include="Utils\Bootstrap.cs" />

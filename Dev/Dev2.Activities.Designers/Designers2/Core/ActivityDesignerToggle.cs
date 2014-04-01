@@ -35,6 +35,23 @@ namespace Dev2.Activities.Designers2.Core
             return toggle;
         }
 
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, bool autoReset = false)
+        {
+            var toggle = new ActivityDesignerToggle
+            {
+                CollapseImageSourceUri = collapseImageSourceUri,
+                CollapseToolTip = collapseToolTip,
+                ExpandImageSourceUri = expandImageSourceUri,
+                ExpandToolTip = expandToolTip,
+                Image = CreateImage(expandImageSourceUri),
+                ToolTip = expandToolTip,
+                AutomationID = automationID,
+                AutoReset = autoReset
+            };
+
+            return toggle;
+        }
+
         // Prevent direct instantiation - use Create method instead
         ActivityDesignerToggle()
         {

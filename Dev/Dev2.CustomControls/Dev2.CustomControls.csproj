@@ -96,8 +96,10 @@
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
     <Compile Include="Behavior\VisibilityChangedToFocusBehavior.cs" />
     <Compile Include="Controls\SimpleGridSplitter.cs" />
+    <Compile Include="Converters\BoolToStringConvert.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Converters\IsConnectedToTextConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
     <Compile Include="Converters\MathFunctionDoubleConverter.cs" />
     <Compile Include="Adorners\SingleChildAdornerBase.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
+    <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
     <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
     <Compile Include="Data\DataContextSpy.cs" />

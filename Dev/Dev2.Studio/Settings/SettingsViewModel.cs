@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Instrumentation;
 using Dev2.Messages;
@@ -22,7 +23,7 @@ using System.Windows.Input;
 
 namespace Dev2.Settings
 {
-    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>
+    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>
     {
         bool _isLoading;
         bool _isDirty;
@@ -250,13 +251,6 @@ namespace Dev2.Settings
                 return;
             }
 
-            if(!server.IsConnected)
-            {
-                server.CanStudioExecute = false;
-                _popupController.ShowNotConnected();
-                return;
-            }
-
             CurrentEnvironment = server;
             SaveCommand.UpdateContext(CurrentEnvironment);
             LoadSettings();
@@ -271,16 +265,18 @@ namespace Dev2.Settings
 
             _asyncWorker.Start(() =>
             {
+                if(CurrentEnvironment.IsConnected)
+                {
                 Settings = ReadSettings();
+                }
+                else
+                {
+                    Settings = new Data.Settings.Settings { Security = new SecuritySettingsTO() };
+                }
+
             }, () =>
             {
                 IsLoading = false;
-
-                if(Settings == null)
-                {
-                    return;
-                }
-
                 SecurityViewModel = CreateSecurityViewModel();
                 LoggingViewModel = CreateLoggingViewModel();
 
@@ -371,22 +367,22 @@ namespace Dev2.Settings
             var saveResult = GetSaveResult();
             if(saveResult == MessageBoxResult.Yes)
             {
-                ResetIsDirtyForChildren();
-                ClearErrors();
+            ResetIsDirtyForChildren();
+            ClearErrors();
 
-                SecurityViewModel.Save(Settings.Security);
+            SecurityViewModel.Save(Settings.Security);
 
-                var isWritten = WriteSettings();
-                if(isWritten)
-                {
-                    IsSaved = true;
-                    IsDirty = false;
-                }
-                else
-                {
-                    IsSaved = false;
-                    IsDirty = true;
-                }
+            var isWritten = WriteSettings();
+            if(isWritten)
+            {
+                IsSaved = true;
+                IsDirty = false;
+            }
+            else
+            {
+                IsSaved = false;
+                IsDirty = true;
+            }
             }
             return saveResult;
         }
@@ -429,14 +425,28 @@ namespace Dev2.Settings
         {
             HasErrors = true;
             Errors = description;
-            //throw new Exception(string.Format("{0} : {1}", header, description));
         }
 
         #region Implementation of IHandle<ServerSelectionChangedMessage>
 
         public void Handle(ServerSelectionChangedMessage message)
         {
+            if(message.ConnectControlInstanceType == ConnectControlInstanceType.Settings)
+            {
+                OnServerChanged(message.SelectedServer);
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SelectedServerConnectedMessage>
+
+        public void Handle(SelectedServerConnectedMessage message)
+        {
+            if(Equals(message.SelectedServer, CurrentEnvironment))
+            {
             OnServerChanged(message.SelectedServer);
+        }
         }
 
         #endregion

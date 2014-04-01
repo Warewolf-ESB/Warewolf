@@ -121,7 +121,7 @@
     <Compile Include="Providers\Validation\IErrorsSource.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
-    <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
+	 <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXmlRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXpathRule.cs" />
@@ -182,6 +182,7 @@
     <Compile Include="Shared Models\SerializableResource.cs" />
     <Compile Include="Threading\AsyncWorker.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
+    <Compile Include="Threading\TestAsyncWorker.cs" />
     <Compile Include="VerifyArgument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

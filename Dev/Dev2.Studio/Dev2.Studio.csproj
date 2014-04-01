@@ -107,10 +107,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5045.24397, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5058.16094, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\ActiveDirectory\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=4.2.0.8649, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
@@ -141,6 +140,13 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.16125, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor">
+      <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -192,6 +198,7 @@
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -268,6 +275,7 @@
     <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NullToDebugImageConverter.cs" />
     <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
+    <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ActivityDesigners\BaseActivityDesigner.cs" />
@@ -340,6 +348,11 @@
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
+    <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
+      <DependentUpon>SchedulerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
+    <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
@@ -376,7 +389,6 @@
     </Compile>
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
-    <Compile Include="Settings\RuntimeConfigurationViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
     <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
@@ -387,9 +399,6 @@
     </Compile>
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\RuntimeConfigurationView.xaml.cs">
-      <DependentUpon>RuntimeConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Dialogs\Dev2MessageBoxView.xaml.cs">
       <DependentUpon>Dev2MessageBoxView.xaml</DependentUpon>
@@ -664,6 +673,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Settings\Scheduler\SchedulerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\Security\SecurityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -725,6 +738,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\DataTemplatesIntellisense.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\TabControlMetro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\TabControlMetroBrushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -869,10 +890,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Dialog\Dev2MessageBoxWithCustomButtons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\RuntimeConfigurationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1064,6 +1081,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\TaskScheduler-32.png" />
     <Resource Include="Images\AuthExecute-12.png" />
     <Resource Include="Images\AuthNone-16.png" />
     <Resource Include="Images\AuthView-12.png" />
@@ -1307,9 +1325,17 @@
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
+      <Project>{1B229665-1631-4275-AFBD-CB5B7775E4CA}</Project>
+      <Name>Dev2.TaskScheduler.Wrappers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>

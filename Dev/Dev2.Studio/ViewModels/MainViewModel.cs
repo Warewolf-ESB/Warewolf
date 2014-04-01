@@ -7,6 +7,7 @@ using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
+using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
@@ -92,6 +93,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private ICommand _resetLayoutCommand;
         private AuthorizeCommand _settingsCommand;
+        private ICommand _schedulerCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
         private ICommand _startStopRecordedFeedbackCommand;
@@ -353,6 +355,15 @@ namespace Dev2.Studio.ViewModels
             {
                 return _settingsCommand ?? (_settingsCommand =
                     new AuthorizeCommand(AuthorizationContext.Administrator, param => AddSettingsWorkSurface(), param => IsActiveEnvironmentConnected()));
+            }
+        }
+
+        public ICommand SchedulerCommand
+        {
+            get
+            {
+                return _schedulerCommand ?? (_schedulerCommand =
+                    new RelayCommand(param => AddSchedulerWorkSurface()));
             }
         }
 
@@ -838,6 +849,11 @@ namespace Dev2.Studio.ViewModels
         public void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
+        }
+
+        public void AddSchedulerWorkSurface()
+        {
+            ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
         public void AddReportsWorkSurface()
@@ -1515,11 +1531,20 @@ namespace Dev2.Studio.ViewModels
                             remove = settingsViewModel.DoDeactivate();
                             if(remove)
                             {
-                                settingsViewModel.Dispose();
-                            }
+                            settingsViewModel.Dispose();
+                        }
+                    }
+
+                    else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        var schedulerViewModel = vm as SchedulerViewModel;
+                        if(schedulerViewModel != null)
+                        {
+                            schedulerViewModel.Dispose();
                         }
                     }
                 }
+            }
             }
 
             return remove;

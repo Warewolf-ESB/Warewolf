@@ -2748,6 +2748,152 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To prevent redundant data being kept the system will clean up old schedule results. To specify how many results to keep, put a whole number in here..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextHistoryRecords {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextHistoryRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each trigger that is executed will be stored in the system.
+        ///To see the result of the workflow execution, select the history record and then look at the Output pane..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextHistoryView {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextHistoryView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the schedule that will appear in the list of Schedules in the left hand column.
+        ///Renaming a Schedule will loose its History..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextName {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextPassword {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check this box if you would like a missed trigger to execute as soon as possible..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextRun {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To change if the trigger is active or not, select Enabled or Dissabled..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextStatus {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To run a workflow on a schedule select the Edit Trigger button..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextUsername {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To run a workflow on a schedule select the Trigger above and then click … to choose the workflow you want to execute..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextWorkFlow {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextWorkFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to How much History should the system keep?.
+        /// </summary>
+        public static string SchedulerSettingsToolTipHistoryRecords {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipHistoryRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What name do you want to give this Schedule?.
+        /// </summary>
+        public static string SchedulerSettingsToolTipName {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule will use this password for the above username.
+        /// </summary>
+        public static string SchedulerSettingsToolTipPassword {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allows a missed trigger to be executed.
+        /// </summary>
+        public static string SchedulerSettingsToolTipRun {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When should the workflow run?.
+        /// </summary>
+        public static string SchedulerSettingsToolTipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule should execute as this user.
+        /// </summary>
+        public static string SchedulerSettingsToolTipUsername {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a workflow to be triggered.
+        /// </summary>
+        public static string SchedulerSettingsToolTipWorkFlow {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsToolTipWorkFlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What type of scripting language do you want to use?.
         /// </summary>
         public static string ScriptingHelpLanguageType {

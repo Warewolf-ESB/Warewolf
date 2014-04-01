@@ -11,11 +11,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql.Tests", "..\Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpSSH", "SharpSSH-1.1.1.13.src\SharpSSH\SharpSSH.csproj", "{D27CF69D-4681-492A-BE4D-D3D209104423}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService", "TaskService\TaskService.csproj", "{81B5ABCC-6909-483D-8BB3-84B52E3C7043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTaskService", "TaskService\TestTaskService\TestTaskService.csproj", "{207F8F60-0A74-4959-8623-5D258EB133EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C} = {5279D487-59FA-4D01-9D7A-EA7387D8B67C}
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043} = {81B5ABCC-6909-483D-8BB3-84B52E3C7043}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMTask", "TaskService\COMTask\COMTask.csproj", "{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskEditor", "TaskService\TaskEditor\TaskEditor.csproj", "{5279D487-59FA-4D01-9D7A-EA7387D8B67C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043} = {81B5ABCC-6909-483D-8BB3-84B52E3C7043}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityEditor", "TaskService\SecurityEditor\SecurityEditor.csproj", "{31FC9051-D954-4F35-AB09-BBABB391549E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskServiceExecutor", "TaskService\TaskServiceExecutor\TaskServiceExecutor.csproj", "{BB5F9CFB-668A-46ED-B904-3B5744389F87}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Weave.Tests", "Dev2.Weave.Tests\Dev2.Weave.Tests.csproj", "{C02CA2C6-879E-411A-8FC2-1926FF2B47E4}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 13
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -34,9 +53,27 @@ Global
 		SccProjectUniqueName5 = SharpSSH-1.1.1.13.src\\SharpSSH\\SharpSSH.csproj
 		SccProjectName5 = SharpSSH-1.1.1.13.src/SharpSSH
 		SccLocalPath5 = SharpSSH-1.1.1.13.src\\SharpSSH
-		SccProjectUniqueName6 = Dev2.Weave.Tests\\Dev2.Weave.Tests.csproj
-		SccProjectName6 = Dev2.Weave.Tests
-		SccLocalPath6 = Dev2.Weave.Tests
+		SccProjectUniqueName6 = TaskService\\TaskService.csproj
+		SccProjectName6 = TaskService
+		SccLocalPath6 = TaskService
+		SccProjectUniqueName7 = TaskService\\TestTaskService\\TestTaskService.csproj
+		SccProjectName7 = TaskService/TestTaskService
+		SccLocalPath7 = TaskService\\TestTaskService
+		SccProjectUniqueName8 = TaskService\\COMTask\\COMTask.csproj
+		SccProjectName8 = TaskService/COMTask
+		SccLocalPath8 = TaskService\\COMTask
+		SccProjectUniqueName9 = TaskService\\TaskEditor\\TaskEditor.csproj
+		SccProjectName9 = TaskService/TaskEditor
+		SccLocalPath9 = TaskService\\TaskEditor
+		SccProjectUniqueName10 = TaskService\\SecurityEditor\\SecurityEditor.csproj
+		SccProjectName10 = TaskService/SecurityEditor
+		SccLocalPath10 = TaskService\\SecurityEditor
+		SccProjectUniqueName11 = TaskService\\TaskServiceExecutor\\TaskServiceExecutor.csproj
+		SccProjectName11 = TaskService/TaskServiceExecutor
+		SccLocalPath11 = TaskService\\TaskServiceExecutor
+		SccProjectUniqueName12 = Dev2.Weave.Tests\\Dev2.Weave.Tests.csproj
+		SccProjectName12 = Dev2.Weave.Tests
+		SccLocalPath12 = Dev2.Weave.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +132,51 @@ Global
 		{D27CF69D-4681-492A-BE4D-D3D209104423}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D27CF69D-4681-492A-BE4D-D3D209104423}.Release|x64.ActiveCfg = Release|Any CPU
 		{D27CF69D-4681-492A-BE4D-D3D209104423}.Release|x86.ActiveCfg = Release|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Release|x64.ActiveCfg = Release|Any CPU
+		{81B5ABCC-6909-483D-8BB3-84B52E3C7043}.Release|x86.ActiveCfg = Release|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Release|x64.ActiveCfg = Release|Any CPU
+		{207F8F60-0A74-4959-8623-5D258EB133EB}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Release|x64.ActiveCfg = Release|Any CPU
+		{D8FF73D8-57A2-42E4-98C3-76C129BBB8F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Release|x64.ActiveCfg = Release|Any CPU
+		{5279D487-59FA-4D01-9D7A-EA7387D8B67C}.Release|x86.ActiveCfg = Release|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Release|x64.ActiveCfg = Release|Any CPU
+		{31FC9051-D954-4F35-AB09-BBABB391549E}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Release|x64.ActiveCfg = Release|Any CPU
+		{BB5F9CFB-668A-46ED-B904-3B5744389F87}.Release|x86.ActiveCfg = Release|Any CPU
 		{C02CA2C6-879E-411A-8FC2-1926FF2B47E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C02CA2C6-879E-411A-8FC2-1926FF2B47E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C02CA2C6-879E-411A-8FC2-1926FF2B47E4}.Debug|x64.ActiveCfg = Debug|Any CPU

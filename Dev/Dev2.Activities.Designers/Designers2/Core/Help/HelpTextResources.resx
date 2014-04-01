@@ -1773,6 +1773,56 @@ Leaving the Archive Password blank will result in no password being required to 
   <data name="FindRecordsRequireAllMatchesTrueToolTip" xml:space="preserve">
     <value>Should each criteria be met?</value>
   </data>
+  <data name="SchedulerSettingsHelpTextHistoryRecords" xml:space="preserve">
+    <value>To prevent redundant data being kept the system will clean up old schedule results. To specify how many results to keep, put a whole number in here.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextName" xml:space="preserve">
+    <value>The name of the schedule that will appear in the list of Schedules in the left hand column.
+Renaming a Schedule will loose its History.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextPassword" xml:space="preserve">
+    <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextRun" xml:space="preserve">
+    <value>Check this box if you would like a missed trigger to execute as soon as possible.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextStatus" xml:space="preserve">
+    <value>To change if the trigger is active or not, select Enabled or Dissabled.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextTrigger" xml:space="preserve">
+    <value>To run a workflow on a schedule select the Edit Trigger button.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextUsername" xml:space="preserve">
+    <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextWorkFlow" xml:space="preserve">
+    <value>To run a workflow on a schedule select the Trigger above and then click … to choose the workflow you want to execute.</value>
+  </data>
+  <data name="SchedulerSettingsToolTipHistoryRecords" xml:space="preserve">
+    <value>How much History should the system keep?</value>
+  </data>
+  <data name="SchedulerSettingsToolTipName" xml:space="preserve">
+    <value>What name do you want to give this Schedule?</value>
+  </data>
+  <data name="SchedulerSettingsToolTipPassword" xml:space="preserve">
+    <value>Schedule will use this password for the above username</value>
+  </data>
+  <data name="SchedulerSettingsToolTipRun" xml:space="preserve">
+    <value>Allows a missed trigger to be executed</value>
+  </data>
+  <data name="SchedulerSettingsToolTipTrigger" xml:space="preserve">
+    <value>When should the workflow run?</value>
+  </data>
+  <data name="SchedulerSettingsToolTipUsername" xml:space="preserve">
+    <value>Schedule should execute as this user</value>
+  </data>
+  <data name="SchedulerSettingsToolTipWorkFlow" xml:space="preserve">
+    <value>Select a workflow to be triggered</value>
+  </data>
+  <data name="SchedulerSettingsHelpTextHistoryView" xml:space="preserve">
+    <value>Each trigger that is executed will be stored in the system.
+To see the result of the workflow execution, select the history record and then look at the Output pane.</value>
+  </data>
   <data name="RecordsLengthHelpRecordset" xml:space="preserve">
     <value>To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
   </data>

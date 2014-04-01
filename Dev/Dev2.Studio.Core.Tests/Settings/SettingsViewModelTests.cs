@@ -365,7 +365,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_ServerChangedCommand")]
-        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsNull_DoesNothing()
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentNotConnected_DoesNothing()
         {
             //------------Setup for test--------------------------
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
@@ -377,13 +377,14 @@ namespace Dev2.Core.Tests.Settings
             viewModel.ServerChangedCommand.Execute(server.Object);
 
             //------------Assert Results-------------------------
-            Assert.IsNull(viewModel.CurrentEnvironment);
+            Assert.IsNotNull(viewModel.CurrentEnvironment);
+            Assert.IsFalse(viewModel.CurrentEnvironment.IsConnected);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_ServerChangedCommand")]
-        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsNotConnected_ShowsNotConnectedPopup()
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsNotConnected_CurrentEnvironmentSetButNotConnected()
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
@@ -392,6 +393,7 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
 
             var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(c => c.IsConnected).Returns(false);
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEventAgg = new Mock<IEventAggregator>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -404,9 +406,8 @@ namespace Dev2.Core.Tests.Settings
             viewModel.ServerChangedCommand.Execute(server);
 
             //------------Assert Results-------------------------
-            Assert.IsNull(viewModel.CurrentEnvironment);
-            Assert.IsFalse(server.CanStudioExecute);
-            popupController.Verify(p => p.ShowNotConnected());
+            Assert.IsNotNull(viewModel.CurrentEnvironment);
+            Assert.IsFalse(viewModel.CurrentEnvironment.IsConnected);
         }
 
         [TestMethod]

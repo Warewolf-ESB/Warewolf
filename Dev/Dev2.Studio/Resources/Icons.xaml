@@ -29,6 +29,30 @@
         <Setter Property="VerticalAlignment" Value="Top"/>
     </Style> 
     
+    <DrawingImage x:Key="TaskScheduler-32">
+		<DrawingImage.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingGroup ClipGeometry="F1 M 2.534,2.80467L 45.1953,2.80467L 45.1953,45.466L 2.534,45.466L 2.534,2.80467 Z ">
+						<DrawingGroup.Children>
+							<GeometryDrawing Brush="#FFE95814" Geometry="F1 M 45.1955,41.466C 45.1955,43.666 43.3955,45.466 41.1955,45.466L 6.53414,45.466C 4.33414,45.466 2.53414,43.666 2.53414,41.466L 2.53414,6.80466C 2.53414,4.60466 4.33414,2.80467 6.53414,2.80467L 41.1955,2.80467C 43.3955,2.80467 45.1955,4.60466 45.1955,6.80466L 45.1955,41.466 Z "/>
+							<GeometryDrawing Brush="#FFE95814" Geometry="F1 M 39.7307,24.1347C 39.7307,32.8973 32.6267,40 23.8653,40C 15.1027,40 8,32.8973 8,24.1347C 8,15.3733 15.1027,8.27066 23.8653,8.27066C 32.6267,8.27066 39.7307,15.3733 39.7307,24.1347 Z ">
+								<GeometryDrawing.Pen>
+									<Pen Thickness="4" MiterLimit="2.75" Brush="#FFFFFFFF"/>
+								</GeometryDrawing.Pen>
+							</GeometryDrawing>
+							<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 31.1792,14.0839L 26.7605,22.7572L 23.9752,21.3372L 28.3939,12.6652L 31.1792,14.0839 Z "/>
+							<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 21.3908,25.7876L 11.9508,25.8103L 11.9428,22.6983L 21.3841,22.6756L 21.3908,25.7876 Z "/>
+							<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 25.7924,24.3124C 25.7924,25.3031 24.9897,26.1057 24.0004,26.1057C 23.0111,26.1057 22.2084,25.3031 22.2084,24.3124C 22.2084,23.3231 23.0111,22.5204 24.0004,22.5204C 24.9897,22.5204 25.7924,23.3231 25.7924,24.3124 Z "/>
+							<GeometryDrawing Brush="#FFE95814" Geometry="F1 M 44.8647,28.4888L 38.9367,35.3781L 33.3927,30.6101L 39.322,23.7195L 44.8647,28.4888 Z "/>
+							<GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 44.0645,21.4823L 39.6619,30.6369C 39.6619,30.6369 39.3445,31.1809 39.0419,30.6369C 38.7392,30.0916 34.6232,21.4823 34.6232,21.4823C 34.6232,21.4823 34.4419,20.7103 35.0019,20.7103L 43.6565,20.7103C 43.6565,20.7103 44.2912,20.7876 44.0645,21.4823 Z "/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingImage.Drawing>
+	</DrawingImage>
+    
     <DrawingImage x:Key="HelpCommunity-32" >		
         <DrawingImage.Drawing>
             <DrawingGroup>
