@@ -22,6 +22,7 @@ namespace Dev2.Runtime.Security
         {
             _timeOutPeriod = securityService.TimeOutPeriod;
             securityService.Read();
+
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
