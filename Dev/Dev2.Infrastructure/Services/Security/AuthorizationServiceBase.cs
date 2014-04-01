@@ -74,7 +74,11 @@ namespace Dev2.Services.Security
 
         protected bool IsAuthorizedToConnect(IPrincipal principal)
         {
-            return IsAuthorized(AuthorizationContext.Any, () => GetGroupPermissions(principal));
+            var result = IsAuthorized(AuthorizationContext.Any, () => GetGroupPermissions(principal));
+
+            ServerLogger.LogTrace("Is Authorized To Connect : " + principal.Identity.Name + " = " + result);
+
+            return result;
         }
 
         public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)

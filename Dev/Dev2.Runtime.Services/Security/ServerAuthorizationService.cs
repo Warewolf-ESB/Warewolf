@@ -33,6 +33,8 @@ namespace Dev2.Runtime.Security
 
         public override bool IsAuthorized(IAuthorizationRequest request)
         {
+            ServerLogger.LogTrace("IsAuthorized Request Entered");
+
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
             Tuple<bool, DateTime> authorizedRequest;
