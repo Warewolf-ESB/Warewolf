@@ -117,8 +117,8 @@ namespace Dev2.Services.Security
             {
                 return IsServer && IsBuiltInGuestsForExecution;
             }
-        }
-
+        }      
+        
         [JsonIgnore]
         public bool IsBuiltInGuestsForExecution
         {

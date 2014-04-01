@@ -56,7 +56,7 @@ namespace Dev2.Settings
             _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             _parentWindow = parentWindow;
-
+            
             SaveCommand = new AuthorizeCommand(AuthorizationContext.Administrator, o => SaveSettings(), o => IsDirty);
             SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
@@ -330,6 +330,16 @@ namespace Dev2.Settings
 
         public bool DoDeactivate()
         {
+            var messageBoxResult = SaveSettings();
+            if(messageBoxResult == MessageBoxResult.Cancel)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        MessageBoxResult GetSaveResult()
+        {
             if(_popupController != null && SecurityViewModel.IsDirty)
             {
                 _popupController.Header = "Security Settings have changed";
@@ -343,31 +353,24 @@ namespace Dev2.Settings
                 _popupController.Buttons = MessageBoxButton.YesNoCancel;
                 _popupController.ImageType = MessageBoxImage.Information;
                 var messageBoxResult = _popupController.Show();
-                switch(messageBoxResult)
-                {
-                    case MessageBoxResult.Yes:
-                        SaveSettings();
-                        return true;
-                    case MessageBoxResult.Cancel:
-                        return false;
-                    case MessageBoxResult.No:
-                        return true;
-                }
+                return messageBoxResult;
             }
-            return true;
+            return MessageBoxResult.None;
         }
 
-
         #endregion
 
 
         #endregion
 
-        void SaveSettings()
+        MessageBoxResult SaveSettings()
         {
             Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
             // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
 
+            var saveResult = GetSaveResult();
+            if(saveResult == MessageBoxResult.Yes)
+            {
             ResetIsDirtyForChildren();
             ClearErrors();
 
@@ -384,6 +387,8 @@ namespace Dev2.Settings
                 IsSaved = false;
                 IsDirty = true;
             }
+            }
+            return saveResult;
         }
 
         bool WriteSettings()
