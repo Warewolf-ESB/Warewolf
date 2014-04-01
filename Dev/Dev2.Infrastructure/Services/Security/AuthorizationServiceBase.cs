@@ -76,7 +76,10 @@ namespace Dev2.Services.Security
         {
             var result = IsAuthorized(AuthorizationContext.Any, () => GetGroupPermissions(principal));
 
-            ServerLogger.LogTrace("Is Authorized To Connect : " + principal.Identity.Name + " = " + result);
+            if(principal.Identity != null)
+            {
+                ServerLogger.LogTrace("Is Authorized To Connect : " + principal.Identity.Name + " = " + result);
+            }
 
             return result;
         }

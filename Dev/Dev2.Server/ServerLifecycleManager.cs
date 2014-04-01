@@ -290,11 +290,11 @@ namespace Dev2
                 didBreak = true;
             }
 
-            if(!didBreak && !PreloadReferences())
-            {
-                result = 2;
-                didBreak = true;
-            }
+            //if(!didBreak && !PreloadReferences())
+            //{
+            //    result = 2;
+            //    didBreak = true;
+            //}
 
             if(!didBreak && !StartGCManager())
             {
