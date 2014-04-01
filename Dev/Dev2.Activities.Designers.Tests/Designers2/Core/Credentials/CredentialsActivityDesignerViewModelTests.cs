@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Activities.Designers2.Core;
+﻿using System.Collections.Generic;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +72,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
             Verify_ValidateUserNameAndPassword(userName: "afaf", password: "a]]", isPasswordError: true, expectedMessageFormat: "Invalid expression: opening and closing brackets don't match.");
         }
 
+        // ReSharper disable UnusedParameter.Local
         static void Verify_ValidateUserNameAndPassword(string userName, string password, bool isPasswordError, string expectedMessageFormat)
+        // ReSharper restore UnusedParameter.Local
         {
             //------------Setup for test-------------------------
             const string LabelText = "Password";

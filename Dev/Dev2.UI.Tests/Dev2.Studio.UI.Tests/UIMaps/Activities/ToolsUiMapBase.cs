@@ -1,9 +1,9 @@
-﻿using Dev2.Studio.UI.Tests.Extensions;
+﻿using System;
+using System.Linq;
+using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
-using System.Linq;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
@@ -73,11 +73,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         {
             GetControlOnActivity("AddButton", ControlType.Button).Click();
         }
-        
+
         public WpfTable GetSmallViewTable()
         {
             UITestControl findContent = null;
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var child in Activity.GetChildren())
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(child.FriendlyName == "SmallViewContent")
                 {
@@ -168,7 +170,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             }
             return GetSmallView();
         }
-        
+
         protected UITestControl GetQuickVariableInputView()
         {
             UITestControlCollection uiTestControlCollection = Activity.GetChildren();
