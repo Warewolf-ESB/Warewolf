@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Load.Tests</RootNamespace>
-    <AssemblyName>Dev2.Load.Tests</AssemblyName>
+    <AssemblyName>Dev2.LoadTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,6 +16,10 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +38,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Test\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -55,15 +67,15 @@
     <Compile Include="ServerLoadTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Dev2.Common\Dev2.Common.csproj">
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Dev2.Data\Dev2.Data.csproj">
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Dev2.Integration.Tests\Dev2.Integration.Tests.csproj">
+    <ProjectReference Include="..\Dev2.Integration.Tests\Dev2.Integration.Tests.csproj">
       <Project>{2c7f0e32-c4c4-422d-a767-92f3b3510392}</Project>
       <Name>Dev2.Integration.Tests</Name>
     </ProjectReference>

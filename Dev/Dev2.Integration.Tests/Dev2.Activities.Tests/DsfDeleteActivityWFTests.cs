@@ -30,28 +30,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             StringAssert.Contains(ResponseData, expected);
         }
 
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("DeleteRecordsActivity_Delete")]
-        public void DeleteRecordsActivity_Delete_LargePayload_TakesLessThenTwoAndAHalfSecond()
-        {
-            string PostData = String.Format("{0}{1}", WebserverURI, "DeleteTestFlow");
-
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            int startIndex = ResponseData.IndexOf(@"<yeardiff>", StringComparison.Ordinal) + 10;
-            int endIndex = ResponseData.IndexOf(@"</yeardiff>", StringComparison.Ordinal);
-            string substring = ResponseData.Substring(startIndex, endIndex - startIndex);
-            int val;
-            if(int.TryParse(substring, out val))
-            {
-                Assert.IsTrue(val < 2500, "Deleting tool to long it took " + val.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                Assert.Fail("Could get the time");
-            }
-        }
-
 
         [TestMethod]
         public void DeleteRecordUsingRecsetWithBlankIndex()

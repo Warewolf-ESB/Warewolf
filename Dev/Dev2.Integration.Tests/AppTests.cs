@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,6 +12,14 @@ namespace Dev2.Integration.Tests
     [TestClass]
     public class AppTests
     {
+        private static string deployDir;
+
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            deployDir = testContext.TestDeploymentDir;
+        }
+
         [TestMethod]
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
         {
@@ -19,7 +29,12 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var studioPath = Bootstrap.ServerLocation.Replace("Server", "Studio");
+                var studioPath = Path.Combine(deployDir, "Warewolf Studio.exe");
+
+                if(!File.Exists(studioPath))
+                {
+                    studioPath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Warewolf Studio.exe");
+                }
 
                 Process.Start(studioPath);
 
@@ -76,7 +91,12 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var serverPath = Bootstrap.ServerLocation;
+                var serverPath = Path.Combine(deployDir, "Warewolf Server.exe");
+
+                if(!File.Exists(serverPath))
+                {
+                    serverPath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Warewolf Server.exe");
+                }
 
                 // fire off process 
                 Process p = new Process { StartInfo = { FileName = serverPath, RedirectStandardOutput = true, UseShellExecute = false } };

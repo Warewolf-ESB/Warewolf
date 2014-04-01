@@ -1,8 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Integration.Tests;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -294,7 +297,7 @@ namespace Unlimited.UnitTest.Framework
 
                 Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
 
-                Assert.IsTrue(result1 <= 20); // Given 0.75 WAS : 0.75
+                Assert.IsTrue(result1 <= 20, "Expected 20 seconds but got " + result1 + " seconds"); // Given 0.75 WAS : 0.75
                 // Since Windblow really sucks at resource allocation, I need to adjust these for when it is forced into a multi-user enviroment!!!!
             }
         }
@@ -338,11 +341,12 @@ namespace Unlimited.UnitTest.Framework
 
             Console.WriteLine(result1 + " seconds for " + runs + " with 5 cols");
 
-            Assert.IsTrue(result1 <= 6.0); // create speed
+            Assert.IsTrue(result1 <= 6.0, "Expected 6.0 seconds but got " + result1 + " seconds"); // create speed
 
         }
 
         [TestMethod]
+        [Ignore]//Ashley - Causes server datalist temp file to spike in size until it runs out of disk.
         public void LargeBDL_Persist_10M_5Cols_Recordset_Entries()
         {
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
@@ -383,6 +387,32 @@ namespace Unlimited.UnitTest.Framework
 
             Assert.IsTrue(result1 <= 60); // create speed
 
+        }
+
+        #endregion
+
+        #region Delete RS Test
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DeleteRecordsActivity_Delete")]
+        public void DeleteRecordsActivity_Delete_LargePayload_TakesLessThenTwoAndAHalfSecond()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "DeleteTestFlow");
+
+            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            int startIndex = ResponseData.IndexOf(@"<yeardiff>", StringComparison.Ordinal) + 10;
+            int endIndex = ResponseData.IndexOf(@"</yeardiff>", StringComparison.Ordinal);
+            string substring = ResponseData.Substring(startIndex, endIndex - startIndex);
+            int val;
+            if(int.TryParse(substring, out val))
+            {
+                Assert.IsTrue(val < 2500, "Deleting tool to long it took " + val.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                Assert.Fail("Could get the time");
+            }
         }
 
         #endregion
