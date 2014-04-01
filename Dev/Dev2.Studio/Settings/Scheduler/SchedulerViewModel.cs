@@ -444,6 +444,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     ClearError(LoginErrorMessage);
                     SelectedTask.UserName = value;
+                    SelectedTask.IsDirty = true;
                     NotifyOfPropertyChange(() => AccountName);
                 }
             }
@@ -461,6 +462,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     ClearError(LoginErrorMessage);
                     SelectedTask.Password = value;
+                    SelectedTask.IsDirty = true;
                     NotifyOfPropertyChange(() => Password);
                 }
             }
