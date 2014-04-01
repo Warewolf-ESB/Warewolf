@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
@@ -55,6 +56,12 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     var xml = contents.ToXElement();
                     result = new Connection(xml);
+
+                    // now we need to remove \ for display to the user ;)
+                    if(result.UserName == GlobalConstants.PublicUsername && string.IsNullOrEmpty(result.Password))
+                    {
+                        result.UserName = string.Empty;
+                    }
                 }
             }
             catch(Exception ex)
@@ -74,6 +81,13 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var connection = JsonConvert.DeserializeObject<Connection>(args);
+
+                // convert public user and pass to proper ntlm user and pass ;)
+                if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                {
+                    connection.UserName = GlobalConstants.PublicUsername;
+                }
+
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
@@ -186,6 +200,13 @@ namespace Dev2.Runtime.ServiceModel
                 else
                 {
                     client.UseDefaultCredentials = false;
+
+                    // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                    if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                    {
+                        connection.UserName = GlobalConstants.PublicUsername;
+                    }
+
                     client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                 }
 

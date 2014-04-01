@@ -26,8 +26,8 @@ namespace Dev2.Runtime.ServiceModel
                         result.Add("authenticationType", "Determines how to authenticate with the server: "
                             + "<p><b>Windows</b> - the current user's windows account will be used.</p>"
                             + "<p><b>User</b> - the given user account will be used.</p>");
-                        result.Add("userName", "Enter your <b>user name</b>.");
-                        result.Add("password", "Enter the <b>password</b> for the server.");
+                        result.Add("userName", "Enter your <b>user name</b>.<br/><i>Leave blank for Public access.</i>");
+                        result.Add("password", "Enter the <b>password</b> for the server. <br/><i>Leave blank for Public access.</i>");
                         break;
                     //07.03.2013: Ashley Lewis - PBI 8720:
                     case "dbSource":

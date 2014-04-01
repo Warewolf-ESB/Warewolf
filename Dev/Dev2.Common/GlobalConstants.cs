@@ -183,6 +183,7 @@ namespace Dev2.Common
 
         // Security
         public static String BuiltInAdministrator = "BuiltIn\\Administrators";
+        public static String PublicUsername = @"\";
 
         // GAC
         public static readonly string GACPrefix = "GAC:";
