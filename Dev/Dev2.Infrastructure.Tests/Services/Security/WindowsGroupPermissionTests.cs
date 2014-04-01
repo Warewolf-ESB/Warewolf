@@ -1,6 +1,6 @@
-﻿using System;
-using Dev2.Services.Security;
+﻿using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -377,6 +377,87 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Assert.IsTrue(p.Administrator);
             Assert.AreEqual("Everyone", p.WindowsGroup);
             Assert.AreEqual(Guid.Empty, p.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemove")]
+        public void WindowsGroupPermissions_CanRemove_IsPublic_False()
+        {
+            //------------Setup for test--------------------------
+            var guestPermissions = WindowsGroupPermission.CreateGuests();
+            //------------Execute Test---------------------------
+            var canRemove = guestPermissions.CanRemove;
+            //------------Assert Results-------------------------
+            Assert.IsFalse(canRemove);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemove")]
+        public void WindowsGroupPermissions_CanRemove_NoWindowsGroupName_False()
+        {
+            //------------Setup for test--------------------------
+            var guestPermissions = WindowsGroupPermission.CreateGuests();
+            guestPermissions.WindowsGroup = "";
+            //------------Execute Test---------------------------
+            var canRemove = guestPermissions.CanRemove;
+            //------------Assert Results-------------------------
+            Assert.IsFalse(canRemove);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemove")]
+        public void WindowsGroupPermissions_CanRemove_Server_True()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = "xxx" };
+            //------------Execute Test---------------------------
+            var canRemove = p.CanRemove;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canRemove);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemove")]
+        public void WindowsGroupPermissions_CanRemove_Resource_True()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsServer = false, ResourceID = Guid.NewGuid(), WindowsGroup = "xxx" };
+            //------------Execute Test---------------------------
+            var canRemove = p.CanRemove;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canRemove);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("WindowsGroup_MethodName")]
+        public void WindowsGroup_RemoveRow_DeleteFalse_DeleteTrueEnableCellEditingFalse()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = false };
+            //------------Execute Test---------------------------
+            p.RemoveRow.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(p.IsDeleted);
+            Assert.IsFalse(p.EnableCellEditing);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("WindowsGroup_MethodName")]
+        public void WindowsGroup_RemoveRow_DeleteTrue_DeletefalseEnableCellEditingTrue()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = true };
+            //------------Execute Test---------------------------
+            p.RemoveRow.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(p.IsDeleted);
+            Assert.IsTrue(p.EnableCellEditing);
         }
     }
 }

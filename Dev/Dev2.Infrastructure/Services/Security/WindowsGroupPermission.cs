@@ -1,10 +1,16 @@
-using System;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Newtonsoft.Json;
+using System;
+using System.Windows.Input;
 
 namespace Dev2.Services.Security
 {
     public class WindowsGroupPermission : ObservableObject
     {
+        public WindowsGroupPermission()
+        {
+            EnableCellEditing = true;
+        }
         public const string BuiltInAdministratorsText = "BuiltIn\\Administrators";
         public const string BuiltInGuestsText = "Public";
 
@@ -19,6 +25,9 @@ namespace Dev2.Services.Security
         bool _deployFrom;
         bool _administrator;
         bool _isNew;
+        bool _isDeleted;
+        ICommand _removeRow;
+        bool _enableCellEditing;
 
         public bool IsServer { get { return _isServer; } set { OnPropertyChanged(ref _isServer, value); } }
 
@@ -27,6 +36,30 @@ namespace Dev2.Services.Security
         public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
 
         public string WindowsGroup { get { return _windowsGroup; } set { OnPropertyChanged(ref _windowsGroup, value); } }
+
+        public bool IsDeleted { get { return _isDeleted; } set { OnPropertyChanged(ref _isDeleted, value); } }
+
+        public bool EnableCellEditing { get { return _enableCellEditing; } set { OnPropertyChanged(ref _enableCellEditing, value); } }
+
+        public ICommand RemoveRow
+        {
+            get
+            {
+                return _removeRow ??
+                       (_removeRow =
+                       new RelayCommand(o =>
+                           {
+                               IsDeleted = !IsDeleted;
+                               EnableCellEditing = !IsDeleted;
+                           }, o => CanRemove));
+            }
+        }
+
+        public bool CanRemove
+        {
+            get { return !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests; }
+        }
+
 
         public bool View { get { return _view; } set { OnPropertyChanged(ref _view, value); } }
 
@@ -84,8 +117,8 @@ namespace Dev2.Services.Security
             {
                 return IsServer && IsBuiltInGuestsForExecution;
             }
-        }      
-        
+        }
+
         [JsonIgnore]
         public bool IsBuiltInGuestsForExecution
         {

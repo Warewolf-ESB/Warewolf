@@ -100,7 +100,7 @@
                 <!--<ToggleButton Content="Logging"
                               IsChecked="{Binding ShowLogging, Mode=TwoWay}"
                               Style="{StaticResource SettingsToggleButtonStyle}" />-->
-                <ToggleButton Content="Security"
+                <ToggleButton Content="{Binding SecurityHeader}"
                               IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
                               Style="{StaticResource SettingsToggleButtonStyle}" />
 

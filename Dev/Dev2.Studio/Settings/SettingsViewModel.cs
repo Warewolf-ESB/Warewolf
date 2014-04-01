@@ -16,6 +16,7 @@ using Dev2.Threading;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -55,7 +56,7 @@ namespace Dev2.Settings
             _asyncWorker = asyncWorker;
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             _parentWindow = parentWindow;
-            
+
             SaveCommand = new AuthorizeCommand(AuthorizationContext.Administrator, o => SaveSettings(), o => IsDirty);
             SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
@@ -206,6 +207,13 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => LoggingViewModel);
             }
         }
+        public string SecurityHeader
+        {
+            get
+            {
+                return IsDirty ? "Security *" : "Security";
+            }
+        }
 
         void OnSelectionChanged([CallerMemberName] string propertyName = null)
         {
@@ -306,18 +314,60 @@ namespace Dev2.Settings
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
             IsDirty = SecurityViewModel.IsDirty;
+            NotifyOfPropertyChange(() => SecurityHeader);
             ClearErrors();
         }
 
         void ResetIsDirtyForChildren()
         {
             SecurityViewModel.IsDirty = false;
+            NotifyOfPropertyChange(() => SecurityHeader);
         }
+
+        #region Overrides of SimpleBaseViewModel
+
+        #region Overrides of Screen
+
+        public bool DoDeactivate()
+        {
+            if(_popupController != null && SecurityViewModel.IsDirty)
+            {
+                _popupController.Header = "Security Settings have changed";
+                var description = "Security settings have not been saved." + Environment.NewLine
+                                  + "Would you like to save the settings? " + Environment.NewLine +
+                                  "-------------------------------------------------------------------" +
+                                  "Yes - Save the security settings." + Environment.NewLine +
+                                  "No - Discard your changes." + Environment.NewLine +
+                                  "Cancel - Returns you to security settings.";
+                _popupController.Description = description;
+                _popupController.Buttons = MessageBoxButton.YesNoCancel;
+                _popupController.ImageType = MessageBoxImage.Information;
+                var messageBoxResult = _popupController.Show();
+                switch(messageBoxResult)
+                {
+                    case MessageBoxResult.Yes:
+                        SaveSettings();
+                        return true;
+                    case MessageBoxResult.Cancel:
+                        return false;
+                    case MessageBoxResult.No:
+                        return true;
+                }
+            }
+            return true;
+        }
+
+
+        #endregion
+
+
+        #endregion
 
         void SaveSettings()
         {
             Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
             // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
+
             ResetIsDirtyForChildren();
             ClearErrors();
 

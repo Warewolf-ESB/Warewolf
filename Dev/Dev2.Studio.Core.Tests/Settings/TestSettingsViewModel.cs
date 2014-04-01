@@ -1,9 +1,9 @@
-﻿using System.Windows.Forms;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Threading;
+using System.Windows.Forms;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -29,6 +29,11 @@ namespace Dev2.Core.Tests.Settings
         protected override SecurityViewModel CreateSecurityViewModel()
         {
             return TheSecurityViewModel ?? base.CreateSecurityViewModel();
+        }
+
+        public void CallDeactivate()
+        {
+            DoDeactivate();
         }
     }
 }

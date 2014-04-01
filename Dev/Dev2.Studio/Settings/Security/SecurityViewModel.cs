@@ -109,7 +109,7 @@ namespace Dev2.Settings.Security
             for(var i = source.Count - 1; i >= 0; i--)
             {
                 var permission = source[i];
-                if(permission.IsValid)
+                if(permission.IsValid && !permission.IsDeleted)
                 {
                     target.Insert(0, permission);
                 }

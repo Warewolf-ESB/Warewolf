@@ -123,7 +123,8 @@
                 </DataTrigger>                
             </Style.Triggers>
         </Style>
-
+        
+       
         <Style x:Key="PermissionsGridTextBlockStyle"
                TargetType="{x:Type TextBlock}"
                BasedOn="{StaticResource TextBlockStyle}">
@@ -258,15 +259,13 @@
                       RowStyle="{StaticResource PermissionsGridRowServerStyle}"
                       Height="Auto"
                       Sorting="OnDataGridSorting">
-
                 <DataGrid.Columns>
 
                     <DataGridTemplateColumn Header="Windows Group"
                                             SortMemberPath="WindowsGroup"
                                             Width="*"
                                             HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"                                            
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource PermissionsGridCellServerStyle}">
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -275,6 +274,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             IsEnabled="{Binding EnableCellEditing}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
                                         <i:Interaction.Behaviors>
@@ -284,7 +284,14 @@
                                     </TextBox>
                                     <Button Grid.Column="1"                                            
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                            IsEnabled="{Binding EnableCellEditing}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}" />
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -298,15 +305,24 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}"
-                                          AutomationProperties.AutomationId="UI_SecuritySettingServerDeployTochk_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </CheckBox>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}"
+                                              AutomationProperties.AutomationId="UI_SecuritySettingServerDeployTochk_AutoID">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>                                        
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -319,8 +335,10 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <Grid>
                                 <CheckBox IsChecked="{Binding DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                          IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}"
                                           AutomationProperties.AutomationId="UI_SecuritySettingServerDeployFromchk_AutoID">
                                     <i:Interaction.Behaviors>
@@ -328,6 +346,13 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
+                                <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -340,8 +365,10 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <Grid>
                                 <CheckBox IsChecked="{Binding Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                          IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}"
                                           AutomationProperties.AutomationId="UI_SecuritySettingServerAdministratorchk_AutoID">
                                     <i:Interaction.Behaviors>
@@ -349,6 +376,13 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
+                                <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -361,8 +395,10 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <Grid>
                                 <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                          IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}"
                                           AutomationProperties.AutomationId="UI_SecuritySettingServerViewchk_AutoID">
                                     <i:Interaction.Behaviors>
@@ -370,6 +406,13 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
+                                <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -382,8 +425,10 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
+                                <Grid>
                                 <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                          IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}"
                                           AutomationProperties.AutomationId="UI_SecuritySettingServerExecutechk_AutoID">
                                     <i:Interaction.Behaviors>
@@ -391,6 +436,13 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
+                                <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -400,11 +452,13 @@
                                             CanUserResize="False"
                                             Width="83"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
-                        <DataGridTemplateColumn.CellTemplate>
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">                        
+                        <DataGridTemplateColumn.CellTemplate>                            
                             <DataTemplate>
+                                <Grid>
                                 <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                          IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}"
                                           AutomationProperties.AutomationId="UI_SecuritySettingServerContributuechk_AutoID">
                                     <i:Interaction.Behaviors>
@@ -412,9 +466,33 @@
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </CheckBox>
+                                <Path Grid.ColumnSpan="2"
+                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                              Data="M0,0.5 L1,0.5"
+                                              Stretch="Fill"
+                                              Stroke="Red"
+                                              StrokeThickness="1"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    
+                     <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Grid.Column="1"
+                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Margin="0,0,2,0"
+                                        Command="{Binding RemoveRow}"
+                                        ToolTip="Removes Permissions">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                           Height="15"
+                                           Width="15" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
 
                 </DataGrid.Columns>
 
@@ -488,8 +566,15 @@
                                     </TextBlock>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
+                                            IsEnabled="{Binding EnableCellEditing}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}"
                                             AutomationProperties.AutomationId="UI_AddResourceToSecuritySettingsbtn_AutoID" />
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -511,6 +596,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                             IsEnabled="{Binding EnableCellEditing}"
                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}"
                                              AutomationProperties.AutomationId="UI_AddWindowsGroupsTextBox_AutoID">
                                         <i:Interaction.Behaviors>
@@ -520,7 +606,14 @@
                                     </TextBox>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                            IsEnabled="{Binding EnableCellEditing}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}" />
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -534,15 +627,24 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}"
-                                          AutomationProperties.AutomationId="UI_SecuritySettingResourceViewchk_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </CheckBox>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}"
+                                              AutomationProperties.AutomationId="UI_SecuritySettingResourceViewchk_AutoID">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -555,15 +657,24 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}"
-                                          AutomationProperties.AutomationId="UI_SecuritySettingResourceExecutechk_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </CheckBox>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}"
+                                              AutomationProperties.AutomationId="UI_SecuritySettingResourceExecutechk_AutoID">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -576,15 +687,40 @@
                                             d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}"
-                                          AutomationProperties.AutomationId="UI_SecuritySettingResourceContributechk_AutoID">
-                                    <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                </CheckBox>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}"
+                                              AutomationProperties.AutomationId="UI_SecuritySettingResourceContributechk_AutoID">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Grid.Column="1"
+                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Margin="0,0,2,0"
+                                        Command="{Binding RemoveRow}"
+                                        ToolTip="Removes Permissions">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                           Height="15"
+                                           Width="15" />
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

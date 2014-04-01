@@ -111,6 +111,9 @@
     <Compile Include="..\..\Dev2.Infrastructure\Services\Security\WindowsGroupPermission.cs">
       <Link>Resources\WindowsGroupPermission.cs</Link>
     </Compile>
+    <Compile Include="..\..\Dev2.Runtime.Configuration\ViewModels\Base\RelayCommand.cs">
+      <Link>Resources\RelayCommand.cs</Link>
+    </Compile>
     <Compile Include="AdornerTests.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />

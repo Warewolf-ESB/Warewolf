@@ -943,7 +943,7 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepository = new Mock<IResourceRepository>();
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Returns(resourceModel.Object);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceModel.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, mockEnvironmentModel.Object);
             //------------Execute Test---------------------------
@@ -1067,6 +1067,39 @@ namespace Dev2.Core.Tests.Settings
 
             var invalidPermission = permissions[permissions.Count - 1];
             invalidPermission.WindowsGroup = "";
+
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+
+            var target = new SecuritySettingsTO();
+
+            var expectedCount = permissions.Count - 1;
+            var expectedResourceCount = viewModel.ResourcePermissions.Count - 1;
+
+            //------------Execute Test---------------------------
+            viewModel.Save(target);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedCount, target.WindowsGroupPermissions.Count);
+            Assert.AreEqual(expectedResourceCount, viewModel.ResourcePermissions.Count);
+            foreach(var permission in target.WindowsGroupPermissions)
+            {
+                Assert.IsTrue(permission.IsValid);
+                Assert.IsFalse(permission.IsNew);
+            }
+            Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
+            Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityViewModel_Save")]
+        public void SecurityViewModel_Save_DeletedPermissions_DeletedPermissionsAreRemoved()
+        {
+            //------------Setup for test--------------------------          
+            var permissions = CreatePermissions();
+
+            var deletedPermission = permissions[permissions.Count - 1];
+            deletedPermission.IsDeleted = true;
 
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
 

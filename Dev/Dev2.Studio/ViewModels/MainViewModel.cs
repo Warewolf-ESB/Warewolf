@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -48,6 +40,14 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable once CheckNamespace
@@ -1512,7 +1512,11 @@ namespace Dev2.Studio.ViewModels
                         var settingsViewModel = vm as SettingsViewModel;
                         if(settingsViewModel != null)
                         {
-                            settingsViewModel.Dispose();
+                            remove = settingsViewModel.DoDeactivate();
+                            if(remove)
+                            {
+                                settingsViewModel.Dispose();
+                            }
                         }
                     }
                 }
