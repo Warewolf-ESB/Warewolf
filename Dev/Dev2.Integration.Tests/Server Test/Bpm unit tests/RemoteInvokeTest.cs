@@ -91,5 +91,17 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             Assert.AreEqual(6, debugItems.Count);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("RemoteInvoke_CanExecuteRemoteNested")]
+        public void RemoteInvoke_CanFetchResults_WhenRemoteNestedWF_ExpectCorrectMappings()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "RemoteWF11466");
+
+            Guid id = Guid.NewGuid();
+            var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+            Assert.AreEqual("<DataList><a>12</a></DataList>",output);
+        }
     }
 }

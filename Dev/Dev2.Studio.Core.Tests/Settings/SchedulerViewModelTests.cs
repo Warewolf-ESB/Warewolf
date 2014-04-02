@@ -858,7 +858,8 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(2013, schedulerViewModel.SelectedTask.NextRunDate.Year);
             Assert.AreEqual(02, schedulerViewModel.SelectedTask.NextRunDate.Hour);
             Assert.AreEqual(21, schedulerViewModel.SelectedTask.NextRunDate.Minute);
-            Assert.AreEqual("At 02:21 AM every day", schedulerViewModel.TriggerText);
+            Assert.IsTrue( schedulerViewModel.TriggerText.StartsWith("At"));
+            Assert.IsTrue(schedulerViewModel.TriggerText.EndsWith("AM every day"));
         }
 
         [TestMethod]

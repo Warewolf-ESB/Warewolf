@@ -243,7 +243,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
                 {
-                    DataListRegistar.DisposeScope(thread.Key, Guid.Empty);
+                    DataListRegistar.DisposeScope(thread.Key, resultID);
                 }
 
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
