@@ -198,8 +198,9 @@ namespace Dev2.Runtime.ServiceModel
                     client.UseDefaultCredentials = true;
 
                     // check for \ and blank pass as this will give the wrong impression of what is really happening ;)
-                    // at times windows will inject \ as the current credentials. 
+                    // at times windows will inject \ aka anonymous as the current credentials. 
                     // seems to be the case when we cross non-domain to domain
+                    // the code below negates this and forces a failure in these cases
                     var creds = client.Credentials;
                     if(creds != null)
                     {
