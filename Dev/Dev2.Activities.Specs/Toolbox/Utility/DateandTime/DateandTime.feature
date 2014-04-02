@@ -170,7 +170,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:y
 	|                                      |
 	| [[result]] = 2013/12/05 04:18:51 PM |
 
-Scenario: Calculate for a negative recordset index for Date 1
+Scenario: Date and time input date with a negative index
 	Given I have a date "[[my(-1).date]]" 
 	And the input format as "yyyy-mm-dd"
 	And I selected Add time as "Weeks" with a value of 52
@@ -184,7 +184,7 @@ Scenario: Calculate for a negative recordset index for Date 1
 	|               |
 	| [[result]] = |
 
-Scenario: Calculate for a negative recordset index for Format
+Scenario: Date and time input format with a negative index
 	Given I have a date "2013-11-29" 
 	And the input format as "[[my(-1).format]]"
 	And I selected Add time as "Weeks" with a value of 52
@@ -198,7 +198,7 @@ Scenario: Calculate for a negative recordset index for Format
 	|               |
 	| [[result]] = |
 
-Scenario: Calculate for a negative recordset index for Time Value
+Scenario: Date and Time add weeks with a negative index
 	Given I have a date "2013-11-29" 
 	And the input format as "yyyy-mm-dd"
 	And I selected Add time as "Weeks" with a value of "[[my(-1).int]]"
@@ -212,7 +212,7 @@ Scenario: Calculate for a negative recordset index for Time Value
 	|               |
 	| [[result]] = |
 	
-Scenario: Calculate for a negative recordset index for Output Format
+Scenario: Date and Time output format with a negative index
 	Given I have a date "2013-11-29" 
 	And the input format as "yyyy-mm-dd"
 	And I selected Add time as "Weeks" with a value of 52
@@ -242,17 +242,17 @@ Scenario: Default outputs for dateparts not present
 	|                                            |
 	| [[result]] = 0001-01-01 00r:00:00 AM A.D. |
 
-#Scenario: Calculate with data in output format
-#       Given I have a date " 2013 March 29" 
-#       And the input format as " yyyy MM dd"
-#       And I selected Add time as "Years" with a value of 1
-#       And the output format as "yyyy-mm-dd ‘wrong ‘date"
-#       When the datetime tool is executed
-#       Then the datetime result should be "2014-03-29 wrong date"
-#       And the execution has "NO" error
-#       And the debug inputs as  
-#       | Input        | Input Format | Add Time |    | Output Format           |
-#       | 2013 March 29| yyyy MM dd   | Years    | 1  | yyyy-mm-dd 'wrong 'date |  
-#       And the debug output as 
-#       |                                    |  
-#       | [[result]] = 2014-03-29 wrong date |
+Scenario: Date and Time output format with quoted strings
+       Given I have a date " 2013 March 29" 
+       And the input format as " yyyy MM dd"
+       And I selected Add time as "Years" with a value of 1
+       And the output format as "yyyy-mm-dd ‘wrong date'"
+       When the datetime tool is executed
+       Then the datetime result should be "2014-03-29 wrong date"
+       And the execution has "NO" error
+       And the debug inputs as  
+       | Input        | Input Format | Add Time |    | Output Format           |
+       | 2013 March 29| yyyy MM dd   | Years    | 1  | yyyy-mm-dd 'wrong date' |  
+       And the debug output as 
+       |                                    |  
+       | [[result]] = 2014-03-29 wrong date |

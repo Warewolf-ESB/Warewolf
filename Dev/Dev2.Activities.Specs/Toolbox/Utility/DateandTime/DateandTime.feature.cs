@@ -640,11 +640,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate for a negative recordset index for Date 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and time input date with a negative index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        public virtual void CalculateForANegativeRecordsetIndexForDate1()
+        public virtual void DateAndTimeInputDateWithANegativeIndex()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate for a negative recordset index for Date 1", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and time input date with a negative index", ((string[])(null)));
 #line 173
 this.ScenarioSetup(scenarioInfo);
 #line 174
@@ -686,11 +686,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate for a negative recordset index for Format")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and time input format with a negative index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        public virtual void CalculateForANegativeRecordsetIndexForFormat()
+        public virtual void DateAndTimeInputFormatWithANegativeIndex()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate for a negative recordset index for Format", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and time input format with a negative index", ((string[])(null)));
 #line 187
 this.ScenarioSetup(scenarioInfo);
 #line 188
@@ -732,11 +732,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate for a negative recordset index for Time Value")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time add weeks with a negative index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        public virtual void CalculateForANegativeRecordsetIndexForTimeValue()
+        public virtual void DateAndTimeAddWeeksWithANegativeIndex()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate for a negative recordset index for Time Value", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time add weeks with a negative index", ((string[])(null)));
 #line 201
 this.ScenarioSetup(scenarioInfo);
 #line 202
@@ -778,11 +778,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate for a negative recordset index for Output Format")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time output format with a negative index")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
-        public virtual void CalculateForANegativeRecordsetIndexForOutputFormat()
+        public virtual void DateAndTimeOutputFormatWithANegativeIndex()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate for a negative recordset index for Output Format", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time output format with a negative index", ((string[])(null)));
 #line 215
 this.ScenarioSetup(scenarioInfo);
 #line 216
@@ -829,21 +829,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DefaultOutputsForDatepartsNotPresent()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Default outputs for dateparts not present", ((string[])(null)));
-#line 229
-this.ScenarioSetup(scenarioInfo);
 #line 230
- testRunner.Given("I have a date \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 231
- testRunner.And("the input format as \"sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a date \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 232
- testRunner.And("I selected Add time as \"None\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the input format as \"sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 233
- testRunner.And("the output format as \"yyyy-mm-dd 24hr:min:ss am/pm Era\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected Add time as \"None\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 234
- testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("the output format as \"yyyy-mm-dd 24hr:min:ss am/pm Era\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 235
- testRunner.Then("the datetime result should be \"0001-01-01 00r:00:00 AM A.D.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 236
+ testRunner.Then("the datetime result should be \"0001-01-01 00r:00:00 AM A.D.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 237
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -858,15 +858,63 @@ this.ScenarioSetup(scenarioInfo);
                         "None",
                         "0",
                         "yyyy-mm-dd 24hr:min:ss am/pm Era"});
-#line 237
+#line 238
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table32.AddRow(new string[] {
                         "[[result]] = 0001-01-01 00r:00:00 AM A.D."});
-#line 240
+#line 241
  testRunner.And("the debug output as", ((string)(null)), table32, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Date and Time output format with quoted strings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
+        public virtual void DateAndTimeOutputFormatWithQuotedStrings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Date and Time output format with quoted strings", ((string[])(null)));
+#line 245
+this.ScenarioSetup(scenarioInfo);
+#line 246
+       testRunner.Given("I have a date \" 2013 March 29\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 247
+       testRunner.And("the input format as \" yyyy MM dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 248
+       testRunner.And("I selected Add time as \"Years\" with a value of 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 249
+       testRunner.And("the output format as \"yyyy-mm-dd ‘wrong date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
+       testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 251
+       testRunner.Then("the datetime result should be \"2014-03-29 wrong date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+       testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input",
+                        "Input Format",
+                        "Add Time",
+                        "",
+                        "Output Format"});
+            table33.AddRow(new string[] {
+                        "2013 March 29",
+                        "yyyy MM dd",
+                        "Years",
+                        "1",
+                        "yyyy-mm-dd \'wrong date\'"});
+#line 253
+       testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table34.AddRow(new string[] {
+                        "[[result]] = 2014-03-29 wrong date"});
+#line 256
+       testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

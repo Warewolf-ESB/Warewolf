@@ -139,7 +139,8 @@ Leave this field blank if you do not want to change the date time.</value>
   </data>
   <data name="DateTimeInputFormatHelpText" xml:space="preserve">
     <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.</value>
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
   </data>
   <data name="DateTimeInputHelpText" xml:space="preserve">
     <value>Any variable and/or data goes in here.
@@ -148,11 +149,12 @@ Leaving this field blank will give you the system date time.</value>
   </data>
   <data name="DateTimeOutputFormatHelpText" xml:space="preserve">
     <value>Describe the format you would like the date time to be returned in.
-Leaving this field blank will assume the same as the Input Format.</value>
+Leaving this field blank will assume the same as the Input Format.
+To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
   </data>
   <data name="DateTimeResultHelpText" xml:space="preserve">
     <value>Only variables go in here.
-Returns the formatted  and/or added/subtracted date time.
+Returns the formatted and/or added/subtracted date time.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
@@ -1393,7 +1395,8 @@ Leaving this field blank will give you the system date time.</value>
   </data>
   <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
     <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.</value>
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
   </data>
   <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
     <value>Select the unit of time to output the difference in.</value>

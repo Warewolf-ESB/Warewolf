@@ -890,6 +890,52 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of weeks between two given dates format has quoted strings")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
+        public virtual void CalculateTheNumberOfWeeksBetweenTwoGivenDatesFormatHasQuotedStrings()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of weeks between two given dates format has quoted strings", ((string[])(null)));
+#line 272
+this.ScenarioSetup(scenarioInfo);
+#line 273
+ testRunner.Given("I have a first date \"2013-11-29 \'previous date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 274
+ testRunner.And("I have a second date \"2014-11-01 \'current date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 275
+ testRunner.And("the date format as \"yyyy-mm-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 276
+ testRunner.And("I selected output in \"Hours\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 277
+ testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 278
+ testRunner.Then("the difference should be \"8088\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 279
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input 1",
+                        "Input 2",
+                        "Input Format",
+                        "Output In"});
+            table37.AddRow(new string[] {
+                        "2013-11-29",
+                        "2014-11-01",
+                        "yyyy-mm-dd",
+                        "Hours"});
+#line 280
+ testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table38.AddRow(new string[] {
+                        "[[result]] = 8088"});
+#line 283
+ testRunner.And("the debug output as", ((string)(null)), table38, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

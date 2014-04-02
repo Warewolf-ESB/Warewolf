@@ -983,7 +983,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format..
+        ///Leaving this field blank will assume the system date time format.
+        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeDifferenceHelpInputFormat {
             get {
@@ -1065,7 +1066,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///Leaving this field blank will assume the system date time format..
+        ///Leaving this field blank will assume the system date time format.
+        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeInputFormatHelpText {
             get {
@@ -1086,7 +1088,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
-        ///Leaving this field blank will assume the same as the Input Format..
+        ///Leaving this field blank will assume the same as the Input Format.
+        ///To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeOutputFormatHelpText {
             get {
@@ -1096,7 +1099,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted  and/or added/subtracted date time.
+        ///Returns the formatted and/or added/subtracted date time.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record..
         /// </summary>
