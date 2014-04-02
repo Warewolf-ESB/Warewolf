@@ -290,11 +290,11 @@ namespace Dev2
                 didBreak = true;
             }
 
-            if(!didBreak && !PreloadReferences())
-            {
-                result = 2;
-                didBreak = true;
-            }
+            //if(!didBreak && !PreloadReferences())
+            //{
+            //    result = 2;
+            //    didBreak = true;
+            //}
 
             if(!didBreak && !StartGCManager())
             {
@@ -1160,9 +1160,9 @@ namespace Dev2
                         if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
+                        }
                     }
                 }
-            }
             }
 
             return result;

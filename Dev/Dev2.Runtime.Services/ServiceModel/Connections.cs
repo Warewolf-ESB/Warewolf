@@ -196,6 +196,24 @@ namespace Dev2.Runtime.ServiceModel
                 if(connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     client.UseDefaultCredentials = true;
+
+                    // check for \ and blank pass as this will give the wrong impression of what is really happening ;)
+                    // at times windows will inject \ as the current credentials. 
+                    // seems to be the case when we cross non-domain to domain
+                    var creds = client.Credentials;
+                    if(creds != null)
+                    {
+                        var castCreds = creds as NetworkCredential;
+                        if(castCreds != null)
+                        {
+                            if(castCreds.UserName == GlobalConstants.PublicUsername && string.IsNullOrEmpty(castCreds.Password))
+                            {
+                                // in this case we need to force a failure ;)
+                                client.UseDefaultCredentials = false;
+                                client.Credentials = new NetworkCredential(GlobalConstants.PublicUsername, "dummyPasswordForFailure");
+                            }
+                        }
+                    }
                 }
                 else
                 {
