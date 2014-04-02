@@ -1048,8 +1048,10 @@ namespace Dev2
 
             foreach(AssemblyName toLoad in allReferences)
             {
-                if(inspected.Add(toLoad.ToString()))
+                if(!inspected.Contains(toLoad.ToString()))
                 {
+                    inspected.Add(toLoad.ToString());
+
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
                     if(LogTraceInfo)
                     // ReSharper restore ConditionIsAlwaysTrueOrFalse

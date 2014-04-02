@@ -238,8 +238,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = new Connections();
-            var connection = new Connection();
-            connection.Address = "http://localhost:3142/dsf";
+            var connection = new Connection { Address = "http://localhost:3142/dsf" };
             //------------Execute Test---------------------------
             var testAddress = connections.GetTestAddress(connection);
             //------------Assert Results-------------------------
@@ -253,8 +252,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = new Connections();
-            var connection = new Connection();
-            connection.Address = "http://localhost:3142";
+            var connection = new Connection { Address = "http://localhost:3142" };
             //------------Execute Test---------------------------
             var testAddress = connections.GetTestAddress(connection);
             //------------Assert Results-------------------------
