@@ -393,7 +393,7 @@
             <!-- End Sample -->
             <!-- Start Services -->
             <Component Id="Recordset_Length" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{11B67EEE-C507-4ABE-7AC6-AF6EC29E163B}">
-                <File Id="fil858D36B941DA865AB6AC040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Records Length.xml" />
+                <File Id="fil858D36B941DA865AB6AC040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - Records Length.xml" />
             </Component>
             <Component Id="RecordsetSQL_Bulk_Insert" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4ABE-7AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - SQL Bulk Insert.xml" />
