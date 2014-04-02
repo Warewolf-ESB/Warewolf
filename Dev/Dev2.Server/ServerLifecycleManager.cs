@@ -1160,9 +1160,9 @@ namespace Dev2
                         if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
-                        }
                     }
                 }
+            }
             }
 
             return result;
@@ -1809,13 +1809,13 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
+                ServerLogger.LogMessage(message);
             }
             else
             {
                 ServerLogger.LogMessage(message);
             }
 
-            ServerLogger.LogMessage(message);
         }
 
         internal static void Write(string message)
@@ -1823,13 +1823,12 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.Write(message);
+                ServerLogger.LogMessage(message);
             }
             else
             {
                 ServerLogger.LogMessage(message);
             }
-
-            ServerLogger.LogMessage(message);
         }
 
         #endregion Output Handling
