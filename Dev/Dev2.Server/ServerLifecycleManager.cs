@@ -290,11 +290,11 @@ namespace Dev2
                 didBreak = true;
             }
 
-            //if(!didBreak && !PreloadReferences())
-            //{
-            //    result = 2;
-            //    didBreak = true;
-            //}
+            if(!didBreak && !PreloadReferences())
+            {
+                result = 2;
+                didBreak = true;
+            }
 
             if(!didBreak && !StartGCManager())
             {
@@ -1048,9 +1048,9 @@ namespace Dev2
 
             foreach(AssemblyName toLoad in allReferences)
             {
-                if(!inspected.Contains(toLoad.ToString()))
+                if(!inspected.Contains(toLoad.FullName))
                 {
-                    inspected.Add(toLoad.ToString());
+                    inspected.Add(toLoad.FullName);
 
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
                     if(LogTraceInfo)
@@ -1102,7 +1102,7 @@ namespace Dev2
                                     // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                                     {
-                                        WriteLine("Loading Dependencies [ " + gacName + " ]");
+                                        WriteLine("Loading External Dependencies [ " + gacName + " ]");
                                     }
 #pragma warning restore 162
                                     // ReSharper restore HeuristicUnreachableCode
@@ -1158,7 +1158,9 @@ namespace Dev2
                         }
 
                         if(result)
+                        {
                             AppDomain.CurrentDomain.Load(asm.GetName());
+                        }
                     }
                 }
             }
