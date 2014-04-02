@@ -176,7 +176,6 @@ namespace Gui
                     p.WaitForExit(InstallVariables.DefaultWaitInMs);
                 }
 
-
                 Thread.Sleep(waitAmt);
 
                 // now try and start the service ;)
