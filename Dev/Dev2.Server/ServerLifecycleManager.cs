@@ -291,11 +291,11 @@ namespace Dev2
             }
 
             // remove due to hanging installer ;) 02.04.2014
-            //if(!didBreak && !PreloadReferences())
-            //{
-            //    result = 2;
-            //    didBreak = true;
-            //}
+            if(!didBreak && !PreloadReferences())
+            {
+                result = 2;
+                didBreak = true;
+            }
 
             if(!didBreak && !StartGCManager())
             {
