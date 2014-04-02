@@ -55,7 +55,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 var exp = itm.FetchNextFrameItem().Expression;
                 const string expected = "rs(*).val";
 
-                StringAssert.Contains(exp, expected, "Index substitution occured when not active");
+                StringAssert.Contains(exp, expected, "Index substitution occurred when not active");
 
                 idx++;
             }

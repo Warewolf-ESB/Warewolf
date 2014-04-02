@@ -109,7 +109,7 @@ namespace Dev2.Data.Operations
             decimal number;
             if (!numberString.IsNumeric(out number))
             {
-                throw new InvalidOperationException("An error occured while formatting a number, an ivalid value of '" + numberString + "' was returned from the rounding function.");
+                throw new InvalidOperationException("An error occurred while formatting a number, an ivalid value of '" + numberString + "' was returned from the rounding function.");
             }
 
             return number;

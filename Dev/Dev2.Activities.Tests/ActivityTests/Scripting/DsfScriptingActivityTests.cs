@@ -53,7 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             else
             {
                 Assert.Fail(
-                    string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}",
+                    string.Format("The following errors occurred while retrieving datalist items\r\nerrors:{0}",
                                     error));
             }
             
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -340,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -367,7 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -391,7 +391,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -416,7 +416,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -447,7 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 

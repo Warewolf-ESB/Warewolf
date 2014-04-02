@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -154,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -179,7 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -232,7 +232,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -282,7 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -307,7 +307,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -360,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -389,7 +389,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -414,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -439,7 +439,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 
@@ -464,7 +464,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                Assert.Fail("The following errors occured while retrieving datalist items\r\nerrors:{0}", error);
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
         }
 

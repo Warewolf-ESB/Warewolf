@@ -32,15 +32,15 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         [TestMethod]
         public void Connections_Test_ExceptionThrown_InvalidResult()
-            {
-            const string Error = "An unexpected error occurre";
+        {
+            const string Error = "An unexpected error occurred";
             Verify_Test("http://testurl:333", Error, () => { throw new Exception(Error); });
         }
 
         [TestMethod]
         public void Connections_Test_FatalErrorThrown_InvalidResult()
         {
-            const string Message = "An internal error occured while executing the service request";
+            const string Message = "An internal error occurred while executing the service request";
             const string InnerError = "Service [ ping ] not found.";
             const string FatalError = "<FatalError><Message>" + Message + "</Message><InnerError>" + InnerError + "</InnerError></FatalError>";
             const string Error = Message + " - " + InnerError;
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search(null, Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("gendev", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("testgreenmonster", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -298,7 +298,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         private Func<List<string>> CreateQueryFn()
         {
             return () => new List<string> { "RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD" };
-        } 
+        }
 
         #endregion Private Test Methods
     }

@@ -152,7 +152,7 @@ namespace Dev2.Tests.MathOperationTest
             }
             else
             {
-                Assert.Fail("Unexpected behaviour occured during non-existant function evaluation");
+                Assert.Fail("Unexpected behaviour occurred during non-existant function evaluation");
             }
         }
 
