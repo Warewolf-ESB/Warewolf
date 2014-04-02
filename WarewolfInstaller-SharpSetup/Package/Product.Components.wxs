@@ -42,6 +42,18 @@
         </Component>
         <!-- End Shortcuts -->
         <ComponentGroup Id="Server">
+            <Component Id="cmpE9EC7D9921B14FF5CF2AB1807B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-8179-4D4B-9C4E-DF618AF58912}">
+                <File Id="filD16B434756CC5371AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Scheduler.dll" />
+            </Component>
+            <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B977837" Directory="dirServerRoot" Guid="{A0FD2BF1-8174-4D4B-9C4E-DF618AF58912}">
+                <File Id="filD16B434756CC1373AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.TaskScheduler.Wrappers.dll" />
+            </Component>
+            <Component Id="cmpF9FC7D9021C14EE5BF2FB1807B966836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-7D4B-9C4E-DF717AF58912}">
+                <File Id="filD16B232756AA1373AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Win32.TaskScheduler.dll" />
+            </Component>
+            <Component Id="cmpE9EC7DAA21A14AA5BF2FB1807B977837" Directory="dirServerRoot" Guid="{A0FD2BF1-8174-4D4B-9F4A-EF918AF58912}">
+                <File Id="filD16B434116CC2273AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Microsoft.Win32.TaskSchedulerEditor.dll" />
+            </Component>
             <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B966836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618AF58912}">
                 <File Id="filD16B434756CC1373AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Instrumentation.dll" />
             </Component>
