@@ -478,6 +478,9 @@ namespace Gui
             {
                 try
                 {
+                    InstallVariables.StartStudioOnExit = false;
+                    InstallVariables.ViewReadMe = false;
+
                     SetCleanupMessage();
                     List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
                     var trans = new PreUnInstallProcess(2, listOfStepNames);
@@ -485,8 +488,6 @@ namespace Gui
                     if(!trans.Rollback())
                     {
                         ShowCancelError();
-                        InstallVariables.StartStudioOnExit = false;
-                        InstallVariables.ViewReadMe = false;
                     }
                     else
                     {
