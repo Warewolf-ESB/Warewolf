@@ -213,7 +213,7 @@ namespace Dev2.Core.Tests.Settings
 
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_PopReturnsYes_ResultIsSuccess_IsDirtyFalse()
         {
@@ -243,7 +243,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_PopupReturnsNo_ResultIsSuccess_IsDirtyFalse()
         {
@@ -271,7 +271,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_PopupReturnsCancel_ResultIsSuccess_IsDirtyFalse()
         {
@@ -299,7 +299,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
         {
@@ -506,7 +506,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_IsDirty_TrueSecurityNameHasStar()
         {
@@ -522,9 +522,9 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
-        public void SettingsViewModel_IsDirty_FalseSecurityNameHasStar()
+        public void SettingsViewModel_IsDirty_FalseSecurityNameHasNoStar()
         {
             //------------Setup for test--------------------------
             var viewModel = CreateViewModel(CreateSettings().ToString());
@@ -538,7 +538,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_ShouldShowPopup()
         {
@@ -561,7 +561,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultYes()
         {
@@ -586,7 +586,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_OnDeactivate_RequestCloseFalse_NoPopup()
         {
@@ -612,7 +612,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
         {

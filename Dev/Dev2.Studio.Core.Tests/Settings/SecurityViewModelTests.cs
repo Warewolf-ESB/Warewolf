@@ -1083,7 +1083,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SecurityViewModel_Save")]
         public void SecurityViewModel_Save_DeletedPermissions_DeletedPermissionsAreRemoved()
         {
