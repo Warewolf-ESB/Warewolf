@@ -116,6 +116,8 @@ namespace Gui
                                         UriKind.RelativeOrAbsolute));
             postInstallStatusCircularProgressBar.Visibility = Visibility.Hidden;
             CanGoNext = true;
+            InstallVariables.StartStudioOnExit = true;
+            InstallVariables.ViewReadMe = true;
             btnRerun.Visibility = Visibility.Collapsed;
         }
 
@@ -468,7 +470,8 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PostInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-
+            InstallVariables.StartStudioOnExit = false;
+            InstallVariables.ViewReadMe = false;
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Collapsed;
             postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
@@ -478,9 +481,6 @@ namespace Gui
             {
                 try
                 {
-                    InstallVariables.StartStudioOnExit = false;
-                    InstallVariables.ViewReadMe = false;
-
                     SetCleanupMessage();
                     List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
                     var trans = new PreUnInstallProcess(2, listOfStepNames);
