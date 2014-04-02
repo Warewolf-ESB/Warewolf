@@ -396,7 +396,7 @@
             <!-- End Sample -->
             <!-- Start Services -->
             <Component Id="Recordset_Length" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{11B67EEE-C507-4ABE-7AC6-AF6EC29E163B}">
-                <File Id="fil858D36B941DA865AB6AC040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Records Length.xml" />
+                <File Id="fil858D36B941DA865AB6AC040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - Records Length.xml" />
             </Component>
             <Component Id="RecordsetSQL_Bulk_Insert" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4ABE-7AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - SQL Bulk Insert.xml" />
@@ -835,10 +835,10 @@
             <Component Id="cmp0E096172207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{117F2388-C33C-1132-92AB-7B4349240DAC}">
                 <File Id="fil7BFC25375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\AeroWizard.dll" />
             </Component>
-            <Component Id="cmp0E096172207607B31C552A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{117F2388-F33D-1132-92AB-7B4349240DAC}">
-                <File Id="fil7BFC25375326109CAE22A1FA23A4AB6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Scheduler.dll" />
+            <Component Id="cmp1E196172207607B31C552A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{117F2388-F33D-1132-92AB-7B4349240DAC}">
+                <File Id="fil7BACA5375326109CAE22A1FA23A4AB6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Scheduler.dll" />
             </Component>
-            <Component Id="cmp0E096172207607B31C552A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{117F2388-F33D-1132-92AB-7B4349240DAC}">
+            <Component Id="cmp0E096172207607B31C552A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{127FA388-F33D-1132-92AB-7B4349240DAC}">
                 <File Id="fil7BFC25375326109CAE22A1FA23A4AB6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.TaskScheduler.Wrappers.dll" />
             </Component>
             <Component Id="cmp0E096172207607B31C345A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{127F5388-F33D-1132-12AB-7B4349240DAC}">
