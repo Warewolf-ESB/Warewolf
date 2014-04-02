@@ -290,6 +290,7 @@ namespace Dev2
                 didBreak = true;
             }
 
+            // remove due to hanging installer ;) 02.04.2014
             //if(!didBreak && !PreloadReferences())
             //{
             //    result = 2;
