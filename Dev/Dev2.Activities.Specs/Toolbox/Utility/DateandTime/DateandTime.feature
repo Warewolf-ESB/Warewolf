@@ -246,7 +246,7 @@ Scenario: Date and Time output format with quoted strings
        Given I have a date " 2013 March 29" 
        And the input format as " yyyy MM dd"
        And I selected Add time as "Years" with a value of 1
-       And the output format as "yyyy-mm-dd ‘wrong date'"
+       And the output format as "yyyy-mm-dd 'wrong date'"
        When the datetime tool is executed
        Then the datetime result should be "2014-03-29 wrong date"
        And the execution has "NO" error

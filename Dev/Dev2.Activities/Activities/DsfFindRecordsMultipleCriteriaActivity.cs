@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',');
-                if(dataObject.IsDebug)
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputValues(dataObject, toSearch, compiler, executionID, ref errorResultTO);
                 }

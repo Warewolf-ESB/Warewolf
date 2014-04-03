@@ -1841,4 +1841,8 @@ To see the result of the workflow execution, select the history record and then 
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="ServiceHelpRunWorkflowAsync" xml:space="preserve">
+    <value>Selecting this checkbox will cause the workflow to execute as "Fire and Forget". This will free up the parent workflow to continue without waiting for a response from the nested workflow.
+Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.</value>
+  </data>
 </root>

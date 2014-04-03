@@ -73,5 +73,7 @@ namespace Dev2
 
         Guid DebugSessionID { get; set; }
         Guid ParentID { get; set; }
+
+        bool RunWorkflowAsync { get; set; }
     }
 }

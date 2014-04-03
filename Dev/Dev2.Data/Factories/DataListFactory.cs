@@ -220,7 +220,7 @@ namespace Dev2.DataList.Contract
         {
             DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTO, DataList = dataList };
 
-            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
+           IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
 
             return result;
         }

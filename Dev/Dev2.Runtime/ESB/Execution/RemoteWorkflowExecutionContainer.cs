@@ -142,13 +142,38 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
+        public virtual bool ServerIsUp()
+        {
+            var connection = GetConnection(DataObject.EnvironmentID);
+            if(connection == null)
+            {
+                return false;
+            }
+            try
+            {
+                var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>");
+                if(!string.IsNullOrEmpty(returnData))
+                {
+                    if(returnData.Contains("Pong"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+
         protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload)
         {
             var result = string.Empty;
 
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
-            
+
             using(var response = req.GetResponse() as HttpWebResponse)
             {
                 if(response != null)

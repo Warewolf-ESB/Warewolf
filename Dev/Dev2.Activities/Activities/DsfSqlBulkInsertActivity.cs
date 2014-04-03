@@ -94,7 +94,7 @@ namespace Dev2.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
-            toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
             var errorResultTO = new ErrorResultTO();
             var allErrors = new ErrorResultTO();

@@ -900,11 +900,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 272
 this.ScenarioSetup(scenarioInfo);
 #line 273
- testRunner.Given("I have a first date \"2013-11-29 \'previous date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a first date \"2013-11-29 date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 274
- testRunner.And("I have a second date \"2014-11-01 \'current date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a second date \"2014-11-01 date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 275
- testRunner.And("the date format as \"yyyy-mm-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the date format as \"yyyy-mm-dd \'date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 276
  testRunner.And("I selected output in \"Hours\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 277
@@ -920,9 +920,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Input Format",
                         "Output In"});
             table37.AddRow(new string[] {
-                        "2013-11-29",
-                        "2014-11-01",
-                        "yyyy-mm-dd",
+                        "2013-11-29 date",
+                        "2014-11-01 date",
+                        "yyyy-mm-dd \'date\'",
                         "Hours"});
 #line 280
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");

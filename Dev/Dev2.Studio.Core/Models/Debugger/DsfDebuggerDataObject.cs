@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Data.Enums;
-using System.Security.Principal;
+﻿using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace Dev2.Studio.Core.Models
 {
@@ -11,6 +11,7 @@ namespace Dev2.Studio.Core.Models
     {
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
+        public bool RunWorkflowAsync { get; set; }
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
         public int ParentThreadID { get; set; }

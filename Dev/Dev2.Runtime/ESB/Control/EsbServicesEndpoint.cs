@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading;
-using System.Xml;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
@@ -19,7 +10,18 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ESB.Control
 {
 
@@ -283,35 +285,33 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
-            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var invoker = CreateDynamicServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var compiler = DataListFactory.CreateDataListCompiler();
 
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
 
             // local non-scoped execution ;)
-            bool isLocal = !dataObject.IsRemoteWorkflow;
-            EsbExecutionContainer executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
+            var isLocal = !dataObject.IsRemoteWorkflow;
 
-            // set the output defs for execution of select service ;)
-            if(executionContainer != null)
+            var result = dataObject.DataListID;
+            if(dataObject.RunWorkflowAsync)
             {
-                executionContainer.InstanceOutputDefinition = outputDefs;
-            }
-
-            Guid result = dataObject.DataListID;
-
-            if(executionContainer != null)
-            {
-                result = executionContainer.Execute(out invokeErrors);
+                ExecuteRequestAsync(dataObject, compiler, invoker, isLocal, oldID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
             else
             {
-                errors.AddError("Null container returned");
-            }
+                var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
+            if(executionContainer != null)
+            {
+                    executionContainer.InstanceOutputDefinition = outputDefs;
+                result = executionContainer.Execute(out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+
+
 
             // If Webservice or Plugin, skip the final shaping junk ;)
             if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
@@ -335,13 +335,60 @@ namespace Dev2.Runtime.ESB.Control
             // The act of doing this moves the index data correctly ;)
             // We need to remove this in the future.
 #pragma warning disable 168
+                    // ReSharper disable UnusedVariable
             var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
             var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                    // ReSharper restore UnusedVariable
 #pragma warning restore 168
 
             return result;
         }
+                errors.AddError("Null container returned");
+            }
+            return result;
+        }
 
+        void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IDynamicServicesInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
+        {
+            var clonedDataObject = dataObject.Clone();
+            var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+            var shapeOfData = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
+            var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
+            if(executionContainer != null)
+            {
+                if(!isLocal)
+                {
+                    var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
+                    if(remoteContainer != null)
+                    {
+                        if(!remoteContainer.ServerIsUp())
+                        {
+                            invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
+                        }
+                    }
+                }
+                if(!invokeErrors.HasErrors())
+                {
+                    var task = Task.Factory.StartNew(() =>
+                    {
+                        ErrorResultTO error;
+                        clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
+                        executionContainer.Execute(out error);
+                    });
+
+                    task.ContinueWith(o =>
+                        {
+                            DataListRegistar.DisposeScope(o.Id, clonedDataObject.DataListID);
+                            o.Dispose();
+                        });
+                }
+            }
+            else
+            {
+                invokeErrors.AddError("Asynchronous execution failed: Resource not found");
+            }
+
+        }
 
         /// <summary>
         /// Shapes for sub request. Returns a key valid pair with remaining output mappings to be processed later!

@@ -270,16 +270,16 @@ Scenario: Calculate with negative recordset index for Format
 	| [[result]] = |
 
 Scenario: Calculate the number of weeks between two given dates format has quoted strings
-	Given I have a first date "2013-11-29 'previous date'" 
-	And I have a second date "2014-11-01 'current date'" 
-	And the date format as "yyyy-mm-dd"
+	Given I have a first date "2013-11-29 date" 
+	And I have a second date "2014-11-01 date" 
+	And the date format as "yyyy-mm-dd 'date'"
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be "8088"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Input 1    | Input 2    | Input Format | Output In |
-	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Hours     |
+	| Input 1         | Input 2         | Input Format      | Output In |
+	| 2013-11-29 date | 2014-11-01 date | yyyy-mm-dd 'date' | Hours     |
 	And the debug output as 
 	|                    |
 	| [[result]] = 8088 |

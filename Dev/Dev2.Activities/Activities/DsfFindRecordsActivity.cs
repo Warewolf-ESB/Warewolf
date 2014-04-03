@@ -160,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int iterationIndex = 0;
                     foreach(string s in toSearch)
                     {
-                        if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(dataObject.IsDebugMode())
                         {
                             IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, s, false, out errors);
                             AddDebugInputItem(s, string.Empty, tmpEntry, executionID);
@@ -194,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         toUpsert.Add(region, concatRes);
                                         toUpsert.FlushIterationFrame();
-                                        if(dataObject.IsDebug)
+                                        if(dataObject.IsDebugMode())
                                         {
                                             AddDebugOutputItem(new DebugOutputParams(region, concatRes, executionID, iterationIndex));
                                         }
@@ -207,7 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         {
                                             toUpsert.Add(region, r);
                                             toUpsert.FlushIterationFrame();
-                                            if(dataObject.IsDebug)
+                                            if(dataObject.IsDebugMode())
                                             {
                                                 AddDebugOutputItem(new DebugOutputParams(region, r, executionID, iterationIndex));
                                             }

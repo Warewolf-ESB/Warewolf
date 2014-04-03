@@ -1,13 +1,3 @@
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
@@ -27,6 +17,16 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace Dev2.Activities.Designers2.Service
 {
@@ -77,6 +77,9 @@ namespace Dev2.Activities.Designers2.Service
             InitializeDisplayName();
             InitializeProperties();
             InitializeImageSource();
+
+            IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == DynamicServices.enActionType.Workflow;
+            OutputMappingEnabled = !RunWorkflowAsync;
 
             var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
             _environment = environment;
@@ -185,6 +188,38 @@ namespace Dev2.Activities.Designers2.Service
             private set { SetValue(IsEditableProperty, value); }
         }
 
+        public bool IsAsyncVisible
+        {
+            get { return (bool)GetValue(IsAsyncVisibleProperty); }
+            private set { SetValue(IsAsyncVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAsyncVisibleProperty =
+            DependencyProperty.Register("IsAsyncVisible", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
+
+        public bool RunWorkflowAsync
+        {
+            get
+            {
+                return GetProperty<bool>();
+            }
+            set
+            {
+                _runWorkflowAsync = value;
+                OutputMappingEnabled = !_runWorkflowAsync;
+                SetProperty(value);
+            }
+        }
+
+        public bool OutputMappingEnabled
+        {
+            get { return (bool)GetValue(OutputMappingEnabledProperty); }
+            private set { SetValue(OutputMappingEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty OutputMappingEnabledProperty =
+            DependencyProperty.Register("OutputMappingEnabled", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
+
         public static readonly DependencyProperty IsEditableProperty =
             DependencyProperty.Register("IsEditable", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(false));
 
@@ -243,6 +278,7 @@ namespace Dev2.Activities.Designers2.Service
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         string OutputMapping { set { SetProperty(value); } }
         string InputMapping { set { SetProperty(value); } }
+        
 
 
 
@@ -256,6 +292,7 @@ namespace Dev2.Activities.Designers2.Service
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         IEnvironmentModel _environment;
+        bool _runWorkflowAsync;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         public override void Validate()

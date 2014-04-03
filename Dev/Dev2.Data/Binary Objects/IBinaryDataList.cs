@@ -202,6 +202,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #endregion
 
-
+        /// <summary>
+        /// Clones the specified type of.
+        /// </summary>
+        /// <param name="depth">The depth.</param>
+        /// <param name="errorResult">The error result.</param>
+        /// <param name="onlySystemTags">if set to <c>true</c> [only system tags].</param>
+        /// <returns></returns>
+        IBinaryDataList CloneWithoutParentLink(enTranslationDepth depth, out ErrorResultTO errorResult, bool onlySystemTags);
     }
 }

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
 {
     /// <summary>
@@ -31,6 +35,42 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
 
             //------------Assert Results-------------------------
             StringAssert.Contains(ResponseData, expected);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("InvokeWorkflow_ViaBrowser")]
+        public void InvokeWorkflow_ViaBrowser_HasWorkflowWithExecuteAsync_ShouldReturnImmediately()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11536_FireForget.xml");
+            const string pathForFileWrittenForTest = "C:\\Testing\\FireForgetText.txt";
+            File.Delete(pathForFileWrittenForTest);
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(PostData);
+            StringAssert.Contains(responseData, "<result>PASS</result><fireforgetres></fireforgetres>");
+            //------------Assert Results-------------------------
+            var exists = File.Exists(pathForFileWrittenForTest);
+            Assert.IsFalse(exists);
+            Thread.Sleep(4500); // 5 second wait for the async workflow to finish
+            exists = File.Exists(pathForFileWrittenForTest);
+            Assert.IsTrue(exists);
+            var contentsOfFile = File.ReadAllText(pathForFileWrittenForTest);
+            Assert.AreEqual("200", contentsOfFile);
+            File.Delete(pathForFileWrittenForTest);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("InvokeWorkflow_ViaBrowser")]
+        public void InvokeWorkflow_ViaBrowser_HasWorkflowWithExecuteAsync_WithError_ShouldReturnErrorImmediately()
+        {
+            //------------Setup for test--------------------------
+            var PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11536_FireForget_Error.xml");
+            //------------Execute Test---------------------------
+            var responseData = TestHelper.PostDataToWebserver(PostData);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(responseData, "Asynchronous execution failed: Resource not found");
         }
     }
 }

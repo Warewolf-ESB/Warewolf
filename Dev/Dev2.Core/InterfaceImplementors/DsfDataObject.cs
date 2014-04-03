@@ -1,15 +1,15 @@
-﻿using System;
-using System.Activities.Persistence;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Security.Principal;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
+using System;
+using System.Activities.Persistence;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Security.Principal;
+using System.Xml.Linq;
 using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
@@ -160,6 +160,7 @@ namespace Dev2.DynamicServices
 
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
+        public bool RunWorkflowAsync { get; set; }
         public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
@@ -321,12 +322,13 @@ namespace Dev2.DynamicServices
             result.WorkspaceID = WorkspaceID;
             result.ThreadsToDispose = ThreadsToDispose;
             result.ParentID = ParentID;
+            result.RunWorkflowAsync = RunWorkflowAsync;
             return result;
         }
 
         public bool IsDebugMode()
         {
-            return (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke);
+            return (IsDebug || ServerLogger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
         }
 
         #endregion

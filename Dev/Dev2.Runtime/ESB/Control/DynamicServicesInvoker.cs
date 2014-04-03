@@ -317,7 +317,7 @@ namespace Dev2.Runtime.ESB
         // BUG 9706 - 2013.06.22 - TWR : refactored
         void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
         {
-            if(errors.HasErrors() && (dataObject.IsDebug || dataObject.RemoteInvoke))
+            if(errors.HasErrors() && (dataObject.IsDebugMode()))
             {
                 Guid parentInstanceID;
                 Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);

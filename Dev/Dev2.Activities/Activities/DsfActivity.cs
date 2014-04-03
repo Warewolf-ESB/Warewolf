@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Security.Authentication;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -15,6 +11,10 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Security.Authentication;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 // ReSharper disable CheckNamespace
@@ -116,6 +116,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         public string ServiceName { get; set; }
 
+        public bool RunWorkflowAsync { get; set; }
+
         /// <summary>
         /// The Tags that are required to invoke the Dynamic Service Framework Service
         /// </summary>
@@ -213,6 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
@@ -242,8 +245,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 dataObject.RemoteServiceType = context.GetValue(Type);
-
-                if(dataObject.IsDebugMode())
+                dataObject.RunWorkflowAsync = RunWorkflowAsync;
+                if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
                     DispatchDebugState(context, StateType.Before);
                 }
@@ -300,6 +303,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
 
                             // Execute Request
+
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
 
@@ -348,7 +352,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if(dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
                     DispatchDebugState(context, StateType.After);
                 }
@@ -357,7 +361,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
-
+                dataObject.RunWorkflowAsync = false;
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
@@ -400,7 +404,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ServerLogger.LogMessage("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
 
             var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
-
             ServerLogger.LogMessage("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
 
             return resultID;

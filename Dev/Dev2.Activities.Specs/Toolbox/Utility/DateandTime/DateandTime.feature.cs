@@ -886,7 +886,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 248
        testRunner.And("I selected Add time as \"Years\" with a value of 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
-       testRunner.And("the output format as \"yyyy-mm-dd ‘wrong date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("the output format as \"yyyy-mm-dd \'wrong date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 250
        testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 251

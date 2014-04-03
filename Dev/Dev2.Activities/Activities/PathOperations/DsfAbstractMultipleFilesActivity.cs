@@ -88,7 +88,7 @@ namespace Dev2.Activities.PathOperations
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if(dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(new DebugItemVariableParams(InputPath, "Source Path", inputPathEntry, executionId));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);

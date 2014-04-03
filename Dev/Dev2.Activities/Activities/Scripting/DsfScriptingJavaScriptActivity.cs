@@ -90,7 +90,7 @@ namespace Dev2.Activities
                         return;
                     }
 
-                    if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(Script, scriptEntry, executionId);
                     }
@@ -108,7 +108,7 @@ namespace Dev2.Activities
                             toUpsert.Add(region, null);
                             toUpsert.FlushIterationFrame();
 
-                            if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                            if(dataObject.IsDebugMode())
                             {
                                 // ReSharper disable ExpressionIsAlwaysNull
                                 AddDebugOutputItem(new DebugOutputParams(region, value, executionId, iterationCounter));

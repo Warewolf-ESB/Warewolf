@@ -370,7 +370,7 @@ namespace Dev2.Tests.Runtime
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.WorkspaceID).Returns(workspaceID);
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
-            dataObj.Setup(d => d.IsDebug).Returns(true);
+            dataObj.Setup(d => d.IsDebugMode()).Returns(true);
 
             var actualStates = new List<IDebugState>();
 

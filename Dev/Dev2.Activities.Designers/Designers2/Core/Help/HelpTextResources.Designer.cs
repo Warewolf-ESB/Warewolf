@@ -2974,6 +2974,16 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selecting this checkbox will cause the workflow to execute as &quot;Fire and Forget&quot;. This will free up the parent workflow to continue without waiting for a response from the nested workflow.
+        ///Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use..
+        /// </summary>
+        public static string ServiceHelpRunWorkflowAsync {
+            get {
+                return ResourceManager.GetString("ServiceHelpRunWorkflowAsync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   

@@ -16,7 +16,7 @@
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="175"
+                               MinHeight="200"
                                Padding="7"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
@@ -43,6 +43,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -197,6 +198,7 @@
                                    ItemsSource="{Binding DataMappingViewModel.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    CanUserResizeRows="False"
+                                   IsEnabled="{Binding OutputMappingEnabled}"
                                    MinHeight="53"
                                    Height="Auto"
                                    Margin="0"
@@ -265,9 +267,21 @@
             </controls:Dev2DataGrid>
         </Grid>
 
-        <errors:OnError Grid.Row="1"
+        <CheckBox Grid.Row="1" Margin="0,5,0,0"
+                  Visibility="{Binding IsAsyncVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                  IsChecked="{Binding RunWorkflowAsync, NotifyOnTargetUpdated=True}">
+            Execute workflow asynchronously
+            <i:Interaction.Behaviors>
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ServiceHelpRunWorkflowAsync}"
+                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+
+            </i:Interaction.Behaviors>
+        </CheckBox>
+        
+        <errors:OnError Grid.Row="2"
                         x:Name="OnErrorControl"
                         Height="128"
                         Margin="0" />
+        
     </Grid>
 </core:ActivityDesignerTemplate>

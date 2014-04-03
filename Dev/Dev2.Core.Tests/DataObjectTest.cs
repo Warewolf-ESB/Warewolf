@@ -68,7 +68,8 @@ namespace Dev2.Tests
             dataObject.WorkflowResumeable = false;
             dataObject.ParentID = Guid.NewGuid();
             dataObject.WorkspaceID = Guid.NewGuid();            
-            dataObject.ClientID = Guid.NewGuid();            
+            dataObject.ClientID = Guid.NewGuid();
+            dataObject.RunWorkflowAsync = true;
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -81,7 +82,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(47, properties.Length);
+            Assert.AreEqual(48, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -131,6 +132,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.WorkspaceID, clonedObject.WorkspaceID);
             Assert.AreEqual(dataObject.ThreadsToDispose, clonedObject.ThreadsToDispose);
             Assert.AreEqual(dataObject.ParentID, clonedObject.ParentID);
+            Assert.AreEqual(dataObject.RunWorkflowAsync, clonedObject.RunWorkflowAsync);
         }
     }
 }

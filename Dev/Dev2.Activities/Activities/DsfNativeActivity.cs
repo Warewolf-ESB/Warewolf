@@ -464,10 +464,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var instance = Activator.CreateInstance(type);
                 var activity = instance as Activity;
                 if(activity != null)
+                {
                     _debugState.Name = activity.DisplayName;
+                }
+                var act = instance as DsfActivity;
                 //End Bug 8595
 
                 Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
+                {
+                    var debugItem = new DebugItem();
+                    var debugItemResult = new DebugItemResult();
+                    debugItemResult.Type = DebugItemResultType.Value;
+                    debugItemResult.Label = "Execute workflow asynchronously: ";
+                    debugItemResult.Value = dataObject.RunWorkflowAsync ? "True" : "False";
+                    debugItem.Add(debugItemResult);
+                    _debugState.Inputs.Add(debugItem);
+                }
             }
             else
             {
@@ -509,7 +522,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState.ErrorMessage = errorMessage;
                     try
                     {
+                        if(dataObject.RunWorkflowAsync && !_debugState.HasError)
+                        {
+                            var debugItem = new DebugItem();
+                            var debugItemResult = new DebugItemResult();
+                            debugItemResult.Type = DebugItemResultType.Value;
+                            debugItemResult.Value = "Asynchronous execution started";
+                            debugItem.Add(debugItemResult);
+                            _debugState.Outputs.Add(debugItem);
+                            _debugState.NumberOfSteps = 0;
+                        }
+                        else
+                        {
                         Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                    }
                     }
                     catch(Exception e)
                     {

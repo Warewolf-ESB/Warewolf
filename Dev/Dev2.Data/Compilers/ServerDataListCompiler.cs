@@ -260,7 +260,7 @@ namespace Dev2.Server.Datalist
                 if(result != null)
                 {
                     allErrors.MergeErrors(errors);
-                    TryPushDataList(result, out error);
+                TryPushDataList(result, out error);
                     allErrors.AddError(error);
 
                     res = result.UID;

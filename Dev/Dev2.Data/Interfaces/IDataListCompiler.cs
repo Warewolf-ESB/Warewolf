@@ -8,6 +8,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
 {
     public interface IDataListCompiler : IDisposable

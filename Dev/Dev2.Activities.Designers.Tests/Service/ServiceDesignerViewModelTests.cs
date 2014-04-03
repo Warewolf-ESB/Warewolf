@@ -1,12 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
@@ -26,6 +18,14 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -1041,6 +1041,129 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
             Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
 
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServiceDesingerViewModel_RunWorkflowAsync")]
+        public void ServiceDesingerViewModel_RunWorkflowAsync_Constructor_False()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.RunWorkflowAsync);
+            Assert.IsTrue(viewModel.OutputMappingEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServiceDesingerViewModel_RunWorkflowAsync")]
+        public void ServiceDesingerViewModel_SetRunWorkflowAsync_True_OutputMappingEnabledFalse()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+
+            var modelItem = CreateModelItem(activity);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Execute Test---------------------------
+            viewModel.RunWorkflowAsync = true;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.RunWorkflowAsync);
+            Assert.IsFalse(viewModel.OutputMappingEnabled);
+        }
+
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServiceDesingerViewModel_IsAsyncVisible")]
+        public void ServiceDesingerViewModel_IsAsyncVisible_WorkflowResource_True()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            resourceModel.Setup(model => model.ServerResourceType).Returns("Workflow");
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            var resourceType = resourceModel.Object.ServerResourceType;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.IsAsyncVisible);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServiceDesingerViewModel_IsAsyncVisible")]
+        public void ServiceDesingerViewModel_IsAsyncVisible_NotWorkflowResource_False()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+
+            var modelItem = CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.IsAsyncVisible);
         }
 
         ///////////////////////////////////////////////
