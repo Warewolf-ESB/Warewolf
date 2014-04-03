@@ -42,6 +42,15 @@
         </Component>
         <!-- End Shortcuts -->
         <ComponentGroup Id="Server">
+             <Component Id="cmpF9FC7D1221B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CB4-8179-1F2B-7C4E-DF613AF28912}">
+                <File Id="filD16B434756CC5371AB2257A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\TimeSpan2.dll" />
+            </Component>
+            <Component Id="cmpE9EC7D9921B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-8179-1F2B-7C4E-DF618AF58912}">
+                <File Id="filD16B434756CC5371AB1757A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\AeroWizard.dll" />
+            </Component>
+            <Component Id="cmpE9FC7F1421F14FF5CF2AB1807B966836" Directory="dirServerRoot" Guid="{A9CD1CF4-1139-4D4B-9C4E-DF618AF58912}">
+                <File Id="filD16B434886AA5171AB1957E4FBFB516B" KeyPath="yes" Source="..\ProductBuild\Server\GroupControls.dll" />
+            </Component>
             <Component Id="cmpE9AC7D1421B14FF5CF2AB1807B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-1139-4D4B-9C4E-DF618AF58912}">
                 <File Id="filD16B434886CC5371AB1957E4FBFB516B" KeyPath="yes" Source="..\ProductBuild\Server\WareWolfAgent.exe" />
             </Component>
@@ -395,9 +404,9 @@
             <!-- End Service-->
             <!-- End Sample -->
             <!-- Start Services -->
-            <Component Id="Recordset_Length" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{11B67EEE-C507-4ABE-7AC6-AF6EC29E163B}">
+            <!--<Component Id="Recordset_Length" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{11B67EEE-C507-4ABE-7AC6-AF6EC29E163B}">
                 <File Id="fil858D36B941DA865AB6AC040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - Records Length.xml" />
-            </Component>
+            </Component>-->
             <Component Id="RecordsetSQL_Bulk_Insert" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4ABE-7AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - SQL Bulk Insert.xml" />
             </Component>
