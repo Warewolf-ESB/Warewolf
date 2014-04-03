@@ -50,6 +50,8 @@
                     Value="True" />
             <Setter Property="Background"
                     Value="White" />
+            <Setter Property="SelectionMode"
+                    Value="Single" />
         </Style>
 
         <Style x:Key="SchedulerDataGridHeaderStyle"
@@ -432,7 +434,7 @@
                             <TextBlock Text="Number of History records to load (0 = all): "
                                        Style="{StaticResource PermissionsGridTextBlockStyle}" />
                             <TextBox Width="60"
-                                     Text="{Binding NumberOfRecordsToKeep,Mode=TwoWay}"
+                                     Text="{Binding NumberOfRecordsToKeep,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipHistoryRecords}"
                                      VerticalAlignment="Center">
                                 <i:Interaction.Behaviors>

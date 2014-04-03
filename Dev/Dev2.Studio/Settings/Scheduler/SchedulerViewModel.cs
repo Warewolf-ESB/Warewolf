@@ -302,14 +302,9 @@ namespace Dev2.Settings.Scheduler
                     int val;
                     if(value.IsWholeNumber(out val))
                     {
-                        ClearError(NumberOfHistoryErrorMessage);
+                        SelectedTask.NumberOfHistoryToKeep = val;
+                        SelectedTask.IsDirty = true;
                     }
-                    else
-                    {
-                        ShowError(NumberOfHistoryErrorMessage);
-                    }
-                    SelectedTask.NumberOfHistoryToKeep = val;
-                    SelectedTask.IsDirty = true;
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
                 }
             }
@@ -859,9 +854,13 @@ namespace Dev2.Settings.Scheduler
 
         public virtual IScheduleTrigger ShowEditTriggerDialog()
         {
+            var tmpTrigger = TriggerEditDialog.Trigger;
             if(TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
+                if(TriggerEditDialog.Trigger != tmpTrigger)
+                {
+                    return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
+                }
             }
             return null;
         }

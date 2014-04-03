@@ -579,7 +579,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.triggerTypeCombo);
             this.Controls.Add(this.triggerTypeLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "TriggerEditDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

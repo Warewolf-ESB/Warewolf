@@ -550,7 +550,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SchedulerViewModel_NumberOfRecordsToKeep")]
-        public void SchedulerViewModel_NumberOfRecordsToKeep_NotWholeNumber_SetsError()
+        public void SchedulerViewModel_NumberOfRecordsToKeep_NotWholeNumber_KeepsOldNumber()
         {
             //------------Setup for test--------------------------
 
@@ -569,54 +569,11 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
-            schedulerViewModel.NumberOfRecordsToKeep = "-5";
+            schedulerViewModel.NumberOfRecordsToKeep = "5";
+            schedulerViewModel.NumberOfRecordsToKeep = "-a5";
             //------------Assert Results-------------------------
-            Assert.IsTrue(schedulerViewModel.HasErrors);
-            Assert.AreEqual("Number of History Records to Keep must be a whole number", schedulerViewModel.Error);
-            Assert.IsFalse(schedulerViewModel.IsSaveEnabled);
-            Assert.AreEqual(-5, schedulerViewModel.SelectedTask.NumberOfHistoryToKeep);
+            Assert.AreEqual(5, schedulerViewModel.SelectedTask.NumberOfHistoryToKeep);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SchedulerViewModel_NumberOfRecordsToKeep")]
-        public void SchedulerViewModel_NumberOfRecordsToKeep_WholeNumber_RemovesError()
-        {
-            //------------Setup for test--------------------------
-
-            var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
-            var scheduledResourceForTest2 = new ScheduledResourceForTest();
-            scheduledResourceForTest2.Name = "Test2";
-            scheduledResourceForTest.IsDirty = true;
-            resources.Add(scheduledResourceForTest);
-            resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel();
-
-            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
-            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
-            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            //------------Assert Precondition---------------------
-            schedulerViewModel.NumberOfRecordsToKeep = "-5";
-            Assert.IsTrue(schedulerViewModel.HasErrors);
-            Assert.AreEqual("Number of History Records to Keep must be a whole number", schedulerViewModel.Error);
-            Assert.IsFalse(schedulerViewModel.IsSaveEnabled);
-            Assert.AreEqual(-5, schedulerViewModel.SelectedTask.NumberOfHistoryToKeep);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
-            //------------Execute Test---------------------------
-            schedulerViewModel.NumberOfRecordsToKeep = "2";
-            //------------Assert Results-------------------------
-            Assert.IsFalse(schedulerViewModel.HasErrors);
-            Assert.AreEqual(string.Empty, schedulerViewModel.Error);
-            Assert.IsTrue(schedulerViewModel.IsSaveEnabled);
-            Assert.AreEqual(2, schedulerViewModel.SelectedTask.NumberOfHistoryToKeep);
-            Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
         }
 
         [TestMethod]
@@ -727,29 +684,6 @@ namespace Dev2.Core.Tests.Settings
             schedulerViewModel.SelectedTask = resources[0];
             schedulerViewModel.Name = "monkeys";
             Assert.IsFalse(schedulerViewModel.HasErrors);
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("SchedulerViewModel_Validation")]
-        public void SchedulerViewModel_Validation_IfHistoryCountIsNotWhole()
-        {
-            var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
-            resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
-
-            var schedulerViewModel = new SchedulerViewModel()
-            {
-                ScheduledResourceModel = resourceModel.Object
-            };
-            schedulerViewModel.SelectedTask = resources[0];
-            schedulerViewModel.NumberOfRecordsToKeep = "-1";
-            Assert.IsTrue(schedulerViewModel.HasErrors);
-            Assert.AreEqual("Number of History Records to Keep must be a whole number", schedulerViewModel.Error);
-
 
         }
 
