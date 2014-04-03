@@ -1,34 +1,39 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Load.Tests", "Dev2.Load.Tests\Dev2.Load.Tests.csproj", "{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "..\Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "..\Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Integration.Tests", "Dev2.Integration.Tests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Integration.Tests", "..\Dev2.Integration.Tests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Load.Tests", "Dev2.Load.Tests.Test\Dev2.Load.Tests.csproj", "{C983006F-A81F-4C92-AAD6-43E4E75528B4}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = ..\\Dev2.Common\\Dev2.Common.csproj
-		SccProjectName0 = ../Dev2.Common
+		SccProjectUniqueName0 = Dev2.Common\\Dev2.Common.csproj
+		SccProjectName0 = Dev2.Common
 		SccAuxPath0 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = ..\\Dev2.Common
+		SccLocalPath0 = Dev2.Common
 		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = ..\\Dev2.Data\\Dev2.Data.csproj
-		SccProjectName1 = ../Dev2.Data
+		SccProjectUniqueName1 = Dev2.Data\\Dev2.Data.csproj
+		SccProjectName1 = Dev2.Data
 		SccAuxPath1 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath1 = ..\\Dev2.Data
+		SccLocalPath1 = Dev2.Data
 		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName2 = ..\\Dev2.Integration.Tests\\Dev2.Integration.Tests.csproj
-		SccProjectName2 = ../Dev2.Integration.Tests
+		SccProjectUniqueName2 = Dev2.Integration.Tests\\Dev2.Integration.Tests.csproj
+		SccProjectName2 = Dev2.Integration.Tests
 		SccAuxPath2 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath2 = ..\\Dev2.Integration.Tests
+		SccLocalPath2 = Dev2.Integration.Tests
 		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName3 = Dev2.Load.Tests.Test\\Dev2.Load.Tests.csproj
+		SccProjectName3 = Dev2.Load.Tests.Test
+		SccAuxPath3 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
+		SccLocalPath3 = Dev2.Load.Tests.Test
+		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,16 +42,11 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Test|Any CPU = Test|Any CPU
+		Test|x64 = Test|x64
+		Test|x86 = Test|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|x64.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|x86.ActiveCfg = Release|Any CPU
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -55,6 +55,10 @@ Global
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|x64.ActiveCfg = Release|Any CPU
 		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Release|x86.ActiveCfg = Release|Any CPU
+		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Test|Any CPU.Build.0 = Test|Any CPU
+		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Test|x64.ActiveCfg = Test|Any CPU
+		{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}.Test|x86.ActiveCfg = Test|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -63,16 +67,40 @@ Global
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|x64.ActiveCfg = Release|Any CPU
 		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Test|Any CPU.Build.0 = Test|Any CPU
+		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Test|x64.ActiveCfg = Test|Any CPU
+		{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}.Test|x86.ActiveCfg = Test|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|x64.ActiveCfg = Debug|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|x64.Build.0 = Debug|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|x86.ActiveCfg = Debug|x86
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Debug|x86.Build.0 = Debug|x86
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|x64.ActiveCfg = Release|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|x64.Build.0 = Release|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|x86.ActiveCfg = Release|x86
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|x86.Build.0 = Release|x86
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Any CPU.Build.0 = Test|Any CPU
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x64.ActiveCfg = Test|x64
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x64.Build.0 = Test|x64
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x86.ActiveCfg = Test|x86
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x86.Build.0 = Test|x86
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Release|x64.ActiveCfg = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Test|Any CPU.Build.0 = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Test|x64.ActiveCfg = Release|Any CPU
+		{C983006F-A81F-4C92-AAD6-43E4E75528B4}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
