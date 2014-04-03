@@ -10,7 +10,7 @@ namespace Dev2.Integration.Tests.Load_Tests
     [TestClass]
     public class ServerLoadTest
     {
-        private double _ticksPerSec = 10000000;
+        const double _ticksPerSec = 10000000;
 
         [TestMethod]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
