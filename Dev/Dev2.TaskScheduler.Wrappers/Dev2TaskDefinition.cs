@@ -102,7 +102,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public string UserName
         {
-            get { return _taskDefinition.Principal.DisplayName; }
+            get { return _taskDefinition.Principal.UserId; }
         }
     }
 }

@@ -32,13 +32,13 @@ namespace Dev2.ScheduleExecutor
 
                 AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
                 Log("Info", "Task Started");
-                if (args.Length < 2)
+                if(args.Length < 2)
                 {
                     Log("Error", "Invalid arguments passed in.");
                     return;
                 }
                 var paramters = new Dictionary<string, string>();
-                for (int i = 0; i < args.Count(); i++)
+                for(int i = 0; i < args.Count(); i++)
                 {
                     string[] singleParameters = args[i].Split(':');
 
@@ -56,7 +56,7 @@ namespace Dev2.ScheduleExecutor
                     throw;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Log("Error", string.Format("Error from execution: {0}{1}", e.Message, e.StackTrace));
 
@@ -69,7 +69,7 @@ namespace Dev2.ScheduleExecutor
             string postUrl = string.Format("http://localhost:3142/services/{0}", workflowName);
             Log("Info", string.Format("Executing as {0}", CredentialCache.DefaultNetworkCredentials.UserName));
             int len = postUrl.Split('?').Count();
-            if (len == 1)
+            if(len == 1)
             {
                 string result = string.Empty;
 
@@ -82,18 +82,18 @@ namespace Dev2.ScheduleExecutor
 
                 try
                 {
-                    using (var response = req.GetResponse() as HttpWebResponse)
+                    using(var response = req.GetResponse() as HttpWebResponse)
                     {
-                        if (response != null)
+                        if(response != null)
                         {
                             // ReSharper disable AssignNullToNotNullAttribute
-                            using (var reader = new StreamReader(response.GetResponseStream()))
-                                // ReSharper restore AssignNullToNotNullAttribute
+                            using(var reader = new StreamReader(response.GetResponseStream()))
+                            // ReSharper restore AssignNullToNotNullAttribute
                             {
                                 result = reader.ReadToEnd();
                             }
 
-                            if (response.StatusCode != HttpStatusCode.OK)
+                            if(response.StatusCode != HttpStatusCode.OK)
                             {
                                 DebugState state = CreateDebugState(result, workflowName, taskName);
 
@@ -108,7 +108,7 @@ namespace Dev2.ScheduleExecutor
                         }
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
                     Console.Write(e.Message);
@@ -154,7 +154,7 @@ namespace Dev2.ScheduleExecutor
             File.WriteAllText(
                 string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName,
                               DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
-                js.SerializeToBuilder(new List<DebugState> {state}).ToString());
+                js.SerializeToBuilder(new List<DebugState> { state }).ToString());
             return state;
         }
 
@@ -169,13 +169,13 @@ namespace Dev2.ScheduleExecutor
                                      where a.TaskCategory == "Task Started" && time > StartTime
                                      orderby a.TimeCreated
                                      select a).LastOrDefault();
-                if (null != events)
+                if(null != events)
                 {
                     return events.Correlation;
                 }
                 return "";
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
@@ -197,17 +197,17 @@ namespace Dev2.ScheduleExecutor
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
-            using (var response = req.GetResponse() as HttpWebResponse)
+            using(var response = req.GetResponse() as HttpWebResponse)
             {
-                if (response != null)
+                if(response != null)
                 {
                     Stream responseStream = response.GetResponseStream();
-                    if (responseStream != null)
+                    if(responseStream != null)
                     {
-                        using (var reader = new StreamReader(responseStream))
+                        using(var reader = new StreamReader(responseStream))
                         {
                             string data = reader.ReadToEnd();
-                            if (Stopwatch.ElapsedMilliseconds < 5000)
+                            if(Stopwatch.ElapsedMilliseconds < 5000)
                             {
                                 Thread.Sleep(5000);
                             }
@@ -223,29 +223,49 @@ namespace Dev2.ScheduleExecutor
 
         private static void Log(string logType, string logMessage)
         {
-            using (
-                TextWriter tsw =
-                    new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd"),
-                                                    FileMode.Append)))
+            try
             {
-                tsw.WriteLine();
-                tsw.Write(logType);
-                tsw.Write("----");
-                tsw.WriteLine(logMessage);
+
+
+                using(
+                    TextWriter tsw =
+                        new StreamWriter(new FileStream(SchedulerLogDirectory + "/" + DateTime.Now.ToString("yyyy-MM-dd"),
+                                                        FileMode.Append)))
+                {
+                    tsw.WriteLine();
+                    tsw.Write(logType);
+                    tsw.Write("----");
+                    tsw.WriteLine(logMessage);
+                }
+            }
+            catch
+            {
+
+
             }
         }
 
         private static void SetupForLogging()
         {
             bool hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
-            if (hasSchedulerLogDirectory)
+            if(hasSchedulerLogDirectory)
             {
                 var directoryInfo = new DirectoryInfo(SchedulerLogDirectory);
                 FileInfo[] logFiles = directoryInfo.GetFiles();
-                if (logFiles.Count() > 20)
+                if(logFiles.Count() > 20)
                 {
-                    FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
-                    fileInfo.Delete();
+                    try
+                    {
+
+
+
+                        FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
+                        fileInfo.Delete();
+                    }
+                    catch
+                    {
+                    }
+
                 }
             }
             else

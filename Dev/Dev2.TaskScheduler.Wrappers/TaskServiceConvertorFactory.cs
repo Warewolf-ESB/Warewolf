@@ -105,7 +105,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public ITrigger SanitiseTrigger(ITrigger resource)
         {
-            ITrigger trigger;
+            ITrigger trigger= new Dev2Trigger(this,resource.Instance);
             Trigger serialisedTrigger = resource.Instance;
             switch (resource.Instance.TriggerType)
             {
@@ -125,7 +125,17 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     break;
                 case TaskTriggerType.Event:
-                    trigger = new Dev2EventTrigger(this, new EventTrigger());
+                    var evt = resource.Instance as EventTrigger;
+                    if (evt != null)
+                    {
+                        int? eventId;
+                        string source;
+                        string log;
+                        evt.GetBasic(out log, out source, out eventId);
+
+                        trigger = new Dev2EventTrigger(this, new EventTrigger(log, source, eventId));
+                    }
+            
 
                     break;
                 case TaskTriggerType.Idle:
@@ -133,7 +143,9 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     break;
                 case TaskTriggerType.Logon:
-                    trigger = new Dev2LogonTrigger(this, new LogonTrigger());
+                    var logonTrigger = resource.Instance as LogonTrigger;
+                    if (logonTrigger != null)
+                        trigger = new Dev2LogonTrigger(this, new LogonTrigger {UserId = logonTrigger.UserId});
 
                     break;
                 case TaskTriggerType.Monthly:
@@ -159,8 +171,9 @@ namespace Dev2.TaskScheduler.Wrappers
                     break;
                 case TaskTriggerType.SessionStateChange:
 
-                    trigger = new Dev2Trigger(this, new SessionStateChangeTrigger());
-
+                    var sessionStateChangeTrigger = resource.Instance as SessionStateChangeTrigger;
+                    if (sessionStateChangeTrigger != null)
+                        trigger = new Dev2Trigger(this, new SessionStateChangeTrigger { UserId = sessionStateChangeTrigger.UserId, StateChange = sessionStateChangeTrigger.StateChange });
                     break;
                 case TaskTriggerType.Time:
                     var y = (serialisedTrigger as TimeTrigger);

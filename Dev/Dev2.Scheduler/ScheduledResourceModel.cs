@@ -209,7 +209,8 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                                 arg.Definition.Settings.Enabled
                                     ? SchedulerStatus.Enabled
                                     : SchedulerStatus.Disabled,
-                            RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable
+                            RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable,
+                            UserName = arg.Definition.UserName
                         };
                 }
                 finally

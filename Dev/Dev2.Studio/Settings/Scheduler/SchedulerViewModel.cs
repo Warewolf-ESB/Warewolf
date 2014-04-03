@@ -5,6 +5,7 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.AppResources.Enums;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Messages;
 using Dev2.Scheduler;
@@ -343,8 +344,8 @@ namespace Dev2.Settings.Scheduler
                     int val;
                     if(value.IsWholeNumber(out val))
                     {
-                    SelectedTask.NumberOfHistoryToKeep = val;
-                    SelectedTask.IsDirty = true;
+                        SelectedTask.NumberOfHistoryToKeep = val;
+                        SelectedTask.IsDirty = true;
                     }
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
                 }
@@ -385,8 +386,15 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
-                if(null == value || Equals(value, _selectedHistory))
+                if(null == value)
                 {
+                    EventPublisher.Publish(new DebugOutputMessage(new List<DebugState>()));
+                    return;
+                }
+
+                if(Equals(value, _selectedHistory))
+                {
+
                     return;
                 }
                 _selectedHistory = value;
@@ -430,6 +438,7 @@ namespace Dev2.Settings.Scheduler
                 _selectedTask = value;
 
                 NotifyOfPropertyChange(() => SelectedTask);
+
                 if(_selectedTask != null)
                 {
                     NotifyOfPropertyChange(() => Trigger);
@@ -445,6 +454,8 @@ namespace Dev2.Settings.Scheduler
                     NotifyOfPropertyChange(() => History);
                     NotifyOfPropertyChange(() => Errors);
                     NotifyOfPropertyChange(() => Error);
+                    NotifyOfPropertyChange(() => SelectedHistory);
+                    SelectedHistory = null;
                     if(IsHistoryTab)
                     {
                         NotifyOfPropertyChange(() => History);
@@ -686,6 +697,7 @@ namespace Dev2.Settings.Scheduler
         void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
+            HelpText = HelpTextResources.SchedulerSettingsHelpTextSettingsView;
         }
 
         ActivityDesignerToggle CreateHelpToggle()
@@ -704,9 +716,11 @@ namespace Dev2.Settings.Scheduler
         void SaveTasks()
         {
             if(SelectedTask != null && SelectedTask.IsDirty)
+            {
                 if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
                 {
-                    var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName, SelectedTask.Name);
+                    var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
+                                                                                           SelectedTask.Name);
                     if(showNameChangedConflict == MessageBoxResult.Cancel)
                     {
                         return;
@@ -715,7 +729,14 @@ namespace Dev2.Settings.Scheduler
                     {
                         SelectedTask.Name = SelectedTask.OldName;
                     }
+
                 }
+                if(SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+                {
+                    SelectedTask.OldName = SelectedTask.Name;
+                }
+            }
+
             GetCredentials(SelectedTask);
             string errorMessage;
             if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
@@ -724,6 +745,7 @@ namespace Dev2.Settings.Scheduler
             }
             else
             {
+                if(SelectedTask != null) SelectedTask.OldName = SelectedTask.Name;
                 NotifyOfPropertyChange(() => TaskList);
             }
         }
@@ -825,35 +847,35 @@ namespace Dev2.Settings.Scheduler
             if(CurrentEnvironment != null && CurrentEnvironment.AuthorizationService != null && CurrentEnvironment.IsConnected)
             {
                 if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
-            {
-                    ClearConnectionError();
-                _resourcePicker = new ResourcePickerDialog(enDsfActivityType.Workflow, CurrentEnvironment);
-                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment);
-                IsLoading = true;
-                _asyncWorker.Start(
-                    () =>
-                    ScheduledResourceModel.ScheduledResources = ScheduledResourceModel.GetScheduledResources(), () =>
                 {
-                    foreach(var scheduledResource in ScheduledResourceModel.ScheduledResources)
+                    ClearConnectionError();
+                    _resourcePicker = new ResourcePickerDialog(enDsfActivityType.Workflow, CurrentEnvironment);
+                    ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment);
+                    IsLoading = true;
+                    _asyncWorker.Start(
+                        () =>
+                        ScheduledResourceModel.ScheduledResources = ScheduledResourceModel.GetScheduledResources(), () =>
                     {
-                        scheduledResource.NextRunDate = scheduledResource.Trigger.Trigger.StartBoundary;
-                        scheduledResource.OldName = scheduledResource.Name;
-                    }
+                        foreach(var scheduledResource in ScheduledResourceModel.ScheduledResources)
+                        {
+                            scheduledResource.NextRunDate = scheduledResource.Trigger.Trigger.StartBoundary;
+                            scheduledResource.OldName = scheduledResource.Name;
+                        }
 
-                    NotifyOfPropertyChange(() => TaskList);
-                    if(TaskList.Count > 0)
-                    {
-                        SelectedTask = TaskList[0];
-                    }
-                    IsLoading = false;
-                });
-            }
-            else
-            {
+                        NotifyOfPropertyChange(() => TaskList);
+                        if(TaskList.Count > 0)
+                        {
+                            SelectedTask = TaskList[0];
+                        }
+                        IsLoading = false;
+                    });
+                }
+                else
+                {
                     SetConnectionError();
-                ClearViewModel();
+                    ClearViewModel();
+                }
             }
-        }
             else
             {
                 ClearConnectionError();
@@ -906,15 +928,15 @@ You need Administrator permission.";
         void ShowError(string description)
         {
             if(!string.IsNullOrEmpty(description))
-        {
-                if(!description.StartsWith("Error while saving:"))
             {
-                IsSaveEnabled = false;
+                if(!description.StartsWith("Error while saving:"))
+                {
+                    IsSaveEnabled = false;
+                }
+                Errors.AddError(description, true);
+                NotifyOfPropertyChange(() => Error);
+                NotifyOfPropertyChange(() => HasErrors);
             }
-            Errors.AddError(description, true);
-            NotifyOfPropertyChange(() => Error);
-            NotifyOfPropertyChange(() => HasErrors);
-        }
         }
 
         #endregion
@@ -928,8 +950,8 @@ You need Administrator permission.";
             {
                 if(TriggerEditDialog.Trigger != tmpTrigger)
                 {
-                return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
-            }
+                    return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
+                }
             }
             return null;
         }

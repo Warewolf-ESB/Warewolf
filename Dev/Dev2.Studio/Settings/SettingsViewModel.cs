@@ -246,6 +246,7 @@ namespace Dev2.Settings
         void OnServerChanged(object obj)
         {
             var server = obj as IEnvironmentModel;
+
             if(server == null)
             {
                 return;
@@ -363,6 +364,10 @@ namespace Dev2.Settings
 
         #endregion
 
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        /// <returns></returns>
         void SaveSettings()
         {
             Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);

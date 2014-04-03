@@ -2798,6 +2798,16 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
+        ///Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well..
+        /// </summary>
+        public static string SchedulerSettingsHelpTextSettingsView {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsHelpTextSettingsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To change if the trigger is active or not, select Enabled or Dissabled..
         /// </summary>
         public static string SchedulerSettingsHelpTextStatus {

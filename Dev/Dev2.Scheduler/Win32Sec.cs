@@ -141,8 +141,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         bool windowsAuthorised = false;
 
-        if (userName.Contains("\\"))
-            userName = userName.Split(new[] {'\\'}).Last();
+        userName = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
         IntPtr buffer;
@@ -175,6 +174,13 @@ public class SecurityWrapper : ISecurityWrapper
         }
         else
             return false;
+    }
+
+    private static string CleanUser(string userName)
+    {
+        if (userName.Contains("\\"))
+            userName = userName.Split(new[] {'\\'}).Last();
+        return userName;
     }
 
 
@@ -262,6 +268,7 @@ public class SecurityWrapper : ISecurityWrapper
 
     public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
     {
+        userName = CleanUser(userName);
         var wp = new WindowsPrincipal(new WindowsIdentity(userName));
 
 

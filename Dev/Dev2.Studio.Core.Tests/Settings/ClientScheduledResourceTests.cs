@@ -221,6 +221,8 @@ namespace Dev2.Core.Tests.Settings
         /// The workflow that we will run
         /// </summary>
         public string WorkflowName { get; set; }
+
+
         /// <summary>
         /// The workflow that we will run
         /// </summary>

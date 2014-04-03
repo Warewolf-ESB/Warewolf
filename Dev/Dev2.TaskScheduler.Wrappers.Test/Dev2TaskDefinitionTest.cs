@@ -29,7 +29,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             {
                 var defn = new Dev2TaskDefinition(_factory.Object, native);
                 Assert.AreEqual(defn.Instance, native);
-                Assert.AreEqual(defn.UserName, native.Principal.DisplayName);
+                Assert.AreEqual(defn.UserName, native.Principal.UserId);
                 Assert.AreEqual(defn.XmlText, native.XmlText);
             }
         }

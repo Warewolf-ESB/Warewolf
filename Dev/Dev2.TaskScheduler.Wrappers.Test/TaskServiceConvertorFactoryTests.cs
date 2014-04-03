@@ -46,7 +46,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var fact = new TaskServiceConvertorFactory();
 
            
-            Trigger trig = new EventTrigger();
+            Trigger trig = new EventTrigger("1","2",1);
             var wrapped = new Dev2Trigger(fact, trig);
             var sanitised = fact.SanitiseTrigger(wrapped);
             AssertEqual(trig, sanitised);

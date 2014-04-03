@@ -1845,4 +1845,8 @@ To see the result of the workflow execution, select the history record and then 
     <value>Selecting this checkbox will cause the workflow to execute as "Fire and Forget". This will free up the parent workflow to continue without waiting for a response from the nested workflow.
 Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.</value>
   </data>
+  <data name="SchedulerSettingsHelpTextSettingsView" xml:space="preserve">
+    <value>To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
+Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.</value>
+  </data>
 </root>

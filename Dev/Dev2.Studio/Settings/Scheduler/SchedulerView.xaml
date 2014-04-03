@@ -295,7 +295,8 @@
                     Background="White"
                     SelectedItem="{Binding ActiveItem, Mode=OneWayToSource}">
 
-            <TabItem Header="Settings">
+            <TabItem Header="Settings"                     
+                     x:Name="InitialFocusElement">                
                 <Grid Visibility="{Binding SelectedTask,Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -562,7 +563,7 @@
                     <help1:HelpControl Grid.Row="0"
                                        Grid.Column="1"
                                        VerticalAlignment="Top"
-                                       Width="175"
+                                       Width="175"                                       
                                        Visibility="{Binding HelpToggle.IsChecked, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                 </Grid>
             </TabItem>
@@ -586,6 +587,7 @@
                                                         Visibility="{Binding IsProgressBarVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                     <DataGrid ItemsSource="{Binding History}"
                               Grid.Column="0"
+                              EnableRowVirtualization="False"
                               SelectedItem="{Binding SelectedHistory,Mode=TwoWay}"                              
                               Style="{StaticResource SchedulerDataGridStyle}"
                               RowHeight="22"

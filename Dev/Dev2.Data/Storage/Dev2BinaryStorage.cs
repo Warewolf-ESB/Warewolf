@@ -184,19 +184,21 @@ namespace Dev2.Data.Storage
                     {
                         if(!startupCleaned)
                         {
-                            try
-                            {
-                                foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
+                              foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
                                 {
-                                    f.Delete();
+                                  try
+                                    {
+
+                                        f.Delete();
+                                    }
+                                  // ReSharper disable EmptyGeneralCatchClause
+                                    catch 
+                                  // ReSharper restore EmptyGeneralCatchClause
+                                    {
+                                      // Best effort ;)
+                                    }
                                 }
-                            }
-                            // ReSharper disable EmptyGeneralCatchClause
-                            catch(Exception)
-                            // ReSharper restore EmptyGeneralCatchClause
-                            {
-                                // Best effort ;)
-                            }
+                       
                             startupCleaned = true;
                         }
                     }

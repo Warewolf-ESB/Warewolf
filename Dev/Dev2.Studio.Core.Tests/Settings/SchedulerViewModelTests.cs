@@ -13,12 +13,15 @@ using Dev2.Dialogs;
 using Dev2.Messages;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
+using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -229,6 +232,69 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             mockPopupController.Verify(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_SaveCommand")]
+        public void SchedulerViewModel_SaveCommand_WithNewNameDiffToOldNameYesDialogResponse_OldNameChanges()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task1", IsDirty = true };
+            scheduledResourceForTest.IsDirty = true;
+            resources.Add(scheduledResourceForTest);
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
+            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
+            string test;
+            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
+            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+            //------------Execute Test---------------------------
+            schedulerViewModel.SaveCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(schedulerViewModel.GetCredentialsCalled);
+            string errorMessage;
+            mockScheduledResourceModel.Verify(model => model.Save(It.IsAny<IScheduledResource>(), out errorMessage), Times.Once());
+            Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].Name);
+            Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
+            mockPopupController.Verify(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        }
+
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_SaveCommand")]
+        public void SchedulerViewModel_SaveCommand_WithNewNameDiffToOldNameYesDialogResponse_OldNameChangesNewTask()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "New Task 1", IsDirty = true };
+            scheduledResourceForTest.IsDirty = true;
+            resources.Add(scheduledResourceForTest);
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
+            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
+            string test;
+            mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
+            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+            //------------Execute Test---------------------------
+            schedulerViewModel.SaveCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(schedulerViewModel.GetCredentialsCalled);
+            string errorMessage;
+            mockScheduledResourceModel.Verify(model => model.Save(It.IsAny<IScheduledResource>(), out errorMessage), Times.Once());
+            Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].Name);
+            Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
+          
+        }
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_SaveCommand")]
@@ -328,7 +394,11 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var _numRecordsChange = false;
             var _triggerTextChange = false;
             var _historyMustChange = false;
-            var schedulerViewModel = new SchedulerViewModel();
+            var agg = new Mock<IEventAggregator>();
+            agg.Setup(a=>a.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
+            var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker());
+           
+       
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
                 switch(args.PropertyName)
@@ -374,6 +444,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             Assert.IsTrue(_numRecordsChange);
             Assert.IsTrue(_triggerTextChange);
             Assert.IsTrue(_historyMustChange);
+            agg.Verify(a=>a.Publish(It.IsAny<DebugOutputMessage>()));
         }
 
         [TestMethod]
