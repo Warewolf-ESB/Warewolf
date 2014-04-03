@@ -238,7 +238,7 @@ namespace Dev2.Runtime.ServiceModel
 
                     if(hub.State == ConnectionState.Disconnected)
                     {
-                        throw new Exception("Unauthorized");
+                        throw new Exception("Not Authorized");
                     }
 
                     return "Success";
@@ -251,11 +251,6 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
-        }
-
-        void HubOnClosed()
-        {
-            throw new NotImplementedException();
         }
 
         void HubOnError(Exception exception)
