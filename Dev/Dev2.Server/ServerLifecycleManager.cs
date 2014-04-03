@@ -1051,8 +1051,8 @@ namespace Dev2
             {
                 if(!inspected.Contains(toLoad.FullName))
                 {
-                    //inspected.Add(toLoad.FullName);
-
+                    inspected.Add(toLoad.FullName);
+                    
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
                     if(LogTraceInfo)
                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
