@@ -135,14 +135,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Load.Tests", "Dev2.Load.Tests\Dev2.Load.Tests.csproj", "{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 52
+		SccNumberOfProjects = 51
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
+		SccLocalPath0 = Dev2.Load.Tests
+		SccProjectFilePathRelativizedFromConnection0 = ..\\
 		SccProjectUniqueName1 = Dev2.Common\\Dev2.Common.csproj
 		SccProjectName1 = Dev2.Common
 		SccLocalPath1 = Dev2.Common
@@ -278,24 +277,21 @@ Global
 		SccProjectUniqueName45 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
 		SccProjectName45 = Dev2.Instrumentation
 		SccLocalPath45 = Dev2.Instrumentation
-		SccProjectUniqueName46 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName46 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath46 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName47 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName47 = Dev2.Scheduler
-		SccLocalPath47 = Dev2.Scheduler
-		SccProjectUniqueName48 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
-		SccProjectName48 = Dev2.Scheduler.Test
-		SccLocalPath48 = Dev2.Scheduler.Test
-		SccProjectUniqueName49 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Test.csproj
-		SccProjectName49 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath49 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName50 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName50 = Dev2.ScheduleExecutor
-		SccLocalPath50 = Dev2.ScheduleExecutor
-		SccProjectUniqueName46 = Dev2.Load.Tests\\Dev2.Load.Tests.csproj
-		SccProjectName51 = Dev2.Load.Tests
-		SccLocalPath51 = Dev2.Load.Tests
+		SccProjectUniqueName46 = Dev2.Scheduler\\Dev2.Scheduler.csproj
+		SccProjectName46 = Dev2.Scheduler
+		SccLocalPath46 = Dev2.Scheduler
+		SccProjectUniqueName47 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
+		SccProjectName47 = Dev2.Scheduler.Test
+		SccLocalPath47 = Dev2.Scheduler.Test
+		SccProjectUniqueName48 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Test.csproj
+		SccProjectName48 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath48 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName49 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
+		SccProjectName49 = Dev2.ScheduleExecutor
+		SccLocalPath49 = Dev2.ScheduleExecutor
+		SccProjectUniqueName50 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName50 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath50 = Dev2.TaskScheduler.Wrappers
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1254,24 +1250,6 @@ Global
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Test|x64.ActiveCfg = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Test|x86.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|x64.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Release|x86.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|Any CPU.Build.0 = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|Mixed Platforms.Build.0 = Test|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|x64.ActiveCfg = Release|Any CPU
-		{041EA156-4CFF-4D4D-95D1-44CBC23CDD07}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
