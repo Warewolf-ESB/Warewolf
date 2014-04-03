@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -10,6 +12,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 using Connection = Dev2.Data.ServiceModel.Connection;
 
@@ -182,6 +185,19 @@ namespace Dev2.Runtime.ServiceModel
             }
             catch(Exception ex)
             {
+                var hex = ex.InnerException as HttpClientException;
+                if(hex != null)
+                {
+                    switch(hex.Response.StatusCode)
+                    {
+                        case HttpStatusCode.Unauthorized:
+                        case HttpStatusCode.Forbidden:
+                            result.IsValid = false;  // This we know how to handle this
+                            result.ErrorMessage = hex.Response.ReasonPhrase;
+                            return result;
+                    }
+                }
+
                 result.IsValid = false;
                 result.ErrorMessage = ex.Message;
             }
@@ -190,31 +206,11 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual string ConnectToServer(Connection connection)
         {
-            string result;
             using(var client = new WebClient())
             {
                 if(connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     client.UseDefaultCredentials = true;
-
-                    // check for \ and blank pass as this will give the wrong impression of what is really happening ;)
-                    // at times windows will inject \ aka anonymous as the current credentials. 
-                    // seems to be the case when we cross non-domain to domain
-                    // the code below negates this and forces a failure in these cases
-                    var creds = client.Credentials;
-                    if(creds != null)
-                    {
-                        var castCreds = creds as NetworkCredential;
-                        if(castCreds != null)
-                        {
-                            if(castCreds.UserName == GlobalConstants.PublicUsername && string.IsNullOrEmpty(castCreds.Password))
-                            {
-                                // in this case we need to force a failure ;)
-                                client.UseDefaultCredentials = false;
-                                client.Credentials = new NetworkCredential(GlobalConstants.PublicUsername, "dummyPasswordForFailure");
-                            }
-                        }
-                    }
                 }
                 else
                 {
@@ -229,10 +225,38 @@ namespace Dev2.Runtime.ServiceModel
                     client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                 }
 
-                var testAddress = GetTestAddress(connection);
-                result = client.DownloadString(testAddress + "/services/ping");
+
+                // Need to do hub connect here to get true permissions ;)
+                HubConnection hub = null;
+                try
+                {
+                    hub = new HubConnection(connection.Address) { Credentials = client.Credentials };
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                    hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+                    hub.Start().Wait();
+                    return "Success";
+                }
+                finally
+                {
+                    if(hub != null)
+                    {
+                        hub.Dispose();
+                    }
+                }
             }
-            return result;
+        }
+
+        /// <summary>
+        /// Validates the server certificate.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="certificate">The certificate.</param>
+        /// <param name="chain">The chain.</param>
+        /// <param name="sslpolicyerrors">The policyholders.</param>
+        /// <returns></returns>
+        static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        {
+            return true;
         }
 
         public string GetTestAddress(Connection connection)

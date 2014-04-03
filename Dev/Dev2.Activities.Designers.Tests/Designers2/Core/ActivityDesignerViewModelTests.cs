@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Assert.AreEqual(ActivityDesignerToggle.IsCheckedProperty.Name, binding.Path.Path);
             Assert.AreEqual(BindingMode.TwoWay, binding.Mode);
         }
-        
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ActivityDesignerViewModel_Collapse")]
@@ -139,10 +139,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-
-
-            viewModel.PreviousView = ActivityDesignerViewModel.ShowLargeProperty.Name;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { PreviousView = ActivityDesignerViewModel.ShowLargeProperty.Name };
 
             //------------Execute Test---------------------------
             viewModel.Restore();
@@ -174,11 +171,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsSelected = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
-            viewModel.ShowLarge = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Visible, viewModel.ThumbVisibility);
@@ -191,9 +186,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsSelected = true;
-            viewModel.ShowLarge = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
             viewModel.ShowLarge = false;
@@ -209,11 +202,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsSelected = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
-            viewModel.ShowLarge = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Collapsed, viewModel.ConnectorVisibility);
@@ -226,9 +217,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsSelected = true;
-            viewModel.ShowLarge = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
             viewModel.ShowLarge = false;
@@ -244,10 +233,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true };
 
             //------------Execute Test---------------------------
-            viewModel.IsSelected = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Visible, viewModel.TitleBarTogglesVisibility);
@@ -260,10 +248,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = false };
 
             //------------Execute Test---------------------------
-            viewModel.IsSelected = false;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Collapsed, viewModel.TitleBarTogglesVisibility);
@@ -276,10 +263,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = true };
 
             //------------Execute Test---------------------------
-            viewModel.IsSelected = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ZIndexPosition.Front, viewModel.ZIndexPosition);
@@ -292,10 +278,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsSelected = false };
 
             //------------Execute Test---------------------------
-            viewModel.IsSelected = false;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ZIndexPosition.Back, viewModel.ZIndexPosition);
@@ -308,11 +293,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsMouseOver = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
-            viewModel.ShowLarge = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Visible, viewModel.ThumbVisibility);
@@ -325,9 +308,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsMouseOver = true;
-            viewModel.ShowLarge = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
             viewModel.ShowLarge = false;
@@ -343,11 +324,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsMouseOver = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
-            viewModel.ShowLarge = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Collapsed, viewModel.ConnectorVisibility);
@@ -360,9 +339,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-            viewModel.IsMouseOver = true;
-            viewModel.ShowLarge = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true, ShowLarge = true };
 
             //------------Execute Test---------------------------
             viewModel.ShowLarge = false;
@@ -378,10 +355,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true };
 
             //------------Execute Test---------------------------
-            viewModel.IsMouseOver = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Visible, viewModel.TitleBarTogglesVisibility);
@@ -394,10 +370,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = false };
 
             //------------Execute Test---------------------------
-            viewModel.IsMouseOver = false;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Visibility.Collapsed, viewModel.TitleBarTogglesVisibility);
@@ -410,10 +385,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = true };
 
             //------------Execute Test---------------------------
-            viewModel.IsMouseOver = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ZIndexPosition.Front, viewModel.ZIndexPosition);
@@ -426,10 +400,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { IsMouseOver = false };
 
             //------------Execute Test---------------------------
-            viewModel.IsMouseOver = false;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ZIndexPosition.Back, viewModel.ZIndexPosition);
