@@ -193,7 +193,7 @@ namespace Dev2.Runtime.ServiceModel
                         case HttpStatusCode.Unauthorized:
                         case HttpStatusCode.Forbidden:
                             result.IsValid = false;  // This we know how to handle this
-                            result.ErrorMessage = hex.Response.ReasonPhrase;
+                            result.ErrorMessage = "Connection Error : " + hex.Response.ReasonPhrase;
                             return result;
                     }
                 }
@@ -232,8 +232,15 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     hub = new HubConnection(connection.Address) { Credentials = client.Credentials };
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+                    var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+                    hub.Error += HubOnError;
                     hub.Start().Wait();
+
+                    if(hub.State == ConnectionState.Disconnected)
+                    {
+                        throw new Exception("Unauthorized");
+                    }
+
                     return "Success";
                 }
                 finally
@@ -244,6 +251,16 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
+        }
+
+        void HubOnClosed()
+        {
+            throw new NotImplementedException();
+        }
+
+        void HubOnError(Exception exception)
+        {
+            throw new Exception("Not Authorized");
         }
 
         /// <summary>

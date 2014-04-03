@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -41,14 +49,6 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable once CheckNamespace
@@ -1421,7 +1421,9 @@ namespace Dev2.Studio.ViewModels
 
         public Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> GetWorkSurfaceContextViewModel = (resourceModel, createDesigner) =>
             {
+                // ReSharper disable ConvertToLambdaExpression
                 return WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
+                // ReSharper restore ConvertToLambdaExpression
             };
 
         private bool IsInOpeningState(IContextualResourceModel resource)
@@ -1531,20 +1533,20 @@ namespace Dev2.Studio.ViewModels
                             remove = settingsViewModel.DoDeactivate();
                             if(remove)
                             {
-                            settingsViewModel.Dispose();
+                                settingsViewModel.Dispose();
+                            }
                         }
-                    }
 
-                    else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
-                    {
-                        var schedulerViewModel = vm as SchedulerViewModel;
-                        if(schedulerViewModel != null)
+                        else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                         {
-                            schedulerViewModel.Dispose();
+                            var schedulerViewModel = vm as SchedulerViewModel;
+                            if(schedulerViewModel != null)
+                            {
+                                schedulerViewModel.Dispose();
+                            }
                         }
                     }
                 }
-            }
             }
 
             return remove;

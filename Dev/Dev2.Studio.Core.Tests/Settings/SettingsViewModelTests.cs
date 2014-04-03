@@ -1,4 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Forms;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
@@ -12,10 +16,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Forms;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings
@@ -92,10 +92,9 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowLogging_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
 
             //------------Execute Test---------------------------
-            settingsViewModel.ShowLogging = true;
 
             //------------Assert Results-------------------------
             Assert.IsFalse(settingsViewModel.ShowSecurity);
@@ -109,8 +108,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
-            settingsViewModel.ShowLogging = true;
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -128,8 +126,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
-            settingsViewModel.ShowLogging = true;
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -145,8 +142,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowSecurity_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
-            settingsViewModel.ShowSecurity = false;
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = false };
 
             //------------Execute Test---------------------------
             settingsViewModel.ShowSecurity = true;
@@ -163,8 +159,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
-            settingsViewModel.ShowSecurity = true;
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -182,8 +177,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
-            settingsViewModel.ShowSecurity = true;
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -199,8 +193,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_SaveCommand_InvokesSaveOnSecurityViewModel_Done()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            securityViewModel.IsDirty = true;
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateViewModel(CreateSettings().ToString(), "success", securityViewModel);
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
@@ -224,8 +217,10 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
             viewModel.IsDirty = true;
             viewModel.SecurityViewModel.IsDirty = true;
+#pragma warning disable 168
             var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
+#pragma warning restore 168
+ + "Would you like to save the settings? " + Environment.NewLine +
                                  "-------------------------------------------------------------------" +
                                  "Yes - Save the security settings." + Environment.NewLine +
                                  "No - Discard your changes." + Environment.NewLine +
@@ -247,8 +242,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new TestSecurityViewModel();
-            securityViewModel.IsDirty = true;
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
             viewModel.IsDirty = true;
 
@@ -272,8 +266,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             const string ErrorMessage = "A message that is not just the word Success.";
 
-            var securityViewModel = new TestSecurityViewModel();
-            securityViewModel.IsDirty = true;
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
             viewModel.IsDirty = true;
 
@@ -603,8 +596,7 @@ namespace Dev2.Core.Tests.Settings
 
         static TestSettingsViewModel CreateViewModel(IPopupController popupController, string executeCommandReadResult = "", string executeCommandWriteResult = "", SecurityViewModel securityViewModel = null)
         {
-            var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
-            viewModel.TheSecurityViewModel = securityViewModel;
+            var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object) { TheSecurityViewModel = securityViewModel };
 
             var mockResourceRepo = new Mock<IResourceRepository>();
 
