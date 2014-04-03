@@ -235,11 +235,12 @@ namespace Dev2.Runtime.ServiceModel
                     var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
                     hub.Error += HubOnError;
                     hub.Start().Wait();
-
                     if(hub.State == ConnectionState.Disconnected)
                     {
                         throw new Exception("Not Authorized");
                     }
+
+                    ServerLogger.LogTrace("Hub State : " + hub.State);
 
                     return "Success";
                 }
@@ -247,6 +248,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     if(hub != null)
                     {
+                        hub.Stop();
                         hub.Dispose();
                     }
                 }
@@ -255,6 +257,7 @@ namespace Dev2.Runtime.ServiceModel
 
         void HubOnError(Exception exception)
         {
+            ServerLogger.LogTrace("Connection Test Error : " + exception.Message);
             throw new Exception("Not Authorized");
         }
 
