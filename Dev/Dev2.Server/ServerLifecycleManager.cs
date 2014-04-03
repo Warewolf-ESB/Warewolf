@@ -1019,8 +1019,6 @@ namespace Dev2
         /// </summary>
         bool PreloadReferences()
         {
-            try
-            {
             if(!LoadExternalDependencies())
             {
                 return false;
@@ -1040,12 +1038,6 @@ namespace Dev2
 
             return Result;
         }
-            catch(Exception e)
-            {
-                LogException(e);
-                return false;
-            }
-        }
 
         /// <summary>
         /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
@@ -1053,26 +1045,44 @@ namespace Dev2
         /// </summary>
         void LoadReferences(Assembly asm, HashSet<string> inspected)
         {
-            AssemblyName[] allReferences = asm.GetReferencedAssemblies();
-
-            foreach(AssemblyName toLoad in allReferences)
+            AssemblyName[] allReferences = null;
+            try
             {
-                if(!inspected.Contains(toLoad.FullName))
-                {
-                    inspected.Add(toLoad.FullName);
+                allReferences = asm.GetReferencedAssemblies();
+            }
+            catch(Exception e)
+            {
+                WriteLine("Load Error : " + e.Message);
+            }
 
-                    // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                    if(LogTraceInfo)
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                    // ReSharper disable HeuristicUnreachableCode
-#pragma warning disable 162
+            if(allReferences != null)
+            {
+                foreach(AssemblyName toLoad in allReferences)
+                {
+                    if(!inspected.Contains(toLoad.Name))
                     {
-                        WriteLine("Loading Reference [ " + toLoad.FullName + " ]");
-                    }
+                        inspected.Add(toLoad.Name);
+
+                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                        if(LogTraceInfo)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                        // ReSharper disable HeuristicUnreachableCode
+#pragma warning disable 162
+                        {
+                            WriteLine("Loading Reference [ " + toLoad.FullName + " ]");
+                        }
 #pragma warning restore 162
-                    // ReSharper restore HeuristicUnreachableCode
-                    Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
-                    LoadReferences(loaded, inspected);
+                        // ReSharper restore HeuristicUnreachableCode
+                        try
+                        {
+                            Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
+                            LoadReferences(loaded, inspected);
+                        }
+                        catch(Exception e)
+                        {
+                            WriteLine("Load Error : " + e.Message);
+                        }
+                    }
                 }
             }
         }
@@ -1169,9 +1179,9 @@ namespace Dev2
                         if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
+                        }
                     }
                 }
-            }
             }
 
             return result;
