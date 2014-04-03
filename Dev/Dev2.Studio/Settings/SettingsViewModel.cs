@@ -267,7 +267,7 @@ namespace Dev2.Settings
             {
                 if(CurrentEnvironment.IsConnected)
                 {
-                Settings = ReadSettings();
+                    Settings = ReadSettings();
                 }
                 else
                 {
@@ -326,10 +326,14 @@ namespace Dev2.Settings
 
         public bool DoDeactivate()
         {
-            var messageBoxResult = SaveSettings();
+            var messageBoxResult = GetSaveResult();
             if(messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
             {
                 return false;
+            }
+            if(messageBoxResult == MessageBoxResult.Yes)
+            {
+                SaveSettings();
             }
             return true;
         }
@@ -359,14 +363,12 @@ namespace Dev2.Settings
 
         #endregion
 
-        MessageBoxResult SaveSettings()
+        void SaveSettings()
         {
             Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
             // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
 
-            var saveResult = GetSaveResult();
-            if(saveResult == MessageBoxResult.Yes)
-            {
+
             ResetIsDirtyForChildren();
             ClearErrors();
 
@@ -383,8 +385,6 @@ namespace Dev2.Settings
                 IsSaved = false;
                 IsDirty = true;
             }
-            }
-            return saveResult;
         }
 
         bool WriteSettings()
@@ -445,8 +445,8 @@ namespace Dev2.Settings
         {
             if(Equals(message.SelectedServer, CurrentEnvironment))
             {
-            OnServerChanged(message.SelectedServer);
-        }
+                OnServerChanged(message.SelectedServer);
+            }
         }
 
         #endregion

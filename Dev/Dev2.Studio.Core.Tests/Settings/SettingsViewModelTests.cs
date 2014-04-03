@@ -232,9 +232,7 @@ namespace Dev2.Core.Tests.Settings
                                  "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
-
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
             Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
             Assert.IsFalse(viewModel.IsDirty);
             Assert.IsTrue(viewModel.IsSaved);
@@ -242,61 +240,6 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(viewModel.IsLoading);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SettingsViewModel_SaveCommand")]
-        public void SettingsViewModel_SaveCommand_PopupReturnsNo_ResultIsSuccess_IsDirtyFalse()
-        {
-            //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
-            viewModel.IsDirty = true;
-            viewModel.SecurityViewModel.IsDirty = true;
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
-            Assert.IsTrue(viewModel.SecurityViewModel.IsDirty);
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SettingsViewModel_SaveCommand")]
-        public void SettingsViewModel_SaveCommand_PopupReturnsCancel_ResultIsSuccess_IsDirtyFalse()
-        {
-            //------------Setup for test--------------------------
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Cancel);
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
-            viewModel.IsDirty = true;
-            viewModel.SecurityViewModel.IsDirty = true;
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
-            //------------Execute Test---------------------------
-            viewModel.SaveCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
-            Assert.IsTrue(viewModel.SecurityViewModel.IsDirty);
-            Assert.IsTrue(viewModel.IsDirty);
-            Assert.IsFalse(viewModel.IsSaved);
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
