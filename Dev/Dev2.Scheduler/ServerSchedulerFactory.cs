@@ -14,7 +14,7 @@ namespace Dev2.Scheduler
         private readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
         private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerDebugPath);
         private IDirectoryHelper _dir;
-        public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory,IDirectoryHelper directory)
+        public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory)
         {
             _service = service;
             _factory = factory;
@@ -45,18 +45,18 @@ namespace Dev2.Scheduler
             get { return _factory; }
         }
 
-        public IScheduledResourceModel CreateModel(string schedulerFolderId)
+        public IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper)
         {
 
-            return new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath);
+            return new ScheduledResourceModel(TaskService, schedulerFolderId, _agentPath, ConvertorFactory, _debugOutputPath, securityWrapper);
         }
 
-        public IScheduleTrigger CreateTrigger( Trigger trigger)
+        public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
-            switch (trigger.TriggerType)
+            switch(trigger.TriggerType)
             {
                 case TaskTriggerType.Boot:
-                    return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(ConvertorFactory, trigger as BootTrigger),TaskService,ConvertorFactory);
+                    return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(ConvertorFactory, trigger as BootTrigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Custom:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Daily:
@@ -79,8 +79,8 @@ namespace Dev2.Scheduler
                     return new ScheduleTrigger(TaskState.Ready, new Dev2TimeTrigger(ConvertorFactory, trigger as TimeTrigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Weekly:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2WeeklyTrigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
-                default :
-                    return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory); 
+                default:
+                    return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
 
             }
         }
@@ -88,7 +88,7 @@ namespace Dev2.Scheduler
         public IScheduledResource CreateResource(string name, SchedulerStatus status, Trigger trigger,
                                                  string workflowName)
         {
-            return  new ScheduledResource(name,status,DateTime.MinValue, CreateTrigger( trigger),workflowName);
+            return new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName);
         }
     }
 }

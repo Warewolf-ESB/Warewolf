@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
-using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Workspaces;
@@ -18,6 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class GetScheduledResources : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
+        ISecurityWrapper _securityWrapper;
 
         public string HandlesType()
         {
@@ -27,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ObservableCollection<IScheduledResource> resources;
-            using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId))
+            using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
             {
                 resources = model.GetScheduledResources();
             }
@@ -62,6 +60,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             getScheduledResourcesService.Actions.Add(getScheduledResourcesAction);
 
             return getScheduledResourcesService;
+        }
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

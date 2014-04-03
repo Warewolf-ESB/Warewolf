@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
@@ -32,9 +33,9 @@ namespace Dev2.Scheduler.Test
             IDev2TaskService service = new Mock<IDev2TaskService>().Object;
             ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
             var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryHelper());
-            ScheduledResourceModel model = (ScheduledResourceModel)factory.CreateModel("bob");
+            ScheduledResourceModel model = (ScheduledResourceModel)factory.CreateModel("bob", new SecurityWrapper(ServerAuthorizationService.Instance));
             Assert.AreEqual("bob", model.WarewolfFolderPath);
-            Assert.IsTrue( model.WarewolfAgentPath.Contains(GlobalConstants.SchedulerAgentPath));
+            Assert.IsTrue(model.WarewolfAgentPath.Contains(GlobalConstants.SchedulerAgentPath));
             Assert.IsTrue(model.DebugHistoryPath.Contains(GlobalConstants.SchedulerDebugPath));
 
         }

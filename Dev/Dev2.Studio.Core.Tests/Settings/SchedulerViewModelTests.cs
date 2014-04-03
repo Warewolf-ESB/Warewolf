@@ -13,6 +13,7 @@ using Dev2.Dialogs;
 using Dev2.Messages;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
+using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -119,6 +120,7 @@ namespace Dev2.Core.Tests.Settings
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(c => c.AuthorizationService.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
             ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
             var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
@@ -135,6 +137,43 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(schedulerViewModel.ScheduledResourceModel);
             Assert.AreEqual(1, schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count);
             Assert.IsNotNull(schedulerViewModel.SelectedTask);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_HandleServerSelectionChangeMessage")]
+        public void SchedulerViewModel_HandleSetActiveEnvironmentMessage_WithValidEnvironmentModelWithWrongPermissions_SetsConnectionError()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest();
+            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            resources.Add(scheduledResourceForTest);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeObject = serializer.SerializeToBuilder(resources);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
+            resourceRepo.Add(setupResourceModelMock.Object);
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
+            mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
+            mockEnvironmentModel.Setup(c => c.AuthorizationService.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(false);
+            var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
+
+            //------------Execute Test---------------------------
+            schedulerViewModel.Handle(message);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(schedulerViewModel.HasConnectionError);
+            Assert.AreEqual(@"You don't have permission to schedule on this server.
+You need Administrator permission.", schedulerViewModel.ConnectionError);
         }
 
         [TestMethod]

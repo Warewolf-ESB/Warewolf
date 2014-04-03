@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Scheduler.Interfaces;
+using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
@@ -17,15 +18,22 @@ namespace Dev2.Scheduler.Test
         private string _agentPath;
         private Mock<ITaskServiceConvertorFactory> _convertorFactory;
         private Mock<ITaskFolder> _folder;
+        private Mock<ISecurityWrapper> _wrapper;
 
         [TestInitialize]
         public void Init()
         {
             _mockService = new Mock<IDev2TaskService>();
+            new Mock<IAuthorizationService>();
             _convertorFactory = new Mock<ITaskServiceConvertorFactory>();
             _folderId = "WareWolf";
             _agentPath = "AgentPath";
             _folder = new Mock<ITaskFolder>();
+            _wrapper = new Mock<ISecurityWrapper>();
+            _wrapper.Setup(a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(true);
+            _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(true);
             new Mock<ITaskCollection>();
         }
 
@@ -37,7 +45,7 @@ namespace Dev2.Scheduler.Test
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
             Assert.AreEqual(_convertorFactory.Object, model.ConvertorFactory);
             Assert.AreEqual(_folderId, model.WarewolfFolderPath);
             Assert.AreEqual(_agentPath, model.WarewolfAgentPath);
@@ -54,7 +62,7 @@ namespace Dev2.Scheduler.Test
             SetupSingleTask();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\");
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object);
 
             Assert.AreEqual(1,
                             model.ScheduledResources.Count());
@@ -69,7 +77,7 @@ namespace Dev2.Scheduler.Test
             SetupSingleTask();
             //create
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath,
-                                                   _convertorFactory.Object, @"c:\");
+                                                   _convertorFactory.Object, @"c:\", _wrapper.Object);
 
             Assert.AreEqual(1,
                             model.ScheduledResources.Count());
@@ -84,7 +92,7 @@ namespace Dev2.Scheduler.Test
             SetupSingleTask();
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
             IScheduledResource a = model.ScheduledResources.First();
             Assert.AreEqual("bob", a.Name);
             Assert.AreEqual("a", a.WorkflowName);
@@ -98,7 +106,7 @@ namespace Dev2.Scheduler.Test
             SetupSingleTask();
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             var mockFolder = new Mock<ITaskFolder>();
@@ -120,7 +128,7 @@ namespace Dev2.Scheduler.Test
             //setup
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
             var mockFolder = new Mock<ITaskFolder>();
             var resource = new Mock<IScheduledResource>();
 
@@ -162,7 +170,7 @@ namespace Dev2.Scheduler.Test
 
             //construct
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
 
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
             Assert.AreEqual(2, history.Count);
@@ -198,7 +206,7 @@ namespace Dev2.Scheduler.Test
 
             //test
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             IList<IResourceHistory> history = model.CreateHistory(res.Object);
@@ -219,7 +227,7 @@ namespace Dev2.Scheduler.Test
             //create objects
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                  @"c:\");
+                                                  @"c:\", _wrapper.Object);
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();
             var action = new Mock<IExecAction>();
@@ -255,7 +263,53 @@ namespace Dev2.Scheduler.Test
         }
 
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("TaskSheduler_ScheduledResourceModel_Save")]
+        public void ScheduledResourceModel_SaveInvalidWindowsUserPermissions()
+        {
+            //create objects
+            SetupSingleTask();
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
+                                                  @"c:\", _wrapper.Object);
+            var resourceToSave = new Mock<IScheduledResource>();
 
+            //setup expectations
+            _wrapper.Setup(
+                a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(false);
+            //run test
+            string errorMessage;
+            model.Save(resourceToSave.Object, out errorMessage);
+            Assert.AreEqual(@"This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.", errorMessage);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("TaskSheduler_ScheduledResourceModel_Save")]
+        public void ScheduledResourceModel_SaveInvalidWarewolfUserPermissions()
+        {
+            //create objects
+            SetupSingleTask();
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
+                                                  @"c:\", _wrapper.Object);
+            var resourceToSave = new Mock<IScheduledResource>();
+
+            //setup expectations
+            _wrapper.Setup(
+                a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(false);
+            resourceToSave.Setup(a => a.WorkflowName).Returns("bob");
+            //run test
+            string errorMessage;
+            model.Save(resourceToSave.Object, out errorMessage);
+            Assert.AreEqual(@"This Workflow requires that you have Execute permission on the 'bob' Workflow. 
+Please contact your Warewolf System Administrator.", errorMessage);
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -264,7 +318,7 @@ namespace Dev2.Scheduler.Test
         {
             SetupSingleTask();
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   @"c:\");
+                                                   @"c:\", _wrapper.Object);
 
             var task = new Mock<IDev2TaskDefinition>();
             var resourceToSave = new Mock<IScheduledResource>();

@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Delete")]
         [TestMethod]
-        public void SaveScheduledResourceTest_ServiceName()
+        public void DeleteResourceTest_ServiceName()
         {
             SchedulerTestBaseStaticMethods.SaveScheduledResourceTest_ServiceName("DeleteScheduledResourceService", new DeleteScheduledResource());
         }
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Delete")]
         [TestMethod]
-        public void GetScheduledResourcesReturnsDynamicService()
+        public void DeleteResourcesReturnsDynamicService()
         {
             SchedulerTestBaseStaticMethods.GetScheduledResourcesReturnsDynamicService(new DeleteScheduledResource());
 
@@ -64,10 +64,13 @@ namespace Dev2.Tests.Runtime.Services
                                               new Dev2TaskService(new TaskServiceConvertorFactory()),
                                               new TaskServiceConvertorFactory());
             var res = new ScheduledResource("a", SchedulerStatus.Enabled, DateTime.Now, trigger, "dave");
+            var security = new Mock<ISecurityWrapper>();
+            esbMethod.SecurityWrapper = security.Object;
+
             Dictionary<string, StringBuilder> inp = new Dictionary<string, StringBuilder>();
             factory.Setup(
                 a =>
-                a.CreateModel(GlobalConstants.SchedulerFolderId)).Returns(model.Object);
+                a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             if(expectCorrectInput)
             {

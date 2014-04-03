@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Workspaces;
@@ -16,7 +14,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteScheduledResource : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-
+        ISecurityWrapper _securityWrapper;
         public string HandlesType()
         {
             return "DeleteScheduledResourceService";
@@ -33,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var res = serializer.Deserialize<IScheduledResource>(tmp);
 
-                using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId))
+                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
                     model.DeleteSchedule(res);
                 }
@@ -45,6 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return serializer.SerializeToBuilder(result);
         }
+
+
 
         public DynamicService CreateServiceEntry()
         {
@@ -72,6 +72,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
             set { _schedulerFactory = value; }
+        }
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

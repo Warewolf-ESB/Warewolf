@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
-namespace Dev2.CustomControls.Converters
+namespace Dev2.AppResources.Converters
 {
-    public class MultipleBoolToEnabledConverter : IMultiValueConverter
+    public class SchedulerMultiBoolToVisibilityConverter : IMultiValueConverter
     {
+
         #region Implementation of IMultiValueConverter
 
         /// <summary>
@@ -17,15 +19,14 @@ namespace Dev2.CustomControls.Converters
         /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding"/> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue"/> indicates that the source binding has no value to provide for conversion.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            foreach(var value in values)
+            bool? isLoading = values[0] as bool?;
+            bool? hasConnectionError = values[1] as bool?;
+
+            if(isLoading.GetValueOrDefault() || hasConnectionError.GetValueOrDefault())
             {
-                bool? tmpval = value as bool?;
-                if(!tmpval.GetValueOrDefault())
-                {
-                    return false;
-                }
+                return Visibility.Collapsed;
             }
-            return true;
+            return Visibility.Visible;
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ using Dev2.Messages;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -64,6 +65,8 @@ namespace Dev2.Settings.Scheduler
         bool _isHistoryTabVisible;
         string _helpText;
         bool _isLoading;
+        string _connectionError;
+        bool _hasConnectionError;
 
         #endregion
 
@@ -106,6 +109,44 @@ namespace Dev2.Settings.Scheduler
         #endregion
 
         #region Properties
+
+        public bool IsCurrentEnvironmentConnected
+        {
+            get
+            {
+                if(CurrentEnvironment != null)
+                {
+                    return CurrentEnvironment.IsConnected;
+                }
+                return false;
+            }
+        }
+
+        public bool HasConnectionError
+        {
+            get
+            {
+                return _hasConnectionError;
+            }
+            set
+            {
+                _hasConnectionError = value;
+                NotifyOfPropertyChange(() => HasConnectionError);
+            }
+        }
+
+        public string ConnectionError
+        {
+            get
+            {
+                return _connectionError;
+            }
+            set
+            {
+                _connectionError = value;
+                NotifyOfPropertyChange(() => ConnectionError);
+            }
+        }
 
         public IResourcePickerDialog ResourcePickerDialog
         {
@@ -302,8 +343,8 @@ namespace Dev2.Settings.Scheduler
                     int val;
                     if(value.IsWholeNumber(out val))
                     {
-                        SelectedTask.NumberOfHistoryToKeep = val;
-                        SelectedTask.IsDirty = true;
+                    SelectedTask.NumberOfHistoryToKeep = val;
+                    SelectedTask.IsDirty = true;
                     }
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
                 }
@@ -764,6 +805,7 @@ namespace Dev2.Settings.Scheduler
                 if(hasResult)
                 {
                     WorkflowName = _resourcePicker.SelectedResource.ResourceName;
+                    SelectedTask.ResourceId = _resourcePicker.SelectedResource.ID;
                     if(SelectedTask.Name.StartsWith("New Task"))
                     {
                         Name = _resourcePicker.SelectedResource.ResourceName;
@@ -780,8 +822,11 @@ namespace Dev2.Settings.Scheduler
         {
             CurrentEnvironment = obj as IEnvironmentModel;
 
-            if(CurrentEnvironment != null && CurrentEnvironment.IsConnected)
+            if(CurrentEnvironment != null && CurrentEnvironment.AuthorizationService != null && CurrentEnvironment.IsConnected)
             {
+                if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
+            {
+                    ClearConnectionError();
                 _resourcePicker = new ResourcePickerDialog(enDsfActivityType.Workflow, CurrentEnvironment);
                 ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment);
                 IsLoading = true;
@@ -805,8 +850,29 @@ namespace Dev2.Settings.Scheduler
             }
             else
             {
+                    SetConnectionError();
                 ClearViewModel();
             }
+        }
+            else
+            {
+                ClearConnectionError();
+                ClearViewModel();
+            }
+            NotifyOfPropertyChange(() => IsCurrentEnvironmentConnected);
+        }
+
+        void SetConnectionError()
+        {
+            ConnectionError = @"You don't have permission to schedule on this server.
+You need Administrator permission.";
+            HasConnectionError = true;
+        }
+
+        void ClearConnectionError()
+        {
+            ConnectionError = string.Empty;
+            HasConnectionError = false;
         }
 
         void ClearViewModel()
@@ -837,15 +903,18 @@ namespace Dev2.Settings.Scheduler
             NotifyOfPropertyChange(() => HasErrors);
         }
 
-        protected virtual void ShowError(string description)
+        void ShowError(string description)
         {
-            if(description != "Error while saving: Logon failure: unknown user name or bad password")
+            if(!string.IsNullOrEmpty(description))
+        {
+                if(!description.StartsWith("Error while saving:"))
             {
                 IsSaveEnabled = false;
             }
             Errors.AddError(description, true);
             NotifyOfPropertyChange(() => Error);
             NotifyOfPropertyChange(() => HasErrors);
+        }
         }
 
         #endregion
@@ -859,8 +928,8 @@ namespace Dev2.Settings.Scheduler
             {
                 if(TriggerEditDialog.Trigger != tmpTrigger)
                 {
-                    return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
-                }
+                return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
+            }
             }
             return null;
         }

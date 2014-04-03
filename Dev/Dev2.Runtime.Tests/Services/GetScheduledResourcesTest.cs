@@ -6,6 +6,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
@@ -38,9 +39,6 @@ namespace Dev2.Tests.Runtime.Services
             });
             Assert.AreEqual(result.Count, 1);
             Assert.AreEqual("a", result.First().Name);
-
-
-
         }
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
@@ -96,6 +94,8 @@ namespace Dev2.Tests.Runtime.Services
         {
             var esbMethod = new GetScheduledResources();
             _factory = new Mock<IServerSchedulerFactory>();
+            var security = new Mock<ISecurityWrapper>();
+            esbMethod.SecurityWrapper = security.Object;
             var model = new Mock<IScheduledResourceModel>();
             var ws = new Mock<IWorkspace>();
             var trigger = new ScheduleTrigger(TaskState.Disabled,
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             var res = new ScheduledResource("a", SchedulerStatus.Enabled, DateTime.Now, trigger, "dave");
             _factory.Setup(
                 a =>
-                a.CreateModel(GlobalConstants.SchedulerFolderId)).Returns(model.Object);
+                a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
             model.Setup(a => a.GetScheduledResources()).Returns(new ObservableCollection<IScheduledResource>() { res });
 
             esbMethod.SchedulerFactory = _factory.Object;

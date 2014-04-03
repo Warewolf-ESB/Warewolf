@@ -11,6 +11,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         UITestControl _activeTab;
         VisualTreeWalker _visualTreeWalker;
+        readonly string[] _newButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "New" };
+        readonly string[] _nameTextboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_NameTextbox" };
+        readonly string[] _enabledRadioButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_EnabledRadioButton" };
+        readonly string[] _workflowNameTextBoxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_WorkflowNameTextBox" };
+        readonly string[] _runAsapCheckboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_RunAsapCheckBox" };
+        readonly string[] _usernameTextboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_UserNameTextBox" };
 
         public SchedulerUiMap()
         {
@@ -34,38 +40,42 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public void ClickNewTaskButton()
         {
-            UITestControl newButton = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, new[] { "", "" });
+            UITestControl newButton = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _newButtonAutoIds);
             newButton.Click();
         }
 
         public string GetNameText()
         {
-            return string.Empty;
+            UITestControl nameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _nameTextboxAutoIds);
+            return nameTextbox.GetText();
         }
 
         public string GetStatus()
         {
-            return string.Empty;
+            UITestControl statusRadioButton = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _enabledRadioButtonAutoIds);
+            if(statusRadioButton.IsSelected())
+            {
+                return "Enabled";
+            }
+            return "Disabled";
         }
 
         public string GetWorkflowName()
         {
-            return string.Empty;
+            UITestControl workflowNameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _workflowNameTextBoxAutoIds);
+            return workflowNameTextbox.GetText();
         }
 
         public bool GetRunAsap()
         {
-            return false;
+            UITestControl runAsapCheckbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _runAsapCheckboxAutoIds);
+            return runAsapCheckbox.IsChecked();
         }
 
         public string GetUsername()
         {
-            return string.Empty;
-        }
-
-        public string GetPassword()
-        {
-            return string.Empty;
+            UITestControl usernameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _usernameTextboxAutoIds);
+            return usernameTextbox.GetText();
         }
     }
 }

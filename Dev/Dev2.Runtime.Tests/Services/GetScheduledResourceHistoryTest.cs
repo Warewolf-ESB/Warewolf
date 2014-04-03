@@ -57,12 +57,14 @@ namespace Dev2.Tests.Runtime.Services
         {
             var output = RunOutput(false);
             Assert.AreEqual(0, output.Count);
-      
+
         }
 
         private List<IResourceHistory> RunOutput(bool expectCorrectInput)
         {
             var esbMethod = new GetScheduledResourceHistory();
+            var security = new Mock<ISecurityWrapper>();
+            esbMethod.SecurityWrapper = security.Object;
             var factory = new Mock<IServerSchedulerFactory>();
             var model = new Mock<IScheduledResourceModel>();
             var ws = new Mock<IWorkspace>();
@@ -80,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             Dictionary<string, StringBuilder> inp = new Dictionary<string, StringBuilder>();
             factory.Setup(
                 a =>
-                a.CreateModel(GlobalConstants.SchedulerFolderId)).Returns(model.Object);
+                a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             if(expectCorrectInput)
             {

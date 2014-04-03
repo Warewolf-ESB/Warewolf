@@ -200,6 +200,16 @@ namespace Dev2.Studio.UI.Tests.Extensions
             return checkBox.Checked;
         }
 
+        public static bool IsSelected(this UITestControl control)
+        {
+            var radioButton = control as WpfRadioButton;
+            if(radioButton == null)
+            {
+                throw new Exception("Control must be a radio button");
+            }
+            return radioButton.Selected;
+        }
+
         public static bool IsEnabled(this UITestControl control)
         {
             return control.Enabled;

@@ -55,6 +55,7 @@
     <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
+    <converters1:SchedulerMultiBoolToVisibilityConverter x:Key="SchedulerMultiBoolToVisibilityConverter" />
     <converters:ConnectControlDisableConverter x:Key="ConnectControlDisableConverter" />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />

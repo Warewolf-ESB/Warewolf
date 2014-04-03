@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 
@@ -15,19 +13,20 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class GetScheduledResourceHistory : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
+        ISecurityWrapper _securityWrapper;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, Workspaces.IWorkspace theWorkspace)
         {
             StringBuilder tmp;
             values.TryGetValue("Resource", out tmp);
             var serializer = new Dev2JsonSerializer();
- 
+
             if(tmp != null)
             {
                 var res = serializer.Deserialize<IScheduledResource>(tmp);
 
                 IList<IResourceHistory> resources;
-                using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId))
+                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
                     resources = model.CreateHistory(res);
                 }
@@ -68,6 +67,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
             set { _schedulerFactory = value; }
+        }
+
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

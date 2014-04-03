@@ -24,7 +24,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Scheduler
                 Assert.AreEqual("", schedulerUiMap.GetWorkflowName());
                 Assert.AreEqual(false, schedulerUiMap.GetRunAsap());
                 Assert.AreEqual("", schedulerUiMap.GetUsername());
-                Assert.AreEqual("", schedulerUiMap.GetPassword());
             }
         }
 

@@ -4,6 +4,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
+
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
@@ -75,6 +76,8 @@ namespace Dev2.Tests.Runtime.Services
             string username = "user";
             string password = "pass";
             var esbMethod = new SaveScheduledResource();
+            var security = new Mock<ISecurityWrapper>();
+            esbMethod.SecurityWrapper = security.Object;
             var factory = new Mock<IServerSchedulerFactory>();
             var model = new Mock<IScheduledResourceModel>();
             var ws = new Mock<IWorkspace>();
@@ -86,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             Dictionary<string, StringBuilder> inp = new Dictionary<string, StringBuilder>();
             factory.Setup(
                 a =>
-                a.CreateModel(GlobalConstants.SchedulerFolderId)).Returns(model.Object);
+                a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             if(expectCorrectInput)
             {

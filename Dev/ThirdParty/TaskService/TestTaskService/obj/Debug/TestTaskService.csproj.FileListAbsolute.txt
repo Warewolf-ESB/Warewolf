@@ -30,3 +30,6 @@ C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskSer
 C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\bin\Debug\zh-CN\Microsoft.Win32.TaskScheduler.resources.dll
 C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\obj\Debug\TestTaskService.exe
 C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\obj\Debug\TestTaskService.pdb
+E:\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\bin\Debug\TestTaskService.exe.config
+E:\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\obj\Debug\TestTaskService.exe
+E:\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TestTaskService\obj\Debug\TestTaskService.pdb

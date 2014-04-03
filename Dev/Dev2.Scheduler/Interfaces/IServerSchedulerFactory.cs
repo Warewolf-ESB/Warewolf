@@ -4,7 +4,7 @@ namespace Dev2.Scheduler.Interfaces
 {
     public interface IServerSchedulerFactory
     {
-        IScheduledResourceModel CreateModel(string schedulerFolderId);
+        IScheduledResourceModel CreateModel(string schedulerFolderId, ISecurityWrapper securityWrapper);
         IScheduleTrigger CreateTrigger(Trigger trigger);
 
         IScheduledResource CreateResource(string name, SchedulerStatus status

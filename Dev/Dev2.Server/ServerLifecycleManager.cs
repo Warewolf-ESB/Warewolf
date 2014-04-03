@@ -1019,6 +1019,8 @@ namespace Dev2
         /// </summary>
         bool PreloadReferences()
         {
+            try
+            {
             if(!LoadExternalDependencies())
             {
                 return false;
@@ -1038,6 +1040,12 @@ namespace Dev2
 
             return Result;
         }
+            catch(Exception e)
+            {
+                LogException(e);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
@@ -1052,7 +1060,7 @@ namespace Dev2
                 if(!inspected.Contains(toLoad.FullName))
                 {
                     inspected.Add(toLoad.FullName);
-                    
+
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
                     if(LogTraceInfo)
                     // ReSharper restore ConditionIsAlwaysTrueOrFalse
@@ -1161,9 +1169,9 @@ namespace Dev2
                         if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
-                        }
                     }
                 }
+            }
             }
 
             return result;

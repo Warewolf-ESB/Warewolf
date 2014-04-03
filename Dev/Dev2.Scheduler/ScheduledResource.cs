@@ -209,5 +209,8 @@ namespace Dev2.Scheduler
         }
 
         #endregion INotifyPropertyChanged
+
+
+        public Guid ResourceId { get; set; }
     }
 }

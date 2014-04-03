@@ -222,6 +222,10 @@ namespace Dev2.Core.Tests.Settings
         /// </summary>
         public string WorkflowName { get; set; }
         /// <summary>
+        /// The workflow that we will run
+        /// </summary>
+        public Guid ResourceId { get; set; }
+        /// <summary>
         /// If a schedule is missed execute as soon as possible
         /// </summary>
         public bool RunAsapIfScheduleMissed { get; set; }

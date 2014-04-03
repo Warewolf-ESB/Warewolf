@@ -48,6 +48,11 @@ namespace Dev2.Scheduler.Interfaces
 
 
         /// <summary>
+        /// The workflow that we will run
+        /// </summary>
+        Guid ResourceId { get; set; }
+
+        /// <summary>
         /// If a schedule is missed execute as soon as possible
         /// </summary>
         bool RunAsapIfScheduleMissed { get; set; }

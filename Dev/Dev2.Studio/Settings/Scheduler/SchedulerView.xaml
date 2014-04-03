@@ -17,7 +17,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance scheduler:SchedulerViewModel}"
-             AutomationProperties.AutomationId="UI_ShcedulerView_AutoID">
+             AutomationProperties.AutomationId="UI_SchedulerView_AutoID">
 
     <UserControl.Resources>
         <Style x:Key="SchedulerDataGridStyle"
@@ -165,10 +165,19 @@
                 <Button Content="New"
                         Height="30"
                         Width="100"
-                        Command="{Binding NewCommand}"></Button>
+                        AutomationProperties.AutomationId="UI_NewTaskButton_AutoID"
+                        Command="{Binding NewCommand}">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource MultipleBoolToEnabledConverter}">
+                            <Binding Path="HasConnectionError" Converter="{StaticResource BooleanInvertConverter}"/>
+                            <Binding Path="IsCurrentEnvironmentConnected" />                         
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                </Button>
                 <Button Content="Save"
                         Height="30"
                         Width="100"
+                        AutomationProperties.AutomationId="UI_SaveTaskButton_AutoID"
                         Command="{Binding SaveCommand}">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource MultipleBoolToEnabledConverter}">
@@ -182,15 +191,31 @@
                 <Button Content="Delete"
                         Height="30"
                         Width="100"
+                        AutomationProperties.AutomationId="UI_DeleteTaskButton_AutoID"
                         IsEnabled="{Binding SelectedTask,Converter={StaticResource NullToBoolConvert}}"
                         Command="{Binding DeleteCommand}"></Button>
             </StackPanel>
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Width="300"
+                       Foreground="{StaticResource ValidationErrorElement}"
+                       TextWrapping="WrapWithOverflow"
+                       Text="{Binding ConnectionError}"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Visibility="{Binding HasConnectionError, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            </TextBlock>
             <DataGrid Grid.Row="2"
                       Grid.Column="0"
-                      Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative},Mode=OneWay}"
                       Style="{StaticResource SchedulerDataGridStyle}"
                       ItemsSource="{Binding TaskList}"
                       SelectedItem="{Binding SelectedTask,Mode=TwoWay}">
+                <DataGrid.Visibility>
+                    <MultiBinding Converter="{StaticResource SchedulerMultiBoolToVisibilityConverter}">
+                        <Binding Path="IsLoading" Mode="OneWay"/>
+                        <Binding Path="HasConnectionError" Mode="OneWay"/>
+                    </MultiBinding>
+                </DataGrid.Visibility>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Name"
                                             Width="120"
@@ -338,6 +363,8 @@
                             <TextBlock Text="Name: "
                                        Style="{StaticResource PermissionsGridTextBlockStyle}" />
                             <TextBox VerticalAlignment="Center"
+                                     x:Name="NameTextBox"
+                                     AutomationProperties.AutomationId="UI_NameTextbox"
                                      HorizontalAlignment="Left"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipName}"
                                      Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -359,6 +386,7 @@
                                     </i:Interaction.Behaviors>
                             </TextBlock>
                             <RadioButton x:Name="EnabledRadioButton"
+                                         AutomationProperties.AutomationId="UI_EnabledRadioButton"
                                          Content="Enabled"
                                          Margin="0,0,5,0"
                                          HorizontalAlignment="Left"
@@ -371,6 +399,7 @@
                                 </i:Interaction.Behaviors>
                             </RadioButton>
                             <RadioButton x:Name="DisabledRadioButton"
+                                         AutomationProperties.AutomationId="UI_DisabledRadioButton"
                                          Content="Disabled"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Center"
@@ -392,6 +421,8 @@
                                      Style="{StaticResource ReadOnlyTextBoxStyle}"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipWorkFlow}"
                                      HorizontalAlignment="Left"
+                                     x:Name="WorkflowNameTextBox"
+                                     AutomationProperties.AutomationId="UI_WorkflowNameTextBox"
                                      Width="220"
                                      IsReadOnly="True">
                                 <i:Interaction.Behaviors>
@@ -414,7 +445,9 @@
                                     Grid.Row="5">
                             <CheckBox IsChecked="{Binding RunAsapIfScheduleMissed,Mode=TwoWay}"
                                       ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipRun}"
-                                      VerticalAlignment="Center">
+                                      VerticalAlignment="Center"
+                                      x:Name="RunAsapCheckBox"
+                                      AutomationProperties.AutomationId="UI_RunAsapCheckBox">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextRun}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -435,6 +468,8 @@
                                        Style="{StaticResource PermissionsGridTextBlockStyle}" />
                             <TextBox Width="60"
                                      Text="{Binding NumberOfRecordsToKeep,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                     x:Name="NumOfHisTextBox"
+                                     AutomationProperties.AutomationId="UI_NumOfHisTextBox"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipHistoryRecords}"
                                      VerticalAlignment="Center">
                                 <i:Interaction.Behaviors>
@@ -473,6 +508,8 @@
                                     </TextBlock>
                                     <TextBox Width="220"
                                              Margin="0,1,0,1"
+                                             x:Name="UserNameTextBox"
+                                             AutomationProperties.AutomationId="UI_UserNameTextBox"
                                              Grid.Row="0"
                                              Grid.Column="1"
                                              ToolTip="Schedule should execute as this user"
@@ -494,6 +531,8 @@
                                     </TextBlock>
                                     <PasswordBox Width="220"
                                                  Margin="0,1,0,1"
+                                                 x:Name="PasswordBox"
+                                                 AutomationProperties.AutomationId="UI_PasswordBox"
                                                  Grid.Row="1"
                                                  Grid.Column="1"
                                                  ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipPassword}"
@@ -512,6 +551,7 @@
                             <TextBlock Foreground="{StaticResource ValidationErrorElement}"
                                        Text="{Binding Error}"
                                        VerticalAlignment="Bottom"
+                                       TextWrapping="WrapWithOverflow"
                                        HorizontalAlignment="Right"
                                        Visibility="{Binding HasErrors, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                             </TextBlock>

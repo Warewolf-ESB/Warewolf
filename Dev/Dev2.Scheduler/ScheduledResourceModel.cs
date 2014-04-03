@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security;
 using Dev2.Common.Common;
 using Dev2.Diagnostics;
 using Dev2.Scheduler.Interfaces;
@@ -15,6 +16,7 @@ namespace Dev2.Scheduler
     public class ScheduledResourceModel : IScheduledResourceModel
     {
         private readonly string _debugHistoryPath;
+        private readonly ISecurityWrapper _securityWrapper;
         private readonly ITaskServiceConvertorFactory _factory;
         private readonly IDev2TaskService _taskService;
         private readonly string _warewolfAgentPath;
@@ -22,10 +24,12 @@ namespace Dev2.Scheduler
         private IFileHelper _fileHelper;
         private IDirectoryHelper _folderHelper;
         private readonly IDictionary<int, string> _taskStates;
-        private const char _nameSeperator = ':';
-        private const char _argWrapper = '"';
+        private const string Sebatchlogonright = "SeBatchLogonRight";
+
+        private const char NameSeperator = ':';
+        private const char ArgWrapper = '"';
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath,
-                                      ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath)
+                                      ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper)
         {
             _taskStates = new Dictionary<int, string>
                 {
@@ -41,8 +45,7 @@ namespace Dev2.Scheduler
 
             _factory = taskServiceFactory;
             _debugHistoryPath = debugHistoryPath;
-
-
+            _securityWrapper = securityWrapper;
         }
 
         public IFileHelper FileHelper
@@ -101,12 +104,30 @@ namespace Dev2.Scheduler
 
         public void Save(IScheduledResource resource, string userName, string password)
         {
-            ITaskFolder folder = TaskService.GetFolder(WarewolfFolderPath);
+
+            if(!_securityWrapper.IsWindowsAuthorised(Sebatchlogonright, userName))
+            {
+                throw new SecurityException(
+                    @"This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.");
+            }
+            if(!_securityWrapper.IsWarewolfAuthorised(Sebatchlogonright, userName, resource.ResourceId.ToString()))
+            {
+                throw new SecurityException(
+                   String.Format(@"This Workflow requires that you have Execute permission on the '{0}' Workflow. 
+Please contact your Warewolf System Administrator.", resource.WorkflowName));
+            }
+
+
+            var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
             created.Settings.Enabled = resource.Status == SchedulerStatus.Enabled;
 
-            folder.RegisterTaskDefinition(resource.Name, created, TaskCreation.CreateOrUpdate, userName, password, TaskLogonType.InteractiveTokenOrPassword);
+            folder.RegisterTaskDefinition(resource.Name, created, TaskCreation.CreateOrUpdate, userName, password,
+                                          TaskLogonType.InteractiveTokenOrPassword);
             resource.IsDirty = false;
+
+
         }
 
 
@@ -162,16 +183,16 @@ namespace Dev2.Scheduler
             ITrigger trigger;
             DateTime nextDate;
             List<string> output;
-            using (var action = ConvertorFactory.CreateExecAction(arg.Action))
+            using(var action = ConvertorFactory.CreateExecAction(arg.Action))
             {
                 trigger = arg.Trigger;
                 nextDate = trigger.StartBoundary;
-                output = action.Arguments.Split(new[] {_argWrapper}).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
+                output = action.Arguments.Split(new[] { ArgWrapper }).Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
             }
-            if(output.Count() == 2 && output.All(a => a.Contains(_nameSeperator)))
+            if(output.Count() == 2 && output.All(a => a.Contains(NameSeperator)))
             {
-                
-                var split = output.SelectMany(a => a.Split(new[] { _nameSeperator })).ToList();
+
+                var split = output.SelectMany(a => a.Split(new[] { NameSeperator })).ToList();
                 try
                 {
 
@@ -247,7 +268,7 @@ namespace Dev2.Scheduler
             created.Data = string.Format("{0}~{1}", resource.Name, resource.NumberOfHistoryToKeep);
 
             var trigger = _factory.SanitiseTrigger(resource.Trigger.Trigger);
-         
+
 
             created.AddTrigger(trigger);
             created.AddAction(BuildAction(resource));
@@ -263,6 +284,7 @@ namespace Dev2.Scheduler
         public void Dispose()
         {
             _taskService.Dispose();
+            _securityWrapper.Dispose();
         }
     }
 }

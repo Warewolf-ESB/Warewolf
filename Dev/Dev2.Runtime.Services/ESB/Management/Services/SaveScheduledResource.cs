@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Workspaces;
@@ -14,6 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveScheduledResource : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
+        ISecurityWrapper _securityWrapper   ;
 
         public string HandlesType()
         {
@@ -35,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
 
-                    using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId))
+                    using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         StringBuilder userName;
                         StringBuilder password;
@@ -98,6 +100,18 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
             set { _schedulerFactory = value; }
+        }
+
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }
