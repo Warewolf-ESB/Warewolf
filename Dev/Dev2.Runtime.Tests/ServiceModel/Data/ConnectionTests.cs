@@ -25,15 +25,15 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void Connections_Test_WebExceptionThrown_InvalidResult()
         {
-            const string Error = "Unable to connect to the remote server";
+            const string Error = "Connection Error : Unable to connect to the remote server";
             const WebExceptionStatus Status = WebExceptionStatus.ConnectFailure;
-            Verify_Test("http://testurl:333", string.Format("{0} - {1}", Status, Error), () => { throw new WebException(Error, Status); });
+            Verify_Test("http://testurl:333", Error, () => { throw new WebException(Error, Status); });
         }
 
         [TestMethod]
         public void Connections_Test_ExceptionThrown_InvalidResult()
         {
-            const string Error = "An unexpected error occurred";
+            const string Error = "Connection Error : An unexpected error occurred";
             Verify_Test("http://testurl:333", Error, () => { throw new Exception(Error); });
         }
 

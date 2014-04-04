@@ -154,6 +154,8 @@ namespace Dev2.Runtime.WebServer.Hubs
                             if(Context.User.Identity != null)
                             // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
+                                // set correct principle ;)
+                                System.Threading.Thread.CurrentPrincipal = Context.User;
                                 this.LogTrace("Execute Command Invoked For [ " + Context.User.Identity.Name + " ] For Service [ " + request.ServiceName + " ]");
                             }
 

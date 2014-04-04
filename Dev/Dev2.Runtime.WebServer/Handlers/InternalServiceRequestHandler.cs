@@ -66,8 +66,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 Guid dlID = Guid.Empty;
                 ErrorResultTO errors;
+                var princple = Thread.CurrentPrincipal;
+
                 var t = new Thread(() =>
                 {
+                    Thread.CurrentPrincipal = princple;
                     dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                 });
 

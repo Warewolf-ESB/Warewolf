@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -178,87 +179,106 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
-            catch(WebException wex)
-            {
-                result.IsValid = false;
-                result.ErrorMessage = string.Format("{0} - {1}", wex.Status, wex.Message);
-            }
             catch(Exception ex)
             {
                 var hex = ex.InnerException as HttpClientException;
                 if(hex != null)
                 {
-                    switch(hex.Response.StatusCode)
-                    {
-                        case HttpStatusCode.Unauthorized:
-                        case HttpStatusCode.Forbidden:
-                            result.IsValid = false;  // This we know how to handle this
-                            result.ErrorMessage = "Connection Error : " + hex.Response.ReasonPhrase;
-                            return result;
-                    }
+                    result.IsValid = false;  // This we know how to handle this
+                    result.ErrorMessage = "Connection Error : " + hex.Response.ReasonPhrase;
+                    return result;
                 }
 
                 result.IsValid = false;
-                result.ErrorMessage = ex.Message;
+                // get something more relevant ;)
+                if(ex.Message == "One or more errors occurred." && ex.InnerException != null)
+                {
+                    result.ErrorMessage = "Connection Error : " + ex.InnerException.Message;
+                }
+                else
+                {
+                    var msg = ex.Message;
+                    if(msg.IndexOf("Connection Error : ", StringComparison.Ordinal) >= 0 || msg.IndexOf("Invalid URI:", StringComparison.Ordinal) >= 0)
+                    {
+                        result.ErrorMessage = ex.Message;
+                    }
+                    else
+                    {
+                        result.ErrorMessage = "Connection Error : " + ex.Message;
+                    }
+
+                }
             }
+
             return result;
         }
 
         protected virtual string ConnectToServer(Connection connection)
         {
-            using(var client = new WebClient())
+            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
+            var principle = System.Threading.Thread.CurrentPrincipal;
+            var identity = principle.Identity as WindowsIdentity;
+            WindowsImpersonationContext context = null;
+
+            try
             {
-                if(connection.AuthenticationType == AuthenticationType.Windows)
+                if(identity != null)
                 {
-                    client.UseDefaultCredentials = true;
+                    context = identity.Impersonate();
                 }
-                else
-                {
-                    client.UseDefaultCredentials = false;
 
-                    // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                    if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                using(var client = new WebClient())
+                {
+                    if(connection.AuthenticationType == AuthenticationType.Windows)
                     {
-                        connection.UserName = GlobalConstants.PublicUsername;
+                        client.UseDefaultCredentials = true;
+                    }
+                    else
+                    {
+                        client.UseDefaultCredentials = false;
+
+                        //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                        if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                        {
+                            connection.UserName = GlobalConstants.PublicUsername;
+                        }
+
+                        client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                     }
 
-                    client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
-                }
-
-
-                // Need to do hub connect here to get true permissions ;)
-                HubConnection hub = null;
-                try
-                {
-                    hub = new HubConnection(connection.Address) { Credentials = client.Credentials };
-                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
-                    hub.Error += HubOnError;
-                    hub.Start().Wait();
-                    if(hub.State == ConnectionState.Disconnected)
+                    // Need to do hub connect here to get true permissions ;)
+                    HubConnection hub = null;
+                    try
                     {
-                        throw new Exception("Not Authorized");
+                        // Credentials = client.Credentials 
+                        hub = new HubConnection(connection.Address) { Credentials = client.Credentials };
+                        ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+#pragma warning disable 168
+                        var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
+#pragma warning restore 168
+                        hub.Start().Wait();
+
+                        ServerLogger.LogTrace("Hub State : " + hub.State);
+
+                        return "Success";
                     }
-
-                    ServerLogger.LogTrace("Hub State : " + hub.State);
-
-                    return "Success";
-                }
-                finally
-                {
-                    if(hub != null)
+                    finally
                     {
-                        hub.Stop();
-                        hub.Dispose();
+                        if(hub != null)
+                        {
+                            hub.Stop();
+                            hub.Dispose();
+                        }
                     }
                 }
             }
-        }
-
-        void HubOnError(Exception exception)
-        {
-            ServerLogger.LogTrace("Connection Test Error : " + exception.Message);
-            throw new Exception("Not Authorized");
+            finally
+            {
+                if(context != null)
+                {
+                    context.Undo();
+                }
+            }
         }
 
         /// <summary>
@@ -272,16 +292,6 @@ namespace Dev2.Runtime.ServiceModel
         static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
             return true;
-        }
-
-        public string GetTestAddress(Connection connection)
-        {
-            if(connection != null && !string.IsNullOrEmpty(connection.Address))
-            {
-                var testAddress = connection.Address.Replace("/dsf", "");
-                return testAddress;
-            }
-            return "";
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Dev2.Common;
 
 namespace Dev2.Runtime
 {
@@ -34,37 +33,6 @@ namespace Dev2.Runtime
 
         #endregion
 
-        #region TryInvoke
-
-        /// <summary>
-        /// Invokes the given method on the given class.
-        /// </summary>
-        /// <param name="className">The name of the class to be used.</param>
-        /// <param name="methodName">The name of the method to be invoked.</param>
-        /// <param name="args">The arguments to the method; this is typically a JSON string.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="dataListID">The data list ID.</param>
-        /// <param name="result">Contains the result if the operation was successful.</param>
-        /// <returns>
-        /// true if the operation was successful; otherwise, false
-        /// </returns>
-        public bool TryInvoke(string className, string methodName, string args, Guid workspaceID, Guid dataListID, out object result)
-        {
-            result = null;
-            try
-            {
-                result = Invoke(className, methodName, args, workspaceID, dataListID);
-                return true;
-            }
-            catch(Exception ex)
-            {
-                this.LogError(ex);
-                return false;
-            }
-        }
-
-        #endregion
-
         #region Invoke
 
         /// <summary>
@@ -87,7 +55,7 @@ namespace Dev2.Runtime
                 if(method != null)
                 {
                     var service = method.IsStatic ? null : Activator.CreateInstance(serviceType);
-                    var actionResult = method.Invoke(service, new object[] { args, workspaceID, dataListID});
+                    var actionResult = method.Invoke(service, new object[] { args, workspaceID, dataListID });
                     if(actionResult != null)
                     {
                         return actionResult;

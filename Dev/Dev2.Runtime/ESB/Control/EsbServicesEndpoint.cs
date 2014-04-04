@@ -1,4 +1,14 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
@@ -10,16 +20,6 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ESB.Control
@@ -196,6 +196,9 @@ namespace Dev2.Runtime.ESB.Control
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
+            var principle = Thread.CurrentPrincipal;
+            ServerLogger.LogTrace("Execution Context User Is : " + principle.Identity.Name);
+
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
@@ -296,6 +299,10 @@ namespace Dev2.Runtime.ESB.Control
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow;
 
+
+            var principle = Thread.CurrentPrincipal;
+            ServerLogger.LogTrace("Sub-Execution Context User Is : " + principle.Identity.Name);
+
             var result = dataObject.DataListID;
             if(dataObject.RunWorkflowAsync)
             {
@@ -305,44 +312,44 @@ namespace Dev2.Runtime.ESB.Control
             else
             {
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
-            if(executionContainer != null)
-            {
+                if(executionContainer != null)
+                {
                     executionContainer.InstanceOutputDefinition = outputDefs;
-                result = executionContainer.Execute(out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-
-
-
-            // If Webservice or Plugin, skip the final shaping junk ;)
-            if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
-            {
-                if(!dataObject.IsDataListScoped && remainingMappings != null)
-                {
-                    // Adjust the remaining output mappings ;)
-                    compiler.SetParentID(dataObject.DataListID, oldID);
-                    var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
-                                   out invokeErrors);
+                    result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-                }
-                else
-                {
-                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                }
-            }
 
-            // The act of doing this moves the index data correctly ;)
-            // We need to remove this in the future.
+
+
+                    // If Webservice or Plugin, skip the final shaping junk ;)
+                    if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
+                    {
+                        if(!dataObject.IsDataListScoped && remainingMappings != null)
+                        {
+                            // Adjust the remaining output mappings ;)
+                            compiler.SetParentID(dataObject.DataListID, oldID);
+                            var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+                            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
+                                           out invokeErrors);
+                            errors.MergeErrors(invokeErrors);
+                        }
+                        else
+                        {
+                            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
+                            errors.MergeErrors(invokeErrors);
+                        }
+                    }
+
+                    // The act of doing this moves the index data correctly ;)
+                    // We need to remove this in the future.
 #pragma warning disable 168
                     // ReSharper disable UnusedVariable
-            var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                    var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                    var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
                     // ReSharper restore UnusedVariable
 #pragma warning restore 168
 
-            return result;
-        }
+                    return result;
+                }
                 errors.AddError("Null container returned");
             }
             return result;
@@ -371,6 +378,8 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     var task = Task.Factory.StartNew(() =>
                     {
+                        ServerLogger.LogTrace("Async Execution Context User Is : " + Thread.CurrentPrincipal.Identity.Name);
+
                         ErrorResultTO error;
                         clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
                         executionContainer.Execute(out error);
