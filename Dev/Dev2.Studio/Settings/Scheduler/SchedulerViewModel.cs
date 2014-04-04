@@ -753,6 +753,8 @@ namespace Dev2.Settings.Scheduler
                         if(SelectedTask != null)
                         {
                             SelectedTask.Errors.ClearErrors();
+                            NotifyOfPropertyChange(() => Error);
+                            NotifyOfPropertyChange(() => Errors);
                             SelectedTask.OldName = SelectedTask.Name;
                         }
                         NotifyOfPropertyChange(() => TaskList);
