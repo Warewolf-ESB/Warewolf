@@ -8,6 +8,7 @@ using Dev2.Data.Enums;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract.Binary_Objects
 {
     [Serializable]
@@ -339,53 +340,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     string error;
                     // fetch this instance via clone, fetch toClone instance and merge the data
                     IBinaryDataListEntry cloned = _templateDict[e].Clone(depth, UID, out error);
-                    // Copy over the intellisesne parts ;)
-                    result._intellisenseParts = _intellisenseParts;
-                    errorResult.AddError(error);
-                    if(error == string.Empty)
-                    {
-                        // safe to add
-                        result._templateDict[e] = cloned;
-                    }
-                }
-            }
-
-            // if only system tags, clean the intellisense parts out ;)
-            if(onlySystemTags)
-            {
-                var parts =
-                    result._intellisenseParts.Where(
-                        c => c.Name.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) >= 0);
-                result._intellisenseParts = parts.ToList();
-            }
-
-
-            return result;
-        }
-
-        /// <summary>
-        /// Clones the specified type of.
-        /// </summary>
-        /// <param name="depth">The depth.</param>
-        /// <param name="errorResult">The error result.</param>
-        /// <param name="onlySystemTags">if set to <c>true</c> [only system tags].</param>
-        /// <returns></returns>
-        public IBinaryDataList CloneWithoutParentLink(enTranslationDepth depth, out ErrorResultTO errorResult, bool onlySystemTags)
-        {
-            // set parent child reference
-            BinaryDataList result = new BinaryDataList();
-
-            errorResult = new ErrorResultTO();
-
-            // clone the dictionary
-            foreach(string e in _templateDict.Keys)
-            {
-
-                if((onlySystemTags && e.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) >= 0) || !onlySystemTags)
-                {
-                    string error;
-                    // fetch this instance via clone, fetch toClone instance and merge the data
-                    IBinaryDataListEntry cloned = _templateDict[e].Clone(depth, result.UID, out error);
                     // Copy over the intellisesne parts ;)
                     result._intellisenseParts = _intellisenseParts;
                     errorResult.AddError(error);
