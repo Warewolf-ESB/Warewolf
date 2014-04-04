@@ -41,7 +41,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             }
         }
 
-        // Travis.Frisinger - Bug 8579 
+        // Travis.Frisinger - Bug 8579
         [TestMethod]
         public void FileWith200kLine_Expect200kRecordsetEntries_In_Under_25Seconds()
         {
