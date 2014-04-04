@@ -5,7 +5,7 @@ using System;
 namespace Dev2.Integration.Tests.Load_Tests
 {
     /// <summary>
-    /// Summary description for LoadTest
+    /// Summary description for LoadTest 
     /// </summary>
     [TestClass]
     public class ServerLoadTest
