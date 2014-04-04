@@ -219,6 +219,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var schedulerViewModel = new SchedulerViewModelForTest();
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -252,6 +253,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -288,6 +290,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            env.Setup(a => a.IsConnected).Returns(true);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
@@ -325,6 +328,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            env.Setup(a => a.IsConnected).Returns(true);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
@@ -343,6 +347,40 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             Assert.AreEqual("Task2", schedulerViewModel.TaskList[0].OldName);
 
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_SaveCommand")]
+        public void SchedulerViewModel_SaveCommand_ServerNotConnected_ErrorMessageSet()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResource("Task2", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "New Task 1", IsDirty = true };
+            scheduledResourceForTest.IsDirty = true;
+            resources.Add(scheduledResourceForTest);
+            resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { OldName = "Task3", IsDirty = true });
+            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(c => c.IsConnected).Returns(false);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
+            mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
+
+            schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+            //------------Execute Test---------------------------
+            schedulerViewModel.SaveCommand.Execute(null);
+            //------------Assert Results-------------------------
+            auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null), Times.Never());
+            Assert.AreEqual(schedulerViewModel.Errors.FetchErrors().Count, 1);
+            Assert.AreEqual(@"Error while saving: Server unreachable.", schedulerViewModel.Errors.FetchErrors().FirstOrDefault());
+        }
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_SaveCommand")]
@@ -359,6 +397,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -392,6 +431,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -426,6 +466,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new TestAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -459,6 +500,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var schedulerViewModel = new SchedulerViewModelForTest();
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
@@ -490,6 +532,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var schedulerViewModel = new SchedulerViewModelForTest();
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;

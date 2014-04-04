@@ -40,6 +40,7 @@ namespace Dev2.Settings.Scheduler
 
         const string DuplicateNameErrorMessage = "There is already a task with the same name";
         const string LoginErrorMessage = "Error while saving: Logon failure: unknown user name or bad password";
+        const string NotConnectedErrorMessage = "Error while saving: Server unreachable.";
         const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
         const string BlankNameErrorMessage = "The name can not be blank";
         const string SaveErrorMessage = "Error while saving:";
@@ -715,51 +716,58 @@ namespace Dev2.Settings.Scheduler
 
         void SaveTasks()
         {
-            if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
+            if(CurrentEnvironment.IsConnected)
             {
-                if(SelectedTask != null && SelectedTask.IsDirty)
+                if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
-                    if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
+                    if(SelectedTask != null && SelectedTask.IsDirty)
                     {
-                        var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
-                                                                                               SelectedTask.Name);
-                        if(showNameChangedConflict == MessageBoxResult.Cancel)
+                        if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
                         {
-                            return;
-                        }
-                        if(showNameChangedConflict == MessageBoxResult.No)
-                        {
-                            SelectedTask.Name = SelectedTask.OldName;
-                        }
+                            var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
+                                                                                                   SelectedTask.Name);
+                            if(showNameChangedConflict == MessageBoxResult.Cancel)
+                            {
+                                return;
+                            }
+                            if(showNameChangedConflict == MessageBoxResult.No)
+                            {
+                                SelectedTask.Name = SelectedTask.OldName;
+                            }
 
+                        }
+                        if(SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+                        {
+                            SelectedTask.OldName = SelectedTask.Name;
+                        }
                     }
-                    if(SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+
+                    GetCredentials(SelectedTask);
+                    string errorMessage;
+                    if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
                     {
-                        SelectedTask.OldName = SelectedTask.Name;
+                        ShowError(errorMessage);
                     }
-                }
+                    else
+                    {
+                        if(SelectedTask != null)
+                        {
+                            SelectedTask.Errors.ClearErrors();
+                            SelectedTask.OldName = SelectedTask.Name;
+                        }
+                        NotifyOfPropertyChange(() => TaskList);
+                    }
 
-                GetCredentials(SelectedTask);
-                string errorMessage;
-                if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
-                {
-                    ShowError(errorMessage);
                 }
                 else
                 {
-                    if(SelectedTask != null)
-                    {
-                        SelectedTask.Errors.ClearErrors();
-                        SelectedTask.OldName = SelectedTask.Name;
-                    }
-                    NotifyOfPropertyChange(() => TaskList);
+                    ShowError(@"You don't have permission to schedule on this server.
+You need Administrator permission.");
                 }
-
             }
             else
             {
-                ShowError(@"You don't have permission to schedule on this server.
-You need Administrator permission.");
+                ShowError(NotConnectedErrorMessage);
             }
         }
 
