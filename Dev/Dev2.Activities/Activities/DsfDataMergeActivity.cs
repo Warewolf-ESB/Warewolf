@@ -199,9 +199,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             }
 
                                             int atValue;
-                                            if(!Int32.TryParse(at.TheValue, out atValue))
+                                            if(!Int32.TryParse(at.TheValue, out atValue) || atValue < 0)
                                             {
-                                                allErrors.AddError("The 'Using' value must be a whole number.");
+                                                allErrors.AddError("The 'Using' value must be a real number.");
                                             }
                                             if(pad.TheValue.Length > 1)
                                             {

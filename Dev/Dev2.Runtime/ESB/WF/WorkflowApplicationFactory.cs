@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
@@ -336,7 +335,7 @@ namespace Dev2.Runtime.ESB.WF
                     // here is space at the inn ;)
                     var wfappUtils = new WfApplicationUtils();
 
-                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors,null,true,false);
+                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors,null,true);
                     _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                     DataTransferObject.NumberOfSteps = 0;
                     _instance.Run();

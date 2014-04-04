@@ -299,6 +299,24 @@ WallisBuchan
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfDataMerge_Execute")]
+        public void DsfDataMerge_Execute_AtValueNegativeForIndextType_HasErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Index", "-6", 1, "", "Left"));
+            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            DataListRemoval(result.DataListID);
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            StringAssert.Contains(actual, "The 'Using' value must be a real number.");
+        }
+
         #endregion Index Tests
 
         #region Negative Tests

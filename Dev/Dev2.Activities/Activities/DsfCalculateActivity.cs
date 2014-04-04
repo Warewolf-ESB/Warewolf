@@ -72,7 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IFunctionEvaluator functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
 
-                string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
 
                 IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(input);
 
@@ -80,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 compiler.Upsert(executionId, Result, result, out errors);
-               
+
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, executionId);
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
             var entry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
-            AddDebugOutputItem(new DebugItemVariableParams(expression , "", entry, executionId));
+            AddDebugOutputItem(new DebugItemVariableParams(expression, "", entry, executionId));
         }
 
         #endregion Private Methods

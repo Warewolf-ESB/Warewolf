@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.Services
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
             ExecutableServiceRepository.Instance.Clear();
-            const string Expected = "Message: Termination of workflow failed";
+            const string Expected = "Message: Failed to stop the workflow execution. It may have completed already.";
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
 

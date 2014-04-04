@@ -142,11 +142,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate with")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate with new lines should concatenate values")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculate")]
-        public virtual void CalculateWith()
+        public virtual void CalculateWithNewLinesShouldConcatenateValues()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with new lines should concatenate values", ((string[])(null)));
 #line 32
 this.ScenarioSetup(scenarioInfo);
 #line 33
@@ -165,7 +165,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table5.AddRow(new string[] {
-                        "[[var]]\\r\n[[var2]]"});
+                        "[[var]]\\r\n[[var2]] = 1\\r\n20"});
 #line 39
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden

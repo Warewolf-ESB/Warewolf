@@ -286,7 +286,7 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message: Termination of workflow failed.
+        ///   Looks up a localized string similar to Message: Failed to stop the workflow execution. It may have completed already..
         /// </summary>
         public static string CompilerError_TerminationFailed {
             get {

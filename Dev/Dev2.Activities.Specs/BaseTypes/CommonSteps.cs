@@ -344,7 +344,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 var debugItemResult = new DebugItemResult { Label = columnHeader };
                 var rowValue = row[index];
-
+                rowValue = rowValue.Replace("\\r", "\r");
                 if(rowValue.Contains(" ="))
                 {
                     string[] multipleVarsOneLine;
@@ -456,7 +456,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if(string.IsNullOrEmpty(type) && actualValue != null)
             {
-                Assert.AreEqual(expectedValue, actualValue, name + " are not equal at index" + index);
+                Assert.AreEqual(expectedValue, actualValue.Replace("\\r\\n", Environment.NewLine), name + " are not equal at index" + index);
             }
             else
             {

@@ -29,7 +29,7 @@ Scenario: Calculate using multiple scalars and recordset inputs
 	|                   |
 	| [[result]] = 20.1 |
 
-Scenario: Calculate with 
+Scenario: Calculate with new lines should concatenate values
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
 	And I have the formula "[[var]]\r\n[[var2]]"
@@ -37,8 +37,8 @@ Scenario: Calculate with
 	Then the calculate result should be "120"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| fx =                |
-	| [[var]]\r\n[[var2]] |	
+	| fx =                          |
+	| [[var]]\r\n[[var2]] = 1\r\n20 |
 	And the debug output as 
 	|                  |
 	| [[result]] = 120 |
