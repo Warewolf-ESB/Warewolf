@@ -344,7 +344,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 var debugItemResult = new DebugItemResult { Label = columnHeader };
                 var rowValue = row[index];
-                rowValue = rowValue.Replace("\\r", "\r");
+                //rowValue = rowValue.Replace("\\r", "\r");
                 if(rowValue.Contains(" ="))
                 {
                     string[] multipleVarsOneLine;
