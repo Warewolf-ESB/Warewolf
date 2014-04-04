@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Unlimited.UnitTest.Framework
 {
     /// <summary>
-    /// Summary description for Dev2RecordsetIndexScopeTest
+    /// Summary description for Dev2RecordsetIndexScopeTest 
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
