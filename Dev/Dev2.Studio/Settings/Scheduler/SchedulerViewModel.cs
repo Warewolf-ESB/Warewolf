@@ -38,11 +38,11 @@ namespace Dev2.Settings.Scheduler
     {
         #region Fields
 
-        const string NumberOfHistoryErrorMessage = "Number of History Records to Keep must be a whole number";
         const string DuplicateNameErrorMessage = "There is already a task with the same name";
         const string LoginErrorMessage = "Error while saving: Logon failure: unknown user name or bad password";
         const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
         const string BlankNameErrorMessage = "The name can not be blank";
+        const string SaveErrorMessage = "Error while saving:";
         const string NewTaskName = "New Task";
         IResourcePickerDialog _resourcePicker;
         int _newTaskCounter = 1;
@@ -588,7 +588,7 @@ namespace Dev2.Settings.Scheduler
                 if(HasErrors)
                 {
                     var fetchError = Errors.FetchErrors()[0];
-                    if(fetchError != LoginErrorMessage)
+                    if(!fetchError.StartsWith(SaveErrorMessage))
                     {
                         IsSaveEnabled = false;
                     }
@@ -715,38 +715,51 @@ namespace Dev2.Settings.Scheduler
 
         void SaveTasks()
         {
-            if(SelectedTask != null && SelectedTask.IsDirty)
+            if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
             {
-                if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
+                if(SelectedTask != null && SelectedTask.IsDirty)
                 {
-                    var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
-                                                                                           SelectedTask.Name);
-                    if(showNameChangedConflict == MessageBoxResult.Cancel)
+                    if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
                     {
-                        return;
-                    }
-                    if(showNameChangedConflict == MessageBoxResult.No)
-                    {
-                        SelectedTask.Name = SelectedTask.OldName;
-                    }
+                        var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
+                                                                                               SelectedTask.Name);
+                        if(showNameChangedConflict == MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                        if(showNameChangedConflict == MessageBoxResult.No)
+                        {
+                            SelectedTask.Name = SelectedTask.OldName;
+                        }
 
+                    }
+                    if(SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+                    {
+                        SelectedTask.OldName = SelectedTask.Name;
+                    }
                 }
-                if(SelectedTask.OldName != SelectedTask.Name && SelectedTask.OldName.Contains(NewTaskName))
+
+                GetCredentials(SelectedTask);
+                string errorMessage;
+                if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
                 {
-                    SelectedTask.OldName = SelectedTask.Name;
+                    ShowError(errorMessage);
                 }
-            }
+                else
+                {
+                    if(SelectedTask != null)
+                    {
+                        SelectedTask.Errors.ClearErrors();
+                        SelectedTask.OldName = SelectedTask.Name;
+                    }
+                    NotifyOfPropertyChange(() => TaskList);
+                }
 
-            GetCredentials(SelectedTask);
-            string errorMessage;
-            if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
-            {
-                ShowError(errorMessage);
             }
             else
             {
-                if(SelectedTask != null) SelectedTask.OldName = SelectedTask.Name;
-                NotifyOfPropertyChange(() => TaskList);
+                ShowError(@"You don't have permission to schedule on this server.
+You need Administrator permission.");
             }
         }
 
@@ -914,7 +927,11 @@ You need Administrator permission.";
             Errors.ClearErrors();
         }
 
-        void ClearError(string description)
+        #endregion
+
+        #region Public Methods
+
+        public void ClearError(string description)
         {
             Errors.RemoveError(description);
             if(!Errors.HasErrors())
@@ -925,7 +942,7 @@ You need Administrator permission.";
             NotifyOfPropertyChange(() => HasErrors);
         }
 
-        void ShowError(string description)
+        public void ShowError(string description)
         {
             if(!string.IsNullOrEmpty(description))
             {
@@ -939,16 +956,12 @@ You need Administrator permission.";
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public virtual IScheduleTrigger ShowEditTriggerDialog()
         {
-            var tmpTrigger = TriggerEditDialog.Trigger;
+            var tmpTrigger = SelectedTask.Trigger.Trigger.Instance;
             if(TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if(TriggerEditDialog.Trigger != tmpTrigger)
+                if(TriggerEditDialog.Trigger.ToString() != tmpTrigger.ToString())
                 {
                     return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
                 }
