@@ -7,6 +7,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.DataSplit
 {
     [TestClass]
@@ -206,14 +207,14 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             //------------Execute Test---------------------------
             viewModel.Validate();
-            
+
             //------------Assert Results-------------------------
             Assert.AreEqual(2, viewModel.Errors.Count);
 
             StringAssert.Contains(viewModel.Errors[0].Message, "'Results' - Invalid expression: opening and closing brackets don't match");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsOutputVariableFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a positive whole number");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a real number");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
         }
 

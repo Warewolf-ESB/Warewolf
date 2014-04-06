@@ -390,7 +390,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "[[a]]", At = "-1", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", " must be a positive whole number");
+            Verify_RuleSet(dto, "At", " must be a real number");
         }
 
         [TestMethod]

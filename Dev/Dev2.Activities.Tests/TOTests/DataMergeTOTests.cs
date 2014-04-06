@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "-1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "must be a positive whole number");
+            Verify_RuleSet(dto, "At", "must be a real number");
         }
 
         [TestMethod]

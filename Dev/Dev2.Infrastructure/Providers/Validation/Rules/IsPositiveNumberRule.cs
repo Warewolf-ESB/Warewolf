@@ -8,7 +8,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsPositiveNumberRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "must be a positive whole number";
+            ErrorText = "must be a real number";
         }
 
         public override IActionableErrorInfo Check()
