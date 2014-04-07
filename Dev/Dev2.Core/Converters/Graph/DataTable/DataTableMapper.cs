@@ -1,12 +1,12 @@
-﻿using System.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using Dev2.Common;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 
 namespace Dev2.Converters.Graph.DataTable
 {
-    public class DataTableMapper : IMapper 
+    public class DataTableMapper : IMapper
     {
         public IEnumerable<IPath> Map(object data)
         {
@@ -14,7 +14,7 @@ namespace Dev2.Converters.Graph.DataTable
 
             var tmp = data as System.Data.DataTable;
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 var tblName = tmp.TableName;
 
@@ -23,7 +23,7 @@ namespace Dev2.Converters.Graph.DataTable
                 List<IPath> result = new List<IPath>();
 
                 // ReSharper disable LoopCanBeConvertedToQuery
-                foreach (DataColumn col in cols)
+                foreach(DataColumn col in cols)
                 // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     var colName = col.ColumnName;
@@ -33,7 +33,7 @@ namespace Dev2.Converters.Graph.DataTable
                 BuildSampleData(tmp, cols.Count, ref result);
 
                 return result;
-                
+
             }
 
             return null;
@@ -67,7 +67,7 @@ namespace Dev2.Converters.Graph.DataTable
                 rowCnt++;
 
                 // exit after 10 rows ;)
-                if (rowCnt == 10)
+                if(rowCnt == 10)
                 {
                     break;
                 }

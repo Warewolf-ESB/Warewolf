@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,7 +39,7 @@ namespace Dev2.Tests.Runtime.Services
             mockResourceCatalog.Verify(c => c.GetResource<DbService>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
             mockResourceCatalog.Verify(c => c.GetResource<DbSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
-        
+
         #endregion
 
     }
