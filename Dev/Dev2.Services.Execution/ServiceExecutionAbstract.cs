@@ -304,11 +304,6 @@ namespace Dev2.Services.Execution
 
         protected virtual IOutputFormatter GetOutputFormatter(TService service)
         {
-            if(!HandlesOutputFormatting)
-            {
-                return null;
-            }
-
             return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
         }
 

@@ -110,9 +110,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            Assert.AreEqual(3, debugItems.Count);
-            Assert.AreEqual("[[rec(1).row]]", debugItems[2].Outputs[0].ResultsList[1].Variable);
-            Assert.AreEqual("", debugItems[2].Outputs[0].ResultsList[1].Value);
+            Assert.AreEqual(4, debugItems.Count);
+            Assert.AreEqual("[[rec(2).row]]", debugItems[2].Outputs[0].ResultsList[1].Variable);
+            Assert.AreEqual("NOT EMPTY", debugItems[2].Outputs[0].ResultsList[1].Value);
         }
         #endregion
 
