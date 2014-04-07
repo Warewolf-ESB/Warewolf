@@ -1,0 +1,20 @@
+
+<Source ID="527191d8-5212-428f-89a7-39f0497557f5" Name="BuildServer" Type="Dev2Server" ConnectionString="AppServerUri=http://rsaklfsvrtfsbld:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <TypeOf>Dev2Server</TypeOf>
+  <DisplayName>BuildServer</DisplayName>
+  <Category>SERVERS</Category>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>HbgII+TWZfXFfqod82rIYDFSj50=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>rRP8MeI9Qv2fJc/nCj5y6V8fEYZPkWIOEHDPsKanYh4GYROd9q1bvkUCZWGS7R6Mflh4IGc7aR4uo2VfyrDCLC6xujINcYpEwe0PM3AkteCoi6sIc55tLeumlWPvJ1ytlABQbxiwQ0LpH4Kag/P3k4nxefCUBg1zuciGfa0Lnwg=</SignatureValue>
+  </Signature>
+</Source>
