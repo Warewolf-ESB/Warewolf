@@ -235,6 +235,7 @@ namespace Dev2.Core.Tests.Settings
         public string UserName { get; set; }
         public string Password { get; set; }
         public ErrorResultTO Errors { get; set; }
+        public bool IsNew { get; set; }
 
         #endregion
     }

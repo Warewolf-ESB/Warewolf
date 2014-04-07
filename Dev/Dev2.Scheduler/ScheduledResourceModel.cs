@@ -128,17 +128,14 @@ Please contact your Windows System Administrator.");
                    String.Format(@"This Workflow requires that you have Execute permission on the '{0}' Workflow. 
 Please contact your Warewolf System Administrator.", resource.WorkflowName));
             }
-            if(  resource.Name.Any(a=>"\\/:*?\"<>|".Contains(a)))
-                throw  new Exception("The task name may not contain the following characters \\/:*?\"<>| .");
+            if(resource.Name.Any(a => "\\/:*?\"<>|".Contains(a)))
+                throw new Exception("The task name may not contain the following characters \\/:*?\"<>| .");
             var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
             created.Settings.Enabled = resource.Status == SchedulerStatus.Enabled;
 
             folder.RegisterTaskDefinition(resource.Name, created, TaskCreation.CreateOrUpdate, userName, password,
                                           TaskLogonType.InteractiveTokenOrPassword);
-            resource.IsDirty = false;
-
-
         }
 
 

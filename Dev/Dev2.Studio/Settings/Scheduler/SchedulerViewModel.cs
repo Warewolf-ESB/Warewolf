@@ -741,7 +741,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     if(SelectedTask != null && SelectedTask.IsDirty)
                     {
-                        if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName))
+                        if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName) && !SelectedTask.IsNew)
                         {
                             var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
                                                                                                    SelectedTask.Name);
@@ -776,6 +776,7 @@ namespace Dev2.Settings.Scheduler
                             NotifyOfPropertyChange(() => Error);
                             NotifyOfPropertyChange(() => Errors);
                             SelectedTask.OldName = SelectedTask.Name;
+                            SelectedTask.IsNew = false;
                         }
                         NotifyOfPropertyChange(() => TaskList);
                     }
@@ -807,6 +808,7 @@ You need Administrator permission.");
             NotifyOfPropertyChange(() => TaskList);
             SelectedTask = ScheduledResourceModel.ScheduledResources.Last();
             WorkflowName = string.Empty;
+            SelectedTask.IsNew = true;
         }
 
         void DeleteTask()

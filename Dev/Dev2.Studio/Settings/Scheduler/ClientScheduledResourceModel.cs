@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Scheduler.Interfaces;
@@ -93,7 +92,7 @@ namespace Dev2.Settings.Scheduler
 
         public void Dispose()
         {
-          
+
         }
     }
 }

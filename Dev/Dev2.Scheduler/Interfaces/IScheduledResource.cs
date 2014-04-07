@@ -77,6 +77,6 @@ namespace Dev2.Scheduler.Interfaces
         /// </summary>
 
         ErrorResultTO Errors { get; set; }
-
+        bool IsNew { get; set; }
     }
 }

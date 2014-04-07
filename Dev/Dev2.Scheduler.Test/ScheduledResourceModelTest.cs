@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Scheduler.Test
 {
     [TestClass]
@@ -23,7 +24,7 @@ namespace Dev2.Scheduler.Test
         public void Init()
         {
             _mockService = new Mock<IDev2TaskService>();
-          
+
             _convertorFactory = new Mock<ITaskServiceConvertorFactory>();
             _folderId = "WareWolf";
             _agentPath = "AgentPath";
@@ -64,7 +65,7 @@ namespace Dev2.Scheduler.Test
             {
                 new ScheduledResourceModel(null, null, null, null, null, null);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Assert.AreEqual(e.Message, @"The following arguments are not allowed to be null: taskService
 warewolfFolderId
@@ -75,7 +76,7 @@ securityWrapper
 ");
                 throw;
             }
-           
+
 
         }
 

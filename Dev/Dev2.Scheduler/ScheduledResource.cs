@@ -195,6 +195,7 @@ namespace Dev2.Scheduler
                 OnPropertyChanged("Errors");
             }
         }
+        public bool IsNew { get; set; }
 
         #region INotifyPropertyChanged
 
