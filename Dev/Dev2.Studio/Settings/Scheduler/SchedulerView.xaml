@@ -129,8 +129,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"
-                              MinWidth="100" />
+            <ColumnDefinition Width="320"
+                              MinWidth="320" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -206,7 +206,7 @@
                        Visibility="{Binding HasConnectionError, Converter={StaticResource BoolToVisibilityConverterPositive}}">
             </TextBlock>
             <DataGrid Grid.Row="2"
-                      Grid.Column="0"
+                      Grid.Column="0"                     
                       Style="{StaticResource SchedulerDataGridStyle}"
                       ItemsSource="{Binding TaskList}"
                       SelectedItem="{Binding SelectedTask,Mode=TwoWay}">
@@ -218,7 +218,8 @@
                 </DataGrid.Visibility>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Name"
-                                            Width="120"
+                                            MinWidth="50"
+                                            Width="*"
                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
                         <DataGridTemplateColumn.CellTemplate>
@@ -238,7 +239,8 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Status"
-                                            Width="60"
+                                            MinWidth="50"
+                                            Width="*"
                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
                         <DataGridTemplateColumn.CellTemplate>
@@ -251,7 +253,8 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Next Execution"
-                                            Width="140"
+                                            MinWidth="90"
+                                            Width="*"
                                             HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:IScheduledResource}">
                         <DataGridTemplateColumn.CellTemplate>
@@ -594,6 +597,7 @@
                               Visibility="{Binding IsHistoryTabVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="27"
+                                                    MinWidth="27"
                                                     IsReadOnly="True"
                                                     Header="#"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
@@ -609,6 +613,7 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTemplateColumn Width="*"
+                                                    MinWidth="80"
                                                     IsReadOnly="True"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     Header="Start Time"
@@ -624,6 +629,7 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTemplateColumn Width="*"
+                                                    MinWidth="70"
                                                     IsReadOnly="True"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     Header="Duration"
@@ -640,6 +646,7 @@
 
                             <DataGridTemplateColumn Width="*"
                                                     IsReadOnly="True"
+                                                    MinWidth="80"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     Header="End Time"
                                                     d:DataContext="{d:DesignInstance interfaces:IResourceHistory}">
@@ -654,6 +661,7 @@
                             </DataGridTemplateColumn>
                             
                             <DataGridTemplateColumn Width="*"
+                                                    MinWidth="50"
                                                     IsReadOnly="True"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     Header="Status"
@@ -669,6 +677,7 @@
                             </DataGridTemplateColumn>
                             
                             <DataGridTemplateColumn Width="*"
+                                                    MinWidth="70"
                                                     IsReadOnly="True"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     Header="Event Id"
@@ -684,6 +693,7 @@
                             </DataGridTemplateColumn>
                             
                             <DataGridTemplateColumn Width="*"
+                                                    MinWidth="90"
                                                     HeaderStyle="{StaticResource SchedulerDataGridHeaderStyle}"
                                                     IsReadOnly="True"
                                                     Header="User Context"

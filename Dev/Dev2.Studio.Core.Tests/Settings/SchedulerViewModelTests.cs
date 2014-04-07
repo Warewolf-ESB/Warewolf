@@ -436,9 +436,11 @@ You need Administrator permission.";
 
             schedulerViewModel.ConnectionError = @"You don't have permission to schedule on this server.
 You need Administrator permission.";
+
+
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
-            //------------Assert Results-------------------------
+            //------------Assert Results-------------------------            
             Assert.AreEqual(string.Empty, schedulerViewModel.Name);
             Assert.AreEqual(false, schedulerViewModel.RunAsapIfScheduleMissed);
             Assert.AreEqual("", schedulerViewModel.ConnectionError);
@@ -717,7 +719,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
             //------------Assert Results-------------------------
             auth.Verify(a => a.IsAuthorized(AuthorizationContext.Administrator, null));
             Assert.AreEqual(schedulerViewModel.Errors.FetchErrors().Count, 1);
-            Assert.AreEqual(@"You don't have permission to schedule on this server.
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server.
 You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().FirstOrDefault());
         }
 
@@ -1422,6 +1424,12 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker());
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
             var resources = new ObservableCollection<IScheduledResource>();
             resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
             resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
@@ -1471,6 +1479,12 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker());
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
             var resources = new ObservableCollection<IScheduledResource>();
             resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
             resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
@@ -1490,6 +1504,73 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             Assert.AreEqual("dave", schedulerViewModel.TaskList[0].Name);
             Assert.AreEqual(SchedulerStatus.Enabled, schedulerViewModel.TaskList[0].Status);
             resourceModel.Verify(a => a.DeleteSchedule(It.IsAny<IScheduledResource>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_DeleteTask")]
+        public void SchedulerViewModel_DeleteTask_DeleteWithNoAdminRights_ShouldShowError()
+        {
+            //------------Setup for test--------------------------
+
+            Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
+            mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker());
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            var resources = new ObservableCollection<IScheduledResource>();
+            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
+            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+
+            var resourceModel = new Mock<IScheduledResourceModel>();
+            resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
+            resourceModel.Setup(c => c.DeleteSchedule(It.IsAny<IScheduledResource>())).Verifiable();
+            schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
+            //------------Execute Test---------------------------
+            Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+
+            schedulerViewModel.DeleteCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"Error while saving: You don't have permission to schedule on this server.
+You need Administrator permission.", schedulerViewModel.Error);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SchedulerViewModel_DeleteTask")]
+        public void SchedulerViewModel_DeleteTask_DeleteWhenEnvironmentIsntConnected_ShouldShowError()
+        {
+            //------------Setup for test--------------------------
+
+            Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
+            mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker());
+            var env = new Mock<IEnvironmentModel>();
+            var auth = new Mock<IAuthorizationService>();
+            env.Setup(a => a.IsConnected).Returns(false);
+            env.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
+            schedulerViewModel.CurrentEnvironment = env.Object;
+            var resources = new ObservableCollection<IScheduledResource>();
+            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
+            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+
+            var resourceModel = new Mock<IScheduledResourceModel>();
+            resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
+            resourceModel.Setup(c => c.DeleteSchedule(It.IsAny<IScheduledResource>())).Verifiable();
+            schedulerViewModel.ScheduledResourceModel = resourceModel.Object;
+            //------------Execute Test---------------------------
+            Assert.AreEqual(2, schedulerViewModel.TaskList.Count);
+            schedulerViewModel.SelectedTask = schedulerViewModel.TaskList[0];
+
+            schedulerViewModel.DeleteCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Error while saving: Server unreachable.", schedulerViewModel.Error);
         }
 
         [TestMethod]
@@ -1557,9 +1638,29 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
 
+            var _historyChanged = false;
+            var _taskListChanged = false;
+
+
+            schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
+            {
+                switch(args.PropertyName)
+                {
+                    case "History":
+                        _historyChanged = true;
+                        break;
+
+                    case "TaskList":
+                        _taskListChanged = true;
+                        break;
+                }
+            };
+
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
-            //------------Assert Results-------------------------            
+            //------------Assert Results------------------------- 
+            Assert.IsTrue(_historyChanged);
+            Assert.IsTrue(_taskListChanged);
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
             Assert.AreEqual(string.Empty, schedulerViewModel.Name);
             Assert.AreEqual(string.Empty, schedulerViewModel.WorkflowName);
@@ -1662,7 +1763,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
 
         public override void GetCredentials(IScheduledResource scheduledResource)
         {
-            if(string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.UserName))
+            if(string.IsNullOrEmpty(scheduledResource.UserName) || string.IsNullOrEmpty(scheduledResource.Password))
             {
                 GetCredentialsCalled = true;
                 scheduledResource.UserName = "some username";

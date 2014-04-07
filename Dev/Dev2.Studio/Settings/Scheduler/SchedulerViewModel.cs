@@ -783,7 +783,7 @@ namespace Dev2.Settings.Scheduler
                 }
                 else
                 {
-                    ShowError(@"You don't have permission to schedule on this server.
+                    ShowError(@"Error while saving: You don't have permission to schedule on this server.
 You need Administrator permission.");
                 }
             }
@@ -811,28 +811,43 @@ You need Administrator permission.");
 
         void DeleteTask()
         {
-            if(SelectedTask != null)
+            if(SelectedTask != null && CurrentEnvironment != null)
             {
-                if(_popupController.ShowDeleteConfirmation(SelectedTask.Name) == MessageBoxResult.Yes)
+                if(CurrentEnvironment.IsConnected)
                 {
-                    int index = ScheduledResourceModel.ScheduledResources.IndexOf(SelectedTask);
-                    int indexInFilteredList = TaskList.IndexOf(SelectedTask);
-                    if(index != -1)
+                    if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
                     {
-                        ScheduledResourceModel.DeleteSchedule(SelectedTask);
-                        //if delete is successfull then do the code below
-                        ScheduledResourceModel.ScheduledResources.RemoveAt(index);
-                        NotifyOfPropertyChange(() => TaskList);
-                        if(indexInFilteredList <= TaskList.Count && indexInFilteredList > 0)
+                        if(_popupController.ShowDeleteConfirmation(SelectedTask.Name) == MessageBoxResult.Yes)
                         {
-                            SelectedTask = TaskList[indexInFilteredList - 1];
-                        }
-                        else if(indexInFilteredList == 0 && TaskList.Count > 0)
-                        {
-                            SelectedTask = TaskList[0];
+                            int index = ScheduledResourceModel.ScheduledResources.IndexOf(SelectedTask);
+                            int indexInFilteredList = TaskList.IndexOf(SelectedTask);
+                            if(index != -1)
+                            {
+                                ScheduledResourceModel.DeleteSchedule(SelectedTask);
+                                //if delete is successfull then do the code below
+                                ScheduledResourceModel.ScheduledResources.RemoveAt(index);
+                                NotifyOfPropertyChange(() => TaskList);
+                                if(indexInFilteredList <= TaskList.Count && indexInFilteredList > 0)
+                                {
+                                    SelectedTask = TaskList[indexInFilteredList - 1];
+                                }
+                                else if(indexInFilteredList == 0 && TaskList.Count > 0)
+                                {
+                                    SelectedTask = TaskList[0];
+                                }
+                            }
+                            NotifyOfPropertyChange(() => History);
                         }
                     }
-                    NotifyOfPropertyChange(() => History);
+                    else
+                    {
+                        ShowError(@"Error while saving: You don't have permission to schedule on this server.
+You need Administrator permission.");
+                    }
+                }
+                else
+                {
+                    ShowError(NotConnectedErrorMessage);
                 }
             }
         }
@@ -953,6 +968,7 @@ You need Administrator permission.";
                 ScheduledResourceModel.ScheduledResources = new ObservableCollection<IScheduledResource>();
             }
             NotifyOfPropertyChange(() => TaskList);
+            NotifyOfPropertyChange(() => History);
             Errors.ClearErrors();
         }
 
