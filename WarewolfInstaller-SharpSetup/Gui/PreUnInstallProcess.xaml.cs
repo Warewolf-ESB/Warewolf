@@ -60,7 +60,16 @@ namespace Gui
             catch
             {
                 // Best effort ;)
+                try
+                {
+                    RemoveService();
+                }
+                catch(Exception)
+                { }
             }
+
+            // close those ports up ;)
+            ClosePorts();
 
             return _serviceRemoved;
         }

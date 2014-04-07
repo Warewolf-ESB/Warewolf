@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -138,6 +139,9 @@ namespace Gui
                     {
                         MessageBox.Show("An error occurred while removing Warewolf" + Environment.NewLine + "Cannot locate install directory!");
                     }
+
+                    // remove warewolf directory
+                    RemoveWarewolfDirectory();
                 }
                 catch(Exception e2)
                 {
@@ -149,6 +153,27 @@ namespace Gui
                 }
             }
         }
+
+
+
+        private void RemoveWarewolfDirectory()
+        {
+            try
+            {
+                // give the darn files time to remove handles
+                Thread.Sleep(1500);
+
+                var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var logDir = Path.Combine(appData, "Warewolf");
+
+                Directory.Delete(logDir, true);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception) { }
+            // ReSharper restore EmptyGeneralCatchClause
+
+        }
+
 
         /// <summary>
         /// Sets the webs acl.

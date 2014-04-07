@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Windows;
 using SharpSetup.Base;
@@ -27,17 +28,19 @@ namespace Gui
             }
 
             // if we want logging, here it is ;)
-            if (!InstallVariables.RemoveLogFile)
+            if(!InstallVariables.RemoveLogFile)
             {
                 // set log file location ;)
-                var installLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
-                var logFileName = Path.Combine(installLoc, "Warewolf_Install.log");
+                var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var logDir = Path.Combine(appData, "Warewolf");
 
                 // create directory to avoid issues ;)
-                if (!Directory.Exists(installLoc))
+                if(!Directory.Exists(logDir))
                 {
-                    Directory.CreateDirectory(installLoc);
+                    Directory.CreateDirectory(logDir);
                 }
+
+                var logFileName = Path.Combine(logDir, "Warewolf_Install.log");
 
                 MsiConnection.Instance.LogFile = logFileName;
             }
