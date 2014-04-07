@@ -61,7 +61,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "BUGS");
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TESTCATEGORY");
             // prime the values ;)
             RibbonUIMap.ClickDebug();
             DebugUIMap.EnterTextIntoRow(0, "1");
@@ -131,7 +131,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "BUGS");
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TESTCATEGORY");
 
             // prime the values ;)
             RibbonUIMap.ClickDebug();
