@@ -222,7 +222,7 @@ namespace Dev2.Runtime.ServiceModel
 
             try
             {
-                if(identity != null)
+                if(identity != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context = identity.Impersonate();
                 }
@@ -274,7 +274,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             finally
             {
-                if(context != null)
+                if(context != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context.Undo();
                 }
