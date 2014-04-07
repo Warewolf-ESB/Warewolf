@@ -99,8 +99,23 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
 
             #region Create OutputFormatter
+            // ReSharper disable RedundantAssignment
+            IOutputFormatter outputFormatter = null;
+            // ReSharper restore RedundantAssignment
 
-            var outputFormatter = GetOutputFormatter(Service);
+            try
+            {
+                outputFormatter = GetOutputFormatter(Service);
+            }
+            catch(Exception)
+            {
+                if(HandlesOutputFormatting)
+                {
+                    errors.AddError(string.Format("Output format in service action {0} is invalid. Please edit and remap.", Service.ResourceName));
+                    return;
+                }
+            }
+
             if(HandlesOutputFormatting && outputFormatter == null)
             {
                 errors.AddError(string.Format("Output format in service action {0} is invalid.", Service.ResourceName));

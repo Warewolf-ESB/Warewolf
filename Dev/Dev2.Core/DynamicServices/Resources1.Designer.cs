@@ -322,7 +322,7 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message: Workflow succesfully terminated.
+        ///   Looks up a localized string similar to Message: Workflow successfully terminated.
         /// </summary>
         public static string CompilerMessage_TerminationSuccess {
             get {

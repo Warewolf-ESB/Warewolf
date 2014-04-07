@@ -21,7 +21,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             set;
         }
 
-
         [TestMethod]
         public void TestPluginNull_Expected_AnonymousSend()
         {

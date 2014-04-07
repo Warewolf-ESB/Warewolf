@@ -241,7 +241,7 @@
     <value>Message: Failed to stop the workflow execution. It may have completed already.</value>
   </data>
   <data name="CompilerMessage_TerminationSuccess" xml:space="preserve">
-    <value>Message: Workflow succesfully terminated</value>
+    <value>Message: Workflow successfully terminated</value>
   </data>
   <data name="CompilerMessage_ExecutionInterrupted" xml:space="preserve">
     <value>The workflow execution was interrupted. The last item executed is :</value>

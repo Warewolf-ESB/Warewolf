@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
 
-            const string Expected = "Message: Workflow succesfully terminated";
+            const string Expected = "Message: Workflow successfully terminated";
             var obj = ConvertToMsg(result.ToString());
 
             Assert.AreEqual(Expected, obj.Message.ToString());
