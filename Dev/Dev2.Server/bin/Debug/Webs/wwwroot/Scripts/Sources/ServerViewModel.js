@@ -102,9 +102,11 @@
     
     self.isFormTestable = ko.computed(function () {
         var valid = self.data.address() ? true : false;
+		/*
         if (self.isUserInputVisible()) {
             valid = valid && self.data.userName() && self.data.password();
         }
+		*/
         self.showTestResults(false);
         return valid;
     });
