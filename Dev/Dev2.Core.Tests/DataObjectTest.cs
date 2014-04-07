@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Dev2.Data.Enums;
+﻿using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests
@@ -67,14 +67,14 @@ namespace Dev2.Tests
             dataObject.WorkflowInstanceId = "333";
             dataObject.WorkflowResumeable = false;
             dataObject.ParentID = Guid.NewGuid();
-            dataObject.WorkspaceID = Guid.NewGuid();            
+            dataObject.WorkspaceID = Guid.NewGuid();
             dataObject.ClientID = Guid.NewGuid();
             dataObject.RunWorkflowAsync = true;
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
             dataObject.ThreadsToDispose = threadsToDispose;
-            
+
             //------------Execute Test---------------------------
             IDSFDataObject clonedObject = dataObject.Clone();
 
@@ -133,6 +133,66 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.ThreadsToDispose, clonedObject.ThreadsToDispose);
             Assert.AreEqual(dataObject.ParentID, clonedObject.ParentID);
             Assert.AreEqual(dataObject.RunWorkflowAsync, clonedObject.RunWorkflowAsync);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_IsDebugIsTrueAndRunWorkflowAsyncIsTrue_IsDebugModeIsFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = true;
+            dataObject.IsDebug = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isDebug);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_IsDebugIsTrueAndRunWorkflowAsyncIsFalse_IsDebugModeIsTrue()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = false;
+            dataObject.IsDebug = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isDebug);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_RemoteInvokeIsTrueAndRunWorkflowAsyncIsTrue_IsDebugModeIsFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = true;
+            dataObject.RemoteInvoke = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isDebug);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataObject_IsDebugMode")]
+        public void DataObject_IsDebugMode_RemoteInvokeIsTrueAndRunWorkflowAsyncIsFalse_IsDebugModeIsTrue()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            dataObject.RunWorkflowAsync = false;
+            dataObject.RemoteInvoke = true;
+            //------------Execute Test---------------------------
+            var isDebug = dataObject.IsDebugMode();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isDebug);
         }
     }
 }

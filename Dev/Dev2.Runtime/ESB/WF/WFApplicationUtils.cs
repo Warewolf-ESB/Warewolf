@@ -1,19 +1,17 @@
-using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using System;
 using Dev2.Runtime.Hosting;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
     {
-
-
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
         {
             if(dataObject != null)
@@ -79,15 +77,17 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     if(debugState.StateType == StateType.End)
                     {
-                        DebugDispatcher.Instance.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
                     }
                     else
                     {
-                        DebugDispatcher.Instance.Write(debugState);
+                        GetDebugDispatcher().Write(debugState);
                     }
                 }
             }
         }
+
+        public Func<IDebugDispatcher> GetDebugDispatcher = () => DebugDispatcher.Instance;
 
         public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, out ErrorResultTO errors)
         {

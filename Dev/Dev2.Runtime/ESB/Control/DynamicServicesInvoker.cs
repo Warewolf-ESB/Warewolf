@@ -8,8 +8,6 @@
 
 #endregion
 
-using System;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -19,9 +17,13 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
+using System;
+using System.Linq;
 using enActionType = Dev2.DynamicServices.enActionType;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB
+// ReSharper restore CheckNamespace
 {
 
     #region Dynamic Invocation Class - Invokes Dynamic Endpoint and returns responses to the Caller
@@ -117,14 +119,7 @@ namespace Dev2.Runtime.ESB
                     {
                         var sl = new ServiceLocator();
                         DynamicService theService;
-                        if(serviceID == Guid.Empty)
-                        {
-                            theService = sl.FindService(serviceName, _workspace.ID);
-                        }
-                        else
-                        {
-                            theService = sl.FindService(serviceID, _workspace.ID);
-                        }
+                        theService = serviceID == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceID, _workspace.ID);
 
                         if(theService == null)
                         {
@@ -145,11 +140,13 @@ namespace Dev2.Runtime.ESB
 
                             ErrorResultTO invokeErrors;
                             // Invoke based upon type ;)
-                            theStart.DataListSpecification = theService.DataListSpecification;
-                            EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
-                            result = container.Execute(out invokeErrors);
-                            errors.MergeErrors(invokeErrors);
-
+                            if(theStart != null)
+                            {
+                                theStart.DataListSpecification = theService.DataListSpecification;
+                                EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
+                                result = container.Execute(out invokeErrors);
+                                errors.MergeErrors(invokeErrors);
+                            }
                             #endregion
                         }
                         else
