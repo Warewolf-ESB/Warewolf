@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Scheduler.Interfaces;
-using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
@@ -24,7 +23,7 @@ namespace Dev2.Scheduler.Test
         public void Init()
         {
             _mockService = new Mock<IDev2TaskService>();
-            new Mock<IAuthorizationService>();
+          
             _convertorFactory = new Mock<ITaskServiceConvertorFactory>();
             _folderId = "WareWolf";
             _agentPath = "AgentPath";
@@ -34,13 +33,13 @@ namespace Dev2.Scheduler.Test
                     .Returns(true);
             _wrapper.Setup(a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(true);
-            new Mock<ITaskCollection>();
+
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_Constructor")]
-        public void TaskSheduler_ScheduledResourceModel_ShouldConstruct()
+        [TestCategory("ScheduledResourceModel_Constructor")]
+        public void ScheduledResourceModel_Constructor_ShouldConstruct()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
@@ -55,8 +54,35 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ScheduledResources")]
-        public void TaskSheduler_ScheduledResourceModel_ShouldSelectedCorrectResources()
+        [TestCategory("ScheduledResourceModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ScheduledResourceModel_Constructor_ShouldThrowErrorIfArgsNull()
+        {
+            _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
+            _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
+            try
+            {
+                new ScheduledResourceModel(null, null, null, null, null, null);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, @"The following arguments are not allowed to be null: taskService
+warewolfFolderId
+warewolfAgentPath
+taskServiceFactory
+debugHistoryPath
+securityWrapper
+");
+                throw;
+            }
+           
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        public void ScheduledResourceModel_Constructor_ShouldSelectedCorrectResources()
         {
             //setup
             SetupSingleTask();
@@ -70,8 +96,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ScheduledResourcesInvalid")]
-        public void TaskSheduler_ScheduledResourceModel_ShouldErrorInvalidMessages()
+        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        public void ScheduledResourceModel_Get_ShouldErrorInvalidMessages()
         {
             //setup
             SetupSingleTask();
@@ -86,8 +112,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ScheduledResources")]
-        public void TaskSheduler_ScheduledResourceModel_CorrectSelectedResources()
+        [TestCategory("ScheduledResourceModel_ScheduledResources")]
+        public void ScheduledResourceModel_CorrectSelectedResources()
         {
             SetupSingleTask();
 
@@ -100,8 +126,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_Should_DeleteValid")]
-        public void TaskSheduler_ScheduledResourceModel_ShouldDeleteTest_Valid()
+        [TestCategory("ScheduledResourceModel_Delete")]
+        public void ScheduledResourceModel_ShouldDeleteTest_Valid()
         {
             SetupSingleTask();
 
@@ -122,8 +148,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ShouldNotDeleteInvalid")]
-        public void ScheduledResourceModel_DeleteTest_InValid()
+        [TestCategory("ScheduledResourceModel_Delete")]
+        public void ScheduledResourceModel_Delete_InValid()
         {
             //setup
             SetupSingleTask();
@@ -148,8 +174,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ShouldSelectHistory")]
-        public void ScheduledResourceModel_HistoryTestTaskEventsSelected()
+        [TestCategory("ScheduledResourceModel_History")]
+        public void ScheduledResourceModel_HistoryTest_CorrectTaskEventsSelected()
         {
             // setup 
             var log = new MockTaskEventLog
@@ -180,7 +206,7 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_History")]
+        [TestCategory("ScheduledResourceModel_History")]
         public void ScheduledResourceModel_HistoryTestDebugCreated()
         {
             //setup
@@ -221,8 +247,8 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ScheduledResources")]
-        public void ScheduledResourceModel_SaveTest()
+        [TestCategory("ScheduledResourceModel_Save")]
+        public void ScheduledResourceModel_SaveTestValid()
         {
             //create objects
             SetupSingleTask();
@@ -265,7 +291,7 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel_Save")]
         public void ScheduledResourceModel_SaveInvalidWindowsUserPermissions()
         {
             //create objects
@@ -289,7 +315,7 @@ Please contact your Windows System Administrator.", errorMessage);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_Save")]
+        [TestCategory("ScheduledResourceModel_Save")]
         public void ScheduledResourceModel_SaveInvalidWarewolfUserPermissions()
         {
             //create objects
@@ -313,7 +339,30 @@ Please contact your Warewolf System Administrator.", errorMessage);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResourceModel_ScheduledResources")]
+        [TestCategory("ScheduledResourceModel_Save")]
+        public void ScheduledResourceModel_SaveInvalidName()
+        {
+            //create objects
+            SetupSingleTask();
+            var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
+                                                  @"c:\", _wrapper.Object);
+            var resourceToSave = new Mock<IScheduledResource>();
+
+            //setup expectations
+            _wrapper.Setup(
+                a => a.IsWarewolfAuthorised(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(true);
+            resourceToSave.Setup(a => a.Name).Returns("bob?");
+            //run test
+            string errorMessage;
+            model.Save(resourceToSave.Object, out errorMessage);
+            Assert.AreEqual("The task name may not contain the following characters \\/:*?\"<>| .", errorMessage);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ScheduledResourceModel_Save")]
         public void ScheduledResourceModel_SaveTest_UserPassword()
         {
             SetupSingleTask();
@@ -387,7 +436,7 @@ Please contact your Warewolf System Administrator.", errorMessage);
 
         public new long Count
         {
-            get { return Count; }
+            get { return base.Count; }
         }
     }
 

@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ClientSchedulerFactory.cs" />
     <Compile Include="EventInfoTest.cs" />
     <Compile Include="ResourceHistoryTest.cs" />
     <Compile Include="ScheduledResourceTest.cs" />

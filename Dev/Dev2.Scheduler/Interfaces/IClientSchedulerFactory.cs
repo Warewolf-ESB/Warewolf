@@ -5,7 +5,7 @@ namespace Dev2.Scheduler.Interfaces
 {
     public interface IClientSchedulerFactory
     {
-        IScheduledResourceModel GetResourceModel(string serverName);
+
         IScheduleTrigger CreateTrigger(TaskState state, ITrigger trigger);
     }
 }

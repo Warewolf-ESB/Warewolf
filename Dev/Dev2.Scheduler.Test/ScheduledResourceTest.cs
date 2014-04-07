@@ -13,10 +13,10 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResource_Properties")]
-        public void TaskSheduler_ScheduledResource_Constructor()
+        [TestCategory("ScheduledResource_Ctor")]
+        public void ScheduledResource_Constructor()
         {
-            IList< IResourceHistory> hist = new List<IResourceHistory>();
+       
             IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
             ScheduledResource res = new ScheduledResource("bob",SchedulerStatus.Enabled, DateTime.MaxValue,trigger,"rory");
             Assert.AreEqual("bob",res.Name);
@@ -29,10 +29,10 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ScheduledResource_Properties")]
-        public void TaskSheduler_Properties()
+        [TestCategory("ScheduledResource_Properties")]
+        public void ScheduledResource_Properties()
         {
-            IList<IResourceHistory> hist = new List<IResourceHistory>();
+     
             IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
             var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory");
             res.Password = "PWD";

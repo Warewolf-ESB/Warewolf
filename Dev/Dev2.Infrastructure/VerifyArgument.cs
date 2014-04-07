@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2 {
     /// <summary>
@@ -14,6 +16,15 @@ namespace Dev2 {
          public static void IsNotNull([NotNull]string name, [AssertionCondition(AssertionConditionType.IS_NOT_NULL)]object argument) {
              if(argument == null) {
                  throw new ArgumentNullException(name);
+             }
+         }
+
+         [AssertionMethod]
+         public static void AreNotNull([AssertionCondition(AssertionConditionType.IS_NOT_NULL)]IDictionary<string,object> args)
+         {
+             if (args.Any(a=> a.Value== null))
+             {
+                 throw new ArgumentNullException("",String.Format("The following arguments are not allowed to be null: {0}" ,args.Where(a=>a.Value==null).Aggregate("",(a,b)=>string.Format("{0}{1}{2}", a, b.Key, Environment.NewLine))));
              }
          }
 

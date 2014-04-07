@@ -176,6 +176,8 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
+    <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
+    <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />

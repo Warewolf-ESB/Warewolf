@@ -182,7 +182,7 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         bool RunOnLastDayOfMonth { get;  }
     }
 
-    public interface IRegistrationTrigger : ITriggerDelay, IWrappedObject<RegistrationTrigger>
+    public interface IRegistrationTrigger : ITrigger, ITriggerDelay, IWrappedObject<RegistrationTrigger>
     {
     }
 }

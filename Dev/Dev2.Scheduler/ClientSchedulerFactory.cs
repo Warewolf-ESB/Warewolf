@@ -20,10 +20,7 @@ namespace Dev2.Scheduler
             _serviceConvertorFactory = serviceConvertorFactory;
         }
 
-        public IScheduledResourceModel GetResourceModel(string serverName)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public IScheduleTrigger CreateTrigger(TaskState state, ITrigger trigger)
         {
@@ -37,9 +34,7 @@ namespace Dev2.Scheduler
             {
                 case TaskTriggerType.Boot:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(_serviceConvertorFactory, trigger as BootTrigger), _service, _serviceConvertorFactory);
-                case TaskTriggerType.Custom:
-                    return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(_serviceConvertorFactory, trigger), _service, _serviceConvertorFactory);
-                case TaskTriggerType.Daily:
+                           case TaskTriggerType.Daily:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(_serviceConvertorFactory, trigger as DailyTrigger), _service, _serviceConvertorFactory);
                 case TaskTriggerType.Event:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2EventTrigger(_serviceConvertorFactory, trigger as EventTrigger), _service, _serviceConvertorFactory);

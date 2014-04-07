@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
@@ -14,8 +15,17 @@ namespace Dev2.Scheduler
         private readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
         private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerDebugPath);
         private IDirectoryHelper _dir;
+
         public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory)
         {
+            var nullables = new Dictionary<string, object>
+                {
+                    {"service", service},
+                    {"factory", factory},
+                    {"directory", directory},
+
+                };
+            VerifyArgument.AreNotNull(nullables);
             _service = service;
             _factory = factory;
             _dir = directory;
@@ -57,8 +67,6 @@ namespace Dev2.Scheduler
             {
                 case TaskTriggerType.Boot:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2BootTrigger(ConvertorFactory, trigger as BootTrigger), TaskService, ConvertorFactory);
-                case TaskTriggerType.Custom:
-                    return new ScheduleTrigger(TaskState.Ready, new Dev2Trigger(ConvertorFactory, trigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Daily:
                     return new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(ConvertorFactory, trigger as DailyTrigger), TaskService, ConvertorFactory);
                 case TaskTriggerType.Event:
@@ -89,6 +97,11 @@ namespace Dev2.Scheduler
                                                  string workflowName)
         {
             return new ScheduledResource(name, status, DateTime.MinValue, CreateTrigger(trigger), workflowName);
+        }
+
+        public void Dispose()
+        {
+            _service.Dispose();
         }
     }
 }

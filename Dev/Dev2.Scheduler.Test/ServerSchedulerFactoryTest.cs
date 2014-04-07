@@ -14,21 +14,72 @@ namespace Dev2.Scheduler.Test
     {
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_Constructor")]
-        public void TaskSheduler_ServerSchedulerFactory_Constructor()
+        [TestCategory("ServerSchedulerFactory_Constructor")]
+        public void ServerSchedulerFactory_Constructor()
         {
             IDev2TaskService service = new Mock<IDev2TaskService>().Object;
             ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
-            var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryHelper());
+            var dir = new Mock<IDirectoryHelper>();
+            dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
+            var factory = new ServerSchedulerFactory(service, cFactory, dir.Object);
             Assert.AreEqual(cFactory, factory.ConvertorFactory);
             Assert.AreEqual(service, factory.TaskService);
+            dir.Verify(a => a.CreateIfNotExists(It.IsAny<string>()));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerSchedulerFactory_Constructor")]
+        public void ServerSchedulerFactory_ConstructorNulls()
+        {
+
+
+            try
+            {
+                new ServerSchedulerFactory(null, null, null);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(e.Message, @"The following arguments are not allowed to be null: service
+factory
+directory
+");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerSchedulerFactory_Constructor")]
+        public void ServerSchedulerFactory_Default()
+        {
+
+#pragma warning disable 168
+            var factory = new ServerSchedulerFactory();
+#pragma warning restore 168
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerSchedulerFactory_Constructor")]
+        public void ServerSchedulerFactory_Dispose()
+        {
+
+            var service = new Mock<IDev2TaskService>();
+            ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
+            var dir = new Mock<IDirectoryHelper>();
+            dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
+            var factory = new ServerSchedulerFactory(service.Object, cFactory, dir.Object);
+            service.Setup(a => a.Dispose()).Verifiable();
+            factory.Dispose();
+            service.Verify(a => a.Dispose());
+
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_Model")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateModel()
+        [TestCategory("ServerSchedulerFactory_Model")]
+        public void ServerSchedulerFactory_CreateModel()
         {
             IDev2TaskService service = new Mock<IDev2TaskService>().Object;
             ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
@@ -43,21 +94,23 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateResource")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateResource()
+        [TestCategory("ServerSchedulerFactory_CreateResource")]
+        public void ServerSchedulerFactory_CreateResource()
         {
             var service = new Mock<IDev2TaskService>();
 
             var cFactory = new Mock<ITaskServiceConvertorFactory>();
             cFactory.Setup(f => f.CreateExecAction("notepad", null, null))
+// ReSharper disable RedundantArgumentDefaultValue
                 .Returns(new Dev2ExecAction(new TaskServiceConvertorFactory(), new ExecAction("notepad.exe", null, null)));
+// ReSharper restore RedundantArgumentDefaultValue
             var mockTask = new Mock<IDev2TaskDefinition>();
             mockTask.Setup(a => a.AddAction(It.IsAny<IAction>()));
             mockTask.Setup(a => a.AddTrigger(It.IsAny<ITrigger>()));
             mockTask.Setup(a => a.XmlText).Returns("bob");
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
-            var factory = new ServerSchedulerFactory(service.Object, cFactory.Object, new DirectoryHelper());
+            var factory = new ServerSchedulerFactory(service.Object, cFactory.Object, new Mock<IDirectoryHelper>().Object);
             var trig = new DailyTrigger();
             var res = factory.CreateResource("A", SchedulerStatus.Disabled, trig, "c");
             Assert.AreEqual("A", res.Name);
@@ -69,15 +122,15 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateDailyTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateBootTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateDailyTrigger")]
+        public void ServerSchedulerFactory_CreateBootTrigger()
         {
             CheckTriggerTypes(new BootTrigger());
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateDailyTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateDailyTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateDailyTrigger")]
+        public void ServerSchedulerFactory_CreateDailyTrigger()
         {
             CheckTriggerTypes(new DailyTrigger());
         }
@@ -86,74 +139,78 @@ namespace Dev2.Scheduler.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateEventTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateEventTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateEventTrigger")]
+        public void ServerSchedulerFactory_CreateEventTrigger()
         {
             CheckTriggerTypes(new EventTrigger("log", "bob", 111));
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateIdleTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateIdleTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateIdleTrigger")]
+        public void ServerSchedulerFactory_CreateIdleTrigger()
         {
             CheckTriggerTypes(new IdleTrigger());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateLogonTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateLogonTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateLogonTrigger")]
+        public void ServerSchedulerFactory_CreateLogonTrigger()
         {
             CheckTriggerTypes(new LogonTrigger());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateMonthlyTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateMonthlyTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateMonthlyTrigger")]
+        public void ServerSchedulerFactory_CreateMonthlyTrigger()
         {
+// ReSharper disable RedundantArgumentDefaultValue
             CheckTriggerTypes(new MonthlyTrigger(1, MonthsOfTheYear.AllMonths));
+// ReSharper restore RedundantArgumentDefaultValue
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateMonthlyDOWTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateMonthlyDowTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateMonthlyDOWTrigger")]
+        public void ServerSchedulerFactory_CreateMonthlyDowTrigger()
         {
             CheckTriggerTypes(new MonthlyDOWTrigger(DaysOfTheWeek.AllDays, MonthsOfTheYear.AllMonths, WhichWeek.AllWeeks));
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateRegistrationTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateRegistrationTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateRegistrationTrigger")]
+        public void ServerSchedulerFactory_CreateRegistrationTrigger()
         {
             CheckTriggerTypes(new RegistrationTrigger());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateSessionChangeTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateSessionChangeTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateSessionChangeTrigger")]
+        public void ServerSchedulerFactory_CreateSessionChangeTrigger()
         {
             CheckTriggerTypes(new SessionStateChangeTrigger());
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateTimeTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateTimeTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateTimeTrigger")]
+        public void ServerSchedulerFactory_CreateTimeTrigger()
         {
             CheckTriggerTypes(new TimeTrigger(DateTime.Now));
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("TaskSheduler_ServerSchedulerFactory_CreateWeeklyTrigger")]
-        public void TaskSheduler_ServerSchedulerFactory_CreateWeeklyTrigger()
+        [TestCategory("ServerSchedulerFactory_CreateWeeklyTrigger")]
+        public void ServerSchedulerFactory_CreateWeeklyTrigger()
         {
+// ReSharper disable RedundantArgumentDefaultValue
             CheckTriggerTypes(new WeeklyTrigger(DaysOfTheWeek.AllDays, 1));
+// ReSharper restore RedundantArgumentDefaultValue
         }
 
 

@@ -49,6 +49,7 @@ namespace Dev2.Settings.Scheduler
         int _newTaskCounter = 1;
         ICommand _saveCommand;
         ICommand _newCommand;
+        ICommand _closeCommand;
         ICommand _deleteCommand;
         ICommand _editTriggerCommand;
         ICommand _addWorkflowCommand;
@@ -69,6 +70,7 @@ namespace Dev2.Settings.Scheduler
         bool _isLoading;
         string _connectionError;
         bool _hasConnectionError;
+        IEnvironmentModel _currentEnvironment;
 
         #endregion
 
@@ -88,10 +90,11 @@ namespace Dev2.Settings.Scheduler
 
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
+
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
 
             IsLoading = false;
-            CloseHelpCommand = new RelayCommand(o => CloseHelp(), o => true);
             directoryObjectPicker1.AllowedObjectTypes = ObjectTypes.Users;
             directoryObjectPicker1.DefaultObjectTypes = ObjectTypes.Users;
             directoryObjectPicker1.AllowedLocations = Locations.All;
@@ -105,24 +108,11 @@ namespace Dev2.Settings.Scheduler
             IsSaveEnabled = true;
             var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
-            ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
         }
 
         #endregion
 
         #region Properties
-
-        public bool IsCurrentEnvironmentConnected
-        {
-            get
-            {
-                if(CurrentEnvironment != null)
-                {
-                    return CurrentEnvironment.IsConnected;
-                }
-                return false;
-            }
-        }
 
         public bool HasConnectionError
         {
@@ -176,21 +166,6 @@ namespace Dev2.Settings.Scheduler
         }
 
         public ActivityDesignerToggle HelpToggle { get; private set; }
-
-        public string OldName
-        {
-            get
-            {
-                return SelectedTask != null ? SelectedTask.OldName : string.Empty;
-            }
-            set
-            {
-                if(SelectedTask != null)
-                {
-                    SelectedTask.OldName = value;
-                }
-            }
-        }
 
         public IClientSchedulerFactory SchedulerFactory
         {
@@ -342,11 +317,19 @@ namespace Dev2.Settings.Scheduler
                     {
                         return;
                     }
-                    int val;
-                    if(value.IsWholeNumber(out val))
+                    if(string.IsNullOrEmpty(value))
                     {
-                        SelectedTask.NumberOfHistoryToKeep = val;
+                        SelectedTask.NumberOfHistoryToKeep = 0;
                         SelectedTask.IsDirty = true;
+                    }
+                    else
+                    {
+                        int val;
+                        if(value.IsWholeNumber(out val))
+                        {
+                            SelectedTask.NumberOfHistoryToKeep = val;
+                            SelectedTask.IsDirty = true;
+                        }
                     }
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
                 }
@@ -395,7 +378,6 @@ namespace Dev2.Settings.Scheduler
 
                 if(Equals(value, _selectedHistory))
                 {
-
                     return;
                 }
                 _selectedHistory = value;
@@ -436,6 +418,11 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
+                if(Equals(_selectedTask, value))
+                {
+                    return;
+                }
+
                 _selectedTask = value;
 
                 NotifyOfPropertyChange(() => SelectedTask);
@@ -452,7 +439,6 @@ namespace Dev2.Settings.Scheduler
                     NotifyOfPropertyChange(() => IsSaveEnabled);
                     NotifyOfPropertyChange(() => AccountName);
                     NotifyOfPropertyChange(() => Password);
-                    NotifyOfPropertyChange(() => History);
                     NotifyOfPropertyChange(() => Errors);
                     NotifyOfPropertyChange(() => Error);
                     NotifyOfPropertyChange(() => SelectedHistory);
@@ -473,6 +459,10 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
+                if(Equals(_triggerEditDialog, value))
+                {
+                    return;
+                }
                 _triggerEditDialog = value;
                 NotifyOfPropertyChange(() => TriggerEditDialog);
             }
@@ -490,6 +480,10 @@ namespace Dev2.Settings.Scheduler
             {
                 if(SelectedTask != null)
                 {
+                    if(Equals(SelectedTask.UserName, value))
+                    {
+                        return;
+                    }
                     ClearError(LoginErrorMessage);
                     SelectedTask.UserName = value;
                     SelectedTask.IsDirty = true;
@@ -508,6 +502,10 @@ namespace Dev2.Settings.Scheduler
             {
                 if(SelectedTask != null)
                 {
+                    if(Equals(SelectedTask.Password, value))
+                    {
+                        return;
+                    }
                     ClearError(LoginErrorMessage);
                     SelectedTask.Password = value;
                     SelectedTask.IsDirty = true;
@@ -524,14 +522,31 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
+                if(Equals(_isSaveEnabled, value))
+                {
+                    return;
+                }
                 _isSaveEnabled = value;
                 NotifyOfPropertyChange(() => IsSaveEnabled);
             }
         }
 
-        public ICommand ServerChangedCommand { get; private set; }
-
-        public IEnvironmentModel CurrentEnvironment { get; set; }
+        public IEnvironmentModel CurrentEnvironment
+        {
+            get
+            {
+                return _currentEnvironment;
+            }
+            set
+            {
+                if(Equals(_currentEnvironment, value))
+                {
+                    return;
+                }
+                _currentEnvironment = value;
+                NotifyOfPropertyChange(() => CurrentEnvironment);
+            }
+        }
 
         public bool HasErrors
         {
@@ -599,6 +614,38 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
+        public TabItem ActiveItem
+        {
+            get
+            {
+                return _activeItem;
+            }
+            set
+            {
+                if(Equals(value, _activeItem))
+                {
+                    return;
+                }
+                _activeItem = value;
+                if(IsHistoryTab)
+                {
+                    NotifyOfPropertyChange(() => History);
+                }
+            }
+        }
+
+        private bool IsHistoryTab
+        {
+            get
+            {
+                if(ActiveItem != null)
+                {
+                    return (string)ActiveItem.Header == "History";
+                }
+                return false;
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -614,8 +661,12 @@ namespace Dev2.Settings.Scheduler
 
         public ICommand CloseHelpCommand
         {
-            get;
-            private set;
+            get
+            {
+                return _closeCommand ??
+                    (_closeCommand = new RelayCommand(o => CloseHelp(), o => true));
+            }
+
         }
 
         public ICommand NewCommand
@@ -651,38 +702,6 @@ namespace Dev2.Settings.Scheduler
             {
                 return _addWorkflowCommand ??
                        (_addWorkflowCommand = new RelayCommand(param => AddWorkflow()));
-            }
-        }
-
-        public TabItem ActiveItem
-        {
-            get
-            {
-                return _activeItem;
-            }
-            set
-            {
-                if(Equals(value, _activeItem))
-                {
-                    return;
-                }
-                _activeItem = value;
-                if(IsHistoryTab)
-                {
-                    NotifyOfPropertyChange(() => History);
-                }
-            }
-        }
-
-        private bool IsHistoryTab
-        {
-            get
-            {
-                if(ActiveItem != null)
-                {
-                    return (string)ActiveItem.Header == "History";
-                }
-                return false;
             }
         }
 
@@ -733,6 +752,7 @@ namespace Dev2.Settings.Scheduler
                             if(showNameChangedConflict == MessageBoxResult.No)
                             {
                                 SelectedTask.Name = SelectedTask.OldName;
+                                NotifyOfPropertyChange(() => Name);
                             }
 
                         }
@@ -904,7 +924,6 @@ You need Administrator permission.");
                 ClearConnectionError();
                 ClearViewModel();
             }
-            NotifyOfPropertyChange(() => IsCurrentEnvironmentConnected);
         }
 
         void SetConnectionError()

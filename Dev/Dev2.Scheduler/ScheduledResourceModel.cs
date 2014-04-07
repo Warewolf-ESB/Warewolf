@@ -25,12 +25,23 @@ namespace Dev2.Scheduler
         private IDirectoryHelper _folderHelper;
         private readonly IDictionary<int, string> _taskStates;
         private const string Sebatchlogonright = "SeBatchLogonRight";
-
         private const char NameSeperator = ':';
         private const char ArgWrapper = '"';
+
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath,
                                       ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper)
         {
+            var nullables = new Dictionary<string, object>
+                {
+                    {"taskService", taskService},
+                    {"warewolfFolderId", warewolfFolderId},
+                    {"warewolfAgentPath", warewolfAgentPath},
+                    {"taskServiceFactory", taskServiceFactory},
+                    {"debugHistoryPath", debugHistoryPath},
+                    {"securityWrapper", securityWrapper}
+                };
+            VerifyArgument.AreNotNull(nullables);
+
             _taskStates = new Dictionary<int, string>
                 {
                     {102, "Task Completed"},
@@ -117,8 +128,8 @@ Please contact your Windows System Administrator.");
                    String.Format(@"This Workflow requires that you have Execute permission on the '{0}' Workflow. 
 Please contact your Warewolf System Administrator.", resource.WorkflowName));
             }
-
-
+            if(  resource.Name.Any(a=>"\\/:*?\"<>|".Contains(a)))
+                throw  new Exception("The task name may not contain the following characters \\/:*?\"<>| .");
             var folder = TaskService.GetFolder(WarewolfFolderPath);
             var created = CreateNewTask(resource);
             created.Settings.Enabled = resource.Status == SchedulerStatus.Enabled;
@@ -284,8 +295,7 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         public void Dispose()
         {
-            _taskService.Dispose();
-            _securityWrapper.Dispose();
+
         }
     }
 }
