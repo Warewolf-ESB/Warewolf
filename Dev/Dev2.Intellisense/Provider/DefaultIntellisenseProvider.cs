@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
@@ -18,6 +9,15 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.UI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
@@ -139,7 +139,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             return succeeded;
         }
-    
+
         #endregion
 
         #region Result Handling
@@ -422,7 +422,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                             if(char.IsWhiteSpace(letter))
                             {
-                               results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
+                                results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
                             }
                             else
                             {
@@ -439,7 +439,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 csv = new[] { inputText };
                             }
-                            
+
                             results = GetIntellisenseResultsImpl(csv.Last(), filterType);
                         }
 
@@ -563,30 +563,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            if(input.Trim().EndsWith("]"))
-            {
-                var bracketNumber = Regex.Matches(input, @"\[\[[0-9]");
-                if(bracketNumber.Count > 0)
-                {
-                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorExpressionStartingWithANumber));
-                }
+            results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
 
-                if(results.Count == 0)
-                {
-                    var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
-                    tmpResults.ToList().ForEach(r =>
-                    {
-                        if(r.Type == enIntellisenseResultType.Error)
-                        {
-                            results.Add(r);
-                        }
-                    });
-                }
-            }
-            else
-            {
-                results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, true, filterTO, true);
-            }
             return results;
         }
 

@@ -220,11 +220,11 @@ Scenario: Convert a negative recordset index to uppercase
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                              | To    |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks | UPPER |
+	| # | Convert               | To    |
+	| 1 | [[my(-1).sentenct]] = | UPPER |
 	And the debug output as  
-	| # |                                      |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks |
+	| # |                       |
+	| 1 | [[my(-1).sentenct]] = |
 
 Scenario: Convert a negative recordset index to lowercase
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
@@ -232,11 +232,11 @@ Scenario: Convert a negative recordset index to lowercase
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                              | To    |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks | lower |
+	| # | Convert               | To    |
+	| 1 | [[my(-1).sentenct]] = | lower |
 	And the debug output as  
-	| # |                                      |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks |
+	| # |                       |
+	| 1 | [[my(-1).sentenct]] = |
 
 Scenario: Convert a negative recordset index to Sentence
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
@@ -244,11 +244,11 @@ Scenario: Convert a negative recordset index to Sentence
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                              | To       |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks | Sentence |
+	| # | Convert               | To       |
+	| 1 | [[my(-1).sentenct]] = | Sentence |
 	And the debug output as  
-	| # |                                      |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks |
+	| # |                       |
+	| 1 | [[my(-1).sentenct]] = |
 
 Scenario: Convert a negative recordset index to Title Case
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
@@ -256,10 +256,10 @@ Scenario: Convert a negative recordset index to Title Case
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                              | To         |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks | Title Case |
+	| # | Convert               | To         |
+	| 1 | [[my(-1).sentenct]] = | Title Case |
 	And the debug output as  
-	| # |                                      |
-	| 1 | [[my(-1).sentenct]] = Warewolf Rocks |
+	| # |                       |
+	| 1 | [[my(-1).sentenct]] = |
 
 	

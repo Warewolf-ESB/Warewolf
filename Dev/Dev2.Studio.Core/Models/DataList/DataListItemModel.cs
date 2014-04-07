@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Xml;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListItemModel : BaseDataListItemModel, IDataListItemModel
@@ -269,6 +269,7 @@ namespace Dev2.Studio.Core.Models.DataList
         /// </returns>
         public override string ValidateName(string name)
         {
+            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if(!string.IsNullOrEmpty(name))
             {
                 if(IsRecordset)
@@ -280,16 +281,15 @@ namespace Dev2.Studio.Core.Models.DataList
                     name = DataListUtil.ExtractFieldNameFromValue(name);
                 }
 
-                try
+                if(!string.IsNullOrEmpty(name))
                 {
-                    if(!string.IsNullOrEmpty(name))
+                    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
+                    if(intellisenseResult != null)
                     {
-                        if(name.Contains("."))
-                        {
-                            SetError(StringResources.ErrorMessageInvalidChar);
-                            return name;
-                        }
-                        XmlConvert.VerifyName(name);
+                        SetError(StringResources.ErrorMessageInvalidChar);
+                    }
+                    else
+                    {
                         if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
                             !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
                             !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
@@ -298,10 +298,6 @@ namespace Dev2.Studio.Core.Models.DataList
                             RemoveError();
                         }
                     }
-                }
-                catch
-                {
-                    SetError(StringResources.ErrorMessageInvalidChar);
                 }
             }
             return name;

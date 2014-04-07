@@ -32,9 +32,9 @@ Scenario: Ensure that a negative index throws an error
 	When the switch tool is executed	
 	Then the execution has "AN" error
 	And the debug inputs as
-	| Switch on                              |
-	| [[rec(-1).val]] = Moses Mabida Stadium |
+	| Switch on         |
+	| [[rec(-1).val]] = |
 	And the debug output as
-	|                      |
-	| Moses Mabida Stadium |
+	|  |
+	|  |
 

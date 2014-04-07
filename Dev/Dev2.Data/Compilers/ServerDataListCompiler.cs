@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -25,6 +20,11 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -260,7 +260,7 @@ namespace Dev2.Server.Datalist
                 if(result != null)
                 {
                     allErrors.MergeErrors(errors);
-                TryPushDataList(result, out error);
+                    TryPushDataList(result, out error);
                     allErrors.AddError(error);
 
                     res = result.UID;
@@ -2242,7 +2242,7 @@ namespace Dev2.Server.Datalist
 
                                                     case enRecordsetIndexType.Error:
                                                         //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
-                                                        allErrors.AddError("Unrecognized recordset index, expected a number or data list variable");
+                                                        allErrors.AddError("Recordset index (" + part.Option.RecordsetIndex + ") contains invalid character(s)");
                                                         break;
 
                                                     default:

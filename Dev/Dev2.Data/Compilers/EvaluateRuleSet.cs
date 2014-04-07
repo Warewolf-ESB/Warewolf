@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Data.Compilers
 {
@@ -69,8 +69,8 @@ namespace Dev2.Data.Compilers
 
 
         // build result name space ;)
-        private readonly string ns = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
-        private IBinaryDataListEntry result;
+        private readonly string _ns = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+        private IBinaryDataListEntry _result;
         private readonly IDictionary<int, IIntellisenseResult> _internalMap = new Dictionary<int, IIntellisenseResult>();
         private readonly IDictionary<IIntellisenseResult, IBinaryDataListEntry> _internalKeyMap = new Dictionary<IIntellisenseResult, IBinaryDataListEntry>();
 
@@ -83,8 +83,8 @@ namespace Dev2.Data.Compilers
         {
             Errors = new ErrorResultTO();
             Errors.MergeErrors(prevIter.Errors);
-            result = prevIter.result;
-            ns = prevIter.ns;
+            _result = prevIter._result;
+            _ns = prevIter._ns;
             IsDebug = prevIter.IsDebug;
             EvaluateToRootOnly = prevIter.EvaluateToRootOnly;
 
@@ -182,14 +182,14 @@ namespace Dev2.Data.Compilers
                             var scalar = value.FetchScalar();
                             if(scalar != null)
                             {
-                                if(result == null)
+                                if(_result == null)
                                 {
                                     var toReplace = scalar.TheValue;
                                     CompiledExpression = CompiledExpression.Replace(token, toReplace);
                                 }
                                 else
                                 {
-                                    var itr = result.FetchRecordsetIndexes();
+                                    var itr = _result.FetchRecordsetIndexes();
                                     var replaceVal = scalar.TheValue;
 
                                     while(itr.HasMore())
@@ -198,11 +198,11 @@ namespace Dev2.Data.Compilers
 
                                         // Fetch the next value from result ;)
                                         string error;
-                                        var template = result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
+                                        var template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
                                         Errors.AddError(error);
 
                                         template = template.Replace(token, replaceVal);
-                                        result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField, val), val, out error);
+                                        _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
                                         Errors.AddError(error);
                                     }
 
@@ -214,10 +214,10 @@ namespace Dev2.Data.Compilers
                         {
                             string error;
                             // build up the complex expression result - this means debug will be out of sync of complex expressions ;)
-                            if(result == null)
+                            if(_result == null)
                             {
                                 IList<Dev2Column> cols = new List<Dev2Column> { new Dev2Column(GlobalConstants.EvaluationRsField, enDev2ColumnArgumentDirection.Both) };
-                                result = Dev2BinaryDataListFactory.CreateEntry(ns, string.Empty, cols, BinaryDataList.UID);
+                                _result = Dev2BinaryDataListFactory.CreateEntry(_ns, string.Empty, cols, BinaryDataList.UID);
 
                                 var max = _internalKeyMap.Values.OrderByDescending(c => c.ItemCollectionSize()).FirstOrDefault();
 
@@ -232,7 +232,7 @@ namespace Dev2.Data.Compilers
                                     for(int i = 0; i < itrToVal; i++)
                                     {
                                         int idxT = (i + 1);
-                                        result.TryPutRecordItemAtIndex(new BinaryDataListItem(CompiledExpression, ns, GlobalConstants.EvaluationRsField, idxT), idxT, out error);
+                                        _result.TryPutRecordItemAtIndex(new BinaryDataListItem(CompiledExpression, _ns, GlobalConstants.EvaluationRsField, idxT), idxT, out error);
                                         Errors.AddError(error);
                                     }
                                 }
@@ -240,7 +240,7 @@ namespace Dev2.Data.Compilers
                                 if(IsDebug)
                                 {
                                     // attach audit object for debug ;)
-                                    result.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                    _result.ComplexExpressionAuditor = new ComplexExpressionAuditor();
                                 }
                             }
 
@@ -251,7 +251,7 @@ namespace Dev2.Data.Compilers
                             if(idxItr.Count == 1)
                             {
                                 int curVal = idxItr.FetchNextIndex();
-                                int amt = result.ItemCollectionSize();
+                                int amt = _result.ItemCollectionSize();
                                 // ensure we always iterate once ;)
                                 if(amt == 0)
                                 {
@@ -267,7 +267,7 @@ namespace Dev2.Data.Compilers
                                 var val = idxItr.FetchNextIndex();
 
                                 // Fetch the next value from result ;)
-                                var template = result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField,
+                                var template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField,
                                                                             expIdx, out error).TheValue;
                                 Errors.AddError(error);
 
@@ -280,14 +280,14 @@ namespace Dev2.Data.Compilers
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
                                     template = template.Replace(token, toReplace);
-                                    result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
+                                    _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
                                     Errors.AddError(error);
 
                                     if(IsDebug)
                                     {
                                         var displayValue = DataListUtil.AddBracketsToValueIfNotExist(binaryValue.DisplayValue);
-                                        result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template, Expression);
-                                        result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
+                                        _result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template, Expression);
+                                        _result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
                                     }
                                 }
 
@@ -305,7 +305,7 @@ namespace Dev2.Data.Compilers
                 }
             }
 
-            return result;
+            return _result;
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace Dev2.Data.Compilers
             {
                 int subVar = 0;
                 var compiledExpression = Expression;
-                HashSet<string> _usedTokens = new HashSet<string>();
+                HashSet<string> usedTokens = new HashSet<string>();
 
                 // ReSharper disable PossibleMultipleEnumeration
                 foreach(var token in tokens)
@@ -329,11 +329,11 @@ namespace Dev2.Data.Compilers
                 {
                     var subToken = token.Option.DisplayValue;
                     // we may have dups avoid them ;)
-                    if(!_usedTokens.Contains(subToken))
+                    if(!usedTokens.Contains(subToken))
                     {
                         if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
                         {
-                            _usedTokens.Add(subToken);
+                            usedTokens.Add(subToken);
                             compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
                             _internalMap[subVar] = token;
                             subVar++;
@@ -359,16 +359,16 @@ namespace Dev2.Data.Compilers
             }
             else
             {
-                Errors.AddError("Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.");
+                Errors.AddError("Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.");
                 CompiledExpression = null;
             }
 
             // multi-phase binding ;)
-            if(tokens != null && result != null && CompiledExpression != null)
+            if(tokens != null && _result != null && CompiledExpression != null)
             {
                 int subVar = 0;
 
-                var idxItr = result.FetchRecordsetIndexes();
+                var idxItr = _result.FetchRecordsetIndexes();
 
                 // foreach result to far ;)
                 while(idxItr.HasMore())
@@ -377,10 +377,10 @@ namespace Dev2.Data.Compilers
 
                     // Fetch the next value from result ;)
                     string error;
-                    var compiledExpression = result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
+                    var compiledExpression = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
                     Errors.AddError(error);
 
-                    HashSet<string> _usedTokens = new HashSet<string>();
+                    HashSet<string> usedTokens = new HashSet<string>();
 
                     // now process each token ;)
                     // ReSharper disable PossibleMultipleEnumeration
@@ -389,11 +389,11 @@ namespace Dev2.Data.Compilers
                     {
                         var subToken = token.Option.DisplayValue;
                         // we may have dups avoid them ;)
-                        if(!_usedTokens.Contains(subToken))
+                        if(!usedTokens.Contains(subToken))
                         {
                             if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
                             {
-                                _usedTokens.Add(subToken);
+                                usedTokens.Add(subToken);
                                 compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
                                 _internalMap[subVar] = token;
                                 subVar++;
@@ -405,7 +405,7 @@ namespace Dev2.Data.Compilers
                         }
                     }
 
-                    result.TryPutRecordItemAtIndex(new BinaryDataListItem(compiledExpression, ns, GlobalConstants.EvaluationRsField, val), val, out error);
+                    _result.TryPutRecordItemAtIndex(new BinaryDataListItem(compiledExpression, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
                     Errors.AddError(error);
 
                 }

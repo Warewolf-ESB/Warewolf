@@ -112,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.Errors);
-            Assert.AreEqual("'Results' - Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.", viewModel.Errors[0].Message);
+            Assert.AreEqual("'Results' - Variable name [[a$]] contains invalid character(s)", viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' - Recordset index [ @ ] is not numeric");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'XML' - Recordset index (@) contains invalid character(s)");
         }
 
 

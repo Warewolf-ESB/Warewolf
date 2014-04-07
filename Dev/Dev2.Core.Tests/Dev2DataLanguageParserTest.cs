@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests
 {
     //<summary>
@@ -16,6 +16,7 @@ namespace Dev2.Tests
     //</summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class Dev2DataLanguageParserTest
     {
         // <summary>
@@ -70,9 +71,8 @@ namespace Dev2.Tests
                 var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
 
                 //------------Assert Results-------------------------
-                Assert.AreEqual(2, parts.Count);
-                StringAssert.Contains(parts[1].Message, "[[rec(&&,]] is a malformed recordset");
-                StringAssert.Contains(parts[0].Message, "Recordset index [ &&, ] is not numeric");
+                Assert.AreEqual(1, parts.Count);
+                StringAssert.Contains(parts[0].Message, "Recordset name [[rec(&&,]] contains invalid character(s)");
             }
             else
             {
@@ -103,7 +103,7 @@ namespace Dev2.Tests
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(2, parts.Count);
-                StringAssert.Contains(parts[0].Message, "Recordset index [ a,* ] is not numeric");
+                StringAssert.Contains(parts[0].Message, "Recordset index (a,*) contains invalid character(s)");
             }
             else
             {
@@ -133,8 +133,8 @@ namespace Dev2.Tests
                 var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
 
                 //------------Assert Results-------------------------
-                Assert.AreEqual(1, parts.Count);
-                StringAssert.Contains(parts[0].Message, "Invalid syntax - You have a close ( ]] ) without a related open ( [[ )");
+                Assert.AreEqual(2, parts.Count);
+                StringAssert.Contains(parts[1].Message, "Variable name [[var}]] contains invalid character(s)");
             }
             else
             {
@@ -165,7 +165,7 @@ namespace Dev2.Tests
 
                 //------------Assert Results-------------------------
                 Assert.AreEqual(1, parts.Count);
-                StringAssert.Contains(parts[0].Message, " [[]] is missing a variable");
+                StringAssert.Contains(parts[0].Message, "Variable [[]] is missing a name");
             }
             else
             {
@@ -176,7 +176,6 @@ namespace Dev2.Tests
         #endregion
 
         #region Pos Test
-        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Dev2LanuageParser_Parse")]
@@ -211,9 +210,14 @@ namespace Dev2.Tests
         {
             const string dl = "<ADL> <rs><f1/></rs><myScalar/><myScalar2/> </ADL>";
 
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[rs(", dl, true, false);
-
-            Assert.IsTrue(result.Count == 3 && result[0].Option.DisplayValue == "[[rs([[myScalar]])]]" && result[1].Option.DisplayValue == "[[rs([[myScalar2]])]]");
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense("[[rs(", dl, false, false);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(" / Select a specific row", result[0].Message);
+            Assert.AreEqual("[[rs([[myScalar]])]]", result[0].Option.DisplayValue);
+            Assert.AreEqual(" / Select a specific row", result[1].Message);
+            Assert.AreEqual("[[rs([[myScalar2]])]]", result[1].Option.DisplayValue);
+            Assert.AreEqual(" / Reference all rows in the Recordset ", result[2].Message);
+            Assert.AreEqual("[[rs(*)]]", result[2].Option.DisplayValue);
         }
 
         [TestMethod]
@@ -297,7 +301,10 @@ namespace Dev2.Tests
             IntellisenseFilterOpsTO filterTo = new IntellisenseFilterOpsTO { FilterCondition = "", FilterType = enIntellisensePartType.All };
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, false, filterTo);
 
-            Assert.IsTrue(results.Count == 3 && results[0].Option.Description == "this is a decription for TestScalar / Select this variable" && results[1].Option.Description == "this is a decription for TestRecset / Select this record set" && results[2].Option.Description == "this is a decription for TestField / Select this record set field");
+            Assert.AreEqual(3, results.Count);
+            Assert.AreEqual("this is a decription for TestScalar / Select this variable", results[0].Option.Description);
+            Assert.AreEqual("this is a decription for TestRecset / Select this record set", results[1].Option.Description);
+            Assert.AreEqual("this is a decription for TestField / Select this record set field", results[2].Option.Description);
         }
 
         [TestMethod]
@@ -308,7 +315,8 @@ namespace Dev2.Tests
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
 
-            Assert.IsTrue(results.Count == 2);
+            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(" / Select a specific row", results[0].Message);
         }
 
         [TestMethod]
@@ -344,7 +352,7 @@ namespace Dev2.Tests
 
             //------------Execute Test---------------------------
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, true);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, false, true);
 
             //------------Assert Results-------------------------
 
@@ -395,7 +403,7 @@ namespace Dev2.Tests
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
 
-            Assert.IsTrue(results.Count == 2 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.InvalidRecordsetNotation);
+            Assert.IsTrue(results.Count == 1 && results[0].Type == enIntellisenseResultType.Error && results[0].ErrorCode == enIntellisenseErrorCode.SyntaxError);
         }
 
         [TestMethod]
@@ -472,7 +480,7 @@ namespace Dev2.Tests
             const string dl = "<ADL><cars><reg/><colour/><year/></cars><cool/><myPos/><myCount/></ADL>";
             const string payload = "[[cars([[my";
 
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true);
 
             Assert.IsTrue(results.Count == 2 && results[0].Option.DisplayValue == "[[myPos]]" && results[1].Option.DisplayValue == "[[myCount]]");
         }
@@ -542,10 +550,12 @@ namespace Dev2.Tests
         {
             const string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
             const string payload = "[[recset([[s";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true, false);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, false, true);
 
-            Assert.IsTrue(result.Count == 6 && result[0].Option.DisplayValue == "[[recset(" && result[1].Option.DisplayValue == "[[recset(*)]]" && result[5].Option.DisplayValue == "[[scalar]]");
-
+            Assert.AreEqual(6,result.Count);
+            Assert.AreEqual("[[recset(",result[0].Option.DisplayValue);
+            Assert.AreEqual("[[recset(*).f1]]",result[2].Option.DisplayValue);
+            Assert.AreEqual("[[scalar]]",result[5].Option.DisplayValue);
         }
 
         // Bug : 5793 - Travis.Frisinger : 19.10.2012
@@ -554,10 +564,9 @@ namespace Dev2.Tests
         {
             const string dl = "<ADL><recset><f1/><f2/></recset><scalar/></ADL>";
             const string payload = "[[recset([[scalar).f2]]";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true, false);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, false, false);
 
             Assert.IsTrue(result.Count == 4 && result[0].Option.DisplayValue == "[[recset([[scalar]])]]" && result[1].Option.DisplayValue == "[[recset([[scalar]]).f1]]" && result[2].Option.DisplayValue == "[[recset([[scalar]]).f2]]");
-
         }
 
         //2013.05.31: Ashley Lewis for bug 9472
@@ -566,7 +575,7 @@ namespace Dev2.Tests
         {
             const string dl = "<ADL><recset><f1/><f2/></recset></ADL>";
             const string payload = "[[rec";
-            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, true, false);
+            IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, false, false);
 
             Assert.IsNotNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }
@@ -703,7 +712,7 @@ namespace Dev2.Tests
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl);
             Assert.AreEqual(1, results.Count);
             Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error);
-            Assert.AreEqual(" [[a b ]] contains a space, this is an invalid character for a variable name", results[0].Message);
+            Assert.AreEqual("Variable name [[a b ]] contains invalid character(s)", results[0].Message);
         }
 
         [TestMethod]
@@ -740,8 +749,8 @@ namespace Dev2.Tests
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
             Assert.AreEqual(1, results.Count);
-            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec(). val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
-
+            Assert.AreEqual(enIntellisenseResultType.Error, results[0].Type);
+            Assert.AreEqual("Recordset field name  val contains invalid character(s)", results[0].Message);
         }
 
         [TestMethod]
@@ -752,8 +761,8 @@ namespace Dev2.Tests
 
             IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
             Assert.AreEqual(1, results.Count);
-            Assert.IsTrue(results[0].Type == enIntellisenseResultType.Error && results[0].Option.DisplayValue == "[[rec() .val]]", "Got [ " + results[0].Option.DisplayValue + " ]");
-
+            Assert.AreEqual(enIntellisenseResultType.Error, results[0].Type);
+            Assert.AreEqual("Recordset name [[rec() ]] contains invalid character(s)", results[0].Message);
         }
 
 

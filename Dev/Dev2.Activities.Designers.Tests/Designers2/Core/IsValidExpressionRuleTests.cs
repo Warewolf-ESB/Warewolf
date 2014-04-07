@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("MyVar - Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.", errorInfo.Message);
+            Assert.AreEqual("MyVar -  [[a_b]] does not exist in your variable list", errorInfo.Message);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("MyVar - Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.", errorInfo.Message);
+            Assert.AreEqual("MyVar - Variable name [[a$]] contains invalid character(s)", errorInfo.Message);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("MyRecSet - Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.", errorInfo.Message);
+            Assert.AreEqual("MyRecSet - Recordset name [[rec#]] contains invalid character(s)", errorInfo.Message);
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var errorInfo = rule.Check();
             //------------Assert Results-------------------------
             Assert.IsNotNull(errorInfo);
-            Assert.AreEqual("MyRecSet - Recordset index [ ** ] is not numeric", errorInfo.Message);
+            Assert.AreEqual("MyRecSet - Recordset index (**) contains invalid character(s)", errorInfo.Message);
         }
     }
 }

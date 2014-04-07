@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Data.Parsers;
+﻿using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
+// ReSharper restore CheckNamespace
 {
     public class DataListCleaningUtils
     {
 
+// ReSharper disable InconsistentNaming
         public static string stripDoubleBracketsAndRecordsetNotation(string canidate)
+// ReSharper restore InconsistentNaming
         {
             string result = canidate;
-            bool isCanidate = isDoubleBracketCanidate(canidate);
+            bool isCanidate = IsDoubleBracketCanidate(canidate);
 
 
             if(canidate.Contains("[[") && isCanidate)
@@ -44,7 +48,7 @@ namespace Dev2.DataList.Contract
                     var allRegions = new List<string>();
                     Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
                     IList<ParseTO> makeParts = parser.MakeParts(result);
-                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
+                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen && !string.IsNullOrEmpty(c.Payload)))
                     {
                         if(makePart.Child != null)
                         {
@@ -123,7 +127,7 @@ namespace Dev2.DataList.Contract
 
         #region Private Method
 
-        private static bool isDoubleBracketCanidate(string canidate)
+        private static bool IsDoubleBracketCanidate(string canidate)
         {
             bool result = false;
             char[] tokens = { ']' };

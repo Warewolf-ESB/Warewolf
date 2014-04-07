@@ -10,7 +10,7 @@ namespace Dev2.Tests
     ///This is a test class for DataListUtilTest and is intended
     ///to contain all DataListUtilTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     [ExcludeFromCodeCoverage]
     public class DataListCleaningUtilTest
     {
@@ -19,9 +19,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithScalarsExpectedSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion]], [[secondRegion]]";
+            const string Expression = "[[firstregion]], [[secondRegion]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
             Assert.AreEqual("[[firstregion]]", actual[0]);
             Assert.AreEqual("[[secondRegion]]", actual[1]);
@@ -31,9 +31,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithRecSetsExpectedSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion().field]], [[secondRegion().field]]";
+            const string Expression = "[[firstregion().field]], [[secondRegion().field]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
             Assert.AreEqual("[[firstregion().field]]", actual[0]);
             Assert.AreEqual("[[secondRegion().field]]", actual[1]);
@@ -43,9 +43,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithBigGapBetweenRegionsExpectedSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion]],,,||###&&&/// [[secondRegion]]";
+            const string Expression = "[[firstregion]],,,||###&&&/// [[secondRegion]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
             Assert.AreEqual("[[firstregion]]", actual[0]);
             Assert.AreEqual("[[secondRegion]]", actual[1]);
@@ -55,9 +55,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithInvalidRegionsExpectedCannotSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion[[ [[secondRegion[[";
+            const string Expression = "[[firstregion[[ [[secondRegion[[";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
             Assert.AreEqual(0, actual.Count);
         }
@@ -66,9 +66,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithNoOpenningRegionsExpectedCannotSeperateRegions()
         {
             //Initialize
-            var expression = "]]firstregion]] ]]secondRegion]]";
+            const string Expression = "]]firstregion]] ]]secondRegion]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
             Assert.AreEqual(null, actual[0]);
         }
@@ -77,11 +77,11 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithRecordSetsAndScalarsRecordSetIndexsOfExpectedOneRegion()
         {
             //Initialize
-            var expression = "[[firstregion1([[scalar]]).field]]";
+            const string Expression = "[[firstregion1([[scalar]]).field]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegions(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegions(Expression);
             //Assert
-            Assert.AreEqual(expression, actual[0]);
+            Assert.AreEqual(Expression, actual[0]);
 
         }
 
@@ -89,9 +89,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithScalarsRecordSetsIndexsOfExpectedSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion([[firstregion]]).field]], [[secondRegion([[secondRegion]]).field]]";
+            const string Expression = "[[firstregion([[firstregion]]).field]], [[secondRegion([[secondRegion]]).field]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(Expression);
             //Assert
             Assert.AreEqual("[[firstregion().field]]", actual[0]);
             Assert.AreEqual("[[firstregion]]", actual[1]);
@@ -103,9 +103,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsWithRecordSetsAndScalarsRecordSetIndexsOfExpectedSeperateRegions()
         {
             //Initialize
-            var expression = "[[firstregion([[firstregion1([[scalar]]).field]]).field]], [[secondRegion([[secondRegion1([[scalar1]]).field]]).field]]";
+            const string Expression = "[[firstregion([[firstregion1([[scalar]]).field]]).field]], [[secondRegion([[secondRegion1([[scalar1]]).field]]).field]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(Expression);
             //Assert
             Assert.AreEqual("[[firstregion().field]]", actual[0]);
             Assert.AreEqual("[[firstregion1().field]]", actual[1]);
@@ -120,9 +120,9 @@ namespace Dev2.Tests
         public void SplitIntoRegionsForFindMissingWithRecordSetAndScalarInvalidRegionExpectedNoRegionsReturned()
         {
             //Initialize
-            var expression = "[[rec().val]][a]]";
+            const string Expression = "[[rec().val]][a]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(Expression);
             //Assert
             Assert.AreEqual(null, actual[0]);
         }
@@ -132,11 +132,11 @@ namespace Dev2.Tests
         public void SplitIntoRegionsForFindMissingWithRecordSetAndScalarInvalidRegionExpectedRecordsetReturned()
         {
             //Initialize
-            var expression = "[[rec().val][a]]";
+            const string Expression = "[[rec().val][a]]";
             //Execute
-            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(expression);
+            var actual = DataListCleaningUtils.SplitIntoRegionsForFindMissing(Expression);
             //Assert
-            Assert.AreEqual("[[rec().vala]]", actual[0]);
+            Assert.AreEqual("[[rec().val][a]]", actual[0]);
         }
 
     }

@@ -165,7 +165,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table5.AddRow(new string[] {
-                        "[[var]]\\r\n[[var2]] = 1\\r\n20"});
+                        "String = String"});
 #line 39
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden

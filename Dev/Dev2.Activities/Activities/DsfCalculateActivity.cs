@@ -80,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 compiler.Upsert(executionId, Result, result, out errors);
-
+               
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, executionId);

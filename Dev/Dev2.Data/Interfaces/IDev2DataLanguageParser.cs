@@ -32,8 +32,9 @@ namespace Dev2.DataList.Contract
         /// Makes the parts.
         /// </summary>
         /// <param name="payload">The payload.</param>
+        /// <param name="addCompleteParts">Allows open regions for intellisense</param>
         /// <returns></returns>
-        IList<ParseTO> MakeParts(string payload);
+        IList<ParseTO> MakeParts(string payload, bool addCompleteParts = false);
 
         /// <summary>
         /// Makes the parts excluding recordset index with is added back to the results later.

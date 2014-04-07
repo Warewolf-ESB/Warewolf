@@ -742,10 +742,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(isInputMappingsValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Input Mapping To Field '" + toField + "' Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
-            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch Size Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
-            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
-            Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid syntax - You have a close ( ]] ) without a related open ( [[ )") == null);
+            Assert.AreEqual(isInputMappingsValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Input Mapping To Field '" + toField + "' Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isBatchSizeValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Batch Size Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isTimeoutValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Timeout Invalid region detected: A close ]] without a related open [[") == null);
+            Assert.AreEqual(isResultValid, viewModel.Errors == null || viewModel.Errors.FirstOrDefault(e => e.Message == "Result Invalid region detected: A close ]] without a related open [[") == null);
         }
 
         [TestMethod]
@@ -912,17 +912,23 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
 
             var tableJson = new DbTableList();
+// ReSharper disable ImplicitlyCapturedClosure
             resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
+// ReSharper restore ImplicitlyCapturedClosure
             {
                 if(sources != null)
                 {
                     var tableList = sources[src];
                     tableJson = tableList;
                 }
+// ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => tableJson);
+// ReSharper restore ImplicitlyCapturedClosure
 
             var columnsJson = new DbColumnList();
+// ReSharper disable ImplicitlyCapturedClosure
             resourceRepo.Setup(r => r.GetDatabaseTableColumns(It.IsAny<DbSource>(), It.IsAny<DbTable>())).Callback((DbSource src, DbTable tbl) =>
+// ReSharper restore ImplicitlyCapturedClosure
             {
                 var tableName = tbl.TableName;
                 if(sources != null)
@@ -939,7 +945,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     }
                     columnsJson = columnList;
                 }
+// ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => columnsJson);
+// ReSharper restore ImplicitlyCapturedClosure
 
             if(configureFindSingle)
             {

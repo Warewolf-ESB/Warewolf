@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -16,6 +13,9 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace Dev2.Core.Tests
 {
@@ -268,7 +268,7 @@ namespace Dev2.Core.Tests
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             Assert.AreEqual(1, getResults.Count);
-            Assert.AreEqual("Invalid Expression", getResults[0].ToString());
+            Assert.AreEqual("Variable name [[4]] begins with a number", getResults[0].Description);
         }
 
         [TestMethod]
@@ -565,7 +565,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[2].ToString());
         }
 
-    
+
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_OpenRegion_AndInRecSetIndex_AndWithField_Expected_RecSetVarInResults()
@@ -993,7 +993,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual("Invalid expression: Opening and closing brackets dont match.", getResults[0].Description);
         }
 
         [TestMethod]
@@ -1008,8 +1008,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
-
+            Assert.AreEqual("Invalid expression: Opening and closing brackets dont match.", getResults[0].Description);
         }
 
         //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback

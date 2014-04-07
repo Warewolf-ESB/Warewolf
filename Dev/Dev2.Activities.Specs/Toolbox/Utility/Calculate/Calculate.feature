@@ -37,8 +37,8 @@ Scenario: Calculate with new lines should concatenate values
 	Then the calculate result should be "120"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| fx =                          |
-	| [[var]]\r\n[[var2]] = 1\r\n20 |
+	| fx =            |
+	| String = String |	
 	And the debug output as 
 	|                  |
 	| [[result]] = 120 |

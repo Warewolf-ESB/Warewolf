@@ -1141,7 +1141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             Assert.AreEqual("some value \"testData\" another", actual);
-        }       
+        }
 
         [TestMethod]
         public void ValueToInvalidRecordsetIndexExpectedError()
@@ -1156,7 +1156,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "<InnerError>Unrecognized recordset index, expected a number or data list variable</InnerError>";
+            const string expected = "<InnerError>Recordset index (xx) contains invalid character(s)</InnerError>";
+
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
@@ -1181,7 +1182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "<InnerError>Recordset index [ xx ] is not numeric</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([xx]).opt]]</InnerError>";
+            const string expected = "<InnerError>Recordset index ([xx]) contains invalid character(s)</InnerError>";
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
@@ -1204,7 +1205,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "<InnerError>[[xx)]] does not exist in your Data List</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]).opt]]</InnerError>";
+            const string expected = "<InnerError>Invalid region detected: An open [[ without a related close ]]</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]).opt]]</InnerError>";
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
@@ -1227,7 +1228,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "<InnerError>Invalid syntax - You have a close ( ]] ) without a related open ( [[ )</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your data list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]][aa]]).opt]]</InnerError>";
+            const string expected = "<InnerError>Invalid region detected: A close ]] without a related open [[</InnerError><InnerError>Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.</InnerError><InnerError>Invalid Region [[cRec([[xx]][aa]]).opt]]</InnerError>";
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
