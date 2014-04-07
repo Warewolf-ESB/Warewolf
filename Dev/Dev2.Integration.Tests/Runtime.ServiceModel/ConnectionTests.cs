@@ -14,7 +14,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void Connection_Test_ValidServer_PositiveValidationResult()
         {
             //Create Connection
-            Connection conn = SetupDefaultConnection();
+            Connection conn = SetupUserConnection();
             Connections connections = new Connections();
 
             //Attemp to test the connection
@@ -50,6 +50,25 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 ResourcePath = @"host\Server",
                 ResourceType = ResourceType.Server,
                 UserName = @"Domain\User",
+                WebServerPort = 3142
+            };
+
+            return testConnection;
+        }
+
+
+        static Connection SetupUserConnection()
+        {
+            var testConnection = new Connection
+            {
+                Address = ServerSettings.DsfAddress,
+                AuthenticationType = AuthenticationType.User,
+                Password = "I73573r0",
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "TestResourceIMadeUp",
+                ResourcePath = @"host\Server",
+                ResourceType = ResourceType.Server,
+                UserName = @"Dev2\IntegrationTester",
                 WebServerPort = 3142
             };
 
