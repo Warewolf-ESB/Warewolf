@@ -1,7 +1,7 @@
 
 <Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <Actions>
-    <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bb045c79-5da3-430f-ab8a-7fdc0080f5b3" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
+    <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
         <Input Name="host" Source="host" EmptyToNull="false" DefaultValue="" NativeType="System.String">
           <Validator Type="Required" />
@@ -25,7 +25,7 @@
       <Outputs>
         <Output OriginalName="result" Name="result" MapsTo="result" Value="[[result]]" RecordsetName="" RecordsetAlias="" Recordset="" />
       </Outputs>
-      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[result]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Email sent to a from a</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[result]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Email sent from a</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
     </Action>
   </Actions>
   <AuthorRoles />
@@ -52,9 +52,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>KbDF2/0f5XWoLTb9oQsVyZiOLrM=</DigestValue>
+        <DigestValue>eSoIy4gJDOhraoNAihp1NSofMDI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>LzLSTL7GPUI47llYpvS9ToICXVroi2qqmofNSL/D83PDjSxdgxS5MEz2u8ZnrwyGZFN1/ZJ9IGiwZFlv4CPFUUqB50nLw/hXgwTYjjqgMj8uqrOKLndJSDqqNq3uCNP9b4pjNVqdO9se53S3ayFNNp0HxPuBIVqvviytjuqBl/8=</SignatureValue>
+    <SignatureValue>tIZs0iOX6YgfcxCvblb3+JNO00JuGuBzgDZ0SvSpwtg8ji7O1ltnv4MDTqlmYRHmWPbRgrq+FXjctzpD45FuNyZZUq4nZGbc7q/hrhYVRYPeSTF9ELUZa/JZ6DGBcyPIDecPV1gO8UiNeYcT0SRKh/zvEI/XKPGgN6ou9t+2ZMg=</SignatureValue>
   </Signature>
 </Service>

@@ -1,1 +1,41 @@
-﻿<Service ID="ff969344-329e-47bb-b770-5bb3b032f5b9" Version="1.0" Name="Insert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Actions><Action Name="" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_SmallInsert"><Inputs><Input Name="r1" Source="r1" EmptyToNull="false" DefaultValue="" NativeType="System.Object" /></Inputs><Outputs /><OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription></Action></Actions><AuthorRoles /><Comment /><Tags /><HelpLink /><UnitTestTargetWorkflowService /><BizRule /><WorkflowActivityDef /><XamlDefinition /><DataList /><TypeOf>InvokeStoredProc</TypeOf><DisplayName>Insert</DisplayName><Category>XXX</Category><AuthorRoles></AuthorRoles><ErrorMessages /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>R1ngNlCMh5L0B3XbuN2YenXbYuE=</DigestValue></Reference></SignedInfo><SignatureValue>beqHeV3dIpFGmVK/41MG50jgoNQD7YNl3L/Uj1uyrOfgc1TFPknIqU5a8YFmu0gO80AsoKP1V/Y/JQxdexcqP+iP3lsQIHwlbCbjtcCZJmGiWpamg3nd2EjkkYe8RRRpbOIzMPpl360VSQXvW9Eb9AEXFtZNbFg22c+H5QrXiiE=</SignatureValue></Signature></Service>
+
+<Service ID="ff969344-329e-47bb-b770-5bb3b032f5b9" Version="1.0" Name="Insert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_proc_SmallInsert" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_SmallInsert">
+      <Inputs>
+        <Input Name="r1" Source="r1" EmptyToNull="false" DefaultValue="" NativeType="System.Object" />
+      </Inputs>
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>Insert</DisplayName>
+  <Category>XXX</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>w3Lb/wyQgr83VJ3s+lpdq7FAjKE=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Yqh71ruzZ0pvRBzZe999R89x3v1HZr6ZZQVM7Pv0GTUPekm3d0s737wz/O10EtYlnCSkAPcP02CIHEuCmxPDl3i7urwZR7/sWMcyYDeq1/3oUABAUEqwtGmqRPj3+tanMrn4bHjguivPvE6z48V8JO2c0OUtU7Z2F//A/J1JOCU=</SignatureValue>
+  </Signature>
+</Service>
