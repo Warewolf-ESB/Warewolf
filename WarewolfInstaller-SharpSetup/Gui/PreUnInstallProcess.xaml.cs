@@ -265,7 +265,7 @@ namespace Gui
                 // magic string stating that service is not present ;)
                 if(ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer", StringComparison.Ordinal) > 0)
                 {
-                    SetSuccessMessasge("Scan for server services complete");
+                    SetSuccessMessasge("Scan for server service complete");
                 }
                 else
                 {
