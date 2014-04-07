@@ -122,14 +122,6 @@ namespace Gui
         }
 
         /// <summary>
-        /// Shows the cancel error.
-        /// </summary>
-        private void ShowCancelError()
-        {
-            MessageBox.Show("Failed to rollback installer progress", "Error");
-        }
-
-        /// <summary>
         /// Sets the cleanup message.
         /// </summary>
         private void SetCleanupMessage()
@@ -469,8 +461,7 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         private void PostInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-            InstallVariables.StartStudioOnExit = false;
-            InstallVariables.ViewReadMe = false;
+
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Collapsed;
             postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
@@ -480,24 +471,28 @@ namespace Gui
             {
                 try
                 {
+                    // avoid trying to open studio and readme
+                    InstallVariables.StartStudioOnExit = false;
+                    InstallVariables.ViewReadMe = false;
+                    InstallVariables.IsInstallMode = false;
+
+                    SetupApplication.IsCancel = true;
+
                     SetCleanupMessage();
                     List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
                     var trans = new PreUnInstallProcess(2, listOfStepNames);
 
-                    if(!trans.Rollback())
-                    {
-                        ShowCancelError();
-                    }
-                    else
-                    {
-                        // Now uninstall?!
-                        MsiConnection.Instance.Uninstall();
-                        SetSuccessMessasge("Rollback complete");
-                    }
+                    // remove server service
+                    trans.Rollback();
+
+                    // Now uninstall?!
+                    MsiConnection.Instance.Uninstall();
+                    SetSuccessMessasge("Rollback complete");
                 }
-                catch(Exception e1)
+                // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
                 {
-                    MessageBox.Show(e1.Message);
                 }
             };
 

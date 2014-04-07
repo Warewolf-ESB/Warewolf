@@ -14,6 +14,8 @@ namespace Gui
     /// </summary>
     public partial class SetupApplication
     {
+        public static bool IsCancel = false;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
 
@@ -67,15 +69,18 @@ namespace Gui
             // Hi-jack the exit event to start the studio ;)
             AppDomain.CurrentDomain.ProcessExit += (o, args) =>
             {
-                // do any install, uninstall actions
-                PerformInstallerExitActions();
 
-                // set the Webs folder ACL
-                //SetWebsACL();
+                if(!IsCancel)
+                {
+                    // do any install, uninstall actions
+                    PerformInstallerExitActions();
 
-                // open the readme.txt
-                ViewReadMe();
+                    // set the Webs folder ACL
+                    //SetWebsACL();
 
+                    // open the readme.txt
+                    ViewReadMe();
+                }
             };
         }
 
