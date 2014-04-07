@@ -45,7 +45,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        // ReSharper disable UnusedMember.Local
         void SetupHelper_SilentInstall(object sender, EventArgs e)
+        // ReSharper restore UnusedMember.Local
         {
             // TODO : Something logical ;)
             Shutdown();
