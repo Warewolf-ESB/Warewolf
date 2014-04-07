@@ -116,6 +116,7 @@
     <Compile Include="Providers\Errors\ActionableErrorInfoTests.cs" />
     <Compile Include="Providers\Events\EventPublisherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\Validation\Rules\IsPostiveNumberRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidEmailAddressRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidFileNameRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSetTests.cs" />

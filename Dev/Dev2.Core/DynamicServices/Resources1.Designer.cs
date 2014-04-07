@@ -313,7 +313,7 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The workflow execution was interrupted. The last item executed is :.
+        ///   Looks up a localized string similar to The workflow execution was interrupted. The last item executed is:.
         /// </summary>
         public static string CompilerMessage_ExecutionInterrupted {
             get {
