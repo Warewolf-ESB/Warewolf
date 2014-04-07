@@ -194,7 +194,6 @@ namespace Dev2.Data.Parsers
                     {
                         if(isFromIntellisense)
                         {
-                            //result = ExtractIntellisenseOptions(magicRegion, parts, true);
                             result = ExtractActualIntellisenseOptions(magicRegion, parts, false);
                         }
                         else
@@ -1049,7 +1048,6 @@ namespace Dev2.Data.Parsers
                     catch(Dev2DataLanguageParseError e)
                     {
                         result.Add(AddErrorToResults(isRs, parts[0], e, (!payload.HangingOpen)));
-                        // return result;
                     }
 
                     IDev2DataLanguageIntellisensePart recordsetPart = refParts.FirstOrDefault(c => c.Name.ToLower() == search && c.Children != null);
