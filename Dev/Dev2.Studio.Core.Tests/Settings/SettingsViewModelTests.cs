@@ -260,6 +260,62 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        public void SettingsViewModel_SaveCommand_NoAuth_HasErrorsIsTrueCorrectErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.IsConnected).Returns(true);
+            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(false);
+            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+            viewModel.CurrentEnvironment = environment.Object;
+            viewModel.IsDirty = true;
+
+
+            //------------Execute Test---------------------------
+            viewModel.SaveCommand.Execute(null);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server.
+You need Administrator permission.", viewModel.Errors);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        public void SettingsViewModel_SaveCommand_NotConnected_HasErrorsIsTrueCorrectErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.IsConnected).Returns(false);
+            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+            viewModel.CurrentEnvironment = environment.Object;
+            viewModel.IsDirty = true;
+
+            //------------Execute Test---------------------------
+            viewModel.SaveCommand.Execute(null);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual("Error while saving: Server unreachable.", viewModel.Errors);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_ResultIsError_HasErrorsIsTrue()
@@ -636,6 +692,9 @@ namespace Dev2.Core.Tests.Settings
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(c => c.ResourceRepository).Returns(mockResourceRepo.Object);
+            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
 
             // simulate auto-loading of ConnectControl ComboBox
             viewModel.ServerChangedCommand.Execute(environment.Object);
@@ -767,13 +826,13 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
         {
-            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------            
+
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-
+            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
             var result = viewModel.DoDeactivate();

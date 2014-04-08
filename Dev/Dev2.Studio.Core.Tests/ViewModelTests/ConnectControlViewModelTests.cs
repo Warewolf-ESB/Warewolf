@@ -307,6 +307,56 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
+        [TestCategory("ConnectControl_HandleSetConnectControlSelectedServerMessage")]
+        public void ConnectControlViewModel_SetConnectControlSelectedServerMessage_TypeIsCorrect_SetSelectedServer()
+        {
+            //------------Setup for test--------------------------
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
+            connectControlViewModel.LabelText = "Connect";
+            connectControlViewModel.BindToActiveEnvironment = false;
+            var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
+            var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
+            connectControlViewModel.Servers = observableCollection;
+            connectControlViewModel.SelectedServer = localhostServer;
+            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.Settings;
+            var updateSelectedServerMessage = new SetConnectControlSelectedServerMessage(remoteServer, ConnectControlInstanceType.Settings);
+            //------------Execute Test---------------------------
+            connectControlViewModel.Handle(updateSelectedServerMessage);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(remoteServer, connectControlViewModel.SelectedServer);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ConnectControl_HandleSetConnectControlSelectedServerMessage")]
+        public void ConnectControlViewModel_SetConnectControlSelectedServerMessage_TypeIsNotCorrect_DontSetSelectedServer()
+        {
+            //------------Setup for test--------------------------
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
+            connectControlViewModel.LabelText = "Connect";
+            connectControlViewModel.BindToActiveEnvironment = false;
+            var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
+            var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
+            connectControlViewModel.Servers = observableCollection;
+            connectControlViewModel.SelectedServer = localhostServer;
+            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.Settings;
+            var updateSelectedServerMessage = new SetConnectControlSelectedServerMessage(remoteServer, ConnectControlInstanceType.Explorer);
+            //------------Execute Test---------------------------
+            connectControlViewModel.Handle(updateSelectedServerMessage);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(localhostServer, connectControlViewModel.SelectedServer);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
         [TestCategory("ConnectControl_Connect")]
         public void ConnectControlViewModel_ConnectWithDisconnectedEnvironment_ConnectIsHit()
         {

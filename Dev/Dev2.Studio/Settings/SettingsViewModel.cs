@@ -67,7 +67,7 @@ namespace Dev2.Settings
 
         public ICommand ServerChangedCommand { get; private set; }
 
-        public IEnvironmentModel CurrentEnvironment { get; private set; }
+        public IEnvironmentModel CurrentEnvironment { get; set; }
 
         public bool IsSavedSuccessVisible { get { return !HasErrors && !IsDirty && IsSaved; } }
 
@@ -341,7 +341,7 @@ namespace Dev2.Settings
             }
             if(messageBoxResult == MessageBoxResult.Yes)
             {
-                SaveSettings();
+                return SaveSettings();
             }
             return true;
         }
@@ -364,28 +364,41 @@ namespace Dev2.Settings
         /// Saves the settings.
         /// </summary>
         /// <returns></returns>
-        void SaveSettings()
+        bool SaveSettings()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
-            // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
-
-
-            ResetIsDirtyForChildren();
-            ClearErrors();
-
-            SecurityViewModel.Save(Settings.Security);
-
-            var isWritten = WriteSettings();
-            if(isWritten)
+            if(CurrentEnvironment.IsConnected)
             {
-                IsSaved = true;
-                IsDirty = false;
+                if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
+                {
+                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
+                    // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
+
+                    ResetIsDirtyForChildren();
+                    ClearErrors();
+
+                    SecurityViewModel.Save(Settings.Security);
+
+                    var isWritten = WriteSettings();
+                    if(isWritten)
+                    {
+                        IsSaved = true;
+                        IsDirty = false;
+                        ClearErrors();
+                    }
+                    else
+                    {
+                        IsSaved = false;
+                        IsDirty = true;
+                    }
+                    return IsSaved;
+                }
+
+                ShowError("Error while saving", @"Error while saving: You don't have permission to change settings on this server.
+You need Administrator permission.");
+                return false;
             }
-            else
-            {
-                IsSaved = false;
-                IsDirty = true;
-            }
+            ShowError("Error while saving", "Error while saving: Server unreachable.");
+            return false;
         }
 
         bool WriteSettings()
