@@ -51,7 +51,7 @@
             <Setter Property="Background"
                     Value="White" />
             <Setter Property="SelectionMode"
-                    Value="Single" />
+                    Value="Single" />             
         </Style>
 
         <Style x:Key="SchedulerDataGridHeaderStyle"
@@ -171,6 +171,7 @@
                         <MultiBinding Converter="{StaticResource MultipleBoolToEnabledConverter}">
                             <Binding Path="HasConnectionError" Converter="{StaticResource BooleanInvertConverter}"/>
                             <Binding Path="CurrentEnvironment.IsConnected" />                         
+                            <Binding Path="SelectedTask.IsDirty" Converter="{StaticResource BooleanInvertConverter}" />
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
@@ -183,7 +184,6 @@
                         <MultiBinding Converter="{StaticResource MultipleBoolToEnabledConverter}">
                             <Binding Path="SelectedTask"
                                      Converter="{StaticResource NullToBoolConvert}" />
-                            <Binding Path="IsSaveEnabled" />
                             <Binding Path="SelectedTask.IsDirty" />
                         </MultiBinding>
                     </Button.IsEnabled>
@@ -204,12 +204,13 @@
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
                        Visibility="{Binding HasConnectionError, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-            </TextBlock>
+            </TextBlock>            
             <DataGrid Grid.Row="2"
-                      Grid.Column="0"                     
+                      Grid.Column="0"
                       Style="{StaticResource SchedulerDataGridStyle}"
                       ItemsSource="{Binding TaskList}"
-                      SelectedItem="{Binding SelectedTask,Mode=TwoWay}">
+                      IsEnabled="{Binding SelectedTask.IsDirty,Converter={StaticResource BooleanInvertConverter}}"
+                      SelectedItem="{Binding SelectedTask,Mode=TwoWay,NotifyOnSourceUpdated=True}">
                 <DataGrid.Visibility>
                     <MultiBinding Converter="{StaticResource SchedulerMultiBoolToVisibilityConverter}">
                         <Binding Path="IsLoading" Mode="OneWay"/>
@@ -268,6 +269,11 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Rectangle Grid.Column="0"
+                       Grid.Row="2"
+                Fill="Gray"
+                Opacity="0.2"
+                       Visibility="{Binding SelectedTask.IsDirty,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
             <customControls:CircularProgressBar Grid.Row="2"
                                                 Grid.Column="0"
                                                 Height="30"

@@ -16,6 +16,7 @@
         xmlns:help="clr-namespace:Dev2.Help"
         WindowState="Maximized"
         Title="{Binding DisplayName}"
+        Closing="MainView_OnClosing"
         Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
         x:Name="MainViewWindow"
         Opacity="1"
@@ -436,17 +437,19 @@
                                                Style="{StaticResource TextBlockStyleRibbonHeader}" />
                                 </Border>
                                 <StackPanel Orientation="Horizontal"> 
-                                    <!--<Button Command="{Binding SchedulerCommand}"
+                                    <Button Command="{Binding SchedulerCommand}"
+                                            CommandParameter="Scheduler"
                                             Style="{DynamicResource ButtonStyleRibbon}"
-                                            AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabSchedulerBtn_AutoID">
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource TaskScheduler-32}"
-                                                   ToolTip="Scheduler" />
+                                                   ToolTip="Scheduler"
+                                                   />
                                             <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
-                                                   Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
+                                                   Visibility="{Binding SchedulerCommand.UnauthorizedVisibility}"/>
                                         </Grid>
-                                    </Button>-->
+                                    </Button>
                                     <Button Command="{Binding DebugCommand}"
                                             AutomationProperties.AutomationId="UI_RibbonDebugBtn_AutoID"
                                             Style="{DynamicResource ButtonStyleRibbon}">
@@ -488,7 +491,7 @@
                                             <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
                                         </Grid>
-                                    </Button>                                                                      
+                                    </Button>                                          
                                 </StackPanel>
                             </Grid>
                         </Border>

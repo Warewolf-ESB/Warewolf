@@ -7,6 +7,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Dialogs;
+using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
@@ -34,7 +35,7 @@ using System.Windows.Input;
 
 namespace Dev2.Settings.Scheduler
 {
-    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>, IHelpSource
+    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>, IHelpSource, IStudioTab
     {
         #region Fields
 
@@ -43,7 +44,7 @@ namespace Dev2.Settings.Scheduler
         const string NotConnectedErrorMessage = "Error while saving: Server unreachable.";
         const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
         const string BlankNameErrorMessage = "The name can not be blank";
-        const string SaveErrorMessage = "Error while saving:";
+        const string SaveErrorPrefix = "Error while saving:";
         const string NewTaskName = "New Task";
         IResourcePickerDialog _resourcePicker;
         int _newTaskCounter = 1;
@@ -59,7 +60,6 @@ namespace Dev2.Settings.Scheduler
         TriggerEditDialog _triggerEditDialog;
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
-        bool _isSaveEnabled;
 
         IResourceHistory _selectedHistory;
         IList<IResourceHistory> _history;
@@ -105,7 +105,6 @@ namespace Dev2.Settings.Scheduler
 
             InitializeHelp();
 
-            IsSaveEnabled = true;
             var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
         }
@@ -378,6 +377,7 @@ namespace Dev2.Settings.Scheduler
 
                 if(Equals(value, _selectedHistory))
                 {
+
                     return;
                 }
                 _selectedHistory = value;
@@ -436,7 +436,6 @@ namespace Dev2.Settings.Scheduler
                     NotifyOfPropertyChange(() => RunAsapIfScheduleMissed);
                     NotifyOfPropertyChange(() => NumberOfRecordsToKeep);
                     NotifyOfPropertyChange(() => TriggerText);
-                    NotifyOfPropertyChange(() => IsSaveEnabled);
                     NotifyOfPropertyChange(() => AccountName);
                     NotifyOfPropertyChange(() => Password);
                     NotifyOfPropertyChange(() => Errors);
@@ -514,22 +513,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public bool IsSaveEnabled
-        {
-            get
-            {
-                return _isSaveEnabled;
-            }
-            set
-            {
-                if(Equals(_isSaveEnabled, value))
-                {
-                    return;
-                }
-                _isSaveEnabled = value;
-                NotifyOfPropertyChange(() => IsSaveEnabled);
-            }
-        }
 
         public IEnvironmentModel CurrentEnvironment
         {
@@ -603,12 +586,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if(HasErrors)
                 {
-                    var fetchError = Errors.FetchErrors()[0];
-                    if(!fetchError.StartsWith(SaveErrorMessage))
-                    {
-                        IsSaveEnabled = false;
-                    }
-                    return fetchError;
+                    return Errors.FetchErrors()[0];
                 }
                 return string.Empty;
             }
@@ -733,7 +711,7 @@ namespace Dev2.Settings.Scheduler
             return toggle;
         }
 
-        void SaveTasks()
+        bool SaveTasks()
         {
             if(CurrentEnvironment.IsConnected)
             {
@@ -741,13 +719,19 @@ namespace Dev2.Settings.Scheduler
                 {
                     if(SelectedTask != null && SelectedTask.IsDirty)
                     {
+                        if(HasErrors && !Error.StartsWith(SaveErrorPrefix))
+                        {
+                            ShowSaveErrorDialog(Error);
+                            return false;
+                        }
+
                         if(SelectedTask.OldName != SelectedTask.Name && !SelectedTask.OldName.Contains(NewTaskName) && !SelectedTask.IsNew)
                         {
                             var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
                                                                                                    SelectedTask.Name);
                             if(showNameChangedConflict == MessageBoxResult.Cancel)
                             {
-                                return;
+                                return false;
                             }
                             if(showNameChangedConflict == MessageBoxResult.No)
                             {
@@ -766,32 +750,30 @@ namespace Dev2.Settings.Scheduler
                     string errorMessage;
                     if(!ScheduledResourceModel.Save(SelectedTask, out errorMessage))
                     {
+                        ShowSaveErrorDialog(errorMessage);
                         ShowError(errorMessage);
+                        return false;
                     }
-                    else
+                    if(SelectedTask != null)
                     {
-                        if(SelectedTask != null)
-                        {
-                            SelectedTask.Errors.ClearErrors();
-                            NotifyOfPropertyChange(() => Error);
-                            NotifyOfPropertyChange(() => Errors);
-                            SelectedTask.OldName = SelectedTask.Name;
-                            SelectedTask.IsNew = false;
-                        }
-                        NotifyOfPropertyChange(() => TaskList);
+                        SelectedTask.Errors.ClearErrors();
+                        NotifyOfPropertyChange(() => Error);
+                        NotifyOfPropertyChange(() => Errors);
+                        SelectedTask.OldName = SelectedTask.Name;
+                        SelectedTask.IsNew = false;
                     }
-
+                    NotifyOfPropertyChange(() => TaskList);
                 }
                 else
                 {
                     ShowError(@"Error while saving: You don't have permission to schedule on this server.
 You need Administrator permission.");
+                    return false;
                 }
+                return true;
             }
-            else
-            {
-                ShowError(NotConnectedErrorMessage);
-            }
+            ShowError(NotConnectedErrorMessage);
+            return false;
         }
 
 
@@ -902,7 +884,19 @@ You need Administrator permission.");
 
         void OnServerChanged(object obj)
         {
-            CurrentEnvironment = obj as IEnvironmentModel;
+            var tmpEnv = obj as IEnvironmentModel;
+            if(Equals(CurrentEnvironment, tmpEnv))
+            {
+                return;
+            }
+
+            if(!DoDeactivate())
+            {
+                _asyncWorker.Start(() => { }, () => EventPublisher.Publish(new SetConnectControlSelectedServerMessage(CurrentEnvironment, ConnectControlInstanceType.Scheduler)));
+
+                return;
+            }
+            CurrentEnvironment = tmpEnv;
 
             if(CurrentEnvironment != null && CurrentEnvironment.AuthorizationService != null && CurrentEnvironment.IsConnected)
             {
@@ -981,10 +975,6 @@ You need Administrator permission.";
         public void ClearError(string description)
         {
             Errors.RemoveError(description);
-            if(!Errors.HasErrors())
-            {
-                IsSaveEnabled = true;
-            }
             NotifyOfPropertyChange(() => Error);
             NotifyOfPropertyChange(() => HasErrors);
         }
@@ -993,14 +983,37 @@ You need Administrator permission.";
         {
             if(!string.IsNullOrEmpty(description))
             {
-                if(!description.StartsWith("Error while saving:"))
-                {
-                    IsSaveEnabled = false;
-                }
                 Errors.AddError(description, true);
                 NotifyOfPropertyChange(() => Error);
                 NotifyOfPropertyChange(() => HasErrors);
             }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public virtual bool DoDeactivate()
+        {
+            if(SelectedTask != null && SelectedTask.IsDirty)
+            {
+                MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
+                if(showSchedulerCloseConfirmation == MessageBoxResult.Cancel || showSchedulerCloseConfirmation == MessageBoxResult.None)
+                {
+                    return false;
+                }
+                if(showSchedulerCloseConfirmation == MessageBoxResult.No)
+                {
+                    return true;
+                }
+                return SaveTasks();
+            }
+            return true;
+        }
+
+        public virtual void ShowSaveErrorDialog(string error)
+        {
+            _popupController.ShowSaveErrorDialog(error);
         }
 
         public virtual IScheduleTrigger ShowEditTriggerDialog()
@@ -1101,6 +1114,8 @@ You need Administrator permission.";
         }
 
         #endregion
+
+
     }
 }
 

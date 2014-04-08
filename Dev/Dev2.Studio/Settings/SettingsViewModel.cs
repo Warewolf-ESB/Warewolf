@@ -2,8 +2,8 @@
 using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Instrumentation;
+using Dev2.Interfaces;
 using Dev2.Messages;
-using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -23,7 +23,7 @@ using System.Windows.Input;
 
 namespace Dev2.Settings
 {
-    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>
+    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>, IStudioTab
     {
         bool _isLoading;
         bool _isDirty;
@@ -58,12 +58,12 @@ namespace Dev2.Settings
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
             _parentWindow = parentWindow;
 
-            SaveCommand = new AuthorizeCommand(AuthorizationContext.Administrator, o => SaveSettings(), o => IsDirty);
-            SaveCommand.UpdateContext(CurrentEnvironment);
+            SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
+            //SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
         }
 
-        public AuthorizeCommand SaveCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
 
         public ICommand ServerChangedCommand { get; private set; }
 
@@ -251,9 +251,16 @@ namespace Dev2.Settings
             {
                 return;
             }
+            if(SecurityViewModel != null)
+            {
+                if(!DoDeactivate())
+                {
+                    _asyncWorker.Start(() => { }, () => EventPublisher.Publish(new SetConnectControlSelectedServerMessage(CurrentEnvironment, ConnectControlInstanceType.Settings)));
 
+                    return;
+                }
+            }
             CurrentEnvironment = server;
-            SaveCommand.UpdateContext(CurrentEnvironment);
             LoadSettings();
         }
 
@@ -325,7 +332,7 @@ namespace Dev2.Settings
 
         #region Overrides of Screen
 
-        public bool DoDeactivate()
+        public virtual bool DoDeactivate()
         {
             var messageBoxResult = GetSaveResult();
             if(messageBoxResult == MessageBoxResult.Cancel || messageBoxResult == MessageBoxResult.None)
@@ -343,18 +350,7 @@ namespace Dev2.Settings
         {
             if(_popupController != null && SecurityViewModel.IsDirty)
             {
-                _popupController.Header = "Security Settings have changed";
-                var description = "Security settings have not been saved." + Environment.NewLine
-                                  + "Would you like to save the settings? " + Environment.NewLine +
-                                  "-------------------------------------------------------------------" +
-                                  "Yes - Save the security settings." + Environment.NewLine +
-                                  "No - Discard your changes." + Environment.NewLine +
-                                  "Cancel - Returns you to security settings.";
-                _popupController.Description = description;
-                _popupController.Buttons = MessageBoxButton.YesNoCancel;
-                _popupController.ImageType = MessageBoxImage.Information;
-                var messageBoxResult = _popupController.Show();
-                return messageBoxResult;
+                return _popupController.ShowSettingsCloseConfirmation();
             }
             return !SecurityViewModel.IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
         }
@@ -448,7 +444,7 @@ namespace Dev2.Settings
 
         public void Handle(SelectedServerConnectedMessage message)
         {
-            if(Equals(message.SelectedServer, CurrentEnvironment))
+            if(message.SelectedServer.Equals(CurrentEnvironment))
             {
                 OnServerChanged(message.SelectedServer);
             }

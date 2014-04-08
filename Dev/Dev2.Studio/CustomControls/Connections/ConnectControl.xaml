@@ -21,7 +21,7 @@
                    VerticalAlignment="Center" />
         <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}"
                   Grid.Column="1"
-                  x:Name="TheServerComboBox"
+                  x:Name="TheServerComboBox"                  
                   SelectedItem="{Binding SelectedServer,Mode=TwoWay}"
                   ItemsSource="{Binding Servers}"
                   Margin="5,0,0,0"

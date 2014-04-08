@@ -319,6 +319,7 @@
     <Compile Include="Interfaces\IScriptableClassDataHandler.cs" />
     <Compile Include="Interfaces\IServerProvider.cs" />
     <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
+    <Compile Include="Interfaces\IStudioTab.cs" />
     <Compile Include="Interfaces\IUserMessageProvider.cs" />
     <Compile Include="Interfaces\IWebActivity.cs" />
     <Compile Include="Interfaces\IWebCommunication.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\SelectedServerConnectedMessage.cs" />
     <Compile Include="Messages\ServerSelectionChangedMessage.cs" />
+    <Compile Include="Messages\SetConnectControlSelectedServerMessage.cs" />
     <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />

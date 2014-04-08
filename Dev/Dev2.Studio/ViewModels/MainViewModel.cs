@@ -93,7 +93,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private ICommand _resetLayoutCommand;
         private AuthorizeCommand _settingsCommand;
-        private ICommand _schedulerCommand;
+        private AuthorizeCommand _schedulerCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
         private ICommand _startStopRecordedFeedbackCommand;
@@ -185,6 +185,7 @@ namespace Dev2.Studio.ViewModels
         {
             NewResourceCommand.UpdateContext(ActiveEnvironment);
             SettingsCommand.UpdateContext(ActiveEnvironment);
+            SchedulerCommand.UpdateContext(ActiveEnvironment);
         }
 
         #region Commands
@@ -358,12 +359,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand SchedulerCommand
+        public AuthorizeCommand SchedulerCommand
         {
             get
             {
                 return _schedulerCommand ?? (_schedulerCommand =
-                    new RelayCommand(param => AddSchedulerWorkSurface()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => AddSchedulerWorkSurface(), param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -1536,11 +1537,14 @@ namespace Dev2.Studio.ViewModels
                                 settingsViewModel.Dispose();
                             }
                         }
-
-                        else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    }
+                    else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        var schedulerViewModel = vm as SchedulerViewModel;
+                        if(schedulerViewModel != null)
                         {
-                            var schedulerViewModel = vm as SchedulerViewModel;
-                            if(schedulerViewModel != null)
+                            remove = schedulerViewModel.DoDeactivate();
+                            if(remove)
                             {
                                 schedulerViewModel.Dispose();
                             }
@@ -1550,6 +1554,45 @@ namespace Dev2.Studio.ViewModels
             }
 
             return remove;
+        }
+
+        public bool OnStudioClosing()
+        {
+            List<WorkSurfaceContextViewModel> workSurfaceContextViewModels = Items.ToList();
+            for(int i = 0; i < workSurfaceContextViewModels.Count; i++)
+            {
+                var vm = workSurfaceContextViewModels[i].WorkSurfaceViewModel;
+                if(vm != null)
+                {
+                    if(vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                    {
+                        var settingsViewModel = vm as SettingsViewModel;
+                        if(settingsViewModel != null && settingsViewModel.IsDirty)
+                        {
+                            ActivateItem(workSurfaceContextViewModels[i]);
+                            bool remove = settingsViewModel.DoDeactivate();
+                            if(!remove)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if(vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        var schedulerViewModel = vm as SchedulerViewModel;
+                        if(schedulerViewModel != null && schedulerViewModel.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                        {
+                            ActivateItem(workSurfaceContextViewModels[i]);
+                            bool remove = schedulerViewModel.DoDeactivate();
+                            if(!remove)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         #endregion

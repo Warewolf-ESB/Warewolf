@@ -4533,7 +4533,7 @@ namespace Infragistics.Calculations.Engine
 			// We decided to make the functions excel compatible in XAML and also not expose this flag.
 			// 
 
-			internal const bool UseExcelValueCompatibility = false;
+			internal const bool UseExcelValueCompatibility = true;
 			internal const bool UseExcelFunctionCompatibility = true;
 
 

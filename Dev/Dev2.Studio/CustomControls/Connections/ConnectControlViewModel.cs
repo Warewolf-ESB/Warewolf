@@ -22,7 +22,7 @@ using Dev2.Threading;
 // ReSharper disable once CheckNamespace
 namespace Dev2.UI
 {
-    public class ConnectControlViewModel : DependencyObject, INotifyPropertyChanged, IHandle<UpdateActiveEnvironmentMessage>
+    public class ConnectControlViewModel : DependencyObject, INotifyPropertyChanged, IHandle<UpdateActiveEnvironmentMessage>, IHandle<SetConnectControlSelectedServerMessage>
     {
         #region Fields
 
@@ -66,6 +66,8 @@ namespace Dev2.UI
         #endregion
 
         #region Properties
+
+
 
         public bool IsEnabled
         {
@@ -197,12 +199,6 @@ namespace Dev2.UI
                         viewModel.OpenNewConnectionWizard(localHost);
 
                         viewModel.AddMissingServers();
-                        //var oldValue = e.OldValue as IEnvironmentModel;
-                        //if(oldValue != null && viewModel.Servers.Contains(oldValue))
-                        //{
-                        //    viewModel.SelectedServer = oldValue;
-
-                        //}
                     }
                 }
 
@@ -221,8 +217,10 @@ namespace Dev2.UI
                             viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
                             break;
                         case ConnectControlInstanceType.Settings:
+
                             break;
                         case ConnectControlInstanceType.Scheduler:
+
                             break;
                         case ConnectControlInstanceType.RuntimeConfiguration:
                             break;
@@ -420,5 +418,17 @@ namespace Dev2.UI
         }
 
         #endregion INotifyPropertyChanged
+
+        #region Implementation of IHandle<SetConnectControlSelectedServerMessage>
+
+        public void Handle(SetConnectControlSelectedServerMessage message)
+        {
+            if(message != null && message.ConnectControlInstanceType == ConnectControlInstanceType && !Equals(message.SelectedServer, SelectedServer))
+            {
+                SelectedServer = message.SelectedServer;
+            }
+        }
+
+        #endregion
     }
 }

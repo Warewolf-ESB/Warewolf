@@ -9,14 +9,21 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Caliburn.Micro;
+using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
+using Dev2.Scheduler;
+using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Settings;
+using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -46,6 +53,7 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using Action = System.Action;
+using FileHelper = Dev2.Studio.Core.Helpers.FileHelper;
 
 //using System.Windows.Media.Imaging;
 // ReSharper disable InconsistentNaming
@@ -1900,6 +1908,122 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        #region OnStudioClosing
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_OnStudioClosing_CallsSchedulerOnClosing()
+        {
+            SetupDefaultMef();
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
+            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(true);
+            scheduler.SelectedTask = task.Object;
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey() , scheduler);
+
+            mvm.Items.Add(vm) ;
+            Assert.IsFalse( mvm.OnStudioClosing());
+
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_OnStudioClosing_CallsSettingsOnClosing()
+        {
+            SetupDefaultMef();
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow());
+            settings.RetValue = false;
+            settings.WorkSurfaceContext = WorkSurfaceContext.Settings;
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(true);
+            settings.IsDirty = true;
+                var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings);
+
+            mvm.Items.Add(vm);
+            Assert.IsFalse(mvm.OnStudioClosing());
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_OnStudioClosing_CallsSettingsOnClosingDirty()
+        {
+            SetupDefaultMef();
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            var popup = new Mock<IPopupController>();
+
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(),new NativeWindow());
+            settings.RetValue = true;
+            settings.WorkSurfaceContext = WorkSurfaceContext.Settings;
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(true);
+            settings.IsDirty = true;
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings);
+
+            mvm.Items.Add(vm);
+            Assert.IsTrue(mvm.OnStudioClosing());
+
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_OnStudioClosing_CallsSchedulerOnClosingClosesSuccessfully()
+        {
+            SetupDefaultMef();
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
+            var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
+            scheduler.RetValue = true;
+            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(true);
+            scheduler.SelectedTask = task.Object;
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler);
+
+            mvm.Items.Add(vm);
+            Assert.IsTrue( mvm.OnStudioClosing());
+
+        }
+
+        #endregion
+
         [TestMethod]
         [TestCategory("MainViewModel_ShowStartPage")]
         [Description("ShowStartPage must load start page asynchronously.")]
@@ -2221,5 +2345,48 @@ namespace Dev2.Core.Tests
             });
 
         }
+    }
+
+    public class SchedulerViewModelForTesting:SchedulerViewModel
+    {
+       public SchedulerViewModelForTesting() : base()
+       {
+           
+       }
+       public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
+           : base(eventPublisher,directoryObjectPicker,popupController,asyncWorker)
+       {
+
+       }
+
+       public override bool DoDeactivate()
+       {
+           return RetValue;
+       }
+
+       public bool RetValue { get; set; }
+    }
+
+    public class SettingsViewModelForTest : SettingsViewModel
+    {
+
+         public SettingsViewModelForTest() : base()
+       {
+           
+       }
+
+         public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
+                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow)
+        {
+        }
+
+
+        public override bool DoDeactivate()
+         {
+             return RetValue;
+         }
+
+         public bool RetValue { get; set; }
     }
 }

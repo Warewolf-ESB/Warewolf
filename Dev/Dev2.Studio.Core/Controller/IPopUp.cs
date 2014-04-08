@@ -16,5 +16,8 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
+        MessageBoxResult ShowSettingsCloseConfirmation();
+        MessageBoxResult ShowSchedulerCloseConfirmation();
+        MessageBoxResult ShowSaveErrorDialog(string errorMessage);
     }
 }

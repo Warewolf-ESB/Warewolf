@@ -1,7 +1,9 @@
-﻿using Dev2.Studio.StartupResources;
+﻿using System.ComponentModel;
 using System;
 using System.Windows;
 using System.Windows.Interop;
+using Dev2.Studio.StartupResources;
+using Dev2.Studio.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views
@@ -35,5 +37,17 @@ namespace Dev2.Studio.Views
         }
 
         #endregion
+
+        void MainView_OnClosing(object sender, CancelEventArgs e)
+        {
+            MainViewModel mainViewModel = DataContext as MainViewModel;
+            if(mainViewModel != null)
+            {
+                if(!mainViewModel.OnStudioClosing())
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
     }
 }

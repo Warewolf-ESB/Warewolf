@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
+using Dev2.Messages;
 using Dev2.Services.Events;
 using Dev2.Studio;
 using Dev2.Studio.Core;
