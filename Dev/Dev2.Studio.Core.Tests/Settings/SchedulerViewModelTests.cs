@@ -541,6 +541,7 @@ You need Administrator permission.";
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
+            mockPopUpController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new TestAsyncWorker());
             Mock<IScheduledResourceModel> scheduledResourceModelMock = new Mock<IScheduledResourceModel>();
             string test;
@@ -2119,7 +2120,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             //------------Assert Results-------------------------
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
 
-    }
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

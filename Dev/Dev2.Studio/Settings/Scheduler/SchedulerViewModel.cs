@@ -729,7 +729,7 @@ namespace Dev2.Settings.Scheduler
                         {
                             var showNameChangedConflict = _popupController.ShowNameChangedConflict(SelectedTask.OldName,
                                                                                                    SelectedTask.Name);
-                            if(showNameChangedConflict == MessageBoxResult.Cancel)
+                            if(showNameChangedConflict == MessageBoxResult.Cancel || showNameChangedConflict == MessageBoxResult.None)
                             {
                                 return false;
                             }

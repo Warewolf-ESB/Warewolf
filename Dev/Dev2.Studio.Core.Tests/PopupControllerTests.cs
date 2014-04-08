@@ -20,7 +20,7 @@ namespace Dev2.Core.Tests
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             MessageBoxImage imageType = MessageBoxImage.Error;
-                
+
             var popupController = new PopupController
                 {
                     ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
@@ -54,11 +54,18 @@ namespace Dev2.Core.Tests
             var popupWasCalled = false;
             string description = string.Empty;
             string header = string.Empty;
+            string oldName = string.Empty;
+            string newName = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
+            string expectedDescription = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
+                          " Would you like to save the new name?" + Environment.NewLine +
+                          "-------------------------------------------------------------------" +
+                          "Yes - Save with the new name." + Environment.NewLine +
+                          "No - Save with the old name." + Environment.NewLine +
+                          "Cancel - Returns you to Scheduler.";
             MessageBoxImage imageType = MessageBoxImage.Error;
-                string oldName = string.Empty;
-         string newName = string.Empty;
-                
+
+
             var popupController = new PopupController
             {
                 ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
@@ -72,14 +79,14 @@ namespace Dev2.Core.Tests
                 }
             };
 
-             
+
             //------------Execute Test---------------------------
             popupController.ShowNameChangedConflict(oldName, newName);
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
             Assert.AreEqual("Rename conflict", header);
-            Assert.AreEqual("The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task. Would you like to save the new name?", description);
+            Assert.AreEqual(expectedDescription, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
 
@@ -94,7 +101,7 @@ namespace Dev2.Core.Tests
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             MessageBoxImage imageType = MessageBoxImage.Error;
-           
+
             var popupController = new PopupController
             {
                 ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
@@ -144,14 +151,14 @@ namespace Dev2.Core.Tests
                     return MessageBoxResult.OK;
                 }
             };
-            
+
             //------------Execute Test---------------------------
             popupController.ShowSaveErrorDialog(errorMessage);
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
             Assert.AreEqual("Saving Error", header);
-            Assert.AreEqual("The following error occurred on save:" + Environment.NewLine+ errorMessage, description);
+            Assert.AreEqual("The following error occurred on save:" + Environment.NewLine + errorMessage, description);
             Assert.AreEqual(MessageBoxImage.Error, imageType);
         }
 
@@ -166,7 +173,7 @@ namespace Dev2.Core.Tests
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             MessageBoxImage imageType = MessageBoxImage.Error;
-            var expectedDesc = "Scheduler Task has not been saved." + Environment.NewLine   
+            var expectedDesc = "Scheduler Task has not been saved." + Environment.NewLine
                             + "Would you like to save the Task? " + Environment.NewLine +
                             "-------------------------------------------------------------------" +
                             "Yes - Save the Task." + Environment.NewLine +
@@ -238,4 +245,3 @@ namespace Dev2.Core.Tests
         }
     }
 }
-    

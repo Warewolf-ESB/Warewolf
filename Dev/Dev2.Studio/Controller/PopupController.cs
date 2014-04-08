@@ -132,7 +132,12 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.YesNoCancel;
             Header = "Rename conflict";
-            Description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task. Would you like to save the new name?";
+            Description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
+                          " Would you like to save the new name?" + Environment.NewLine +
+                          "-------------------------------------------------------------------" +
+                          "Yes - Save with the new name." + Environment.NewLine +
+                          "No - Save with the old name." + Environment.NewLine +
+                          "Cancel - Returns you to Scheduler."; ;
             ImageType = MessageBoxImage.Information;
             return Show();
         }
