@@ -4,7 +4,7 @@ using CommandLine.Text;
 namespace Dev2
 {
     class CommandLineParameters : CommandLineOptionsBase
-    {
+    { 
         [Option("s", "startservice", HelpText = "Starts the windows service.", DefaultValue = false)]
         public bool StartService { get; set; }
 
