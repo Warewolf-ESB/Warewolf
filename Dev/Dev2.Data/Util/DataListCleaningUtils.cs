@@ -12,9 +12,9 @@ namespace Dev2.DataList.Contract
     public class DataListCleaningUtils
     {
 
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public static string stripDoubleBracketsAndRecordsetNotation(string canidate)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             string result = canidate;
             bool isCanidate = IsDoubleBracketCanidate(canidate);
@@ -48,7 +48,7 @@ namespace Dev2.DataList.Contract
                     var allRegions = new List<string>();
                     Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
                     IList<ParseTO> makeParts = parser.MakeParts(result);
-                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen && !string.IsNullOrEmpty(c.Payload)))
+                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
                         if(makePart.Child != null)
                         {

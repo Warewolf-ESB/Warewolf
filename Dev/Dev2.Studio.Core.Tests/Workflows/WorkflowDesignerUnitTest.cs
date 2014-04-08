@@ -1015,6 +1015,53 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerViewModel_BuildDataPart")]
+        public void WorkflowDesignerViewModel_BuildDataPart_ValidItem_ShouldAddItemToDataList()
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new EventAggregator();
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            var dataListViewModel = new DataListViewModel();
+            DataListSingleton.SetDataList(dataListViewModel);
+            dataListViewModel.AddBlankRow(null);
+            //------------Execute Test---------------------------
+            workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().set]]", "[[test()]]", "[[scalar]]" }));
+            //------------Assert Results-------------------------
+            var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
+            Assert.AreEqual(5, dataListItemModels.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerViewModel_BuildDataPart")]
+        public void WorkflowDesignerViewModel_BuildDataPart_InValidItems_ShouldNotAddItemToDataList()
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new EventAggregator();
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            var dataListViewModel = new DataListViewModel();
+            DataListSingleton.SetDataList(dataListViewModel);
+            dataListViewModel.AddBlankRow(null);
+            //------------Execute Test---------------------------
+            workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
+            //------------Assert Results-------------------------
+            var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
+            Assert.AreEqual(3, dataListItemModels.Count);
+            Assert.AreEqual("", dataListItemModels[0].DisplayName);
+            Assert.AreEqual("rec()", dataListItemModels[1].DisplayName);
+            Assert.AreEqual("", dataListItemModels[1].Children[0].DisplayName);
+            Assert.AreEqual("", dataListItemModels[2].DisplayName);
+        }
+
+
         #endregion
 
         #region InitializeDesigner

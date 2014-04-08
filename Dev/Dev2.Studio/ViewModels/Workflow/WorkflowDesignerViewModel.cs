@@ -745,11 +745,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             return result;
         }
 
-        // WHY THE HECK ARE WE RE-INVENTING THE WHEEL AND NOT USING THE INTELLISENSE PARSER?! ;)
         void BuildDataPart(string dataPartFieldData)
         {
             Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
-
 
             dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
             IDataListVerifyPart verifyPart;
@@ -757,7 +755,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             string[] fieldList = dataPartFieldData.Split('.');
             if(fieldList.Count() > 1 && !String.IsNullOrEmpty(fieldList[0]))
             {
-
                 // If it's a RecordSet Containing a field
                 foreach(var item in fieldList)
                 {
@@ -766,7 +763,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if(item.Contains("("))
                         {
                             fullyFormattedStringValue = RemoveRecordSetBrace(item);
-                            var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "Recordset");
+                            var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
                             if(intellisenseResult == null)
                             {
                                 verifyPart =
@@ -780,11 +777,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     else if(item == fieldList[1] && !(item.EndsWith(")") && item.Contains(")")))
                     {
                         // If it's a field to a record set
-                        var intellisenseResult = dataLanguageParser.ValidateName(item, "Recordset");
+                        var intellisenseResult = dataLanguageParser.ValidateName(item, "");
                         if(intellisenseResult == null)
                         {
-                            verifyPart =
-                                IntellisenseFactory.CreateDataListValidationRecordsetPart(
+                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(
                                     RemoveRecordSetBrace(fieldList.ElementAt(0)), item);
                             AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
                         }
@@ -803,22 +799,20 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(dataPartFieldData.Contains("("))
                     {
                         fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
-                        var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "Recordset");
+                        var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
                         if(intellisenseResult == null)
                         {
-                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                fullyFormattedStringValue, String.Empty);
+                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
                             AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
                         }
                     }
                 }
                 else
                 {
-                    var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "Recordset");
+                    var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "");
                     if(intellisenseResult == null)
                     {
-                        verifyPart =
-                       IntellisenseFactory.CreateDataListValidationScalarPart(RemoveRecordSetBrace(dataPartFieldData));
+                        verifyPart = IntellisenseFactory.CreateDataListValidationScalarPart(RemoveRecordSetBrace(dataPartFieldData));
                         AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
                     }
                 }
