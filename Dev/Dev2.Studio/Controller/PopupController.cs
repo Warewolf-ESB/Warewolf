@@ -4,7 +4,7 @@ using Dev2.Studio.ViewModels.Dialogs;
 using System.ComponentModel.Composition;
 using System.Windows;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
 {
 
@@ -105,8 +105,10 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            return Dev2MessageBoxViewModel.Show(Description, Header, Buttons, ImageType, DontShowAgainKey);
+            return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey);
         }
+
+        public Func<string, string, MessageBoxButton, MessageBoxImage, string, MessageBoxResult> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey);
 
         public MessageBoxResult ShowNotConnected()
         {

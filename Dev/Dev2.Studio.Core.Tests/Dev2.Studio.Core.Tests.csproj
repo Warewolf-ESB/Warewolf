@@ -226,6 +226,7 @@
     <Compile Include="Settings\SettingsItemViewModelTests.cs" />
     <Compile Include="Settings\ClientScheduledResourceTests.cs" />
     <Compile Include="Settings\SchedulerViewModelTests.cs" />
+    <Compile Include="PopupControllerTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
