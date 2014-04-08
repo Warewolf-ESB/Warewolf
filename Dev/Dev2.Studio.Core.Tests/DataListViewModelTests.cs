@@ -11,6 +11,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Util;
@@ -1886,6 +1887,24 @@ namespace Dev2.Core.Tests
             dataListViewModel.SearchText = "jim";
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListViewModel_UpdateDataListItems")]
+        public void DataListViewModel_UpdateDataListItems_DataListHasNoParts_UpdateIntellisenseMessageIsPublished()
+        {
+            //------------Setup for test--------------------------
+            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var dataListViewModel = new DataListViewModel(eventAggregator.Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            eventAggregator.Setup(c => c.Publish(It.IsAny<UpdateIntellisenseMessage>())).Verifiable();
+            var dataListParts = new List<IDataListVerifyPart>();
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, dataListParts);
+            //------------Assert Results-------------------------
+            eventAggregator.Verify(c => c.Publish(It.IsAny<UpdateIntellisenseMessage>()), Times.Once());
         }
 
         IDataListItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -19,6 +14,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -366,7 +366,11 @@ namespace Dev2.Studio.ViewModels.DataList
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
-            AddBlankRow(null);
+
+            if(parts.Count > 0)
+            {
+                AddBlankRow(null);
+            }
         }
 
         #endregion Add/Remove Missing Methods
@@ -1237,17 +1241,13 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
             ShowUnusedDataListVariables(resourceModel, removeParts);
-            if(filteredDataListParts.Count > 0)
+
+            if(resourceModel == Resource)
             {
-                if(resourceModel == Resource)
-                {
-                    if(filteredDataListParts.Count != 0)
-                    {
-                        AddMissingDataListItems(filteredDataListParts);
-                        return filteredDataListParts;
-                    }
-                }
+                AddMissingDataListItems(filteredDataListParts);
+                return filteredDataListParts;
             }
+
             return new List<IDataListVerifyPart>();
         }
 
