@@ -29,7 +29,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Composition;
 using Dev2.CustomControls.Utils;
-using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.Data.SystemTemplates.Models;
@@ -750,7 +749,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         void BuildDataPart(string dataPartFieldData)
         {
             Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
-            
+
 
             dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
             IDataListVerifyPart verifyPart;
@@ -758,7 +757,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             string[] fieldList = dataPartFieldData.Split('.');
             if(fieldList.Count() > 1 && !String.IsNullOrEmpty(fieldList[0]))
             {
-                
+
                 // If it's a RecordSet Containing a field
                 foreach(var item in fieldList)
                 {
@@ -766,16 +765,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if(item.Contains("("))
                         {
-                            var intellisenseResult = dataLanguageParser.ValidateName(item, "Recordset");
+                            fullyFormattedStringValue = RemoveRecordSetBrace(item);
+                            var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "Recordset");
                             if(intellisenseResult == null)
                             {
-                                fullyFormattedStringValue = RemoveRecordSetBrace(item);
                                 verifyPart =
-                                    IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,
-                                        String.Empty);
+                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,
+                                         String.Empty);
                                 AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
                             }
-                           
+
                         }
                     }
                     else if(item == fieldList[1] && !(item.EndsWith(")") && item.Contains(")")))
@@ -803,16 +802,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if(dataPartFieldData.Contains("("))
                     {
-                        var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "Recordset");
+                        fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
+                        var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "Recordset");
                         if(intellisenseResult == null)
                         {
-                            fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
                             verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(
                                 fullyFormattedStringValue, String.Empty);
                             AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
                         }
-
-                       
                     }
                 }
                 else
@@ -1888,7 +1885,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
             }
             NewWorkflowNames.Instance.Remove(unsavedName);
-            
+
         }
 
         void PublishMessages(IContextualResourceModel resourceModel)
