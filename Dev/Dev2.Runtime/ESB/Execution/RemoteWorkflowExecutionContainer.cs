@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -117,7 +118,7 @@ namespace Dev2.Runtime.ESB.Execution
             errors.MergeErrors(invokeErrors);
 
             // Merge Result into Local DL ;)
-            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data_With_Blank_OverWrite, false, out invokeErrors);
+            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             if(mergeOp == DataObject.DataListID)
@@ -240,6 +241,30 @@ namespace Dev2.Runtime.ESB.Execution
 
             var xe = xml.ToXElement();
             return new Connection(xe);
+        }
+
+        public SerializableResource FetchRemoteResource(string serviceName)
+        {
+            var connection = GetConnection(DataObject.EnvironmentID);
+            if(connection == null)
+            {
+                return null;
+            }
+            try
+            {
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}", "TypeWorkflowService", serviceName));
+                if(!string.IsNullOrEmpty(returnData))
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
+                    return serializableResources[0];
+                }
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+            return null;
         }
     }
 }

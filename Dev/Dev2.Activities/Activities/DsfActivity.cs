@@ -287,14 +287,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         // PBI 7913
                         if(datalistID != GlobalConstants.NullDataListID)
                         {
-                            // do we need to flag this as a remote workflow? ;)
-                            if(dataObject.IsRemoteWorkflow)
-                            {
-                                // set remote execution target shape ;)
-                                var shape = compiler.ShapeDev2DefinitionsToDataList(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-                                dataObject.RemoteInvokeResultShape = shape;
-                            }
-
                             BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
 
@@ -318,7 +310,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
                             if(string.IsNullOrEmpty(testData))
                             {
-                                
+
                             }
                         }
 
@@ -520,7 +512,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-        
+
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();

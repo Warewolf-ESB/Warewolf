@@ -2,6 +2,8 @@
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable once CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 {
     /// <summary>
@@ -97,11 +99,24 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("RemoteInvoke_CanExecuteRemoteNested")]
         public void RemoteInvoke_CanFetchResults_WhenRemoteNestedWF_ExpectCorrectMappings()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "RemoteWF11466");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11466_RemoteExecution");
 
             Guid id = Guid.NewGuid();
             var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
-            Assert.AreEqual("<DataList><a>12</a></DataList>", output);
+            Assert.AreEqual("<DataList><Output>PASS</Output></DataList>", output);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("RemoteInvoke_CanExecuteRemoteNested")]
+        public void RemoteInvoke_CanFetchResults_WhenRemoteNestedWF_SameName_ExpectCorrectMappings()
+        {
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11466_RemoteExecution_SameName");
+
+            Guid id = Guid.NewGuid();
+            var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+            Assert.AreEqual("<DataList><Output>PASS</Output></DataList>", output);
         }
     }
 }

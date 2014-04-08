@@ -314,6 +314,10 @@ namespace Dev2.Runtime.ESB.Control
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if(executionContainer != null)
                 {
+                    if(!isLocal)
+                    {
+                        SetRemoteExecutionDataList(dataObject, executionContainer);
+                    }
                     executionContainer.InstanceOutputDefinition = outputDefs;
                     result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
@@ -355,6 +359,17 @@ namespace Dev2.Runtime.ESB.Control
             return result;
         }
 
+        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer)
+        {
+            var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
+            if(remoteContainer != null)
+            {
+                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ServiceName);
+                fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
+                dataObject.RemoteInvokeResultShape = fetchRemoteResource.DataList;
+            }
+        }
+
         void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IDynamicServicesInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
         {
             var clonedDataObject = dataObject.Clone();
@@ -372,6 +387,8 @@ namespace Dev2.Runtime.ESB.Control
                         {
                             invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                         }
+                        SetRemoteExecutionDataList(dataObject, executionContainer);
+                        shapeOfData = dataObject.RemoteInvokeResultShape;
                     }
                 }
                 if(!invokeErrors.HasErrors())
@@ -379,7 +396,6 @@ namespace Dev2.Runtime.ESB.Control
                     var task = Task.Factory.StartNew(() =>
                     {
                         ServerLogger.LogTrace("Async Execution Context User Is : " + Thread.CurrentPrincipal.Identity.Name);
-
                         ErrorResultTO error;
                         clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
                         executionContainer.Execute(out error);
