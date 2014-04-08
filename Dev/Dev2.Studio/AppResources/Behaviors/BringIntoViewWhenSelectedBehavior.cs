@@ -1,10 +1,10 @@
-﻿using Dev2.Studio.Core.ViewModels.Navigation;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 namespace Dev2.CustomControls.Behavior
 {
@@ -96,16 +96,15 @@ namespace Dev2.CustomControls.Behavior
             //TODO find a better way to do this (instead of waiting halve a second and using a dispatchertimer)
             //We need to know when the item as been scrolled into view, and then fire the animation
             _timer = new DispatcherTimer
-                {
-                    Interval = new TimeSpan(0, 0, 0, 0, 3000)
-                };
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 3000)
+            };
             _timer.Tick += (sender, e) =>
-                {
-                    _item.BeginStoryboard(_storyBoard);
-                    _timer.Stop();
-                    _timer = null;
-                    treeNode.IsNew = false;
-                };
+            {
+                _item.BeginStoryboard(_storyBoard);
+                _timer.Stop();
+                treeNode.IsNew = false;
+            };
             _timer.Start();
         }
         #endregion IsBroughtIntoViewWhenSelected

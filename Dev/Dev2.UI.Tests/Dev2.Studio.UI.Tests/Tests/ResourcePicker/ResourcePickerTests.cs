@@ -76,10 +76,10 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
             ActivityDropUIMap.SingleClickFirstWorkflow();
 
             // Click the Ok button on the window
-            ActivityDropUIMap.ClickOkButton();
+            ActivityDropUIMap.ClickCancelButton();
 
             // Check if it exists on the designer
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "fileTest"));
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "ServiceDesigner"));
 
             #endregion
         }

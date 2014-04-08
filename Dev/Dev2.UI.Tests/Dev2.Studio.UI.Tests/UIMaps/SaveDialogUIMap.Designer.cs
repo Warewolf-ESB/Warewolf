@@ -56,16 +56,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
 
             KeyboardCommands.SendTabs(6, 150);
             KeyboardCommands.SendKey(textToType);
+            MouseCommands.ClickPoint(new Point(145, 364), 100);
             KeyboardCommands.SendTabs(2, 150);
             KeyboardCommands.SendEnter();
-            // Click image
-            //Mouse.Click(uIItemImage, new Point(145, 364));
-
-            // Type text in 'Wpf' window
-            //SendKeys.SendWait(textToType);
-            //Playback.Wait(500);
-            //SendKeys.SendWait("{TAB}{TAB}{ENTER}");
-            //Playback.Wait(2000);
         }
 
         /// <summary>

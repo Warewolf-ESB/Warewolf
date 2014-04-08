@@ -265,6 +265,10 @@ namespace Dev2.Data.Decision
                 if(binaryDataListItem != null)
                 {
                     var value = binaryDataListItem.TheValue;
+                    // handle \n coming from value ;)
+                    value = value.Replace("\r\n", "__R__N__");
+                    value = value.Replace("\n", "\r\n");
+                    value = value.Replace("__R__N__", "\r\n");
                     return value;
                 }
             }
