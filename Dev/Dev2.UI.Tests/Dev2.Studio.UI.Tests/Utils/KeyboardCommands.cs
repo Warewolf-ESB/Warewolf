@@ -12,6 +12,7 @@ namespace Dev2.Studio.UI.Tests
         public static string DelCommand { get { return "{DEL}"; } }
         public static string EscCommand { get { return "{ESC}"; } }
         public static string TabCommand { get { return "{TAB}"; } }
+        public static string DownCommand { get { return "{DOWN}"; } }
         public static string ShiftCommand { get { return "{SHIFT}"; } }
         public static string SelectAllCommand { get { return "^a"; } }
         public static string CopyCommand { get { return "^c"; } }
@@ -35,6 +36,14 @@ namespace Dev2.Studio.UI.Tests
         {
             Keyboard.SendKeys(key);
             Playback.Wait(waitAmt);
+        }
+
+        public static void SendDownArrows(int amtOfTabs, int waitAmt = 15)
+        {
+            for(var i = 0; i < amtOfTabs; i++)
+            {
+                SendKey(DownCommand, waitAmt);
+            }
         }
 
         public static void SendTabs(int amtOfTabs, int waitAmt = 15)

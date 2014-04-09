@@ -48,5 +48,16 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             //Check that the focus is in the result box
             Assert.IsTrue(_dsfActivityUiMap.GetResultTextBoxControl(ToolsUiMapBase.ViewType.Large).HasFocus);
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ToolDesigners_FindRecordsSmallView")]
+        public void ToolDesigners_FindRecordsSmallView_SelectingOptionInDopdownWithKeyboard_MatchesBoxEnabled()
+        {
+            var _dsfActivityUiMap = new DsfFindRecordsUiMap();
+            _dsfActivityUiMap.SetFocusToConditionDropDown(1, ToolsUiMapBase.ViewType.Small);
+            KeyboardCommands.SendDownArrows(13);
+            Assert.IsFalse(_dsfActivityUiMap.IsMatchTextBoxEnabled(1, ToolsUiMapBase.ViewType.Small));
+        }
     }
 }

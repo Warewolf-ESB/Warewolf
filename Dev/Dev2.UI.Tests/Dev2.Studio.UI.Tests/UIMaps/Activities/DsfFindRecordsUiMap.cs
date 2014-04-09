@@ -1,5 +1,7 @@
-﻿using Dev2.Studio.UI.Tests.Enums;
+﻿using System.Collections.Generic;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Extensions;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System;
 using System.Linq;
@@ -8,6 +10,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
     public class DsfFindRecordsUiMap : ToolsUiMapBase
     {
+        #region Fields
+
+        VisualTreeWalker _visualTreeWalker;
+
+        #endregion
+
         public DsfFindRecordsUiMap(bool createNewtab = true, bool dragFindRecordsOntoNewTab = true)
             : base(createNewtab, 1500)
         {
@@ -15,6 +23,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 DragToolOntoDesigner(ToolType.Find);
             }
+            _visualTreeWalker = new VisualTreeWalker();
         }
 
         public void EnterTextIntoFieldsToSearch(string stringToEnter, ViewType viewType)
@@ -34,8 +43,31 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public UITestControl GetResultTextBoxControl(ViewType viewType)
         {
-
             return GetTextBox("UI__Result_AutoID", GetView(viewType));
+        }
+
+        public void SetFocusToConditionDropDown(int rowNumber, ViewType viewType)
+        {
+            List<UITestControl> dataGridRowChildList = GetDataGridRowChildList(rowNumber - 1, viewType);
+            dataGridRowChildList[2].SetFocus();
+        }
+
+        public bool IsMatchTextBoxEnabled(int rowNumber, ViewType viewType)
+        {
+            List<UITestControl> dataGridRowChildList = GetDataGridRowChildList(rowNumber, viewType);
+            UITestControl firstOrDefault = dataGridRowChildList[3].GetChildren().FirstOrDefault(c => c.ControlType == ControlType.Edit);
+            if(firstOrDefault == null)
+            {
+                throw new Exception("Could not find the matches text box.");
+            }
+            return firstOrDefault.IsEnabled();
+        }
+
+        private List<UITestControl> GetDataGridRowChildList(int rowNumber, ViewType viewType)
+        {
+            UITestControl childByAutomationIDPath = _visualTreeWalker.GetChildByAutomationIDPath(GetView(viewType), "Table");
+            List<UITestControl> uiTestControlCollection = childByAutomationIDPath.GetChildren().Where(c => c.ControlType == ControlType.Row).ToList();
+            return uiTestControlCollection[rowNumber].GetChildren().ToList();
         }
 
         private UITestControl GetTextBox(string autoId, UITestControl viewControl)
@@ -50,6 +82,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             throw new Exception("Couldn't find the" + autoId + " textbox.");
         }
 
-        }
+    }
 
 }
