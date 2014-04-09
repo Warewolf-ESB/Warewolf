@@ -1,0 +1,41 @@
+
+<Service ID="002a20c5-96f5-4ce0-bf74-f29f9e2301ce" Version="1.0" Name="WebService1234" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="WebService1234" Type="InvokeWebService" SourceID="00000000-0000-0000-0000-000000000000" SourceName="" SourceMethod="" RequestUrl="" RequestMethod="Get" JsonPath="">
+      <RequestHeaders><![CDATA[]]></RequestHeaders>
+      <RequestBody><![CDATA[]]></RequestBody>
+      <Inputs />
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeWebService</TypeOf>
+  <DisplayName>WebService1234</DisplayName>
+  <Category>REMOTEUITESTS</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>OI8FJOP/LljZu+5XGfRf0NrO31M=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>GoUs3ndQuwARySCF/zHfPVg78s+6vkgQ3tq+qISjFfRPWGstugg2vWg+EixV2BAKQX3blPZYWhZLVtockdPt0P4utpliHN8EG8LBK5AlO1ggaUFuQzF4JqbdDtbRS5eLqmIiTlQ0skcMThRKD5qx+BXBXZv1Yp6qvCvSeRuAp6I=</SignatureValue>
+  </Signature>
+</Service>
