@@ -381,6 +381,36 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("sfGatherSystemInformation_ExecuteProcess")]
+        public void DsfGatherSystemInformation_ExecuteProcess_ACoupleOfTimes_InitiailizesDebugProperties()
+        {
+            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.UserName, "[[a]]", 1) };
+            var mock = new Mock<IGetSystemInformation>();
+            mock.Setup(information => information.GetUserNameInformation()).Returns("IAMUSER");
+            var activity = DsfGatherSystemInformationActivity(mock);
+            activity.SystemInformationCollection = systemInformationCollection;
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            CurrentDl = "<ADL><a/></ADL>";
+            TestData = "<root><a>Some Other Value</a></root>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess(isDebug:true);
+                         ExecuteProcess(isDebug:true);
+                         ExecuteProcess(isDebug:true);
+            //------------Assert Results-------------------------
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            var debugOutputs = activity.GetDebugOutputs(null);
+            var debugInputs = activity.GetDebugInputs(null);
+
+            Assert.AreEqual(1, debugInputs.Count);
+            Assert.AreEqual(1, debugOutputs.Count);
+        }
+
+        [TestMethod]
         public void GatherSystemInformationWithStarNotationWhereExecuteExpectCorrectResultsWithRecordsetOverwrite()
         {
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO> { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.DiskAvailable, "[[recset1(*).field1]]", 1) };

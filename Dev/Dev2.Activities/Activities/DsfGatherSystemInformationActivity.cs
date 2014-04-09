@@ -25,7 +25,6 @@ namespace Dev2.Activities
         #region Fields
 
         IGetSystemInformation _getSystemInformation;
-        private int _indexCounter;
 
         #endregion
 
@@ -82,6 +81,9 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid executionId = dataObject.DataListID;
@@ -90,6 +92,7 @@ namespace Dev2.Activities
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
+            var indexCounter = 0;
 
             InitializeDebug(dataObject);
             try
@@ -98,16 +101,19 @@ namespace Dev2.Activities
 
                 foreach(GatherSystemInformationTO item in SystemInformationCollection)
                 {
-                    _indexCounter++;
+                    indexCounter++;
 
                     IBinaryDataListEntry resultEntry = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
                     allErrors.MergeErrors(errors);
 
-                    var inputToAdd = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
-                    AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                    _debugInputs.Add(inputToAdd);
+                    if(dataObject.IsDebugMode())
+                    {
+                        var inputToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                        AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                        _debugInputs.Add(inputToAdd);
+                    }
 
                     var hasErrors = allErrors.HasErrors();
                     if(resultEntry != null && !hasErrors)
