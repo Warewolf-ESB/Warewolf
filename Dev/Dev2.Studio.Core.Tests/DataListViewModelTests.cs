@@ -1040,7 +1040,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Recordset name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1056,7 +1056,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel.Children[0]);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.Children[0].HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.Children[0].ErrorMessage);
+            Assert.AreEqual("Variable name [[Child@]] contains invalid character(s)", dataListItemModel.Children[0].ErrorMessage);
         }
 
         [TestMethod]
@@ -1161,7 +1161,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Variable name [[TestScalar!]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1177,7 +1177,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Variable name [[TestScalar.]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1193,7 +1193,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Variable name [[TestScalar.ad]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1209,7 +1209,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+            Assert.AreEqual("Variable name [[TestScalar()]] contains invalid character(s)", dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]

@@ -286,7 +286,7 @@ namespace Dev2.Studio.Core.Models.DataList
                     var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
                     if(intellisenseResult != null)
                     {
-                        SetError(StringResources.ErrorMessageInvalidChar);
+                        SetError(intellisenseResult.Message);
                     }
                     else
                     {
