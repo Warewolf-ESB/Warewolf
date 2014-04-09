@@ -525,15 +525,12 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestMethod]
         public void CanReturnDataInCorrectCase()
         {
-
             string postData = String.Format("{0}{1}", _webserverURI, "Bug9490");
             const string expected = @"<result index=""1""><val>abc_def_hij</val></result><result index=""2""><val>ABC_DEF_HIJ</val></result>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-
             StringAssert.Contains(responseData, expected);
-
         }
 
         [TestMethod]
@@ -541,18 +538,15 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestCategory("DatabaseService_Mapping")]
         public void DatabaseService_MappedOutputsFetchedInInnerWorkflow_WhenFetchedWithDiffernedColumnsThanFetched_DataReturned()
         {
-
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", _webserverURI, "Bug 10475 Outer WF");
-            const string expected = @"<Row index=""1""><BigID>1</BigID>";
+            const string expected = @"<Row index=""1""><ID>1</ID></Row>";
 
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-
             //------------Assert Results-------------------------
             StringAssert.Contains(responseData, expected);
-
         }
 
         [TestMethod]
@@ -560,7 +554,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestCategory("DatabaseService_Mapping")]
         public void DatabaseService_WithInputsAndNoOutputs_WhenInsertingFromDataList_SameDataReturned()
         {
-
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", _webserverURI, "DB Service With No Output");
             const string expected = @"<Result>PASS</Result>";
@@ -568,10 +561,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-
             //------------Assert Results-------------------------
             StringAssert.Contains(responseData, expected);
-
         }
 
 

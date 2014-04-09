@@ -401,7 +401,9 @@ namespace Dev2.Runtime.ESB.Control
                         executionContainer.Execute(out error);
                     });
 
+                    // ReSharper disable ImplicitlyCapturedClosure
                     task.ContinueWith(o =>
+                        // ReSharper restore ImplicitlyCapturedClosure
                         {
                             DataListRegistar.DisposeScope(o.Id, clonedDataObject.DataListID);
                             o.Dispose();

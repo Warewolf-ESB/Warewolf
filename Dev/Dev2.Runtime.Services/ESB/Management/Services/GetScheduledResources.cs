@@ -25,12 +25,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ObservableCollection<IScheduledResource> resources;
-            using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+            using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
             {
                 resources = model.GetScheduledResources();
             }
 
-            var sb = new StringBuilder( JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
+            var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
@@ -46,16 +46,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService getScheduledResourcesService = new DynamicService();
-            getScheduledResourcesService.Name = HandlesType();
-            getScheduledResourcesService.DataListSpecification = "<DataList></DataList>";
+            DynamicService getScheduledResourcesService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList></DataList>" };
 
-
-            ServiceAction getScheduledResourcesAction = new ServiceAction();
-            getScheduledResourcesAction.Name = HandlesType();
-            getScheduledResourcesAction.ActionType = enActionType.InvokeManagementDynamicService;
-            getScheduledResourcesAction.SourceName = HandlesType();
-            getScheduledResourcesAction.SourceMethod = HandlesType();
+            ServiceAction getScheduledResourcesAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceName = HandlesType(), SourceMethod = HandlesType() };
 
             getScheduledResourcesService.Actions.Add(getScheduledResourcesAction);
 

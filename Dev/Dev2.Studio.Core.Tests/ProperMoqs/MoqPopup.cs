@@ -1,19 +1,13 @@
-﻿using Dev2.Studio.Core.Controller;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Windows;
+using Dev2.Studio.Core.Controller;
 
 namespace Dev2.Core.Tests.ProperMoqs
 {
     [Export(typeof(IPopupController))]
     public class MoqPopup : IPopupController
     {
-        private string _header;
-        private string _discripton;
-        private string _question;
-        MessageBoxImage _imageType;
-        MessageBoxButton _buttons;
-        MessageBoxResult _result;
-        string _dontShowAgainKey;
+        readonly MessageBoxResult _result;
 
         public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
         {
@@ -34,65 +28,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             _result = result;
         }
 
-        public string Header
-        {
-            get
-            {
-                return _header;
-            }
-            set
-            {
-                _header = value;
-            }
-        }
+        public string Header { get; set; }
 
-        public string Description
-        {
-            get
-            {
-                return _discripton;
-            }
-            set
-            {
-                _discripton = value;
-            }
-        }
+        public string Description { get; set; }
 
-        public string Question
-        {
-            get
-            {
-                return _question;
-            }
-            set
-            {
-                _question = value;
-            }
-        }
+        public string Question { get; set; }
 
-        public MessageBoxImage ImageType
-        {
-            get
-            {
-                return _imageType;
-            }
-            set
-            {
-                _imageType = value;
-            }
-        }
+        public MessageBoxImage ImageType { get; set; }
 
-        public MessageBoxButton Buttons
-        {
-            get
-            {
-                return _buttons;
-            }
-            set
-            {
-                _buttons = value;
-            }
-        }
+        public MessageBoxButton Buttons { get; set; }
+
         public MessageBoxResult Show()
         {
             ShowHitCount++;
@@ -131,16 +76,6 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
-        public string DontShowAgainKey
-        {
-            get
-            {
-                return _dontShowAgainKey;
-            }
-            set
-            {
-                _dontShowAgainKey = value;
-            }
-        }
+        public string DontShowAgainKey { get; set; }
     }
 }

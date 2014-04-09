@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Infrastructure.Tests
@@ -29,11 +26,11 @@ namespace Dev2.Infrastructure.Tests
                     {"f", ""}
                 });
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Assert.AreEqual(@"The following arguments are not allowed to be null: c
 d
-",e.Message);
+", e.Message);
                 throw;
             }
 
@@ -46,8 +43,8 @@ d
         [TestCategory("VerifyArgumentsTest_AreNotNull")]
         public void VerifyArgumentsTest_AreNotNull_DoesNotThrows()
         {
-           
-                VerifyArgument.AreNotNull(new Dictionary<string, object>
+
+            VerifyArgument.AreNotNull(new Dictionary<string, object>
                 {
                     {"a", new object()},
                     {"b", ""},
@@ -56,7 +53,7 @@ d
                     {"e", ""},
                     {"f", ""}
                 });
-            
+
 
 
         }

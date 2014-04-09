@@ -15,7 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveScheduledResource : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-        ISecurityWrapper _securityWrapper   ;
+        ISecurityWrapper _securityWrapper;
 
         public string HandlesType()
         {
@@ -31,13 +31,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-
                 if(tmp != null)
                 {
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
 
-                    using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                    using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         StringBuilder userName;
                         StringBuilder password;
@@ -53,9 +52,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             StringBuilder previousTask;
                             values.TryGetValue("PreviousResource", out previousTask);
-                   
+
                             model.Save(res, userName.ToString(), password.ToString());
-                            if (previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && (previousTask.ToString() != res.Name))
+                            if(previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && (previousTask.ToString() != res.Name))
                             {
                                 model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null));
                             }

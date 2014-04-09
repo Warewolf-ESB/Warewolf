@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -13,9 +16,6 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 
 namespace Dev2.Core.Tests
 {
@@ -1582,7 +1582,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
 
-            string exprected = "[[Scalar]]";
+            const string exprected = "[[Scalar]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[Scalar]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1601,7 +1601,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            string exprected = "[[City().GeoLocation]]";
+            const string exprected = "[[City().GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1619,7 +1619,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City().GeoLocation]]";
+            const string exprected = "[[City().GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1637,7 +1637,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City(4).GeoLocation]]";
+            const string exprected = "[[City(4).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(4).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1655,7 +1655,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City(*).GeoLocation]]";
+            const string exprected = "[[City(*).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(*).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1673,7 +1673,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City().GeoLocation]]";
+            const string exprected = "[[City().GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1691,7 +1691,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City(44).GeoLocation]]";
+            const string exprected = "[[City(44).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(44).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1709,7 +1709,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            string exprected = "[[City(*).GeoLocation]]";
+            const string exprected = "[[City(*).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(*).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1728,7 +1728,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            string exprected = "[[City()]]";
+            const string exprected = "[[City()]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City()]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1738,7 +1738,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void PerformResultInsertionWithPartialRecordsetFieldAfterScalarExpectedCompleteResult()
         {
-            var currentText = "[[index1]][[rec().fi";
+            const string currentText = "[[index1]][[rec().fi";
             DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
             IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
@@ -1748,14 +1748,14 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            string exprected = "[[index1]][[rec().field]]";
+            const string exprected = "[[index1]][[rec().field]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[rec().field]]", intellisenseProviderContext);
             Assert.AreEqual(exprected, actual, "Inserting a recordset after a scalar from intellisense results performs an incorrect insertion");
         }
         [TestMethod]
         public void PerformResultInsertionWithRecordsetAfterScalarExpectedCompleteResult()
         {
-            var currentText = "[[index1]][[rec";
+            const string currentText = "[[index1]][[rec";
             DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
             IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
             {
@@ -1765,7 +1765,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            string exprected = "[[index1]][[rec().field]]";
+            const string exprected = "[[index1]][[rec().field]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[rec().field]]", intellisenseProviderContext);
             Assert.AreEqual(exprected, actual, "Inserting a recordset after a scalar from intellisense results performs an incorrect insertion");
         }
@@ -1796,7 +1796,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetIntellisenseResults_FullMethodMatch_GivenMethodWithParams_Expected_AllAvailableFunctionsReturned()
         {
-            string intellisenseText = "sum(10,20,30)";
+            const string intellisenseText = "sum(10,20,30)";
             IntellisenseProviderContext context = new IntellisenseProviderContext
             {
                 CaretPosition = intellisenseText.Length,

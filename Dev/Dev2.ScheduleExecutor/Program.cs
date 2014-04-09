@@ -95,8 +95,6 @@ namespace Dev2.ScheduleExecutor
 
                             if(response.StatusCode != HttpStatusCode.OK)
                             {
-                                DebugState state = CreateDebugState(result, workflowName, taskName);
-
                                 Log("Error", string.Format("Error from execution: {0}", result));
                             }
                             else
@@ -125,7 +123,7 @@ namespace Dev2.ScheduleExecutor
             return string.Empty;
         }
 
-        private static DebugState CreateDebugState(string result, string workflowName, string taskName)
+        private static void CreateDebugState(string result, string workflowName, string taskName)
         {
             string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
             var state = new DebugState
@@ -155,7 +153,6 @@ namespace Dev2.ScheduleExecutor
                 string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName,
                               DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
-            return state;
         }
 
         private static string GetCorrelationId(string taskName)
@@ -238,7 +235,9 @@ namespace Dev2.ScheduleExecutor
                     tsw.WriteLine(logMessage);
                 }
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
 
@@ -262,7 +261,9 @@ namespace Dev2.ScheduleExecutor
                         FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
                         fileInfo.Delete();
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                     }
 

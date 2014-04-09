@@ -22,7 +22,18 @@ namespace Dev2.Studio.Core
         {
             get
             {
-                return _activeDataList.Resource.DataList;
+                if(_activeDataList != null)
+                {
+                    if(_activeDataList.Resource != null)
+                    {
+                        if(_activeDataList.Resource.DataList != null)
+                        {
+                            return _activeDataList.Resource.DataList;
+                        }
+                    }
+                }
+
+                return string.Empty;
             }
         }
 
