@@ -1308,20 +1308,7 @@ namespace Dev2.UI
         {
             base.OnLostKeyboardFocus(e);
 
-            if(_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused && !_listBox.IsKeyboardFocusWithin)
-            {
-                CloseDropDown(true);
-            }
-
-            if(WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
-            {
-                Text = AddBracketsToExpression(Text);
-            }
-
-            if(IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
-            {
-                Text = AddRecordsetNotationToExpresion(Text);
-            }
+            ExecWrapBrackets();
 
             CloseDropDown(true);
 
@@ -1329,6 +1316,25 @@ namespace Dev2.UI
             if(be != null)
             {
                 be.UpdateSource();
+            }
+        }
+
+        private void ExecWrapBrackets()
+        {
+            if (_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused &&
+                !_listBox.IsKeyboardFocusWithin)
+            {
+                CloseDropDown(true);
+            }
+
+            if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
+            {
+                Text = AddBracketsToExpression(Text);
+            }
+
+            if (IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
+            {
+                Text = AddRecordsetNotationToExpresion(Text);
             }
         }
 
@@ -1590,11 +1596,21 @@ namespace Dev2.UI
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            HandleWrapInBrackets(e.Key);
+
             base.OnKeyDown(e);
 
             if(e.Key == Key.Escape)
             {
                 CloseDropDown(true);
+            }
+        }
+
+        public void HandleWrapInBrackets(Key e)
+        {
+            if (e == Key.F6)
+            {
+                ExecWrapBrackets();
             }
         }
 

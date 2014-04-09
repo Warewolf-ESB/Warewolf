@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
+using System.Windows.Input;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
@@ -207,6 +208,54 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsFalse(textBox.HasError);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_KeyDown")]
+        public void IntellisenseTextBox_KeyDown_CannotWrapInBracketsWhenNotFSix()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.WrapInBrackets = true;
+            textBox.Text = "var()";
+          //------------Execute Test---------------------------
+            textBox.HandleWrapInBrackets(Key.F10);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("var()", textBox.Text);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_KeyDown")]
+        public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenWrapInBrackets()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.WrapInBrackets = false;
+            textBox.Text = "var()";
+            //------------Execute Test---------------------------
+            textBox.HandleWrapInBrackets(Key.F6);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("var()", textBox.Text);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBox_KeyDown")]
+        public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenNotWrapInBrackets()
+        {
+            //------------Setup for test--------------------------
+            var textBox = new IntellisenseTextBox();
+            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            textBox.WrapInBrackets = false;
+            textBox.Text = "var()";
+            //------------Execute Test---------------------------
+            textBox.HandleWrapInBrackets(Key.F6);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("var()", textBox.Text);
+        }
+
 
         [TestMethod]
         public void InsertItemExpectedTextboxTextChanged_InvalidSyntax_ErrorStatusUpdated()
