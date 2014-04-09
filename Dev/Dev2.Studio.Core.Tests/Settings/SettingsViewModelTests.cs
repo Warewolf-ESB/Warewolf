@@ -355,6 +355,24 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsNull(viewModel.CurrentEnvironment);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_ServerChangedCommand")]
+        public void SettingsViewModel_ServerChangedCommand_XX()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
+            Assert.IsNull(viewModel.CurrentEnvironment);
+
+            //------------Execute Test---------------------------
+            viewModel.ServerChangedCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsNull(viewModel.CurrentEnvironment);
+        }
+
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_ServerChangedCommand")]
@@ -494,19 +512,13 @@ You need Administrator permission.", viewModel.Errors);
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
             viewModel.IsDirty = true;
             viewModel.SecurityViewModel.IsDirty = true;
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             var env = new Mock<IEnvironmentModel>();
             env.Setup(a => a.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
             viewModel.Handle(new SelectedServerConnectedMessage(env.Object));
 
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
+            VerifySavePopup(mockPopupController);
 
         }
 
@@ -567,18 +579,12 @@ You need Administrator permission.", viewModel.Errors);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString());
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.CallDeactivate();
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
+            VerifySavePopup(mockPopupController);
         }
 
         [TestMethod]
@@ -591,18 +597,12 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.CallDeactivate();
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
+            VerifySavePopup(mockPopupController);
             Assert.IsFalse(viewModel.IsDirty);
         }
 
@@ -617,18 +617,12 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.CallDeactivate();
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
+            VerifySavePopup(mockPopupController);
             Assert.IsTrue(viewModel.IsDirty);
         }
 
@@ -643,23 +637,17 @@ You need Administrator permission.", viewModel.Errors);
             mockPopupController.SetupAllProperties();
             mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
             var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
-            var description = "Security settings have not been saved." + Environment.NewLine
-                                 + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.CallDeactivate();
             //------------Assert Results-------------------------
-            VerifySavePopup(mockPopupController, "Security Settings have changed", description);
+            VerifySavePopup(mockPopupController);
             Assert.IsTrue(viewModel.IsDirty);
         }
 
 
-        static void VerifySavePopup(Mock<IPopupController> popupController, string expectedHeader, string expectedDescription, bool showShown = true)
+        static void VerifySavePopup(Mock<IPopupController> popupController, bool showShown = true)
         {
             Times times = showShown ? Times.Once() : Times.Never();
             popupController.Verify(p => p.ShowSettingsCloseConfirmation(), times);
@@ -821,9 +809,9 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             mockPopupController.Verify(c => c.ShowSettingsCloseConfirmation(), Times.Once());
             Assert.IsFalse(result);
+            Assert.IsTrue(viewModel.IsDirty);
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SettingsViewModel_DoDeactivate")]
@@ -841,7 +829,41 @@ You need Administrator permission.", viewModel.Errors);
             var result = viewModel.DoDeactivate();
             //------------Assert Results-------------------------
 
+            Assert.IsTrue(result); 
+            Assert.IsFalse(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
+        public void SettingsViewModel_DoDeactivate_NoSavesChanges()
+        {
+            //------------Setup for test--------------------------            
+
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.SetupAllProperties();
+            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.No);
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+            viewModel.IsDirty = true;
+            bool propertyChanged = false;
+            const string propertyName = "SecurityHeader";
+            //------------Execute Test---------------------------
+            viewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == propertyName)
+                {
+                    propertyChanged = true;
+                }
+            };
+
+            var result = viewModel.DoDeactivate();
+            //------------Assert Results-------------------------
+
             Assert.IsTrue(result);
+            Assert.IsFalse(viewModel.IsDirty);
+            Assert.IsTrue(propertyChanged);
+            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
         }
 
         [TestMethod]

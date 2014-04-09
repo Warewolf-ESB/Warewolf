@@ -329,8 +329,11 @@ namespace Dev2.Settings
 
         void ResetIsDirtyForChildren()
         {
-            SecurityViewModel.IsDirty = false;
-            NotifyOfPropertyChange(() => SecurityHeader);
+            if(SecurityViewModel != null)
+            {
+                SecurityViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => SecurityHeader);
+            }
         }
 
         #region Overrides of SimpleBaseViewModel
@@ -348,6 +351,13 @@ namespace Dev2.Settings
             {
                 return SaveSettings();
             }
+
+            if (messageBoxResult == MessageBoxResult.No)
+            {
+                IsDirty = false;
+                ResetIsDirtyForChildren();    
+            }
+
             return true;
         }
 
