@@ -45,7 +45,10 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             //------------Setup for test--------------------------
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11536_FireForget.xml");
             const string pathForFileWrittenForTest = "C:\\Testing\\FireForgetText.txt";
-            File.Delete(pathForFileWrittenForTest);
+            if (File.Exists(pathForFileWrittenForTest))
+            {
+                File.Delete(pathForFileWrittenForTest);
+            }
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(responseData, "<result>PASS</result><fireforgetres></fireforgetres>");

@@ -33,8 +33,11 @@ namespace Dev2.Integration.Tests
 
                 if(!File.Exists(studioPath))
                 {
-                    studioPath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Warewolf Studio.exe");
+                    studioPath = Path.Combine(Directory.GetCurrentDirectory(), "Warewolf Studio.exe");
                 }
+
+                //Pre-assert
+                Assert.IsTrue(File.Exists(studioPath), "Studio not found at " + studioPath);
 
                 Process.Start(studioPath);
 
@@ -95,8 +98,11 @@ namespace Dev2.Integration.Tests
 
                 if(!File.Exists(serverPath))
                 {
-                    serverPath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Warewolf Server.exe");
+                    serverPath = Path.Combine(Directory.GetCurrentDirectory(), "Warewolf Server.exe");
                 }
+
+                //Pre-assert
+                Assert.IsTrue(File.Exists(serverPath), "Server not found at " + serverPath);
 
                 // fire off process 
                 Process p = new Process { StartInfo = { FileName = serverPath, RedirectStandardOutput = true, UseShellExecute = false } };

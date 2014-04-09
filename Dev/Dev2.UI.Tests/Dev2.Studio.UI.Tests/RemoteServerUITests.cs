@@ -182,7 +182,7 @@ namespace Dev2.Studio.UI.Tests
                 var actualRightTitleText = DatabaseSourceUIMap.GetRightTitleText();
 
                 Assert.AreEqual("Edit - DBSource", actualLeftTitleText);
-                Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+                Assert.AreEqual("Remote Connection (http://test-2:3142/dsf)", actualRightTitleText);
 
                 DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
                 DatabaseSourceUIMap.EnterUsernameAndPassword();
@@ -218,7 +218,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = WebSourceWizardUIMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - Dev2GetCountriesWebService", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual("Remote Connection (http://test-2:3142/dsf)", actualRightTitleText);
 
             WebSourceWizardUIMap.EnterTextIntoWizardTextBox(3, "?extension=json&prefix=b");
             WebSourceWizardUIMap.PressButtonOnWizard(3);
@@ -290,7 +290,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = EmailSourceWizardUIMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - EmailSource", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual("Remote Connection (http://test-2:3142/dsf)", actualRightTitleText);
 
 
             //Change Timeout
@@ -343,7 +343,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = PluginSourceMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - PluginSource", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://rsaklfsvrtfsbld:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual("Remote Connection (http://test-2:3142/dsf)", actualRightTitleText);
 
 
             PluginSourceMap.ClickPluginSourceAssemblyPath();

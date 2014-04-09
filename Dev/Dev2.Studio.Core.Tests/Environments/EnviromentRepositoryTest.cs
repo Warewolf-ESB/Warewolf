@@ -786,7 +786,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://rsaklfsvrtfsbld:3142/dsf;WebServerPort=3142"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://test-2:3142/dsf;WebServerPort=3142"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
 	<DisplayName>bld</DisplayName>
 	<Category/>
@@ -811,7 +811,7 @@ namespace Dev2.Core.Tests.Environments
 
             var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("http://rsaklfsvrtfsbld:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
+            Assert.AreEqual("http://test-2:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
         }
 
         [TestMethod]
@@ -824,7 +824,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://rsaklfsvrtfsbld:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://test-2:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
 	<DisplayName>bld</DisplayName>
 	<Category/>
@@ -849,7 +849,7 @@ namespace Dev2.Core.Tests.Environments
 
             var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("http://rsaklfsvrtfsbld:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
+            Assert.AreEqual("http://test-2:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
             Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
             Assert.AreEqual("dev2\\hagashen.naidu", result[0].Connection.UserName);
             Assert.AreEqual("hahaha", result[0].Connection.Password);

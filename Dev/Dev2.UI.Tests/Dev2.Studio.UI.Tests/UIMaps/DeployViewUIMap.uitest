@@ -109,7 +109,7 @@
                       </SearchConfigurations>
                       <AndCondition>
                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_DestinationServer_tfsbld (http://rsaklfsvrtfsbld:77/dsf)_AutoID</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_DestinationServer_tfsbld (http://test-2:3142/dsf)_AutoID</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
