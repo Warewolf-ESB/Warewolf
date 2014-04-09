@@ -90,6 +90,7 @@ namespace Gui
         /// <summary>
         /// Sets the failure message.
         /// </summary>
+        /// <param name="msg">The MSG.</param>
         private void SetFailureMessageForDependencies(string msg = null)
         {
             PreInstallMsgVCPlusPlus.Text = msg ?? "Cannot install VC++ 2008 SP1 x86";

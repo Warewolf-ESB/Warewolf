@@ -159,6 +159,7 @@
     <Compile Include="SetupWizard.xaml.cs">
       <DependentUpon>SetupWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\RegistryKeyExtensionMethods.cs" />
     <Compile Include="Utility\ResourceExtractor.cs" />
     <Compile Include="Utility\WarewolfCommand.cs" />
     <Compile Include="WelcomeStep.xaml.cs">

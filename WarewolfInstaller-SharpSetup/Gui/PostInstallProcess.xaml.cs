@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using Gui.Utility;
 using Ionic.Zip;
+using Microsoft.Win32;
 using NetFwTypeLib;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
@@ -266,194 +267,6 @@ namespace Gui
 
         }
 
-        private static string outputData = string.Empty;
-        private bool VerifyPortsAreOpen()
-        {
-            // WindowStyle = ProcessWindowStyle.Hidden 
-            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, CreateNoWindow = true } };
-            p.OutputDataReceived += OutputHandler;
-            p.Start();
-            p.BeginOutputReadLine();
-
-            p.WaitForExit(30);
-
-            // Now scan outputData for magical strings ;)
-            if(outputData.IndexOf("http://*:3142/", StringComparison.Ordinal) >= 0)
-            {
-                if(outputData.IndexOf("https://*:3143/", StringComparison.Ordinal) >= 0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
-        {
-            // Collect the sort command output. 
-            var data = outLine.Data;
-            if(!String.IsNullOrEmpty(data))
-            {
-                outputData += data;
-            }
-        }
-
-        /// <summary>
-        /// Cleanups the operation.
-        /// </summary>
-        private void CleanupOperation(string installLocation)
-        {
-
-            if(InstallVariables.RemoveLogFile)
-            {
-                // two install log files
-                var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
-                var path2 = Path.Combine(installLocation, "Warewolf Server.InstallState");
-
-                var paths = new[] { path, path2 };
-
-                foreach(var p in paths)
-                {
-                    try
-                    {
-                        File.Delete(p);
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch { }
-                    // ReSharper restore EmptyGeneralCatchClause
-                }
-            }
-
-        }
-
-        private void AddFirewallRules()
-        {
-            AddInboundRule();
-            AddOutboundRule();
-        }
-
-        private void AddOutboundRule()
-        {
-            if(!DoesRuleExist(InstallVariables.OutboundHTTPWarewolfRule))
-            {
-                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
-                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-                rule.Description = "Warewolf HTTP/HTTPS OUT";
-                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT;
-                rule.Enabled = true;
-                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
-                rule.LocalPorts = "3142";
-                rule.RemotePorts = "*";
-                rule.InterfaceTypes = "All";
-                rule.Name = InstallVariables.OutboundHTTPWarewolfRule;
-                // Add it 
-                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
-                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-                firewallPolicy.Rules.Add(rule);
-            }
-
-            if(!DoesRuleExist(InstallVariables.OutboundHTTPSWarewolfRule))
-            {
-                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
-                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-                rule.Description = "Warewolf HTTP/HTTPS OUT";
-                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT;
-                rule.Enabled = true;
-                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
-                rule.LocalPorts = "3143";
-                rule.RemotePorts = "*";
-                rule.InterfaceTypes = "All";
-                rule.Name = InstallVariables.OutboundHTTPSWarewolfRule;
-                // Add it 
-                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
-                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-                firewallPolicy.Rules.Add(rule);
-            }
-        }
-
-        private void AddInboundRule()
-        {
-            if(!DoesRuleExist(InstallVariables.InboundHTTPWarewolfRule))
-            {
-                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
-                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-                rule.Description = "Warewolf HTTP/HTTPS IN";
-                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
-                rule.Enabled = true;
-                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
-                rule.LocalPorts = "3142";
-                rule.RemotePorts = "*";
-                rule.InterfaceTypes = "All";
-                rule.Name = InstallVariables.InboundHTTPWarewolfRule;
-                // Add it
-                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
-                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-                firewallPolicy.Rules.Add(rule);
-            }
-
-            if(!DoesRuleExist(InstallVariables.InboundHTTPSWarewolfRule))
-            {
-                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
-                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-                rule.Description = "Warewolf HTTP/HTTPS IN";
-                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
-                rule.Enabled = true;
-                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
-                rule.LocalPorts = "3143";
-                rule.RemotePorts = "*";
-                rule.InterfaceTypes = "All";
-                rule.Name = InstallVariables.InboundHTTPSWarewolfRule;
-                // Add it
-                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
-                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-                firewallPolicy.Rules.Add(rule);
-            }
-        }
-
-        private bool DoesRuleExist(string ruleName)
-        {
-            INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
-            Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-
-            // iterate and find matching rule name ;)
-            foreach(INetFwRule rule in firewallPolicy.Rules)
-            {
-                if(rule.Name == ruleName)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void AddHttpRules()
-        {
-            // NOTE Use : netsh.exe http show urlacl - To view urlacl rules ;)
-
-            var args = new[] { @"http add urlacl url=http://*:3142/  user=\Everyone", @"http add urlacl url=https://*:3143/ user=\Everyone" };
-
-            //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
-            try
-            {
-                foreach(var arg in args)
-                {
-                    bool invoke = ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
-                    if(!invoke)
-                    {
-                        SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
-                    }
-                }
-
-            }
-            catch(Exception e)
-            {
-                SetFailureMessage(e.Message);
-            }
-        }
-
-
         /// <summary>
         /// Handles the Entered event of the PostInstallStep control.
         /// </summary>
@@ -525,6 +338,7 @@ namespace Gui
                         cnt++;
                     }
 
+                    // Add Firewall Rules
                     try
                     {
                         AddFirewallRules();
@@ -536,6 +350,15 @@ namespace Gui
                     {
                         // do nothing
                     }
+
+                    // Add Trusted Sites
+                    try
+                    {
+                        AddTrustedSites();
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch { }
+                    // ReSharper restore EmptyGeneralCatchClause
 
                 };
 
@@ -580,5 +403,256 @@ namespace Gui
                 SetFailureMessage("Installer cannot resolve server install location");
             }
         }
+
+        #region Custom Installer Operations
+
+        /// <summary>
+        /// Adds the trusted sites.
+        /// </summary>
+        private void AddTrustedSites()
+        {
+            const string domainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+            const string domain = @"localhost";
+            const int trustedSiteZone = 0x2;
+
+            var subdomains = new Dictionary<string, string>
+                            {
+                                {"www", "https"},
+                                {"www", "http"}
+                            };
+
+            RegistryKey currentUserKey = Registry.CurrentUser;
+
+            currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, false);
+
+            foreach(var subdomain in subdomains)
+            {
+                CreateSubdomainKeyAndValue(currentUserKey, domainsKeyLocation, domain, subdomain, trustedSiteZone);
+            }
+        }
+
+        private static void CreateSubdomainKeyAndValue(RegistryKey currentUserKey, string domainsKeyLocation, string domain, KeyValuePair<string, string> subdomain, int zone)
+        {
+            RegistryKey subdomainRegistryKey = currentUserKey.GetOrCreateSubKey(
+                string.Format(@"{0}\{1}", domainsKeyLocation, domain),
+                subdomain.Key, true);
+
+            object objSubDomainValue = subdomainRegistryKey.GetValue(subdomain.Value);
+
+            if(objSubDomainValue == null || Convert.ToInt32(objSubDomainValue) != zone)
+            {
+                subdomainRegistryKey.SetValue(subdomain.Value, zone, RegistryValueKind.DWord);
+            }
+        }
+
+        private static string outputData = string.Empty;
+        private bool VerifyPortsAreOpen()
+        {
+            // WindowStyle = ProcessWindowStyle.Hidden 
+            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, CreateNoWindow = true } };
+            p.OutputDataReceived += OutputHandler;
+            p.Start();
+            p.BeginOutputReadLine();
+
+            p.WaitForExit(30);
+
+            // Now scan outputData for magical strings ;)
+            if(outputData.IndexOf("http://*:3142/", StringComparison.Ordinal) >= 0)
+            {
+                if(outputData.IndexOf("https://*:3143/", StringComparison.Ordinal) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        {
+            // Collect the sort command output. 
+            var data = outLine.Data;
+            if(!String.IsNullOrEmpty(data))
+            {
+                outputData += data;
+            }
+        }
+
+        /// <summary>
+        /// Cleanups the operation.
+        /// </summary>
+        private void CleanupOperation(string installLocation)
+        {
+
+            if(InstallVariables.RemoveLogFile)
+            {
+                // two install log files
+                var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
+                var path2 = Path.Combine(installLocation, "Warewolf Server.InstallState");
+
+                var paths = new[] { path, path2 };
+
+                foreach(var p in paths)
+                {
+                    try
+                    {
+                        File.Delete(p);
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch { }
+                    // ReSharper restore EmptyGeneralCatchClause
+                }
+            }
+
+        }
+
+
+
+
+        /// <summary>
+        /// Adds the firewall rules.
+        /// </summary>
+        private void AddFirewallRules()
+        {
+            AddInboundRule();
+            AddOutboundRule();
+        }
+
+        /// <summary>
+        /// Adds the outbound rule.
+        /// </summary>
+        private void AddOutboundRule()
+        {
+            if(!DoesRuleExist(InstallVariables.OutboundHTTPWarewolfRule))
+            {
+                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
+                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
+                rule.Description = "Warewolf HTTP/HTTPS OUT";
+                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT;
+                rule.Enabled = true;
+                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
+                rule.LocalPorts = "3142";
+                rule.RemotePorts = "*";
+                rule.InterfaceTypes = "All";
+                rule.Name = InstallVariables.OutboundHTTPWarewolfRule;
+                // Add it 
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                firewallPolicy.Rules.Add(rule);
+            }
+
+            if(!DoesRuleExist(InstallVariables.OutboundHTTPSWarewolfRule))
+            {
+                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
+                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
+                rule.Description = "Warewolf HTTP/HTTPS OUT";
+                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT;
+                rule.Enabled = true;
+                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
+                rule.LocalPorts = "3143";
+                rule.RemotePorts = "*";
+                rule.InterfaceTypes = "All";
+                rule.Name = InstallVariables.OutboundHTTPSWarewolfRule;
+                // Add it 
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                firewallPolicy.Rules.Add(rule);
+            }
+        }
+
+        /// <summary>
+        /// Adds the inbound rule.
+        /// </summary>
+        private void AddInboundRule()
+        {
+            if(!DoesRuleExist(InstallVariables.InboundHTTPWarewolfRule))
+            {
+                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
+                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
+                rule.Description = "Warewolf HTTP/HTTPS IN";
+                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
+                rule.Enabled = true;
+                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
+                rule.LocalPorts = "3142";
+                rule.RemotePorts = "*";
+                rule.InterfaceTypes = "All";
+                rule.Name = InstallVariables.InboundHTTPWarewolfRule;
+                // Add it
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                firewallPolicy.Rules.Add(rule);
+            }
+
+            if(!DoesRuleExist(InstallVariables.InboundHTTPSWarewolfRule))
+            {
+                INetFwRule rule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
+                rule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
+                rule.Description = "Warewolf HTTP/HTTPS IN";
+                rule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
+                rule.Enabled = true;
+                rule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
+                rule.LocalPorts = "3143";
+                rule.RemotePorts = "*";
+                rule.InterfaceTypes = "All";
+                rule.Name = InstallVariables.InboundHTTPSWarewolfRule;
+                // Add it
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                firewallPolicy.Rules.Add(rule);
+            }
+        }
+
+        /// <summary>
+        /// Doeses the rule exist.
+        /// </summary>
+        /// <param name="ruleName">Name of the rule.</param>
+        /// <returns></returns>
+        private bool DoesRuleExist(string ruleName)
+        {
+            INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+            Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+
+            // iterate and find matching rule name ;)
+            foreach(INetFwRule rule in firewallPolicy.Rules)
+            {
+                if(rule.Name == ruleName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Adds the HTTP rules.
+        /// </summary>
+        private void AddHttpRules()
+        {
+            // NOTE Use : netsh.exe http show urlacl - To view urlacl rules ;)
+
+            var args = new[] { @"http add urlacl url=http://*:3142/  user=\Everyone", @"http add urlacl url=https://*:3143/ user=\Everyone" };
+
+            //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
+            try
+            {
+                foreach(var arg in args)
+                {
+                    bool invoke = ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
+                    if(!invoke)
+                    {
+                        SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
+                    }
+                }
+
+            }
+            catch(Exception e)
+            {
+                SetFailureMessage(e.Message);
+            }
+        }
+
+        #endregion
+
     }
 }
