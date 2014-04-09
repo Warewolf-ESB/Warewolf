@@ -247,6 +247,11 @@ namespace Dev2.Settings
         {
             var server = obj as IEnvironmentModel;
 
+            if(Equals(CurrentEnvironment, server))
+            {
+                return;
+            }
+
             if(server == null)
             {
                 return;
