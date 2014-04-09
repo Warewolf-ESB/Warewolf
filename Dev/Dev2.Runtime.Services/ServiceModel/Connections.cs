@@ -251,7 +251,7 @@ namespace Dev2.Runtime.ServiceModel
                     try
                     {
                         // Credentials = client.Credentials 
-                        hub = new HubConnection(connection.Address) { Credentials = client.Credentials };
+                        hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
                         ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 #pragma warning disable 168
                         var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation

@@ -73,6 +73,32 @@ namespace Dev2.Data.ServiceModel
 
         #endregion
 
+        /// <summary>
+        /// Fetches the test connection address.
+        /// </summary>
+        public String FetchTestConnectionAddress()
+        {
+            var result = Address;
+
+            if(result != null)
+            {
+                if(result.IndexOf("dsf", StringComparison.Ordinal) < 0)
+                {
+                    if(result.EndsWith("/"))
+                    {
+                        result += "dsf";
+                    }
+                    else
+                    {
+                        result += "/dsf";
+                    }
+
+                }
+            }
+
+            return result;
+        }
+
         #region ToXml
 
         public override XElement ToXml()

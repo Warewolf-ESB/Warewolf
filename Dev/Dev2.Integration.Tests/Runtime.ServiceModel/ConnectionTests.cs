@@ -10,6 +10,63 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
     [TestClass]
     public class ConnectionTests
     {
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connection_ServerMissingDsf")]
+        public void Connection_ServerMissingDsf_ServerUrlMissingSlashDsf_ExpectConnectionOk()
+        {
+            //------------Setup for test--------------------------
+            //Create Connection
+            Connection conn = SetupUserConnection("http://localhost:3142");
+            Connections connections = new Connections();
+
+            //------------Execute Test---------------------------
+            //Attemp to test the connection
+            ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(validationResult.IsValid);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connection_ServerMissingDsf")]
+        public void Connection_ServerMissingDsf_ServerUrlWithSlashMissingDsf_ExpectConnectionOk()
+        {
+            //------------Setup for test--------------------------
+            //Create Connection
+            Connection conn = SetupUserConnection("http://localhost:3142/");
+            Connections connections = new Connections();
+
+            //------------Execute Test---------------------------
+            //Attemp to test the connection
+            ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(validationResult.IsValid);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connection_ServerMissingDsf")]
+        public void Connection_ServerMissingDsf_ServerUrlMissingDsf_ExpectConnectionOk()
+        {
+            //------------Setup for test--------------------------
+            //Create Connection
+            Connection conn = SetupUserConnection("http://localhost:3142");
+            Connections connections = new Connections();
+
+            //------------Execute Test---------------------------
+            //Attemp to test the connection
+            ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(validationResult.IsValid);
+        }
+
+
+
         [TestMethod]
         public void Connection_Test_ValidServer_PositiveValidationResult()
         {
@@ -57,11 +114,19 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         }
 
 
-        static Connection SetupUserConnection()
+        static Connection SetupUserConnection(string overRideAddress = "")
         {
+
+            var address = ServerSettings.DsfAddress;
+            if(overRideAddress != "")
+            {
+                address = overRideAddress;
+            }
+
             var testConnection = new Connection
             {
-                Address = ServerSettings.DsfAddress,
+
+                Address = address,
                 AuthenticationType = AuthenticationType.User,
                 Password = "I73573r0",
                 ResourceID = Guid.NewGuid(),

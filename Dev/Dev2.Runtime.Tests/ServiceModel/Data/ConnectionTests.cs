@@ -16,6 +16,74 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [ExcludeFromCodeCoverage]
     public class ConnectionTests
     {
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connections_GetTestConnectionAddress")]
+        public void Connection_GetTestConnectionAddress_WhenDsfPresent_ExpectSameAddress()
+        {
+            //------------Setup for test--------------------------
+            const string address = "http://localhost:3142/dsf";
+            var conn = new Connection
+            {
+                ResourceType = ResourceType.Server,
+                Address = address
+            };
+
+
+            //------------Execute Test---------------------------
+            var result = conn.FetchTestConnectionAddress();
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, address);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connections_GetTestConnectionAddress")]
+        public void Connection_GetTestConnectionAddress_WhenOnlySlashPresent_ExpectDsfAdded()
+        {
+
+            //------------Setup for test--------------------------
+            const string address = "http://localhost:3142/";
+            const string expected = address + "dsf";
+            var conn = new Connection
+            {
+                ResourceType = ResourceType.Server,
+                Address = address
+            };
+
+
+            //------------Execute Test---------------------------
+            var result = conn.FetchTestConnectionAddress();
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, expected);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Connections_GetTestConnectionAddress")]
+        public void Connection_GetTestConnectionAddress_WhenNoSlashPresent_ExpectSlashAndDsfAdded()
+        {
+            //------------Setup for test--------------------------
+            const string address = "http://localhost:3142";
+            const string expected = address + "/dsf";
+            var conn = new Connection
+            {
+                ResourceType = ResourceType.Server,
+                Address = address
+            };
+
+
+            //------------Execute Test---------------------------
+            var result = conn.FetchTestConnectionAddress();
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, expected);
+        }
+
         [TestMethod]
         public void Connections_Test_InvalidPortNumber_InvalidResult()
         {
