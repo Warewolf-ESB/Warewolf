@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
     <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
     <SolidColorBrush x:Key="CheckBoxInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="Black" />
     <SolidColorBrush x:Key="CheckBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="CheckBoxPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="CheckBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />

@@ -43,7 +43,7 @@
                     <Image Visibility="Visible" Source="/Gui;component\ResourceFiles\Images\tick.png" Name="preUnInstallStatusImg" Margin="0,0,0,195" Width="16" RenderTransformOrigin="1.651,2.784"/>
                     <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar" Margin="0,0,0,189" Height="20" Width="20"/>
                 </StackPanel>
-                <CheckBox Style="{StaticResource CheckBoxStyle}" VerticalAlignment="Bottom" IsChecked="false" Content="{x:Static props:Resources.PreUninstall_Remove_All_Text}" Margin="0,0,0,0" Click="BtnRemoveAllTraces" Visibility="Visible" Name="cbRemoveItAll"/>
+                <CheckBox Style="{StaticResource CheckBoxStyle}" FontWeight="Bold" VerticalAlignment="Bottom" IsChecked="false" Content="{x:Static props:Resources.PreUninstall_Remove_All_Text}" Margin="0,0,0,0" Click="BtnRemoveAllTraces" Visibility="Visible" Name="cbRemoveItAll"/>
                 <Button Style="{StaticResource ButtonStyle}" x:Name="btnRerun" Content="Try Again" Padding="16,2,16,2" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Height="16" Visibility="Visible" Width="287" Click="BtnRerun_OnClick"/>
                 <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
             </StackPanel>

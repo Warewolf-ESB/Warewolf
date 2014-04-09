@@ -49,6 +49,7 @@
                                  FontFamily="{StaticResource DefaultFontFamily}"
                                  ScrollViewer.VerticalScrollBarVisibility="Hidden" />                                    
                     <CheckBox Grid.Row="1"
+                              FontWeight="Bold"
                               Style="{StaticResource CheckBoxStyle}"
                               Name="cbAccept"
                               IsChecked="{Binding CanGoNext, RelativeSource={RelativeSource FindAncestor, AncestorType=ss:ModernActionStep}}"

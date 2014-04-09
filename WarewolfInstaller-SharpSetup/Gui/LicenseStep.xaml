@@ -55,6 +55,7 @@
                                  Background="#D4D5D6"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto" />
                     <CheckBox Grid.Row="2"
+                              FontWeight="Bold"
                               Style="{StaticResource CheckBoxStyle}"
                               Name="cbAccept"
                               IsChecked="{Binding CanGoNext, RelativeSource={RelativeSource FindAncestor, AncestorType=ss:ModernActionStep}}"

@@ -35,8 +35,8 @@
                            Margin="-10,0,0,0"></Rectangle>
         <DockPanel Grid.Row="2" HorizontalAlignment="Stretch">
             <TextBlock Style="{StaticResource TextBlockStyle}" TextWrapping="NoWrap" DockPanel.Dock="Bottom" Text="{x:Static props:Resources.FinishStep_MessageBottom}" Visibility="Hidden" Name="tbFinish"/>
-            <CheckBox Style="{StaticResource CheckBoxStyle}" DockPanel.Dock="Bottom" IsChecked="true" Content="{x:Static props:Resources.FinishStep_Start_Studio_Text}" Margin="0,0,0,5" Click="BtnExitWithStart" Visibility="Visible" Name="cbStartStudio"/>
-            <CheckBox Style="{StaticResource CheckBoxStyle}" DockPanel.Dock="Bottom" IsChecked="true" Content="{x:Static props:Resources.FinishStep_View_Readme}" Margin="0,0,0,5" Click="BtnExitWithReadme" Visibility="Visible" Name="cbViewReadMe"/>
+            <CheckBox Style="{StaticResource CheckBoxStyle}" FontWeight="Bold" DockPanel.Dock="Bottom" IsChecked="true" Content="{x:Static props:Resources.FinishStep_Start_Studio_Text}" Margin="0,0,0,5" Click="BtnExitWithStart" Visibility="Visible" Name="cbStartStudio"/>
+            <CheckBox Style="{StaticResource CheckBoxStyle}" FontWeight="Bold" DockPanel.Dock="Bottom" IsChecked="true" Content="{x:Static props:Resources.FinishStep_View_Readme}" Margin="0,0,0,5" Click="BtnExitWithReadme" Visibility="Visible" Name="cbViewReadMe"/>
             <TextBlock Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap" Text="{x:Static props:Resources.FinishStep_MessageMain}" />
         </DockPanel>
     </Grid>
