@@ -61,7 +61,8 @@ namespace Dev2.Activities.Debug
             {
                 int groupIndex = 0;
                 enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
-                if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
+
+                if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Numeric && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty)  || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
                     if(!dlEntry.IsEmpty())
@@ -376,7 +377,7 @@ namespace Dev2.Activities.Debug
                 {
                     indexType = enRecordsetIndexType.Star;
                 }
-                if(indexType == enRecordsetIndexType.Star)
+                if(indexType == enRecordsetIndexType.Star || indexType == enRecordsetIndexType.Numeric)
                 {
                     IIndexIterator idxItr = dlEntry.FetchRecordsetIndexes();
                     while(idxItr.HasMore())

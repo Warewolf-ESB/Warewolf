@@ -57,7 +57,7 @@ Scenario: Delete the first record in a recordset
 	And the execution has "NO" error
 	And the debug inputs as  	
 	| Records       |
-	| [[rs(1)]] = 1 |
+	| [[rs(1).row]] = 1 |
 	And the debug output as  
 	|                      |
 	| [[result]] = Success |	
@@ -143,10 +143,10 @@ Scenario: Delete a record that does not exist
 	| rs().row | 3   |
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Records      |
-	| [[rs(5)]]  = |
+	| Records          |
+	| [[rs(5).row]]  = |
 	And the debug output as  
-	|                       |
+	|                      |
 	| [[result]] = Failure |
 
 Scenario: Delete a record an empty recordset

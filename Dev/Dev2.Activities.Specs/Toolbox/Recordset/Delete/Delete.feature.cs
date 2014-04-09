@@ -226,7 +226,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
             table10.AddRow(new string[] {
-                        "[[rs(1)]] = 1"});
+                        "[[rs(1).row]] = 1"});
 #line 58
  testRunner.And("the debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
@@ -476,7 +476,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
             table26.AddRow(new string[] {
-                        "[[rs(5)]]  ="});
+                        "[[rs(5).row]]  ="});
 #line 145
  testRunner.And("the debug inputs as", ((string)(null)), table26, "And ");
 #line hidden
