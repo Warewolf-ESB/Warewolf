@@ -20,9 +20,12 @@ namespace Dev2.CustomControls.Converters
             foreach(var value in values)
             {
                 bool? tmpval = value as bool?;
-                if(!tmpval.GetValueOrDefault())
+                if(tmpval != null)
                 {
-                    return false;
+                    if(!tmpval.GetValueOrDefault())
+                    {
+                        return false;
+                    }
                 }
             }
             return true;

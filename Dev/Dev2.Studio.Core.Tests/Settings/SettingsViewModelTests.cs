@@ -808,15 +808,18 @@ You need Administrator permission.", viewModel.Errors);
             //------------Setup for test--------------------------
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.SetupAllProperties();
-            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel);
+            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
 
             viewModel.IsDirty = true;
             //------------Execute Test---------------------------
             var result = viewModel.DoDeactivate();
-            //------------Assert Results-------------------------
 
+            var env = viewModel.CurrentEnvironment;
+            viewModel.Handle(new SelectedServerConnectedMessage(env));
+            //------------Assert Results-------------------------
+            mockPopupController.Verify(c => c.ShowSettingsCloseConfirmation(), Times.Once());
             Assert.IsFalse(result);
         }
 
