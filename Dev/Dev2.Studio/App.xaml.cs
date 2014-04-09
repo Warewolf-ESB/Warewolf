@@ -15,6 +15,7 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
+using Dev2.Threading;
 using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
@@ -94,7 +95,7 @@ namespace Dev2.Studio
 
 #if ! (DEBUG)
             var versionChecker = new VersionChecker();
-            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow));
+            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow), new AsyncWorker());
 #endif
         }
 

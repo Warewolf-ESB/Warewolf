@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
@@ -1940,6 +1941,50 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("MainViewModel_OnStudioClosing")]
         [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
+        {
+            SetupDefaultMef();
+            var eventPublisher = new Mock<IEventAggregator>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var connected1 = new Mock<IEnvironmentModel>();
+            var connected2 = new Mock<IEnvironmentModel>();
+            var notConnected = new Mock<IEnvironmentModel>();
+            connected1.Setup(a=>a.IsConnected).Returns(true).Verifiable();
+            connected1.Setup(a=>a.Disconnect()).Verifiable();
+            connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected2.Setup(a=>a.Disconnect()).Verifiable();
+            notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
+            IList<IEnvironmentModel> lst = new List<IEnvironmentModel>(){connected1.Object,connected2.Object,notConnected.Object};
+
+            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            environmentRepository.Setup(repo => repo.All()).Returns(lst);
+            var versionChecker = new Mock<IVersionChecker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
+            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var task = new Mock<IScheduledResource>();
+            task.Setup(a => a.IsDirty).Returns(false);
+            scheduler.SelectedTask = task.Object;
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler);
+
+            mvm.Items.Add(vm);
+            Assert.IsTrue(mvm.OnStudioClosing());   // assert that the studio closes
+            connected1.Verify(a => a.IsConnected);
+            connected1.Verify(a => a.Disconnect());
+            connected2.Verify(a => a.IsConnected);
+            connected2.Verify(a => a.Disconnect());
+            notConnected.Verify(a => a.IsConnected);
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OnStudioClosing")]
+        [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_CallsSettingsOnClosing()
         {
             SetupDefaultMef();
@@ -1988,7 +2033,7 @@ namespace Dev2.Core.Tests
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings);
-
+            environmentRepository.Setup(repo => repo.All()).Returns(new List<IEnvironmentModel>());
             mvm.Items.Add(vm);
             Assert.IsTrue(mvm.OnStudioClosing());
 
@@ -2016,7 +2061,7 @@ namespace Dev2.Core.Tests
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler);
-
+            environmentRepository.Setup(repo => repo.All()).Returns(new List<IEnvironmentModel>());
             mvm.Items.Add(vm);
             Assert.IsTrue( mvm.OnStudioClosing());
 

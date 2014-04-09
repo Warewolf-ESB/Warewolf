@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Progress;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -64,15 +65,14 @@ namespace Dev2.Core.Tests.Helpers
             mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.2").Verifiable();
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
-
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
             versionChecker.ShowPopupResult = MessageBoxResult.Yes;
             versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
-            versionChecker.IsLatest(mockDownloader.Object, new Mock<IProgressDialog>().Object);
+            versionChecker.IsLatest(mockDownloader.Object, new Mock<IProgressDialog>().Object, asyncWorker.Object);
 
             Assert.AreEqual(1, versionChecker.ShowPopUpHitCount, "Do you want to download new version not displayed if latest version if higher than current version");
-            //This must get hit twice as it need to download the version file and the new start page
-            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Between(2, 2, new Range()));
+            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -90,15 +90,14 @@ namespace Dev2.Core.Tests.Helpers
             mockPopUp.Setup(c => c.ShowDialog()).Verifiable();
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
-
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
             versionChecker.ShowPopupResult = MessageBoxResult.No;
             versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
-            versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object);
+            versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
             mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
-            //This must get hit twice as it need to download the version file and the new start page
-            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Between(2, 2, new Range()));
+            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Once());
         }
 
         [TestMethod]
@@ -116,15 +115,14 @@ namespace Dev2.Core.Tests.Helpers
             mockPopUp.Setup(c => c.ShowDialog()).Verifiable();
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
-
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
             versionChecker.ShowPopupResult = MessageBoxResult.Yes;
             versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
-            versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object);
+            versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
             mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
-            //This must get hit twice as it need to download the version file and the new start page
-            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Between(2, 2, new Range()));
+            mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Once());
         }
 
         #endregion

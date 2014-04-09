@@ -1592,7 +1592,20 @@ namespace Dev2.Studio.ViewModels
                     }
                 }
             }
+            CloseRemoteConnections();
             return true;
+        }
+
+        private void CloseRemoteConnections()
+        {
+            
+           var connected=  EnvironmentRepository.All().Where(a => a.IsConnected);
+           foreach (var environmentModel in connected)
+           {
+
+               environmentModel.Disconnect();
+                
+           }
         }
 
         #endregion
