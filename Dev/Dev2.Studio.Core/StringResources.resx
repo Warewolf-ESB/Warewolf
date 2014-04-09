@@ -770,4 +770,14 @@ Would you like to start the setup now?</value>
   <data name="Warewolf_Homepage_New" xml:space="preserve">
     <value>http://warewolf.io/start_new.html</value>
   </data>
+  <data name="SaveSettingErrorPrefix" xml:space="preserve">
+    <value>Error while saving</value>
+  </data>
+  <data name="SaveSettingsNotReachableErrorMsg" xml:space="preserve">
+    <value>Error while saving: Server unreachable.</value>
+  </data>
+  <data name="SaveSettingsPermissionsErrorMsg" xml:space="preserve">
+    <value>Error while saving: You don't have permission to change settings on this server.
+You need Administrator permission.</value>
+  </data>
 </root>

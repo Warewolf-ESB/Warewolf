@@ -943,6 +943,34 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while saving.
+        /// </summary>
+        public static string SaveSettingErrorPrefix {
+            get {
+                return ResourceManager.GetString("SaveSettingErrorPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: Server unreachable..
+        /// </summary>
+        public static string SaveSettingsNotReachableErrorMsg {
+            get {
+                return ResourceManager.GetString("SaveSettingsNotReachableErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving: You don&apos;t have permission to change settings on this server.
+        ///You need Administrator permission..
+        /// </summary>
+        public static string SaveSettingsPermissionsErrorMsg {
+            get {
+                return ResourceManager.GetString("SaveSettingsPermissionsErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ResourceUpload.
         /// </summary>
         public static string Services_Add_Resource {

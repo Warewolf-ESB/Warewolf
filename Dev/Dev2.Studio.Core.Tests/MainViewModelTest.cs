@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
@@ -17,14 +16,12 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
-using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
@@ -1931,10 +1928,10 @@ namespace Dev2.Core.Tests
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
-            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey() , scheduler);
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler);
 
-            mvm.Items.Add(vm) ;
-            Assert.IsFalse( mvm.OnStudioClosing());
+            mvm.Items.Add(vm);
+            Assert.IsFalse(mvm.OnStudioClosing());
 
         }
 
@@ -1949,12 +1946,12 @@ namespace Dev2.Core.Tests
             var connected1 = new Mock<IEnvironmentModel>();
             var connected2 = new Mock<IEnvironmentModel>();
             var notConnected = new Mock<IEnvironmentModel>();
-            connected1.Setup(a=>a.IsConnected).Returns(true).Verifiable();
-            connected1.Setup(a=>a.Disconnect()).Verifiable();
+            connected1.Setup(a => a.IsConnected).Returns(true).Verifiable();
+            connected1.Setup(a => a.Disconnect()).Verifiable();
             connected2.Setup(a => a.IsConnected).Returns(true).Verifiable();
-            connected2.Setup(a=>a.Disconnect()).Verifiable();
+            connected2.Setup(a => a.Disconnect()).Verifiable();
             notConnected.Setup(a => a.IsConnected).Returns(false).Verifiable();
-            IList<IEnvironmentModel> lst = new List<IEnvironmentModel>(){connected1.Object,connected2.Object,notConnected.Object};
+            IList<IEnvironmentModel> lst = new List<IEnvironmentModel> { connected1.Object, connected2.Object, notConnected.Object };
 
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
@@ -2003,7 +2000,7 @@ namespace Dev2.Core.Tests
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
-                var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings);
+            var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), settings);
 
             mvm.Items.Add(vm);
             Assert.IsFalse(mvm.OnStudioClosing());
@@ -2026,7 +2023,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
 
-            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(),new NativeWindow());
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow());
             settings.RetValue = true;
             settings.WorkSurfaceContext = WorkSurfaceContext.Settings;
             var task = new Mock<IScheduledResource>();
@@ -2063,7 +2060,7 @@ namespace Dev2.Core.Tests
             var vm = new WorkSurfaceContextViewModel(new EventAggregator(), new WorkSurfaceKey(), scheduler);
             environmentRepository.Setup(repo => repo.All()).Returns(new List<IEnvironmentModel>());
             mvm.Items.Add(vm);
-            Assert.IsTrue( mvm.OnStudioClosing());
+            Assert.IsTrue(mvm.OnStudioClosing());
 
         }
 
@@ -2392,46 +2389,48 @@ namespace Dev2.Core.Tests
         }
     }
 
-    public class SchedulerViewModelForTesting:SchedulerViewModel
+    public class SchedulerViewModelForTesting : SchedulerViewModel
     {
-       public SchedulerViewModelForTesting() : base()
-       {
-           
-       }
-       public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
-           : base(eventPublisher,directoryObjectPicker,popupController,asyncWorker)
-       {
+        public SchedulerViewModelForTesting()
+            : base()
+        {
 
-       }
+        }
+        public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
+            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker)
+        {
 
-       public override bool DoDeactivate()
-       {
-           return RetValue;
-       }
+        }
 
-       public bool RetValue { get; set; }
+        public override bool DoDeactivate()
+        {
+            return RetValue;
+        }
+
+        public bool RetValue { get; set; }
     }
 
     public class SettingsViewModelForTest : SettingsViewModel
     {
 
-         public SettingsViewModelForTest() : base()
-       {
-           
-       }
+        public SettingsViewModelForTest()
+            : base()
+        {
 
-         public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
-                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
+        }
+
+        public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
+                                       IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher, popupController, asyncWorker, parentWindow)
         {
         }
 
 
         public override bool DoDeactivate()
-         {
-             return RetValue;
-         }
+        {
+            return RetValue;
+        }
 
-         public bool RetValue { get; set; }
+        public bool RetValue { get; set; }
     }
 }

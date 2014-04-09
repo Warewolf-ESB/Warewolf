@@ -1,8 +1,8 @@
 ﻿using System;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.ViewModels.Dialogs;
 using System.ComponentModel.Composition;
 using System.Windows;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.ViewModels.Dialogs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
@@ -11,13 +11,6 @@ namespace Dev2.Studio.Controller
     [Export(typeof(IPopupController))]
     public class PopupController : IPopupController
     {
-        private string _header;
-        private string _discripton;
-        private string _question;
-        MessageBoxImage _imageType;
-        MessageBoxButton _buttons;
-        string _dontShowAgainKey;
-
         public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
         {
             Header = headerText;
@@ -31,77 +24,17 @@ namespace Dev2.Studio.Controller
 
         }
 
-        public string Header
-        {
-            get
-            {
-                return _header;
-            }
-            set
-            {
-                _header = value;
-            }
-        }
+        public string Header { get; set; }
 
-        public string Description
-        {
-            get
-            {
-                return _discripton;
-            }
-            set
-            {
-                _discripton = value;
-            }
-        }
+        public string Description { get; set; }
 
-        public string Question
-        {
-            get
-            {
-                return _question;
-            }
-            set
-            {
-                _question = value;
-            }
-        }
+        public string Question { get; set; }
 
-        public MessageBoxImage ImageType
-        {
-            get
-            {
-                return _imageType;
-            }
-            set
-            {
-                _imageType = value;
-            }
-        }
+        public MessageBoxImage ImageType { get; set; }
 
-        public MessageBoxButton Buttons
-        {
-            get
-            {
-                return _buttons;
-            }
-            set
-            {
-                _buttons = value;
-            }
-        }
+        public MessageBoxButton Buttons { get; set; }
 
-        public string DontShowAgainKey
-        {
-            get
-            {
-                return _dontShowAgainKey;
-            }
-            set
-            {
-                _dontShowAgainKey = value;
-            }
-        }
+        public string DontShowAgainKey { get; set; }
 
         public MessageBoxResult Show()
         {
@@ -137,7 +70,7 @@ namespace Dev2.Studio.Controller
                           "-------------------------------------------------------------------" +
                           "Yes - Save with the new name." + Environment.NewLine +
                           "No - Save with the old name." + Environment.NewLine +
-                          "Cancel - Returns you to Scheduler."; ;
+                          "Cancel - Returns you to Scheduler.";
             ImageType = MessageBoxImage.Information;
             return Show();
         }

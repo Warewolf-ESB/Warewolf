@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Instrumentation;
@@ -14,12 +20,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace Dev2.Settings
 {
@@ -256,6 +256,7 @@ namespace Dev2.Settings
             {
                 return;
             }
+
             if(SecurityViewModel != null)
             {
                 if(!DoDeactivate())
@@ -265,6 +266,7 @@ namespace Dev2.Settings
                     return;
                 }
             }
+
             CurrentEnvironment = server;
             LoadSettings();
         }
@@ -352,10 +354,10 @@ namespace Dev2.Settings
                 return SaveSettings();
             }
 
-            if (messageBoxResult == MessageBoxResult.No)
+            if(messageBoxResult == MessageBoxResult.No)
             {
                 IsDirty = false;
-                ResetIsDirtyForChildren();    
+                ResetIsDirtyForChildren();
             }
 
             return true;
@@ -408,11 +410,10 @@ namespace Dev2.Settings
                     return IsSaved;
                 }
 
-                ShowError("Error while saving", @"Error while saving: You don't have permission to change settings on this server.
-You need Administrator permission.");
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
                 return false;
             }
-            ShowError("Error while saving", "Error while saving: Server unreachable.");
+            ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
             return false;
         }
 

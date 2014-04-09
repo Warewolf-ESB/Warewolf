@@ -1,4 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
+using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
@@ -23,15 +32,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Microsoft.Win32.TaskScheduler;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace Dev2.Settings.Scheduler
 {
@@ -715,7 +715,9 @@ namespace Dev2.Settings.Scheduler
         {
             if(CurrentEnvironment.IsConnected)
             {
-                if(CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
+                var authService = CurrentEnvironment.AuthorizationService;
+
+                if(authService != null && authService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
                     if(SelectedTask != null && SelectedTask.IsDirty)
                     {

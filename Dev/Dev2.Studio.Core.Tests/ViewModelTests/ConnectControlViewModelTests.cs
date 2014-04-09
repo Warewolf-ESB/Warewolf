@@ -32,7 +32,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new ConnectControlViewModel(null, null);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
 
@@ -63,7 +65,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             var otherServer = CreateServer("disconnected", false);
             var connectViewModel = new ConnectControlViewModel(localhostServer, new EventAggregator());
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer, remoteServer, otherServer);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             connectViewModel.LoadServers();
             //------------Assert Results-------------------------
@@ -83,7 +87,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             var otherServer = CreateServer("disconnected", false);
             var connectViewModel = new ConnectControlViewModel(localhostServer, new EventAggregator());
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer, remoteServer, otherServer);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             connectViewModel.LoadServers(remoteServer);
             //------------Assert Results-------------------------
@@ -103,7 +109,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             var otherServer = CreateServer("disconnected", false);
             var connectViewModel = new ConnectControlViewModel(localhostServer, new EventAggregator());
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer, otherServer);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             connectViewModel.LoadServers(remoteServer);
             //------------Assert Results-------------------------
@@ -121,7 +129,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             var localhostServer = CreateServer("localhost", true);
             var connectViewModel = new ConnectControlViewModel(localhostServer, new EventAggregator());
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             connectViewModel.LoadServers();
             //------------Assert Results-------------------------
@@ -145,7 +155,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new TestConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer, remoteServer, otherServer);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             connectControlViewModel.BindToActiveEnvironment = true;
             connectControlViewModel.LoadServers();
             //------------Execute Test---------------------------
@@ -416,7 +428,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             connectControlViewModel.BindToActiveEnvironment = false;
             var serverDtos = new List<IEnvironmentModel> { localhostServer.Object, remoteServer.Object, otherServer.Object };
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer.Object, remoteServer.Object, otherServer.Object);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository);
+            // ReSharper restore ObjectCreationAsStatement
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
             connectControlViewModel.SelectedServer = localhostServer.Object;

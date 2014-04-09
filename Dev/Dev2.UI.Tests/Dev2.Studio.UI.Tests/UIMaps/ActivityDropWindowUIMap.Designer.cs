@@ -181,7 +181,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                 if(workflowsAutoID.Contains("WORKFLOW"))
                 {
                     UITestControlCollection uiTestControlCollection = treeChild.GetChildren();
-                    var firstFolder = uiTestControlCollection[6];
                     UITestControl firstOrDefault = uiTestControlCollection.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
 
                     Mouse.Click(firstOrDefault, new Point(57, 9));
