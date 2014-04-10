@@ -42,6 +42,8 @@
         </Component>
         <!-- End Shortcuts -->
         <ComponentGroup Id="Server">
+          
+            <!-- WareWolfAgent.exe.config -->
              <Component Id="cmpF9FC7D1221B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CB4-8179-1F2B-7C4E-DF613AF28912}">
                 <File Id="filD16B434756CC5371AB2257A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\TimeSpan2.dll" />
             </Component>
@@ -53,6 +55,9 @@
             </Component>
             <Component Id="cmpE9AC7D1421B14FF5CF2AB1807B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-1139-4D4B-9C4E-DF618AF58912}">
                 <File Id="filD16B434886CC5371AB1957E4FBFB516B" KeyPath="yes" Source="..\ProductBuild\Server\WareWolfAgent.exe" />
+            </Component>
+            <Component Id="cmpE9AC7D1421B14FF51F1AB3801B966836" Directory="dirServerRoot" Guid="{A1BD21A1-AA39-4D4B-9C4E-DF618AF58912}">
+                <File Id="filD26BF34881CC5371AB1957E4FBFB516B" KeyPath="yes" Source="..\ProductBuild\Server\WareWolfAgent.exe.config" />
             </Component>
             <Component Id="cmpE9EC7D9921B14FF5CF2AB1807B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-8179-4D4B-9C4E-DF618AF58912}">
                 <File Id="filD16B434756CC5371AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Scheduler.dll" />
@@ -862,9 +867,11 @@
             <Component Id="cmp0E096172207607B45C335A9CFAB1A89B_Studio" Directory="dirStudioRoot" Guid="{127F1554-F33D-1132-52A1-7B4349240DAC}">
                 <File Id="fil7BFC25375326115231222A1FA23A4AB6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.Win32.TaskSchedulerEditor.dll" />
             </Component>
+          <!--
             <Component Id="cmp0E096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-1132-92AB-7B4349240DAC}">
                 <File Id="fil7BBC05375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Interop.ActiveDs.dll" />
             </Component>
+            -->
             <Component Id="cmp0E096C78207607B31C951A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-1132-92AB-7A4341240DAC}">
                 <File Id="fil7BBC05375326109CAE2251F526A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.AspNet.SignalR.Client.dll" />
             </Component>
