@@ -841,6 +841,9 @@
         </DirectoryRef>
         <ComponentGroup Id="Studio">
             <!-- Install Shortcuts -->
+            <Component Id="cmpF9FC7D1221B14A1CA21C1817B966836" Directory="dirStudioRoot" Guid="{C7CD2CC4-8179-1F2B-7C4E-DF613AF28912}">
+                <File Id="filD16B434756CC5371AB2257A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Studio\TimeSpan2.dll" />
+            </Component>
             <Component Id="cmp0E096172207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{117F2388-C33C-1132-92AB-7B4349240DAC}">
                 <File Id="fil7BFC25375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\AeroWizard.dll" />
             </Component>
