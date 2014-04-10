@@ -354,7 +354,7 @@ namespace Gui
                     // Add Trusted Sites
                     try
                     {
-                        //AddTrustedSites();
+                        AddTrustedSites();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch { }
@@ -413,11 +413,12 @@ namespace Gui
         {
             const string domainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
             const string domain = @"localhost";
-            const int trustedSiteZone = 0x2;
+            //const int intratnet = 0x1; // 0x2
+            const int trustedSiteZone = 0x1; // 0x2
 
             RegistryKey currentUserKey = Registry.CurrentUser;
 
-            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, false);
+            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, true);
 
             try
             {
