@@ -74,7 +74,7 @@
         /// </value>
         public static bool ViewReadMe { get; set; }
 
-        public static bool RemoveLogFile = false;
+        public static bool RemoveLogFile = true;
 
         // firewall rule names
         public static readonly string OutboundHTTPWarewolfRule = "Warewolf HTTP Outbound Ports";

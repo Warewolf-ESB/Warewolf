@@ -28,22 +28,22 @@ namespace Gui
             }
 
             // if we want logging, here it is ;)
-            if(!InstallVariables.RemoveLogFile)
+            //if(!InstallVariables.RemoveLogFile)
+            //{
+            // set log file location ;)
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var logDir = Path.Combine(appData, "Warewolf");
+
+            // create directory to avoid issues ;)
+            if(!Directory.Exists(logDir))
             {
-                // set log file location ;)
-                var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var logDir = Path.Combine(appData, "Warewolf");
-
-                // create directory to avoid issues ;)
-                if(!Directory.Exists(logDir))
-                {
-                    Directory.CreateDirectory(logDir);
-                }
-
-                var logFileName = Path.Combine(logDir, "Warewolf_Install.log");
-
-                MsiConnection.Instance.LogFile = logFileName;
+                Directory.CreateDirectory(logDir);
             }
+
+            var logFileName = Path.Combine(logDir, "Warewolf_Install.log");
+
+            MsiConnection.Instance.LogFile = logFileName;
+            //}
 
             Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
             Wizard.NextStep();
