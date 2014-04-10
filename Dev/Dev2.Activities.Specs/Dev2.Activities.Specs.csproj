@@ -220,6 +220,11 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
+    <Compile Include="Toolbox\LoopConstructs\ForEach\Sequence.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sequence.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Recordset\Length\Length.feature.cs">
       <DependentUpon>Length.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -451,6 +456,10 @@
     <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\LoopConstructs\ForEach\Sequence.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Sequence.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Length\Length.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
