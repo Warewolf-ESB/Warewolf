@@ -354,7 +354,7 @@ namespace Gui
                     // Add Trusted Sites
                     try
                     {
-                        AddTrustedSites();
+                        //AddTrustedSites();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch { }
