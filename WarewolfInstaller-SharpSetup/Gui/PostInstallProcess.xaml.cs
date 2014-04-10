@@ -354,7 +354,7 @@ namespace Gui
                     // Add Trusted Sites
                     try
                     {
-                        AddTrustedSites();
+                        //AddTrustedSites();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch { }
@@ -423,26 +423,33 @@ namespace Gui
 
             RegistryKey currentUserKey = Registry.CurrentUser;
 
-            currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, false);
+            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, false);
 
             foreach(var subdomain in subdomains)
             {
-                CreateSubdomainKeyAndValue(currentUserKey, domainsKeyLocation, domain, subdomain, trustedSiteZone);
+                CreateSubdomainKeyAndValue(localKey, domainsKeyLocation, domain, subdomain, trustedSiteZone);
             }
         }
 
         private static void CreateSubdomainKeyAndValue(RegistryKey currentUserKey, string domainsKeyLocation, string domain, KeyValuePair<string, string> subdomain, int zone)
         {
-            RegistryKey subdomainRegistryKey = currentUserKey.GetOrCreateSubKey(
-                string.Format(@"{0}\{1}", domainsKeyLocation, domain),
-                subdomain.Key, true);
+            //RegistryKey subdomainRegistryKey = currentUserKey.GetOrCreateSubKey(
+            //    string.Format(@"{0}\{1}", domainsKeyLocation, domain),
+            //    subdomain.Key, true);
 
-            object objSubDomainValue = subdomainRegistryKey.GetValue(subdomain.Value);
+            //object objSubDomainValue = subdomainRegistryKey.GetValue(subdomain.Value);
 
-            if(objSubDomainValue == null || Convert.ToInt32(objSubDomainValue) != zone)
-            {
-                subdomainRegistryKey.SetValue(subdomain.key, zone, RegistryValueKind.DWord);
-            }
+            //if(objSubDomainValue == null || Convert.ToInt32(objSubDomainValue) != zone)
+            //{
+
+
+            var fullPath = currentUserKey.Name;
+
+            // HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\localhost
+            //currentUserKey.CreateSubKey("http");
+            currentUserKey.SetValue("http", zone, RegistryValueKind.DWord);
+            //currentUserKey.SetValue(fullPath, "http", RegistryValueKind.DWord);
+            //}
         }
 
         private static string outputData = string.Empty;
