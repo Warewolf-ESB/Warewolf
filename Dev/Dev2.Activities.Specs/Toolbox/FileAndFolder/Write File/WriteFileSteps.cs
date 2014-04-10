@@ -1,9 +1,12 @@
 ﻿using Dev2.Activities.Specs.BaseTypes;
 using System.Activities.Statements;
+using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
+// ReSharper restore CheckNamespace
 {
     [Binding]
     public class WriteFileSteps : FileToolsBase
@@ -27,6 +30,37 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
+
+        [Given(@"the input contents from a file '(.*)'")]
+        public void GivenTheInputContentsFromAFile(string fileName)
+        {
+            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+                                                fileName);
+            var content = ReadFile(resourceName);
+            ScenarioContext.Current.Add("content", content);
+        }
+
+        [Then(@"the output contents from a file '(.*)'")]
+        public void ThenTheOutputContentsFromAFile(string fileName)
+        {
+            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+                                              fileName);
+            var expectedContents = ReadFile(resourceName);
+
+            var broker = ActivityIOFactory.CreateOperationsBroker();
+            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
+                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                            true);
+
+            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+
+            var fileContents = broker.Get(sourceEndPoint);
+
+            bool does = fileContents.Contains(expectedContents);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(does);
+        }
+
 
         protected override void BuildDataList()
         {

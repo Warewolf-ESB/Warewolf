@@ -256,9 +256,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             }
         }
-
-
-
+        
         public static string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
             string rawRef = DataListUtil.StripBracketsFromValue(value);

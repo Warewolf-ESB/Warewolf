@@ -8,15 +8,16 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Dev2.Common;
+using Dev2.Common.Utils;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Diagnostics
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class DebugItem : IDebugItem, IXmlSerializable
     {
         #region private fields
-
-        private List<IDebugItemResult> _resultsList = new List<IDebugItemResult>();
 
         static readonly string InvalidFileNameChars =
             new string(Path.GetInvalidFileNameChars())
@@ -52,6 +53,10 @@ namespace Dev2.Diagnostics
         {
             ResultsList = new List<DebugItemResult>();
             _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
+            if(!Directory.Exists(_tempPath))
+            {
+                Directory.CreateDirectory(_tempPath);
+            }
             _itemId = Guid.NewGuid();
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();
@@ -157,11 +162,12 @@ namespace Dev2.Diagnostics
 
         public virtual string SaveFile(string contents, string fileName)
         {
+
             if(string.IsNullOrEmpty(contents))
             {
                 throw new ArgumentNullException("contents");
             }
-
+            contents = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(contents);
             fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
             var path = Path.Combine(_tempPath, fileName);

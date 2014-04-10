@@ -36,3 +36,15 @@ Scenario Outline: Write file at location
 		| FTP with Append Bottom   | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |
 		| FTPS with Append Bottom  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |
 		| SFTP with Append Bottom  | [[path]] | sftp://localhost/filetowrite2.txt                               | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |
+
+
+Scenario: Write file with carriage returns
+	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
+	And source credentials as '' and ''	
+	And Method is 'Overwrite'
+	And the input contents from a file 'infile1WithCarriageReturn.txt'     
+	And result as 'Success'
+    When the write file tool is executed	
+	Then the output contents from a file 'outfile1WithCarriageReturn.txt'
+	And the execution has "NO" error
+	

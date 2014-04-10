@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Diagnostics
 {
+    // ReSharper disable InconsistentNaming
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class DebugItemTests
@@ -33,10 +34,11 @@ namespace Dev2.Tests.Diagnostics
         #region Contains
 
         [TestMethod]
+
         public void Contains_With_NullFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
-            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });           
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
             var result = item.Contains(null);
             Assert.IsTrue(result);
         }
@@ -45,7 +47,7 @@ namespace Dev2.Tests.Diagnostics
         public void Contains_With_EmptyFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
-            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });            
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
             var result = item.Contains(string.Empty);
             Assert.IsTrue(result);
         }
@@ -54,7 +56,7 @@ namespace Dev2.Tests.Diagnostics
         public void Contains_With_ValidFilter_Expected_ReturnsInstance()
         {
             var item = new DebugItem();
-            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });            
+            item.Add(new DebugItemResult { GroupName = "Hello", Value = "world" });
             var result = item.Contains("world");
             Assert.IsTrue(result);
         }
@@ -189,7 +191,7 @@ namespace Dev2.Tests.Diagnostics
         // ReSharper restore InconsistentNaming
         {
             var debugState = new DebugItem();
-           
+
             debugState.SaveFile(null, null);
         }
 
@@ -211,12 +213,35 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(LongText, contents);
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DebugIem_SaveFile")]
+        // ReSharper disable InconsistentNaming - Unit Test
+        public void DebugIem_SaveFile_WithContentsNewLineChars_ExpectedSavesFileToDiskWithCorrectChars()
+        // ReSharper restore InconsistentNaming
+        {
+            var debugState = new DebugItem();
+
+            debugState.ClearFile("TestFile.txt");
+            EnvironmentVariables.WebServerUri = "http://localhost:3142";
+            string expeced = "\r\nThis is\r\n the text\\n that we are writing";
+            string textToWrite = "\nThis is\r\n the text\\n that we are writing";
+
+            var uri = debugState.SaveFile(textToWrite, "TestFile.txt");
+            var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
+            var exists = File.Exists(path);
+            Assert.IsTrue(exists);
+
+            var contents = File.ReadAllText(path);
+            Assert.AreEqual(expeced, contents);
+        }
+
         #endregion
 
         #region CreateDebugItemWithLongValue
 
         static DebugItemResult CreateDebugItemWithLongValue()
-        {            
+        {
             return new DebugItemResult { Type = DebugItemResultType.Value, Value = LongText };
         }
 
