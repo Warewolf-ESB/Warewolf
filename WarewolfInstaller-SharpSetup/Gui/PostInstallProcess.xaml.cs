@@ -417,8 +417,8 @@ namespace Gui
 
             var subdomains = new Dictionary<string, string>
                             {
-                                {"www", "https"},
-                                {"www", "http"}
+                                {"https", "localhost"},
+                                {"http", "localhost"}
                             };
 
             RegistryKey currentUserKey = Registry.CurrentUser;
@@ -441,7 +441,7 @@ namespace Gui
 
             if(objSubDomainValue == null || Convert.ToInt32(objSubDomainValue) != zone)
             {
-                subdomainRegistryKey.SetValue(subdomain.Value, zone, RegistryValueKind.DWord);
+                subdomainRegistryKey.SetValue(subdomain.key, zone, RegistryValueKind.DWord);
             }
         }
 
