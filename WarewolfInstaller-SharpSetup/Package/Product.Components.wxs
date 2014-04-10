@@ -44,8 +44,8 @@
         <ComponentGroup Id="Server">
           
             <!-- WareWolfAgent.exe.config -->
-             <Component Id="cmpF9FC7D1221B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CB4-8179-1F2B-7C4E-DF613AF28912}">
-                <File Id="filD16B434756CC5371AB2257A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\TimeSpan2.dll" />
+             <Component Id="cmpF9FC7DF221B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CB4-8179-1F2B-7C4E-DF613AF28912}">
+                <File Id="filD16Ba347F6CC5371AB2257A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\TimeSpan2.dll" />
             </Component>
             <Component Id="cmpE9EC7D9921B14FF1CF21B1817B966836" Directory="dirServerRoot" Guid="{A7BD2CA4-8179-1F2B-7C4E-DF618AF58912}">
                 <File Id="filD16B434756CC5371AB1757A4FBFC516A" KeyPath="yes" Source="..\ProductBuild\Server\AeroWizard.dll" />
