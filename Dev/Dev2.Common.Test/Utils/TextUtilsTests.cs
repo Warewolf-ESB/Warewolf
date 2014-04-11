@@ -81,11 +81,11 @@ namespace Dev2.Common.Tests.Utils
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("TextUtils_ReplaceWorkflowNewLinesWithEnvironmentNewLines")]
-        public void TextUtils_ReplaceWorkflowNewLinesWithEnvironmentNewLines_NewLinesNextToEachOther_ReplaceOccurs()
+        public void TextUtils_ReplaceWorkflowNewLinesWithEnvironmentNewLines_WackkWackNFirstChars_ReplaceOccurs()
         {
             //------------Setup for test--------------------------
-            string expected = "\\nwarewolf\r\n\r\n\r\n is\\n awesome\r\ntest";
-            string stringToReplace = "\\nwarewolf\n\n\n is\\n awesome\ntest";
+            string expected = "\\4\\\r\n\r\n\\\\\\\r\n\r\n\\n\r\n";
+            string stringToReplace = "\\4\\\n\n\\\\\\\n\n\\n\n";
             //------------Execute Test---------------------------
             string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
