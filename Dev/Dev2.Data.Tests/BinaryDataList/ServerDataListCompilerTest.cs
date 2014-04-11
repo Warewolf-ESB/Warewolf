@@ -1,12 +1,12 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Test;
 using Dev2.Server.Datalist;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList
@@ -456,7 +456,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
+        [Owner("Hagashen Naidu")]
         [TestCategory("ServerDataListCompiler_Shape")]
         public void ServerDataListCompiler_Shape_WhenInvalidInputs_ExpectErrors()
         {
