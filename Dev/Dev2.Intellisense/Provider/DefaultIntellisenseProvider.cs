@@ -189,11 +189,8 @@ namespace Dev2.Studio.InterfaceImplementors
                 {
                     if(context.CaretPosition < context.InputText.Length)
                     {
-                        if(context.InputText[context.CaretPosition] != ']' && context.InputText[context.CaretPosition + 1] != ']')
-                        {
-                            postString = subStringToReplace.Substring(context.CaretPosition);
-                            context.InputText = subStringToReplace.Remove(context.CaretPosition);
-                        }
+                        postString = subStringToReplace.Substring(context.CaretPosition);
+                        context.InputText = subStringToReplace.Remove(context.CaretPosition);
                     }
                 }
 
@@ -258,8 +255,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         string CalculateReplacmentForNonRecordsetIndex(IntellisenseProviderContext context, string subStringToReplace, out int startIndex)
         {
-            char[] trimCharArray = { ' ', ',' };
-
             startIndex = context.InputText.LastIndexOf("[[", StringComparison.Ordinal);
             int tmpIndex = context.InputText.LastIndexOf("]]", StringComparison.Ordinal);
 
@@ -269,24 +264,10 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else if(subStringToReplace.Contains("]]"))
             {
-                startIndex = subStringToReplace.LastIndexOf("]]", StringComparison.Ordinal) + 2;
-                if(startIndex > -1)
-                {
-                    if(startIndex != subStringToReplace.Length)
-                    {
-                        subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
-                        string tmpString = subStringToReplace.TrimStart(trimCharArray);
-                        if(tmpString.Length < subStringToReplace.Length)
-                        {
-                            startIndex = startIndex + (subStringToReplace.Length - tmpString.Length);
-                            subStringToReplace = tmpString;
-                        }
-                    }
-                    else
-                    {
-                        startIndex = 0;
-                    }
-                }
+                subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
+                var si = subStringToReplace.LastIndexOf("[[", StringComparison.Ordinal);
+                var ei = subStringToReplace.LastIndexOf("]]", StringComparison.Ordinal) + 2;
+                subStringToReplace = subStringToReplace.Substring(si, ei);
             }
 
             if(startIndex == -1)

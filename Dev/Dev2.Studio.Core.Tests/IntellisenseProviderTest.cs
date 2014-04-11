@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -16,6 +13,9 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace Dev2.Core.Tests
 {
@@ -1118,6 +1118,27 @@ namespace Dev2.Core.Tests
         #region PerformResultInsertion
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DefaultIntellisenseProvider_PerformResultsInsertion")]
+        public void DefaultIntellisenseProvider_PerformResultsInsertion_WhenClosingRegionWithTextAfter_InsertedNormally()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 29,
+                InputText = "some string [[obfsucationStag some string",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            //------------Execute Test---------------------------
+            var result = new DefaultIntellisenseProvider().PerformResultInsertion("[[obfsucationStaging]]", context);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("some string [[obfsucationStaging]] some string", result);
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DefaultIntellisenseProvider_PerformResultsInsertion")]
         public void DefaultIntellisenseProvider_PerformResultsInsertion_WhenCaseMisMatched_InsertedNormally()
@@ -1582,7 +1603,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
 
-            const string exprected = "[[Scalar]]";
+            const string exprected = "[[Scalar]]]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[Scalar]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1601,7 +1622,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            const string exprected = "[[City().GeoLocation]]";
+            const string exprected = "[[City().GeoLocation]]]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1673,7 +1694,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City().GeoLocation]]";
+            const string exprected = "[[City().GeoLocation]]]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1691,7 +1712,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City(44).GeoLocation]]";
+            const string exprected = "[[City(44).GeoLocation]]]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(44).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1709,7 +1730,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City(*).GeoLocation]]";
+            const string exprected = "[[City(*).GeoLocation]]]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(*).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
