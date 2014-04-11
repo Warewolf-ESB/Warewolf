@@ -105,7 +105,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         if(resourceToUpdate != null)
                         {
                             resourceToUpdate.Update(resource);
-                            Logger.foobar(); // force vs to stop removing the damn references ;)
+                            Logger.KeepMyNamespaces(); // force vs to stop removing the damn references ;)
                             this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                             // For some daft reason we have two model versions?!
                             var resourceWithContext = new ResourceModel(targetEnviroment);

@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
@@ -115,6 +116,7 @@ namespace Dev2.Network
         void OnDebugStateReceived(string objString)
         {
             var obj = JsonConvert.DeserializeObject<DebugState>(objString);
+            Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 

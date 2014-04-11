@@ -165,6 +165,21 @@ Scenario: Assign User Roles into a recordset
 	And the debug output as 
 	| # |                          |
 	| 1 | [[my(2).roles]] = String |
+
+Scenario: Assign User Roles into a multiple fields in recordset
+	Given I have a variable "[[my().roles]]" and I selected "UserRoles"	
+	And I have a variable "[[my().ram]]" and I selected "PhysicalMemoryAvailable"
+	And I have a variable "[[my().ramtot]]" and I selected "PhysicalMemoryTotal"
+	When the gather system infomartion tool is executed
+	Then the value of the variable "[[my(1).roles]]" is a valid "String"
+	Then the value of the variable "[[my(1).ram]]" is a valid "Int32"
+	Then the value of the variable "[[my(1).ramtot]]" is a valid "Int32"
+	And the execution has "NO" error
+	And the debug output as 
+	| # |                          |
+	| 1 | [[my(1).roles]] = String |
+	| 2 | [[my(1).ram]] = Int32 |
+	| 3 | [[my(1).ramtot]] = Int32 |
 	
 
 Scenario: Assign a system Domain into a negative recordset index
@@ -172,8 +187,8 @@ Scenario: Assign a system Domain into a negative recordset index
 	When the gather system infomartion tool is executed
 	Then the execution has "AN" error
 	And the debug output as 
-	| # |  |
-	|   |  |
+	| # |                   |
+	| 1 | [[rec(-1).set]] = |
 
 #This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
 Scenario: Assign Disk Total into a recordset

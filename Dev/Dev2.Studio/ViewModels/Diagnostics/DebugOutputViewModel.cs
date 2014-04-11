@@ -742,11 +742,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddItemToTreeImpl(IDebugState content)
         {
-            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished||_allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
+            if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
             }
-
+            Logger.TraceInfo(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
             if(_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;

@@ -1,1 +1,44 @@
-﻿<Service ID="257e147f-d4be-4343-a5ee-502a06a61a49" Version="1.0" Name="bug9394DBServicesCall" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55"><Actions><Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_CitiesGetCountries"><Inputs><Input Name="Prefix" Source="Prefix" EmptyToNull="false" DefaultValue="" NativeType="" /></Inputs><Outputs><Output OriginalName="CountryID" Name="CountryID" MapsTo="CountryID" Value="[[dbo_Pr_CitiesGetCountries().CountryID]]" RecordsetName="dbo_Pr_CitiesGetCountries" RecordsetAlias="dbo_Pr_CitiesGetCountries" Recordset="dbo_Pr_CitiesGetCountries" /><Output OriginalName="Description" Name="Description" MapsTo="Description" Value="[[dbo_Pr_CitiesGetCountries().Description]]" RecordsetName="dbo_Pr_CitiesGetCountries" RecordsetAlias="dbo_Pr_CitiesGetCountries" Recordset="dbo_Pr_CitiesGetCountries" /></Outputs><OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.CountryID</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.CountryID</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_Pr_CitiesGetCountries().CountryID]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1,2,3,4,5,6,7,8,9,10</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Description</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Description</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_Pr_CitiesGetCountries().Description]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Afghanistan,Albania,Algeria,Andorra,Angola,Argentina,Armenia,Australia,Austria,Azerbaijan</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription></Action></Actions><AuthorRoles /><Comment /><Tags /><HelpLink /><UnitTestTargetWorkflowService /><BizRule /><WorkflowActivityDef /><XamlDefinition /><DataList /><TypeOf>InvokeStoredProc</TypeOf><DisplayName>bug9394DBServicesCall</DisplayName><Category>DATABASE</Category><AuthorRoles></AuthorRoles><ErrorMessages /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>0+zc8DDi6G2CWsWOLrbmQ8UPorY=</DigestValue></Reference></SignedInfo><SignatureValue>KaSbyfxQF3UUPTjJUxieC+oO4z6Byr8DZZjjcVKniZNm01siKDhjCJn4+gfX3gMfnwH9zT9k+jbFBIGOQnPdPELWb3zz5yT6zj+FLVxndekZdedWzJ0eh+K2RC/DCN0dR27NqHh9+scaWyJoGc1j1C9BNTmTmAvObKw9+MuPIJk=</SignatureValue></Signature></Service>
+
+<Service ID="257e147f-d4be-4343-a5ee-502a06a61a49" Version="1.0" Name="bug9394DBServicesCall" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_CitiesGetCountries">
+      <Inputs>
+        <Input Name="Prefix" Source="Prefix" EmptyToNull="false" DefaultValue="" NativeType="System.Object" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="CountryID" Name="CountryID" MapsTo="CountryID" Value="[[dbo_Pr_CitiesGetCountries().CountryID]]" RecordsetName="dbo_Pr_CitiesGetCountries" RecordsetAlias="dbo_Pr_CitiesGetCountries" Recordset="dbo_Pr_CitiesGetCountries" />
+        <Output OriginalName="Description" Name="Description" MapsTo="Description" Value="[[dbo_Pr_CitiesGetCountries().Description]]" RecordsetName="dbo_Pr_CitiesGetCountries" RecordsetAlias="dbo_Pr_CitiesGetCountries" Recordset="dbo_Pr_CitiesGetCountries" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">CountryID</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">CountryID</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_Pr_CitiesGetCountries().CountryID]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1__COMMA__2__COMMA__3__COMMA__4__COMMA__5__COMMA__6__COMMA__7__COMMA__8__COMMA__9__COMMA__10</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Description</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Description</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_Pr_CitiesGetCountries().Description]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Afghanistan__COMMA__Albania__COMMA__Algeria__COMMA__Andorra__COMMA__Angola__COMMA__Argentina__COMMA__Armenia__COMMA__Australia__COMMA__Austria__COMMA__Azerbaijan</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>bug9394DBServicesCall</DisplayName>
+  <Category>DATABASE</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>4SO0Ba8vxKoJfq+N23l2n7uogtc=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>hKDyT5UMG8I+Adjn77T+OUWpLy9xSmk6voP+Y4ytwrpmJ8S1XLCr06yMgYPCviDIjaoUg6C9b5HapkYsNYhyULD5xhg2uPox8QdhmkqAGj0qBjrju66QX0Tk8ixDiRd2Y2os7yXe7DWlUzi62XIZUi5MHHoaUiAZ3KT30WI7Hxw=</SignatureValue>
+  </Signature>
+</Service>

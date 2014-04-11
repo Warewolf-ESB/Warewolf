@@ -140,7 +140,7 @@ namespace Dev2.Diagnostics
             }
 
             // Serialize debugState to a local repo so calling server can manage the data 
-            if (isRemoteInvoke)
+            if(isRemoteInvoke)
             {
                 RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, (debugState as DebugState));
                 return;
@@ -228,13 +228,13 @@ namespace Dev2.Diagnostics
 
         public void Flush()
         {
-            lock (WaitHandleGuard)
+            lock(WaitHandleGuard)
             {
                 IDebugState debugState;
-                while (WriterQueue.Count > 0)
+                while(WriterQueue.Count > 0)
                 {
                     WriterQueue.TryDequeue(out debugState);
-                }                
+                }
             }
         }
     }

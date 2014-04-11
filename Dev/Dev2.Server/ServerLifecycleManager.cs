@@ -41,7 +41,7 @@ namespace Dev2
         const string DefaultConfigFileName = "LifecycleConfig.xml";
 
         // set to true when in trace mode ;)
-        const bool LogTraceInfo = true;
+        const bool LogTraceInfo = false;
 
         #endregion
 
@@ -1021,25 +1021,25 @@ namespace Dev2
         {
             try
             {
-            if(!LoadExternalDependencies())
-            {
-                return false;
+                if(!LoadExternalDependencies())
+                {
+                    return false;
+                }
+
+                const bool Result = true;
+
+                if(_preloadAssemblies)
+                {
+                    Write("Preloading assemblies...  ");
+                    Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
+                    HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
+                    LoadReferences(currentAsm, inspected);
+
+                    WriteLine("done.");
+                }
+
+                return Result;
             }
-
-            const bool Result = true;
-
-            if(_preloadAssemblies)
-            {
-                Write("Preloading assemblies...  ");
-                Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
-                HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
-                LoadReferences(currentAsm, inspected);
-
-                WriteLine("done.");
-            }
-
-            return Result;
-        }
             catch(Exception e)
             {
                 LogException(e);
@@ -1169,9 +1169,9 @@ namespace Dev2
                         if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
+                        }
                     }
                 }
-            }
             }
 
             return result;

@@ -341,7 +341,7 @@ namespace Dev2.Studio.ViewModels
                 return _resetLayoutCommand ??
                        (_resetLayoutCommand = new RelayCommand(param =>
                        {
-                           Logger.foobar();
+                           Logger.KeepMyNamespaces();
                            this.TraceInfo("Publish message of type - " + typeof(ResetLayoutMessage));
                            EventPublisher.Publish(
                                new ResetLayoutMessage(param as FrameworkElement));

@@ -540,7 +540,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", _webserverURI, "Bug 10475 Outer WF");
-            const string expected = @"<Row index=""1""><ID>1</ID></Row>";
+            const string expected = @"<Row index=""1""><ID>1</ID>";
 
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(postData);

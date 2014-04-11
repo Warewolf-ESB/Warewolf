@@ -1036,9 +1036,10 @@ You need Administrator permission.";
             var cancelled = false;
             while((String.IsNullOrEmpty(AccountName) || String.IsNullOrEmpty(Password)) && !cancelled)
             {
+
                 CredentialsDialog credentialsDialog = new CredentialsDialog();
                 credentialsDialog.UserName = scheduledResource.UserName;
-                credentialsDialog.Options = CredentialsDialogOptions.IncorrectPassword | CredentialsDialogOptions.ExpectConfirmation;
+                credentialsDialog.Options = CredentialsDialogOptions.GenericCredentials;
                 credentialsDialog.ValidatePassword = true;
                 var dialogResult = credentialsDialog.ShowDialog();
                 if(dialogResult == System.Windows.Forms.DialogResult.Cancel)

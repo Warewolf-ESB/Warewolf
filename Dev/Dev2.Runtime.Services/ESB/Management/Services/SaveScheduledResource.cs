@@ -30,7 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-
                 if(tmp != null)
                 {
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -30,7 +31,8 @@ internal struct LSA_UNICODE_STRING
 {
     internal ushort Length;
     internal ushort MaximumLength;
-    [MarshalAs(UnmanagedType.LPWStr)] internal string Buffer;
+    [MarshalAs(UnmanagedType.LPWStr)]
+    internal string Buffer;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -121,15 +123,15 @@ public class SecurityWrapper : ISecurityWrapper
         lsaAttr.Attributes = 0;
         lsaAttr.SecurityDescriptor = IntPtr.Zero;
         lsaAttr.SecurityQualityOfService = IntPtr.Zero;
-        lsaAttr.Length = Marshal.SizeOf(typeof (LSA_OBJECT_ATTRIBUTES));
+        lsaAttr.Length = Marshal.SizeOf(typeof(LSA_OBJECT_ATTRIBUTES));
         lsaHandle = IntPtr.Zero;
         LSA_UNICODE_STRING[] system = null;
-        if (MachineName != null)
+        if(MachineName != null)
         {
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int) Access.POLICY_ALL_ACCESS, out lsaHandle);
+        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
         TestReturnValue(ret);
     }
 
@@ -139,7 +141,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// </summary>
     /// <param name="privilege">The name of the privilege for which the accounts with this right should be enumerated</param>
     /// <param name="userName"></param>
-     [ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverage]
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
         bool windowsAuthorised = false;
@@ -152,37 +154,102 @@ public class SecurityWrapper : ISecurityWrapper
         uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
         var Accounts = new List<String>();
 
-        if (ret == 0)
+        if(ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            for (int i = 0, elemOffs = (int) buffer; i < count; i++)
+            for(int i = 0, elemOffs = (int)buffer; i < count; i++)
             {
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)
-                    Marshal.PtrToStructure((IntPtr) elemOffs, typeof (LSA_ENUMERATION_INFORMATION));
-                elemOffs += Marshal.SizeOf(typeof (LSA_ENUMERATION_INFORMATION));
+                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
+                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 Accounts.Add(ResolveAccountName(SID));
             }
 
-            var wp = new WindowsPrincipal(new WindowsIdentity(userName));
-
-            foreach (string account in Accounts)
+            try
             {
-                if (wp.IsInRole(account))
-                    windowsAuthorised = true;
-            }
+                var wp = new WindowsPrincipal(new WindowsIdentity(userName));
 
-            return windowsAuthorised;
+                foreach(string account in Accounts)
+                {
+                    if(wp.IsInRole(account))
+                    {
+                        windowsAuthorised = true;
+                    }
+                }
+
+                return windowsAuthorised;
+            }
+            catch(Exception)
+            {
+                var localGroups = GetLocalUserGroupsForTaskSchedule(userName);
+
+                var intersection = localGroups.Intersect(Accounts);
+
+                return intersection.Any();
+
+            }
         }
-        else
-            return false;
+
+        return false;
+    }
+
+
+    private IEnumerable<string> FetchSchedulerGroups()
+    {
+        var privileges = new LSA_UNICODE_STRING[1];
+        privileges[0] = InitLsaString("SeBatchLogonRight");
+        IntPtr buffer;
+        int count;
+        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out buffer, out count);
+        var accounts = new List<String>();
+
+        if(ret == 0)
+        {
+            var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
+            for(int i = 0, elemOffs = (int)buffer; i < count; i++)
+            {
+                LsaInfo[i] =
+                    (LSA_ENUMERATION_INFORMATION)
+                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
+                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
+                var SID = new SecurityIdentifier(LsaInfo[i].PSid);
+                accounts.Add(ResolveAccountName(SID));
+            }
+        }
+
+        return accounts;
+    }
+
+
+    private IEnumerable<string> GetLocalUserGroupsForTaskSchedule(string userName)
+    {
+        var groups = new List<string>();
+        // Domain failed. Try local pc.
+        using(var pcLocal = new PrincipalContext(ContextType.Machine))
+        {
+            foreach(var grp in FetchSchedulerGroups())
+            {
+                var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
+                if(group != null)
+                {
+                    var members = group.GetMembers();
+                    if(members.Any(member => member.SamAccountName == userName))
+                    {
+                        groups.Add(grp);
+                    }
+                }
+            }
+        }
+
+        return groups;
     }
 
     private static string CleanUser(string userName)
     {
-        if (userName.Contains("\\"))
-            userName = userName.Split(new[] {'\\'}).Last();
+        if(userName.Contains("\\"))
+            userName = userName.Split(new[] { '\\' }).Last();
         return userName;
     }
 
@@ -197,9 +264,9 @@ public class SecurityWrapper : ISecurityWrapper
     {
         try
         {
-            return SID.Translate(typeof (NTAccount)).Value;
+            return SID.Translate(typeof(NTAccount)).Value;
         }
-        catch (Exception)
+        catch(Exception)
         {
             return SID.ToString();
         }
@@ -213,24 +280,24 @@ public class SecurityWrapper : ISecurityWrapper
     [ExcludeFromCodeCoverage]
     private void TestReturnValue(uint ReturnValue)
     {
-        if (ReturnValue == 0) return;
-        if (ReturnValue == ERROR_PRIVILEGE_DOES_NOT_EXIST)
+        if(ReturnValue == 0) return;
+        if(ReturnValue == ERROR_PRIVILEGE_DOES_NOT_EXIST)
         {
             return;
         }
-        if (ReturnValue == ERROR_NO_MORE_ITEMS)
+        if(ReturnValue == ERROR_NO_MORE_ITEMS)
         {
             return;
         }
-        if (ReturnValue == STATUS_ACCESS_DENIED)
+        if(ReturnValue == STATUS_ACCESS_DENIED)
         {
             throw new UnauthorizedAccessException();
         }
-        if ((ReturnValue == STATUS_INSUFFICIENT_RESOURCES) || (ReturnValue == STATUS_NO_MEMORY))
+        if((ReturnValue == STATUS_INSUFFICIENT_RESOURCES) || (ReturnValue == STATUS_NO_MEMORY))
         {
             throw new OutOfMemoryException();
         }
-        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int) ReturnValue));
+        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
     }
 
 
@@ -239,7 +306,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// </summary>
     public void Dispose()
     {
-        if (lsaHandle != IntPtr.Zero)
+        if(lsaHandle != IntPtr.Zero)
         {
             Win32Sec.LsaClose(lsaHandle);
             lsaHandle = IntPtr.Zero;
@@ -263,24 +330,39 @@ public class SecurityWrapper : ISecurityWrapper
     /// <param name="Value"></param>
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
-        if (Value.Length > 0x7ffe) throw new ArgumentException("String too long");
+        if(Value.Length > 0x7ffe) throw new ArgumentException("String too long");
         var lus = new LSA_UNICODE_STRING();
         lus.Buffer = Value;
-        lus.Length = (ushort) (Value.Length*sizeof (char));
-        lus.MaximumLength = (ushort) (lus.Length + sizeof (char));
+        lus.Length = (ushort)(Value.Length * sizeof(char));
+        lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
         return lus;
     }
 
     public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
     {
         userName = CleanUser(userName);
-        var wp = new WindowsPrincipal(new WindowsIdentity(userName));
 
+        IPrincipal identity = null;
+        try
+        {
+            identity = new WindowsPrincipal(new WindowsIdentity(userName));
+        }
+        catch(Exception)
+        {
+            var groups = GetLocalUserGroupsForTaskSchedule(userName);
+            var tmp = new GenericIdentity(userName);
+            if(tmp != null)
+            {
+                identity = new GenericPrincipal(tmp, groups.ToArray());
+            }
+        }
 
-        if (_authorizationService.IsAuthorized(wp, AuthorizationContext.Execute, resourceGuid))
-           return true;
+        if(_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceGuid))
+        {
+            return true;
+        }
+
         return false;
-
     }
 }
 

@@ -35,9 +35,11 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var fileSystemQuery = new FileSystemQuery();
             //------------Execute Test---------------------------
-            fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\LoadTest");
+            fileSystemQuery.QueryList(@"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Installations");
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, fileSystemQuery.QueryCollection.Count);
+            var count = fileSystemQuery.QueryCollection.Count;
+
+            Assert.IsTrue(count > 0, "No items listed");
         }
     }
 }

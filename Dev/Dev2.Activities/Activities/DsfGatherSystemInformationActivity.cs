@@ -6,7 +6,6 @@ using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
@@ -89,7 +88,7 @@ namespace Dev2.Activities
             Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
-            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
             var indexCounter = 0;
@@ -103,28 +102,18 @@ namespace Dev2.Activities
                 {
                     indexCounter++;
 
-                    IBinaryDataListEntry resultEntry = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
-                    allErrors.MergeErrors(errors);
-
                     if(dataObject.IsDebugMode())
                     {
-                        var inputToAdd = new DebugItem();
+                    var inputToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                        AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
-                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                        _debugInputs.Add(inputToAdd);
+                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
+                    AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                    _debugInputs.Add(inputToAdd);
                     }
 
                     var hasErrors = allErrors.HasErrors();
-                    if(resultEntry != null && !hasErrors)
+                    if(!hasErrors)
                     {
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(resultEntry);
-                        while(itr.HasMoreRecords())
-                        {
-                            IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-
-                            if(cols != null)
-                            {
                                 string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                                 string expression = item.Result;
 
@@ -134,8 +123,6 @@ namespace Dev2.Activities
                                 }
                             }
                         }
-                    }
-                }
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);

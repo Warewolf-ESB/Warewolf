@@ -592,28 +592,71 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a system Domain into a negative recordset index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign User Roles into a multiple fields in recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
-        public virtual void AssignASystemDomainIntoANegativeRecordsetIndex()
+        public virtual void AssignUserRolesIntoAMultipleFieldsInRecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Domain into a negative recordset index", ((string[])(null)));
-#line 170
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign User Roles into a multiple fields in recordset", ((string[])(null)));
+#line 169
 this.ScenarioSetup(scenarioInfo);
+#line 170
+ testRunner.Given("I have a variable \"[[my().roles]]\" and I selected \"UserRoles\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 171
- testRunner.Given("I have a variable \"[[rec(-1).set]]\" and I selected \"Domain\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I have a variable \"[[my().ram]]\" and I selected \"PhysicalMemoryAvailable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 172
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have a variable \"[[my().ramtot]]\" and I selected \"PhysicalMemoryTotal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 173
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 174
+ testRunner.Then("the value of the variable \"[[my(1).roles]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 175
+ testRunner.Then("the value of the variable \"[[my(1).ram]]\" is a valid \"Int32\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 176
+ testRunner.Then("the value of the variable \"[[my(1).ramtot]]\" is a valid \"Int32\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 177
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
             table19.AddRow(new string[] {
-                        "",
-                        ""});
-#line 174
+                        "1",
+                        "[[my(1).roles]] = String"});
+            table19.AddRow(new string[] {
+                        "2",
+                        "[[my(1).ram]] = Int32"});
+            table19.AddRow(new string[] {
+                        "3",
+                        "[[my(1).ramtot]] = Int32"});
+#line 178
  testRunner.And("the debug output as", ((string)(null)), table19, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a system Domain into a negative recordset index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
+        public virtual void AssignASystemDomainIntoANegativeRecordsetIndex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Domain into a negative recordset index", ((string[])(null)));
+#line 185
+this.ScenarioSetup(scenarioInfo);
+#line 186
+ testRunner.Given("I have a variable \"[[rec(-1).set]]\" and I selected \"Domain\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 187
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 188
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table20.AddRow(new string[] {
+                        "1",
+                        "[[rec(-1).set]] ="});
+#line 189
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -624,25 +667,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignDiskTotalIntoARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign Disk Total into a recordset", ((string[])(null)));
-#line 179
+#line 194
 this.ScenarioSetup(scenarioInfo);
-#line 180
+#line 195
  testRunner.Given("I have a variable \"[[my().disks]]\" and I selected \"DiskTotal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 181
+#line 196
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 182
+#line 197
  testRunner.Then("the value of the variable \"[[my(1).disks]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 183
+#line 198
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table20.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "1",
                         "[[my(1).disks]] = String"});
-#line 184
- testRunner.And("the debug output as", ((string)(null)), table20, "And ");
+#line 199
+ testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -653,25 +696,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignDiskAvailableIntoARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign Disk Available into a recordset", ((string[])(null)));
-#line 189
+#line 204
 this.ScenarioSetup(scenarioInfo);
-#line 190
+#line 205
  testRunner.Given("I have a variable \"[[my().disks]]\" and I selected \"DiskAvailable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 191
+#line 206
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 192
+#line 207
  testRunner.Then("the value of the variable \"[[my(1).disks]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 193
+#line 208
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table21.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "1",
                         "[[my(1).disks]] =  String"});
-#line 194
- testRunner.And("the debug output as", ((string)(null)), table21, "And ");
+#line 209
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

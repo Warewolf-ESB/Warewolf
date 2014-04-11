@@ -1742,14 +1742,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 436
     testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 437
-    testRunner.And("call the web service \"http://Test-2:3142/services/OnError_WriteToFile.xml?errorLo" +
+    testRunner.And("call the web service \"http://test-2:3142/services/OnError_WriteToFile.xml?errorLo" +
                     "g=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 438
     testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 439
     testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 440
-    testRunner.And("the result from the web service \"http://Test-2:3142/services/OnError_ReadFromFile" +
+    testRunner.And("the result from the web service \"http://test-2:3142/services/OnError_ReadFromFile" +
                     ".xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {

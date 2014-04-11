@@ -1,4 +1,8 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Security.Authentication;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -11,10 +15,6 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Security.Authentication;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 // ReSharper disable CheckNamespace
@@ -354,6 +354,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
                 dataObject.RunWorkflowAsync = false;
+                //dataObject.RemoteInvoke = false;
+                //dataObject.RemoteInvokerID = "";
+                //dataObject.EnvironmentID = Guid.Empty;
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
@@ -389,7 +392,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
         }
-
 
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
