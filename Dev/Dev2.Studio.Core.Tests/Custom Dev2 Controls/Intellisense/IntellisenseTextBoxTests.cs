@@ -229,13 +229,20 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_KeyDown")]
         public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenWrapInBrackets()
         {
-            //------------Setup for test--------------------------
+   
+            RunWrappedKeyPress(Key.F6);
+            RunWrappedKeyPress(Key.F7);
+        }
+
+        private static void RunWrappedKeyPress(Key key)
+        {
+//------------Setup for test--------------------------
             var textBox = new IntellisenseTextBox();
             textBox.FilterType = enIntellisensePartType.RecordsetFields;
             textBox.WrapInBrackets = false;
             textBox.Text = "var()";
             //------------Execute Test---------------------------
-            textBox.HandleWrapInBrackets(Key.F6);
+            textBox.HandleWrapInBrackets(key);
             //------------Assert Results-------------------------
             Assert.AreEqual("var()", textBox.Text);
         }

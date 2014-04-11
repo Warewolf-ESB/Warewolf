@@ -611,7 +611,7 @@ namespace Dev2.UI
         private int _caretPositionOnPopup;
         private string _textOnPopup;
         private object _cachedState;
-
+        private readonly List<Key> _wrapInBracketKey = new List<Key>{Key.F6,Key.F7};
         ToolTip _toolTip;
 
         private bool _forcedOpen;
@@ -1608,7 +1608,7 @@ namespace Dev2.UI
 
         public void HandleWrapInBrackets(Key e)
         {
-            if (e == Key.F6)
+            if (_wrapInBracketKey.Contains(e))
             {
                 ExecWrapBrackets();
             }
