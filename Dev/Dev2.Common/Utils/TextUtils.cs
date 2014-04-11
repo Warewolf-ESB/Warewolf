@@ -22,14 +22,14 @@ namespace Dev2.Common.Utils
                             if(backwardsLookup == '\r' || backwardsLookup == '\\')
                             {
                                 dontReplace = false;
-                                startIndex = indexOfReplacement + 2;
+                                startIndex = indexOfReplacement + 1;
                             }
                         }
 
                         if(dontReplace)
                         {
                             stringToReplaceIn = stringToReplaceIn.Insert(indexOfReplacement, "\r");
-                            startIndex = indexOfReplacement + 4;
+                            startIndex = indexOfReplacement + 2;
                         }
                     }
                     else
