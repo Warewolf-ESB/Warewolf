@@ -10,16 +10,16 @@ Scenario: Execute Sequence with Assign
           | [[var1]] | 1     |
           | [[var2]] | 2     |
           When the sequence is executed
-          Then the execution has “No” error
+          Then the execution has "NO" error
           And “TestAssign” debug inputs as
           | # | Variable | New Value |
-          | 1 | [[var1]] | 1         |
+          | 1 | [[var1]] | 1         | 
           | 2 | [[var2]] | 2         |
           And “TestAssign” debug outputs as
           | # |              |
           | 1 | [[var1]] = 1 |
           | 2 | [[var2]] = 2 |           
-
+	
 Scenario: Execute a Sequence with Assign and Calculate
        Given I have a Sequence
        And it contains an Assign “SetVariables” as
@@ -38,7 +38,7 @@ Scenario: Execute a Sequence with Assign and Calculate
        | 1 | [[var1]] = 1 |
        | 2 | [[var2]] = 2 |
        And the “Calculate Sum” debug inputs as
-       | fx =                                                                 |
+       | fx =                                                                |
        | ((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]]) = (((1+1)/20)+20*1) |          
        And the “Calculate Sum” debug output as
        | # |                |
@@ -85,8 +85,12 @@ Scenario: Execute a Sequence with Assign and Delete
       | [[rec().a]] | 2         |
       | [[rec().a]] | 3         |
       | [[rec().a]] | 4         |
-	  And delete "Delete Record" a record "[[rs(2)]]"
-	  And Assign "Delete check" the value [[rec(2).a]] to a variable "[[check]]
+	  And it contains Delete "Delete Record" as
+	  | Variable   | result     |
+	  | [[rec(2)]] | [[result]] |
+      And it contains Assign "Delete check" as 
+	   | Variable  | New Value    |
+	   | [[check]] | [[rec(2).a]] |
 	  When the Sequence tool is executed
       Then the execution has "NO" error
 	  And the "All Records" debug input as
@@ -123,14 +127,12 @@ Scenario: Execute a Sequence with Assign and Find Record Index
       | [[rec().a]] | 2         |
       | [[rec().a]] | 3         |
       | [[rec().a]] | 4         |
-	  And Find Record Index "Find Record" search type and criteria as
-	  | Match Type | Match |
-	  | =          | 1     |
-	  | =          | 2     |
-	  | =          | 3     |
-	  | =          | 4     |
-	  And Find Record Index "Find Record" "Require All Fields To Match" as "Yes"
-	  And Find Record Index "Find Record" "Require All Fields To Match" as "No"
+	  And it contains Find Record Index "Find Record" search type and criteria as
+	  | Match Type | Match | Require All Fields To Match | Require All Fields To Match |
+	  | =          | 1     |                             |                             |
+	  | =          | 2     |                             |                             |
+	  | =          | 3     |                             |                             |
+	  | =          | 4     | Yes                         | No                          |
 	  When the Sequence tool is executed
       Then the execution has "NO" error
 	  And the "Assign Records" debug input as
@@ -168,12 +170,14 @@ Scenario: Execute a Sequence with Assign, Sort Records and Unique Records
       | [[rec().a]] | 13        |
       | [[rec().a]] | 13        |
       | [[rec().a]] | 13        |
-	  And  sort a record "Sort" field "[[rec(*).a]]"
-	  And "Sort" sort order is "Forward"
-      And find unique "Unique" in field "[[rec().a]]" with the return field "[[rec().a]]"
-	  And The "Unique" result variable is "[[rec().unique]]"
+	  And it contains Sort a Records "Sort" as 
+	  | Sort Field   | Sort Order |
+	  | [[rec(*).a]] | Forward    |
+      And it contain find unique "Unique" as
+	  | In Fields   | Return Fields | Result           |
+	  | [[rec().a]] | [[rec().a]]   | [[rec().unique]] |
       When the Sequence tool is executed
-	 Then the execution has "NO" error
+	  Then the execution has "NO" error
 	  And the "Assign data" debug input as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | 11        |
@@ -234,8 +238,12 @@ Scenario: Execute a Sequence with Assign, Base Convert and Case Convert
       | Variable    | New Value |
       | [[rec().a]] | 0x4141    |
       | [[rec().a]] | warewolf  |
-      And case convert "Case Convert" a variable "[[rec(2).a]]" to "UPPER"
-	  And ase convert "Base Convert" a variable "[[rec(1).a]]" from type "Hex" to type "Binary"
+      And it contains case convert "Case Convert" as
+	  | Variable     | Type  |
+	  | [[rec(2).a]] | UPPER |
+	  And it contains Base convert "Base Convert"as
+	  | Variable     | From | To     |
+	  | [[rec(1).a]] | Hex  | Binary |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Rec To Convert" debug input as
@@ -265,11 +273,14 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
       | Variable    | New Value |
       | [[rec().a]] | test      |
       | [[rec().a]] | warewolf  |
-	  And Data Merge "Data Merge" Input "[[rec(1).a]]" and merge type "Index" and string at as "4" and Padding "" and Alignment "Left"	
-	  And Data Merge "Data Merge" Input "[[rec(2).a]]" and merge type "Index" and string at as "8" and Padding "" and Alignment "Left"
-	  And Data Split "Data Split" string with value "testwarewolf" 
-	  And  Data Split "Data Split" output assign to variable "[[rec(1).b]]" split type "Index" at "4" and Include "unselected"
-	  And  Data Split "Data Split" output assign to variable "[[rec(2).b]]" split type "Index" at "8" and Include "unselected"
+	  And it contains Data Merge "Data Merge1" as	
+	  | Variable     | Type  | string | Padding | Allignment |
+	  | [[rec(1).a]] | Index | 4      |         | Left       |
+	  | [[rec(2).a]  | Index | 8      |         | Left       |
+	  And it contains Data Split1 "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Assign To Merge" debug input as
@@ -280,18 +291,18 @@ Scenario: Execute a Sequence with Assign, Data Merge and Data Split
 	  |   | Records                 |
 	  | 1 | [[rec(1).a]] =  test     |
 	  | 2 | [[rec(2).a]] =  warewolf |
-	  And the "Data Merge" debug inputs as  
+	  And the "Data Merge1" debug inputs as  
 	  | # |                          | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] =  test     | None | "4"   | ""  | Left  |
 	  | 2 | [[rec(2).a]] =  warewolf | None | "8"   | ""  | Left  |
-	  And the debug output as 
+	  And the "Data Merge1" debug output as 
 	  |                           |
 	  | [[result]] = testwarewolf |
-	  And the "Data Split" debug inputs as  
+	  And the "Data Split1" debug inputs as  
 	  | String to Split | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
 	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).a]] = | Index | 4     | No      |        |
 	  |                 | Forward           | No              | 1 | [[rec(2).a]] = | Index | 8     | No      |        |
-	  And the "Data Split" debug output as
+	  And the "Data Split1" debug output as
 	  | # |                           |
 	  | 1 |  [[rec(1).a]] =  test     |
 	  |   |  [[rec(2).a]] =  warewolf |
@@ -303,18 +314,20 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
       | Variable    | New Value |
       | [[rec().a]] | test      |
       | [[rec().a]] | warewolf  |
-	  And Data Merge "Data Merge" Input "[[rec(1).a]]" and merge type "Index" and string at as "4" and Padding "" and Alignment "Left"	
-	  And Data Merge "Data Merge" Input "[[rec(2).a]]" and merge type "Index" and string at as "8" and Padding "" and Alignment "Left"
-	  And Data Split "Data Split" string with value "testwarewolf" 
-	  And Data Split "Data Split" output assign to variable "[[rec(1).b]]" split type "Index" at "4" and Include "unselected"
-	  And Data Split "Data Split" output assign to variable "[[rec(2).b]]" split type "Index" at "8" and Include "unselected"
-	  And Find Index "Index" In Fields "[[rec().a]]"
-	  And Find Index "Index" Selected Index "First Occurence"
-	  And Find Index "Index" search for character "e"
-	  And Find Index "Index" selected direction as "Left to right"
-	  And Replace "Replacing" a sentence "[[rec(*)]]
-	  And Replace "Replacing" Find the character "e"
-	  And Replace "Replacing" them with "REPLACED"
+	  And it contains Data Merge "Data Merge2" as 
+	  | Variable     | Type  | string | Padding | Allignment |
+	  | [[rec(1).a]] | Index | 4      |         | Left       |
+	  | [[rec(2).a]  | Index | 8      |         | Left       |
+	  And it contains Data Split "Data Split2" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  And it contains Find Index "Index" as
+	  | In Fiels    | Index           | Character | Direction     | Result  |
+	  | [[rec().a]] | First Occurence | e         | Left to right | result1 |
+	  And it contains Replace "Replacing" as	
+	  | In Fields  | Find | Replace With | Result  |
+	  | [[rec(*)]] | e    | REPLACED     | result2 |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Assign To Merge" debug input as
@@ -325,13 +338,13 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  |   | Records                 |
 	  | 1 | [[rec(1).a]] =  test     |
 	  | 2 | [[rec(2).a]] =  warewolf |
-	  And the "Data Merge" debug inputs as  
+	  And the "Data Merge2" debug inputs as  
 	  | # |                          | With | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] =  test     | None | "4"   | ""  | Left  |
 	  | 2 | [[rec(2).a]] =  warewolf | None | "8"   | ""  | Left  |
-	  And the debug output as 
+	  And the "Data Merge2" debug output as 
 	  |                           |
-	  | [[result]] = testwarewolf |
+	  | [[result1]] = testwarewolf |
 	  And the "Data Split" debug inputs as  
 	  | String to Split | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
 	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).a]] = | Index | 4     | No      |        |
@@ -345,7 +358,7 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 	  | [[rec(2).a]] = warewolf | First Occurrence | e          | Left to Right |
 	  And the "Index" debug output as
 	  |                |
-	  | [[result]] = 4 |
+	  | [[result2]] = 4 |
 	  And the "Replacing" debug inputs as 
 	  | In Field(s)              | Find | Replace With |
 	  | [[rec(1).a]] =  test     |      |              |
@@ -361,27 +374,27 @@ Scenario: Execute a Sequence with Assign, Data Merge, Data Split, Find Index and
 
 Scenario: Execute a Sequence with Gather System Information, Date and Time Difference, Date and Time, Random, and Format Number tools.
       Given I have a Sequence
-	  And it contains Gather System Info "Sys info" with variable "[[test]]" and selected "Date&Time"
-	  And it contains Date and Time Difference "Date&Time" with first Input date as "2013-11-29"  
-	  And it contains Date and Time Difference "Date&Time" with second Input date as "2050-11-29"  
-	  And it contains Date and Time Difference "Date&Time" with date format as "yyyy-mm-dd"  
-	  And it contains Date and Time Difference "Date&Time" selected output in "Years"  
-	  And it contains Date and Time "Date" with input date as "2013-11-29"
-	  And it contains Date and Time "Date" with input format as "2013-11-29"
-	  And it contains Date and Time "Date" Add time as "Years" with a value 1
-	  And it contains Date and Time "Date" with output format  as ""yyyy-mm-dd"
-	  And it contains Random "Random" type as "Numbers"
-	  And it contains Random "Random" Range as "1" to "10"
-	  And it contains Format Number "Fnumber" number as 788.894564545645
-	  And it contains Format Number "Fnumber" selected rounding "up" to 3
-	  And it contains Format Number "Fnumber" Decimal to show as 3
+	  And it contains Gather System Info "Sys info" as
+	  | Variable | Selected  |
+	  | [[test]] | Date&Time |
+	  And it contains Date and Time Difference "Date&Time" as	
+	  | Input1     | Input2     | Input Format | Output In | Result      |
+	  | 2013-11-29 | 2050-11-29 | yyyy-mm-dd   | Years     | [[result1]] |  
+	  And it contains Date and Time "Date" as
+	  | Input      | Input Format | Add Time | Output Format | Result      |
+	  | 2013-11-29 | 2013-11-29   | 1        | yyyy-mm-dd    | [[result2]] |
+	  And it contains Random "Random" as
+	  | Type   | From | To | Result      |
+	  | Number | 1    | 10 | [[result3]] |
+	  And it contains Format Number "Fnumber" as 
+	  | number           | Rounding Selected | Rounding To | Decimal to show | Result  |
+	  | 788.894564545645 | up                | 3           | 3               | result4 |
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Sys info" debug input as
 	  | # |          |
 	  | 1 | [[test]] |
-	   
-	  And the "Sys info" debug output as 
+	   And the "Sys info" debug output as 
 	  | # |                   |
 	  | 1 | [[test]] = String |
       And the"Date&Time" debug inputs as  
@@ -389,98 +402,100 @@ Scenario: Execute a Sequence with Gather System Information, Date and Time Diffe
 	  | 2013-11-29 | 2050-11-28 | yyyy-mm-dd   | Years     |
 	  And the "Date&Time" debug output as 
 	  |                 |
-	  | [[result]] = 37 |
+	  | [[result1]] = 37 |
 	  And the "Date" debug inputs as  
 	  | Input      | Input Format | Add Time |   | Output Format |
 	  | 2013-11-29 | yyyy-mm-dd   | Years    | 1 | yyyy-mm-dd    |	
 	  And the debug output as 
 	  |                         |
-	  | [[result]] = 2014-11-29 |
+	  | [[result2]] = 2014-11-29 |
 	  And the "Random" debug inputs as  
 	  | Random  | From | To |
 	  | Numbers | 0    | 9  |
 	  And the "Random" debug output as 
 	  |                    |
-	  | [[result]] = Int32 |
+	  | [[result3]] = Int32 |
 	  And the "Fnumber" debug inputs as  
 	  | Number           | Rounding | Rounding Value | Decimals to show |
 	  | 788.894564545645 | Up       | 3              | 3                |
 	  And the "Fnumber" debug output as 
 	  |                      |
-	  | [[result]] = 788.895 |
+	  | [[result4]] = 788.895 |
      
 Scenario: Execute a Sequence with For each
-     Given ForEach type as  "NumOfExecution" as "1"
-	 And there is a sequence with this shape
-	   Given I have a Sequence
-	    And it contains Gather System Info "Sys info" with variable "[[test]]" and selected "Date&Time"
-	    And it contains Date and Time Difference "Date&Time" with first Input date as "2013-11-29"  
-	    And it contains Date and Time Difference "Date&Time" with second Input date as "2050-11-29"  
-	    And it contains Date and Time Difference "Date&Time" with date format as "yyyy-mm-dd"  
-	    And it contains Date and Time Difference "Date&Time" selected output in "Years"  
-	    And it contains Date and Time "Date" with input date as "2013-11-29"
-	    And it contains Date and Time "Date" with input format as "2013-11-29"
-	    And it contains Date and Time "Date" Add time as "Years" with a value 1
-	    And it contains Date and Time "Date" with output format  as ""yyyy-mm-dd"
-	    And it contains Random "Random" type as "Numbers"
-	    And it contains Random "Random" Range as "1" to "10"
-	    And it contains Format Number "Fnumber" number as 788.894564545645
-	    And it contains Format Number "Fnumber" selected rounding "up" to 3
-	    And it contains Format Number "Fnumber" Decimal to show as 3
-	 When the Sequence tool is executed
-	 And the debug inputs as
-	|                 | Number |
-	| No. of Executes | 1      |
+      Given ForEach type as  "NumOfExecution" as "1"
+	  And there is a sequence with this shape
+	  And it contains Gather System Info "Sys info" as
+	  | Variable | Selected  |
+	  | [[test]] | Date&Time |
+	  And it contains Date and Time Difference "Date&Time" as	
+	  | Input1     | Input2     | Input Format | Output In | Result      |
+	  | 2013-11-29 | 2050-11-29 | yyyy-mm-dd   | Years     | [[result1]] |  
+	  And it contains Date and Time "Date" as
+	  | Input      | Input Format | Add Time | Output Format | Result      |
+	  | 2013-11-29 | 2013-11-29   | 1        | yyyy-mm-dd    | [[result2]] |
+	  And it contains Random "Random" as
+	  | Type   | From | To | Result      |
+	  | Number | 1    | 10 | [[result3]] |
+	  And it contains Format Number "Fnumber" as 
+	  | number           | Rounding Selected | Rounding To | Decimal to show | Result  |
+	  | 788.894564545645 | up                | 3           | 3               | result4 |
+	  When the Sequence tool is executed
+	  Then the execution has "NO" error
+	  And the debug inputs as
+	  |                 | Number |
+	  | No. of Executes | 1      |
 
 
 Scenario: Execute a Sequence with Saved workflow, Gather System Information, Date and Time Difference, Date and Time, Random, and Format Number tools.
       Given I have a Sequence
-	  And it contains Gather System Info "Sys info" with variable "[[test]]" and selected "Date&Time"
-	  And it contains Date and Time Difference "Date&Time" with first Input date as "2013-11-29"  
-	  And it contains Date and Time Difference "Date&Time" with second Input date as "2050-11-29"  
-	  And it contains Date and Time Difference "Date&Time" with date format as "yyyy-mm-dd"  
-	  And it contains Date and Time Difference "Date&Time" selected output in "Years"  
-	  And it contains Date and Time "Date" with input date as "2013-11-29"
-	  And it contains Date and Time "Date" with input format as "2013-11-29"
-	  And it contains Date and Time "Date" Add time as "Years" with a value 1
-	  And it contains Date and Time "Date" with output format  as ""yyyy-mm-dd"
-	  And it contains Random "Random" type as "Numbers"
-	  And it contains Random "Random" Range as "1" to "10"
-	  And it contains Format Number "Fnumber" number as 788.894564545645
-	  And it contains Format Number "Fnumber" selected rounding "up" to 3
-	  And it contains Format Number "Fnumber" Decimal to show as 3
+	  And it contains Gather System Info "Sys info1" as
+	  | Variable | Selected  |
+	  | [[test]] | Date&Time |
+	  And it contains Date and Time Difference "Date&Time1" as	
+	  | Input1     | Input2     | Input Format | Output In | Result      |
+	  | 2013-11-29 | 2050-11-29 | yyyy-mm-dd   | Years     | [[result1]] |  
+	  And it contains Date and Time "Date1" as
+	  | Input      | Input Format | Add Time | Output Format | Result      |
+	  | 2013-11-29 | 2013-11-29   | 1        | yyyy-mm-dd    | [[result2]] |
+	  And it contains Random "Random1" as
+	  | Type   | From | To | Result      |
+	  | Number | 1    | 10 | [[result3]] |
+	  And it contains Format Number "Fnumber1" as 
+	  | number           | Rounding Selected | Rounding To | Decimal to show | Result  |
+	  | 788.894564545645 | up                | 3           | 3               | result4 |
 	  And it contains the underlying dropped activity is a(n) "Assignwf"
 	  When the Sequence tool is executed
 	  Then the execution has "NO" error
-	  And the "Sys info" debug input as
+	  And the "Sys info1" debug input as
 	  | # |          |
 	  | 1 | [[test]] |
 	   
-	  And the "Sys info" debug output as 
+	  And the "Sys info1" debug output as 
 	  | # |                   |
 	  | 1 | [[test]] = String |
-      And the"Date&Time" debug inputs as  
+      And the"Date&Time1" debug inputs as  
 	  | Input 1    | Input 2    | Input Format | Output In |
 	  | 2013-11-29 | 2050-11-28 | yyyy-mm-dd   | Years     |
-	  And the "Date&Time" debug output as 
+	  And the "Date&Time1" debug output as 
 	  |                 |
 	  | [[result]] = 37 |
-	  And the "Date" debug inputs as  
+	  And the "Date1" debug inputs as  
 	  | Input      | Input Format | Add Time |   | Output Format |
 	  | 2013-11-29 | yyyy-mm-dd   | Years    | 1 | yyyy-mm-dd    |	
-	  And the debug output as 
+	  And the "Date1" debug output as 
 	  |                         |
 	  | [[result]] = 2014-11-29 |
-	  And the "Random" debug inputs as  
+	  And the "Random1" debug inputs as  
 	  | Random  | From | To |
 	  | Numbers | 0    | 9  |
 	  And the "Random" debug output as 
 	  |                    |
 	  | [[result]] = Int32 |
-	  And the "Fnumber" debug inputs as  
+	  And the "Fnumber1" debug inputs as  
 	  | Number           | Rounding | Rounding Value | Decimals to show |
 	  | 788.894564545645 | Up       | 3              | 3                |
-	  And the "Fnumber" debug output as 
+	  And the "Fnumber1" debug output as 
 	  |                      |
 	  | [[result]] = 788.895 |
 	  And "Assignwf" debug inputs as
@@ -498,12 +513,17 @@ Scenario: Execute a Sequence with Web Service, Assign, Base Convert, Case Conver
       | Variable    | New Value |
       | [[rec().a]] | 0x4141    |
       | [[rec().a]] | warewolf  |
-      And case convert "Case Convert" a variable "[[rec(2).a]]" to "UPPER"
-	  And and convert "Base Convert" a variable "[[rec(1).a]]" from type "Hex" to type "Binary"
-	  And it contains the underlying dropped activity is a(n) "Web service" 
-	  And it contains xpath "xpathtool" with XML '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
-	  And it contains xpath "xpathtool" variable "[[firstNum]]" output with xpath "//root/number[@id='2']/text()"
-	  When the Sequence tool is executed
+      And it contains case convert "Case Convert2" as 
+	  | Variable     | Type  |
+	  | [[rec(2).a]] | UPPER |
+	  And it contains convert "Base Convert2" as
+	  | Variable     | From | To     |
+	  | [[rec(1).a]] | Hex  | Binary |
+      And it contains the underlying dropped activity is a(n) "Web service" 
+	  And it contains xpath "xpathtool" as
+	  | XML                                                                                              | Variable     | XPath                         |
+	  | <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | [[firstNum]] | //root/number[@id='2']/text() |
+      When the Sequence tool is executed
 	  Then the execution has "NO" error
 	  And the "Rec To Convert" debug input as
 	  | # | Variable      | New Value |
@@ -513,16 +533,16 @@ Scenario: Execute a Sequence with Web Service, Assign, Base Convert, Case Conver
 	  |   | Records                  |
 	  | 1 | [[rec().a]] =  0x4141    |
 	  | 2 | [[rec().a]] =   warewolf |
-	  And the "Case Tonvert" debug input as
+	  And the "Case Tonvert2" debug input as
 	  | # | Convert                 | To    |
 	  | 1 | [[rec(2).a]] = warewolf | UPPER |
-	  And the "Case Convert" debug output as  
+	  And the "Case Convert2" debug output as  
 	  | # |                         |
 	  | 1 | [[rec(2).a]] = WAREWOLF |
-	  And the "Base Convert" debug inputs as  
+	  And the "Base Convert2" debug inputs as  
 	  | # | Convert               | From | To     |
 	  | 1 | [[rec(1).a]] = 0x4141 | Hex  | Binary |
-	  And the "Base Convert" debug output as  
+	  And the "Base Convert2" debug output as  
 	  | # |                                 |
 	  | 1 | [[rec(1).a]] = 0100000101000001 |
 	  And the "Web service" debug input as
