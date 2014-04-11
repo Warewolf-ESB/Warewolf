@@ -456,6 +456,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 // Now ID flow through mappings ;)
                 remainingMappings = compiler.ShapeForSubExecution(oldID, shapeID, inputDefs, outputDefs, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
             }
             else
             {
