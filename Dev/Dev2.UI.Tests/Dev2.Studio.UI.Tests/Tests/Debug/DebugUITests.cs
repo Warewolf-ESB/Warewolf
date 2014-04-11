@@ -153,6 +153,36 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Debug_GatherSystemInfo")]
+        public void Debug_GatherSystemInfo_UsingASameVariableInTwoActivities_DebugIsCorrect()
+        {
+            // Remove the PersistSettings.dat ;)
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "");
+            var settingPath = Path.Combine(appData, @"Local\Warewolf\DebugData\PersistSettings.dat");
+
+            if(File.Exists(settingPath))
+            {
+                File.Delete(settingPath);
+            }
+
+            ExplorerUIMap.DoubleClickWorkflow("11330_Integration tests", "SPINT 7");
+           
+            RibbonUIMap.DebugShortcutKeyPress();
+            OutputUIMap.WaitForExecution(2500);
+
+            var step3 = OutputUIMap.GetStep(2);
+            Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(step3, new[] {"[[date]]","=","Date & Time" }));
+            Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(step3, new[] {"[[cpu]]","=","CPU Available" })); 
+            
+            var step4 = OutputUIMap.GetStep(3);
+            Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(step4, new[] {"[[date]]","=","Date & Time" }));
+            Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(step4, new[] {"[[cpu]]","=","CPU Available" }));
+
+            Assert.IsFalse(OutputUIMap.AssertDebugOutputContains(step4, new[] {"% CPU Available" }));
+        }
+
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DebugOutput_whenRun10Time")]
         public void DebugOutput_WhenRun10Times_NormalExecution_CloseTagsReturned10Times()

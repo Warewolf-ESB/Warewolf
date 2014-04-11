@@ -260,7 +260,6 @@
       <SubType>
       </SubType>
     </Compile>
-    <Compile Include="Dev2.Activities.Tests\DsfGatherSystemInformationActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\WorkflowInputMapping.cs" />
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
