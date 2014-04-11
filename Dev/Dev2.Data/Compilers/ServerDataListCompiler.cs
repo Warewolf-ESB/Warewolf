@@ -563,6 +563,7 @@ namespace Dev2.Server.Datalist
                 // Do any remaining input shaping here ;)
                 // Will return the childDLID
                 InternalShape(ctx, parentDLID, iDefs, enDev2ArgumentType.Input, out invokeErrors, false, childDLID);
+                errors.MergeErrors(invokeErrors);
             }
 
             if(oDefs.Count > 0)

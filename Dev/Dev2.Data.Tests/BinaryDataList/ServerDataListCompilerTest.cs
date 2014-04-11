@@ -458,6 +458,26 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WhenInvalidInputs_ExpectErrors()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            const string inputs = @"<Inputs><Input Name=""scalar2"" Source=""[[rs2(**).f1a]]"" /></Inputs>";
+            //------------Execute Test---------------------------
+            _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(errors.HasErrors());
+            var fetchErrors = errors.FetchErrors();
+            StringAssert.Contains(fetchErrors[0], "Recordset index (**) contains invalid character(s)");
+            StringAssert.Contains(fetchErrors[1], "Invalid Recordset Index For { [[rs2(**).f1a]] }");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Shape")]
         public void ServerDataListCompiler_Shape_WhenOutputsContainTwoRecordsets_ExpectTwoAliasMaps()
         {
             //------------Setup for test--------------------------
