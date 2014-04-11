@@ -7,6 +7,7 @@ namespace Dev2.Activities.Debug
     {
         readonly string _value;
         readonly string _labelText;
+        readonly string _operand;
         readonly string _variable;
         readonly DebugItemResultType _type;
 
@@ -21,6 +22,15 @@ namespace Dev2.Activities.Debug
         {
             _value = value;
             _labelText = labelText;
+            _variable = variable;
+            _type = DebugItemResultType.Variable;
+        }
+
+        public DebugItemStaticDataParams(string value, string variable, string labelText, string operand)
+        {
+            _value = value;
+            _labelText = labelText;
+            _operand = operand;
             _variable = variable;
             _type = DebugItemResultType.Variable;
         }
@@ -65,7 +75,8 @@ namespace Dev2.Activities.Debug
                         Type = Type, 
                         Value = Value,
                         Label = LabelText,
-                        Variable = Variable
+                        Variable = Variable,
+                        Operator = string.IsNullOrWhiteSpace(_operand) ? "" : "="
                     }};
             return debugItemsResults;
         }

@@ -104,11 +104,11 @@ namespace Dev2.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                    var inputToAdd = new DebugItem();
+                        var inputToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                    AddDebugItem(DebugUtil.EvaluateEmptyRecordsetBeforeAddingToDebugOutput(item.Result, "", executionId), inputToAdd);
-                    AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                    _debugInputs.Add(inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", item.Result, "", "="), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                        _debugInputs.Add(inputToAdd);
                     }
 
                     var hasErrors = allErrors.HasErrors();
