@@ -133,7 +133,7 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <ui:IntellisenseTextBox DefaultText="Match"
-                                                        FilterType="AllButRecordsets"
+                                                        FilterType="All"
                                                         Grid.Column="0"
                                                         Grid.ColumnSpan="2"
                                                         AllowUserCalculateMode="False"
@@ -167,7 +167,7 @@
                                 </ui:IntellisenseTextBox>
 
                                 <ui:IntellisenseTextBox DefaultText="From"
-                                                        FilterType="AllButRecordsets"
+                                                        FilterType="All"
                                                         Grid.Column="0"                                                        
                                                         AllowUserCalculateMode="False"
                                                         AllowUserInsertLine="False"
@@ -198,7 +198,7 @@
                                 </ui:IntellisenseTextBox>
 
                                 <ui:IntellisenseTextBox DefaultText="To"
-                                                        FilterType="AllButRecordsets"
+                                                        FilterType="All"
                                                         Grid.Column="1"                                                        
                                                         AllowUserCalculateMode="False"
                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"

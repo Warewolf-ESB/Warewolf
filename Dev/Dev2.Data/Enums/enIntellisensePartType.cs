@@ -2,11 +2,11 @@
 namespace Dev2.DataList.Contract
 {
 
-    public enum enIntellisensePartType {
+    public enum enIntellisensePartType
+    {
         All,
         RecorsetsOnly,
-        ScalarsOnly,      
-        RecordsetFields,
-        AllButRecordsets
+        ScalarsOnly,
+        RecordsetFields
     }
 }

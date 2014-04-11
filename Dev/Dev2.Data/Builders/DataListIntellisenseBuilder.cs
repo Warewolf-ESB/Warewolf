@@ -94,7 +94,7 @@ namespace Dev2.DataList.Contract
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
                             }
-                            if(FilterTO.FilterType == enIntellisensePartType.RecordsetFields || FilterTO.FilterType == enIntellisensePartType.AllButRecordsets)
+                            if(FilterTO.FilterType == enIntellisensePartType.RecordsetFields)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
@@ -102,7 +102,7 @@ namespace Dev2.DataList.Contract
                         else
                         {
                             // scalar value, make it as such
-                            if(FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly || FilterTO.FilterType == enIntellisensePartType.AllButRecordsets)
+                            if(FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                             }

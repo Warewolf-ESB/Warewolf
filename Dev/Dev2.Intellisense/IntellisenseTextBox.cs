@@ -1146,15 +1146,6 @@ namespace Dev2.UI
                                     _toolTip.IsOpen = true;
                                 }
                             }
-                            else if(FilterType == enIntellisensePartType.AllButRecordsets)
-                            {
-                                if((text.Contains("(") && text.Contains(")") && !text.Contains(".")))
-                                {
-                                    hasError = true;
-                                    ttErrorBuilder.AppendLine("Full recordsets is not allowed");
-                                    _toolTip.IsOpen = true;
-                                }
-                            }
                         }
 
                         _lastResultHasError = hasError;

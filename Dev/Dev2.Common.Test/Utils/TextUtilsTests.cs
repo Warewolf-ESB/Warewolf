@@ -63,5 +63,19 @@ namespace Dev2.Common.Tests.Utils
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("TextUtils_ReplaceWorkflowNewLinesWithEnvironmentNewLines")]
+        public void TextUtils_ReplaceWorkflowNewLinesWithEnvironmentNewLines_WackWackNFirstChars_ReplaceOccurs()
+        {
+            //------------Setup for test--------------------------
+            string expected = "\\nwarewolf\r\n is\\n awesome\r\ntest";
+            string stringToReplace = "\\nwarewolf\n is\\n awesome\ntest";
+            //------------Execute Test---------------------------
+            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
+        }
     }
 }
