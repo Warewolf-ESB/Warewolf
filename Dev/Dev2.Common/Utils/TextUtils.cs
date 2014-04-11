@@ -16,19 +16,10 @@ namespace Dev2.Common.Utils
                     if(indexOfReplacement != -1)
                     {
                         bool dontReplace = true;
-                        if(indexOfReplacement > 1)
+                        if(indexOfReplacement != 0)
                         {
-                            string backwardsLookup = stringToReplaceIn.Substring(indexOfReplacement - 1, 1);
-                            if(backwardsLookup == "\r" || backwardsLookup[0] == '\\')
-                            {
-                                dontReplace = false;
-                                startIndex = indexOfReplacement + 2;
-                            }
-                        }
-                        else if(indexOfReplacement == 1)
-                        {
-                            string backwardsLookup = stringToReplaceIn.Substring(indexOfReplacement - 1, 1);
-                            if(backwardsLookup == "\\")
+                            char backwardsLookup = stringToReplaceIn[indexOfReplacement - 1];
+                            if(backwardsLookup == '\r' || backwardsLookup == '\\')
                             {
                                 dontReplace = false;
                                 startIndex = indexOfReplacement + 2;
