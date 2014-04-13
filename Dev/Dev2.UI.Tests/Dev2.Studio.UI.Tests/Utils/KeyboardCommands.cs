@@ -13,6 +13,9 @@ namespace Dev2.Studio.UI.Tests
         public static string EscCommand { get { return "{ESC}"; } }
         public static string TabCommand { get { return "{TAB}"; } }
         public static string DownCommand { get { return "{DOWN}"; } }
+        public static string LeftCommand { get { return "{LEFT}"; } }
+        public static string RightCommand { get { return "{RIGHT}"; } }
+        public static string UpCommand { get { return "{UP}"; } }
         public static string ShiftCommand { get { return "{SHIFT}"; } }
         public static string SelectAllCommand { get { return "^a"; } }
         public static string CopyCommand { get { return "^c"; } }
@@ -26,10 +29,17 @@ namespace Dev2.Studio.UI.Tests
 
         #region Methods
 
-        public static void SelectAllText(UITestControl editBlock)
+        public static void SendBackspaces(int amtOfPresses, int waitAmt = 15)
         {
-            SendKeys.SendWait("{HOME}");
-            SendKeys.SendWait("{END} + {SHIFT}");
+            for(var i = 0; i < amtOfPresses; i++)
+            {
+                SendKey(BackspaceCommand, waitAmt);
+            }
+        }
+
+        public static void SelectAllText()
+        {
+            SendKeys.SendWait(SelectAllCommand);
         }
 
         public static void SendKey(string key, int waitAmt = 15)
@@ -38,11 +48,35 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(waitAmt);
         }
 
-        public static void SendDownArrows(int amtOfTabs, int waitAmt = 15)
+        public static void SendDownArrows(int amtOfPresses, int waitAmt = 15)
         {
-            for(var i = 0; i < amtOfTabs; i++)
+            for(var i = 0; i < amtOfPresses; i++)
             {
                 SendKey(DownCommand, waitAmt);
+            }
+        }
+
+        public static void SendLeftArrows(int amtOfPresses, int waitAmt = 15)
+        {
+            for(var i = 0; i < amtOfPresses; i++)
+            {
+                SendKey(LeftCommand, waitAmt);
+            }
+        }
+
+        public static void SendRightArrows(int amtOfPresses, int waitAmt = 15)
+        {
+            for(var i = 0; i < amtOfPresses; i++)
+            {
+                SendKey(RightCommand, waitAmt);
+            }
+        }
+
+        public static void SendUpArrows(int amtOfPresses, int waitAmt = 15)
+        {
+            for(var i = 0; i < amtOfPresses; i++)
+            {
+                SendKey(UpCommand, waitAmt);
             }
         }
 

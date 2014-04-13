@@ -293,7 +293,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
-            Point p = new Point(theControl.BoundingRectangle.X + 200, theControl.BoundingRectangle.Y + 5);
+            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);

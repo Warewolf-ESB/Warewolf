@@ -176,16 +176,72 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     };
 
     self.extractAndPushRequestVariable = function (text, start, varSrc) {
-        var prev = text.slice(start - 2, start - 1);
+        // prune to query string
+        var substring = text;
+        if (text.indexOf("?") >= 0) {
+            var indexOf = text.indexOf("?");
+            var len = substring.length;
+            substring = text.substring(indexOf, len);
+        }
 
-        if (prev == "]") {
+        var findSearchString = text;
+        // find each keyvalue pair
+        var split = substring.split("&");
+        
+        split.forEach(function (item) {
+            var keyValuePair = item.split("=");
 
-            var idx = text.lastIndexOf("[[", start);
-            if (idx != -1) {
-                var paramName = text.substring(idx + 2, start - 2);
+            // split out each key value pair
+            if (keyValuePair.length > 1) {
+                // we have a value to parse ;)
+                var val = keyValuePair[1];
+                var key = keyValuePair[0];
+
+                var paramName1 = self.pushVariable(val, findSearchString, varSrc);                
+                var paramName2 = self.pushVariable(key, findSearchString, varSrc);
+                
+                // remove found pairs and meta-data
+                if (key.indexOf("[[") < 0) {
+                    findSearchString = findSearchString.replace(key, "");
+                }
+                
+                findSearchString = findSearchString.replace("[[" + paramName1 + "]]", "");
+                findSearchString = findSearchString.replace("[[" + paramName2 + "]]", "");
+                findSearchString = findSearchString.replace("=", "");
+                findSearchString = findSearchString.replace("&", "");
+            }
+        });
+        
+        // find any remaing regions of data language
+        var clingOnParts = findSearchString.split("[[");
+        clingOnParts.forEach(function (part) {
+            var endIdx = part.indexOf("]]");
+            if (endIdx > 0) {
+                var newPart = part.substring(0, endIdx);
+
+                self.pushRequestVariable(newPart, varSrc, "");
+            }
+        });
+
+        //Clear the list if there are no variables to add
+        if (clingOnParts.length == 1 && split.length == 1) {
+            self.clearRequestVariables();
+        }
+    };
+
+    self.pushVariable = function (val, findSearchString, varSrc) {
+        var endIdx = val.indexOf("]]");
+
+        if (val.indexOf("[[") == 0 && endIdx > 0) {
+            var paramName = val.substring(2, endIdx);
+
+            if (paramName.length > 0) {
+
                 self.pushRequestVariable(paramName, varSrc, "");
             }
+            return paramName;
         }
+        return "";
     };
 
     self.updateVariablesText = function (varSrc, newValue, caretPos) {
@@ -375,7 +431,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             } else {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
                 // handle more normal use case ;)
-               // self.ProperlyHandleVariableInput(newValue);
+                // self.ProperlyHandleVariableInput(newValue);
             }
         } else { // SRC_BODY
 
@@ -467,7 +523,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.requestMethods = ko.observableArray(["GET", "POST", "PUT", "DELETE", "TRACE"]);
 
     self.sources = ko.observableArray();
-    
+
     self.upsertSources = function (result) {
         var id = result.ResourceID.toLowerCase();
         var name = result.ResourceName.toLowerCase();
@@ -499,7 +555,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.data.source.subscribe(function (newValue) {
         // our sources is a list of Resource's and NOT WebSource's 
         // so we have to load it
-       
+
         if (newValue && !newValue.Address) {
             self.loadSource(newValue.ResourceID);
             return;
@@ -510,27 +566,25 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.onSourceChanged = function (newValue) {
         self.hasSourceSelectionChanged = true;
         try {
-           
+
             if (!initLoad) {
                 self.data.requestBody("");
                 self.data.requestResponse("");
                 self.data.requestHeaders("");
-                self.clearRequestVariables();
                 self.data.recordsets.removeAll();
-                self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
                 self.hasTestResults(false);
                 self.sourceAddress(newValue ? newValue.Address : "");
             } else {
                 initLoad = false;
-                
+
                 // DO NOT CALL - Will overwrite exiting value on edit ;)
                 //self.data.requestUrl(newValue.DefaultQuery); // triggers a call updateVariables()
-                
+
                 // UPDATE : Its fine if we are not in edit mode ;)
-                if(!self.isEditing) {
+                if (!self.isEditing) {
                     self.data.requestUrl(newValue.DefaultQuery);
                 }
-                
+
                 self.sourceAddress(newValue ? newValue.Address : "");
             }
 
@@ -774,10 +828,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.data.source().AuthenticationType = result.AuthenticationType;
             self.data.source().UserName = result.UserName;
             self.data.source().Password = result.Password;
-           
+
             self.upsertSources(result);
             self.onSourceChanged(result);
-            
+
             if (self.onLoadSourceCompleted != null) {
                 self.onLoadSourceCompleted();
             }

@@ -127,6 +127,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_WebServiceWizard")]
+        public void WizardUiTests_WebServiceWizard_WebServiceInputMappings_ExpectedInputMappingsCreated()
+        {
+
+            //Open wizard
+            RibbonUIMap.ClickNewWebService();
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendKey("[[a]]=[[b]][[c]]&d=[[d]]");
+
+
+
+        }
+
         #endregion
 
         #region Db Service And Source Wizards
