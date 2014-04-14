@@ -131,7 +131,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Sche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Test", "Dev2.Scheduler.Test\Dev2.Scheduler.Test.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Test", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Test.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
@@ -285,17 +285,18 @@ Global
 		SccProjectUniqueName47 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
 		SccProjectName47 = Dev2.Scheduler.Test
 		SccLocalPath47 = Dev2.Scheduler.Test
-		SccProjectUniqueName48 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Test.csproj
-		SccProjectName48 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath48 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName49 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName49 = Dev2.ScheduleExecutor
-		SccLocalPath49 = Dev2.ScheduleExecutor
-		SccProjectUniqueName50 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName50 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath50 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName51 = Dev2.Load.Tests\\Dev2.Load.Tests.csproj
-		SccLocalPath51 = Dev2.Load.Tests
+		SccProjectUniqueName48 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
+		SccProjectName48 = Dev2.ScheduleExecutor
+		SccLocalPath48 = Dev2.ScheduleExecutor
+		SccProjectUniqueName49 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName49 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath49 = Dev2.TaskScheduler.Wrappers
+		SccProjectUniqueName50 = Dev2.Load.Tests\\Dev2.Load.Tests.csproj
+		SccProjectName50 = .
+		SccLocalPath50 = Dev2.Load.Tests
+		SccProjectUniqueName51 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName51 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath51 = Dev2.TaskScheduler.Wrappers.Test
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
