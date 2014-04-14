@@ -89,9 +89,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Scheduler\Dev2.Scheduler.csproj", "{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Test", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Test.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Test", "Dev2.Scheduler.Test\Dev2.Scheduler.Test.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -210,12 +210,12 @@ Global
 		SccProjectUniqueName37 = Dev2.Scheduler\\Dev2.Scheduler.csproj
 		SccProjectName37 = Dev2.Scheduler
 		SccLocalPath37 = Dev2.Scheduler
-		SccProjectUniqueName38 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Test.csproj
-		SccProjectName38 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath38 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName39 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
-		SccProjectName39 = Dev2.Scheduler.Test
-		SccLocalPath39 = Dev2.Scheduler.Test
+		SccProjectUniqueName38 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
+		SccProjectName38 = Dev2.Scheduler.Test
+		SccLocalPath38 = Dev2.Scheduler.Test
+		SccProjectUniqueName39 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName39 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath39 = Dev2.TaskScheduler.Wrappers.Test
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -931,24 +931,6 @@ Global
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|x64.ActiveCfg = Release|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|x86.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x64.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Any CPU.Build.0 = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x64.ActiveCfg = Release|Any CPU
-		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x86.ActiveCfg = Release|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -967,6 +949,24 @@ Global
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x64.ActiveCfg = Release|Any CPU
 		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x86.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x64.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Any CPU.Build.0 = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x64.ActiveCfg = Release|Any CPU
+		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

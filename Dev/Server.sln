@@ -85,7 +85,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Sche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Test", "Dev2.Scheduler.Test\Dev2.Scheduler.Test.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Test", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Test.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -198,7 +198,7 @@ Global
 		SccProjectUniqueName35 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
 		SccProjectName35 = Dev2.Scheduler.Test
 		SccLocalPath35 = Dev2.Scheduler.Test
-		SccProjectUniqueName36 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Test.csproj
+		SccProjectUniqueName36 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
 		SccProjectName36 = Dev2.TaskScheduler.Wrappers.Test
 		SccLocalPath36 = Dev2.TaskScheduler.Wrappers.Test
 	EndGlobalSection
