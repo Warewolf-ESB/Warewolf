@@ -12,7 +12,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_Constructor_WithNullFileName_ShouldUseDefaultFileName()
+        public void CustomTraceListener_Constructor_WithNullFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
             var customTextWriter = new CustomTextWriter(null);
@@ -26,7 +26,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_Constructor_WithEmptyFileName_ShouldUseDefaultFileName()
+        public void CustomTraceListener_Constructor_WithEmptyFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
             var customTextWriter = new CustomTextWriter("");
@@ -40,7 +40,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_StaticLoggingFileNameAccessed_WithEmptyFileName_ShouldUseDefaultFileName()
+        public void CustomTraceListener_StaticLoggingFileNameAccessed_WithEmptyFileName_ShouldUseDefaultFileName()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
@@ -52,7 +52,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WithEmptyFileName")]
-        public void CustomTraceListner_Constructor_WithFileName_ShouldUseFileName()
+        public void CustomTraceListener_Constructor_WithFileName_ShouldUseFileName()
         {
             //------------Setup for test--------------------------
             const string fileName = "MyLogFile.txt";

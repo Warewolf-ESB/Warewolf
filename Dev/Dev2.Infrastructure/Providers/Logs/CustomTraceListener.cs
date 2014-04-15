@@ -14,14 +14,13 @@ namespace Dev2.Providers.Logs
         const int DefaultMaxFileSize = 1048576;
         static string FileName;
         StreamWriter _traceWriter;
-        AppSettingsReader _appSettingsReader;
+        readonly AppSettingsReader _appSettingsReader;
         bool _streamClosed;
 
         public CustomTextWriter(string fileName)
         {
             FileName = fileName;
             _appSettingsReader = new AppSettingsReader();
-            _traceWriter = new StreamWriter(LoggingFileName, true);
         }
 
         public static string LoggingFileName
@@ -67,6 +66,7 @@ namespace Dev2.Providers.Logs
         {
             try
             {
+                EnsureStream();
                 CheckRollover();
                 _traceWriter.Write(value);
                 _traceWriter.Flush();
@@ -81,6 +81,7 @@ namespace Dev2.Providers.Logs
         {
             try
             {
+                EnsureStream();
                 CheckRollover();
                 _traceWriter.WriteLine(value);
                 _traceWriter.Flush();
@@ -88,6 +89,14 @@ namespace Dev2.Providers.Logs
             catch(ObjectDisposedException)
             {
                 //ignore this exception
+            }
+        }
+
+        void EnsureStream()
+        {
+            if(_traceWriter == null)
+            {
+                _traceWriter = new StreamWriter(LoggingFileName, true);
             }
         }
 
@@ -122,7 +131,9 @@ namespace Dev2.Providers.Logs
                 int maxFileSize = int.Parse(_appSettingsReader.GetValue("MaxLogFileSizeBytes", typeof(int)).ToString());
                 return maxFileSize;
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 //Could not read setttings. Use default.
             }
@@ -131,8 +142,11 @@ namespace Dev2.Providers.Logs
 
         public void CloseTraceWriter()
         {
-            _traceWriter.Close();
-            _traceWriter.Dispose();
+            if(_traceWriter != null)
+            {
+                _traceWriter.Close();
+                _traceWriter.Dispose();
+            }
             _streamClosed = true;
             FileName = null;
         }
