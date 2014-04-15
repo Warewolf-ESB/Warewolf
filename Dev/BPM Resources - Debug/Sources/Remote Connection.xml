@@ -1,5 +1,5 @@
 
-<Source ID="30184b9d-4cae-41e0-9049-3b8c21295924" Name="Remote Connection" Type="Dev2Server" ConnectionString="AppServerUri=http://test-2:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="30184b9d-4cae-41e0-9049-3b8c21295924" Name="Remote Connection" Type="Dev2Server" ConnectionString="AppServerUri=http://tst-ci-remote:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <TypeOf>Dev2Server</TypeOf>
   <DisplayName>Remote Connection</DisplayName>
   <Category>RemoteCodedUi</Category>
@@ -12,9 +12,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>y4NTgi3a+h+pVciS4JZmY7bkZJs=</DigestValue>
+        <DigestValue>IUkUrqwMMBz/Ygou4DqvKk4KEBs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>aNs/XfYEBem7Tf5v2d8YDiztZvrUG/YsAHltqFfELMKyzGl1byE1G5kFAxdfJ6tfaQlhx3wcf9FlSimp1MFH9dw1SrPNr1RSgqjIAF1prp2qZy1lGVaJFmCDfXpoLNG8jqwzpWq9eRVauk9b+pi6BLpp8w6w3BNuCGXcq24fDxk=</SignatureValue>
+    <SignatureValue>toIgCyiYgJIyNnFMn2JU+4LGyhw9p0+GwEXFph5KjH3WXqakIvxe8XOWPFpO4RNYIV77P8FNwTEy5zP4nCAxAwa1oYGHzFSwBHewjCcQ/3+F4ZV0RwG2fYc43f89b12HnM9jQK9voEnZIeRQYf1ixZFi9A3wlpRooG/L3obJVFw=</SignatureValue>
   </Signature>
 </Source>

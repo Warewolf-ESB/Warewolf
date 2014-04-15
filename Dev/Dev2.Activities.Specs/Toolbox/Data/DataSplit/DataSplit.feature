@@ -434,10 +434,10 @@ Scenario: Split text using a index with "," and space
 	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected"
 	And the direction is "Backward"
     And assign error to variable "[[error]]"
-    And call the web service "http://test-2:3142/services/OnError_WriteToFile.xml?errorLog=[[error]]"
+    And call the web service "http://TST-CI-REMOTE:3142/services/OnError_WriteToFile.xml?errorLog=[[error]]"
     When the data split tool is executed
     Then the execution has "AN" error
-    And the result from the web service "http://test-2:3142/services/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
+    And the result from the web service "http://TST-CI-REMOTE:3142/services/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
     And the debug inputs as
 	| String to Split   | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
 	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] = | Index | *     | No      |        |
