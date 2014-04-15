@@ -139,6 +139,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             try
             {
+                Mouse.Click(StudioWindow);
                 // first try closing wizards ;)
                 for(var i = 0; i < 5; i++)
                 {

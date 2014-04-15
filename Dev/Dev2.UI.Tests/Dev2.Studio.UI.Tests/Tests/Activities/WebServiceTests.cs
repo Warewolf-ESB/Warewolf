@@ -86,7 +86,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendLeftArrows(2);
             KeyboardCommands.SendKey("e");
             KeyboardCommands.SendTabs(2);
-            KeyboardCommands.SendEnter(200);
+            KeyboardCommands.SendEnter(5000);
             KeyboardCommands.SendTabs(1);
             KeyboardCommands.SendEnter(1000);
             KeyboardCommands.SendTabs(3);
@@ -104,6 +104,83 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
             Assert.AreEqual("d", activity.GetInputMappingToServiceValue(4));
             Assert.AreEqual("fe", activity.GetInputMappingToServiceValue(5));
+
+            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_WebServiceWizard")]
+        public void WizardUiTests_WebServiceWizard_WebServiceInputMappingsCase2_ExpectedInputMappingsCreated()
+        {
+            string newGuid = Guid.NewGuid().ToString();
+            string remove = newGuid.Remove(8);
+            string newWebserviceName = "WebService" + remove;
+
+            //Open wizard
+            RibbonUIMap.ClickNewWebService();
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(8);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendKey("?[[a]][[b]]=[[c]]");
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendEnter(5000);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(1000);
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(newWebserviceName);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(200);
+
+            UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+
+            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+
+            Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
+            Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
+            Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
+
+            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_WebServiceWizard")]
+        public void WizardUiTests_WebServiceWizard_WebServiceInputMappingsCase3_ExpectedInputMappingsCreated()
+        {
+            string newGuid = Guid.NewGuid().ToString();
+            string remove = newGuid.Remove(8);
+            string newWebserviceName = "WebService" + remove;
+
+            //Open wizard
+            RibbonUIMap.ClickNewWebService();
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(8);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendKey("[[foobar]]?a=[[a]]");
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendEnter(5000);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(1000);
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(newWebserviceName);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(200);
+
+            UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+
+            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+
+            Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
+            Assert.AreEqual("foobar", activity.GetInputMappingToServiceValue(2));
 
             ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
         }
