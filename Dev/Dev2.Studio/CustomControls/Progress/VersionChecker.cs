@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.Helpers
             get
             {
                 Check();
-                return Latest == Current ? StringResources.Warewolf_Homepage_New : StringResources.Warewolf_Homepage_Start;
+                return StringResources.Warewolf_Homepage_Start;
             }
         }
 

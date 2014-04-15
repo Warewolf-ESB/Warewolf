@@ -1457,29 +1457,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/start_new.html.
-        /// </summary>
-        public static string Warewolf_Homepage_New {
-            get {
-                return ResourceManager.GetString("Warewolf_Homepage_New", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Warewolf_Homepage_Start {
             get {
                 return ResourceManager.GetString("Warewolf_Homepage_Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/take5minutes.html.
-        /// </summary>
-        public static string Warewolf_Homepage_Take5 {
-            get {
-                return ResourceManager.GetString("Warewolf_Homepage_Take5", resourceCulture);
             }
         }
         

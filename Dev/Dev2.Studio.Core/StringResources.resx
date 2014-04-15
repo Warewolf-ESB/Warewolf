@@ -616,9 +616,6 @@ Would you like to start the setup now?</value>
   <data name="CritErrorTitle" xml:space="preserve">
     <value>Critical Error</value>
   </data>
-  <data name="Warewolf_Homepage_Take5" xml:space="preserve">
-    <value>http://warewolf.io/take5minutes.html</value>
-  </data>
   <data name="Warewolf_Version" xml:space="preserve">
     <value>http://warewolf.io/version.txt</value>
   </data>
@@ -766,9 +763,6 @@ Would you like to start the setup now?</value>
   </data>
   <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
     <value>Help\PageNotAvailable.htm</value>
-  </data>
-  <data name="Warewolf_Homepage_New" xml:space="preserve">
-    <value>http://warewolf.io/start_new.html</value>
   </data>
   <data name="SaveSettingErrorPrefix" xml:space="preserve">
     <value>Error while saving</value>

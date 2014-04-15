@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.Helpers
             checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
 
             var startPage = checker.Object.StartPageUri;
-            Assert.AreEqual(StringResources.Warewolf_Homepage_New, startPage);
+            Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
         }
 
         [TestMethod]
