@@ -516,6 +516,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/release-notes.php.
+        /// </summary>
+        public static string ReleaseNotesURL {
+            get {
+                return ResourceManager.GetString("ReleaseNotesURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warewolf Installation Wizard.
         /// </summary>
         public static string SetupWizard_Title {

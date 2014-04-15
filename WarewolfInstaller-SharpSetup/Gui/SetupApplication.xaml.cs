@@ -83,8 +83,22 @@ namespace Gui
 
                     // open the readme.txt
                     ViewReadMe();
+
+                    // open release notes 
+                    ViewReleaseNotes();
                 }
             };
+        }
+
+        private void ViewReleaseNotes()
+        {
+            try
+            {
+                Process.Start(InstallVariables.ReleaseNotesURL);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch { }
+            // ReSharper restore EmptyGeneralCatchClause
         }
 
         private void ViewReadMe()

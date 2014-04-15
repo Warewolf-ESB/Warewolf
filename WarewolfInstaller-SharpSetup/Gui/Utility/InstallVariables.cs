@@ -74,7 +74,13 @@
         /// </value>
         public static bool ViewReadMe { get; set; }
 
+        // Do we keep the log file?
         public static bool RemoveLogFile = true;
+
+        /// <summary>
+        /// The release notes URL
+        /// </summary>
+        public static string ReleaseNotesURL = "http://warewolf.io/release-notes.php";
 
         // firewall rule names
         public static readonly string OutboundHTTPWarewolfRule = "Warewolf HTTP Outbound Ports";

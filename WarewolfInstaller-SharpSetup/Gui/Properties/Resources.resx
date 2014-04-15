@@ -302,4 +302,7 @@ service manager.</value>
   <data name="PreInstall_CheckDependencies" xml:space="preserve">
     <value>Verifying Dependencies</value>
   </data>
+  <data name="ReleaseNotesURL" xml:space="preserve">
+    <value>http://warewolf.io/release-notes.php</value>
+  </data>
 </root>
