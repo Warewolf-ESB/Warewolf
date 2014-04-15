@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -123,5 +124,43 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfActivity_BeforeExecutionStart")]
+        [ExpectedException(typeof(DebugCopyException))]
+        public void DsfActivity_GetDebugInputs_ThrowsErrorIfUnableToParse()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
+            var mockAutorizationService = new Mock<IAuthorizationService>();
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            act.AuthorizationService = mockAutorizationService.Object;
+            var compiler = new Mock<IDataListCompiler>();
+            var parser = new Mock<IDev2LanguageParser>();
+            var inp1 = new Mock<IDev2Definition>();
+            var inp2 = new Mock<IDev2Definition>();
+            parser.Setup(a => a.Parse(It.IsAny<string>())).Returns(new List<IDev2Definition> {inp1.Object, inp2.Object});
+           
+            var errors = new ErrorResultTO();
+            errors.AddError("bob");
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, It.IsAny<string>(), false, out errors));
+            //------------Execute Test---------------------------
+            var dl = new Mock<IBinaryDataList>();
+            var guid = Guid.NewGuid();
+            dl.Setup(a => a.UID).Returns(guid);
+            try
+            {
+                act.GetDebugInputs(dl.Object, compiler.Object, parser.Object);
+            }
+            catch (Exception err)
+            {
+                Assert.IsTrue(err.Message.Contains("bob"));
+                throw;
+            }
+  
+        }
+
     }
 }

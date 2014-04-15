@@ -237,7 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
-
+      
                 if(ServiceServer != Guid.Empty)
                 {
                     // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
@@ -514,21 +514,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
-
-            IList<IDev2Definition> inputs = parser.Parse(InputMapping);
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            return GetDebugInputs(dataList, compiler, parser);
+        
+        }
+        public List<DebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler,IDev2LanguageParser parser)
+        {
+            IList<IDev2Definition> inputs = parser.Parse(InputMapping);
+
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            foreach (IDev2Definition dev2Definition in inputs)
             {
                 ErrorResultTO errors;
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
                 DebugItem itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
+
+                if (errors.HasErrors())
+                {
+                    itemToAdd.FlushStringBuilder();
+                    throw new DebugCopyException(errors.MakeDisplayReady(),itemToAdd);
+                }
                 results.Add(itemToAdd);
+
             }
 
-            foreach(IDebugItem debugInput in results)
+            foreach (IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }

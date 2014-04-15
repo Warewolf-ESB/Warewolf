@@ -703,7 +703,7 @@ namespace Dev2.Runtime.ESB.Control
                     // finally glue the two together ;)
                     XmlDocument iDLXDoc = new XmlDocument();
                     iDLXDoc.LoadXml(inputFragment);
-
+           
                     if(iDLXDoc.DocumentElement != null)
                     {
                         inputFragment = iDLXDoc.DocumentElement.InnerXml;
@@ -712,7 +712,6 @@ namespace Dev2.Runtime.ESB.Control
                 catch(Exception e)
                 {
                     this.LogError(e);
-                    errors.AddError(e.Message);
                 }
             }
 

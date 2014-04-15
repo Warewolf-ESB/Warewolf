@@ -1258,6 +1258,7 @@ namespace Dev2.Data.Util
                 try
                 {
                     // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                   
                     Convert.ToInt32(idx);
                     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                     result = enRecordsetIndexType.Numeric;

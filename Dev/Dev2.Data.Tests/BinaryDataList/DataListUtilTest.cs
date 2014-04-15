@@ -32,6 +32,27 @@ namespace Dev2.Data.Tests.BinaryDataList
 
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataListUtil_AdjustForEncodingIssues")]
+        public void DataListUtil_GetRecordsetIndexTypeRaw_StarNotationDoesNotParseInt()
+        {
+            //------------Setup for test--------------------------
+             const string startingData = "**";
+            //------------Execute Test---------------------------
+            Assert.AreEqual(enRecordsetIndexType.Error, DataListUtil.GetRecordsetIndexTypeRaw(startingData));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataListUtil_AdjustForEncodingIssues")]
+        public void DataListUtil_GetRecordsetIndexTypeRaw_IntParsesInt()
+        {
+            //------------Setup for test--------------------------
+            const string startingData = "1";
+            //------------Execute Test---------------------------
+            Assert.AreEqual(enRecordsetIndexType.Numeric, DataListUtil.GetRecordsetIndexTypeRaw(startingData));
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListUtil_IsSystemTag")]
         public void DataListUtil_IsSystemTag_WhenNoPrefix_ExpectSystemTagDetected()

@@ -466,11 +466,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(activity != null)
                 {
                     _debugState.Name = activity.DisplayName;
+                  
                 }
                 var act = instance as DsfActivity;
                 //End Bug 8595
-
-                Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                try
+                {
+                    Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                }
+                catch (DebugCopyException err)
+                {
+                   
+                    _debugState.ErrorMessage = err.Message;
+                    _debugState.HasError = true;
+                  _debugState.Inputs.Add(err.Item);
+                }
+                
                 if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
                 {
                     var debugItem = new DebugItem();
@@ -545,7 +556,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
+            if (_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity")  && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
