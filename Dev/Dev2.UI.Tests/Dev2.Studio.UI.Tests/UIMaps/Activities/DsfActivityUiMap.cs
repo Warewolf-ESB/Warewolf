@@ -94,10 +94,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public string GetInputMappingToServiceValue(int rowNumber)
         {
-            VisualTreeWalker visualTreeWalker = new VisualTreeWalker();
-            UITestControl table = visualTreeWalker.GetChildByAutomationIDPath(Activity, "LargeView", "Table");
-            UITestControlCollection tableChildren = table.GetChildren();
-            List<UITestControl> rows = tableChildren.Where(c => c.ControlType == ControlType.Row).ToList();
+            var rows = GetInputMappingRows();
             if(rows.Count >= rowNumber)
             {
                 UITestControlCollection rowChildren = rows[rowNumber - 1].GetChildren();
@@ -120,5 +117,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             return null;
         }
 
+        public List<UITestControl> GetInputMappingRows()
+        {
+            VisualTreeWalker visualTreeWalker = new VisualTreeWalker();
+            UITestControl table = visualTreeWalker.GetChildByAutomationIDPath(Activity, "LargeView", "Table");
+            UITestControlCollection tableChildren = table.GetChildren();
+            List<UITestControl> rows = tableChildren.Where(c => c.ControlType == ControlType.Row).ToList();
+            return rows;
+        }
     }
 }

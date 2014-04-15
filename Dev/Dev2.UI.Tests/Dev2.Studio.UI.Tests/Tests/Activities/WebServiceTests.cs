@@ -184,5 +184,41 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
         }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_WebServiceWizard")]
+        public void WizardUiTests_WebServiceWizard_WebServiceInputMappingsDeleteAll_ExpectedNoInputMappings()
+        {
+            string newGuid = Guid.NewGuid().ToString();
+            string remove = newGuid.Remove(8);
+            string newWebserviceName = "WebService" + remove;
+
+            //Open wizard
+            RibbonUIMap.ClickNewWebService();
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(8);
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendDel();
+            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendEnter(5000);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(1000);
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(newWebserviceName);
+            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendEnter(200);
+
+            UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+
+            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+
+            Assert.AreEqual(0, activity.GetInputMappingRows().Count);
+            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+        }
     }
 }
