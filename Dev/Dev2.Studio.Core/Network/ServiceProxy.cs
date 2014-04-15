@@ -24,7 +24,7 @@ namespace Dev2.Network
 
         public static void WaitForResult(this Task task)
         {
-            task.Wait(100);
+            task.Wait(10);
         }
     }
 }
