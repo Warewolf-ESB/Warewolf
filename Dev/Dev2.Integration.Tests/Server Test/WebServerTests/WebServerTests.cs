@@ -381,7 +381,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                         var responseData = TestHelper.PostDataToWebserver(url, out wasSsl);
 
                         //------------Assert Results-------------------------
-                        Assert.AreEqual(expectedSsl, wasSsl);
+                        Assert.AreEqual(expectedSsl, wasSsl, "SSL Assert Failed");
                         switch(request.Item3)
                         {
                             case AssertType.StartsWith:

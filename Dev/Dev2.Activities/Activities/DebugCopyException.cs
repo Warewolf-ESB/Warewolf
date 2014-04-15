@@ -9,10 +9,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public DebugItem Item { get; set; }
 
-        public DebugCopyException(string msg, DebugItem item) : base(msg)
+        public DebugCopyException(string msg, DebugItem item)
+            : base(msg)
         {
             Item = item;
-
         }
     }
 }

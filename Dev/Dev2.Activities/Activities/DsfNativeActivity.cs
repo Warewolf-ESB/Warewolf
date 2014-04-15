@@ -1,4 +1,11 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -13,13 +20,6 @@ using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
 using Dev2.Simulation;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Xml;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Framework;
@@ -43,14 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public InOutArgument<List<string>> AmbientDataList { get; set; }
 
         // Moved into interface ;)
-        public string InputMapping
-        {
-            get { return _inputMapping; }
-            set { 
-                _inputMapping = value; 
-
-            }
-        }
+        public string InputMapping { get; set; }
 
         public string OutputMapping { get; set; }
 
@@ -86,7 +79,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
-        private string _inputMapping;
 
         protected IDebugState DebugState { get { return _debugState; } } // protected for testing!
 
@@ -452,7 +444,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
 
             bool hasError = false;
-            string errorMessage;
 
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
@@ -466,7 +457,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(activity != null)
                 {
                     _debugState.Name = activity.DisplayName;
-                  
+
                 }
                 var act = instance as DsfActivity;
                 //End Bug 8595
@@ -474,27 +465,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Copy(GetDebugInputs(dataList), _debugState.Inputs);
                 }
-                catch (DebugCopyException err)
+                catch(DebugCopyException err)
                 {
-                   
+
                     _debugState.ErrorMessage = err.Message;
                     _debugState.HasError = true;
-                  _debugState.Inputs.Add(err.Item);
+                    _debugState.Inputs.Add(err.Item);
                 }
-                
+
                 if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
                 {
                     var debugItem = new DebugItem();
-                    var debugItemResult = new DebugItemResult();
-                    debugItemResult.Type = DebugItemResultType.Value;
-                    debugItemResult.Label = "Execute workflow asynchronously: ";
-                    debugItemResult.Value = dataObject.RunWorkflowAsync ? "True" : "False";
+                    var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False" };
                     debugItem.Add(debugItemResult);
                     _debugState.Inputs.Add(debugItem);
                 }
             }
             else
             {
+                string errorMessage;
                 if(!(this is DsfFlowDecisionActivity))
                 {
                     hasError = compiler.HasErrors(dataObject.DataListID);
@@ -536,17 +525,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(dataObject.RunWorkflowAsync && !_debugState.HasError)
                         {
                             var debugItem = new DebugItem();
-                            var debugItemResult = new DebugItemResult();
-                            debugItemResult.Type = DebugItemResultType.Value;
-                            debugItemResult.Value = "Asynchronous execution started";
+                            var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
                             debugItem.Add(debugItemResult);
                             _debugState.Outputs.Add(debugItem);
                             _debugState.NumberOfSteps = 0;
                         }
                         else
                         {
-                        Copy(GetDebugOutputs(dataList), _debugState.Outputs);
-                    }
+                            Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                        }
                     }
                     catch(Exception e)
                     {
@@ -556,7 +543,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if (_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity")  && remoteID == Guid.Empty))
+            if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
@@ -763,7 +750,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {
-            var debugItemResults = parameters.GetDebugItemResult(); 
+            var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
 

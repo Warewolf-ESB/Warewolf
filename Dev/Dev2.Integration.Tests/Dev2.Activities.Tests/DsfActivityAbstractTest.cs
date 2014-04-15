@@ -1,7 +1,6 @@
 ﻿using System;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
