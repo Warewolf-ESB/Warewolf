@@ -539,14 +539,19 @@ namespace Dev2.Server.Datalist
                     string error;
 
                     // NOTE : This is a problem when the RecordsetName differs from the rsName?!
-                    childDl.TryGetEntry(rsName, out entry, out error);
-                    errors.AddError(error);
 
-                    if(entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
+                    if (childDl != null)
                     {
-                        entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
-                        errors.MergeErrors(invokeErrors);
-                        outputRemoveIdx.Add(oPos);
+                        childDl.TryGetEntry(rsName, out entry, out error);
+
+                        errors.AddError(error);
+
+                        if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
+                        {
+                            entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
+                            errors.MergeErrors(invokeErrors);
+                            outputRemoveIdx.Add(oPos);
+                        }
                     }
                 }
 
@@ -1780,7 +1785,9 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-        private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules)
+
+
+        private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules )
         {
             if(IsEvaluated(rules.Expression))
             {
@@ -1843,7 +1850,7 @@ namespace Dev2.Server.Datalist
 
                 // we need to drop in again for further evaluation ;)
                 EvaluateRuleSet ers2 = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
-
+        
                 result = InternalDataListEvaluateV2(ers2);
 
                 return result;

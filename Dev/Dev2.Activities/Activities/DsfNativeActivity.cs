@@ -532,8 +532,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            Copy(GetDebugOutputs(dataList), _debugState.Outputs);
-                        }
+                        Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                    }
                     }
                     catch(Exception e)
                     {
@@ -543,7 +543,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
+            if (_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity")  && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
@@ -750,7 +750,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {
-            var debugItemResults = parameters.GetDebugItemResult();
+            var debugItemResults = parameters.GetDebugItemResult(); 
             debugItem.AddRange(debugItemResults);
         }
 

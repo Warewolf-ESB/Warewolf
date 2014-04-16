@@ -42,17 +42,42 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11365_WebService");
 
-            const string expected = @"<DataList><d>&lt;InnerError&gt;The &apos;[&apos; character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.&lt;/InnerError&gt;&lt;InnerError&gt;Recordset index (**) contains invalid character(s)&lt;/InnerError&gt;&lt;InnerError&gt;Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON&lt;/InnerError&gt;</d></DataList>";
-
             //------------Execute Test---------------------------
-            string ResponseData = TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
+            TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
             ////------------Assert Results-------------------------
-            StringAssert.Contains(ResponseData, expected, " **** I expected { " + expected + " } but got { " + ResponseData + " }");
+
             Assert.AreEqual(debugItems.Count,2);
-            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(),  @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.
+            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.
  2 Recordset index (**) contains invalid character(s)
- 3 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON");
+ 3 Invalid Recordset Index For { [[rec(**).A]] }
+ 4 Could not evalaute { [[rec(**).A]] }
+ 5 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
+ 6 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
+ 7 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON
+ 8 Cache miss for [ 00000000-0000-0000-0000-000000000000 ]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WebService_Invoke_IncorrectInput")]
+        public void WebService_Invoke_IntegrationTest_ExpectCorrectErrorsForBadInputsExtraBrackets()
+        {
+            var id = Guid.NewGuid();
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11365AltSyntax");
+
+            //------------Execute Test---------------------------
+            TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+            ////------------Assert Results-------------------------
+
+            Assert.AreEqual(debugItems.Count, 2);
+            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 6.
+ 2 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
+ 3 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
+ 4 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON
+ 5 Cache miss for [ 00000000-0000-0000-0000-000000000000 ]");
         }
     }
 }
