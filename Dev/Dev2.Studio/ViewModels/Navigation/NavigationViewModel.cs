@@ -800,6 +800,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     {
                         UpdateIsRefreshing(environment, false);
                         OnLoadResourcesCompleted();
+                        environment.RaiseResourcesLoaded();
                     }
                 });
             }

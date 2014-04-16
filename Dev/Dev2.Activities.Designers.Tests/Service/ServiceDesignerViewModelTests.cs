@@ -1,9 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Specialized;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Communication;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
+using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Simulation;
@@ -13,8 +17,10 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -27,6 +33,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Action = System.Action;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Service
@@ -280,6 +287,20 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
+        [Description("ServiceDesignerViewModel constructor throws null argument exception when environment repository is null.")]
+        [Owner("Leon Rajindrapersadh")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServiceDesignerViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
+        {
+            // ReSharper disable ObjectCreationAsStatement
+
+            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object, null);
+            // ReSharper restore ObjectCreationAsStatement
+        }
+
+
+        [TestMethod]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEventPublisher_ThrowsArgumentNullException()
@@ -455,7 +476,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
                 Assert.AreEqual(ErrorType.Critical, model.WorstError);
 
-                foreach(var error in m.Errors)
+                foreach (var error in m.Errors)
                 {
                     ErrorInfo currentError = error;
                     var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
@@ -528,7 +549,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
-
+            environment.Setup(a => a.HasLoadedResources).Returns(true);
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
@@ -554,7 +575,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns((IResourceModel)null);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
-
+            environment.Setup(a => a.HasLoadedResources).Returns(true);
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Preconditions--------------------
@@ -1007,16 +1028,625 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[b1]]\" /></Outputs>", outputMapping);
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteResource_ShouldSetupResourceModelFromModelItem()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+                {
+                    ResourceID = new InArgument<Guid>(resourceID),
+                    EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                    UniqueID = Guid.NewGuid().ToString(),
+                    SimulationMode = SimulationMode.OnDemand,
+                    InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                    OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+                };
+
+            var modelItem = CreateModelItem(activity);
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            var inputMapping = viewModel.InputMapping;
+            var outputMapping = viewModel.OutputMapping;
+
+            Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
+            Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteResource_ShouldSubscibeToResourcesLoaded()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Returns(resourceModel.Object).Verifiable();
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+            // ReSharper restore UnusedVariable
+            environment.Setup(a => a.IsConnected).Returns(true);
+            connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+            worker.Verify(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteEnvironmentLoads_ShouldSetVersionMemoIfIncorrect()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Returns(resourceModel.Object).Verifiable();
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                (
+                    Action a, Action b) =>
+                {
+                    a.Invoke();
+                    b.Invoke();
+                }
+                );
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+
+            //------------Events Setup---------------------------
+            var mappingF = new Mock<IDataMappingViewModelFactory>();
+            var mapping = new Mock<IDataMappingViewModel>();
+            mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
+                    .Returns(mapping.Object);
+            viewModel.MappingFactory = mappingF.Object;
+            // ReSharper restore UnusedVariable
+            environment.Setup(a => a.IsConnected).Returns(true);
+            connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_FixErrorss")]
+        public void ServiceDesignerViewModel_WhenUserFixesErrors_ShouldRemoveVersionError()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Returns(resourceModel.Object).Verifiable();
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                (
+                    Action a, Action b) =>
+                {
+                    a.Invoke();
+                    b.Invoke();
+                }
+                );
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+
+            //------------Events Setup---------------------------
+            var mappingF = new Mock<IDataMappingViewModelFactory>();
+            var mapping = new Mock<IDataMappingViewModel>();
+            mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
+                    .Returns(mapping.Object);
+            viewModel.MappingFactory = mappingF.Object;
+            // ReSharper restore UnusedVariable
+            environment.Setup(a => a.IsConnected).Returns(true);
+            connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+            viewModel.FixErrorsCommand.Execute(this);
+            Assert.IsTrue(viewModel.DesignValidationErrors.First().Message.Contains("Service Working Normally"));
+        }
+                
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteEnvironmentLoads_ShouldSetVersionMemoIfIncorrectWhen_OutPutDifferent()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Returns(resourceModel.Object).Verifiable();
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                (
+                    Action a, Action b) =>
+                {
+                    a.Invoke();
+                    b.Invoke();
+                }
+                );
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+
+            //------------Events Setup---------------------------
+            var mappingF = new Mock<IDataMappingViewModelFactory>();
+            var mapping = new Mock<IDataMappingViewModel>();
+            mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
+                    .Returns(mapping.Object);
+            viewModel.MappingFactory = mappingF.Object;
+            // ReSharper restore UnusedVariable
+            environment.Setup(a => a.IsConnected).Returns(true);
+            connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteEnvironmentLoads_ShouldNotSetVersionMemoIfCorrect()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                  .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
+                  .Returns(resourceModel.Object).Verifiable();
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs></Inputs>",
+                OutputMapping = "<Outputs></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                (
+                    Action a, Action b) =>
+                {
+                    a.Invoke();
+                    b.Invoke();
+                }
+                );
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+            // ReSharper restore UnusedVariable
+            environment.Setup(a => a.IsConnected).Returns(true);
+            connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.LastValidationMemo.Errors.Count == 0);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenRemoteEnvironmentLoads_ShouldUseNameToFindEnvironment()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.Empty;
+
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource").Verifiable();
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
+            var resources = new Mock<IResourceRepository>();
+
+            environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity
+            {
+                ServiceName = "bob",
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.Empty.ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var worker = new Mock<IAsyncWorker>();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
+                .Callback((Action a, Action b) =>
+                        {
+                            a.Invoke();
+                            b.Invoke();
+                        }
+                );
+            //------------Execute Test---------------------------
+            // ReSharper disable UnusedVariable
+
+
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
+            var webFact = new Mock<IWebActivityFactory>();
+            var wa = new Mock<IWebActivity>();
+            webFact.Setup(
+                a => a.CreateWebActivity(It.IsAny<Object>(), It.IsAny<IContextualResourceModel>(), It.IsAny<string>())).Returns(wa.Object).Verifiable();
+            viewModel.ActivityFactory = webFact.Object;
+
+            var mappingF = new Mock<IDataMappingViewModelFactory>();
+            var mapping = new Mock<IDataMappingViewModel>();
+            mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
+                    .Returns(mapping.Object);
+            viewModel.MappingFactory = mappingF.Object;
+
+            // ReSharper restore UnusedVariable
+            resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
+                .Returns(resourceModel.Object)
+                .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ResourceName == ")))
+                .Verifiable();
+            environment.Setup(a => a.IsConnected).Returns(true);
+
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+
+            //------------Assert Results-------------------------
+
+            Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
+
+        }
+
+
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
-        public void ServiceDesignerViewModel_InitializeResourceIDNull_StillCOrrectlySetsUp()
+        public void ServiceDesignerViewModel_InitializeResourceIDNull_StillCorrectlySetsUp()
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
             dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
@@ -1176,7 +1806,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             const int OffSet = 3;
             var startIndex = 0;
-            if(modelProperties == null)
+            if (modelProperties == null)
             {
                 modelProperties = new ModelProperty[OffSet];
             }
@@ -1192,7 +1822,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var properties = new Mock<ModelPropertyCollection>();
 
-            foreach(var modelProperty in modelProperties)
+            foreach (var modelProperty in modelProperties)
             {
                 properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
             }
@@ -1242,11 +1872,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.Connection).Returns(connection.Object);
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
-
+            environment.Setup(e => e.HasLoadedResources).Returns(true);
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if(resourceErrors != null)
+            if (resourceErrors != null)
             {
-                foreach(var resourceError in resourceErrors)
+                foreach (var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }
@@ -1296,6 +1926,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
             resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
             dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
@@ -1304,8 +1935,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
-
-            return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher);
+            var worker = new Mock<IAsyncWorker>().Object;
+            return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher, worker);
         }
 
         static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, Mock<IContextualResourceModel> resourceModel, params IErrorInfo[] resourceErrors)

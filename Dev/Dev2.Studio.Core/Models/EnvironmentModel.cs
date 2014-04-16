@@ -26,9 +26,10 @@ namespace Dev2.Studio.Core.Models
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
-
+       
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
+        public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
 
         #region CTOR
         //, IWizardEngine wizardEngine
@@ -97,6 +98,7 @@ namespace Dev2.Studio.Core.Models
         public string Category { get; set; }
 
         public bool IsLocalHost { get { return IsLocalHostCheck(); } }
+        public bool HasLoadedResources { get; private set; }
 
         public IEnvironmentConnection Connection { get; private set; }
 
@@ -190,11 +192,19 @@ namespace Dev2.Studio.Core.Models
 
         #region LoadResources
 
+        public void RaiseResourcesLoaded()
+        {
+            RaiseLoadedResources();
+        }
+
         public void LoadResources()
         {
             if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
+                HasLoadedResources = true;
+                
+
             }
         }
 
@@ -255,6 +265,13 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsConnected");
             // ReSharper restore ExplicitCallerInfoArgument
         }
+        void RaiseLoadedResources()
+        {
+            if (ResourcesLoaded != null)
+            {
+                ResourcesLoaded(this, new ResourcesLoadedEventArgs() { Model = this});
+            }
+        }
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
@@ -265,6 +282,8 @@ namespace Dev2.Studio.Core.Models
         void RaiseNetworkStateChanged(bool isOnline)
         {
             RaiseIsConnectedChanged(isOnline);
+            if (!isOnline)
+                HasLoadedResources = false;
 
             AbstractEnvironmentMessage message;
             if(isOnline)

@@ -135,11 +135,23 @@ namespace Dev2.DataList
                     // handle workflows differently ;)
                     if(IsWorkflow)
                     {
-                        var datalist = activity.ResourceModel.DataList;
-                        var compiler = DataListFactory.CreateDataListCompiler();
+                        //if (!activity.ResourceModel.Environment.IsLocalHost && !activity.ResourceModel.Environment.HasLoadedResources)
+                        if(activity.IsNotAvailable())
+                        {
+                            inputs = activity.ResourceModel.Inputs;
+                            outputs = activity.ResourceModel.Outputs;
+                            
+                        }
+                        else
+                        {
+                            var datalist = activity.ResourceModel.DataList;
+                            var compiler = DataListFactory.CreateDataListCompiler();
 
-                        inputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
-                        outputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Output);
+                            inputs = compiler.GenerateSerializableDefsFromDataList(datalist,
+                                                                                   enDev2ColumnArgumentDirection.Input);
+                            outputs = compiler.GenerateSerializableDefsFromDataList(datalist,
+                                                                                    enDev2ColumnArgumentDirection.Output);
+                        }
                     }
                     else
                     {

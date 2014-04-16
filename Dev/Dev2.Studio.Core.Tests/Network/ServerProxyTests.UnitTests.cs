@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -201,7 +202,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxy()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials)
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials,new AsyncWorker())
         {
 
         }

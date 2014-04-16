@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Disconnect();
 
         // BUG 9634 - 2013.07.17 - TWR : added
-        void Verify(Action<ConnectResult> callback);
+        void Verify(Action<ConnectResult> callback, bool wait=true);
 
         // BUG 10106 - 2013.08.13 - TWR - added
         void StartAutoConnect();

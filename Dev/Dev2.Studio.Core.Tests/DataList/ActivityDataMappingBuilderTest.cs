@@ -107,6 +107,63 @@ namespace Dev2.Core.Tests.DataList
             Assert.AreEqual(outputExpected, activityDataMappingBuilder.ActivityOutputDefinitions);
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityDataMappingBuilder_Generate")]
+        public void ActivityDataMappingBuilder_SetupActivityData_WhenValidServiceDefintion_ActivityNotAvailable()
+        {
+            //------------Setup for test--------------------------
+
+            #region ServiceDef
+            var serviceDefStr = @"
+    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
+      <Inputs>
+        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
+      </Inputs>
+      <Outputs>
+        <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
+        <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
+        <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
+        <Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" />
+        <Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" />
+        <Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" />
+        <Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" />
+        <Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" />
+        <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
+        <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
+        <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
+      </Outputs>
+      
+    </Action>";
+            #endregion
+
+            var activityDataMappingBuilder = new ActivityDataMappingBuilder();
+
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
+            resourceModel.Setup(a => a.Inputs).Returns("Bob");
+            resourceModel.Setup(a => a.Outputs).Returns("Builder");
+
+            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+
+            activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
+            activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
+            activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
+            activity.Setup(a => a.IsNotAvailable()).Returns(true);
+            activity.Setup(a => a.ResourceModel).Returns(resourceModel.Object);
+            //------------Execute Test---------------------------
+
+            activityDataMappingBuilder.SetupActivityData(activity.Object);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("Bob", activityDataMappingBuilder.ActivityInputDefinitions);
+            Assert.AreEqual("Builder", activityDataMappingBuilder.ActivityOutputDefinitions);
+           
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ActivityDataMappingBuilder_Generate")]

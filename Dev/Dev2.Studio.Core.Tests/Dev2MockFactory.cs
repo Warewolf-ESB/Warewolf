@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>())).Callback(() => { });
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(),false)).Callback(() => { });
 
             return mockEnvironmentModel;
         }

@@ -10,6 +10,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 using System;
@@ -29,14 +30,15 @@ namespace Dev2.Network
     public class ServerProxy : IDisposable, IEnvironmentConnection
     {
         Timer _reconnectHeartbeat;
-
+        private const int MillisecondsTimeout = 10000;
+        private IAsyncWorker _asyncWorker; 
         public ServerProxy(Uri serverUri)
-            : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials)
+            : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials,new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        public ServerProxy(string serverUri, ICredentials credentials)
+        public ServerProxy(string serverUri, ICredentials credentials,IAsyncWorker worker)
         {
             IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
@@ -64,10 +66,11 @@ namespace Dev2.Network
             //HubConnection.TraceWriter = Console.Out;
 
             InitializeEsbProxy();
+            _asyncWorker = worker;
         }
 
         public ServerProxy(string webAddress, string userName, string password)
-            : this(webAddress, new NetworkCredential(userName, password))
+            : this(webAddress, new NetworkCredential(userName, password),new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.User;
             UserName = userName;
@@ -236,15 +239,33 @@ namespace Dev2.Network
             HubConnection.Stop();
         }
 
-        public void Verify(Action<ConnectResult> callback)
+        public void Verify(Action<ConnectResult> callback,bool wait = true)
         {
             if(IsConnected)
             {
                 return;
             }
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-            HubConnection.Start().Wait(10000);
-            callback(HubConnection.State == ConnectionState.Connected ? ConnectResult.Success : ConnectResult.ConnectFailed);
+           
+            if (wait)
+            {
+                HubConnection.Start().Wait(MillisecondsTimeout);
+                callback(HubConnection.State == ConnectionState.Connected
+                             ? ConnectResult.Success
+                             : ConnectResult.ConnectFailed);
+            }
+            else
+            {
+                HubConnection.Start();
+                _asyncWorker.Start(()=>
+                    {
+                        Thread.Sleep(MillisecondsTimeout);
+                       
+                       
+                    },()=> callback(HubConnection.State == ConnectionState.Connected
+                                     ? ConnectResult.Success
+                                     : ConnectResult.ConnectFailed));
+            }
         }
 
         public void StartAutoConnect()

@@ -21,6 +21,7 @@ namespace Dev2.Studio.Core.Interfaces
         string SavedOutputMapping { get; set; }
         string SavedInputMapping { get; set; }
         Type UnderlyingWebActivityObjectType { get; }
+        bool IsNotAvailable();
     }
 
 }

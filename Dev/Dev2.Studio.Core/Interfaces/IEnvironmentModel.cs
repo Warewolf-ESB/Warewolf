@@ -9,7 +9,7 @@ namespace Dev2.Studio.Core.Interfaces
     {
         // BUG 9940 - 2013.07.29 - TWR - added
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
-
+        event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
         IAuthorizationService AuthorizationService { get; }
         Guid ID { get; }
         string Name { get; set; }
@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsAuthorizedDeployFrom { get; }
         bool IsAuthorizedDeployTo { get; }
         bool IsLocalHost { get; }
-
+        bool HasLoadedResources { get; }
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }
 
@@ -34,10 +34,16 @@ namespace Dev2.Studio.Core.Interfaces
         string Category { get; set; }
 
         StringBuilder ToSourceDefinition();
+        void RaiseResourcesLoaded();
     }
 
     public class ConnectedEventArgs : EventArgs
     {
         public bool IsConnected { get; set; }
+    }
+    public class ResourcesLoadedEventArgs : EventArgs
+    {
+        public IEnvironmentModel Model { get; set; }
+
     }
 }

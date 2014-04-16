@@ -14,6 +14,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
+using Dev2.Threading;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -86,6 +87,7 @@ namespace Dev2.Core.Tests.Environments
 
             env.Connect();
         }
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -366,6 +368,71 @@ namespace Dev2.Core.Tests.Environments
 
             resourceRepo.Verify(r => r.Load(), Times.Never());
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentModel_Load")]
+        public void EnvironmentModel_Load_Loads_SetsLoaded()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Load()).Verifiable();
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.IsConnected).Returns(true);
+
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+
+            env.CanStudioExecute = true;
+
+            env.LoadResources();
+            Assert.IsTrue(env.HasLoadedResources);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentModel_Load")]
+        public void EnvironmentModel_Load_DoesNotLoads_SetsLoaded()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Load()).Verifiable();
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.IsConnected).Returns(true);
+
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+
+            env.CanStudioExecute = false;
+
+            env.LoadResources();
+            Assert.IsFalse(env.HasLoadedResources);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentModel_Load")]
+        public void EnvironmentModel_Load_CallsLoadedEvent()
+        {
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Load()).Verifiable();
+
+            var connection = CreateConnection();
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.IsConnected).Returns(true);
+
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+            env.ResourcesLoaded += (sender, args) => Assert.AreEqual(args.Model,env);
+            env.CanStudioExecute = false;
+
+            env.LoadResources();
+            Assert.IsFalse(env.HasLoadedResources);
+
+        }
+
 
         [TestMethod]
         [TestCategory("EnvironmentModel_IsLocalHost")]
@@ -661,7 +728,7 @@ namespace Dev2.Core.Tests.Environments
     public class TestEqualityConnection : ServerProxy
     {
         public TestEqualityConnection(Guid serverID, string serverUri)
-            : base(serverUri, CredentialCache.DefaultCredentials)
+            : base(serverUri, CredentialCache.DefaultCredentials,new AsyncWorker())
         {
             ServerID = serverID;
         }

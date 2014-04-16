@@ -261,6 +261,7 @@
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
+    <Compile Include="DataList\DataMappingViewModelFactory.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparer.cs" />
     <Compile Include="DataList\DataMappingViewModel.cs" />
     <Compile Include="Factories\DataListViewModelFactory.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="InterfaceImplementors\DeployService.cs" />
     <Compile Include="InterfaceImplementors\Dev2ConfigurationProvider.cs" />
     <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
+    <Compile Include="Interfaces\IDataMappingViewModelFactory.cs" />
     <Compile Include="Interfaces\IDataMappingViewModel.cs" />
     <Compile Include="Interfaces\IDirectoryPersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\DirectoryPersistenceProvider.cs" />

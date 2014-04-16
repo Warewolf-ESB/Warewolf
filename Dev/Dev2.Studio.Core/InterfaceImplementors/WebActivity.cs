@@ -96,5 +96,9 @@ namespace Dev2.Studio.Core
                 modelItem.Properties[propertyName].SetValue(value);
             }
         }
+        public bool IsNotAvailable()
+        {
+            return !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.HasLoadedResources;
+        }
     }
 }
