@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
@@ -17,7 +16,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
@@ -1160,17 +1158,17 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
             //------------Execute Test---------------------------
             // ReSharper disable UnusedVariable
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            worker.Verify(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()));
+            worker.Verify(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>()));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -1235,7 +1233,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
                 (
                     Action a, Action b) =>
                 {
@@ -1257,7 +1255,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1327,7 +1325,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
                 (
                     Action a, Action b) =>
                 {
@@ -1349,7 +1347,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1420,7 +1418,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
                 (
                     Action a, Action b) =>
                 {
@@ -1442,7 +1440,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.First().Message.Contains("Incorrect Version. The remote workflow has changed.Please refresh"));
@@ -1511,7 +1509,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
                 (
                     Action a, Action b) =>
                 {
@@ -1525,7 +1523,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.LastValidationMemo.Errors.Count == 0);
@@ -1594,7 +1592,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
+            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>()))
                 .Callback((Action a, Action b) =>
                         {
                             a.Invoke();
@@ -1626,7 +1624,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 .Verifiable();
             environment.Setup(a => a.IsConnected).Returns(true);
 
-            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs() { Model = environment.Object });
+            environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
 
