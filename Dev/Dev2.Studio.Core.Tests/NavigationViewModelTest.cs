@@ -519,6 +519,25 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("NavigationViewModel_LoadResources")]
+        public void NavigationViewModel_LoadResources_CausesOnLoadEventToBeFired()
+        {
+            Init(false, true);
+            bool called = false;
+            _vm.LoadResourcesCompleted += delegate(object o, EventArgs args) { called = true; };
+            _vm.LoadEnvironmentResources(_mockEnvironmentModel.Object);
+
+            _vm.Root.NotifyOfFilterPropertyChanged(false);
+           
+            
+            Assert.IsTrue(called);
+        }
+
+
+
+
+        [TestMethod]
         public void FilteredNavigationViewModel_WhereResourceNodeNotFiltered_Expects_CategoryExpanded()
         {
             ITreeNode resourceVM2_2 = null;
