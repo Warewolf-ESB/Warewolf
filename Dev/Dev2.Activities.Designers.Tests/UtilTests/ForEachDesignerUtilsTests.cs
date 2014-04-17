@@ -1,45 +1,284 @@
+using System.Activities.Statements;
+using System.Windows;
 using Dev2.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests.Activities
 {
-    [TestClass, System.Runtime.InteropServices.GuidAttribute("2B16F3E1-F449-4F4F-BFF6-E6A489C09B10")]
+    [TestClass]
     public class ForEachDesignerUtilsTests
     {
-        [TestMethod]
-        [TestCategory("ForEachUtils_UnitTest")]
-        [Description("ForEach ForeachDropPointOnDragEnter util prevents decisions from being fropped into a foreach")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void ForEach_DropPointOnDragEnter_Decision_HandledSetToTrue()
-        // ReSharper restore InconsistentNaming
+        [TestInitialize]
+        public void MyTestInitialize()
         {
-            //init
-            var util = new ForeachActivityDesignerUtils();
-
-            //exe
-            var actual = util.ForeachDropPointOnDragEnter("Decision");
-
-            //assert
-            Assert.IsFalse(actual, "ForEach util allowed a decision to be dropped");
+            Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
         }
 
         [TestMethod]
-        [TestCategory("ForEachUtils_UnitTest")]
-        [Description("ForEach ForeachDropPointOnDragEnter util prevents switches from being fropped into a foreach")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void ForEach_DropPointOnDragEnter_Switch_HandledSetToTrue()
-        // ReSharper restore InconsistentNaming
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_NoFormats_EnableDrop()
         {
-            //init
-            var util = new ForeachActivityDesignerUtils();
-
-            //exe
-            var actual = util.ForeachDropPointOnDragEnter("Switch");
-
-            //assert
-            Assert.IsFalse(actual, "ForEach util allowed a switch to be dropped");
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new string[] { });
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_NoWorkflowItemTypeNameFormatAndNoModelItemFormat_EnableDrop()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "SomeOtherFormat" });
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_Decision_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Decision");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_Switch_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Switch");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_NotDecision_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Act");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_NotSwitch_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Activity");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_Decision_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Decision");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_Switch_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Switch");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_NotDecision_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Act");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_NotSwitch_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("Activity");
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_DecisionModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new FlowDecision());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_SwitchModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new FlowSwitch<string>());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_NotSwitchDecision_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_DecisionModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new FlowDecision());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_SwitchModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new FlowSwitch<string>());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_NotSwitchDecisionModelItem_DropNotPrevented()
+        {
+            //------------Setup for test--------------------------
+            var forEachUtils = new ForeachActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItem);
+            //------------Execute Test---------------------------
+            var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dropEnabled);
+        }
+
     }
 }

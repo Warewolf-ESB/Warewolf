@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
+using Dev2.Utils;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.Workflows
 
         public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
         {
-            CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, environmentModel);
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, environmentModel);
         }
 
         public void TestModelServiceModelChanged(ModelChangedEventArgs e)

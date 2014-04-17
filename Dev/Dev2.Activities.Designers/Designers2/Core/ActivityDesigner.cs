@@ -2,6 +2,7 @@
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
 using System;
@@ -31,7 +32,7 @@ namespace Dev2.Activities.Designers2.Core
         protected TViewModel _dataContext;
         // ReSharper restore InconsistentNaming
         bool _isSetFocusActionSet;
-         MenuItem _showCollapseLargeView;
+        MenuItem _showCollapseLargeView;
 
         public ActivityDesigner()
         {
@@ -43,6 +44,7 @@ namespace Dev2.Activities.Designers2.Core
 
             Loaded += (sender, args) => OnLoaded();
             Unloaded += ActivityDesignerUnloaded;
+            AllowDrop = true;
         }
 
         public TViewModel ViewModel { get { return DataContext as TViewModel; } }
@@ -52,7 +54,7 @@ namespace Dev2.Activities.Designers2.Core
         //DONT TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
-            ToggleView(e.OriginalSource);
+            ToggleView(e);
             if(!(e.OriginalSource is IScrollInfo))
             {
                 e.Handled = true;
@@ -60,20 +62,24 @@ namespace Dev2.Activities.Designers2.Core
             base.OnPreviewMouseDoubleClick(e);
         }
 
-        void ToggleView(object originalSource)
+        void ToggleView(MouseButtonEventArgs eventArgs)
         {
+            var originalSource = eventArgs.OriginalSource;
             var fe = originalSource as FrameworkElement;
             if(fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
             {
                 return;
             }
 
-            if((originalSource is Panel) ||
-               (originalSource is Shape) ||
-               (originalSource is Decorator) ||
+            if((originalSource is Panel) || (originalSource is Shape) || (originalSource is Decorator) ||
                (originalSource is ScrollViewer))
             {
+                if(eventArgs.Source is Large)
+                {
+                    return;
+                }
                 ShowCollapseLargeView();
+                eventArgs.Handled = true;
             }
         }
 
@@ -327,13 +333,13 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(ViewModel.ShowLarge)
                 {
-                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png")), Height = 16, Width = 16};
+                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceCollapseMapping-32.png")), Height = 16, Width = 16 };
                     _showCollapseLargeView.Header = "Collapse Large View";
                     _showCollapseLargeView.Icon = icon;
                 }
                 else if(ViewModel.ShowSmall)
                 {
-                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png")), Height = 16, Width = 16};
+                    var icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceExpandMapping-32.png")), Height = 16, Width = 16 };
                     _showCollapseLargeView.Header = "Show Large View";
                     _showCollapseLargeView.Icon = icon;
                 }

@@ -2034,7 +2034,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
-        ///E.g. http://ServerName:77/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
+        ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]].
         /// </summary>
         public static string OnErrorHelpWorkflow {
             get {
@@ -2957,6 +2957,26 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string ScriptingToolTipScript {
             get {
                 return ResourceManager.GetString("ScriptingToolTipScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
+        ///To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
+        ///Error handling operates as a catch all for all items in the sequence..
+        /// </summary>
+        public static string SequenceHelpSeqence {
+            get {
+                return ResourceManager.GetString("SequenceHelpSeqence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to or edit the sequence..
+        /// </summary>
+        public static string SequenceTooltipSeqence {
+            get {
+                return ResourceManager.GetString("SequenceTooltipSeqence", resourceCulture);
             }
         }
         

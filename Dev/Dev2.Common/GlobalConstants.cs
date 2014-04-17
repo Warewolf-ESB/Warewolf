@@ -225,7 +225,7 @@ namespace Dev2.Common
         public static string LessThenOrEqualToUnicodeChar = "≤";
 
         public static List<string> FindRecordsOperations = new List<string>
-            {
+        {
                 "=",
                 ">",
                 "<",
@@ -276,5 +276,6 @@ namespace Dev2.Common
         public static int MaxWorkflowsToExecute = 10;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
+        public const string ResourceTreeViewModelFormat = "Dev2.Studio.ViewModels.Navigation.ResourceTreeViewModel";
     }
 }

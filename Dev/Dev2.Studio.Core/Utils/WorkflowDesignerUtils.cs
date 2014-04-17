@@ -13,6 +13,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Utils
 {
@@ -95,6 +96,32 @@ namespace Dev2.Utils
 
 
             return result;
+        }
+
+        public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
+        {
+            if(Application.Current != null &&
+                Application.Current.Dispatcher.CheckAccess()
+                && Application.Current.MainWindow != null)
+            {
+                dynamic mvm = Application.Current.MainWindow.DataContext;
+                if(mvm != null && mvm.ActiveItem != null)
+                {
+                    CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
+                }
+            }
+        }
+
+        public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
+        {
+            if(resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
+            {
+                if(contextEnv.ID != resource.Environment.ID)
+                {
+                    dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
+                    dsfActivity.ServiceServer = resource.Environment.ID;
+                }
+            }
         }
 
         /// <summary>

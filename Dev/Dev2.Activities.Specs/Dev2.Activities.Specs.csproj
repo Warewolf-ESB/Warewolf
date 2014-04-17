@@ -53,6 +53,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -69,6 +73,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TechTalk.SpecFlow">
@@ -94,6 +99,12 @@
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
+    <Compile Include="Composition\WorkflowExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,6 +117,7 @@
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Sequence\SequenceSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -220,7 +232,7 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
-    <Compile Include="Toolbox\LoopConstructs\ForEach\Sequence.feature.cs">
+    <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Sequence.feature</DependentUpon>
@@ -365,6 +377,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Composition\WorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
+    </None>
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -457,7 +473,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\LoopConstructs\ForEach\Sequence.feature">
+    <None Include="Toolbox\ControlFlow\Sequence\Sequence.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Sequence.feature.cs</LastGenOutput>
     </None>
@@ -594,6 +610,14 @@
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
       <Name>Dev2.Services.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

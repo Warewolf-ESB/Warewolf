@@ -160,6 +160,7 @@
     <Compile Include="FindMissingStrategyTest\DsfActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\ForEachActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\MixedActivityFindMissingStrategyTests.cs" />
+    <Compile Include="FindMissingStrategyTest\SequenceActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\StaticActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\DsfNativeActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindRecsetOptionsTests\FindRecsetOptionsTests.cs" />

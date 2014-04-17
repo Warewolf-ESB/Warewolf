@@ -9,8 +9,8 @@ using Dev2.Web;
 namespace Dev2
 {
     public interface IDSFDataObject
-    {  
-        Dictionary<int, List<Guid>> ThreadsToDispose { get; set; } 
+    {
+        Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
 
         string CurrentBookmarkName { get; set; }
         string WorkflowInstanceId { get; set; }
@@ -75,5 +75,6 @@ namespace Dev2
         Guid ParentID { get; set; }
 
         bool RunWorkflowAsync { get; set; }
+        bool IsDebugNested { get; set; }
     }
 }

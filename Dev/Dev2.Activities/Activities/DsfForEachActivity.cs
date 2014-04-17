@@ -216,6 +216,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 operationalData = exePayload;
                 // flag it as scoped so we can use a single DataList
                 dataObject.IsDataListScoped = true;
+                dataObject.IsDebugNested = true;
 
                 if(exePayload.InnerActivity != null && exePayload.IndexIterator.HasMore())
                 {
@@ -685,6 +686,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 dataObject.ParentInstanceID = _previousParentID;
+                dataObject.IsDebugNested = false;
             }
         }
 

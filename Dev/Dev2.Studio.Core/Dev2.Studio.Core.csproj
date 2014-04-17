@@ -183,6 +183,7 @@
     <Compile Include="AppResources\Browsers\Dev2RequestHandler.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
     <Compile Include="AppResources\Converters\ConnectControlDisableConverter.cs" />
     <Compile Include="AppResources\Converters\ConnectControlMultiValueBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ContextualResourceModelToImageConverter.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
@@ -19,7 +20,7 @@ namespace Dev2.Activities.Designers2.Foreach
         }
 
         public IList<string> ForeachTypes { get; private set; }
-      
+
         public Visibility Visibility
         {
             get { return (Visibility)GetValue(VisibilityProperty); }
@@ -46,7 +47,7 @@ namespace Dev2.Activities.Designers2.Foreach
 
         public static readonly DependencyProperty ToVisibilityProperty =
             DependencyProperty.Register("ToVisibility", typeof(Visibility), typeof(ForeachDesignerViewModel), new PropertyMetadata(null));
-        
+
         public Visibility CsvIndexesVisibility
         {
             get { return (Visibility)GetValue(CsvIndexesVisibilityProperty); }
@@ -129,8 +130,46 @@ namespace Dev2.Activities.Designers2.Foreach
             }
         }
 
+        public bool MultipleItemsToSequence(IDataObject dataObject)
+        {
+            if(dataObject != null)
+            {
+                var formats = dataObject.GetFormats();
+                if(!formats.Any())
+                {
+                    return false;
+                }
+                var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
+                if(!String.IsNullOrEmpty(modelItemString))
+                {
+                    var objectData = dataObject.GetData(modelItemString);
+                    var data = objectData as List<ModelItem>;
+
+                    if(data != null && data.Count > 1)
+                    {
+
+                        return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackel this issue
+                        //                        DsfSequenceActivity dsfSequenceActivity = new DsfSequenceActivity();
+                        //                        foreach(var item in data)
+                        //                        {
+                        //                            object currentValue = item.GetCurrentValue();
+                        //                            var activity = currentValue as Activity;
+                        //                            if(activity != null)
+                        //                            {
+                        //                                dsfSequenceActivity.Activities.Add(activity);
+                        //                            }
+                        //                        }
+                        //                        ModelItem modelItem = ModelItemUtils.CreateModelItem(dsfSequenceActivity);
+                        //                        return modelItem;
+                    }
+                }
+            }
+            return false;
+        }
+
         // DO NOT bind to these properties - these are here for convenience only!!!
         enForEachType ForEachType { set { SetProperty(value); } get { return GetProperty<enForEachType>(); } }
+
 
         public override void Validate()
         {

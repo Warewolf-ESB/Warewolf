@@ -1,5 +1,8 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+using System.Linq;
+using System.Windows;
 
 namespace Dev2.Activities.Utils
 {
@@ -10,12 +13,30 @@ namespace Dev2.Activities.Utils
     {
         #region Ctor
 
-        public ForeachActivityDesignerUtils()
+        #endregion
+
+
+        public bool LimitDragDropOptions(IDataObject data)
         {
+            var formats = data.GetFormats();
+            if(!formats.Any())
+            {
+                return true;
+            }
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
+            if(String.IsNullOrEmpty(modelItemString))
+            {
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
+                if(String.IsNullOrEmpty(modelItemString))
+                {
+                    return true;
+                }
+            }
+            var objectData = data.GetData(modelItemString);
+            return ForeachDropPointOnDragEnter(objectData);
 
         }
 
-        #endregion
 
         #region DropPointOnDragEnter
 
@@ -24,13 +45,13 @@ namespace Dev2.Activities.Utils
         /// </summary>
         /// <param name="objectData">The ModelItem of the dragged activity</param>
         /// <returns>If the activity is dropable into a foreach</returns>
-        public bool ForeachDropPointOnDragEnter(object objectData)
+        bool ForeachDropPointOnDragEnter(object objectData)
         {
-            bool dropEnabled = true;            
+            bool dropEnabled = true;
 
             var data = objectData as ModelItem;
 
-            if (data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
+            if(data != null && (data.ItemType == typeof(FlowDecision) || data.ItemType == typeof(FlowSwitch<string>)))
             {
                 dropEnabled = false;
 
@@ -38,12 +59,12 @@ namespace Dev2.Activities.Utils
             else
             {
                 var stringValue = objectData as string;
-                if (stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch")))
+                if(stringValue != null && (stringValue.Contains("Decision") || stringValue.Contains("Switch")))
                 {
                     dropEnabled = false;
                 }
 
-            }        
+            }
             return dropEnabled;
         }
 

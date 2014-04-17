@@ -12,6 +12,7 @@ namespace Dev2.Studio.Core.Models
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
         public bool RunWorkflowAsync { get; set; }
+        public bool IsDebugNested { get; set; }
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
         public int ParentThreadID { get; set; }

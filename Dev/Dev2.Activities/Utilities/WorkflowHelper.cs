@@ -43,8 +43,15 @@ namespace Dev2.Utilities
 
         public StringBuilder SerializeWorkflow(ModelService modelService)
         {
-            StringBuilder text = new StringBuilder();
             var builder = EnsureImplementation(modelService);
+            var text = GetXamlDefinition(builder);
+
+            return text;
+        }
+
+        public StringBuilder GetXamlDefinition(ActivityBuilder builder)
+        {
+            StringBuilder text = new StringBuilder();
             if(builder != null)
             {
                 var sb = new StringBuilder();
@@ -57,7 +64,6 @@ namespace Dev2.Utilities
                 }
             }
             text = SanitizeXaml(text);
-
             return text;
         }
 

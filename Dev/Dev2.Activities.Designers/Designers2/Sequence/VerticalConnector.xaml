@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="System.Activities.Core.Presentation.VerticalConnector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Uid="UserControl" HorizontalAlignment="Stretch" Background="Transparent" MinWidth="40"
+             MinHeight="40">
+  <FrameworkElement.Resources>
+    <Storyboard x:Key="Expand" x:Uid="Storyboard_1">
+      <DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_1" BeginTime="00:00:00"
+                                     Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="{x:Null}">
+        <SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_1" KeyTime="00:00:00.1200000" Value="80"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Key="Collapse" x:Uid="Storyboard_2">
+      <DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_2" BeginTime="00:00:00"
+                                     Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="{x:Null}">
+        <SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_2" KeyTime="00:00:00" Value="80"/>
+        <SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_3" KeyTime="00:00:00.1200000" Value="40"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+  </FrameworkElement.Resources>
+  <FrameworkElement.Triggers>
+    <EventTrigger x:Uid="EventTrigger_3" RoutedEvent="DragDrop.Drop">
+      <BeginStoryboard x:Name="Collapse_BeginStoryboardOnDrop" x:Uid="Collapse_BeginStoryboardOnDrop"
+                       Storyboard="{StaticResource Collapse}"/>
+    </EventTrigger>
+  </FrameworkElement.Triggers>
+  <Grid x:Uid="Grid_1">
+    <Path x:Uid="Path_1" VerticalAlignment="Top" Margin="0,15,0,0" Stretch="Fill" StrokeMiterLimit="2.75"
+          Stroke="#FFA8B3C2" Fill="#FFFFFFFF"
+          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" Width="16" Height="10"/>
+    <Path x:Uid="Path_2" VerticalAlignment="Bottom" Margin="0,0,0,15" Stretch="Fill" StrokeMiterLimit="2.75"
+          Stroke="#FFA8B3C2" Fill="#FFFFFFFF"
+          Data="F1 M 675.738,744.979 L 665.7,758.492 655.66,744.979 675.738,744.979 Z" Width="16" Height="10"/>
+    <Rectangle x:Name="dropTarget" x:Uid="dropTarget" Fill="#FFE9ECEE" Height="10" Visibility="Hidden"/>
+  </Grid>
+</UserControl>

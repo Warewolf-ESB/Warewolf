@@ -317,7 +317,6 @@
     </Compile>
     <Compile Include="IntellisenseProviderTest.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
-    <Compile Include="UtilsTests\ActivityDesignerUtilsTests\ForeachActivityDesignerUtilsTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />
     <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
@@ -450,6 +449,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="UtilsTests\ActivityDesignerUtilsTests\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />

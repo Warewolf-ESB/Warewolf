@@ -67,7 +67,7 @@
                    Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox Grid.Row="1"
                                     Grid.Column="1"
-                                    DefaultText="http://ServerName:77/Services/LogErrors?Error=[[ErrorMsg]]"
+                                    DefaultText="http://lcl:3142/services/err"
                                     WrapInBrackets="False"
                                     Text="{Binding ModelItem.OnErrorWorkflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"

@@ -9,7 +9,7 @@ using Dev2.Data.SystemTemplates.Models;
 namespace Dev2.Utilities
 {
     public static class ActivityHelper
-    {   
+    {
         public static void InjectExpression(Dev2Switch ds, ModelProperty activityExpression)
         {
             if(ds == null) return;
@@ -62,7 +62,7 @@ namespace Dev2.Utilities
             }
             return val;
         }
-     
+
         public static void SetSwitchKeyProperty(Dev2Switch ds, ModelItem switchCase)
         {
             if(ds != null)
@@ -131,10 +131,10 @@ namespace Dev2.Utilities
 
         public static void HandleDragEnter(DragEventArgs e)
         {
-            if(e != null)
-            {
-                e.Handled = true;
-            }
+            //if(e != null)
+            //{
+            //    e.Handled = true;
+            //}
         }
     }
 }

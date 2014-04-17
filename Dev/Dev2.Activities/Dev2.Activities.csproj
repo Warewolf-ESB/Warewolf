@@ -140,6 +140,7 @@
     <Compile Include="Activities\DsfRandomActivity.cs" />
     <Compile Include="Activities\DsfReplaceActivity.cs" />
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
+    <Compile Include="Activities\DsfSequenceActivity.cs" />
     <Compile Include="Activities\DsfServiceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
     <Compile Include="Activities\DsfCountRecordsetActivity.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\ForEachActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\SequenceActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
     <Compile Include="Hosting\WorkflowInstanceInfo.cs" />
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />

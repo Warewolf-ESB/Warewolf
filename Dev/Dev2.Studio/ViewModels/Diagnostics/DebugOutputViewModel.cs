@@ -13,7 +13,6 @@ using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;

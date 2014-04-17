@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -49,17 +50,27 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var expectedDebugItems = BuildExpectedDebugItems(table);
             var inputDebugItems = GetInputDebugItems();
+            ThenTheDebugInputsAs(table, inputDebugItems);
+        }
+
+        public void ThenTheDebugInputsAs(Table table, List<DebugItemResult> inputDebugItems)
+        {
+            var expectedDebugItems = BuildExpectedDebugItems(table);
             CollectionsAssert(expectedDebugItems, inputDebugItems);
         }
 
         [Then(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
+            var outputDebugItems = GetOutputDebugItems();
+            ThenTheDebugOutputAs(table, outputDebugItems);
+        }
+
+        public void ThenTheDebugOutputAs(Table table, List<DebugItemResult> outputDebugItems)
+        {
             var expectedDebugItems = BuildExpectedDebugItems(table);
-            var inputDebugItems = GetOutputDebugItems();
-            CollectionsAssert(expectedDebugItems, inputDebugItems);
+            CollectionsAssert(expectedDebugItems, outputDebugItems);
         }
 
         [Given(@"I have a source path '(.*)' with value '(.*)'")]
@@ -192,7 +203,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             //Call the service and get the result
             WebClient webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             var webCallResult = webClient.DownloadString(webservice);
-            Assert.IsTrue(webCallResult.Contains(errorValue));
+            StringAssert.Contains(webCallResult, errorValue);
         }
 
 
@@ -256,7 +267,38 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             }
         }
-        
+
+        public static void AddVariableToVariableList(string resultVariable)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if(variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
+        }
+
+        public static void AddActivityToActivityList(string activityName, Activity activity)
+        {
+            Dictionary<string, Activity> activityList;
+            if(!ScenarioContext.Current.TryGetValue("activityList", out activityList))
+            {
+                activityList = new Dictionary<string, Activity>();
+                ScenarioContext.Current.Add("activityList", activityList);
+            }
+            activityList.Add(activityName, activity);
+        }
+
+        public static Dictionary<string, Activity> GetActivityList()
+        {
+            Dictionary<string, Activity> activityList;
+            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+            return activityList;
+        }
+
         public static string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
             string rawRef = DataListUtil.StripBracketsFromValue(value);
@@ -274,7 +316,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        static List<DebugItemResult> GetInputDebugItems()
+        public static List<DebugItemResult> GetInputDebugItems(Activity act = null)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -283,10 +325,18 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
+                DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
+                if(dsfActivityAbstractString != null)
+                {
+                    return DebugItemResults(dsfActivityAbstractString, dl);
+                }
+                DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
+                if(dsfActivityAbstractBool != null)
+                {
+                    return DebugItemResults(dsfActivityAbstractBool, dl);
+                }
                 var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
-                return activity.GetDebugInputs(dl)
-                    .SelectMany(r => r.ResultsList)
-                    .ToList();
+                return DebugItemResults(activity, dl);
             }
             catch
             {
@@ -297,7 +347,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        static List<DebugItemResult> GetOutputDebugItems()
+        static List<DebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
+        {
+            return dsfActivityAbstractString.GetDebugInputs(dl)
+                .SelectMany(r => r.ResultsList)
+                .ToList();
+        }
+
+        public static List<DebugItemResult> GetOutputDebugItems(Activity act = null)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -306,7 +363,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
-                var activity = ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
+                var activity = act as DsfActivityAbstract<string> ?? ScenarioContext.Current.Get<DsfActivityAbstract<string>>("activity");
                 return activity.GetDebugOutputs(dl)
                     .SelectMany(r => r.ResultsList)
                     .ToList();

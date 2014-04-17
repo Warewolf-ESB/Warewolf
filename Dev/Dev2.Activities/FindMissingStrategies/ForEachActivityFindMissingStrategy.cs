@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -34,7 +32,7 @@ namespace Dev2.FindMissingStrategies
             if(forEachActivity != null)
             {
                 IFindMissingStrategy strategy;
-                enFindMissingType findMissingType = enFindMissingType.StaticActivity;
+                enFindMissingType findMissingType;
                 var boolAct = forEachActivity.DataFunc.Handler as DsfNativeActivity<bool>;
                 if(boolAct == null)
                 {
@@ -43,22 +41,22 @@ namespace Dev2.FindMissingStrategies
                     {
                         findMissingType = stringAct.GetFindMissingType();
                         strategy = stratFac.CreateFindMissingStrategy(findMissingType);
-                        results.AddRange(strategy.GetActivityFields(stringAct));    
+                        results.AddRange(strategy.GetActivityFields(stringAct));
                     }
                 }
                 else
                 {
                     findMissingType = boolAct.GetFindMissingType();
                     strategy = stratFac.CreateFindMissingStrategy(findMissingType);
-                    results.AddRange(strategy.GetActivityFields(boolAct));    
-                }                                                          
+                    results.AddRange(strategy.GetActivityFields(boolAct));
+                }
             }
-            
+
             IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
-            foreach (PropertyInfo propertyInfo in properties)
+            foreach(PropertyInfo propertyInfo in properties)
             {
                 object property = propertyInfo.GetValue(activity, null);
-                if (property != null)
+                if(property != null)
                 {
                     results.Add(property.ToString());
                 }

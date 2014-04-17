@@ -432,6 +432,19 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\Sequence\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesigner.xaml.cs">
+      <DependentUpon>SequenceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Sequence\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\VerticalConnector.xaml.cs">
+      <DependentUpon>VerticalConnector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Service\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -921,6 +934,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Script\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Sequence\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Sequence\SequenceDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\VerticalConnector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

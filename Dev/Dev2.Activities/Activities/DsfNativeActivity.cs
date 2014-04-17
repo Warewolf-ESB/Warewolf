@@ -199,6 +199,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     OnExecutedCompleted(context, false, resumable);
                     if(compiler != null)
                     {
+                        DoErrorHandling(context, compiler, dataObject);
+                    }
+                }
+            }
+        }
+
+        protected void DoErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject)
+        {
                         string errorString = compiler.FetchErrors(dataObject.DataListID, true);
                         string currentError = compiler.FetchErrors(dataObject.DataListID);
                         ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
@@ -215,9 +223,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
                     }
-                }
-            }
-        }
 
         void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
         {
@@ -368,7 +373,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.ForceDeleteDataListByID(dataListExecutionID);
             }
 
-            if(!dataObject.IsDataListScoped)
+            if(!dataObject.IsDebugNested)
             {
                 dataObject.ParentInstanceID = _previousParentInstanceID;
             }

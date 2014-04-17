@@ -164,6 +164,7 @@
     <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
     <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
+    <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
     <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />

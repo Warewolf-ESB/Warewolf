@@ -357,7 +357,7 @@ If left empty the result will still be placed in the result variable.</value>
   </data>
   <data name="OnErrorHelpWorkflow" xml:space="preserve">
     <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
-E.g. http://ServerName:77/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
+E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
   </data>
   <data name="OnErrorToolTipIsEnded" xml:space="preserve">
     <value>Ends the executing workflow at this point</value>
@@ -1379,6 +1379,14 @@ To execute a command line action or actions, enter them in here. Acts like a bat
   <data name="CommentHelpComment" xml:space="preserve">
     <value>Comments do not execute and are place holders for fututre services or tools or simply to leave commenty inside the workflow.
 You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.</value>
+  </data>
+  <data name="SequenceHelpSeqence" xml:space="preserve">
+    <value>To execute a set of Activities in sequence put them in the order you want them executed.
+To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
+Error handling operates as a catch all for all items in the sequence.</value>
+  </data>
+  <data name="SequenceTooltipSeqence" xml:space="preserve">
+    <value>Add to or edit the sequence.</value>
   </data>
   <data name="CommentToolTipComment" xml:space="preserve">
     <value>Notes and comments will not be executed at run time but will show up in the debug output.</value>

@@ -434,7 +434,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true);
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
                                     d.IconPath = resource.IconPath;
-                                    CheckIfRemoteWorkflowAndSetProperties(d, resource);
+                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);
                                     //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
                                     //Setting it twice causes double connection to startnode
                                 }
@@ -473,32 +473,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             this.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
             EventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
-        }
-
-        void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
-        {
-            if(Application.Current != null &&
-                Application.Current.Dispatcher.CheckAccess()
-                && Application.Current.MainWindow != null)
-            {
-                var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
-                if(mvm != null && mvm.ActiveItem != null)
-                {
-                    CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
-                }
-            }
-        }
-
-        protected void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
-        {
-            if(resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
-            {
-                if(contextEnv.ID != resource.Environment.ID)
-                {
-                    dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
-                    dsfActivity.ServiceServer = resource.Environment.ID;
-                }
-            }
         }
 
         void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)

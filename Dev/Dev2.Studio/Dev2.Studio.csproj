@@ -1082,6 +1082,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\ToolCMDLine-32.png" />
+    <Resource Include="Images\ToolCopyRecords-32.png" />
+    <Resource Include="Images\ToolCreateJSON-32.png" />
+    <Resource Include="Images\ToolDelay-32.png" />
+    <Resource Include="Images\ToolDoWhile-32.png" />
+    <Resource Include="Images\ToolIfThen-32.png" />
+    <Resource Include="Images\ToolLength-32.png" />
+    <Resource Include="Images\ToolParallel-32.png" />
+    <Resource Include="Images\ToolParallelForEach-32.png" />
+    <Resource Include="Images\ToolPowerShelScript-32.png" />
+    <Resource Include="Images\ToolRules-32.png" />
+    <Resource Include="Images\ToolTransactionScope-32.png" />
     <Resource Include="Images\TaskScheduler-32.png" />
     <Resource Include="Images\AuthExecute-12.png" />
     <Resource Include="Images\AuthNone-16.png" />

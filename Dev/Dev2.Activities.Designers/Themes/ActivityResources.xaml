@@ -4,8 +4,9 @@
                     xmlns:customControlsConverters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:studioConverters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"                                        
-                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"                   
-                    x:Class="ArbitraryNameToEliminateBogusGenericsErrorDsfActivityResources">
+                    xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                    xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+    x:Class="ArbitraryNameToEliminateBogusGenericsErrorDsfActivityResources">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityStyles.xaml" />
@@ -15,6 +16,8 @@
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     <customControlsConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverse" TrueValue="Collapsed" FalseValue="Visible"/>
 
+    <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
+    <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <studioConverters:ForEachTypeToVisibilityConverter x:Key="ForEachTypeToVisibilityConverter" />
     <studioConverters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <studioConverters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
@@ -68,7 +71,25 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="RowStyle" Value="{StaticResource SpacedDataGridRowStyle}"/>  
-    </Style>   
+    </Style>
+    
+    <Style x:Key="NonSelectableActivityDataGridStyle" TargetType="{x:Type DataGrid}">
+        <Setter Property="HeadersVisibility" Value="None"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonBorderBrush}" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="MinHeight" Value="53"/>
+        <Setter Property="MaxHeight" Value="53"/>
+        <Setter Property="Margin" Value="0"/>     
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="RowStyle" Value="{StaticResource NonSelectableDataGridRowStyle}"/>  
+    </Style>
     
      
     <Style x:Key="ActivityMapppingDataGridStyle" BasedOn="{StaticResource SpacedActivityDataGridStyle}" TargetType="{x:Type DataGrid}">

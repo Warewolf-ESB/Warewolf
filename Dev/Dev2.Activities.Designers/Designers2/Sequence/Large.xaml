@@ -1,0 +1,66 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.Sequence.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Sequence"
+                               xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+                               xmlns:presentation="clr-namespace:System.Activities.Core.Presentation"
+                               xmlns:sa="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               MinWidth="200"
+                               MinHeight="188"
+                               MaxWidth="Infinity"
+                               MaxHeight="Infinity"
+                               Padding="7"
+                               mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}">
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary x:Name="TheResources"
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+    </core:ActivityDesignerTemplate.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0">
+        <sap:WorkflowItemsPresenter x:Uid="sad:WorkflowItemsPresenter_1"                                    
+                                    x:Name="ActivitiesPresenter"
+                                    AllowedItemType="{x:Type sa:Activity}"
+                                    HintText="Add New Activity"
+                                    ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSeqence}"
+                                    IsDefaultContainer="true">
+            <sap:WorkflowItemsPresenter.Items>
+                <Binding Path="ModelItem.Activities"/>
+            </sap:WorkflowItemsPresenter.Items>
+            <sap:WorkflowItemsPresenter.SpacerTemplate>
+                <DataTemplate x:Uid="DataTemplate_9">
+                    <presentation:VerticalConnector x:Uid="sacd:VerticalConnector_1"
+                                                    AllowedItemType="{x:Type sa:Activity}"
+                                                    Focusable="true"
+                                                    Context="{Binding Path=Context}" />
+                </DataTemplate>
+            </sap:WorkflowItemsPresenter.SpacerTemplate>
+            <sap:WorkflowItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate x:Uid="ItemsPanelTemplate_1">
+                    <StackPanel x:Uid="StackPanel_1"
+                                Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </sap:WorkflowItemsPresenter.ItemsPanel>
+            <i:Interaction.Behaviors>
+        <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSeqence}"
+                         DataContext="{Binding}" />
+    </i:Interaction.Behaviors>
+        </sap:WorkflowItemsPresenter>    
+        </Border>
+        
+        <errors:OnError Grid.Row="1"
+                        Width="{Binding ElementName=ActivitiesPresenter, Path=Width}"
+                        Margin="2" />
+    </Grid>
+     
+</core:ActivityDesignerTemplate>

@@ -161,6 +161,7 @@ namespace Dev2.DynamicServices
         public Guid DebugSessionID { get; set; }
         public Guid ParentID { get; set; }
         public bool RunWorkflowAsync { get; set; }
+        public bool IsDebugNested { get; set; }
         public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
@@ -323,6 +324,7 @@ namespace Dev2.DynamicServices
             result.ThreadsToDispose = ThreadsToDispose;
             result.ParentID = ParentID;
             result.RunWorkflowAsync = RunWorkflowAsync;
+            result.IsDebugNested = IsDebugNested;
             return result;
         }
 

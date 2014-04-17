@@ -31,6 +31,7 @@ using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
+using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
@@ -42,6 +43,7 @@ using Dev2.Activities.Designers2.Zip;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
 {
     public static class ActivityDesignerHelper
@@ -57,7 +59,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
                 { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
-//                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
+                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
@@ -75,6 +77,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfZip), typeof(ZipDesigner) },
                 { typeof(DsfExecuteCommandLineActivity), typeof(CommandLineDesigner) },
                 { typeof(DsfCommentActivity), typeof(CommentDesigner) },
+                { typeof(DsfSequenceActivity), typeof(SequenceDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DateTimeDifferenceDesigner) },
                 { typeof(DsfSendEmailActivity), typeof(EmailDesigner) },
                 { typeof(DsfIndexActivity), typeof(FindIndexDesigner) },
