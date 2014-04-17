@@ -11,7 +11,7 @@ using Clipboard = System.Windows.Clipboard;
 namespace Dev2.Studio.UI.Tests
 {
     /// <summary>
-    ///     These are UI tests based on using a remote server
+    /// These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
     public class RemoteServerUiTests : UIMapBase
@@ -88,7 +88,7 @@ namespace Dev2.Studio.UI.Tests
             PopupDialogUIMap.WaitForDialog();
             //assert error dialog not showing
             var child = StudioWindow.GetChildren()[0];
-            if (child != null)
+            if(child != null)
             {
                 Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
             }
@@ -393,7 +393,7 @@ namespace Dev2.Studio.UI.Tests
             const string CategoryName = "Unassigned";
 
             //CREATE A WORKFLOW
-            using (DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
             {
                 activityUiMap.DragToolOntoDesigner(ToolType.Assign);
 
