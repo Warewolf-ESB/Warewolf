@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Dev2.Studio.UI.Tests.Extensions;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
