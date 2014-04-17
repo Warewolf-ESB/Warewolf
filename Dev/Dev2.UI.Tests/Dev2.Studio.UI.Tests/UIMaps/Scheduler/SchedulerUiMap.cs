@@ -9,7 +9,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
     {
 
         UITestControl _activeTab;
-        VisualTreeWalker _visualTreeWalker;
+        readonly VisualTreeWalker _visualTreeWalker;
         readonly string[] _newButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "New" };
         readonly string[] _nameTextboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_NameTextbox" };
         readonly string[] _enabledRadioButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_EnabledRadioButton" };
