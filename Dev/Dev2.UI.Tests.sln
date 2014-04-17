@@ -13,9 +13,6 @@ Global
 		SccProjectName1 = Dev2.UI.Tests/Dev2.Studio.UI.Tests
 		SccLocalPath1 = Dev2.UI.Tests\\Dev2.Studio.UI.Tests
 	EndGlobalSection
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -25,6 +22,10 @@ Global
 		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Test|Any CPU = Test|Any CPU
+		Test|Mixed Platforms = Test|Mixed Platforms
+		Test|x64 = Test|x64
+		Test|x86 = Test|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -39,8 +40,17 @@ Global
 		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Release|x64.ActiveCfg = Release|Any CPU
 		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|Any CPU.Build.0 = Test|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|Mixed Platforms.Build.0 = Test|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|x64.ActiveCfg = Test|Any CPU
+		{9C452452-634E-4A21-AB9E-681D3F05DF52}.Test|x86.ActiveCfg = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
 	EndGlobalSection
 EndGlobal
