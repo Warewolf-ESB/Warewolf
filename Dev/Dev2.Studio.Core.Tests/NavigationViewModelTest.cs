@@ -473,9 +473,11 @@ namespace Dev2.Core.Tests
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentTreeViewModel(eventAggregator, _vm.Root, localEnvironment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             new ServiceTypeTreeViewModel(eventAggregator, _vm.Root.Children[0], ResourceType.WorkflowService);
             new CategoryTreeViewModel(eventAggregator, _vm.Root.Children[0].Children[0], expectedCategoryName, ResourceType.WorkflowService);
+            // ReSharper restore ObjectCreationAsStatement
             _vm.Root.Children[0].Children[0].Children[0].Children.Add(localResource.Object);
 
             //------------Execute Test---------------------------
@@ -525,12 +527,12 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             bool called = false;
-            _vm.LoadResourcesCompleted += delegate(object o, EventArgs args) { called = true; };
+            _vm.LoadResourcesCompleted += delegate { called = true; };
             _vm.LoadEnvironmentResources(_mockEnvironmentModel.Object);
 
             _vm.Root.NotifyOfFilterPropertyChanged(false);
-           
-            
+
+
             Assert.IsTrue(called);
         }
 
@@ -1067,7 +1069,7 @@ namespace Dev2.Core.Tests
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeAllExpectedAllItemsToBeInTree()
         {
             Init(false, true);
-            _vm = CreateViewModel(true, enDsfActivityType.All);
+            _vm = CreateViewModel(true);
             _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(3, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName);
@@ -1149,7 +1151,9 @@ namespace Dev2.Core.Tests
         {
             var eventPublisher = new Mock<IEventAggregator>();
 
+            // ReSharper disable ObjectCreationAsStatement
             new NavigationViewModel(eventPublisher.Object, null, null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -1516,7 +1520,9 @@ namespace Dev2.Core.Tests
 
             nvm.Root.Children.Add(new CategoryTreeViewModel(eventPublisher.Object, nvm.Root, "Workflows", ResourceType.WorkflowService));
 
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, env.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
             nvm.UpdateResource(newResource.Object);

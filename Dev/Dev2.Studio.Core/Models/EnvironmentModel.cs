@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Network;
+using System.Text;
+using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -9,12 +15,6 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Workspaces;
-using System;
-using System.Network;
-using System.Text;
-using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
 using Action = System.Action;
 
 // ReSharper disable CheckNamespace
@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.Models
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
-       
+
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
@@ -203,7 +203,7 @@ namespace Dev2.Studio.Core.Models
             {
                 ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
                 HasLoadedResources = true;
-                
+
 
             }
         }
@@ -267,9 +267,9 @@ namespace Dev2.Studio.Core.Models
         }
         void RaiseLoadedResources()
         {
-            if (ResourcesLoaded != null)
+            if(ResourcesLoaded != null)
             {
-                ResourcesLoaded(this, new ResourcesLoadedEventArgs() { Model = this});
+                ResourcesLoaded(this, new ResourcesLoadedEventArgs { Model = this });
             }
         }
 
@@ -282,7 +282,7 @@ namespace Dev2.Studio.Core.Models
         void RaiseNetworkStateChanged(bool isOnline)
         {
             RaiseIsConnectedChanged(isOnline);
-            if (!isOnline)
+            if(!isOnline)
                 HasLoadedResources = false;
 
             AbstractEnvironmentMessage message;
@@ -352,7 +352,7 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsAuthorizedDeployFrom");
 
         }
-         
+
         #region Overrides of Object
 
         /// <summary>

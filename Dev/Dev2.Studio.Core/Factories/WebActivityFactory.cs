@@ -3,6 +3,20 @@
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories
 {
+    public interface IWebActivityFactory
+    {
+        IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel,
+                                       string serviceName);
+    }
+    public class InstanceWebActivityFactory : IWebActivityFactory
+    {
+        public IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel,
+                                              string serviceName)
+        {
+            return WebActivityFactory.CreateWebActivity(webActivityWrappingObject, resourceModel, serviceName);
+        }
+    }
+
     public static class WebActivityFactory
     {
         internal static IWebActivity CreateWebActivity()
@@ -25,19 +39,6 @@ namespace Dev2.Studio.Core.Factories
             activity.ResourceModel = resourceModel;
             activity.ServiceName = serviceName;
             return activity;
-        }
-    }
-    public interface IWebActivityFactory
-    {
-        IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel,
-                                       string serviceName);
-    }
-    public class InstanceWebActivityFactory:IWebActivityFactory
-    {
-        public IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel,
-                                              string serviceName)
-        {
-            return WebActivityFactory.CreateWebActivity(webActivityWrappingObject, resourceModel, serviceName);
         }
     }
 }

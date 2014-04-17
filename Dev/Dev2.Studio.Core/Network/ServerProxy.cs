@@ -1,4 +1,14 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Security;
+using System.Network;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
@@ -13,16 +23,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Security;
-using System.Network;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -31,14 +31,14 @@ namespace Dev2.Network
     {
         Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
-        private IAsyncWorker _asyncWorker; 
+        private IAsyncWorker _asyncWorker;
         public ServerProxy(Uri serverUri)
-            : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials,new AsyncWorker())
+            : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        public ServerProxy(string serverUri, ICredentials credentials,IAsyncWorker worker)
+        public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
             IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
@@ -70,7 +70,7 @@ namespace Dev2.Network
         }
 
         public ServerProxy(string webAddress, string userName, string password)
-            : this(webAddress, new NetworkCredential(userName, password),new AsyncWorker())
+            : this(webAddress, new NetworkCredential(userName, password), new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.User;
             UserName = userName;
@@ -239,15 +239,15 @@ namespace Dev2.Network
             HubConnection.Stop();
         }
 
-        public void Verify(Action<ConnectResult> callback,bool wait = true)
+        public void Verify(Action<ConnectResult> callback, bool wait = true)
         {
             if(IsConnected)
             {
                 return;
             }
             ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-           
-            if (wait)
+
+            if(wait)
             {
                 HubConnection.Start().Wait(MillisecondsTimeout);
                 callback(HubConnection.State == ConnectionState.Connected
@@ -257,12 +257,7 @@ namespace Dev2.Network
             else
             {
                 HubConnection.Start();
-                _asyncWorker.Start(()=>
-                    {
-                        Thread.Sleep(MillisecondsTimeout);
-                       
-                       
-                    },()=> callback(HubConnection.State == ConnectionState.Connected
+                _asyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
             }
