@@ -349,3 +349,59 @@ Scenario: Assign to a negative recordset index
 	| 1 | [[des(-1).val]] = | 10        |	
 	And the debug output as
 	| # |                      |
+	
+#
+#Scenario Outline: Assign to a invalid variable
+#   Given I assign the value 10 to a variable '<var>'
+#   When the assign tool is executed
+#   Then the execution has "AN" error
+#   And the debug inputs as
+#	| # | Variable | New Value |
+#	| 1 | <var> =  | 10        |
+#   And the debug output as
+#   | # |         |
+#   |   | <error> |
+#   Examples:
+#   | no | var                                       | error                                                                                                                                                                                                                                                   |
+#   | 1  | [[rec().a]]=]]                            | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+#   | 2  | [[rec'()'.a]]                             | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+#   | 3  | [[rec"()".a]]                             | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
+#   | 4  | [[rec".a]]                                | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
+#   | 5  | [[rec.a]]                                 | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
+#   | 6  | [[rec()*.a]]                              | Variable name [[rec()*.a]] contains invalid character(s)                                                                                                                                                                                                |
+#   | 7  | [[rec().a]].[[a]]                         | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 8  | [[rec().a]][[a]]                          | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 9  | [[rec().a]]*                              | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 10 | [[rec().a]] a                             | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 11 | [[1]]                                     | Variable name [[1]] begins with a number                                                                                                                                                                                                                |
+#   | 12 | [[@]]                                     | Variable name [[@]] contains invalid character(s)                                                                                                                                                                                                       |
+#   | 13 | [[var#]]                                  | Variable name [[var#]] contains invalid character(s)                                                                                                                                                                                                    |
+#   | 14 | [[var]]00]]                               | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+#   | 15 | [[var]]@]]                                | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+#   | 16 | [[var.()]]                                | Variable name [[var.()]] contains invalid character(s)                                                                                                                                                                                                  |
+#   | 17 | [[]]                                      | Variable [[]] is missing a name                                                                                                                                                                                                                         |
+#   | 18 | [[()]]                                    | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
+#   | 19 | [[var[[a]]]]                              | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 20 | [[var[[]]                                 | Invalid region detected: An open [[ without a related close ]]                                                                                                                                                                                          |
+#   | 21 | [[var1.a]]                                | Variable name [[var1.a]] contains invalid character(s)                                                                                                                                                                                                  |
+#   | 22 | [[rec()!a]]                               | Recordset name [[rec()!a]] contains invalid character(s)                                                                                                                                                                                                |
+#   | 23 | [[rec()         a]]                       | Recordset name [[rec()         a]] contains invalid character(s)                                                                                                                                                                                        |
+#   | 24 | [[{{rec(_).a}}]]]                         | Recordset name [[{{rec]] contains invalid character(s)                                                                                                                                                                                                  |
+#   | 25 | [[rec(23).[[var*]]]]                      | Variable name [[var*]] contains invalid character(s)                                                                                                                                                                                                    |
+#   | 26 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |
+#   | 27 | [[rec().a]]&[[a]]                         | One variable only allowed in the output field                                                                                                                                                                                                           |
+#   | 28 | a[[rec([[[[b]]]]).a]]@                    | Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)                                                                                                                                                                                     |
+#   | 29 | [[var  ]]                                 | Variable name [[var  ]] contains invalid character(s)                                                                                                                                                                                                   |
+#   | 29 | [[rec()                                   | UPPER                                                                                                                                                                                                                                                   | Recordset variable that needs a field name(s) ||
+#
+
+
+
+
+
+
+
+
+
+
+

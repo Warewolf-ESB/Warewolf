@@ -211,3 +211,49 @@ Scenario: Find unique records using a * for Return Field
 	| 1 | [[rec(1).unique]] = 1 |
 	|   | [[rec(2).unique]] = 2 |
 	|   | [[rec(3).unique]] = 3 |
+
+Scenario: Executing Unique record tool with empty In Fields
+	Given I have the following duplicated recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And I want to find unique in field "" with the return field "[[rs(*).row]]"
+	And The result variable is ""
+	When the unique tool is executed	
+	Then the unique result will be
+	| rec       | unique |
+	And the execution has "AN" error	
+	And the debug inputs as  
+	| #           |  | Return Fields |
+	| In Field(s) |  | [[rs(*).row]] |
+	And the debug output as 
+	|  |  |
+
+
+Scenario: Executing Unique record tool with empty In Return Field
+	Given I have the following duplicated recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And I want to find unique in field "[[rs(*).row]]" with the return field ""
+	And The result variable is ""
+	When the unique tool is executed	
+	Then the unique result will be
+	| rec       | unique |
+	And the execution has "AN" error	
+	And the debug inputs as  
+	| #           |                 | Return Fields |
+	| In Field(s) | [[rs(*).row]] = |               |	
+	And the debug output as 
+	|  |  |
+
+
+
+
+
+
+	

@@ -992,8 +992,8 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = country                             | String    | YES                              |
 	And the debug output as 
-	|         |
-	| NO     |
+	|    |
+	| NO |
 
 Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
@@ -1073,7 +1073,16 @@ Scenario: decide if There Is No Error (False)
 	|  | String    | YES                              |
 	And the debug output as 
 	|    |
-	| NO |
 
-
-
+#Scenario: decide if text with space is equal to same text with extra space (False)
+#	Given a decision variable "[[A]]" value "123 234"		
+#	And is "[[A]]" "IsEqual" "123   234"	
+#	When the decision tool is executed
+#	Then the decision result should be "False"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	|                 | Statement | Require All decisions to be True |
+#	| [[A]] = 123 234 | String    | YES                              |
+#	And the debug output as 
+#	|    |
+#	| NO |
