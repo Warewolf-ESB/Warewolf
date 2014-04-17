@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Playback.Wait(10);
             SendKeys.SendWait("{TAB}{RIGHT}{TAB}");
             Playback.Wait(10);
-            SendKeys.SendWait("testuser");
+            SendKeys.SendWait(@"testuser");
             Playback.Wait(10);
             SendKeys.SendWait("{TAB}");
             Playback.Wait(10);
