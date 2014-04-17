@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Management;
-using System.Reflection;
 using System.Threading;
 using BuildEventLogging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,7 +11,7 @@ namespace Dev2.Studio.UI.Tests.Utils
     /// <summary>
     /// Used to bootstrap the server for coded UI test runs
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class Bootstrap
     {
         private const string ServerName = "Warewolf Server.exe";
@@ -22,22 +20,21 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioProcName = "Warewolf Studio";
         private const int ServerTimeOut = 2000;
         private const int StudioTimeOut = 10000;
-        private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
 
-        public static string ServerLocation;
+        public static string ServerLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Warewolf Server.exe";
         public static Process ServerProc;
-        public static string StudioLocation;
+        public static string StudioLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Warewolf Studio.exe";
         public static Process StudioProc;
 
 
-        private static object _tumbler = new object();
+        private static readonly object _tumbler = new object();
         private static TestContext testCtx;
 
         /// <summary>
         /// Inits the specified test CTX.
         /// </summary>
         /// <param name="textCtx">The test CTX.</param>
-        [AssemblyInitialize()]
+        [AssemblyInitialize]
         public static void AssemblyInit(TestContext textCtx)
         {
             testCtx = textCtx;
@@ -49,17 +46,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 var serverProcess = TryGetProcess(ServerProcName);
                 var studioProcess = TryGetProcess(StudioProcName);
-                if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
-                {
-                    //Local, assume server is running
-                    ServerLocation = GetProcessPath(serverProcess);
-                    StudioLocation = GetProcessPath(studioProcess);
-                    return;
-                }
 
-                var deployLocation = testCtx.DeploymentDirectory;
-                ServerLocation = deployLocation + @"\" + ServerName;
-                StudioLocation = deployLocation + @"\" + StudioName;
                 if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
                 {
                     // term any existing studio processes ;)
@@ -67,62 +54,16 @@ namespace Dev2.Studio.UI.Tests.Utils
                     // term any existing server processes ;)
                     KillProcess(serverProcess);
 
-                    CleanWarewolfAppData();
-
                     StartServer();
                     StartStudio();
-                }
-                else
-                {
-                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    //Remote. Restart Server and Studio.
-                    //Stop Studio.
-                    KillProcess(studioProcess);
-                    //Stop Server.
-                    KillProcess(serverProcess);
-
-                    CleanWarewolfAppData();
-
-                    ServerLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + ServerName;
-                    StudioLocation = LocalBuildRunDirectory + buildLabel.ChangesetID + "\\Binaries\\" + StudioName;
-                    if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
-                    {
-                        //Try start
-                        StartServer();
-                        ServerLocation = GetProcessPath(serverProcess);
-                        if(buildLabel.LoggingURL != string.Empty)
-                        {
-                            BuildEventLogger.LogBuildEvent(buildLabel, "Server restarted for Coded UI Test");
-                        }
-
-                        //Try start
-                        StartStudio();
-                        StudioLocation = GetProcessPath(studioProcess);
-                        if(buildLabel.LoggingURL != string.Empty)
-                        {
-                            BuildEventLogger.LogBuildEvent(buildLabel, "Studio restarted for Coded UI Test");
-                        }
-                    }
-                    else
-                    {
-                        if(buildLabel.LoggingURL != string.Empty)
-                        {
-                            BuildEventLogger.LogBuildEvent(buildLabel, "Error! Build not found to restart server and studio for coded ui test!");
-                        }
-                        throw new Exception("Cannot run coded UI test pack because no build is available to restart.");
-                    }
+                    Thread.Sleep(2500);
                 }
             }
         }
 
         static void StartStudio()
         {
-            var args = "-t";
-
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
-            startInfo.FileName = StudioLocation;
-            //startInfo.RedirectStandardOutput = true;
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = StudioLocation };
 
             var started = false;
             var startCnt = 0;
@@ -137,7 +78,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     Thread.Sleep(StudioTimeOut); // wait for server to start ;)
                     if(StudioProc != null && !StudioProc.HasExited)
                     {
-                        StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+                        //        StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
                         started = true;
                     }
                 }
@@ -151,12 +92,9 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         static void StartServer()
         {
-            var args = "-t";
+            const string args = "-t";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
-            startInfo.FileName = ServerLocation;
-            //startInfo.RedirectStandardOutput = true;
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = ServerLocation };
 
             var started = false;
             var startCnt = 0;
@@ -193,7 +131,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <summary>
         /// Teardowns this instance.
         /// </summary>
-        [AssemblyCleanup()]
+        [AssemblyCleanup]
         public static void Teardown()
         {
             if(ServerProc != null && !ServerProc.HasExited)
@@ -244,15 +182,6 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        private static string GetProcessPath(ManagementObjectCollection processes)
-        {
-            if(processes == null || processes.Count == 0)
-            {
-                return null;
-            }
-            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
-        }
-
         static void KillProcess(ManagementObjectCollection processes)
         {
             if(processes == null)
@@ -269,28 +198,13 @@ namespace Dev2.Studio.UI.Tests.Utils
                     var proc = Process.GetProcessById(Int32.Parse(pid));
                     proc.Kill();
                 }
-                catch
+                // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
                 }
             }
-        }
-
-        static void CleanWarewolfAppData()
-        {
-            //Clean dir
-            var appdataPath = "C:\\Users\\" + System.Security.Principal.WindowsIdentity.GetCurrent().Name.TrimStart("DEV2\\".ToCharArray()) + "\\AppData\\Local\\Warewolf";
-            if(Directory.Exists(appdataPath))
-            {
-                try
-                {
-                    Directory.Delete(appdataPath, true);
-                }
-                catch { }
-            }
-            //Deploy standard layout
-            Directory.CreateDirectory(Path.Combine(appdataPath, "UserInterfaceLayouts"));
-            File.Copy(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Default.xml"), Path.Combine(appdataPath, "UserInterfaceLayouts", "Default.xml"));
         }
     }
 }
