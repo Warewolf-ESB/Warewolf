@@ -1,10 +1,10 @@
-﻿using Dev2.Studio.UI.Tests.Enums;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
@@ -21,7 +21,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 _theTab = RibbonUIMap.CreateNewWorkflow(waitAmt);
             }
         }
-        
+
         public UITestControl GetActivityDisplayNameControl()
         {
             return GetControlOnActivity("DisplayNameReadOnlyControl", ControlType.Edit);
@@ -32,7 +32,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             var displayNameControl = GetActivityDisplayNameControl();
             return displayNameControl.Width;
         }
-        
+
         protected UITestControl GetControlOnActivity(string autoId, ControlType controlType)
         {
             UITestControlCollection uiTestControlCollection = Activity.GetChildren();
@@ -56,7 +56,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
             throw new Exception("Couldn't find the " + autoId + " for control type " + controlType);
         }
-
 
         #region Properties
 
