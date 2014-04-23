@@ -56,6 +56,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     StartServer();
                     StartStudio();
+
                     Thread.Sleep(2500);
                 }
             }
@@ -78,7 +79,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                     Thread.Sleep(StudioTimeOut); // wait for server to start ;)
                     if(StudioProc != null && !StudioProc.HasExited)
                     {
-                        //        StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
                         started = true;
                     }
                 }

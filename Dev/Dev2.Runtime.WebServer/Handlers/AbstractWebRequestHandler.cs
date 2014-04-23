@@ -7,20 +7,17 @@ using System.Net;
 using System.Reflection;
 using System.Security.Principal;
 using System.Web;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Communication;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.WebServer.Responses;
+using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Server.DataList.Translators;
 using Dev2.Web;
 using Dev2.Workspaces;
-using DEV2.MultiPartFormPasser;
-using Unlimited.Framework;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -32,20 +29,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
-            // properly setup xml extraction ;)
-            string payload = String.Empty;
-            if(d.PostData is string)
-            {
-                payload = d.PostData;
-                payload = payload.Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
-                payload = payload.Replace("<Payload>", "<XmlData>").Replace("</Payload>", "</XmlData>");
-            }
-
-
-            string correctedUri = d.XmlString.Replace("&", "").Replace(GlobalConstants.PostDataStart, "").Replace(GlobalConstants.PostDataEnd, "");
-            correctedUri = correctedUri.Replace("<Payload>", "<XmlData>").Replace("</Payload>", "</XmlData>");
             string executePayload;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid workspaceGuid;
@@ -64,9 +49,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             ErrorResultTO errors;
             var allErrors = new ErrorResultTO();
-            var dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload) { IsFromWebServer = true };
-            dataObject.ExecutingUser = user;
-            dataObject.ServiceName = serviceName;
+            var dataObject = new DsfDataObject(d.RawRequestPayload, GlobalConstants.NullDataListID, d.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName };
 
             // now process headers ;)
             if(headers != null)
@@ -259,10 +242,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static string GetPostData(ICommunicationContext ctx, string postDataListID)
         {
-            var formData = new UnlimitedObject();
-
-            var isXmlData = false;
-
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
             if(baseStr != null)
             {
@@ -272,133 +251,58 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var payload = baseStr.Substring((startIdx + 1));
                     if(payload.IsXml())
                     {
-                        formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(payload);
-                        isXmlData = true;
+                        return payload;
                     }
                 }
             }
 
-            if(!isXmlData)
+            // Not an XML payload, but it up as such ;)
+
+            IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
+            // Extract GET request keys ;)
+            foreach(var key in ctx.Request.QueryString.AllKeys)
             {
-                foreach(var key in ctx.Request.QueryString.AllKeys)
+                string error;
+                bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
+                if(!string.IsNullOrEmpty(error))
                 {
-                    formData.CreateElement(key).SetValue(ctx.Request.QueryString[key]);
+                    "AbstractWebRequestHandler".LogError(error);
                 }
 
-                if((!String.IsNullOrEmpty(ctx.Request.ContentType)) && ctx.Request.ContentType.ToUpper().Contains("MULTIPART"))
+                IBinaryDataListEntry entry;
+                if(bdl.TryGetEntry(key, out entry, out error))
                 {
-                    var parser = new MultipartDataParser(ctx.Request.InputStream, ctx.Request.ContentType, ctx.Request.ContentEncoding);
-                    var results = parser.ParseStream();
-
-                    results.ForEach(result =>
+                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(ctx.Request.QueryString[key], key);
+                    entry.TryPutScalar(item, out error);
+                    if(!string.IsNullOrEmpty(error))
                     {
-                        var textObj = result.FormValue as TextObj;
-                        if(textObj != null)
-                        {
-                            formData.CreateElement(result.FormKey).SetValue(textObj.ValueVar);
-                        }
-                        else
-                        {
-                            var fileObj = result.FormValue as FileObj;
-                            if(fileObj != null)
-                            {
-                                if(fileObj.ValueVar.LongLength > 0)
-                                {
-                                    formData.CreateElement(result.FormKey).SetValue(Convert.ToBase64String(fileObj.ValueVar));
-                                    formData.CreateElement(String.Format("{0}_filename", result.FormKey)).SetValue(fileObj.FileName);
-                                }
-                            }
-                        }
-                    });
+                        "AbstractWebRequestHandler".LogError(error);
+                    }
                 }
                 else
                 {
-                    string data;
-                    if(postDataListID != null && new Guid(postDataListID) != Guid.Empty)
-                    {
-                        //TrevorCake
-                        var dlid = new Guid(postDataListID);
-                        ErrorResultTO errors;
-                        string error;
-                        var datalListServer = DataListFactory.CreateDataListServer();
-                        var dataList = datalListServer.ReadDatalist(dlid, out errors);
-                        datalListServer.DeleteDataList(dlid, false);
-                        IBinaryDataListEntry dataListEntry;
-                        dataList.TryGetEntry(GlobalConstants.PostData, out dataListEntry, out error);
-                        data = dataListEntry.FetchScalar().TheValue;
-                    }
-                    else
-                    {
-                        using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
-                        {
-                            try
-                            {
-                                data = reader.ReadToEnd();
-                            }
-                            catch(Exception ex)
-                            {
-                                ServerLogger.LogError("AbstractWebRequestHandler", ex);
-                                data = "";
-                            }
-                        }
-                    }
-
-                    try
-                    {
-                        if(DataListUtil.IsXml(data))
-                        {
-                            formData.Add(new UnlimitedObject(XElement.Parse(data)));
-                        }
-                        else if(data.StartsWith("{") && data.EndsWith("}")) // very simple JSON check!!!
-                        {
-                            formData.CreateElement("Args").SetValue(data);
-                        }
-                        else
-                        {
-                            var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                            foreach(var keyValuePair in keyValuePairs)
-                            {
-                                var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                                if(keyValue.Length > 1)
-                                {
-                                    if(keyValue[1].StartsWith("{") && keyValue[keyValue.Length - 1].EndsWith("}"))
-                                    {
-                                        var parameterName = keyValue[0];
-                                        var jsonData = keyValue.ToList();
-                                        jsonData.Remove(parameterName);
-                                        formData.CreateElement(parameterName).SetValue(String.Join("=", jsonData));
-                                        continue;
-                                    }
-                                    var formFieldValue = HttpUtility.UrlDecode(keyValue[1]);
-                                    try
-                                    {
-                                        // ReSharper disable AssignNullToNotNullAttribute
-                                        formFieldValue = XElement.Parse(formFieldValue).ToString();
-                                        // ReSharper restore AssignNullToNotNullAttribute
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
-                                    }
-                                    formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
-                                }
-                            }
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
-                    }
+                    "AbstractWebRequestHandler".LogError(error);
                 }
             }
 
-            // Still need to remvove the rubish from the string
-            var tmpOut = formData.XmlString.Replace("<XmlData>", GlobalConstants.PostDataStart).Replace("</XmlData>", GlobalConstants.PostDataEnd).Replace("<XmlData />", "");
-            // Replace the DataList tag for test... still a hack
-            tmpOut = tmpOut.Replace("<DataList>", String.Empty).Replace("</DataList>", String.Empty);
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid pushedID = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
 
-            return tmpOut;
+            if(pushedID != Guid.Empty)
+            {
+                var result = compiler.ConvertFrom(pushedID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                if(errors.HasErrors())
+                {
+                    "AbstractWebRequestHandler".LogError(errors.MakeDisplayReady());
+                }
+
+                return result;
+            }
+
+            "AbstractWebRequestHandler".LogError(errors.MakeDisplayReady());
+
+            return string.Empty;
         }
 
         static string CleanupHtml(string result)

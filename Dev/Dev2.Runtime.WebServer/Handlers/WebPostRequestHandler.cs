@@ -1,6 +1,6 @@
 ﻿using System;
 using Dev2.Runtime.WebServer.Responses;
-using Unlimited.Framework;
+using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -14,28 +14,21 @@ namespace Dev2.Runtime.WebServer.Handlers
             var postDataListID = GetDataListID(ctx);
             var workspaceID = GetWorkspaceID(ctx);
 
-            UnlimitedObject formData = null;
-
-            dynamic d = new UnlimitedObject();
-
+            var requestTO = new WebRequestTO();
             var xml = GetPostData(ctx, postDataListID);
 
             if(!String.IsNullOrEmpty(xml))
             {
-                formData = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xml);
+                requestTO.RawRequestPayload = xml;
             }
 
-            d.Service = serviceName;
-            d.InstanceId = instanceId;
-            d.Bookmark = bookmark;
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-            if(formData != null)
-            {
-                d.AddResponse(formData);
-            }
+            requestTO.ServiceName = serviceName;
+            requestTO.InstanceID = instanceId;
+            requestTO.Bookmark = bookmark;
+            requestTO.WebServerUrl = ctx.Request.Uri.ToString();
+            requestTO.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-            IResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
+            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
             ctx.Send(responseWriter);
         }
 

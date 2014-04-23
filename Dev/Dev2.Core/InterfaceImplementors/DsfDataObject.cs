@@ -1,16 +1,16 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Activities.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Security.Principal;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
-using System;
-using System.Activities.Persistence;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Security.Principal;
-using System.Xml.Linq;
-using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
@@ -35,55 +35,74 @@ namespace Dev2.DynamicServices
 
         private DsfDataObject() { }
 
+        private string ExtractValue(XElement xe, string elementName)
+        {
+            var tmp = xe.Descendants(elementName);
+            var targetElement = tmp.FirstOrDefault();
+
+            return targetElement != null ? targetElement.Value : string.Empty;
+        }
+
         public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
         {
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
-            if(!string.IsNullOrEmpty(xmldata))
+            if(xmldata != null)
             {
-                dynamic dataObject = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmldata);
+                XElement xe = null;
+                try
+                {
+                    xe = XElement.Parse(xmldata);
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // we only trying to parse ;)
+                }
 
-                if(!dataObject.HasError)
+                if(xe != null)
                 {
                     bool isDebug;
-                    var debugString = dataObject.GetValue("IsDebug") as string;
+                    var debugString = ExtractValue(xe, "IsDebug");
                     if(!string.IsNullOrEmpty(debugString))
                     {
                         bool.TryParse(debugString, out isDebug);
                     }
                     else
                     {
-                        bool.TryParse(dataObject.GetValue("BDSDebugMode"), out isDebug);
+                        debugString = ExtractValue(xe, "BDSDebugMode");
+                        bool.TryParse(debugString, out isDebug);
                     }
                     IsDebug = isDebug;
 
                     Guid debugSessionID;
-                    Guid.TryParse(dataObject.GetValue("DebugSessionID"), out debugSessionID);
+                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out debugSessionID);
                     DebugSessionID = debugSessionID;
 
                     Guid environmentID;
-                    if(Guid.TryParse(dataObject.GetValue("EnvironmentID"), out environmentID))
+                    if(Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentID))
                     {
                         EnvironmentID = environmentID;
                     }
 
                     var isOnDemandSimulation = false;
-                    var onDemandSimulationString = dataObject.GetValue("IsOnDemandSimulation") as string;
+                    var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
                     if(!string.IsNullOrEmpty(onDemandSimulationString))
                     {
                         bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
                     }
                     IsOnDemandSimulation = isOnDemandSimulation;
 
-                    _parentServiceName = dataObject.GetValue("ParentServiceName");
-                    _parentWorkflowInstanceId = dataObject.GetValue("ParentWorkflowInstanceId");
+                    _parentServiceName = ExtractValue(xe, "ParentServiceName");
+                    _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
 
                     Guid executionCallbackID;
-                    Guid.TryParse(dataObject.GetValue("ExecutionCallbackID"), out executionCallbackID);
+                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out executionCallbackID);
                     ExecutionCallbackID = executionCallbackID;
 
                     Guid bookmarkExecutionCallbackID;
-                    Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
                     BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
 
                     if(BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
@@ -92,66 +111,63 @@ namespace Dev2.DynamicServices
                     }
 
                     Guid parentInstanceID;
-                    Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out parentInstanceID);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out parentInstanceID);
 
-                    ParentInstanceID = dataObject.GetValue("ParentInstanceID");
+                    ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 
                     int numberOfSteps;
-                    Int32.TryParse(dataObject.GetValue("NumberOfSteps"), out numberOfSteps);
+                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
-                    if(dataObject.Bookmark is string)
-                    {
-                        Bookmark = dataObject.Bookmark;
-                    }
-                    if(dataObject.InstanceId is string)
-                    {
+                    Bookmark = ExtractValue(xe, "Bookmark");
 
-                        Guid instID;
+                    Guid instID;
 
-                        if(Guid.TryParse(dataObject.InstanceId, out instID))
-                        {
-                            InstanceID = instID;
-                        }
+                    if(Guid.TryParse(ExtractValue(xe, "InstanceId"), out instID))
+                    {
+                        InstanceID = instID;
                     }
+
 
                     //
                     // Extract merge data form request
                     //
-                    ExtractInMergeDataFromRequest(dataObject);
-                    ExtractOutMergeDataFromRequest(dataObject);
+                    ExtractInMergeDataFromRequest(xe);
+                    ExtractOutMergeDataFromRequest(xe);
 
                     // set the ID ;)
                     DataListID = dataListID;
 
                     // set the IsDataListScoped flag ;)
                     bool isScoped;
-                    bool.TryParse(dataObject.GetValue("IsDataListScoped"), out isScoped);
+                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out isScoped);
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
-                    if(dataObject.Service is string)
-                    {
-                        ServiceName = dataObject.Service;
-                    }
+                    ServiceName = ExtractValue(xe, "Service");
+
                     // finally set raw payload
                     RawPayload = xmldata;
                 }
-                else
-                {
-                    var error = dataObject.GetValue("Error") as string;
-                    Errors.AddError(error);
-                }
 
-                if(!IsDebug && !string.IsNullOrEmpty(rawPayload))
-                {
-                    RawPayload = rawPayload;
-                }
             }
             else
             {
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                if(xmldata == null)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                {
+                    xmldata = "NULL";
+                }
+
+                Errors.AddError("Failed to parse XML INPUT [ " + xmldata + " ]");
+            }
+
+            if(!IsDebug && !string.IsNullOrEmpty(rawPayload))
+            {
                 RawPayload = rawPayload;
             }
+
         }
 
         #endregion Constructor
@@ -362,8 +378,10 @@ namespace Dev2.DynamicServices
             writeOnlyValues = null;
         }
 
+
+
         /// <summary>
-        /// The host invokes this method and passes all the loaded values in the <see cref="P:System.Activities.Persistence.SaveWorkflowCommand.InstanceData" /> collection (filled by the <see cref="T:System.Activities.Persistence.LoadWorkflowCommand" /> or <see cref="T:System.Activities.Persistence.LoadWorkflowByInstanceKeyCommand" />) as a dictionary parameter.
+        /// The host invokes this method and passes all the loaded values in the collection (filled by the or ) as a dictionary parameter.
         /// </summary>
         /// <param name="readWriteValues">The read-write values that were loaded from the persistence store. This dictionary corresponds to the dictionary of read-write values persisted in the most recent persistence episode.</param>
         protected override void PublishValues(IDictionary<XName, object> readWriteValues)
@@ -383,14 +401,14 @@ namespace Dev2.DynamicServices
 
         #region Private Methods
 
-        private void ExtractOutMergeDataFromRequest(dynamic dataObject)
+        private void ExtractOutMergeDataFromRequest(XElement xe)
         {
             Guid datalistOutMergeID;
-            Guid.TryParse(dataObject.GetValue("DatalistOutMergeID"), out datalistOutMergeID);
+            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out datalistOutMergeID);
             DatalistOutMergeID = datalistOutMergeID;
 
             enDataListMergeTypes datalistOutMergeType;
-            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistOutMergeType"), true, out datalistOutMergeType))
+            if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }
@@ -400,7 +418,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistOutMergeDepth;
-            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
+            if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
             {
                 DatalistOutMergeDepth = datalistOutMergeDepth;
             }
@@ -410,7 +428,7 @@ namespace Dev2.DynamicServices
             }
 
             DataListMergeFrequency datalistOutMergeFrequency;
-            if(Enum.TryParse<DataListMergeFrequency>(dataObject.GetValue("DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
+            if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
             {
                 DatalistOutMergeFrequency = datalistOutMergeFrequency;
             }
@@ -420,14 +438,14 @@ namespace Dev2.DynamicServices
             }
         }
 
-        private void ExtractInMergeDataFromRequest(dynamic dataObject)
+        private void ExtractInMergeDataFromRequest(XElement xe)
         {
             Guid datalistInMergeID;
-            Guid.TryParse(dataObject.GetValue("DatalistInMergeID"), out datalistInMergeID);
+            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out datalistInMergeID);
             DatalistInMergeID = datalistInMergeID;
 
             enDataListMergeTypes datalistInMergeType;
-            if(Enum.TryParse<enDataListMergeTypes>(dataObject.GetValue("DatalistInMergeType"), true, out datalistInMergeType))
+            if(Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType))
             {
                 DatalistInMergeType = datalistInMergeType;
             }
@@ -437,7 +455,7 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistInMergeDepth;
-            if(Enum.TryParse<enTranslationDepth>(dataObject.GetValue("DatalistInMergeDepth"), true, out datalistInMergeDepth))
+            if(Enum.TryParse(ExtractValue(xe, "DatalistInMergeDepth"), true, out datalistInMergeDepth))
             {
                 DatalistInMergeDepth = datalistInMergeDepth;
             }

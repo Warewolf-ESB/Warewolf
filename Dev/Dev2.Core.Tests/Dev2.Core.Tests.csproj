@@ -242,7 +242,6 @@
     <Compile Include="RecordsetSearch\RsOpTests.cs" />
     <Compile Include="Repository\SimulationRespositoryTest.cs" />
     <Compile Include="TokenizerTest.cs" />
-    <Compile Include="UnlimitedObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ParserStrings.resx">

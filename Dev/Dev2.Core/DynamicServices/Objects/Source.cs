@@ -10,7 +10,6 @@
 using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Unlimited.Framework;
 
 namespace Dev2.DynamicServices
 {
@@ -109,7 +108,7 @@ namespace Dev2.DynamicServices
                             }
                             catch(Exception ex)
                             {
-                                string data = string.Format("<{0}>{1}\r\nDetail:\r\n{2}</{0}>", "CompilerError", "Unable to generate Web Service Proxy", new UnlimitedObject(ex).XmlString);
+                                string data = string.Format("<{0}>{1}\r\nDetail:\r\n{2}</{0}>", "CompilerError", "Unable to generate Web Service Proxy", ex.Message);
                                 WriteCompileError(data);
                             }
                         }

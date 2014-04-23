@@ -16,7 +16,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
@@ -199,10 +198,23 @@ namespace Dev2.Core.Tests
             _resourceModel.DataList = newDataList;
 
             string result = _resourceModel.DataList;
-            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml.ToString()).GetValue("DataList"), result);
+
+            var xe = _resourceModel.WorkflowXaml.ToXElement();
+            var dlElms = xe.Elements("DataList");
+
+            // new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml.ToString()).GetValue("DataList")
+            var firstOrDefault = dlElms.FirstOrDefault();
+            if(firstOrDefault != null)
+            {
+                var wfResult = firstOrDefault.ToString(SaveOptions.None);
+                StringAssert.Contains(result, wfResult);
+            }
+            else
+            {
+                Assert.Fail();
+            }
 
         }
-
 
         [TestMethod]
         public void ResourceModel_Constructor_IsWorkflowSaved()
@@ -969,7 +981,7 @@ namespace Dev2.Core.Tests
             var memoServerID = Guid.NewGuid();
 
             var pubMemo = new PermissionsModifiedMemo();
-            
+
             pubMemo.ServerID = memoServerID;
             pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.Execute });
             pubMemo.ModifiedPermissions.Add(new WindowsGroupPermission { ResourceID = resourceID, Permissions = Permissions.DeployTo });

@@ -160,6 +160,7 @@
     <Compile Include="Security\AuthorizeHubAttribute.cs" />
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
     <Compile Include="Security\QueryString.cs" />
+    <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebServerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />
     <Compile Include="Responses\Streams\HttpFileStream.cs" />

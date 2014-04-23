@@ -1,6 +1,6 @@
 ﻿using System;
 using Dev2.Runtime.WebServer.Responses;
-using Unlimited.Framework;
+using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
@@ -18,21 +18,15 @@ namespace Dev2.Runtime.WebServer.Handlers
             var serviceName = GetServiceName(ctx);
             var workspaceID = GetWorkspaceID(ctx);
 
-            dynamic d = new UnlimitedObject();
-            d.Service = serviceName;
-
-            d.WebServerUrl = ctx.Request.Uri.ToString();
-            d.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
-
+            var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority) };
             var data = GetPostData(ctx, Guid.Empty.ToString());
 
             if(!String.IsNullOrEmpty(data))
             {
-                d.PostData = data;
-                d.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(data));
+                requestTO.RawRequestPayload = data;
             }
 
-            IResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
             ctx.Send(responseWriter);
         }
 

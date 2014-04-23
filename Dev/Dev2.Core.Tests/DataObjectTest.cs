@@ -1,12 +1,12 @@
-﻿using Dev2.Data.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests
@@ -137,6 +137,8 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebugNested, clonedObject.IsDebugNested);
         }
 
+        #region Debug Mode Test
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DataObject_IsDebugMode")]
@@ -196,5 +198,262 @@ namespace Dev2.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(isDebug);
         }
+
+        #endregion
+
+        #region Constructor Test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataObject_Ctor")]
+        public void DataObject_Ctor_WhenXmlStringContainsAllButDataMergePropertiesSet_ExpectParseAndSet()
+        {
+            //------------Setup for test--------------------------
+            var debugID = Guid.NewGuid();
+            var envID = Guid.NewGuid();
+            var exeID = Guid.NewGuid();
+            var bookmarkID = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var instID = Guid.NewGuid();
+
+            var xmlStr = "<Payload>" +
+                         "<IsDebug>true</IsDebug>" +
+                         "<DebugSessionID>" + debugID + "</DebugSessionID>" +
+                         "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
+                         "<ParentServiceName>TestParentService</ParentServiceName>" +
+                         "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
+                         "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
+                         "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
+                         "<NumberOfSteps>5</NumberOfSteps>" +
+                         "<Bookmark>MyBookmark</Bookmark>" +
+                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<IsDataListScoped>true</IsDataListScoped>" +
+                         "<Service>MyTestService</Service>" +
+                         "</Payload>";
+
+
+            //------------Execute Test---------------------------
+            var dataObjct = new DsfDataObject(xmlStr, Guid.NewGuid(), "<x>1</x>");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataObjct.IsDebug);
+            StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
+            StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            Assert.IsTrue(dataObjct.IsOnDemandSimulation);
+            StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
+            StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
+            StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
+            StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
+            Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
+            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
+            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            Assert.IsTrue(dataObjct.IsDataListScoped);
+            StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
+            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+
+            // Default Data Merge Checks
+            StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
+
+            StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataObject_Ctor")]
+        public void DataObject_Ctor_WhenXmlStringgDoesNotHaveIsDebugModeSetButHasBDSDebugModeSet_ExpectParseAndSetAndIsDebugStillTrue()
+        {
+            //------------Setup for test--------------------------
+            var debugID = Guid.NewGuid();
+            var envID = Guid.NewGuid();
+            var exeID = Guid.NewGuid();
+            var bookmarkID = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var instID = Guid.NewGuid();
+
+            var xmlStr = "<Payload>" +
+                         "<BDSDebugMode>true</BDSDebugMode>" +
+                         "<DebugSessionID>" + debugID + "</DebugSessionID>" +
+                         "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
+                         "<ParentServiceName>TestParentService</ParentServiceName>" +
+                         "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
+                         "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
+                         "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
+                         "<NumberOfSteps>5</NumberOfSteps>" +
+                         "<Bookmark>MyBookmark</Bookmark>" +
+                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<IsDataListScoped>true</IsDataListScoped>" +
+                         "<Service>MyTestService</Service>" +
+                         "</Payload>";
+
+
+            //------------Execute Test---------------------------
+            var dataObjct = new DsfDataObject(xmlStr, Guid.NewGuid(), "<x>1</x>");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataObjct.IsDebug);
+            StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
+            StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            Assert.IsTrue(dataObjct.IsOnDemandSimulation);
+            StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
+            StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
+            StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
+            StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
+            Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
+            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
+            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            Assert.IsTrue(dataObjct.IsDataListScoped);
+            StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
+            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+
+            // Default Data Merge Checks
+            StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
+
+            StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataObject_Ctor")]
+        public void DataObject_Ctor_WhenXmlStringDoesNotHaveBookmarkExecutionCallbackIDSet_ExpectParseAndSet()
+        {
+            //------------Setup for test--------------------------
+            var debugID = Guid.NewGuid();
+            var envID = Guid.NewGuid();
+            var exeID = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var instID = Guid.NewGuid();
+
+            var xmlStr = "<Payload>" +
+                         "<IsDebug>true</IsDebug>" +
+                         "<DebugSessionID>" + debugID + "</DebugSessionID>" +
+                         "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
+                         "<ParentServiceName>TestParentService</ParentServiceName>" +
+                         "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
+                         "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
+                         "<NumberOfSteps>5</NumberOfSteps>" +
+                         "<Bookmark>MyBookmark</Bookmark>" +
+                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<IsDataListScoped>true</IsDataListScoped>" +
+                         "<Service>MyTestService</Service>" +
+                         "</Payload>";
+
+
+            //------------Execute Test---------------------------
+            var dataObjct = new DsfDataObject(xmlStr, Guid.NewGuid(), "<x>1</x>");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataObjct.IsDebug);
+            StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
+            StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            Assert.IsTrue(dataObjct.IsOnDemandSimulation);
+            StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
+            StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
+            StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), exeID.ToString());
+            StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
+            Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
+            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
+            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            Assert.IsTrue(dataObjct.IsDataListScoped);
+            StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
+            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+
+            // Default Data Merge Checks
+            StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
+
+            StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataObject_Ctor")]
+        public void DataObject_Ctor_WhenXmlStringContainsAllIncludingDataMergePropertiesSet_ExpectParseAndSet()
+        {
+            //------------Setup for test--------------------------
+            var debugID = Guid.NewGuid();
+            var envID = Guid.NewGuid();
+            var exeID = Guid.NewGuid();
+            var bookmarkID = Guid.NewGuid();
+            var parentID = Guid.NewGuid();
+            var instID = Guid.NewGuid();
+            var mergeIDOut = Guid.NewGuid();
+            var mergeIDIn = Guid.NewGuid();
+
+            var xmlStr = "<Payload>" +
+                         "<IsDebug>true</IsDebug>" +
+                         "<DebugSessionID>" + debugID + "</DebugSessionID>" +
+                         "<EnvironmentID>" + envID + "</EnvironmentID>" +
+                         "<IsOnDemandSimulation>true</IsOnDemandSimulation>" +
+                         "<ParentServiceName>TestParentService</ParentServiceName>" +
+                         "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
+                         "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
+                         "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
+                         "<NumberOfSteps>5</NumberOfSteps>" +
+                         "<Bookmark>MyBookmark</Bookmark>" +
+                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<IsDataListScoped>true</IsDataListScoped>" +
+                         "<Service>MyTestService</Service>" +
+                         "<DatalistOutMergeID>" + mergeIDOut + "</DatalistOutMergeID>" +
+                         "<DatalistOutMergeType>Union</DatalistOutMergeType>" +
+                         "<DatalistOutMergeDepth>Data</DatalistOutMergeDepth>" +
+                         "<DatalistOutMergeFrequency>Never</DatalistOutMergeFrequency>" +
+                         "<DatalistInMergeID>" + mergeIDIn + "</DatalistInMergeID>" +
+                         "<DatalistInMergeType>Union</DatalistInMergeType>" +
+                         "<DatalistInMergeDepth>Data</DatalistInMergeDepth>" +
+                         "</Payload>";
+
+
+            //------------Execute Test---------------------------
+            var dataObjct = new DsfDataObject(xmlStr, Guid.NewGuid(), "<x>1</x>");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataObjct.IsDebug);
+            StringAssert.Contains(dataObjct.DebugSessionID.ToString(), debugID.ToString());
+            StringAssert.Contains(dataObjct.EnvironmentID.ToString(), envID.ToString());
+            Assert.IsTrue(dataObjct.IsOnDemandSimulation);
+            StringAssert.Contains(dataObjct.ParentServiceName, "TestParentService");
+            StringAssert.Contains(dataObjct.ExecutionCallbackID.ToString(), exeID.ToString());
+            StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
+            StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
+            Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
+            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
+            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            Assert.IsTrue(dataObjct.IsDataListScoped);
+            StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
+            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+
+            // Data Merge Checks
+            StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), mergeIDOut.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Union.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.Never.ToString());
+
+            StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), mergeIDIn.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Union.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data.ToString());
+
+        }
+
+        #endregion
     }
 }

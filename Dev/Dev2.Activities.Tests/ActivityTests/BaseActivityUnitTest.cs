@@ -20,7 +20,6 @@ using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests
@@ -88,7 +87,7 @@ namespace ActivityUnitTests
                          new Variable<bool>{Name = "HasError"},
                          new Variable<string>{Name = "ExplicitDataList"},
                          new Variable<bool>{Name = "IsValid"},
-                         new Variable<UnlimitedObject>{Name = "d"},
+                         //new Variable<UnlimitedObject>{Name = "d"},
                          new Variable<Util>{ Name = "t"},
                          new Variable<Dev2DataListDecisionHandler>{Name = "Dev2DecisionHandler"}
 

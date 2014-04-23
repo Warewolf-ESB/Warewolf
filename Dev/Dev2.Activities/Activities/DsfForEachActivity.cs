@@ -1,4 +1,8 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
@@ -8,13 +12,8 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
-using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -115,8 +114,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // REMOVE : Travis.Frisinger - 28.11.2012 : The two variables below are no longer required
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        private Variable<IEnumerator<UnlimitedObject>> _dataTags = new Variable<IEnumerator<UnlimitedObject>>("dataTags");
-        private Variable<UnlimitedObject> _inputData = new Variable<UnlimitedObject>("inputData");
+        //private Variable<IEnumerator<UnlimitedObject>> _dataTags = new Variable<IEnumerator<UnlimitedObject>>("dataTags");
+        //private Variable<UnlimitedObject> _inputData = new Variable<UnlimitedObject>("inputData");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 #pragma warning disable 169
         private List<bool> _results = new List<bool>();
@@ -158,8 +157,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(DataFunc);
-            metadata.AddImplementationVariable(_dataTags);
-            metadata.AddImplementationVariable(_inputData);
+            //metadata.AddImplementationVariable(_dataTags);
+            //metadata.AddImplementationVariable(_inputData);
             metadata.AddImplementationVariable(_origInput);
             metadata.AddImplementationVariable(_origOutput);
 

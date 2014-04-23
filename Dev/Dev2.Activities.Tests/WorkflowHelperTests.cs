@@ -33,7 +33,6 @@ namespace Dev2.Tests.Activities
             "Dev2.Data.SystemTemplates.Models",
             "Dev2.DataList.Contract",
             "Dev2.DataList.Contract.Binary_Objects",
-            "Unlimited.Framework",
             "Unlimited.Applications.BusinessDesignStudio.Activities"
         };
 
@@ -41,7 +40,6 @@ namespace Dev2.Tests.Activities
         {
             "Dev2.Common",
             "Dev2.Data",
-            "Dev2.Core",
             "Dev2.Activities"
         };
 

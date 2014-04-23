@@ -7,7 +7,6 @@ using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Framework;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 {
@@ -59,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             conn.Connect();
             if(conn.IsConnected)
             {
-                
+
                 var returnData = conn.ExecuteCommand(request, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
@@ -99,11 +98,8 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
         private StringBuilder CreateDataObject(string serviceName, string resourceName = null, string xmlFileLocation = null)
         {
+            var request = new EsbExecuteRequest { ServiceName = serviceName };
 
-            var request = new EsbExecuteRequest {ServiceName = serviceName};
-
-            dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = serviceName;
             if(serviceName == "FindResourceService" || serviceName == "GetResourceService")
             {
                 request.AddArgument("ResourceName", new StringBuilder(resourceName));
@@ -111,7 +107,10 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             }
             else if(serviceName == "AddResourceService")
             {
-                request.AddArgument("ResourceXml", new StringBuilder(XmlTextReader.Create(xmlFileLocation).ReadContentAsString()));
+                if(xmlFileLocation != null)
+                {
+                    request.AddArgument("ResourceXml", new StringBuilder(XmlReader.Create(xmlFileLocation).ReadContentAsString()));
+                }
             }
 
             var serializer = new Dev2JsonSerializer();

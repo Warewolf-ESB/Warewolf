@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Xml;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -22,7 +20,6 @@ using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Unlimited.Framework;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -207,22 +204,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void DoErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject)
         {
-                        string errorString = compiler.FetchErrors(dataObject.DataListID, true);
-                        string currentError = compiler.FetchErrors(dataObject.DataListID);
-                        ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                        _tmpErrors.MergeErrors(_tmpErrorsAfter);
-                        if(_tmpErrors.HasErrors())
-                        {
-                            if(!(this is DsfFlowDecisionActivity))
-                            {
-                                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
-                                if(!String.IsNullOrEmpty(currentError))
-                                {
-                                    PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
-                                }
-                            }
-                        }
+            string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+            string currentError = compiler.FetchErrors(dataObject.DataListID);
+            ErrorResultTO _tmpErrorsAfter = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+            _tmpErrors.MergeErrors(_tmpErrorsAfter);
+            if(_tmpErrors.HasErrors())
+            {
+                if(!(this is DsfFlowDecisionActivity))
+                {
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
+                    if(!String.IsNullOrEmpty(currentError))
+                    {
+                        PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
                     }
+                }
+            }
+        }
 
         void PerformCustomErrorHandling(NativeActivityContext context, IDataListCompiler compiler, IDSFDataObject dataObject, string currentError, ErrorResultTO tmpErrors)
         {
@@ -537,8 +534,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                        Copy(GetDebugOutputs(dataList), _debugState.Outputs);
-                    }
+                            Copy(GetDebugOutputs(dataList), _debugState.Outputs);
+                        }
                     }
                     catch(Exception e)
                     {
@@ -548,7 +545,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
 
-            if (_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity")  && remoteID == Guid.Empty))
+            if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
             {
                 _debugState.StateType = StateType.All;
 
@@ -645,8 +642,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Static Helper methods
-
         #region DisplayAndWriteError
 
         protected static void DisplayAndWriteError(string serviceName, ErrorResultTO errors)
@@ -658,31 +653,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             ServerLogger.LogError("DsfNativeActivity", new Exception(errorBuilder.ToString()));
         }
-
-        protected static string DisplayAndWriteError(string serviceName, Exception ex, string dataList)
-        {
-            var resultObj = new UnlimitedObject();
-
-            try
-            {
-                resultObj.Add(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(dataList));
-                var tmp = DataListUtil.CDATAWrapText(ex.Message);
-                resultObj.GetElement("Error").SetValue(tmp);
-            }
-            catch(XmlException)
-            {
-                resultObj.GetElement("ADL").SetValue(@"<![CDATA[" + dataList + "]]>");
-                resultObj.GetElement("Error").SetValue(@"<![CDATA[" + ex.Message + "]]>");
-            }
-
-            ServerLogger.LogError("DsfNativeActivity", new Exception(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} " + "\r\nStack Trace = {2}\r\nDataList = {3}\r\n--[ End Execution Exception ]--", serviceName, ex.Message, ex.StackTrace, dataList)));
-
-            var result = resultObj.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
-
-            return result;
-        }
-
-        #endregion
 
         #endregion
 
@@ -755,7 +725,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {
-            var debugItemResults = parameters.GetDebugItemResult(); 
+            var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
 

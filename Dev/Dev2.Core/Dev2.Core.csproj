@@ -307,7 +307,6 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\UnlimitedObject.cs" />
     <Compile Include="FrameworkResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
