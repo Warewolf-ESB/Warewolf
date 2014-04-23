@@ -10,7 +10,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         #region ToRecordsetList
 
-        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList = null)
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList = null, string defaultFieldName = "")
         {
             if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {
@@ -38,13 +38,19 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var rsName = names.Item1;
                 var rsAlias = rsName;
                 var fieldName = names.Item2;
-                if(String.IsNullOrEmpty(fieldName))
+                if(string.IsNullOrEmpty(fieldName) && string.IsNullOrEmpty(defaultFieldName))
                 {
                     continue;
                 }
+
+                if(string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(defaultFieldName))
+                {
+                    fieldName = defaultFieldName;
+                }
+
                 // Bug 10532 - Amend to remove : from the alias ;)
-                var fieldAlias = fieldName.Replace(":","");
-                
+                var fieldAlias = fieldName.Replace(":", "");
+
                 var pathLoop = path;
                 var rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ?? new RecordsetField { Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias };
                 rsField.Name = fieldName;

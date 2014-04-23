@@ -73,7 +73,8 @@
                         <table class="data-table_plugin" data-bind="visible: !$root.hasTestErrors() && $root.hasTestResults() && $root.hasTestResultRecords() && !$root.isTestResultsLoading()">
                             <thead>
                                 <tr>
-                                    <th>Record Name</th>
+                                    <th data-bind="visible: Name != ''">Record Name</th>
+                                    <th data-bind="visible: Name == ''"></th>
                                     <!-- ko foreach: Fields -->
                                     <th data-bind="text: Alias"></th>
                                     <!-- /ko -->

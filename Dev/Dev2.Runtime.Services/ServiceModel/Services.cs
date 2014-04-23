@@ -213,7 +213,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            return outputDescription.ToRecordsetList(pluginService.Recordsets);
+            return outputDescription.ToRecordsetList(pluginService.Recordsets, "PrimitiveReturnValue");
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
