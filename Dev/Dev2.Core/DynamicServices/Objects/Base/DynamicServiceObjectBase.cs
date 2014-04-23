@@ -160,9 +160,6 @@ namespace Dev2.DynamicServices.Objects.Base
                 {
                     string errorData = string.Format("<CompilerError>{0}</CompilerError>", c);
                     result.Append(errorData);
-                    //dynamic error = new UnlimitedObject();
-                    //error.Load(errorData);
-                    //returnData.AddResponse(error);
                 });
             }
             else

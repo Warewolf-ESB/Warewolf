@@ -67,7 +67,9 @@ namespace Dev2.DynamicServices
             {
                 throw new NotImplementedException();
             }
+            // ReSharper disable ValueParameterNotUsed
             set
+            // ReSharper restore ValueParameterNotUsed
             {
             }
         }
@@ -94,15 +96,15 @@ namespace Dev2.DynamicServices
         {
             base.Compile();
 
-            if(this.Actions.Count == 0)
+            if(Actions.Count == 0)
             {
                 WriteCompileError(Resources.CompilerError_ServiceHasNoActions);
             }
 
-            this.Actions.ForEach(c =>
+            Actions.ForEach(c =>
             {
                 c.Compile();
-                c.CompilerErrors.ToList().ForEach(d => this.CompilerErrors.Add(d));
+                c.CompilerErrors.ToList().ForEach(d => CompilerErrors.Add(d));
             });
 
 

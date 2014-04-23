@@ -212,6 +212,7 @@
     <Compile Include="DataObjectTest.cs" />
     <Compile Include="TypeExtentionTest.cs" />
     <Compile Include="DeleteHelperTest.cs" />
+    <Compile Include="Utils\Dev2XamlCleanerTest.cs" />
     <Compile Include="Utils\JSONUtilsTests.cs" />
     <Compile Include="Weave\MockByteReaderWriter.cs" />
     <Compile Include="ExecutionStatusCallbackDispatcherTests.cs" />

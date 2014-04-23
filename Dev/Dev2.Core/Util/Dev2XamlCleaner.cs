@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Dev2.Util
 {
@@ -9,6 +10,7 @@ namespace Dev2.Util
     {
 
         public static readonly string[] badNamespaces = {
+                                                            /*
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Dev2.Studio.Core""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.AddIn""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Unlimited.Applications.BusinessDesignStudio""",
@@ -16,7 +18,9 @@ namespace Dev2.Util
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Warewolf Studio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Warewolf Studio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.ComponentModel.Composition""",
-                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities"""
+                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities""",
+                                                            */
+                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:clr-namespace:Unlimited.Framework;assembly=Dev2.Core"""
         };
 
         const string replacePrefix = "assembly=";
@@ -35,9 +39,7 @@ namespace Dev2.Util
         /// <returns></returns>
         public StringBuilder CleanServiceDef(StringBuilder def)
         {
-            //var result = StripNaughtyNamespaces(def);
-
-            var result = def;
+            var result = StripNaughtyNamespaces(def);
 
             result = ReplaceChangedNamespaces(result);
 
@@ -56,6 +58,33 @@ namespace Dev2.Util
             for(int i = 0; i < (replaceNamespaces.Length / 2); i++)
             {
                 result = result.Replace((replacePrefix + replaceNamespaces[i, 0]), (replacePrefix + replaceNamespaces[i, 1]));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Strips the naughty namespaces.
+        /// </summary>
+        /// <param name="def">The def.</param>
+        /// <returns></returns>
+        public StringBuilder StripNaughtyNamespaces(StringBuilder def)
+        {
+            StringBuilder result = def;
+            foreach(string ns in badNamespaces)
+            {
+                // Have to make it a string for Regex ;(
+                Match m = Regex.Match(def.ToString(), ns);
+                if(m.Success)
+                {
+                    // we have a hit ;)
+                    // search backward for the start xmlns: ...
+                    for(int i = 0; i < m.Groups.Count; i++)
+                    {
+                        string val = m.Groups[i].Value;
+                        result = def.Replace(val, string.Empty);
+                    }
+                }
             }
 
             return result;
