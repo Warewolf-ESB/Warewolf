@@ -96,6 +96,9 @@ namespace Dev2.Common
         public const char EvaluationToken = '[';
         public const string RowAnnotation = "index";
 
+        // Plugin Constants For Shape
+        public const string PrimitiveReturnValueTag = "PrimitiveReturnValue";
+
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultStorageSegments = 1;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Common;
+using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
 using Unlimited.Framework.Converters.Graph;
@@ -43,6 +44,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var formater = setupInfo.OutputFormatter;
             if(formater != null)
             {
+                // When it returns a string and it is not XML, make it so ;)
+                if((methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Char") && !DataListUtil.IsXml(pluginResult.ToString()))
+                {
+                    // add our special tags ;)
+                    pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+                }
+
                 return formater.Format(pluginResult).ToString();
             }
 
@@ -73,6 +81,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             if(pluginResult != null)
             {
+                // When it returns a string and it is not XML, make it so ;)
+                if((methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Char") && !DataListUtil.IsXml(pluginResult.ToString()))
+                {
+                    // add our special tags ;)
+                    pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+                }
+
                 var tmpData = dataBrowser.Map(pluginResult);
                 dataSourceShape.Paths.AddRange(tmpData);
             }
