@@ -20,7 +20,8 @@ namespace Dev2.Util
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.ComponentModel.Composition""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities""",
                                                             */
-                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:clr-namespace:Unlimited.Framework;assembly=Dev2.Core"""
+                                                            @"xmlns:[A-Za-z]+=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core""",
+                                                            @"<Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />"
         };
 
         const string replacePrefix = "assembly=";
@@ -74,7 +75,8 @@ namespace Dev2.Util
             foreach(string ns in badNamespaces)
             {
                 // Have to make it a string for Regex ;(
-                Match m = Regex.Match(def.ToString(), ns);
+                string defStr = def.ToString();
+                Match m = Regex.Match(defStr, ns);
                 if(m.Success)
                 {
                     // we have a hit ;)
@@ -82,7 +84,7 @@ namespace Dev2.Util
                     for(int i = 0; i < m.Groups.Count; i++)
                     {
                         string val = m.Groups[i].Value;
-                        result = def.Replace(val, string.Empty);
+                        result = result.Replace(val, string.Empty);
                     }
                 }
             }

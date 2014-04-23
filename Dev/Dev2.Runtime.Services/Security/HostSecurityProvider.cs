@@ -45,7 +45,8 @@ namespace Dev2.Runtime.Security
                     {
                         if (TheInstance == null)
                         {
-                            TheInstance = new HostSecurityProvider(new HostSecureConfig());
+                            var config = new HostSecureConfig();
+                            TheInstance = new HostSecurityProvider(config);
                         }
                     }
                 }

@@ -140,7 +140,7 @@ namespace Dev2.Data.Storage
         // internal location data ;)
         // ReSharper disable StaticFieldInGenericType
         private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string _savePath = @"Warewolf\DataListServerTmp\";
+        private const string _savePath = @"Warewolf\DataListTmp\";
         private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
 
         private static readonly object _dirLock = new object();
@@ -180,29 +180,28 @@ namespace Dev2.Data.Storage
                     {
                         Directory.CreateDirectory(DataListPersistPath);
                     }
-                    else
-                    {
-                        if(!startupCleaned)
-                        {
-                              foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
-                                {
-                                  try
-                                    {
 
-                                        f.Delete();
-                                    }
-                                  // ReSharper disable EmptyGeneralCatchClause
-                                    catch 
-                                  // ReSharper restore EmptyGeneralCatchClause
-                                    {
-                                      // Best effort ;)
-                                    }
-                                }
-                       
-                            startupCleaned = true;
+                    if(!startupCleaned)
+                    {
+                        foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
+                        {
+                            try
+                            {
+
+                                f.Delete();
+                            }
+                            // ReSharper disable EmptyGeneralCatchClause
+                            catch
+                            // ReSharper restore EmptyGeneralCatchClause
+                            {
+                                // Best effort ;)
+                            }
                         }
+
+                        startupCleaned = true;
                     }
                 }
+
 
                 _completeFilename = Path.Combine(DataListPersistPath, filename);
 

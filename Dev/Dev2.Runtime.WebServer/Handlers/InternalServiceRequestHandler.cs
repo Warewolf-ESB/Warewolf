@@ -49,6 +49,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 xmlData = request.Args["DebugPayload"].ToString();
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
+
+            // we need to adjust for the silly xml structure this system was init built on ;(
+            if(string.IsNullOrEmpty(xmlData))
+            {
+                xmlData = "<DataList></DataList>";
+            }
+
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             dataObject.ServiceName = request.ServiceName;
             dataObject.ClientID = Guid.Parse(connectionId);
