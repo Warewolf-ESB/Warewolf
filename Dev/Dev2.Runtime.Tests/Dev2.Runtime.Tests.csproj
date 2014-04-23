@@ -479,6 +479,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Json\cryptsy_all_markets.json" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9304_RemovedUnlimitedNamespace.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug9304.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract_Expected.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

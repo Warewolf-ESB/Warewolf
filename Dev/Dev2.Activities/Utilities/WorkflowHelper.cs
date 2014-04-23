@@ -254,7 +254,6 @@ namespace Dev2.Utilities
             variables.Add(new Variable<bool> { Name = "HasError" });
             variables.Add(new Variable<string> { Name = "ExplicitDataList" });
             variables.Add(new Variable<bool> { Name = "IsValid" });
-            //variables.Add(new Variable<UnlimitedObject> { Name = "d" });
             variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
             variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
         }
@@ -267,7 +266,6 @@ namespace Dev2.Utilities
         {
             var dev2ActivitiesAssembly = typeof(WorkflowHelper).Assembly;
             var dev2CommonAssembly = typeof(GlobalConstants).Assembly;
-            //var dev2CoreAssembly = typeof(UnlimitedObject).Assembly;
             var dev2DataAssembly = typeof(Dev2DataListDecisionHandler).Assembly;
 
             var namespaces = new Dictionary<string, Assembly>
@@ -277,7 +275,6 @@ namespace Dev2.Utilities
                 { "Dev2.Data.SystemTemplates.Models", dev2DataAssembly },
                 { "Dev2.DataList.Contract", dev2DataAssembly },
                 { "Dev2.DataList.Contract.Binary_Objects", dev2DataAssembly },
-                //{ "Unlimited.Framework", dev2CoreAssembly },
                 { "Unlimited.Applications.BusinessDesignStudio.Activities", dev2ActivitiesAssembly }
             };
 

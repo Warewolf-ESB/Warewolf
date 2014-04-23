@@ -21,7 +21,8 @@ namespace Dev2.Util
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities""",
                                                             */
                                                             @"xmlns:[A-Za-z]+=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core""",
-                                                            @"<Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />"
+                                                            @"<Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />",
+                                                            @"<AssemblyReference>Dev2.Core</AssemblyReference>"
         };
 
         const string replacePrefix = "assembly=";

@@ -621,7 +621,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     HelperUtils.ShowTrustRelationshipError(exception);
                 }
 
-                if(data.Errors != null)
+                if(data.Errors != null && data.Errors.Count > 0)
                 {
                     // set the errors ;)
                     foreach(var error in data.Errors)

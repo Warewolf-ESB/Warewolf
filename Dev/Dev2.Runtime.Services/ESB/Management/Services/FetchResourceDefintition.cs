@@ -7,6 +7,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Util;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -92,6 +93,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
             }
+
+            // Finally, clean the definition as per execution hydration rules ;)
+            Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+            res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
