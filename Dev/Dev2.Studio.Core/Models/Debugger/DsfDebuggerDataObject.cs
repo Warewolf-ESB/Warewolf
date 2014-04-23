@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core.Models
         public string ParentServiceName { get; set; }
         public string ParentWorkflowInstanceId { get; set; }
         public string ServiceName { get; set; }
-        public string WorkflowInstanceId { get; set; }
+        public Guid WorkflowInstanceId { get; set; }
         public string XmlData { get; set; }
         public string DataList { get; set; }
         public string ParentWorkflowXmlData { get; set; }

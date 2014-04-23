@@ -23,6 +23,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
+            Guid wfInstanceID = Guid.NewGuid();
 
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
@@ -64,7 +65,7 @@ namespace Dev2.Tests
             dataObject.ReturnType = EmitionTypes.XML;
             dataObject.ServerID = Guid.NewGuid();
             dataObject.ServiceName = "xxx";
-            dataObject.WorkflowInstanceId = "333";
+            dataObject.WorkflowInstanceId = wfInstanceID;
             dataObject.WorkflowResumeable = false;
             dataObject.ParentID = Guid.NewGuid();
             dataObject.WorkspaceID = Guid.NewGuid();
@@ -226,8 +227,8 @@ namespace Dev2.Tests
                          "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
                          "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
                          "<NumberOfSteps>5</NumberOfSteps>" +
-                         "<Bookmark>MyBookmark</Bookmark>" +
-                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<CurrentBookmarkName>MyBookmark</CurrentBookmarkName>" +
+                         "<WorkflowInstanceId>" + instID + "</WorkflowInstanceId>" +
                          "<IsDataListScoped>true</IsDataListScoped>" +
                          "<Service>MyTestService</Service>" +
                          "</Payload>";
@@ -246,8 +247,8 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
             StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
             Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
-            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
-            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            StringAssert.Contains(dataObjct.CurrentBookmarkName, "MyBookmark");
+            StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
             StringAssert.Contains(dataObjct.RawPayload, xmlStr);
@@ -287,8 +288,8 @@ namespace Dev2.Tests
                          "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
                          "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
                          "<NumberOfSteps>5</NumberOfSteps>" +
-                         "<Bookmark>MyBookmark</Bookmark>" +
-                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<CurrentBookmarkName>MyBookmark</CurrentBookmarkName>" +
+                         "<WorkflowInstanceId>" + instID + "</WorkflowInstanceId>" +
                          "<IsDataListScoped>true</IsDataListScoped>" +
                          "<Service>MyTestService</Service>" +
                          "</Payload>";
@@ -307,8 +308,8 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
             StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
             Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
-            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
-            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            StringAssert.Contains(dataObjct.CurrentBookmarkName, "MyBookmark");
+            StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
             StringAssert.Contains(dataObjct.RawPayload, xmlStr);
@@ -346,8 +347,8 @@ namespace Dev2.Tests
                          "<ExecutionCallbackID>" + exeID + "</ExecutionCallbackID>" +
                          "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
                          "<NumberOfSteps>5</NumberOfSteps>" +
-                         "<Bookmark>MyBookmark</Bookmark>" +
-                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<CurrentBookmarkName>MyBookmark</CurrentBookmarkName>" +
+                         "<WorkflowInstanceId>" + instID + "</WorkflowInstanceId>" +
                          "<IsDataListScoped>true</IsDataListScoped>" +
                          "<Service>MyTestService</Service>" +
                          "</Payload>";
@@ -366,8 +367,8 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), exeID.ToString());
             StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
             Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
-            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
-            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            StringAssert.Contains(dataObjct.CurrentBookmarkName, "MyBookmark");
+            StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
             StringAssert.Contains(dataObjct.RawPayload, xmlStr);
@@ -409,8 +410,8 @@ namespace Dev2.Tests
                          "<BookmarkExecutionCallbackID>" + bookmarkID + "</BookmarkExecutionCallbackID>" +
                          "<ParentInstanceID>" + parentID + "</ParentInstanceID>" +
                          "<NumberOfSteps>5</NumberOfSteps>" +
-                         "<Bookmark>MyBookmark</Bookmark>" +
-                         "<InstanceId>" + instID + "</InstanceId>" +
+                         "<CurrentBookmarkName>MyBookmark</CurrentBookmarkName>" +
+                         "<WorkflowInstanceId>" + instID + "</WorkflowInstanceId>" +
                          "<IsDataListScoped>true</IsDataListScoped>" +
                          "<Service>MyTestService</Service>" +
                          "<DatalistOutMergeID>" + mergeIDOut + "</DatalistOutMergeID>" +
@@ -436,8 +437,8 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.BookmarkExecutionCallbackID.ToString(), bookmarkID.ToString());
             StringAssert.Contains(dataObjct.ParentInstanceID, parentID.ToString());
             Assert.AreEqual(5, dataObjct.NumberOfSteps, "Wrong number of steps");
-            StringAssert.Contains(dataObjct.Bookmark, "MyBookmark");
-            StringAssert.Contains(dataObjct.InstanceID.ToString(), instID.ToString());
+            StringAssert.Contains(dataObjct.CurrentBookmarkName, "MyBookmark");
+            StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
             StringAssert.Contains(dataObjct.RawPayload, xmlStr);

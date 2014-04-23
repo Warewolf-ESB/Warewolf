@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
@@ -29,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(WebRequestTO d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
             string executePayload;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -49,7 +50,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             ErrorResultTO errors;
             var allErrors = new ErrorResultTO();
-            var dataObject = new DsfDataObject(d.RawRequestPayload, GlobalConstants.NullDataListID, d.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName };
+            var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName };
+
+            // now bind any variables that are part of the path arguments ;)
+            BindRequestVariablesToDataObject(webRequest, ref dataObject);
 
             // now process headers ;)
             if(headers != null)
@@ -240,6 +244,31 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
+        protected static void BindRequestVariablesToDataObject(WebRequestTO request, ref DsfDataObject dataObject)
+        {
+            if(dataObject != null && request != null)
+            {
+                if(!string.IsNullOrEmpty(request.Bookmark))
+                {
+                    dataObject.CurrentBookmarkName = request.Bookmark;
+                }
+
+                if(!string.IsNullOrEmpty(request.InstanceID))
+                {
+                    Guid tmpID;
+                    if(Guid.TryParse(request.InstanceID, out tmpID))
+                    {
+                        dataObject.WorkflowInstanceId = tmpID;
+                    }
+                }
+
+                if(!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
+                {
+                    dataObject.ServiceName = request.ServiceName;
+                }
+            }
+        }
+
         protected static string GetPostData(ICommunicationContext ctx, string postDataListID)
         {
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
@@ -256,11 +285,61 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            // Not an XML payload, but it up as such ;)
+            // Not an XML payload - Handle it as a GET or POST request ;)
+            if(ctx.Request.Method == "GET")
+            {
+                var pairs = ctx.Request.QueryString;
+                return ExtractKeyValuePairs(pairs);
+            }
 
+            if(ctx.Request.Method == "POST")
+            {
+                using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+                {
+                    try
+                    {
+                        string data = reader.ReadToEnd();
+                        if(DataListUtil.IsXml(data))
+                        {
+                            return data;
+                        }
+
+                        // very simple JSON check!!!
+                        if(data.StartsWith("{") && data.EndsWith("}"))
+                        {
+                            throw new Exception("Unsupported Request : POST Request with JSON stream");
+                        }
+
+                        // Process POST key value pairs ;)
+                        NameValueCollection pairs = new NameValueCollection(5);
+                        var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        foreach(var keyValuePair in keyValuePairs)
+                        {
+                            var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                            if(keyValue.Length > 1)
+                            {
+                                pairs.Add(keyValue[0], keyValue[1]);
+                            }
+                        }
+
+                        // we need to process it as key value pairs ;)
+                        return ExtractKeyValuePairs(pairs);
+                    }
+                    catch(Exception ex)
+                    {
+                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        static string ExtractKeyValuePairs(NameValueCollection pairs)
+        {
             IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
-            // Extract GET request keys ;)
-            foreach(var key in ctx.Request.QueryString.AllKeys)
+            // Extract request keys ;)
+            foreach(var key in pairs.AllKeys)
             {
                 string error;
                 bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
@@ -272,7 +351,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 IBinaryDataListEntry entry;
                 if(bdl.TryGetEntry(key, out entry, out error))
                 {
-                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(ctx.Request.QueryString[key], key);
+                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(pairs[key], key);
                     entry.TryPutScalar(item, out error);
                     if(!string.IsNullOrEmpty(error))
                     {

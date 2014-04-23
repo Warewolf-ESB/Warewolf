@@ -25,7 +25,6 @@ namespace Dev2.DynamicServices
 
         private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
-        private bool _workflowResumeable;
         private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
         private ErrorResultTO _errors;
 
@@ -119,13 +118,13 @@ namespace Dev2.DynamicServices
                     Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
-                    Bookmark = ExtractValue(xe, "Bookmark");
+                    CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
 
                     Guid instID;
 
-                    if(Guid.TryParse(ExtractValue(xe, "InstanceId"), out instID))
+                    if(Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out instID))
                     {
-                        InstanceID = instID;
+                        WorkflowInstanceId = instID;
                     }
 
 
@@ -187,7 +186,7 @@ namespace Dev2.DynamicServices
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }
-        public string WorkflowInstanceId { get; set; }
+        public Guid WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
         public Guid OriginalInstanceID { get; set; }
@@ -217,8 +216,6 @@ namespace Dev2.DynamicServices
 
         public Guid DataListID { get; set; }
         public ServiceAction ExecuteAction { get; set; }
-        public string Bookmark { get; set; }
-        public Guid InstanceID { get; set; }
 
         public string RawPayload { get; set; }
         public EmitionTypes ReturnType { get; set; }
@@ -232,17 +229,7 @@ namespace Dev2.DynamicServices
 
         public int ParentThreadID { get; set; }
 
-        public bool WorkflowResumeable
-        {
-            get
-            {
-                return _workflowResumeable;
-            }
-            set
-            {
-                _workflowResumeable = value;
-            }
-        }
+        public bool WorkflowResumeable { get; set; }
 
         public string ParentServiceName
         {
@@ -261,7 +248,7 @@ namespace Dev2.DynamicServices
             get
             {
 
-                return _parentWorkflowInstanceId == null ? string.Empty : _parentWorkflowInstanceId;
+                return _parentWorkflowInstanceId ?? string.Empty;
             }
             set
             {

@@ -126,7 +126,7 @@ namespace Dev2.Runtime.ESB.WF
             return wfApp;
         }
 
-       
+
 
         /// <summary>
         /// Invokes the workflow impl.
@@ -224,8 +224,8 @@ namespace Dev2.Runtime.ESB.WF
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject.Clone();
                     var wfappUtils = new WfApplicationUtils();
-                   
-                    wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors, _runTime,false,true);
+
+                    wfappUtils.DispatchDebugState(dataTransferObject, StateType.End, AllErrors, _runTime, false, true);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
@@ -335,7 +335,7 @@ namespace Dev2.Runtime.ESB.WF
                     // here is space at the inn ;)
                     var wfappUtils = new WfApplicationUtils();
 
-                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors,null,true);
+                    wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors, null, true);
                     _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                     DataTransferObject.NumberOfSteps = 0;
                     _instance.Run();
@@ -391,7 +391,7 @@ namespace Dev2.Runtime.ESB.WF
 
             public void Resume(IDSFDataObject dataObject)
             {
-                var instanceID = Guid.Parse(dataObject.WorkflowInstanceId);
+                var instanceID = dataObject.WorkflowInstanceId;
                 var bookmarkName = dataObject.CurrentBookmarkName;
                 var existingDlid = dataObject.DataListID;
                 _instance.Load(instanceID);

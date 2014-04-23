@@ -365,8 +365,11 @@ namespace Dev2.Runtime.ESB.Control
             if(remoteContainer != null)
             {
                 var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ServiceName);
-                fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
-                dataObject.RemoteInvokeResultShape = fetchRemoteResource.DataList;
+                if(fetchRemoteResource != null)
+                {
+                    fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
+                    dataObject.RemoteInvokeResultShape = fetchRemoteResource.DataList;
+                }
             }
         }
 
@@ -703,7 +706,7 @@ namespace Dev2.Runtime.ESB.Control
                     // finally glue the two together ;)
                     XmlDocument iDLXDoc = new XmlDocument();
                     iDLXDoc.LoadXml(inputFragment);
-           
+
                     if(iDLXDoc.DocumentElement != null)
                     {
                         inputFragment = iDLXDoc.DocumentElement.InnerXml;

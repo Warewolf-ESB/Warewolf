@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Data.Enums;
 using System.Security.Principal;
+using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Web;
@@ -13,7 +13,7 @@ namespace Dev2
         Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
 
         string CurrentBookmarkName { get; set; }
-        string WorkflowInstanceId { get; set; }
+        Guid WorkflowInstanceId { get; set; }
         string ServiceName { get; set; }
         string ParentWorkflowInstanceId { get; set; }
         string ParentServiceName { get; set; }

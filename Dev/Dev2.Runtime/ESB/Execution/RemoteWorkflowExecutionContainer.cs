@@ -202,6 +202,13 @@ namespace Dev2.Runtime.ESB.Execution
                 else
                 {
                     req.UseDefaultCredentials = false;
+
+                    // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
+                    if(string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
+                    {
+                        userName = GlobalConstants.PublicUsername;
+                    }
+
                     req.Credentials = new NetworkCredential(userName, password);
                 }
                 req.Method = "GET";

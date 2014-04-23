@@ -3,8 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Data.Binary_Objects;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -40,29 +38,13 @@ namespace Dev2.Runtime.ESB.Execution
         /// <returns></returns>
         public override Guid Execute(out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
             WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
-            var wfappUtils = new WfApplicationUtils();
             Guid result = GlobalConstants.NullDataListID;
 
-            Guid instanceId = Guid.Empty;
-            string bookmark = string.Empty;
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            // PBI : 5376 Refactored 
-            IBinaryDataListEntry tmp = compiler.Evaluate(DataObject.DataListID,
-                                                             enActionType.System,
-                                                             enSystemTag.Bookmark.ToString(), false, out errors);
-            if(tmp != null)
-            {
-                bookmark = tmp.FetchScalar().TheValue;
-            }
-
-            tmp = compiler.Evaluate(DataObject.DataListID, enActionType.System, enSystemTag.InstanceId.ToString(), false, out errors);
-            if(tmp != null)
-            {
-                Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);
-            }
+            // set current bookmark as per DataObject ;)
+            string bookmark = DataObject.CurrentBookmarkName;
+            Guid instanceId = DataObject.WorkflowInstanceId;
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
@@ -77,13 +59,11 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
-            string dataList = DataObject.DataList;
-            dataList += "";
             // Set original instance ID, only if not set yet - original resource;
             if(DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
 
-            //Set execution origing
+            //Set execution origin
             if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
@@ -104,16 +84,9 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 var theActivity = activity.Value as DynamicActivity;
 
-
-     
-                
-
-                //if (dataList != null)
-                //wfappUtils.DispatchDebugState(DataObject, StateType.Start, errors,null,true,false);
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
                 _workflowHelper.CompileExpressions(theActivity);
 
-         
                 IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
                                                                    new List<object> { EsbChannel, }, instanceId,
                                                                    TheWorkspace, bookmark, out errors);
@@ -144,17 +117,22 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 ServiceAction.PushActivity(activity);
             }
-   
+
             return result;
         }
 
         public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, ErrorResultTO errors)
         {
+            if(errors == null)
+            {
+                throw new ArgumentNullException("errors");
+            }
+
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var results = new List<DebugItem>();
-            foreach (IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in inputs)
             {
-                
+
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
 
                 var val = tmpEntry.FetchScalar();
@@ -166,7 +144,7 @@ namespace Dev2.Runtime.ESB.Execution
                 results.Add(itemToAdd);
             }
 
-            foreach (IDebugItem debugInput in results)
+            foreach(IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -175,9 +153,9 @@ namespace Dev2.Runtime.ESB.Execution
         }
         string GetVariableName(IDev2Definition value)
         {
-          return  String.IsNullOrEmpty(value.RecordSetName)
-                ? String.Format("[[{0}]]", value.Name)
-                : String.Format("[[{0}]]", value.RecordSetName);
+            return String.IsNullOrEmpty(value.RecordSetName)
+                  ? String.Format("[[{0}]]", value.Name)
+                  : String.Format("[[{0}]]", value.RecordSetName);
         }
         void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {

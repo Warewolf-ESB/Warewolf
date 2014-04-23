@@ -8,6 +8,8 @@
 
 #endregion
 
+using System;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -17,8 +19,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
-using System;
-using System.Linq;
 using enActionType = Dev2.DynamicServices.enActionType;
 
 // ReSharper disable CheckNamespace
@@ -138,12 +138,12 @@ namespace Dev2.Runtime.ESB
 
                             MapServiceActionDependencies(theStart, sl);
 
-                            ErrorResultTO invokeErrors;
                             // Invoke based upon type ;)
                             if(theStart != null)
                             {
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
+                                ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors);
                                 errors.MergeErrors(invokeErrors);
                             }
