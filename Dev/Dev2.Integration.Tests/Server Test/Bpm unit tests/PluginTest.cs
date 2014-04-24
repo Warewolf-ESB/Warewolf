@@ -18,6 +18,22 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Plugins_PrimitiveTypes")]
+        public void Plugins_PrimitiveTypes_WhenTestingVariousPrimitivesTypes_ExpectPASS()
+        {
+            //------------Setup for test--------------------------
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "PrimitiveReturnTypeTest");
+            const string expected = @"<Result>PASS</Result>";
+
+            //------------Execute Test---------------------------
+            string responseData = TestHelper.PostDataToWebserver(postData);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(responseData.Unescape(), expected);
+        }
+
+        [TestMethod]
         [TestCategory("PluginIntegrationTest")]
         [Description("Test for executing a remote plugin, specific data is expected to be returned back")]
         [Owner("Ashley Lewis")]
