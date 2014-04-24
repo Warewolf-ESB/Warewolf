@@ -25,6 +25,10 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("WorkflowService_Invoke")]
         public void WorkflowService_Invoke_WithNestedWorkflowHavingForEachDataListNotInSequence_ShouldStillMapCorrectly()
         {
+            // 24-04-2014 
+            // Some flipping joker keeps changing the data in this table. 
+            // I have fixed the null lat and long ;)
+
             //------------Setup for test--------------------------
             var expectedXML = XmlResource.Fetch("Bug_10528_Result.xml");
             string PostData = String.Format("{0}{1}", WebserverURI, "Bug_10528");

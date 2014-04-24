@@ -1,62 +1,62 @@
 ﻿<DataList>
     <UpdatedAddresses index="1">
-        <Longitude>30.8778099802915</Longitude>
-        <Latitude>-29.8105439802915</Latitude>
-        <Address>19 Pineside Road, New Germany 3610, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>19 Pineside Road, New Germany</Address>
         <LocationID>1</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="2">
-        <Longitude>-0.1479965</Longitude>
-        <Latitude>51.2057294</Latitude>
-        <Address>Redhill, Surrey, UK</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>1244 Old North Coast Rd, Redhill</Address>
         <LocationID>2</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="3">
-        <Longitude>150.986410880291</Longitude>
-        <Latitude>-33.8144494802915</Latitude>
-        <Address>Hawkesbury Road Family Medical Centre, Westmead NSW 2145</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Westmead Road, Westmead</Address>
         <LocationID>3</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="4">
-        <Longitude>30.9007269802915</Longitude>
-        <Latitude>-29.89312</Latitude>
-        <Address>Turquoise Place, Queensburgh 4079, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Turquoise Road, Queensmead</Address>
         <LocationID>4</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="5">
-        <Longitude>30.8799483802915</Longitude>
-        <Latitude>-30.0292402802915</Latitude>
-        <Address>Old Main Road, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Old Main Road, Isipingo</Address>
         <LocationID>5</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="6">
-        <Longitude>-71.4907554197085</Longitude>
-        <Latitude>41.6233515197085</Latitude>
-        <Address>Rhode Island 2 &amp;amp; Meadowbrook Road, East Greenwich, RI 02818, USA</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>2 Brook Street North, Warwick Junction</Address>
         <LocationID>7</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="7">
-        <Longitude>-75.5146820197085</Longitude>
-        <Latitude>40.5697660197085</Latitude>
-        <Address>Bellair Drive &amp;amp; Bellair Court, Allentown, PA 18103, USA</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Bellair Road, Corner Bellair &amp; Edwin Swales/Sarnia Arterial</Address>
         <LocationID>8</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="8">
-        <Longitude>31.036891</Longitude>
-        <Latitude>-29.8097564</Latitude>
-        <Address>Riverside Road, Durban North 4051, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Riverside Road, Durban North</Address>
         <LocationID>9</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="9">
-        <Longitude>31.033999</Longitude>
-        <Latitude>-29.769716</Latitude>
-        <Address>Malacca Road, Durban North 4051, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Malacca Road, Durban North</Address>
         <LocationID>10</LocationID>
     </UpdatedAddresses>
     <UpdatedAddresses index="10">
-        <Longitude>30.9570389</Longitude>
-        <Latitude>-29.93189</Latitude>
-        <Address>Glanville Road, Durban South 4004, South Africa</Address>
+        <Longitude>66.6</Longitude>
+        <Latitude>99.99</Latitude>
+        <Address>Glanville Road, Woodlands</Address>
         <LocationID>11</LocationID>
     </UpdatedAddresses>
 </DataList>
