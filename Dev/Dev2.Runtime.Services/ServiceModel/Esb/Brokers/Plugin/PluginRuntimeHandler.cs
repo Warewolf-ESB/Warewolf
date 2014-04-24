@@ -44,13 +44,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var formater = setupInfo.OutputFormatter;
             if(formater != null)
             {
-                // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-                if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Object")
-                    && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
-                {
-                    // add our special tags ;)
-                    pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
-                }
+                pluginResult = AdjustPluginResult(pluginResult, methodToRun);
 
                 return formater.Format(pluginResult).ToString();
             }
@@ -58,14 +52,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return pluginResult;
         }
 
-
         public IOutputDescription Test(PluginInvokeArgs setupInfo)
         {
             Assembly loadedAssembly;
-
-            var loc = Assembly.GetExecutingAssembly().Location;
-
-            loc += "";
 
             if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
@@ -86,13 +75,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             if(pluginResult != null)
             {
-                // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-                if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Object")
-                    && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
-                {
-                    // add our special tags ;)
-                    pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
-                }
+                pluginResult = AdjustPluginResult(pluginResult, methodToRun);
 
                 var tmpData = dataBrowser.Map(pluginResult);
                 dataSourceShape.Paths.AddRange(tmpData);
@@ -227,6 +210,28 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
         }
+
+
+        /// <summary>
+        /// Adjusts the plugin result.
+        /// </summary>
+        /// <param name="pluginResult">The plugin result.</param>
+        /// <param name="methodToRun">The method automatic run.</param>
+        /// <returns></returns>
+        private object AdjustPluginResult(object pluginResult, MethodInfo methodToRun)
+        {
+            object result = pluginResult;
+            // When it returns a primitive or string and it is not XML or JSON, make it so ;)
+            if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
+                && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+            {
+                // add our special tags ;)
+                result = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// Reads the namespaces.

@@ -296,32 +296,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("PluginServices_Test")]
-        public void PluginServices_Test_WhenTestingPluginReturningObjectString_ExpectValidPaths()
-        {
-            //------------Setup for test--------------------------
-            var path = UnpackDLL("PrimativesTestDLL");
-
-            if(string.IsNullOrEmpty(path))
-            {
-                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
-            }
-
-            var pluginServices = new PluginServices();
-            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningObjectString");
-
-            //------------Execute Test---------------------------
-            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
-            ////------------Assert Results-------------------------
-            Assert.AreEqual(1, result[0].Fields.Count);
-            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
-            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
-            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
-            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "myObject");
-        }
-
-        [TestMethod]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------

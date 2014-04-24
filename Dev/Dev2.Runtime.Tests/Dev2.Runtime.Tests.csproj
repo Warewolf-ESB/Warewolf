@@ -364,7 +364,6 @@
     <EmbeddedResource Include="Json\PrimitivePluginReturningPlainString.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningXmlString.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningJsonString.json" />
-    <EmbeddedResource Include="Json\PrimitivePluginReturningObjectString.json" />
     <None Include="packages.config" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>
