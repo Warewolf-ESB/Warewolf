@@ -1,4 +1,9 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -20,11 +25,6 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -535,18 +535,21 @@ namespace Dev2.Server.Datalist
                     var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.RawValue);
                     var rsCol = DataListUtil.ExtractFieldNameFromValue(def.RawValue);
 
-                    IBinaryDataListEntry entry;
-                    string error;
-
                     // NOTE : This is a problem when the RecordsetName differs from the rsName?!
 
-                    if (childDl != null)
+                    if(childDl != null)
                     {
-                        childDl.TryGetEntry(rsName, out entry, out error);
+                        string error;
+                        IBinaryDataListEntry entry;
 
-                        errors.AddError(error);
+                        if(childDl.TryGetEntry(rsName, out entry, out error))
+                        {
+                            // way back some joker though it was a good idea to break the mapping syntax, this corrects for it ;)
+                            // we we loose the aliasing for this level... oh well, best wait into all this bloody mutable xml mapping junk is gone before we properly address
+                            errors.AddError(error);
+                        }
 
-                        if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
+                        if(entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
                         {
                             entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
                             errors.MergeErrors(invokeErrors);
@@ -1787,7 +1790,7 @@ namespace Dev2.Server.Datalist
 
 
 
-        private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules )
+        private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules)
         {
             if(IsEvaluated(rules.Expression))
             {
@@ -1850,7 +1853,7 @@ namespace Dev2.Server.Datalist
 
                 // we need to drop in again for further evaluation ;)
                 EvaluateRuleSet ers2 = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
-        
+
                 result = InternalDataListEvaluateV2(ers2);
 
                 return result;

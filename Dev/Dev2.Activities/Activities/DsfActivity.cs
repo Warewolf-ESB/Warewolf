@@ -237,7 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 compiler.ClearErrors(dataObject.DataListID);
-      
+
                 if(ServiceServer != Guid.Empty)
                 {
                     // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
@@ -282,7 +282,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913
                         if(datalistID != GlobalConstants.NullDataListID)
@@ -290,12 +289,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
 
-
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
 
                             // Execute Request
-
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
 
@@ -304,6 +301,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
+
+                        // ** THIS IS A HACK OF NOTE, WE NEED TO ADDRESS THIS!
                         if(dataObject.IsDebugMode())
                         {
                             //Dont remove this it is here to fix the data not being returned correctly
@@ -516,14 +515,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             return GetDebugInputs(dataList, compiler, parser);
-        
+
         }
-        public List<DebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler,IDev2LanguageParser parser)
+        public List<DebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
             var results = new List<DebugItem>();
-            foreach (IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in inputs)
             {
                 ErrorResultTO errors;
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
@@ -531,16 +530,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DebugItem itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
 
-                if (errors.HasErrors())
+                if(errors.HasErrors())
                 {
                     itemToAdd.FlushStringBuilder();
-                    throw new DebugCopyException(errors.MakeDisplayReady(),itemToAdd);
+                    throw new DebugCopyException(errors.MakeDisplayReady(), itemToAdd);
                 }
                 results.Add(itemToAdd);
 
             }
 
-            foreach (IDebugItem debugInput in results)
+            foreach(IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }

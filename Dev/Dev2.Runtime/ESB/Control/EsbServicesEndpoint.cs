@@ -322,8 +322,6 @@ namespace Dev2.Runtime.ESB.Control
                     result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
 
-
-
                     // If Webservice or Plugin, skip the final shaping junk ;)
                     if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
                     {

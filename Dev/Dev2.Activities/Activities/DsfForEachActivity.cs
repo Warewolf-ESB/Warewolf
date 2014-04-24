@@ -222,7 +222,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
-                        dataObject.IsDataListScoped = false;
                         IterateIOMapping(idx, context);
                     }
                     else
@@ -655,7 +654,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void ActivityCompleted(NativeActivityContext context, ActivityInstance instance, bool result)
         {
-
             var dataObject = context.GetExtension<IDSFDataObject>();
             if(dataObject != null && operationalData != null)
             {
