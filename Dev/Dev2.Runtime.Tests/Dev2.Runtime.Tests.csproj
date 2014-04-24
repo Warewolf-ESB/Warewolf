@@ -150,6 +150,7 @@
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
+    <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
     <Compile Include="Services\GetScheduledResourcesTest.cs" />
@@ -359,6 +360,11 @@
     <EmbeddedResource Include="Json\empty.json" />
     <EmbeddedResource Include="Json\cryptsy_all_markets_shaped_response.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningBool.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningDouble.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningPlainString.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningXmlString.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningJsonString.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningObjectString.json" />
     <None Include="packages.config" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>
@@ -490,9 +496,7 @@
     <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract_Expected.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Plugins\PrimativesTestDLL.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Plugins\PrimativesTestDLL.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

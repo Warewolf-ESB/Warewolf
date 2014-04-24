@@ -4,6 +4,8 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.JSON;
+using Dev2.Tests.Runtime.Plugins;
 using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using DummyNamespaceForTest;
@@ -24,6 +26,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
             new PluginServices(null, null);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        public string UnpackDLL(string name)
+        {
+            return DllExtractor.UnloadToFileSystem(name, "Plugins");
         }
 
         #endregion
@@ -159,16 +170,156 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory("PluginServices_Test")]
         public void PluginServices_Test_WhenTestingPluginReturningBool_ExpectValidPaths()
         {
-            ////------------Setup for test--------------------------
-            //var pluginServices = new PluginServices();
-            //var serviceDef = JsonResource.Fetch("PrimitivePluginReturningBool");
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
 
-            ////------------Execute Test---------------------------
-            //var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
-            //////------------Assert Results-------------------------
-            //Assert.AreEqual(1, result[0].Fields.Count);
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningBool");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "False");
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningDouble_ExpectValidPaths()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningDouble");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningPlainString_ExpectValidPaths()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningPlainString");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Hello__COMMA__ bob");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningXmlString_ExpectValidPaths()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningXmlString");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "Message");
+            StringAssert.Contains(result[0].Fields[0].Name, "Message");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "Message");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Howdy__COMMA__");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningJsonString_ExpectValidPaths()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningJsonString");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "message");
+            StringAssert.Contains(result[0].Fields[0].Name, "message");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "message");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "Howzit__COMMA__");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningObjectString_ExpectValidPaths()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if(string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var pluginServices = new PluginServices();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningObjectString");
+
+            //------------Execute Test---------------------------
+            var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "myObject");
+        }
 
         [TestMethod]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
