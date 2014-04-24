@@ -21,8 +21,8 @@ namespace Dev2.Data.Decisions.Operations
                 return (String.Compare(cols[0], cols[1], StringComparison.Ordinal) == 0);
             }
 
-            // first col is null, prev would have never works!
-            return false;
+            // make it the same comparison
+            return (String.Compare(cols[0], cols[1], StringComparison.Ordinal) == 0);
         }
 
         public Enum HandlesType()
