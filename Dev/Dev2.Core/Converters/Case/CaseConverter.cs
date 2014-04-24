@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Interfaces;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Common;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Interfaces;
 
 namespace Dev2
 {
-    public class CaseConverter :ICaseConverter
+    public class CaseConverter : ICaseConverter
     {
         #region Class Members
 
@@ -33,20 +31,26 @@ namespace Dev2
 
         #region Methods
 
-        public IBinaryDataListItem TryConvert(string conversionType, IBinaryDataListItem item) {
+        public IBinaryDataListItem TryConvert(string conversionType, IBinaryDataListItem item)
+        {
 
             Func<string, string> returnedFunc;
             IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem("Error Invalid Conversion Type", GlobalConstants.EvalautionScalar);
-            if (_convertFunctions.TryGetValue(conversionType, out returnedFunc)) {
-                if (returnedFunc != null) {
+            if(_convertFunctions.TryGetValue(conversionType, out returnedFunc))
+            {
+                if(returnedFunc != null)
+                {
                     string tmp = returnedFunc.Invoke(item.TheValue);
-                    if (item.Namespace != string.Empty) {
+                    if(item.Namespace != string.Empty)
+                    {
                         result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.Namespace, item.FieldName, item.ItemCollectionIndex);
-                    } else {
+                    }
+                    else
+                    {
                         result = Dev2BinaryDataListFactory.CreateBinaryItem(tmp, item.FieldName);
                     }
                 }
-            } 
+            }
 
             return result;
         }
@@ -70,7 +74,7 @@ namespace Dev2
         /// Make the first letter of the word to upper case
         /// </summary>
         private static string MakeFirstLetterUpper(string word)
-        {               
+        {
             // start by converting entire string to lower case
             string lowerCase = word.ToLower();
             // matches the first sentence of a string, as well as subsequent sentences
@@ -95,7 +99,7 @@ namespace Dev2
         }
 
         private static string ConvertToFirstUpper(string stringToConvert)
-        {            
+        {
             return MakeFirstLetterUpper(stringToConvert);
         }
 

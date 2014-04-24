@@ -82,7 +82,6 @@
     <Compile Include="ScheduleTrigger.cs" />
     <Compile Include="ScheduledResourceModel.cs" />
     <Compile Include="Interfaces\SchedulerStatus.cs" />
-    <Compile Include="Interfaces\IResourceHistoryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Sec.cs" />
   </ItemGroup>
