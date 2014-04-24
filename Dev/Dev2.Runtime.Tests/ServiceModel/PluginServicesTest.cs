@@ -155,6 +155,22 @@ namespace Dev2.Tests.Runtime.ServiceModel
         #region Test
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("PluginServices_Test")]
+        public void PluginServices_Test_WhenTestingPluginReturningBool_ExpectValidPaths()
+        {
+            ////------------Setup for test--------------------------
+            //var pluginServices = new PluginServices();
+            //var serviceDef = JsonResource.Fetch("PrimitivePluginReturningBool");
+
+            ////------------Execute Test---------------------------
+            //var result = pluginServices.Test(serviceDef, Guid.Empty, Guid.Empty);
+            //////------------Assert Results-------------------------
+            //Assert.AreEqual(1, result[0].Fields.Count);
+        }
+
+
+        [TestMethod]
         public void PluginServicesTestWithNullArgsExpectedReturnsRecordsetWithError()
         {
             //------------Setup for test--------------------------

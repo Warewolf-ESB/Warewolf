@@ -1258,7 +1258,7 @@ namespace Dev2.Data.Util
                 try
                 {
                     // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-                   
+
                     Convert.ToInt32(idx);
                     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                     result = enRecordsetIndexType.Numeric;
@@ -1439,6 +1439,17 @@ namespace Dev2.Data.Util
             }
 
             return result;
+        }
+
+        public static bool IsJson(string data)
+        {
+            var tmp = data.Trim();
+            if(tmp.StartsWith("{") && tmp.EndsWith("}"))
+            {
+                return true;
+            }
+
+            return false;
         }
 
 

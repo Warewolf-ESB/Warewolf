@@ -358,6 +358,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Json\empty.json" />
     <EmbeddedResource Include="Json\cryptsy_all_markets_shaped_response.json" />
+    <EmbeddedResource Include="Json\PrimitivePluginReturningBool.json" />
     <None Include="packages.config" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>
@@ -487,6 +488,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Calculate_RecordSet_Subtract_Expected.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Plugins\PrimativesTestDLL.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

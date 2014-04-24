@@ -44,8 +44,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var formater = setupInfo.OutputFormatter;
             if(formater != null)
             {
-                // When it returns a string and it is not XML, make it so ;)
-                if((methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Char") && !DataListUtil.IsXml(pluginResult.ToString()))
+                // When it returns a primitive or string and it is not XML or JSON, make it so ;)
+                if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Object")
+                    && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
                 {
                     // add our special tags ;)
                     pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
@@ -61,6 +62,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public IOutputDescription Test(PluginInvokeArgs setupInfo)
         {
             Assembly loadedAssembly;
+
+            var loc = Assembly.GetExecutingAssembly().Location;
+
+            loc += "";
 
             if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
@@ -81,8 +86,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             if(pluginResult != null)
             {
-                // When it returns a string and it is not XML, make it so ;)
-                if((methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Char") && !DataListUtil.IsXml(pluginResult.ToString()))
+                // When it returns a primitive or string and it is not XML or JSON, make it so ;)
+                if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String" || methodToRun.ReturnType.FullName == "System.Object")
+                    && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
                 {
                     // add our special tags ;)
                     pluginResult = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);

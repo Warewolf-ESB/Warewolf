@@ -305,7 +305,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
 
                         // very simple JSON check!!!
-                        if(data.StartsWith("{") && data.EndsWith("}"))
+                        if(DataListUtil.IsJson(data))
                         {
                             throw new Exception("Unsupported Request : POST Request with JSON stream");
                         }

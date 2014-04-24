@@ -18,6 +18,42 @@ namespace Dev2.Data.Tests.BinaryDataList
     {
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsJson")]
+        public void DataListUtil_IsJson_WhenValidJsonString_ExpectTrue()
+        {//------------Setup for test--------------------------
+            const string startingData = "{ \"message\" : \"Howzit, Samantha\"}";
+            //------------Execute Test---------------------------
+            bool result = DataListUtil.IsJson(startingData);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result, "Else Valid JSON not detected as such");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsJson")]
+        public void DataListUtil_IsJson_WhenValidJsonStringWithExtraWhitespace_ExpectTrue()
+        {//------------Setup for test--------------------------
+            const string startingData = " { \"message\" : \"Howzit, Samantha\"} ";
+            //------------Execute Test---------------------------
+            bool result = DataListUtil.IsJson(startingData);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result, "Else Valid JSON not detected as such");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsJson")]
+        public void DataListUtil_IsJson_WhenInvalidJsonString_ExpectFalse()
+        {//------------Setup for test--------------------------
+            const string startingData = "<\"message\" : \"Howzit, Samantha\">";
+            //------------Execute Test---------------------------
+            bool result = DataListUtil.IsJson(startingData);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result, "Invalid JSON not detected as such");
+        }
+
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataListUtil_AdjustForEncodingIssues")]
         public void DataListUtil_AdjustForEncodingIssues_WithStringLengthOf3_SameDataAsPassedIn()
@@ -37,7 +73,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_GetRecordsetIndexTypeRaw_StarNotationDoesNotParseInt()
         {
             //------------Setup for test--------------------------
-             const string startingData = "**";
+            const string startingData = "**";
             //------------Execute Test---------------------------
             Assert.AreEqual(enRecordsetIndexType.Error, DataListUtil.GetRecordsetIndexTypeRaw(startingData));
         }
