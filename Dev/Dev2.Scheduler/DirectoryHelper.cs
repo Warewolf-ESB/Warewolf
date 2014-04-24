@@ -14,10 +14,12 @@ namespace Dev2.Scheduler
 
         public string CreateIfNotExists(string debugOutputPath)
         {
-            if (!Directory.Exists(debugOutputPath))
+            if(!Directory.Exists(debugOutputPath))
+            {
                 return Directory.CreateDirectory(debugOutputPath).Name;
-            else
-                return debugOutputPath;
+            }
+
+            return debugOutputPath;
         }
     }
 }

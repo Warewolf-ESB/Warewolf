@@ -12,11 +12,11 @@ namespace Dev2.Converters
         {
             StringBuilder result = new StringBuilder();
 
-            for (int i = 0; i < payload.Length; i++)
+            for(int i = 0; i < payload.Length; i++)
             {
                 string tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value
-                for (int q = tmp.Length; q < 8; q++)
+                for(int q = tmp.Length; q < 8; q++)
                 {
                     result.Append("0");
                 }
@@ -28,7 +28,6 @@ namespace Dev2.Converters
 
         public byte[] NeutralizeToCommon(string payload)
         {
-
             if(payload.Length >= 8)
             {
                 var result = new byte[(payload.Length / 8)];
@@ -42,10 +41,8 @@ namespace Dev2.Converters
 
                 return result;
             }
-            else
-            {
-                throw new ArgumentException(Resources.Dev2BinaryConverterPayloadToSmallException);
-            }
+
+            throw new ArgumentException(Resources.Dev2BinaryConverterPayloadToSmallException);
         }
 
         public bool IsType(string payload)

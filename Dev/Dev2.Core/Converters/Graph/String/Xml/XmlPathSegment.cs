@@ -45,10 +45,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         public string ToString(bool considerEnumerable)
@@ -57,10 +55,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         #endregion Methods

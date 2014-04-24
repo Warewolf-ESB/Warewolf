@@ -12,7 +12,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -77,13 +77,13 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             List<SettingsObject> graph = new List<SettingsObject>();
 
             // If arributed object is null return empty graph
-            if (attributedObject == null)
+            if(attributedObject == null)
             {
                 return graph;
             }
 
             // If a circular reference is detected then return empty graph
-            if (referenceStack.Contains(attributedObject))
+            if(referenceStack.Contains(attributedObject))
             {
                 return graph;
             }
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             referenceStack.Push(attributedObject);
 
             // Loop through properties on the attributed object
-            foreach (var property in attributedObject.GetType().GetProperties())
+            foreach(var property in attributedObject.GetType().GetProperties())
             {
                 // Try get value from property
                 object value = null;
@@ -100,7 +100,9 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 {
                     value = property.GetValue(attributedObject, null);
                 }
+                // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
                 {
 #if DEBUG
                     //DIE execution DIE ... dude what are you doing?! Fix this otherwise the property won't show as an option in the settings treeview.
@@ -111,29 +113,32 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 }
 
                 // If value is null skip this property
-                if (value == null)
+                if(value == null)
                 {
                     continue;
                 }
 
                 // If a circular reference is detected then skip this property
-                if (referenceStack.Contains(value))
+                if(referenceStack.Contains(value))
                 {
                     continue;
                 }
 
                 // Check if the property is adorned with the SettingsObjectAtribute
                 object[] attributes = property.GetCustomAttributes(typeof(SettingsObjectAttribute), true);
-                if (attributes.Length > 0)
+                if(attributes.Length > 0)
                 {
                     SettingsObjectAttribute settingsObjectAttribute = attributes[0] as SettingsObjectAttribute;
                     // Add settings object to graph
-                    graph.Add(new SettingsObject(value, settingsObjectAttribute.View, settingsObjectAttribute.ViewModel));
+                    if(settingsObjectAttribute != null)
+                    {
+                        graph.Add(new SettingsObject(value, settingsObjectAttribute.View, settingsObjectAttribute.ViewModel));
+                    }
                 }
             }
 
             // Find nested settings objects
-            foreach (SettingsObject item in graph)
+            foreach(SettingsObject item in graph)
             {
                 item.Children.AddRange(BuildGraphImpl(item.Object, referenceStack));
             }

@@ -18,7 +18,9 @@ namespace Dev2.Network.Execution
         #region Constructor
 
         // For testing only!!!
+        // ReSharper disable EmptyConstructor
         public ExecutionStatusCallbackDispatcher()
+        // ReSharper restore EmptyConstructor
         {
         }
 

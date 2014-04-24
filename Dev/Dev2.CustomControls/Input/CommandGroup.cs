@@ -24,7 +24,9 @@ namespace WPF.JoshSmith.Input
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
+        // ReSharper disable EmptyConstructor
         public CommandGroup()
+        // ReSharper restore EmptyConstructor
         {
             // Parameterless public ctor required for XAML instantiation.
         }
@@ -43,7 +45,7 @@ namespace WPF.JoshSmith.Input
         {
             get
             {
-                if (_commands == null)
+                if(_commands == null)
                 {
                     _commands = new ObservableCollection<ICommand>();
                     _commands.CollectionChanged += this.OnCommandsCollectionChanged;
@@ -58,15 +60,15 @@ namespace WPF.JoshSmith.Input
             // We have a new child command so our ability to execute may have changed.
             this.OnCanExecuteChanged();
 
-            if (e.NewItems != null && 0 < e.NewItems.Count)
+            if(e.NewItems != null && 0 < e.NewItems.Count)
             {
-                foreach (ICommand cmd in e.NewItems)
+                foreach(ICommand cmd in e.NewItems)
                     cmd.CanExecuteChanged += this.OnChildCommandCanExecuteChanged;
             }
 
-            if (e.OldItems != null && 0 < e.OldItems.Count)
+            if(e.OldItems != null && 0 < e.OldItems.Count)
             {
-                foreach (ICommand cmd in e.OldItems)
+                foreach(ICommand cmd in e.OldItems)
                     cmd.CanExecuteChanged -= this.OnChildCommandCanExecuteChanged;
             }
         }
@@ -87,8 +89,8 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         public bool CanExecute(object parameter)
         {
-            foreach (ICommand cmd in this.Commands)
-                if (!cmd.CanExecute(parameter))
+            foreach(ICommand cmd in this.Commands)
+                if(!cmd.CanExecute(parameter))
                     return false;
 
             return true;
@@ -104,7 +106,7 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         protected virtual void OnCanExecuteChanged()
         {
-            if (this.CanExecuteChanged != null)
+            if(this.CanExecuteChanged != null)
                 this.CanExecuteChanged(this, EventArgs.Empty);
         }
 
@@ -113,7 +115,7 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         public void Execute(object parameter)
         {
-            foreach (ICommand cmd in this.Commands)
+            foreach(ICommand cmd in this.Commands)
                 cmd.Execute(parameter);
         }
 

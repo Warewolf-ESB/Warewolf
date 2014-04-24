@@ -1,6 +1,6 @@
-﻿using Dev2.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
@@ -26,12 +26,12 @@ namespace Dev2
 
         }
 
-        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber,bool inserted = false)
+        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber, bool inserted = false)
         {
             Inserted = inserted;
             ToType = string.IsNullOrEmpty(toType) ? "Base 64" : toType;
-            FromType = string.IsNullOrEmpty(fromType) ? "Text" : fromType; ;
-            ToExpression = string.IsNullOrEmpty(toExpression) ? string.Empty : toExpression; ;
+            FromType = string.IsNullOrEmpty(fromType) ? "Text" : fromType;
+            ToExpression = string.IsNullOrEmpty(toExpression) ? string.Empty : toExpression;
             FromExpression = fromExpression;
             IndexNumber = indexNumber;
         }
@@ -53,7 +53,7 @@ namespace Dev2
             }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     _fromType = value;
                     OnPropertyChanged("FromType");
@@ -72,7 +72,7 @@ namespace Dev2
             }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     _toType = value;
                     OnPropertyChanged("ToType");
@@ -143,7 +143,7 @@ namespace Dev2
             ToType = "";
             FromExpression = string.Empty;
             ToExpression = string.Empty;
-        }        
+        }
 
         #endregion
 
@@ -153,7 +153,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }

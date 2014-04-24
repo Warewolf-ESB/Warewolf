@@ -14,7 +14,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Constructors
 
+        // ReSharper disable EmptyConstructor
         public XmlMapper()
+        // ReSharper restore EmptyConstructor
         {
         }
 

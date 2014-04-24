@@ -10,14 +10,18 @@ namespace Dev2.Converters
             bool result = false;
             try
             {
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
                 Convert.FromBase64String(payload);
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 result = true;
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // if error is thrown we know it is not a valid base64 string
             }
-            
+
             return result;
 
         }

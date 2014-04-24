@@ -24,11 +24,13 @@ namespace WPF.JoshSmith.Markup
         {
             try
             {
-                var state = PermissionState.Unrestricted;
+                const PermissionState state = PermissionState.Unrestricted;
                 new UIPermission(state).Assert();
                 FullTrust = true;
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch { }
+            // ReSharper restore EmptyGeneralCatchClause
         }
 
         /// <summary>
@@ -44,15 +46,15 @@ namespace WPF.JoshSmith.Markup
         public override object ProvideValue(IServiceProvider sp)
         {
             object value = null;
-            if (FullTrust)
+            if(FullTrust)
             {
                 try
                 {
-                    using (var str = new StringReader(Xaml))
-                    using (var xml = XmlReader.Create(str))
+                    using(var str = new StringReader(Xaml))
+                    using(var xml = XmlReader.Create(str))
                         value = XamlReader.Load(xml);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Debug.Fail("Invalid XAML.\r\n" + ex);
                 }

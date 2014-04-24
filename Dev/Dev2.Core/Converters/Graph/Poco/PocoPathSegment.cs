@@ -37,10 +37,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         public string ToString(bool considerEnumerable)
@@ -49,10 +47,8 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         #endregion Methods

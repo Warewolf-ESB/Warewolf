@@ -21,7 +21,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             string serviceID = null;
             string workspaceID = null;
-            string filterList = null;
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
@@ -40,7 +39,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("FilterList", out tmp);
             if(tmp != null)
             {
-                filterList = tmp.ToString();
             }
 
             if(string.IsNullOrEmpty(serviceID) || string.IsNullOrEmpty(workspaceID))
@@ -63,7 +61,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
 
+                // ReSharper disable ExpressionIsAlwaysNull
                 CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
+                // ReSharper restore ExpressionIsAlwaysNull
 
                 result.Message.Append(serializer.SerializeToBuilder(msgs));
             }
@@ -78,13 +78,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService();
-            newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            ServiceAction sa = new ServiceAction();
-            sa.Name = HandlesType();
-            sa.ActionType = enActionType.InvokeManagementDynamicService;
-            sa.SourceMethod = HandlesType();
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

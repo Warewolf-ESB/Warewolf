@@ -37,10 +37,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             {
                 return ActualSegment + JsonPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         public string ToString(bool considerEnumerable)
@@ -49,10 +47,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             {
                 return ActualSegment + JsonPath.EnumerableSymbol;
             }
-            else
-            {
-                return ActualSegment;
-            }
+
+            return ActualSegment;
         }
 
         #endregion Methods
