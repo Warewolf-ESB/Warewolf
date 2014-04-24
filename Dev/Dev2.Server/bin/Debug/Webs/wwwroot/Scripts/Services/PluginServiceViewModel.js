@@ -334,8 +334,9 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
                         result.Records[i].Cells[q].Value = result.Records[i].Cells[q].Value.replace(regex, ",");
                     }
                 }
-            } catch(e) {
-                
+            } catch (e) {
+                // Just unpack it and replace ;)
+                result = JSON.parse(JSON.stringify(result).replace(regex, ","));
             }
 
             self.pushRecordsets(result);

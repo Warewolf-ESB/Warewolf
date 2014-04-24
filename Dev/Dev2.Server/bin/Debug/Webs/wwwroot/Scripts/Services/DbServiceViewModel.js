@@ -404,7 +404,10 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
                         result.Records[i].Cells[q].Value = result.Records[i].Cells[q].Value.replace(regex, ",");
                     }
                 }
-            } catch(e) {}
+            } catch(e) {
+                // Just unpack it and replace ;)
+                result = JSON.parse(JSON.stringify(result).replace(regex, ","));
+            }
 
             self.isTestResultsLoading(false);
             self.hasTestResultRecords(result.Records.length > 0);
