@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Dev2.Studio.Utils;
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation

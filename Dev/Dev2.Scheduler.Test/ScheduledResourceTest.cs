@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Dev2.Scheduler.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Scheduler;
 using Moq;
 namespace Dev2.Scheduler.Test
 {
@@ -16,15 +13,15 @@ namespace Dev2.Scheduler.Test
         [TestCategory("ScheduledResource_Ctor")]
         public void ScheduledResource_Constructor()
         {
-       
+
             IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
-            ScheduledResource res = new ScheduledResource("bob",SchedulerStatus.Enabled, DateTime.MaxValue,trigger,"rory");
-            Assert.AreEqual("bob",res.Name);
-            Assert.AreEqual(SchedulerStatus.Enabled,res.Status);
-            Assert.AreEqual(DateTime.MaxValue,res.NextRunDate);
-            Assert.AreEqual(trigger,res.Trigger);
-         
-            Assert.AreEqual("rory",res.WorkflowName);
+            ScheduledResource res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory");
+            Assert.AreEqual("bob", res.Name);
+            Assert.AreEqual(SchedulerStatus.Enabled, res.Status);
+            Assert.AreEqual(DateTime.MaxValue, res.NextRunDate);
+            Assert.AreEqual(trigger, res.Trigger);
+
+            Assert.AreEqual("rory", res.WorkflowName);
         }
 
         [TestMethod]
@@ -32,19 +29,19 @@ namespace Dev2.Scheduler.Test
         [TestCategory("ScheduledResource_Properties")]
         public void ScheduledResource_Properties()
         {
-     
+
             IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
             var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory");
             res.Password = "PWD";
-            Assert.AreEqual( "PWD",res.Password);
+            Assert.AreEqual("PWD", res.Password);
             res.UserName = "User";
-            Assert.AreEqual("User",res.UserName);
+            Assert.AreEqual("User", res.UserName);
             res.RunAsapIfScheduleMissed = false;
             Assert.IsFalse(res.RunAsapIfScheduleMissed);
             res.NumberOfHistoryToKeep = 25;
-            Assert.AreEqual(25,res.NumberOfHistoryToKeep);
+            Assert.AreEqual(25, res.NumberOfHistoryToKeep);
             res.AllowMultipleIstances = true;
-            Assert.AreEqual(true,res.AllowMultipleIstances);
+            Assert.AreEqual(true, res.AllowMultipleIstances);
             res.OldName = "bob";
             Assert.AreEqual("bob", res.OldName);
 

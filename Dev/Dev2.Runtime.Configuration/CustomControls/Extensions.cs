@@ -3,8 +3,6 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
-using System.Windows;
 using System.Windows.Media;
 
 namespace System.Windows.Controls
@@ -30,7 +28,7 @@ namespace System.Windows.Controls
         public static bool Invert(this Matrix m, out Matrix outputMatrix)
         {
             double determinant = m.M11 * m.M22 - m.M12 * m.M21;
-            if (determinant == 0.0)
+            if(determinant == 0.0)
             {
                 outputMatrix = m;
                 return false;

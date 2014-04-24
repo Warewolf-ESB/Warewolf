@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Dev2.DynamicServices;
 
-namespace Dev2.Workspaces {
+namespace Dev2.Workspaces
+{
     /// <summary>
     /// A workspace.
     /// </summary>
     [Serializable]
-    public partial class Workspace : IWorkspace {
-        
+    public partial class Workspace : IWorkspace
+    {
+
         #region Initialization
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Workspace" /> class.
         /// </summary>
         /// <param name="workspaceID">The id of the workspace.</param>
-        public Workspace(Guid workspaceID) {
+        public Workspace(Guid workspaceID)
+        {
             ID = workspaceID;
             Items = new List<IWorkspaceItem>();
         }
@@ -28,7 +30,8 @@ namespace Dev2.Workspaces {
         /// <summary>
         /// Gets or sets the unique ID.
         /// </summary>
-        public Guid ID {
+        public Guid ID
+        {
             get;
             private set;
         }
@@ -40,7 +43,8 @@ namespace Dev2.Workspaces {
         /// <summary>
         /// Gets the items for this workspace.
         /// </summary>
-        public IList<IWorkspaceItem> Items {
+        public IList<IWorkspaceItem> Items
+        {
             get;
             private set;
         }
@@ -49,16 +53,20 @@ namespace Dev2.Workspaces {
 
         #region ISerializable
 
-        protected Workspace(SerializationInfo info, StreamingContext context) {
-            if (info == null) {
+        protected Workspace(SerializationInfo info, StreamingContext context)
+        {
+            if(info == null)
+            {
                 throw new ArgumentNullException("info");
             }
             ID = (Guid)info.GetValue("ID", typeof(Guid));
             Items = (IList<IWorkspaceItem>)info.GetValue("Items", typeof(IList<IWorkspaceItem>));
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context) {
-            if (info == null) {
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if(info == null)
+            {
                 throw new ArgumentNullException("info");
             }
             info.AddValue("ID", ID);
@@ -69,15 +77,19 @@ namespace Dev2.Workspaces {
 
         #region IEquatable
 
-        public bool Equals(IWorkspace other) {
-            if (other == null) {
+        public bool Equals(IWorkspace other)
+        {
+            if(other == null)
+            {
                 return false;
             }
             return ID == other.ID;
         }
 
-        public override bool Equals(object obj) {
-            if (obj == null) {
+        public override bool Equals(object obj)
+        {
+            if(obj == null)
+            {
                 return false;
             }
 
@@ -85,7 +97,8 @@ namespace Dev2.Workspaces {
             return item != null && Equals(item);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return ID.GetHashCode();
         }
 

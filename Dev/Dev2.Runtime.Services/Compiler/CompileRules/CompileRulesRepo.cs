@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
-using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.Compiler.CompileRules
 {
@@ -20,7 +19,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
         {
             IList<IServiceCompileRule> rules = FindAll();
 
-            if (rules != null)
+            if(rules != null)
             {
                 return (rules.Where(c => c.HandlesType() == typeOf));
             }

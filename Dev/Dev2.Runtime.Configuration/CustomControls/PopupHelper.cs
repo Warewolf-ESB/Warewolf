@@ -3,12 +3,10 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace System.Windows.Controls
@@ -122,7 +120,7 @@ namespace System.Windows.Controls
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This try-catch pattern is used by other popup controls to keep the runtime up.")]
         public void Arrange()
         {
-            if (Popup == null
+            if(Popup == null
                 || PopupChild == null
 #if SILVERLIGHT
  || OutsidePopupCanvas == null
@@ -143,17 +141,17 @@ namespace System.Windows.Controls
             double rootHeight = hostContent.ActualHeight;
 #else
             UIElement u = Parent;
-            if (Application.Current.Windows.Count > 0)
+            if(Application.Current.Windows.Count > 0)
             {
                 // TODO: USE THE CURRENT WINDOW INSTEAD! WALK THE TREE!
                 u = Application.Current.Windows[0];
             }
-            while ((u as Window) == null && u != null)
+            while((u as Window) == null && u != null)
             {
                 u = VisualTreeHelper.GetParent(u) as UIElement;
             }
             Window w = u as Window;
-            if (w == null)
+            if(w == null)
             {
                 return;
             }
@@ -165,7 +163,7 @@ namespace System.Windows.Controls
             double popupContentWidth = PopupChild.ActualWidth;
             double popupContentHeight = PopupChild.ActualHeight;
 
-            if (rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
+            if(rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
             {
                 return;
             }
@@ -178,7 +176,7 @@ namespace System.Windows.Controls
 
             // Use or come up with a maximum popup height.
             double popupMaxHeight = MaxDropDownHeight;
-            if (double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
+            if(double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
             {
                 popupMaxHeight = (rootHeight - myControlHeight) * 3 / 5;
             }
@@ -190,7 +188,7 @@ namespace System.Windows.Controls
             // We prefer to align the popup box with the left edge of the 
             // control, if it will fit.
             double popupX = rootOffsetX;
-            if (rootWidth < popupX + popupContentWidth)
+            if(rootWidth < popupX + popupContentWidth)
             {
                 // Since it doesn't fit when strictly left aligned, we shift it 
                 // to the left until it does fit.
@@ -201,17 +199,17 @@ namespace System.Windows.Controls
             // We prefer to put the popup below the combobox if it will fit.
             bool below = true;
             double popupY = rootOffsetY + myControlHeight;
-            if (rootHeight < popupY + popupContentHeight)
+            if(rootHeight < popupY + popupContentHeight)
             {
                 below = false;
                 // It doesn't fit below the combobox, lets try putting it above 
                 // the combobox.
                 popupY = rootOffsetY - popupContentHeight;
-                if (popupY < 0)
+                if(popupY < 0)
                 {
                     // doesn't really fit below either.  Now we just pick top 
                     // or bottom based on wich area is bigger.
-                    if (rootOffsetY < (rootHeight - myControlHeight) / 2)
+                    if(rootOffsetY < (rootHeight - myControlHeight) / 2)
                     {
                         below = true;
                         popupY = rootOffsetY + myControlHeight;
@@ -265,7 +263,7 @@ namespace System.Windows.Controls
         private void OnClosed(EventArgs e)
         {
             EventHandler handler = Closed;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(this, e);
             }
@@ -279,9 +277,9 @@ namespace System.Windows.Controls
         private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             // Delayed closing of the popup until now
-            if (e != null && e.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
+            if(e != null && e.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
             {
-                if (Popup != null)
+                if(Popup != null)
                 {
                     Popup.IsOpen = false;
                 }
@@ -295,20 +293,20 @@ namespace System.Windows.Controls
         /// </summary>
         public void BeforeOnApplyTemplate()
         {
-            if (UsesClosingVisualState)
+            if(UsesClosingVisualState)
             {
                 // Unhook the event handler for the popup closed visual state group.
                 // This code is used to enable visual state transitions before 
                 // actually setting the underlying Popup.IsOpen property to false.
                 VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-                if (null != groupPopupClosed)
+                if(null != groupPopupClosed)
                 {
                     groupPopupClosed.CurrentStateChanged -= OnPopupClosedStateChanged;
                     UsesClosingVisualState = false;
                 }
             }
 
-            if (Popup != null)
+            if(Popup != null)
             {
                 Popup.Closed -= Popup_Closed;
             }
@@ -320,13 +318,13 @@ namespace System.Windows.Controls
         /// </summary>
         public void AfterOnApplyTemplate()
         {
-            if (Popup != null)
+            if(Popup != null)
             {
                 Popup.Closed += Popup_Closed;
             }
 
             VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-            if (null != groupPopupClosed)
+            if(null != groupPopupClosed)
             {
                 groupPopupClosed.CurrentStateChanged += OnPopupClosedStateChanged;
                 UsesClosingVisualState = true;
@@ -335,11 +333,11 @@ namespace System.Windows.Controls
             // TODO: Consider moving to the DropDownPopup setter
             // TODO: Although in line with other implementations, what happens 
             // when the template is swapped out?
-            if (Popup != null)
+            if(Popup != null)
             {
                 PopupChild = Popup.Child as FrameworkElement;
 
-                  if (PopupChild != null)
+                if(PopupChild != null)
                 {
 #if SILVERLIGHT
                     // For Silverlight only, we just create the popup child with 
@@ -387,7 +385,7 @@ namespace System.Windows.Controls
         /// <param name="e">The event data.</param>
         private void OutsidePopup_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (Popup != null)
+            if(Popup != null)
             {
                 Popup.IsOpen = false;
             }
@@ -411,7 +409,7 @@ namespace System.Windows.Controls
         private void OnFocusChanged(EventArgs e)
         {
             EventHandler handler = FocusChanged;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(this, e);
             }
@@ -424,7 +422,7 @@ namespace System.Windows.Controls
         private void OnUpdateVisualStates(EventArgs e)
         {
             EventHandler handler = UpdateVisualStates;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(this, e);
             }

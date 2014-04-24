@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.TaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
@@ -27,11 +26,11 @@ namespace Dev2.Scheduler.Test
             mockFactory.Setup(a => a.CreateExecAction(It.IsAny<IAction>())).Returns(mockAction.Object);
             mockTriggers.Setup(a => a.Add(t.Object)).Verifiable();
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
-           
+
             ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
-            Assert.AreEqual(trigger.NativeXML,"bob");
-            Assert.AreEqual(trigger.State,TaskState.Disabled);
-           
+            Assert.AreEqual(trigger.NativeXML, "bob");
+            Assert.AreEqual(trigger.State, TaskState.Disabled);
+
 
 
         }
@@ -52,14 +51,14 @@ namespace Dev2.Scheduler.Test
             mockTask.Setup(a => a.Triggers).Returns(mockTriggers);
             mockFactory.Setup(a => a.CreateExecAction(It.IsAny<IAction>())).Returns(mockAction.Object);
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
-         
+
 
             ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             var x = trigger.Trigger;
             mockTask.VerifySet(a => a.XmlText = "bob");
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
-            
+
 
 
         }
@@ -70,7 +69,7 @@ namespace Dev2.Scheduler.Test
     {
         public void Dispose()
         {
-            
+
         }
 
         public TriggerCollection Instance { get; private set; }

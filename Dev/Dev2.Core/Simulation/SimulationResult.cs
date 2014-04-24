@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.PathOperations.Interfaces;
 
 namespace Dev2.Simulation
 {

@@ -3,11 +3,8 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace System.Windows.Controls
@@ -334,7 +331,7 @@ namespace System.Windows.Controls
         /// Hidden state name for BusyIndicator.
         /// </summary>
         public const string StateHidden = "Hidden";
-        
+
         /// <summary>
         /// BusyDisplay group.
         /// </summary>
@@ -361,9 +358,9 @@ namespace System.Windows.Controls
             Debug.Assert(stateNames != null, "stateNames should not be null!");
             Debug.Assert(stateNames.Length > 0, "stateNames should not be empty!");
 
-            foreach (string name in stateNames)
+            foreach(string name in stateNames)
             {
-                if (VisualStateManager.GoToState(control, name, useTransitions))
+                if(VisualStateManager.GoToState(control, name, useTransitions))
                 {
                     break;
                 }
@@ -381,8 +378,8 @@ namespace System.Windows.Controls
         public static FrameworkElement GetImplementationRoot(DependencyObject dependencyObject)
         {
             Debug.Assert(dependencyObject != null, "DependencyObject should not be null.");
-            return (1 == VisualTreeHelper.GetChildrenCount(dependencyObject)) ? 
-                VisualTreeHelper.GetChild(dependencyObject, 0) as FrameworkElement : 
+            return (1 == VisualTreeHelper.GetChildrenCount(dependencyObject)) ?
+                VisualTreeHelper.GetChild(dependencyObject, 0) as FrameworkElement :
                 null;
         }
 
@@ -397,7 +394,7 @@ namespace System.Windows.Controls
         public static VisualStateGroup TryGetVisualStateGroup(DependencyObject dependencyObject, string groupName)
         {
             FrameworkElement root = GetImplementationRoot(dependencyObject);
-            if (root == null)
+            if(root == null)
             {
                 return null;
             }

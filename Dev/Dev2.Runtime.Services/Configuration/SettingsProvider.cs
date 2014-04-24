@@ -3,8 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Runtime.Configuration
 {
@@ -72,7 +70,7 @@ namespace Dev2.Runtime.Configuration
 
         public virtual void ProcessMessage()
         {
-           
+
         }
 
         #endregion
@@ -139,7 +137,7 @@ namespace Dev2.Runtime.Configuration
                 {
                     var xml = XElement.Load(filePath);
                     xml.SetAttributeValue("WebServerUri", WebServerUri);
-                    
+
                     return new Settings.Configuration(xml);
                 }
                 // ReSharper disable EmptyGeneralCatchClause

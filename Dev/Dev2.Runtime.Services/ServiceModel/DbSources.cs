@@ -8,7 +8,6 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
-using Dev2.Services.Sql;
 using Newtonsoft.Json;
 using DbSource = Dev2.Runtime.ServiceModel.Data.DbSource;
 

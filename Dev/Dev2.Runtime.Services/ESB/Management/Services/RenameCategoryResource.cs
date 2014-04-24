@@ -1,13 +1,12 @@
 ﻿using System;
-using Dev2.Common.ExtMethods;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -27,7 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             StringBuilder tmp;
             values.TryGetValue("OldCategory", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 oldCategory = tmp.ToString();
             }
@@ -54,10 +53,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for ResourceType parameter.");
             }
-            
+
             var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory, resourceType);
 
-            ExecuteMessage msg = new ExecuteMessage() {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage() { HasError = false };
             msg.SetMessage(saveResult.Message);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);

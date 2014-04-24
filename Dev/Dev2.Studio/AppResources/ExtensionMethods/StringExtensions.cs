@@ -26,8 +26,9 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             StringBuilder sb = new StringBuilder();
             foreach(char c in str)
             {
-                // ReSharper disable once PossibleMultipleEnumeration
+                // ReSharper disable PossibleMultipleEnumeration
                 if(!toExclude.Contains(c))
+                    // ReSharper restore PossibleMultipleEnumeration
                     sb.Append(c);
             }
             return sb.ToString();

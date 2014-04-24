@@ -3,9 +3,6 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
-using System.Globalization;
-using System.Windows.Controls;
 
 namespace System.Windows.Controls
 {
@@ -23,7 +20,7 @@ namespace System.Windows.Controls
         /// <returns>Returns the string-based comparison function.</returns>
         public static AutoCompleteFilterPredicate<string> GetFilter(AutoCompleteFilterMode FilterMode)
         {
-            switch (FilterMode)
+            switch(FilterMode)
             {
                 case AutoCompleteFilterMode.Contains:
                     return Contains;

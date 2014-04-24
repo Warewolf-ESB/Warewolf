@@ -3,7 +3,7 @@
 namespace Dev2.Common.ExtMethods
 {
     /// <summary>
-    /// Used to extract primative types out for plugins ;)
+    /// Used to extract primitive types out for plugins ;)
     /// </summary>
     public static class TypeExtensions
     {
@@ -95,9 +95,9 @@ namespace Dev2.Common.ExtMethods
                 case "ulong":
                     parsedTypeName = "System.UInt64";
                     break;
-                case "guid" :
+                case "guid":
                     parsedTypeName = "System.Guid";
-                break;
+                    break;
             }
 
             if(parsedTypeName != null)

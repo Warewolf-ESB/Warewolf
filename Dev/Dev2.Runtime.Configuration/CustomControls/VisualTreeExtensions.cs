@@ -3,12 +3,9 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media;
 
 namespace System.Windows.Controls
@@ -28,7 +25,7 @@ namespace System.Windows.Controls
             Debug.Assert(parent != null, "The parent cannot be null.");
 
             int childCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int counter = 0; counter < childCount; counter++)
+            for(int counter = 0; counter < childCount; counter++)
             {
                 yield return VisualTreeHelper.GetChild(parent, counter);
             }
@@ -50,12 +47,12 @@ namespace System.Windows.Controls
             Queue<FrameworkElement> queue =
                 new Queue<FrameworkElement>(parent.GetVisualChildren().OfType<FrameworkElement>());
 
-            while (queue.Count > 0)
+            while(queue.Count > 0)
             {
                 FrameworkElement element = queue.Dequeue();
                 yield return element;
 
-                foreach (FrameworkElement visualChild in element.GetVisualChildren().OfType<FrameworkElement>())
+                foreach(FrameworkElement visualChild in element.GetVisualChildren().OfType<FrameworkElement>())
                 {
                     queue.Enqueue(visualChild);
                 }

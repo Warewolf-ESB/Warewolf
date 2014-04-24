@@ -5,9 +5,7 @@
 
 using System.Collections;
 using System.Linq;
-using System.Windows;
 using System.Windows.Automation.Peers;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
@@ -45,7 +43,7 @@ namespace System.Windows.Controls
 
             set
             {
-                if (_selector != null)
+                if(_selector != null)
                 {
                     _selector.SelectionChanged -= OnSelectionChanged;
                     _selector.MouseLeftButtonUp -= OnSelectorMouseLeftButtonUp;
@@ -53,7 +51,7 @@ namespace System.Windows.Controls
 
                 _selector = value;
 
-                if (_selector != null)
+                if(_selector != null)
                 {
                     _selector.SelectionChanged += OnSelectionChanged;
                     _selector.MouseLeftButtonUp += OnSelectorMouseLeftButtonUp;
@@ -109,23 +107,23 @@ namespace System.Windows.Controls
         /// Gets or sets the selected item of the selection adapter.
         /// </summary>
         /// <value>The selected item of the underlying selection adapter.</value>
-        public object SelectedItem 
+        public object SelectedItem
         {
-            get 
-            { 
-                return SelectorControl == null ? null : SelectorControl.SelectedItem; 
+            get
+            {
+                return SelectorControl == null ? null : SelectorControl.SelectedItem;
             }
-            
+
             set
             {
                 IgnoringSelectionChanged = true;
-                if (SelectorControl != null)
+                if(SelectorControl != null)
                 {
                     SelectorControl.SelectedItem = value;
                 }
-                
+
                 // Attempt to reset the scroll viewer's position
-                if (value == null)
+                if(value == null)
                 {
                     ResetScrollViewer();
                 }
@@ -144,11 +142,11 @@ namespace System.Windows.Controls
         {
             get
             {
-                return SelectorControl == null ? null : SelectorControl.ItemsSource; 
+                return SelectorControl == null ? null : SelectorControl.ItemsSource;
             }
-            set 
+            set
             {
-                if (SelectorControl != null)
+                if(SelectorControl != null)
                 {
                     SelectorControl.ItemsSource = value;
                 }
@@ -161,10 +159,10 @@ namespace System.Windows.Controls
         /// </summary>
         private void ResetScrollViewer()
         {
-            if (SelectorControl != null)
+            if(SelectorControl != null)
             {
                 ScrollViewer sv = SelectorControl.GetLogicalChildrenBreadthFirst().OfType<ScrollViewer>().FirstOrDefault();
-                if (sv != null)
+                if(sv != null)
                 {
                     sv.ScrollToTop();
                 }
@@ -188,13 +186,13 @@ namespace System.Windows.Controls
         /// <param name="e">The selection changed event data.</param>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (IgnoringSelectionChanged)
+            if(IgnoringSelectionChanged)
             {
                 return;
             }
 
             SelectionChangedEventHandler handler = SelectionChanged;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(sender, e);
             }
@@ -209,7 +207,7 @@ namespace System.Windows.Controls
         /// </summary>
         protected void SelectedIndexIncrement()
         {
-            if (SelectorControl != null)
+            if(SelectorControl != null)
             {
                 SelectorControl.SelectedIndex = SelectorControl.SelectedIndex + 1 >= SelectorControl.Items.Count ? -1 : SelectorControl.SelectedIndex + 1;
             }
@@ -224,14 +222,14 @@ namespace System.Windows.Controls
         /// </summary>
         protected void SelectedIndexDecrement()
         {
-            if (SelectorControl != null)
+            if(SelectorControl != null)
             {
                 int index = SelectorControl.SelectedIndex;
-                if (index >= 0)
+                if(index >= 0)
                 {
                     SelectorControl.SelectedIndex--;
                 }
-                else if (index == -1)
+                else if(index == -1)
                 {
                     SelectorControl.SelectedIndex = SelectorControl.Items.Count - 1;
                 }
@@ -249,7 +247,7 @@ namespace System.Windows.Controls
         /// <see cref="E:System.Windows.UIElement.KeyDown" /> event.</param>
         public void HandleKeyDown(KeyEventArgs e)
         {
-            switch (e.Key)
+            switch(e.Key)
             {
                 case Key.Enter:
                     OnCommit();
@@ -262,7 +260,7 @@ namespace System.Windows.Controls
                     break;
 
                 case Key.Down:
-                    if ((ModifierKeys.Alt & Keyboard.Modifiers) == ModifierKeys.None)
+                    if((ModifierKeys.Alt & Keyboard.Modifiers) == ModifierKeys.None)
                     {
                         SelectedIndexIncrement();
                         e.Handled = true;
@@ -272,9 +270,6 @@ namespace System.Windows.Controls
                 case Key.Escape:
                     OnCancel();
                     e.Handled = true;
-                    break;
-
-                default:
                     break;
             }
         }
@@ -297,7 +292,7 @@ namespace System.Windows.Controls
         private void OnCommit(object sender, RoutedEventArgs e)
         {
             RoutedEventHandler handler = Commit;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(sender, e);
             }
@@ -323,7 +318,7 @@ namespace System.Windows.Controls
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             RoutedEventHandler handler = Cancel;
-            if (handler != null)
+            if(handler != null)
             {
                 handler(sender, e);
             }
@@ -337,7 +332,7 @@ namespace System.Windows.Controls
         private void AfterAdapterAction()
         {
             IgnoringSelectionChanged = true;
-            if (SelectorControl != null)
+            if(SelectorControl != null)
             {
                 SelectorControl.SelectedItem = null;
                 SelectorControl.SelectedIndex = -1;
