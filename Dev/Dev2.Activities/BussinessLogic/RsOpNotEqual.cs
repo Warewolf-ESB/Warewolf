@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -15,49 +16,47 @@ namespace Dev2.DataList
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
 
-            result = () =>
-            {
-                ErrorResultTO err;
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
+            Func<IList<string>> result = () =>
                 {
-                    if(to.MatchCase)
+                    ErrorResultTO err;
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
+
+                    foreach(RecordSetSearchPayload p in operationRange)
                     {
-                        if(!p.Payload.Equals(to.SearchCriteria, StringComparison.CurrentCulture))
+                        if(to.MatchCase)
                         {
-                            fnResult.Add(p.Index.ToString());
+                            if(!p.Payload.Equals(to.SearchCriteria, StringComparison.CurrentCulture))
+                            {
+                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                if(to.RequireAllFieldsToMatch)
+                                {
+                                    return new List<string>();
+                                }
+                            }
                         }
                         else
                         {
-                            if(to.RequireAllFieldsToMatch)
+                            if(!p.Payload.ToLower().Equals(to.SearchCriteria.ToLower(), StringComparison.CurrentCulture))
                             {
-                                return new List<string>();
+                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                if(to.RequireAllFieldsToMatch)
+                                {
+                                    return new List<string>();
+                                }
                             }
                         }
                     }
-                    else
-                    {
-                        if(!p.Payload.ToLower().Equals(to.SearchCriteria.ToLower(), StringComparison.CurrentCulture))
-                        {
-                            fnResult.Add(p.Index.ToString());
-                        }
-                        else
-                        {
-                            if(to.RequireAllFieldsToMatch)
-                            {
-                                return new List<string>();
-                            }
-                        }
-                    }
-                }
 
-                return fnResult.Distinct().ToList();
-            };
-
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

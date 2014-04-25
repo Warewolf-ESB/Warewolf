@@ -54,10 +54,10 @@ namespace Dev2.Runtime.Configuration.CustomControls
         private void DirectoryUpdated(ComputerDrive newDirectory)
         {
             // Update the interface and values only as necessary
-            UpdateDirectoryValue(newDirectory);
+            UpdateDirectoryValue();
         }
 
-        private void UpdateDirectoryValue(ComputerDrive CurrentDrive)
+        private void UpdateDirectoryValue()
         {
 
         }

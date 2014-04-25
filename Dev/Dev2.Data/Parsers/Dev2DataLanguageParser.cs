@@ -1,14 +1,14 @@
-﻿using Dev2.Data.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 
 namespace Dev2.Data.Parsers
 {
@@ -1023,7 +1023,7 @@ namespace Dev2.Data.Parsers
 
                     var isRecName = (isRs && rawSearch.Contains("(") && rawSearch.EndsWith(")"));
 
-                    var displayString = "Recordset";
+                    const string displayString = "Recordset";
                     if((!isRecName || parts[1] == string.Empty) && payload.Child == null)
                     {
                         IList<IIntellisenseResult> intellisenseResults;
@@ -1151,7 +1151,7 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        void ProcessForOnlyOpenRegion(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
+        void ProcessForOnlyOpenRegion(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
         {
             bool addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
 
@@ -1220,7 +1220,6 @@ namespace Dev2.Data.Parsers
         {
             if(!string.IsNullOrEmpty(name))
             {
-                //var intellisenseResult = IntellisenseFactory.CreateErrorResult(1, 1, null, "Variable " + name + "  contains invalid character(s).", enIntellisenseErrorCode.SyntaxError, true);
                 var dataListVerifyPart = new DataListVerifyPart(name, "");
                 var displayName = displayString == "Recordset field" ? name : "[[" + name + "]]";
                 var intellisenseResult = IntellisenseFactory.CreateErrorResult(1, 1, dataListVerifyPart, displayString + " name " + displayName + " contains invalid character(s)", enIntellisenseErrorCode.SyntaxError, true);

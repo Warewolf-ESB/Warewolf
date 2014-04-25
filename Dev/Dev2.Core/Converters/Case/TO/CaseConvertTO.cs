@@ -1,10 +1,10 @@
-﻿using Dev2.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using Dev2.Providers.Validation;
 
 namespace Dev2
 {
@@ -27,7 +27,7 @@ namespace Dev2
             Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
-        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber,bool inserted = false)
+        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber, bool inserted = false)
         {
             Inserted = inserted;
             StringToConvert = stringToConvert;
@@ -67,7 +67,7 @@ namespace Dev2
             }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     _convertType = value;
                     OnPropertyChanged("ConvertType");
@@ -93,7 +93,7 @@ namespace Dev2
             get
             {
                 //Add the below code when the wizard comes in
-                if (string.IsNullOrWhiteSpace(_result))
+                if(string.IsNullOrWhiteSpace(_result))
                 {
                     _result = StringToConvert;
                 }
@@ -136,7 +136,7 @@ namespace Dev2
             StringToConvert = string.Empty;
             ConvertType = "UPPER";
             Result = string.Empty;
-        }        
+        }
 
         #region PropertyChanged
 
@@ -144,7 +144,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -169,7 +169,9 @@ namespace Dev2
         /// <returns>
         /// An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
 
@@ -190,7 +192,7 @@ namespace Dev2
 
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {
-            if (ruleSet == null)
+            if(ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
@@ -205,7 +207,7 @@ namespace Dev2
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if (Errors.TryGetValue(propertyName, out errorList))
+            if(Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -215,7 +217,7 @@ namespace Dev2
         public bool Validate(string propertyName, string datalist)
         {
             RuleSet ruleSet = null;
-            switch (propertyName)
+            switch(propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();

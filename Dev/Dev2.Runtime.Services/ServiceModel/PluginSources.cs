@@ -94,7 +94,9 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/PluginSources/ValidateAssemblyImageFormat
         public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
         {
+            // ReSharper disable RedundantAssignment
             var toJson = @"{""validationresult"":""failure""}";
+            // ReSharper restore RedundantAssignment
 
             var broker = new PluginBroker();
 

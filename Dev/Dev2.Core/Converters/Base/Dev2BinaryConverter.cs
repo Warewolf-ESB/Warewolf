@@ -12,7 +12,9 @@ namespace Dev2.Converters
         {
             StringBuilder result = new StringBuilder();
 
+            // ReSharper disable ForCanBeConvertedToForeach
             for(int i = 0; i < payload.Length; i++)
+            // ReSharper restore ForCanBeConvertedToForeach
             {
                 string tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value

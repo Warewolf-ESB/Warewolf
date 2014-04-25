@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory, resourceType);
 
-            ExecuteMessage msg = new ExecuteMessage() { HasError = false };
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(saveResult.Message);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
@@ -64,13 +64,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService();
-            newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><OldCategory ColumnIODirection=\"Input\"/><NewCategory ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            ServiceAction sa = new ServiceAction();
-            sa.Name = HandlesType();
-            sa.ActionType = enActionType.InvokeManagementDynamicService;
-            sa.SourceMethod = HandlesType();
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><OldCategory ColumnIODirection=\"Input\"/><NewCategory ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

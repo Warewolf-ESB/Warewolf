@@ -140,7 +140,6 @@
     <Compile Include="ESB\WF\FileSystemInstanceStoreIO.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\WF\WorkflowApplicationFactory.cs" />
-    <Compile Include="ESB\WF\XmlInstanceStore.cs" />
     <Compile Include="AppServerStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -382,7 +382,6 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             int growthSize = (int)(targetSize * DataListConstants.RowGrowthFactor);
             char[] tmp = new char[growthSize];
 
-            // Buffer.BlockCopy();
             if(_rowData.Length >= GlobalConstants.MAX_BUFFER_SIZE || _usedStorage >= GlobalConstants.MAX_BUFFER_SIZE || tmp.Length >= GlobalConstants.MAX_BUFFER_SIZE)
             {
                 ServerLogger.LogMessage("*** Row Data Size Warning [ " + _rowData.Length + " ], New Data Size [ " + tmp.Length + " ],  Used Storage Size [ " + _usedStorage + " ]");

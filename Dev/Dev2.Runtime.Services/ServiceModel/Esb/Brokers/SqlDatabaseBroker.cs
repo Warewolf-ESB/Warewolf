@@ -18,11 +18,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
             var foundXMLFrags = 0;
 
-            foreach(XmlNode n in nl)
+            if(nl != null)
             {
-                var tmp = n.InnerXml;
-                result = result.Append(tmp);
-                foundXMLFrags++;
+                foreach(XmlNode n in nl)
+                {
+                    var tmp = n.InnerXml;
+                    result = result.Append(tmp);
+                    foundXMLFrags++;
+                }
             }
 
             var res = result.ToString();

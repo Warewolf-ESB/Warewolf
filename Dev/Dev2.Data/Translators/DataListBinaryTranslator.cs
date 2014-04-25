@@ -13,8 +13,8 @@ namespace Dev2.Server.DataList.Translators
 {
     internal sealed class DataListBinaryTranslator : IDataListTranslator
     {
-        private DataListFormat _format;
-        private Encoding _encoding;
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
 
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
@@ -48,7 +48,7 @@ namespace Dev2.Server.DataList.Translators
                 throw new ArgumentNullException("input");
             }
 
-            DataListTranslatedPayloadTO resultTO = null;
+            DataListTranslatedPayloadTO resultTO;
             BinaryFormatter bf = new BinaryFormatter();
             using(MemoryStream ms = new MemoryStream())
             {

@@ -27,7 +27,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Class Members
 
         private string _result;
-        //int _indexCounter = 1;
 
         #endregion Class Members
 

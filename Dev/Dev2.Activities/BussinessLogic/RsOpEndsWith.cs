@@ -14,51 +14,45 @@ namespace Dev2.DataList
     {
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
-            // Default to a null function result
-            // ReSharper disable RedundantAssignment
-            Func<IList<string>> result = () => null;
-            // ReSharper restore RedundantAssignment
-
-            result = () =>
-            {
-                ErrorResultTO err;
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
+            Func<IList<string>> result = () =>
                 {
-                    if(to.MatchCase)
-                    {
-                        if(p.Payload.EndsWith(to.SearchCriteria))
-                        {
-                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                        }
-                        else
-                        {
-                            if(to.RequireAllFieldsToMatch)
-                            {
-                                return new List<string>();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(p.Payload.ToLower().EndsWith(to.SearchCriteria.ToLower()))
-                        {
-                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                        }
-                        else
-                        {
-                            if(to.RequireAllFieldsToMatch)
-                            {
-                                return new List<string>();
-                            }
-                        }
-                    }
-                }
-                return fnResult.Distinct().ToList();
-            };
+                    ErrorResultTO err;
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
 
+                    foreach(RecordSetSearchPayload p in operationRange)
+                    {
+                        if(to.MatchCase)
+                        {
+                            if(p.Payload.EndsWith(to.SearchCriteria))
+                            {
+                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                if(to.RequireAllFieldsToMatch)
+                                {
+                                    return new List<string>();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(p.Payload.ToLower().EndsWith(to.SearchCriteria.ToLower()))
+                            {
+                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                if(to.RequireAllFieldsToMatch)
+                                {
+                                    return new List<string>();
+                                }
+                            }
+                        }
+                    }
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

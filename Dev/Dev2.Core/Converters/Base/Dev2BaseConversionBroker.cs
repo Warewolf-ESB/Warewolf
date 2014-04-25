@@ -14,10 +14,10 @@
 
         public string Convert(string payload)
         {
-            string result = string.Empty;
+            string result;
 
             // convert from to base type
-            if (_from.IsType(payload))
+            if(_from.IsType(payload))
             {
 
                 byte[] rawBytes = _from.NeutralizeToCommon(payload);

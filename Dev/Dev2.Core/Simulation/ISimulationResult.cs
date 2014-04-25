@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.PathOperations.Interfaces;
 

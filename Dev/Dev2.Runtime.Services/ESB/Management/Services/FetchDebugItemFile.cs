@@ -15,7 +15,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string debugItemFilePath = null;
             var result = new ExecuteMessage { HasError = false };
 
             if(values == null)
@@ -32,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("DebugItemFilePath is missing");
             }
 
-            debugItemFilePath = tmp.ToString();
+            string debugItemFilePath = tmp.ToString();
 
             if(File.Exists(debugItemFilePath))
             {

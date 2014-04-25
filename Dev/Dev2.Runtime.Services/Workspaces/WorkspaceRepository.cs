@@ -211,7 +211,9 @@ namespace Dev2.Workspaces
         {
             lock(_readLock)
             {
+                // ReSharper disable RedundantAssignment
                 var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
+                // ReSharper restore RedundantAssignment
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }

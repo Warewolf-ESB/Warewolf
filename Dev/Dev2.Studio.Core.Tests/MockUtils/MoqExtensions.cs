@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Moq;
-using Moq.Language.Flow;
-using Moq.Language;
 using System.Reflection;
+using Moq;
+using Moq.Language;
+using Moq.Language.Flow;
 
 namespace Dev2.Core.Tests.MockUtils
 {
     public static class MoqExtensions
     {
-        public delegate void RefAction<TRef, TParam1>(ref TRef refVal, TParam1 param1);
+        public delegate void RefAction<TRef, in TParam1>(ref TRef refVal, TParam1 param1);
 
 
         // Sashen.Naidoo : 14-02-2012 : This method adds ref support to Moq
@@ -45,26 +43,34 @@ namespace Dev2.Core.Tests.MockUtils
                                                         .GetType("Moq.MethodCall")
                                                         .GetField("argumentMatchers",
                                                         BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
-                IList<object> argumentMatchers = (IList<object>)matcherField.GetValue(mock);
-                Type refMatcherType = typeof(Mock).Assembly
-                                                    .GetType("Moq.Matchers.RefMatcher");
-                FieldInfo equalField = refMatcherType.GetField("equals", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
-                foreach (object matcher in argumentMatchers)
+                if(matcherField != null)
                 {
-                    if (matcher.GetType() == refMatcherType)
-                        equalField.SetValue(matcher, new Func<object, bool>(delegate(object o) { return true; }));
+                    IList<object> argumentMatchers = (IList<object>)matcherField.GetValue(mock);
+                    Type refMatcherType = typeof(Mock).Assembly
+                                                      .GetType("Moq.Matchers.RefMatcher");
+                    FieldInfo equalField = refMatcherType.GetField("equals", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
+                    foreach(object matcher in argumentMatchers)
+                    {
+                        if(matcher.GetType() == refMatcherType)
+                        {
+                            if(equalField != null)
+                            {
+                                equalField.SetValue(matcher, new Func<object, bool>(o => true));
+                            }
+                        }
+                    }
                 }
 
                 return mock;
             }
-            catch (NullReferenceException)
+            catch(NullReferenceException)
             {
                 return mock;
             }
         }
 
 
-        public delegate void OutAction<TOut, TParam1>(out TOut outValue, TParam1 param1);
+        public delegate void OutAction<TOut, in TParam1>(out TOut outValue, TParam1 param1);
 
         public static IReturnsResult<TMock> OutCallback<TOut, TParam1, TMock>(this ICallback mock, OutAction<TOut, TParam1> action) where TMock : class
         {
@@ -78,7 +84,7 @@ namespace Dev2.Core.Tests.MockUtils
             return mock as IReturnsResult<TMock>;
         }
 
-        public static ICallback IgnoreOutMatching<TMock, TResult>(this ICallback mock)
+        public static ICallback IgnoreOutMatching(this ICallback mock)
         {
             try
             {
@@ -86,18 +92,26 @@ namespace Dev2.Core.Tests.MockUtils
                                             .GetType("Moq.MethodCall")
                                             .GetField("argumentMatchers",
                                                        BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
-                IList<object> argumentMatchers = (IList<object>)matcherField.GetValue(mock);
-                Type outMatcher = typeof(Mock).Assembly
-                                                .GetType("Mock.Matchers.OutMatcher");
-                FieldInfo equalField = outMatcher.GetField("equals", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
-                foreach (object matcher in argumentMatchers)
+                if(matcherField != null)
                 {
-                    if (matcher.GetType() == outMatcher)
-                        equalField.SetValue(matcher, new Func<object, bool>(delegate(object o) { return true; }));
+                    IList<object> argumentMatchers = (IList<object>)matcherField.GetValue(mock);
+                    Type outMatcher = typeof(Mock).Assembly
+                                                  .GetType("Mock.Matchers.OutMatcher");
+                    FieldInfo equalField = outMatcher.GetField("equals", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance);
+                    foreach(object matcher in argumentMatchers)
+                    {
+                        if(matcher.GetType() == outMatcher)
+                        {
+                            if(equalField != null)
+                            {
+                                equalField.SetValue(matcher, new Func<object, bool>(o => true));
+                            }
+                        }
+                    }
                 }
                 return mock;
             }
-            catch (NullReferenceException)
+            catch(NullReferenceException)
             {
                 return mock;
             }

@@ -11,7 +11,9 @@ namespace Dev2.Converters.Graph.DataTable
             throw new NotImplementedException();
         }
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public object Data { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
         public object SelectScalar(IPath path)
         {
             throw new NotImplementedException();

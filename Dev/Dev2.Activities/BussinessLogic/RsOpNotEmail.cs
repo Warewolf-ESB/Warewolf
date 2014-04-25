@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
@@ -14,19 +15,20 @@ namespace Dev2.DataList
     {
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
-
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
 
-            result = () => {
+            Func<IList<string>> result = () =>
+            {
                 ErrorResultTO err;
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
 
-                    if (!p.Payload.IsEmail()) {
-                        fnResult.Add(p.Index.ToString());
+                    if(!p.Payload.IsEmail())
+                    {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
@@ -39,7 +41,6 @@ namespace Dev2.DataList
 
                 return fnResult.Distinct().ToList();
             };
-
 
             return result;
         }

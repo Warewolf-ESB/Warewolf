@@ -13,7 +13,6 @@ namespace Dev2.BussinessLogic
     {
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
-            // Default to a null function result
 
             Func<IList<string>> result = () =>
                 {

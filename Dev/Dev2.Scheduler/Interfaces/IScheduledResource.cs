@@ -56,10 +56,6 @@ namespace Dev2.Scheduler.Interfaces
         /// If a schedule is missed execute as soon as possible
         /// </summary>
         bool RunAsapIfScheduleMissed { get; set; }
-        ///// <summary>
-        ///// Path that is stored in widows achedule
-        ///// </summary>
-        //string Path { get; set; }
 
         // Allow more than once Instance of this task to be run at te same time
         bool AllowMultipleIstances { get; set; }

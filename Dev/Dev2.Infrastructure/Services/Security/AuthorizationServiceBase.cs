@@ -84,7 +84,6 @@ namespace Dev2.Services.Security
 
         public void DumpPermissionsOnError(IPrincipal principal)
         {
-            //var permissions = GetGroupPermissions(principal);
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(principal.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -28,7 +29,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                    WindowsGroupPermission.CreateAdministrators(),
                    WindowsGroupPermission.CreateGuests()
-                   //new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText, Permissions = Permissions.View | Permissions.Execute }
                 };
             }
         }
@@ -58,11 +58,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     return new StringBuilder(decryptData);
                 }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch
-                // ReSharper restore EmptyGeneralCatchClause
+                catch(Exception e)
                 {
-
+                    ServerLogger.LogError("SecurityRead", e);
                 }
             }
 

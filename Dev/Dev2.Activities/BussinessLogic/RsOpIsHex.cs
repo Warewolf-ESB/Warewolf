@@ -13,36 +13,30 @@ namespace Dev2.BussinessLogic
     {
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
-            // Default to a null function result
-            // ReSharper disable RedundantAssignment
-            Func<IList<string>> result = () => null;
-            // ReSharper restore RedundantAssignment
-
-            result = () =>
-            {
-                ErrorResultTO err;
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
+            Func<IList<string>> result = () =>
                 {
+                    ErrorResultTO err;
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
 
-                    if(p.Payload.IsHex())
+                    foreach(RecordSetSearchPayload p in operationRange)
                     {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
+
+                        if(p.Payload.IsHex())
                         {
-                            return new List<string>();
+                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
-                }
 
-                return fnResult.Distinct().ToList();
-            };
-
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

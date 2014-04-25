@@ -45,7 +45,7 @@ namespace WPF.JoshSmith.Panels
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public ConceptualPanel()
+        protected ConceptualPanel()
         {
             Loaded += OnLoaded;
         }
@@ -53,7 +53,11 @@ namespace WPF.JoshSmith.Panels
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnLoaded;
-            (Children as DisconnectedUIElementCollection).Initialize();
+            var disconnectedUiElementCollection = Children as DisconnectedUIElementCollection;
+            if(disconnectedUiElementCollection != null)
+            {
+                disconnectedUiElementCollection.Initialize();
+            }
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace WPF.JoshSmith.Panels
         protected override sealed UIElementCollection CreateUIElementCollection(FrameworkElement logicalParent)
         {
             DisconnectedUIElementCollection children = new DisconnectedUIElementCollection(this);
-            children.CollectionChanged += new NotifyCollectionChangedEventHandler(OnChildrenCollectionChanged);
+            children.CollectionChanged += OnChildrenCollectionChanged;
             return children;
         }
 

@@ -1,13 +1,13 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -23,7 +23,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _fieldName;
         string _fieldValue;
         int _indexNumber;
-        List<string> _outList;
 
         bool _isFieldNameFocused;
         private bool _isFieldValueFocused;
@@ -40,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             FieldName = fieldName;
             FieldValue = fieldValue;
             IndexNumber = indexNumber;
-            _outList = new List<string>();
+            OutList = new List<string>();
         }
 
         public string WatermarkTextVariable { get; set; }
@@ -49,8 +48,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         [FindMissing]
@@ -125,18 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Inserted { get; set; }
 
-        public List<string> OutList
-        {
-            get
-            {
-                return _outList;
-            }
-            set
-            {
-                _outList = value;
-            }
-        }
-
+        public List<string> OutList { get; set; }
 
         public OutputTO ConvertToOutputTO()
         {
@@ -254,12 +244,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ruleSet.Add(new IsStringEmptyRule(() => FieldName));
                     ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1"));
                     break;
-                case "FieldValue":                    
+                case "FieldValue":
                     ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1"));
                     break;
-
-                //case "EscapeChar":
-                //    break;
             }
             return ruleSet;
         }

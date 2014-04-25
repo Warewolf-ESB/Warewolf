@@ -26,7 +26,7 @@ namespace Dev2
 
         }
 
-        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result, int indexNumber,bool inserted = false)
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result, int indexNumber, bool inserted = false)
         {
             Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;
@@ -39,7 +39,7 @@ namespace Dev2
         #region Properties
 
         public bool Inserted { get; set; }
-        
+
         /// <summary>
         /// Type of system information to gather
         /// </summary>       
@@ -89,18 +89,18 @@ namespace Dev2
 
         public bool CanRemove()
         {
-            return string.IsNullOrWhiteSpace(Result);            
+            return string.IsNullOrWhiteSpace(Result);
         }
 
         public bool CanAdd()
         {
-            return !string.IsNullOrWhiteSpace(Result);            
+            return !string.IsNullOrWhiteSpace(Result);
         }
 
         public void ClearRow()
         {
             Result = "";
-        }        
+        }
 
         #endregion
 
@@ -118,7 +118,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -143,7 +143,7 @@ namespace Dev2
 
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {
-            if (ruleSet == null)
+            if(ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
@@ -158,7 +158,7 @@ namespace Dev2
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if (Errors.TryGetValue(propertyName, out errorList))
+            if(Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -168,7 +168,7 @@ namespace Dev2
         public bool Validate(string propertyName, string datalist)
         {
             RuleSet ruleSet = null;
-            switch (propertyName)
+            switch(propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();
@@ -203,7 +203,9 @@ namespace Dev2
         /// <returns>
         /// An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
     }

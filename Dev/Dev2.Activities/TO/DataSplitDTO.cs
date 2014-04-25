@@ -187,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "1");
                     ruleSet.Add(outputExprRule);
                     ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
                     break;
@@ -196,20 +196,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     switch(SplitType)
                     {
                         case SplitTypeIndex:
-                            var atIndexExprRule = new IsValidExpressionRule(() => At,datalist, "1");
+                            var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1");
                             ruleSet.Add(atIndexExprRule);
                             ruleSet.Add(new IsPositiveNumberRule(() => atIndexExprRule.ExpressionValue));
                             break;
                         case SplitTypeChars:
-                            var atCharsExprRule = new IsValidExpressionRule(() => At,datalist, ",");
+                            var atCharsExprRule = new IsValidExpressionRule(() => At, datalist, ",");
                             ruleSet.Add(atCharsExprRule);
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;
                     }
                     break;
-
-                //case "EscapeChar":
-                //    break;
             }
             return ruleSet;
         }

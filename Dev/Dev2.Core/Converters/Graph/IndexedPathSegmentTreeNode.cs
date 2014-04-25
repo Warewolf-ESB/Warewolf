@@ -14,12 +14,9 @@ namespace Unlimited.Framework.Converters.Graph
                 IndexedPathSegmentTreeNode<T> returnNode = this;
 
                 int count = 0;
-                while (count < complexKey.Count && returnNode != null)
+                while(count < complexKey.Count && returnNode != null)
                 {
-                    if (!returnNode.TryGetValue(complexKey[count], out returnNode))
-                    {
-                        returnNode = null;
-                    }
+                    returnNode.TryGetValue(complexKey[count], out returnNode);
                     count++;
                 }
 

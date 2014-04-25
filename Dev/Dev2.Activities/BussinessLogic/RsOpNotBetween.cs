@@ -46,7 +46,7 @@ namespace Dev2.BussinessLogic
             return result;
         }
 
-        private IEnumerable<string> FindRecordIndexForDateTime(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, DateTime fromDateTime, DateTime toDateTime)
+        private static IEnumerable<string> FindRecordIndexForDateTime(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, DateTime fromDateTime, DateTime toDateTime)
         {
             IList<string> fnResult = new List<string>();
             foreach(RecordSetSearchPayload p in operationRange)
@@ -70,7 +70,7 @@ namespace Dev2.BussinessLogic
             return fnResult;
         }
 
-        private IEnumerable<string> FindRecordIndexForNumeric(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, double fromNum, double toNum)
+        private static IEnumerable<string> FindRecordIndexForNumeric(IEnumerable<RecordSetSearchPayload> operationRange, IRecsetSearch to, double fromNum, double toNum)
         {
             IList<string> fnResult = new List<string>();
             foreach(RecordSetSearchPayload p in operationRange)

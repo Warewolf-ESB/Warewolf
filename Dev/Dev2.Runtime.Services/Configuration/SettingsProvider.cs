@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Dev2.Common;
 
 namespace Dev2.Runtime.Configuration
 {

@@ -56,8 +56,6 @@ namespace Dev2.Runtime.ServiceModel
                             databaseSourceDetails.Port = 1433;
                             break;
                         }
-                    default:
-                        break;
                 }
 
                 ResourceCatalog.Instance.SaveResource(workspaceID, databaseSourceDetails);

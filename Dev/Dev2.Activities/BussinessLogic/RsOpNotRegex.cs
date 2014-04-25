@@ -17,33 +17,31 @@ namespace Dev2.DataList
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
 
-            result = () =>
-            {
-                ErrorResultTO err;
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
+            Func<IList<string>> result = () =>
                 {
-                    Regex exp = new Regex(to.SearchCriteria);
-                    if(!exp.IsMatch(p.Payload) && !string.IsNullOrEmpty(p.Payload))
+                    ErrorResultTO err;
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
+
+                    foreach(RecordSetSearchPayload p in operationRange)
                     {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
+                        Regex exp = new Regex(to.SearchCriteria);
+                        if(!exp.IsMatch(p.Payload) && !string.IsNullOrEmpty(p.Payload))
                         {
-                            return new List<string>();
+                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
-                }
 
-                return fnResult.Distinct().ToList();
-            };
-
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

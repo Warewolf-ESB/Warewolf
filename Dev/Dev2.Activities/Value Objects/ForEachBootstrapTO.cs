@@ -27,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         {
             ExeType = typeOf;
             MaxExecutions = maxExe;
-            if (data != null)
+            if(data != null)
             {
                 DataIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(data);
             }
@@ -40,19 +40,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         //MO - Changed : new ctor that accepts the new arguments
         public ForEachBootstrapTO(enForEachType forEachType, string from, string to, string csvNumbers, string numberOfExecutes, string recordsetName, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
-            ErrorResultTO allErrors =  new ErrorResultTO();
             errors = new ErrorResultTO();
             ForEachType = forEachType;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
             IndexIterator localIndexIterator;
             IndexList indexList;
 
-            switch (forEachType)
+            switch(forEachType)
             {
                 case enForEachType.InRecordset:
                     IBinaryDataListEntry recordset = compiler.Evaluate(dlID, enActionType.User, recordsetName, false, out errors);
 
-                    if (recordset == null || !recordset.IsRecordset)
+                    if(recordset == null || !recordset.IsRecordset)
                     {
                         errors.AddError("When selecting a recordset only valid recordsets can be used");
                         break;
@@ -60,16 +59,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
 
                     var isEmpty = recordset.IsEmpty();
-                    if (isEmpty)
+                    if(isEmpty)
                     {
                         indexList = new IndexList(new HashSet<int> { 1 }, 0);
                         localIndexIterator = new IndexIterator(new HashSet<int> { 1 }, 0);
                     }
                     else
                     {
-                        indexList = new IndexList(new HashSet<int>(), 0);
-                        indexList.MinValue = 1;
-                        indexList.MaxValue = recordset.FetchLastRecordsetIndex();
+                        indexList = new IndexList(new HashSet<int>(), 0) { MinValue = 1, MaxValue = recordset.FetchLastRecordsetIndex() };
                         localIndexIterator = new IndexIterator(new HashSet<int>(), 0);
                     }
 
@@ -78,13 +75,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     break;
 
                 case enForEachType.InRange:
-                    if (string.IsNullOrWhiteSpace(from))
+                    if(string.IsNullOrWhiteSpace(from))
                     {
                         errors.AddError("The from field can not be left empty.");
                         break;
                     }
 
-                    if (string.IsNullOrWhiteSpace(to))
+                    if(string.IsNullOrWhiteSpace(to))
                     {
                         errors.AddError("The to field can not be left empty.");
                         break;
@@ -100,13 +97,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     colItr.AddIterator(fromItr);
 
                     int intFrom;
-                    if (!int.TryParse(colItr.FetchNextRow(fromItr).TheValue, out intFrom) || intFrom < 1)
+                    if(!int.TryParse(colItr.FetchNextRow(fromItr).TheValue, out intFrom) || intFrom < 1)
                     {
                         errors.AddError("From range must be a whole number from 1 onwards.");
                         break;
                     }
 
-                    if (to.Contains("(*)"))
+                    if(to.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the To field.");
                         break;
@@ -116,34 +113,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     colItr.AddIterator(toItr);
 
                     int intTo;
-                    if (!int.TryParse(colItr.FetchNextRow(toItr).TheValue, out intTo) || intTo < 1)
+                    if(!int.TryParse(colItr.FetchNextRow(toItr).TheValue, out intTo) || intTo < 1)
                     {
                         errors.AddError("To range must be a whole number from 1 onwards.");
                         break;
-                    }                   
-                    if(intFrom>intTo)
+                    }
+                    if(intFrom > intTo)
                     {
-                        indexList = new IndexList(new HashSet<int>(), 0);
-                        indexList.MinValue = intFrom;
-                        indexList.MaxValue = intTo;
-                        ReverseIndexIterator revIdxItr = new ReverseIndexIterator(new HashSet<int>(), 0);
-                        revIdxItr.IndexList = indexList;
+                        indexList = new IndexList(new HashSet<int>(), 0) { MinValue = intFrom, MaxValue = intTo };
+                        ReverseIndexIterator revIdxItr = new ReverseIndexIterator(new HashSet<int>(), 0) { IndexList = indexList };
                         IndexIterator = revIdxItr;
                     }
                     else
                     {
-                        indexList = new IndexList(new HashSet<int>(), 0);
-                        indexList.MinValue = intFrom;
-                        indexList.MaxValue = intTo;
-                        localIndexIterator = new IndexIterator(new HashSet<int>(), 0);
-                        localIndexIterator.IndexList = indexList;
+                        indexList = new IndexList(new HashSet<int>(), 0) { MinValue = intFrom, MaxValue = intTo };
+                        localIndexIterator = new IndexIterator(new HashSet<int>(), 0) { IndexList = indexList };
                         IndexIterator = localIndexIterator;
                     }
-                    
+
                     break;
                 case enForEachType.InCSV:
                     var csvIndexedsItr = CreateDataListEvaluateIterator(csvNumbers, dlID, compiler, colItr, errors);
                     colItr.AddIterator(csvIndexedsItr);
+                    ErrorResultTO allErrors;
                     List<int> listOfIndexes = SplitOutCsvIndexes(colItr.FetchNextRow(csvIndexedsItr).TheValue, out allErrors);
                     if(allErrors.HasErrors())
                     {
@@ -157,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     break;
                 default:
 
-                    if (numberOfExecutes != null && numberOfExecutes.Contains("(*)"))
+                    if(numberOfExecutes != null && numberOfExecutes.Contains("(*)"))
                     {
                         errors.AddError("The Star notation is not accepted in the Numbers field.");
                         break;
@@ -167,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     var numOfExItr = CreateDataListEvaluateIterator(numberOfExecutes, dlID, compiler, colItr, errors);
                     colItr.AddIterator(numOfExItr);
 
-                    if (!int.TryParse(colItr.FetchNextRow(numOfExItr).TheValue, out intExNum))
+                    if(!int.TryParse(colItr.FetchNextRow(numOfExItr).TheValue, out intExNum))
                     {
                         errors.AddError("Number of executes must be a whole number from 1 onwards.");
                     }
@@ -177,12 +169,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
         }
 
-        List<int> SplitOutCsvIndexes(string csvNumbers,out ErrorResultTO errors)
+        List<int> SplitOutCsvIndexes(string csvNumbers, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             List<int> result = new List<int>();
             var splitStrings = csvNumbers.Split(',');
-            foreach (var splitString in splitStrings)
+            foreach(var splitString in splitStrings)
             {
                 if(!string.IsNullOrEmpty(splitString))
                 {
@@ -205,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         public void IncIterationCount()
         {
             IterationCount++;
-            if (DataIterator != null)
+            if(DataIterator != null)
             {
                 DataIterator.FetchNextRowData(); // TODO : Replace this with another method?!
             }
@@ -216,9 +208,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
             bool result = (IterationCount < MaxExecutions);
 
-            if (ExeType == enForEachExecutionType.GhostService)
+            if(ExeType == enForEachExecutionType.GhostService)
             {
-                if (DataIterator != null && result)
+                if(DataIterator != null && result)
                 {
                     // check that there is still data to iterate across ;)
                     result = DataIterator.HasMoreRecords();
@@ -230,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
         IDev2DataListEvaluateIterator CreateDataListEvaluateIterator(string expression, Guid executionId, IDataListCompiler compiler, IDev2IteratorCollection iteratorCollection, ErrorResultTO allErrors)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             IBinaryDataListEntry expressionEntry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errors);
             allErrors.MergeErrors(errors);

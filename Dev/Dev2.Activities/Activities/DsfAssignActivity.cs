@@ -29,10 +29,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
 
 

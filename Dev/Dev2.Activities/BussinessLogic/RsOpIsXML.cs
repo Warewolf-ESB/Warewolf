@@ -15,33 +15,31 @@ namespace Dev2.DataList
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
-            Func<IList<string>> result = () => { return null; };
 
-            result = () =>
-            {
-                ErrorResultTO err;
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-
-                foreach(RecordSetSearchPayload p in operationRange)
+            Func<IList<string>> result = () =>
                 {
+                    ErrorResultTO err;
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
 
-                    if(p.Payload.IsXml())
+                    foreach(RecordSetSearchPayload p in operationRange)
                     {
-                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
+
+                        if(p.Payload.IsXml())
                         {
-                            return new List<string>();
+                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            if(to.RequireAllFieldsToMatch)
+                            {
+                                return new List<string>();
+                            }
                         }
                     }
-                }
 
-                return fnResult.Distinct().ToList();
-            };
-
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

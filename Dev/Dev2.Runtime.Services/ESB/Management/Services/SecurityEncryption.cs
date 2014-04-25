@@ -76,7 +76,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
+#pragma warning disable 612,618
             var keyBytes = password.GetBytes(KeySize / 8);
+#pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
             var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
@@ -161,7 +163,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
+#pragma warning disable 612,618
             var keyBytes = password.GetBytes(KeySize / 8);
+#pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
             var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };

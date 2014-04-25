@@ -127,11 +127,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Scheduler\Dev2.Scheduler.csproj", "{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Test", "Dev2.Scheduler.Test\Dev2.Scheduler.Test.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Test\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -275,18 +275,18 @@ Global
 		SccProjectUniqueName45 = Dev2.Scheduler\\Dev2.Scheduler.csproj
 		SccProjectName45 = Dev2.Scheduler
 		SccLocalPath45 = Dev2.Scheduler
-		SccProjectUniqueName46 = Dev2.Scheduler.Test\\Dev2.Scheduler.Test.csproj
-		SccProjectName46 = Dev2.Scheduler.Test
-		SccLocalPath46 = Dev2.Scheduler.Test
-		SccProjectUniqueName47 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName47 = Dev2.ScheduleExecutor
-		SccLocalPath47 = Dev2.ScheduleExecutor
-		SccProjectUniqueName48 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName48 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath48 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName49 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName49 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath49 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName46 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
+		SccProjectName46 = Dev2.ScheduleExecutor
+		SccLocalPath46 = Dev2.ScheduleExecutor
+		SccProjectUniqueName47 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName47 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath47 = Dev2.TaskScheduler.Wrappers
+		SccProjectUniqueName48 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName48 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath48 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName49 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
+		SccProjectName49 = Dev2.Scheduler.Test
+		SccLocalPath49 = Dev2.Scheduler.Test
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1173,24 +1173,6 @@ Global
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|x64.ActiveCfg = Release|Any CPU
 		{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}.Test|x86.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x64.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Any CPU.Build.0 = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Mixed Platforms.Build.0 = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x64.ActiveCfg = Release|Any CPU
-		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x86.ActiveCfg = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1227,6 +1209,24 @@ Global
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x64.ActiveCfg = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x86.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x64.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Any CPU.Build.0 = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x64.ActiveCfg = Release|Any CPU
+		{211601FA-019A-4F23-9A30-5FE5344E1BE1}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

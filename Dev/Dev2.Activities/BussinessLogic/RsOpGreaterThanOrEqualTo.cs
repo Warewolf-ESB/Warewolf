@@ -16,44 +16,38 @@ namespace Dev2.DataList
         // Bug 8725 - Fixed to be double rather than int
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
-            // Default to a null function result
-            // ReSharper disable RedundantAssignment
-            Func<IList<string>> result = () => null;
-            // ReSharper restore RedundantAssignment
-
-            result = () =>
-            {
-                ErrorResultTO err;
-
-                IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
-                IList<string> fnResult = new List<string>();
-                double search;
-
-                if(double.TryParse(to.SearchCriteria, out search))
+            Func<IList<string>> result = () =>
                 {
-                    foreach(RecordSetSearchPayload p in operationRange)
+                    ErrorResultTO err;
+
+                    IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
+                    IList<string> fnResult = new List<string>();
+                    double search;
+
+                    if(double.TryParse(to.SearchCriteria, out search))
                     {
-                        double tmp;
-
-                        if(double.TryParse(p.Payload, out tmp) && tmp >= search)
+                        foreach(RecordSetSearchPayload p in operationRange)
                         {
+                            double tmp;
 
-                            fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
-                        }
-                        else
-                        {
-                            if(to.RequireAllFieldsToMatch)
+                            if(double.TryParse(p.Payload, out tmp) && tmp >= search)
                             {
-                                return new List<string>();
+
+                                fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                if(to.RequireAllFieldsToMatch)
+                                {
+                                    return new List<string>();
+                                }
                             }
                         }
                     }
-                }
 
 
-                return fnResult.Distinct().ToList();
-            };
-
+                    return fnResult.Distinct().ToList();
+                };
 
             return result;
         }

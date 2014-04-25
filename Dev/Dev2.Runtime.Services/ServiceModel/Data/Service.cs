@@ -118,7 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 Type tmpType;
 
-                if (string.IsNullOrEmpty(typeName))
+                if(string.IsNullOrEmpty(typeName))
                 {
                     tmpType = typeof(object);
                 }
@@ -183,8 +183,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
                 var description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
-                
-                if (description == null)
+
+                if(description == null)
                 {
                     // we need to handle old plugins ;)
                     outputDescriptionStr =
@@ -206,7 +206,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                     paths = description.DataSourceShapes[0].Paths;
                 }
             }
-            OutputSpecification = action.Element("Outputs").ToString();
+            var xElement = action.Element("Outputs");
+            if(xElement != null)
+            {
+                OutputSpecification = xElement.ToString();
+            }
             foreach(var output in action.Descendants("Output"))
             {
                 var rsName = output.AttributeSafe("RecordsetName");
@@ -323,7 +327,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string GetOutputString(IEnumerable<Recordset> recordsets)
         {
             IEnumerable<XElement> outputsXml = CreateOutputsXml(recordsets);
-            return  outputsXml.ToList()[0].ToString();
+            return outputsXml.ToList()[0].ToString();
         }
 
         #endregion
