@@ -43,6 +43,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         static WebRequest CreateRequest(string url)
         {
             var result = WebRequest.Create(url);
+            result.Timeout = 1000 * 3600; // it can wait up to 1 hour ;)
             result.Credentials = CredentialCache.DefaultCredentials;
             return result;
         }

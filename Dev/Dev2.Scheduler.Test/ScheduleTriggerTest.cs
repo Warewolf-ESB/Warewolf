@@ -30,9 +30,6 @@ namespace Dev2.Scheduler.Test
             ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
-
-
-
         }
 
         [TestMethod]
