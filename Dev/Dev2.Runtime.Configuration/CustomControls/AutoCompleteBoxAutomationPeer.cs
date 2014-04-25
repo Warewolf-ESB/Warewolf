@@ -121,7 +121,9 @@ namespace System.Windows.Automation.Peers
                 }
             }
 
+            // ReSharper disable ConvertIfStatementToNullCoalescingExpression
             if(iface == null)
+            // ReSharper restore ConvertIfStatementToNullCoalescingExpression
             {
                 iface = base.GetPattern(patternInterface);
             }
@@ -250,7 +252,7 @@ namespace System.Windows.Automation.Peers
             TextBox textBox = owner.TextBox;
             if(textBox != null)
             {
-                AutomationPeer peer = FrameworkElementAutomationPeer.CreatePeerForElement(textBox);
+                AutomationPeer peer = CreatePeerForElement(textBox);
                 if(peer != null)
                 {
                     children.Insert(0, peer);
@@ -266,10 +268,7 @@ namespace System.Windows.Automation.Peers
                     List<AutomationPeer> listChildren = selectionAdapterPeer.GetChildren();
                     if(listChildren != null)
                     {
-                        foreach(AutomationPeer child in listChildren)
-                        {
-                            children.Add(child);
-                        }
+                        children.AddRange(listChildren);
                     }
                 }
             }
@@ -296,10 +295,10 @@ namespace System.Windows.Automation.Peers
                     UIElement uie = selectedItem as UIElement;
                     if(uie != null)
                     {
-                        AutomationPeer peer = FrameworkElementAutomationPeer.CreatePeerForElement(uie);
+                        AutomationPeer peer = CreatePeerForElement(uie);
                         if(peer != null)
                         {
-                            return new IRawElementProviderSimple[] { ProviderFromPeer(peer) };
+                            return new[] { ProviderFromPeer(peer) };
                         }
                     }
                 }

@@ -54,7 +54,6 @@ namespace Dev2.Scheduler.Test
 
 
             ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
-            var x = trigger.Trigger;
             mockTask.VerifySet(a => a.XmlText = "bob");
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
@@ -72,7 +71,9 @@ namespace Dev2.Scheduler.Test
 
         }
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public TriggerCollection Instance { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
         public new ITrigger Add(ITrigger unboundTrigger)
         {
             base.Add(unboundTrigger);

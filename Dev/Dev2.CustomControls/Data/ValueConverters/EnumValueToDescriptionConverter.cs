@@ -22,7 +22,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Enum == false)
+            if(value is Enum == false)
                 throw new ArgumentException("'value' must be an enum.");
 
             // Get the field in the enum type which represents the argument value.
@@ -32,19 +32,24 @@ namespace WPF.JoshSmith.Data.ValueConverters
             object[] attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             // The enum value is not decorated with the attribute, so just return the value itself.
-            if (attributes.Length == 0)
+            if(attributes.Length == 0)
                 return value.ToString();
 
             // Return the description applied to the enum value.
             DescriptionAttribute descriptionAttribute = attributes[0] as DescriptionAttribute;
-            return descriptionAttribute.Description;
+            if(descriptionAttribute != null)
+            {
+                return descriptionAttribute.Description;
+            }
+
+            return string.Empty;
         }
 
         #endregion // Convert
 
         #region ConvertBack
 
-        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException("ConvertBack not supported.");
         }

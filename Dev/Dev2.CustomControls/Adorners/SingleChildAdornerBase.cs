@@ -54,7 +54,9 @@ namespace WPF.JoshSmith.Adorners
         public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
         {
             GeneralTransformGroup result = new GeneralTransformGroup();
+            // ReSharper disable AssignNullToNotNullAttribute
             result.Children.Add(base.GetDesiredTransform(transform));
+            // ReSharper restore AssignNullToNotNullAttribute
             result.Children.Add(new TranslateTransform(offsetLeft, offsetTop));
             return result;
         }

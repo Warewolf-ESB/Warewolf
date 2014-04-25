@@ -353,9 +353,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
                 dataObject.RunWorkflowAsync = false;
-                //dataObject.RemoteInvoke = false;
-                //dataObject.RemoteInvokerID = "";
-                //dataObject.EnvironmentID = Guid.Empty;
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }

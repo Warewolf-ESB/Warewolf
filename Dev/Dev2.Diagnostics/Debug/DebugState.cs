@@ -125,8 +125,6 @@ namespace Dev2.Diagnostics
             }
             set
             {
-                //Duration = string.IsNullOrEmpty(value) ?
-                //    TimeSpan.Zero : XmlConvert.ToTimeSpan(value);
             }
         }
 

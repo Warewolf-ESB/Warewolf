@@ -16,7 +16,9 @@ namespace System.Windows.Controls
     /// an <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
     /// </summary>
     /// <QualityBand>Stable</QualityBand>
+    // ReSharper disable PartialTypeWithSinglePart
     public partial class SelectorSelectionAdapter : ISelectionAdapter
+    // ReSharper restore PartialTypeWithSinglePart
     {
         /// <summary>
         /// The Selector instance.
@@ -349,7 +351,7 @@ namespace System.Windows.Controls
         /// infrastructure.</returns>
         public AutomationPeer CreateAutomationPeer()
         {
-            return _selector != null ? FrameworkElementAutomationPeer.CreatePeerForElement(_selector) : null;
+            return _selector != null ? UIElementAutomationPeer.CreatePeerForElement(_selector) : null;
         }
     }
 }

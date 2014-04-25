@@ -54,7 +54,6 @@ namespace Dev2.Instrumentation
                 var productVersion = fvi;
 #endif
                 TBConfig.SetFilePath(filePath);
-                //TBConfig.SetProductEdition("LITE");                      
                 TBConfig.CreateConfig(callHomeUrl, productID, productVersion, productVersion, false);
                 return TBApp.Start();
             });

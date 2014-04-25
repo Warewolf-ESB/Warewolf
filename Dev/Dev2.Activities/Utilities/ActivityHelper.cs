@@ -131,10 +131,6 @@ namespace Dev2.Utilities
 
         public static void HandleDragEnter(DragEventArgs e)
         {
-            //if(e != null)
-            //{
-            //    e.Handled = true;
-            //}
         }
     }
 }
