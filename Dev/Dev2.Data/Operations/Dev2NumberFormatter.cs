@@ -1,8 +1,9 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using System.Globalization;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.MathOperations;
-using System;
 
 namespace Dev2.Data.Operations
 {
@@ -11,7 +12,7 @@ namespace Dev2.Data.Operations
         #region Class Members
 
         // ReSharper disable InconsistentNaming
-        private static readonly string _decimalSeperator = ".";
+        const string _decimalSeperator = ".";
         private static readonly IFunctionEvaluator _functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
         // ReSharper restore InconsistentNaming
 
@@ -29,23 +30,23 @@ namespace Dev2.Data.Operations
         public string Format(FormatNumberTO formatNumberTO)
         // ReSharper restore InconsistentNaming
         {
-            if (formatNumberTO == null)
+            if(formatNumberTO == null)
             {
                 throw new ArgumentNullException("formatNumberTO");
             }
 
             decimal tmp;
-            if (!formatNumberTO.Number.IsNumeric(out tmp))
+            if(!formatNumberTO.Number.IsNumeric(out tmp))
             {
                 throw new InvalidOperationException("Unable to format '" + formatNumberTO.Number + "' because it isn't a number.");
             }
 
-            if (formatNumberTO.RoundingDecimalPlaces < -14 || formatNumberTO.RoundingDecimalPlaces > 14)
+            if(formatNumberTO.RoundingDecimalPlaces < -14 || formatNumberTO.RoundingDecimalPlaces > 14)
             {
                 throw new InvalidOperationException("Rounding decimal places must be between -14 and 14.");
             }
 
-            if (formatNumberTO.AdjustDecimalPlaces && (formatNumberTO.DecimalPlacesToShow < -14 || formatNumberTO.DecimalPlacesToShow > 14))
+            if(formatNumberTO.AdjustDecimalPlaces && (formatNumberTO.DecimalPlacesToShow < -14 || formatNumberTO.DecimalPlacesToShow > 14))
             {
                 throw new InvalidOperationException("Decimal places to show must be less between -14 than 14.");
             }
@@ -66,15 +67,15 @@ namespace Dev2.Data.Operations
             string expression;
 
             enRoundingType roundingType = formatNumberTO.GetRoundingTypeEnum();
-            if (roundingType == enRoundingType.Normal)
+            if(roundingType == enRoundingType.Normal)
             {
                 expression = "round({0}, {1})";
             }
-            else if (roundingType == enRoundingType.Up)
+            else if(roundingType == enRoundingType.Up)
             {
                 expression = "roundup({0}, {1})";
             }
-            else if (roundingType == enRoundingType.Down)
+            else if(roundingType == enRoundingType.Down)
             {
                 expression = "rounddown({0}, {1})";
             }
@@ -96,7 +97,7 @@ namespace Dev2.Data.Operations
             string result;
             _functionEvaluator.TryEvaluateFunction(BuildRoundingExpression(formatNumberTO), out result, out error);
 
-            if (!string.IsNullOrWhiteSpace(error))
+            if(!string.IsNullOrWhiteSpace(error))
             {
                 throw new InvalidOperationException(error);
             }
@@ -107,7 +108,7 @@ namespace Dev2.Data.Operations
         private decimal Parse(string numberString)
         {
             decimal number;
-            if (!numberString.IsNumeric(out number))
+            if(!numberString.IsNumeric(out number))
             {
                 throw new InvalidOperationException("An error occurred while formatting a number, an ivalid value of '" + numberString + "' was returned from the rounding function.");
             }
@@ -124,8 +125,8 @@ namespace Dev2.Data.Operations
         private string AdjustDecimalPlaces(string numberString, bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
             decimal number = Parse(numberString);
-            
-            if (!adjustDecimalPlaces)
+
+            if(!adjustDecimalPlaces)
             {
                 return FormatNumber(number, false, decimalPlacesToShow);
             }
@@ -134,12 +135,12 @@ namespace Dev2.Data.Operations
             decimal integral = Math.Truncate(number);
             decimal adjustedNumber;
 
-            if (decimalPlacesToShow >= 0)
+            if(decimalPlacesToShow >= 0)
             {
                 decimal decimals = number - integral;
 
                 decimal newDecimals = Math.Truncate(decimals * modifier) / modifier;
-                adjustedNumber = integral + newDecimals;  
+                adjustedNumber = integral + newDecimals;
             }
             else
             {
@@ -158,10 +159,10 @@ namespace Dev2.Data.Operations
         private string FormatNumber(decimal number, bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
             string format = "0";
-           
-            if (adjustDecimalPlaces)
+
+            if(adjustDecimalPlaces)
             {
-                if (decimalPlacesToShow > 0)
+                if(decimalPlacesToShow > 0)
                 {
                     //
                     // Output a specific number of decimal places in thenumber
@@ -173,8 +174,8 @@ namespace Dev2.Data.Operations
                     decimalPlacesToShow *= -1;
                     string multiplier = "1";
                     multiplier = multiplier.PadRight(decimalPlacesToShow + 1, char.Parse("0"));
-                    var numbers = number.ToString().Split('.');
-                    return  (Math.Truncate(decimal.Parse(numbers[0]) * int.Parse(multiplier)) / int.Parse(multiplier)).ToString();
+                    var numbers = number.ToString(CultureInfo.InvariantCulture).Split('.');
+                    return (Math.Truncate(decimal.Parse(numbers[0]) * int.Parse(multiplier)) / int.Parse(multiplier)).ToString(CultureInfo.InvariantCulture);
                 }
             }
             else
@@ -188,6 +189,6 @@ namespace Dev2.Data.Operations
             return number.ToString(format);
         }
 
-        #endregion Private Methods 
+        #endregion Private Methods
     }
 }

@@ -12,9 +12,11 @@ namespace Dev2.DataList.Contract.Network
             {
                 return Errors.HasErrors();
             }
+            // ReSharper disable ValueParameterNotUsed
             set
+            // ReSharper restore ValueParameterNotUsed
             {
-               
+
             }
         }
 

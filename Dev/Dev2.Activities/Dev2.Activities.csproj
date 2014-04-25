@@ -233,7 +233,6 @@
     <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
-    <Compile Include="Interfaces\IWebpageRenderWorker.cs" />
     <Compile Include="Interfaces\IWizardEditable.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />

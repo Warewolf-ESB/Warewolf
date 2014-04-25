@@ -317,7 +317,6 @@
     <Compile Include="Interfaces\IServerDataListCompiler.cs" />
     <Compile Include="Compilers\ServerDataListCompiler.cs" />
     <Compile Include="Network\DeleteDataListMessage.cs" />
-    <Compile Include="Network\INetworkDataListChannel.cs" />
     <Compile Include="Network\PersistChildChainMessage.cs" />
     <Compile Include="Network\ReadDataListMessage.cs" />
     <Compile Include="Network\WriteDataListMessage.cs" />

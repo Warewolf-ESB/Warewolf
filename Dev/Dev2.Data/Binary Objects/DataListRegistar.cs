@@ -17,7 +17,7 @@ namespace Dev2.Data.Binary_Objects
 
         private static readonly ConcurrentDictionary<int, int> _activityThreadToParentThreadID = new ConcurrentDictionary<int, int>();
 
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         /// <summary>
         /// Registers the activity thread automatic parent unique identifier.

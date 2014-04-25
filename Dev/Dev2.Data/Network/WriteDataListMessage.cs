@@ -27,7 +27,6 @@ namespace Dev2.DataList.Contract.Network
         public override void Read(IByteReaderBase reader)
         {
             IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
-            ErrorResultTO tmpErrors;
 
             DatalistID = reader.ReadGuid();
 
@@ -35,6 +34,7 @@ namespace Dev2.DataList.Contract.Network
             Datalist = null;
             if(datalistData != null)
             {
+                ErrorResultTO tmpErrors;
                 Datalist = translator.ConvertTo(datalistData, "", out tmpErrors);
             }
 
@@ -44,13 +44,13 @@ namespace Dev2.DataList.Contract.Network
         public override void Write(IByteWriterBase writer)
         {
             IDataListTranslator translator = new DataListTranslatorFactory().FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._BINARY));
-            ErrorResultTO tmpErrors;
 
             writer.Write(DatalistID);
 
             byte[] datalistData = null;
             if(Datalist != null)
             {
+                ErrorResultTO tmpErrors;
                 DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist, out tmpErrors);
                 datalistData = dataListTranslatedPayloadTO.FetchAsByteArray();
             }

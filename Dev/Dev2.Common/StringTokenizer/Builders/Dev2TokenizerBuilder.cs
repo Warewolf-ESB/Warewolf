@@ -11,7 +11,7 @@ namespace Dev2.Common
 
         public bool ReverseOrder { get; set; }
 
-        private IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
+        private readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
 
         public void AddIndexOp(int index)
         {

@@ -10,19 +10,21 @@ namespace Dev2.Common
         public static IList<TTEnum> GetEnumsToList<TTEnum>() where TTEnum : struct
         {
             Type type = typeof(TTEnum);
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if(!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
             return Enum.GetValues(type).Cast<TTEnum>().ToList();
         }
 
         public static IList<string> ConvertEnumsTypeToStringList<tEnum>() where tEnum : struct
         {
-           Type enumType = typeof(tEnum);
+            Type enumType = typeof(tEnum);
 
             IList<string> result = new List<string>();
 
-            foreach (var value in Enum.GetValues(enumType))
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(var value in Enum.GetValues(enumType))
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
-               result.Add((value as Enum).GetDescription());
+                result.Add((value as Enum).GetDescription());
             }
 
             return result;
@@ -31,19 +33,20 @@ namespace Dev2.Common
         public static string ConvertEnumValueToString(Enum value)
         {
             Type type = value.GetType();
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if(!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
 
-            object[] allAttribs = type.GetCustomAttributes(false);
             return value.GetDescription();
-        }    
+        }
 
         public static object GetEnumFromStringDiscription(string discription, Type type)
         {
-            if (!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
+            if(!type.IsEnum) throw new InvalidOperationException("Generic parameter T must be an enumeration type.");
 
-            foreach (var value in Enum.GetValues(type))
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(var value in Enum.GetValues(type))
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
-                if ((value as Enum).GetDescription() == discription)
+                if((value as Enum).GetDescription() == discription)
                 {
                     return value;
                 }
