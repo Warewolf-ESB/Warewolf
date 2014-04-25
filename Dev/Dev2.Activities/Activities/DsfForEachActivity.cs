@@ -112,10 +112,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string PreservedDataList { private set; get; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
-        // REMOVE : Travis.Frisinger - 28.11.2012 : The two variables below are no longer required
-        // ReSharper disable FieldCanBeMadeReadOnly.Local
-        //private Variable<IEnumerator<UnlimitedObject>> _dataTags = new Variable<IEnumerator<UnlimitedObject>>("dataTags");
-        //private Variable<UnlimitedObject> _inputData = new Variable<UnlimitedObject>("inputData");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 #pragma warning disable 169
         private List<bool> _results = new List<bool>();
@@ -157,8 +153,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(DataFunc);
-            //metadata.AddImplementationVariable(_dataTags);
-            //metadata.AddImplementationVariable(_inputData);
             metadata.AddImplementationVariable(_origInput);
             metadata.AddImplementationVariable(_origOutput);
 
