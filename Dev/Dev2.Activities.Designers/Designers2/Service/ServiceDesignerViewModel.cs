@@ -1,3 +1,13 @@
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
@@ -17,16 +27,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml.Linq;
 using Dev2.Threading;
 
 namespace Dev2.Activities.Designers2.Service
@@ -49,16 +49,17 @@ namespace Dev2.Activities.Designers2.Service
         const string FixText = "Fix";
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator,new AsyncWorker())
+            : this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
         {
         }
 
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
-                                        IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher):this(modelItem,rootModel,environmentRepository,eventPublisher,new AsyncWorker())
+                                        IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
+            : this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker())
         {
         }
 
-        public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher,IAsyncWorker asyncWorker)
+        public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
             : base(modelItem)
         {
             AddTitleBarEditToggle();
@@ -97,12 +98,12 @@ namespace Dev2.Activities.Designers2.Service
             {
                 return;
             }
-            if (!IsDeleted)
+            if(!IsDeleted)
             {
                 // MUST InitializeMappings() first!
                 InitializeMappings();
                 InitializeLastValidationMemo(environment);
-                if (IsItemDragged.Instance.IsDragged)
+                if(IsItemDragged.Instance.IsDragged)
                 {
                     Expand();
                     IsItemDragged.Instance.IsDragged = false;
@@ -201,7 +202,7 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsDeleted
         {
             get { return (bool)GetValue(IsDeletedProperty); }
-            private set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
+            private set { if(!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
@@ -298,7 +299,7 @@ namespace Dev2.Activities.Designers2.Service
         SimulationMode SimulationMode { get { return GetProperty<SimulationMode>(); } }
         string FriendlySourceName { get { return GetProperty<string>(); } }
         string Type { get { return GetProperty<string>(); } }
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         Guid EnvironmentID { get { return GetProperty<Guid>(); } }
 
         Guid ResourceID { get { return GetProperty<Guid>(); } }
@@ -306,7 +307,7 @@ namespace Dev2.Activities.Designers2.Service
         // ReSharper restore InconsistentNaming
         public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
         public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        
+
 
 
 
@@ -333,7 +334,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public void UpdateMappings()
         {
-            if (!_resourcesUpdated)
+            if(!_resourcesUpdated)
             {
                 SetInputs();
                 SetOuputs();
@@ -379,9 +380,9 @@ namespace Dev2.Activities.Designers2.Service
         void InitializeMappings()
         {
 
-          var webAct = ActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
-          DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
-               
+            var webAct = ActivityFactory.CreateWebActivity(ModelItem, ResourceModel, ServiceName);
+            DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
+
         }
 
         void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -459,18 +460,18 @@ namespace Dev2.Activities.Designers2.Service
         {
             if(environmentModel != null)
             {
-                if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources )
+                if(!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
                 {
                     ResourceModel = ResourceModelFactory.CreateResourceModel(environmentModel);
                     ResourceModel.Inputs = InputMapping;
                     ResourceModel.Outputs = OutputMapping;
-                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError,false);
-  
+                    environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError, false);
+
                     environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
                     return true;
                 }
 
-                if (!InitializeResourceModelSync(environmentModel))
+                if(!InitializeResourceModelSync(environmentModel))
                     return false;
 
             }
@@ -488,24 +489,24 @@ namespace Dev2.Activities.Designers2.Service
         {
             var resourceId = ResourceID;
 
-            if (resourceId != Guid.Empty) // if we have a GUID then get the model
+            if(resourceId != Guid.Empty) // if we have a GUID then get the model
             {
                 NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-            
+
             }
             else
             {
-                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
+                if(!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
                 {
                     NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName) as IContextualResourceModel;
-              
+
                 }
             }
-         }
+        }
 
         private void CheckVersions()
         {
-            if (LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
+            if(LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
             {
 
                 RemoveErrors(
@@ -517,7 +518,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             var webAct = ActivityFactory.CreateWebActivity(NewModel, NewModel, ServiceName);
             var newMapping = MappingFactory.CreateModel(webAct, OnMappingCollectionChanged);
-            if (newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
+            if(newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
                 newMapping.GetOutputString(DataMappingViewModel.Outputs) != DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs))
             {
                 UpdateLastValidationMemoWithVersionChanged();
@@ -532,35 +533,35 @@ namespace Dev2.Activities.Designers2.Service
         private bool InitializeResourceModelSync(IEnvironmentModel environmentModel)
         {
             var resourceId = ResourceID;
-            if( ! environmentModel.IsConnected) // if we are not connected then just verify connection and return
+            if(!environmentModel.IsConnected) // if we are not connected then just verify connection and return
             {
                 environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
                 return true;
             }
-            if (resourceId != Guid.Empty  ) // if we have a GUID then get the model
+            if(resourceId != Guid.Empty) // if we have a GUID then get the model
             {
                 ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-                
+
             }
             else
             {
-                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
+                if(!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
                 {
                     ResourceModel =
                         environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName, true) as
                         IContextualResourceModel;
-          
+
                 }
-               // else return;
+                // else return;
             }
-            if (ResourceModel == null && environmentModel.IsConnected) // if we have no name, guid and no resource, then set deleted
+            if(ResourceModel == null && environmentModel.IsConnected) // if we have no name, guid and no resource, then set deleted
             {
-            
-                    UpdateLastValidationMemoWithDeleteError();
+
+                UpdateLastValidationMemoWithDeleteError();
             }
             else
             {
-                if (!CheckSourceMissing())
+                if(!CheckSourceMissing())
                     return false;
             }
 
@@ -574,7 +575,7 @@ namespace Dev2.Activities.Designers2.Service
 
         private void UpdateLastValidationMemoWithVersionChanged()
         {
-          
+
             var memo = new DesignValidationMemo
             {
                 InstanceID = UniqueID,
@@ -588,8 +589,8 @@ namespace Dev2.Activities.Designers2.Service
                 Message = "Incorrect Version. The remote workflow has changed.Please refresh"
             });
 
-            UpdateLastValidationMemo(memo,false);
-          
+            UpdateLastValidationMemo(memo, false);
+
         }
 
         bool CheckSourceMissing()
@@ -624,7 +625,7 @@ namespace Dev2.Activities.Designers2.Service
             if(environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
-                _validationService.Subscribe(UniqueID , (a=> UpdateLastValidationMemo(a)));
+                _validationService.Subscribe(UniqueID, (a => UpdateLastValidationMemo(a)));
             }
         }
 
@@ -716,7 +717,7 @@ namespace Dev2.Activities.Designers2.Service
             UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
             if(SourceId == Guid.Empty)
             {
-                if (checkSource && CheckSourceMissing())
+                if(checkSource && CheckSourceMissing())
                 {
                     InitializeMappings();
                     UpdateMappings();
@@ -748,7 +749,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
         {
-         
+
             var memo = new DesignValidationMemo
             {
                 InstanceID = UniqueID,
@@ -768,10 +769,10 @@ namespace Dev2.Activities.Designers2.Service
         {
             Dispatcher.Invoke(() =>
                 {
-                    switch (result)
+                    switch(result)
                     {
                         case ConnectResult.Success:
-                           
+
                             break;
 
                         case ConnectResult.ConnectFailed:
@@ -794,7 +795,7 @@ namespace Dev2.Activities.Designers2.Service
                             UpdateLastValidationMemo(memo);
                             break;
                     }
-                    
+
                 });
         }
 
@@ -904,7 +905,7 @@ namespace Dev2.Activities.Designers2.Service
         // PBI 6690 - 2013.07.04 - TWR : added
         void FixErrors()
         {
-            if (!_versionsDifferent && (WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null))
+            if(!_versionsDifferent && (WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null))
             {
                 return;
             }
@@ -913,20 +914,20 @@ namespace Dev2.Activities.Designers2.Service
             {
                 case FixType.ReloadMapping:
                     ShowLarge = true;
-                    if ( !_versionsDifferent)
+                    if(!_versionsDifferent)
                     {
                         var xml = XElement.Parse(WorstDesignError.FixData);
                         var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
                         var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
 
                         DataMappingViewModel.Inputs.Clear();
-                        foreach (var input in inputs)
+                        foreach(var input in inputs)
                         {
                             DataMappingViewModel.Inputs.Add(input);
                         }
 
                         DataMappingViewModel.Outputs.Clear();
-                        foreach (var output in outputs)
+                        foreach(var output in outputs)
                         {
                             DataMappingViewModel.Outputs.Add(output);
                         }
@@ -935,7 +936,7 @@ namespace Dev2.Activities.Designers2.Service
                         RemoveError(WorstDesignError);
                         UpdateWorstError();
                     }
-                    else if ( _versionsDifferent)
+                    else if(_versionsDifferent)
                     {
                         ResourceModel = NewModel;
                         InitializeMappings();
@@ -953,8 +954,7 @@ namespace Dev2.Activities.Designers2.Service
                     foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
                         IInputOutputViewModel model = inputOutputViewModel;
-                        var actualViewModel =
-                        DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
+                        var actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
                         if(actualViewModel != null)
                         {
                             if(actualViewModel.Value == string.Empty)

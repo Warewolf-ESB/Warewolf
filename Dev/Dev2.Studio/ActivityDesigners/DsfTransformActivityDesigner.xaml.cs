@@ -23,17 +23,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ModelItem item = newItem as ModelItem;
 
-
-            ModelItem parent = item.Parent;
-
-            while(parent != null)
+            if(item != null)
             {
-                if(parent.Properties["Argument"] != null)
-                {
-                    break;
-                }
+                ModelItem parent = item.Parent;
 
-                parent = parent.Parent;
+                while(parent != null)
+                {
+                    if(parent.Properties["Argument"] != null)
+                    {
+                        break;
+                    }
+
+                    parent = parent.Parent;
+                }
             }
         }
 

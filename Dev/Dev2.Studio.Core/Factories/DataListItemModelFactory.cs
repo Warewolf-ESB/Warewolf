@@ -18,8 +18,9 @@ namespace Dev2.Studio.Core.Factories
             return CreateDataListItemViewModel(dataListViewModel, name, description, parent, true);
         }
 
-        // ReSharper disable once MethodOverloadWithOptionalParameter
+        // ReSharper disable MethodOverloadWithOptionalParameter
         public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, string name, string description, IDataListItemModel parent, bool isEditable = true, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        // ReSharper restore MethodOverloadWithOptionalParameter
         {
             IDataListItemModel dataListModel = CreateDataListModel(name);
             dataListModel.Description = description;

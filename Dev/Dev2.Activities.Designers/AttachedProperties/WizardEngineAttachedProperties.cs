@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Dev2.Studio.AppResources.AttachedProperties
 {
@@ -20,7 +16,7 @@ namespace Dev2.Studio.AppResources.AttachedProperties
 
         // Using a DependencyProperty as the backing store for DontOpenWizard.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DontOpenWizardProperty =
-            DependencyProperty.RegisterAttached("DontOpenWizard", typeof(bool), typeof(WizardEngineAttachedProperties), 
+            DependencyProperty.RegisterAttached("DontOpenWizard", typeof(bool), typeof(WizardEngineAttachedProperties),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
     }
 }

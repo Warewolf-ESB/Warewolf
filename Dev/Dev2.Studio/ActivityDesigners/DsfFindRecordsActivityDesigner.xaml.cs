@@ -1,12 +1,10 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.DataList;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Controls;
 using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -27,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void cbxWhere_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            foreach (string item in e.AddedItems)
+            foreach(string item in e.AddedItems)
             {
                 if(item == "Doesn't Contains" || item == "Contains" || item == "=" || item == "<> (Not Equal)" || item == "Ends With" || item == "Starts With" || item == "Is Regex" || item == ">" || item == "<" || item == "<=" || item == ">=")
                 {
@@ -55,7 +53,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfFindRecordsActivityDesigner_OnMouseEnter(object sender, MouseEventArgs e)
         {
             UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
+            if(uiElement != null)
             {
                 Panel.SetZIndex(uiElement, int.MaxValue);
             }
@@ -64,7 +62,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void DsfFindRecordsActivityDesigner_OnMouseLeave(object sender, MouseEventArgs e)
         {
             UIElement uiElement = VisualTreeHelper.GetParent(this) as UIElement;
-            if (uiElement != null)
+            if(uiElement != null)
             {
                 Panel.SetZIndex(uiElement, int.MinValue);
             }

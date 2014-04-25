@@ -27,25 +27,25 @@ namespace Dev2.Activities
         {
             var dgr = sender as DataGrid;
 
-            if (dgr == null)
+            if(dgr == null)
             {
                 return;
             }
-           
+
             var toFn = dgr.Items[0] as IDev2TOFn;
-            if (toFn == null || !toFn.Inserted)
+            if(toFn == null || !toFn.Inserted)
             {
                 return;
             }
 
             _textBox = GetVisualChild<TextBox>(dgr);
-            if (_textBox != null)
+            if(_textBox != null)
             {
                 _textBox.Loaded += intellisenseTextBox_Loaded;
             }
         }
 
-        void intellisenseTextBox_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        void intellisenseTextBox_Loaded(object sender, RoutedEventArgs e)
         {
             _textBox.Focus();
             _textBox.LostKeyboardFocus += _textBox_LostKeyboardFocus;
@@ -55,31 +55,31 @@ namespace Dev2.Activities
         {
             _textBox.Focus();
             _stealCount++;
-            if (_stealCount == 1)
+            if(_stealCount == 1)
             {
                 _textBox.LostKeyboardFocus -= _textBox_LostKeyboardFocus;
                 _textBox.Loaded -= intellisenseTextBox_Loaded;
             }
         }
 
-        public  virtual T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        public virtual T GetVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             T child = default(T);
-            if (parent == null)
+            if(parent == null)
             {
                 return null;
             }
 
             int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
+            for(int i = 0; i < numVisuals; i++)
             {
-                DependencyObject v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                DependencyObject v = VisualTreeHelper.GetChild(parent, i);
                 child = v as T;
-                if (child == null)
+                if(child == null)
                 {
                     child = GetVisualChild<T>(v);
                 }
-                if (child != null)
+                if(child != null)
                 {
                     break;
                 }

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.CaseConvert
 {

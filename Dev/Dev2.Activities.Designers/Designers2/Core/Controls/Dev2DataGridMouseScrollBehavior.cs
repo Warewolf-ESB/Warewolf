@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.UI;
 
 namespace Dev2.Activities.Designers2.Core.Controls
 {

@@ -1,14 +1,13 @@
-﻿using Dev2.Common;
-using Dev2.MathOperations;
-using Dev2.Studio.Core.Interfaces;
-using Infragistics.Calculations.CalcManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Parsing;
 using System.Parsing.Intellisense;
 using System.Text;
 using System.Windows.Data;
+using Dev2.Common;
+using Dev2.MathOperations;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.InterfaceImplementors
 {
@@ -18,14 +17,14 @@ namespace Dev2.Studio.InterfaceImplementors
         private static HashSet<string> _functionNames;
         //private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         //private static string _emptyADL = "<ADL></ADL>";
-        private static IList<IntellisenseProviderResult> _emptyResults = new List<IntellisenseProviderResult>();
+        private static readonly IList<IntellisenseProviderResult> _emptyResults = new List<IntellisenseProviderResult>();
         #endregion
 
         #region Instance Fields
         private IList<IntellisenseProviderResult> _intellisenseResult;
         private readonly List<IntellisenseProviderResult> _errors = new List<IntellisenseProviderResult>();
         private readonly SyntaxTreeBuilder _builder = new SyntaxTreeBuilder();
-        #endregion 
+        #endregion
 
         #region Public Properties
         public bool Optional
@@ -149,7 +148,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                         if(_builder.EventLog != null && _builder.EventLog.HasEventLogs)
                         {
-                            _builder.EventLog.Clear(); 
+                            _builder.EventLog.Clear();
                             subResults.Add(new IntellisenseProviderResult(this, "Syntax Error", null, "An error occurred while parsing { " + context.InputText + " } It appears to be malformed", true, 0, context.InputText.Length)); //Bug 6733
                         }
 
@@ -286,8 +285,8 @@ namespace Dev2.Studio.InterfaceImplementors
                 return _intellisenseResult;
             }
 
-                return _emptyResults;
-            }
+            return _emptyResults;
+        }
 
         private bool VerifyMethodInvocationArguments(MethodInvocationNode mNode)
         {
@@ -305,8 +304,8 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(String.Equals(methodName, _intellisenseResult[i].Name, StringComparison.Ordinal))
                 {
-                        templateResult = _intellisenseResult[i];
-                        break;
+                    templateResult = _intellisenseResult[i];
+                    break;
                 }
             }
 
@@ -369,8 +368,8 @@ namespace Dev2.Studio.InterfaceImplementors
                     }
                     else if(maxArguments == -1 && paramCount != minArguments)
                     {
-                            _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs exactly " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
-                            result = false;
+                        _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs exactly " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                        result = false;
                     }
                 }
                 else if(paramCount > 0 && minArguments == -1)
@@ -584,7 +583,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                         builder.AppendLine();
                                         builder.Append(templateResult.Description);
                                     }
-                                    
+
                                     popupresults.Add(new IntellisenseProviderResult(this, templateResult.Name, builder.ToString()));
                                     return popupresults;
                                 }

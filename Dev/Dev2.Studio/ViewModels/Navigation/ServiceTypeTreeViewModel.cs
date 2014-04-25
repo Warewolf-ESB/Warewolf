@@ -10,9 +10,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
-using Infragistics;
-using Microsoft.Expression.Interactivity.Core;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -37,8 +34,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             : base(eventPublisher, parent)
         {
             ResourceType = resourceCategory;
-            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             IsExpanded = true;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             if(parent != null)
             {
                 parent.IsExpanded = true;
@@ -235,7 +233,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 if(ResourceType == type)
                 {
                     return this;
-            }
+                }
             }
             return base.FindChild(resourceToFind);
         }

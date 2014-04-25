@@ -20,7 +20,7 @@ namespace Dev2.Studio.Webs.Callbacks
     {
         #region Fields
 
-        ConnectControlInstanceType _connectControlInstanceType;
+        readonly ConnectControlInstanceType _connectControlInstanceType;
 
         #endregion
 

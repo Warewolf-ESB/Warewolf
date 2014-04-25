@@ -152,7 +152,6 @@
     <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
     <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
     <Compile Include="Designers2\Core\Adorners\AdornerUtils.cs" />
-    <Compile Include="Designers2\Core\Controls\DatagridFocusOnLoadBehavior.cs" />
     <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
       <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -11,7 +11,9 @@ namespace Dev2.Activities.Designers2.DataMerge
             DataGrid = SmallDataGrid;
         }
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public ICommand MergeTypeUpdatedCommand { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         protected override IInputElement GetInitialFocusElement()
         {

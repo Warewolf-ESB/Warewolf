@@ -784,8 +784,7 @@ You need Administrator permission.");
         {
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = _schedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
-            ScheduledResource scheduledResource = new ScheduledResource(NewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty);
-            scheduledResource.IsDirty = true;
+            ScheduledResource scheduledResource = new ScheduledResource(NewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty) { IsDirty = true };
             scheduledResource.OldName = scheduledResource.Name;
             ScheduledResourceModel.ScheduledResources.Add(scheduledResource);
             _newTaskCounter++;
@@ -1037,10 +1036,7 @@ You need Administrator permission.";
             while((String.IsNullOrEmpty(AccountName) || String.IsNullOrEmpty(Password)) && !cancelled)
             {
 
-                CredentialsDialog credentialsDialog = new CredentialsDialog();
-                credentialsDialog.UserName = scheduledResource.UserName;
-                credentialsDialog.Options = CredentialsDialogOptions.GenericCredentials;
-                credentialsDialog.ValidatePassword = true;
+                CredentialsDialog credentialsDialog = new CredentialsDialog { UserName = scheduledResource.UserName, Options = CredentialsDialogOptions.GenericCredentials, ValidatePassword = true };
                 var dialogResult = credentialsDialog.ShowDialog();
                 if(dialogResult == System.Windows.Forms.DialogResult.Cancel)
                 {

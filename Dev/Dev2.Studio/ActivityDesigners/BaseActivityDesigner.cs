@@ -1,19 +1,14 @@
-﻿using Dev2.Interfaces;
-using System;
-using System.Activities.Presentation;
+﻿using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Interfaces;
 
 namespace Dev2.Studio
 {
     public class BaseActivityDesigner : ActivityDesigner
     {
-        private const Int32 MinSize = 2;
-        private const Int32 MinBlanks = 1;
-
-
-        private IList<ModelItem> ItemList
+        private IEnumerable<ModelItem> ItemList
         {
             get
             {
@@ -22,7 +17,9 @@ namespace Dev2.Studio
             }
         }
 
+        // ReSharper disable UnusedMember.Local
         private IEnumerable<int> BlankIndexes
+        // ReSharper restore UnusedMember.Local
         {
             get
             {
@@ -33,6 +30,6 @@ namespace Dev2.Studio
                                  select currentVal.IndexNumber).ToList();
                 return blankList;
             }
-        }       
+        }
     }
 }

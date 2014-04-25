@@ -31,7 +31,7 @@ namespace Dev2.Network
     {
         Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
-        private IAsyncWorker _asyncWorker;
+        private readonly IAsyncWorker _asyncWorker;
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {

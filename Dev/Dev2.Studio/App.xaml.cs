@@ -8,14 +8,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common.Common;
-using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
-using Dev2.Threading;
 using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
@@ -29,7 +26,9 @@ namespace Dev2.Studio
         MainViewModel _mainViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
         // ReSharper disable once RedundantDefaultFieldInitializer
+        // ReSharper disable NotAccessedField.Local
         private Mutex _processGuard = null;
+        // ReSharper restore NotAccessedField.Local
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
 
@@ -117,8 +116,9 @@ namespace Dev2.Studio
             {
                 base.OnExit(e);
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Best effort ;)
             }
@@ -145,8 +145,9 @@ namespace Dev2.Studio
             {
                 base.Shutdown();
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Best effort ;)
             }

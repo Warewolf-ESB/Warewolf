@@ -3,7 +3,6 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Automation.Provider;
@@ -105,24 +104,24 @@ namespace System.Windows.Automation.Peers
             object iface = null;
             AutoCompleteBox owner = OwnerAutoCompleteBox;
 
-            if (patternInterface == PatternInterface.Value)
+            if(patternInterface == PatternInterface.Value)
             {
                 iface = this;
             }
-            else if (patternInterface == PatternInterface.ExpandCollapse)
+            else if(patternInterface == PatternInterface.ExpandCollapse)
             {
                 iface = this;
             }
-            else if (owner.SelectionAdapter != null)
+            else if(owner.SelectionAdapter != null)
             {
                 AutomationPeer peer = owner.SelectionAdapter.CreateAutomationPeer();
-                if (peer != null)
+                if(peer != null)
                 {
                     iface = peer.GetPattern(patternInterface);
                 }
             }
 
-            if (iface == null)
+            if(iface == null)
             {
                 iface = base.GetPattern(patternInterface);
             }
@@ -140,7 +139,7 @@ namespace System.Windows.Automation.Peers
         /// </remarks>
         void IExpandCollapseProvider.Expand()
         {
-            if (!IsEnabled())
+            if(!IsEnabled())
             {
                 throw new ElementNotEnabledException();
             }
@@ -157,7 +156,7 @@ namespace System.Windows.Automation.Peers
         /// </remarks>
         void IExpandCollapseProvider.Collapse()
         {
-            if (!IsEnabled())
+            if(!IsEnabled())
             {
                 throw new ElementNotEnabledException();
             }
@@ -195,7 +194,7 @@ namespace System.Windows.Automation.Peers
         #endregion ExpandCollapse
 
         #region ValueProvider
-        
+
         /// <summary>
         /// Sets the value of a control.
         /// </summary>
@@ -249,25 +248,25 @@ namespace System.Windows.Automation.Peers
 
             // TextBox part.
             TextBox textBox = owner.TextBox;
-            if (textBox != null)
+            if(textBox != null)
             {
                 AutomationPeer peer = FrameworkElementAutomationPeer.CreatePeerForElement(textBox);
-                if (peer != null)
+                if(peer != null)
                 {
                     children.Insert(0, peer);
                 }
-           }
+            }
 
             // Include SelectionAdapter's children.
-            if (owner.SelectionAdapter != null)
+            if(owner.SelectionAdapter != null)
             {
                 AutomationPeer selectionAdapterPeer = owner.SelectionAdapter.CreateAutomationPeer();
-                if (selectionAdapterPeer != null)
+                if(selectionAdapterPeer != null)
                 {
                     List<AutomationPeer> listChildren = selectionAdapterPeer.GetChildren();
-                    if (listChildren != null)
+                    if(listChildren != null)
                     {
-                        foreach (AutomationPeer child in listChildren)
+                        foreach(AutomationPeer child in listChildren)
                         {
                             children.Add(child);
                         }
@@ -289,16 +288,16 @@ namespace System.Windows.Automation.Peers
         /// </remarks>
         IRawElementProviderSimple[] ISelectionProvider.GetSelection()
         {
-            if (OwnerAutoCompleteBox.SelectionAdapter != null)
+            if(OwnerAutoCompleteBox.SelectionAdapter != null)
             {
                 object selectedItem = OwnerAutoCompleteBox.SelectionAdapter.SelectedItem;
-                if (selectedItem != null)
+                if(selectedItem != null)
                 {
                     UIElement uie = selectedItem as UIElement;
-                    if (uie != null)
+                    if(uie != null)
                     {
                         AutomationPeer peer = FrameworkElementAutomationPeer.CreatePeerForElement(uie);
-                        if (peer != null)
+                        if(peer != null)
                         {
                             return new IRawElementProviderSimple[] { ProviderFromPeer(peer) };
                         }
