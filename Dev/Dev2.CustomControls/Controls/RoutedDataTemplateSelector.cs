@@ -66,7 +66,7 @@ namespace WPF.JoshSmith.Controls
             // We need 'container' to be a UIElement because that class
             // exposes the RaiseEvent method.
             UIElement templatedElement = container as UIElement;
-            if (templatedElement == null)
+            if(templatedElement == null)
                 throw new ArgumentException("RoutedDataTemplateSelector only works with UIElements.");
 
             // Bubble the TemplateRequested event up the logical tree, starting at the templated element.
@@ -91,7 +91,6 @@ namespace WPF.JoshSmith.Controls
     public class TemplateRequestedEventArgs : RoutedEventArgs
     {
         private readonly object dataObject;
-        private DataTemplate templateToUse;
 
         /// <summary>
         /// Initializes a new instance.
@@ -107,24 +106,20 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public object DataObject
         {
-            get { return this.dataObject; }
+            get { return dataObject; }
         }
 
         /// <summary>
         /// Gets/sets the DataTemplate to apply to the templated element.
         /// </summary>
-        public DataTemplate TemplateToUse
-        {
-            get { return this.templateToUse; }
-            set { this.templateToUse = value; }
-        }
+        public DataTemplate TemplateToUse { get; set; }
 
         /// <summary>
         /// The UIElement which contains the data object for which a template must be specified.
         /// </summary>
         public UIElement TemplatedElement
         {
-            get { return base.OriginalSource as UIElement; }
+            get { return OriginalSource as UIElement; }
         }
     }
 

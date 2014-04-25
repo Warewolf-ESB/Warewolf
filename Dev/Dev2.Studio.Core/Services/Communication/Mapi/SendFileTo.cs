@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -43,9 +44,7 @@ namespace SendFileTo
 
         int SendMail(string strSubject, string strBody, int how)
         {
-            MapiMessage msg = new MapiMessage();
-            msg.subject = strSubject;
-            msg.noteText = strBody;
+            MapiMessage msg = new MapiMessage { subject = strSubject, noteText = strBody };
 
             msg.recips = GetRecipients(out msg.recipCount);
             msg.files = GetAttachments(out msg.fileCount);
@@ -58,10 +57,8 @@ namespace SendFileTo
 
         bool AddRecipient(string email, HowTo howTo)
         {
-            MapiRecipDesc recipient = new MapiRecipDesc();
+            MapiRecipDesc recipient = new MapiRecipDesc { recipClass = (int)howTo, name = email };
 
-            recipient.recipClass = (int)howTo;
-            recipient.name = email;
             m_recipients.Add(recipient);
 
             return true;
@@ -99,8 +96,7 @@ namespace SendFileTo
             int size = Marshal.SizeOf(typeof(MapiFileDesc));
             IntPtr intPtr = Marshal.AllocHGlobal(m_attachments.Count * size);
 
-            MapiFileDesc mapiFileDesc = new MapiFileDesc();
-            mapiFileDesc.position = -1;
+            MapiFileDesc mapiFileDesc = new MapiFileDesc { position = -1 };
             int ptr = (int)intPtr;
 
             foreach(string strAttachment in m_attachments)
@@ -118,7 +114,7 @@ namespace SendFileTo
         void Cleanup(ref MapiMessage msg)
         {
             int size = Marshal.SizeOf(typeof(MapiRecipDesc));
-            int ptr = 0;
+            int ptr;
 
             if(msg.recips != IntPtr.Zero)
             {
@@ -153,10 +149,10 @@ namespace SendFileTo
         {
             if(m_lastError <= 26)
                 return errors[m_lastError];
-            return "MAPI error [" + m_lastError.ToString() + "]";
+            return "MAPI error [" + m_lastError.ToString(CultureInfo.InvariantCulture) + "]";
         }
 
-        readonly string[] errors = new string[] {
+        readonly string[] errors = new[] {
 		"OK [0]", "User abort [1]", "General MAPI failure [2]", "MAPI login failure [3]",
 		"Disk full [4]", "Insufficient memory [5]", "Access denied [6]", "-unknown- [7]",
 		"Too many sessions [8]", "Too many files were specified [9]", "Too many recipients were specified [10]", "A specified attachment was not found [11]",
@@ -166,16 +162,17 @@ namespace SendFileTo
 		"Invalid edit fields [24]", "Invalid recipients [25]", "Not supported [26]" 
 		};
 
-
-        List<MapiRecipDesc> m_recipients = new List<MapiRecipDesc>();
-        List<string> m_attachments = new List<string>();
-        int m_lastError = 0;
+        readonly List<MapiRecipDesc> m_recipients = new List<MapiRecipDesc>();
+        readonly List<string> m_attachments = new List<string>();
+        int m_lastError;
 
         const int MAPI_LOGON_UI = 0x00000001;
         const int MAPI_DIALOG = 0x00000008;
         const int maxAttachments = 20;
 
+        // ReSharper disable UnusedMember.Local
         enum HowTo { MAPI_ORIG = 0, MAPI_TO, MAPI_CC, MAPI_BCC };
+        // ReSharper restore UnusedMember.Local
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

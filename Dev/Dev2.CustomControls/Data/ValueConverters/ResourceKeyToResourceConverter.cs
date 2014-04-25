@@ -32,7 +32,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         public object Convert(
           object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return this.FindResource(value);
+            return FindResource(value);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
             // Either we do not have an inheritance context or the  
             // requested resource does not exist, so return null.
-            if (result == DependencyProperty.UnsetValue)
+            if(result == DependencyProperty.UnsetValue)
                 return null;
 
             // The requested resource was found, so we will receive a 

@@ -3,11 +3,8 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
 
-    internal class SimpleHistory : IActionHistory, IEnumerable<IAction>, IEnumerable
+    internal class SimpleHistory : IActionHistory
     {
         private SimpleHistoryNode mCurrentState = new SimpleHistoryNode();
 
@@ -15,41 +12,41 @@
 
         public SimpleHistory()
         {
-            this.Init();
+            Init();
         }
 
         public bool AppendAction(IAction newAction)
         {
-            if (this.CurrentState.PreviousAction == null)
+            if(CurrentState.PreviousAction == null)
             {
-                this.CurrentState.NextAction = newAction;
-                this.CurrentState.NextNode = new SimpleHistoryNode(newAction, this.CurrentState);
+                CurrentState.NextAction = newAction;
+                CurrentState.NextNode = new SimpleHistoryNode(newAction, CurrentState);
             }
             else
             {
-                if (this.CurrentState.PreviousAction.TryToMerge(newAction))
+                if(CurrentState.PreviousAction.TryToMerge(newAction))
                 {
-                    this.RaiseUndoBufferChanged();
+                    RaiseUndoBufferChanged();
                     return false;
                 }
-                this.CurrentState.NextAction = newAction;
-                this.CurrentState.NextNode = new SimpleHistoryNode(newAction, this.CurrentState);
+                CurrentState.NextAction = newAction;
+                CurrentState.NextNode = new SimpleHistoryNode(newAction, CurrentState);
             }
             return true;
         }
 
         public void Clear()
         {
-            this.Init();
-            this.RaiseUndoBufferChanged();
+            Init();
+            RaiseUndoBufferChanged();
         }
 
         public IEnumerable<IAction> EnumUndoableActions()
         {
-            SimpleHistoryNode head = this.Head;
-            while (true)
+            SimpleHistoryNode head = Head;
+            while(true)
             {
-                if (((head == null) || (head == this.CurrentState)) || (head.NextAction == null))
+                if(((head == null) || (head == CurrentState)) || (head.NextAction == null))
                 {
                     yield break;
                 }
@@ -60,57 +57,57 @@
 
         public IEnumerator<IAction> GetEnumerator()
         {
-            return this.EnumUndoableActions().GetEnumerator();
+            return EnumUndoableActions().GetEnumerator();
         }
 
         private void Init()
         {
-            this.CurrentState = new SimpleHistoryNode();
-            this.Head = this.CurrentState;
+            CurrentState = new SimpleHistoryNode();
+            Head = CurrentState;
         }
 
         public void MoveBack()
         {
-            if (!this.CanMoveBack)
+            if(!CanMoveBack)
             {
                 throw new InvalidOperationException("History.MoveBack() cannot execute because CanMoveBack returned false (the current state is the last state in the undo buffer.");
             }
-            this.CurrentState.PreviousAction.UnExecute();
-            this.CurrentState = this.CurrentState.PreviousNode;
-            this.Length--;
-            this.RaiseUndoBufferChanged();
+            CurrentState.PreviousAction.UnExecute();
+            CurrentState = CurrentState.PreviousNode;
+            Length--;
+            RaiseUndoBufferChanged();
         }
 
         public void MoveForward()
         {
-            if (!this.CanMoveForward)
+            if(!CanMoveForward)
             {
                 throw new InvalidOperationException("History.MoveForward() cannot execute because CanMoveForward returned false (the current state is the last state in the undo buffer.");
             }
-            this.CurrentState.NextAction.Execute();
-            this.CurrentState = this.CurrentState.NextNode;
-            this.Length++;
-            this.RaiseUndoBufferChanged();
+            CurrentState.NextAction.Execute();
+            CurrentState = CurrentState.NextNode;
+            Length++;
+            RaiseUndoBufferChanged();
         }
 
         protected void RaiseUndoBufferChanged()
         {
-            if (this.CollectionChanged != null)
+            if(CollectionChanged != null)
             {
-                this.CollectionChanged(this, new EventArgs());
+                CollectionChanged(this, new EventArgs());
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public bool CanMoveBack
         {
             get
             {
-                return ((this.CurrentState.PreviousAction != null) && (this.CurrentState.PreviousNode != null));
+                return ((CurrentState.PreviousAction != null) && (CurrentState.PreviousNode != null));
             }
         }
 
@@ -118,7 +115,7 @@
         {
             get
             {
-                return ((this.CurrentState.NextAction != null) && (this.CurrentState.NextNode != null));
+                return ((CurrentState.NextAction != null) && (CurrentState.NextNode != null));
             }
         }
 
@@ -126,15 +123,17 @@
         {
             get
             {
-                return this.mCurrentState;
+                return mCurrentState;
             }
             set
             {
-                if (value == null)
+                if(value == null)
                 {
+                    // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("CurrentState");
+                    // ReSharper restore NotResolvedInText
                 }
-                this.mCurrentState = value;
+                mCurrentState = value;
             }
         }
 

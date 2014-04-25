@@ -25,7 +25,7 @@ namespace WPF.JoshSmith.Data
             // This binding allows the spy to inherit a DataContext.
             BindingOperations.SetBinding(this, DataContextProperty, new Binding());
 
-            this.IsSynchronizedWithCurrentItem = true;
+            IsSynchronizedWithCurrentItem = true;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace WPF.JoshSmith.Data
         /// </summary>
         public object DataContext
         {
-            get { return (object)GetValue(DataContextProperty); }
+            get { return GetValue(DataContextProperty); }
             set { SetValue(DataContextProperty, value); }
         }
 
@@ -58,13 +58,13 @@ namespace WPF.JoshSmith.Data
         static object OnCoerceDataContext(DependencyObject depObj, object value)
         {
             DataContextSpy spy = depObj as DataContextSpy;
-            if (spy == null)
+            if(spy == null)
                 return value;
 
-            if (spy.IsSynchronizedWithCurrentItem)
+            if(spy.IsSynchronizedWithCurrentItem)
             {
                 ICollectionView view = CollectionViewSource.GetDefaultView(value);
-                if (view != null)
+                if(view != null)
                     return view.CurrentItem;
             }
 

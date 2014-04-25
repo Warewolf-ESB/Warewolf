@@ -6,7 +6,6 @@ using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Interfaces;
-using Dev2.DataList.Contract.Network;
 using Dev2.Server.Datalist;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
@@ -126,14 +125,6 @@ namespace Dev2.DataList.Contract
             return new DataListCompiler(CreateServerDataListCompiler());
         }
 
-        public static IDataListCompiler CreateDataListCompiler(INetworkDataListChannel channel)
-        {
-            IDataListPersistenceProvider persistenceProvider = DataListPersistenceProviderFactory.CreateServerProvider(channel);
-            IDataListServer datalistServer = CreateDataListServer(persistenceProvider);
-            IEnvironmentModelDataListCompiler serverDataListCompiler = CreateServerDataListCompiler(datalistServer);
-            return new DataListCompiler(serverDataListCompiler);
-        }
-
         public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
         {
             if(_serverCompilerCache == null)
@@ -220,7 +211,7 @@ namespace Dev2.DataList.Contract
         {
             DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTO, DataList = dataList };
 
-           IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
+            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
 
             return result;
         }

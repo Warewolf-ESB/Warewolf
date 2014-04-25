@@ -13,15 +13,16 @@ namespace Dev2.PathOperations
     public static class ActivityIOFactory
     {
 
-        private static IList<Type> _endPoints = null;
-        private static object _endPointsLock = new object();
+        private static IList<Type> _endPoints;
+        private static readonly object _endPointsLock = new object();
         // used to check what type services what
-        private static IList<IActivityIOOperationsEndPoint> _referenceCheckers = null;
+        private static IList<IActivityIOOperationsEndPoint> _referenceCheckers;
 
         /// <summary>
         /// Return an IActivityIOPath based upont the path string
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="IsNotCertVerifiable"></param>
         /// <returns></returns>
         public static IActivityIOPath CreatePathFromString(string path, bool IsNotCertVerifiable)
         {
@@ -31,7 +32,9 @@ namespace Dev2.PathOperations
         /// <summary>
         /// Return an IActivityIOPath based upont the path string
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="pass">The pass.</param>
         /// <returns></returns>
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass)
         {
@@ -41,7 +44,10 @@ namespace Dev2.PathOperations
         /// <summary>
         /// Return an IActivityIOPath based upont the path string
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="pass">The pass.</param>
+        /// <param name="IsNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
         /// <returns></returns>
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool IsNotCertVerifiable)
         {

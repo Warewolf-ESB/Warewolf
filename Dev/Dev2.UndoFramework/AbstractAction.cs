@@ -1,32 +1,26 @@
 ﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
 {
-    using System;
-    using System.Runtime.CompilerServices;
 
     public abstract class AbstractAction : IAction
     {
         private bool mAllowToMergeWithPrevious = true;
 
-        protected AbstractAction()
-        {
-        }
-
         public virtual bool CanExecute()
         {
-            return (this.ExecuteCount == 0);
+            return (ExecuteCount == 0);
         }
 
         public virtual bool CanUnExecute()
         {
-            return !this.CanExecute();
+            return !CanExecute();
         }
 
         public virtual void Execute()
         {
-            if (this.CanExecute())
+            if(CanExecute())
             {
-                this.ExecuteCore();
-                this.ExecuteCount++;
+                ExecuteCore();
+                ExecuteCount++;
             }
         }
 
@@ -38,10 +32,10 @@
 
         public virtual void UnExecute()
         {
-            if (this.CanUnExecute())
+            if(CanUnExecute())
             {
-                this.UnExecuteCore();
-                this.ExecuteCount--;
+                UnExecuteCore();
+                ExecuteCount--;
             }
         }
 
@@ -51,11 +45,11 @@
         {
             get
             {
-                return this.mAllowToMergeWithPrevious;
+                return mAllowToMergeWithPrevious;
             }
             set
             {
-                this.mAllowToMergeWithPrevious = value;
+                mAllowToMergeWithPrevious = value;
             }
         }
 

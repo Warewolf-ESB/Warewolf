@@ -10,9 +10,11 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public RelayCommand(Action<object> handlingMethod, Predicate<object> canHandingMethodExecute)
         {
-            if (handlingMethod == null)
+            if(handlingMethod == null)
             {
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("HandingMethod");
+                // ReSharper restore NotResolvedInText
             }
 
             _handlingMethod = handlingMethod;
@@ -25,7 +27,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
-            return _canHandlingMethodExecute == null ? true : _canHandlingMethodExecute(parameter);
+            return _canHandlingMethodExecute == null || _canHandlingMethodExecute(parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -46,8 +48,8 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
     {
         #region Fields
 
-        readonly Action<T> _execute = null;
-        readonly Predicate<T> _canExecute = null;
+        readonly Action<T> _execute;
+        readonly Predicate<T> _canExecute;
 
         #endregion // Fields
 
@@ -65,7 +67,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null)
+            if(execute == null)
                 throw new ArgumentNullException("execute");
 
             _execute = execute;
@@ -78,7 +80,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
+            // ReSharper disable SimplifyConditionalTernaryExpression
             return _canExecute == null ? true : _canExecute((T)parameter);
+            // ReSharper restore SimplifyConditionalTernaryExpression
         }
 
         public event EventHandler CanExecuteChanged

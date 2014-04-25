@@ -25,7 +25,9 @@ namespace WPF.JoshSmith.Controls.Utilities
         private static extern bool GetCursorPos(ref Win32Point pt);
 
         [DllImport("user32.dll")]
+        // ReSharper disable UnusedMember.Local
         private static extern bool ScreenToClient(IntPtr hwnd, ref Win32Point pt);
+        // ReSharper restore UnusedMember.Local
 
         /// <summary>
         /// Returns the mouse cursor location.  This method is necessary during 
@@ -42,7 +44,7 @@ namespace WPF.JoshSmith.Controls.Utilities
             // Using PointFromScreen instead of Dan Crevier's code (commented out below)
             // is a bug fix created by William J. Roberts.  Read his comments about the fix
             // here: http://www.codeproject.com/useritems/ListViewDragDropManager.asp?msg=1911611#xx1911611xx
-            return relativeTo.PointFromScreen(new Point((double)mouse.X, (double)mouse.Y));
+            return relativeTo.PointFromScreen(new Point(mouse.X, mouse.Y));
 
         }
     }

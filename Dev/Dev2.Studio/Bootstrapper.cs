@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio;
@@ -49,7 +48,7 @@ namespace Dev2
         #region Fields
 
         private CompositionContainer _container;
-        bool _serverServiceStartedFromStudio = false;
+        bool _serverServiceStartedFromStudio;
 
         #endregion
 
@@ -58,8 +57,9 @@ namespace Dev2
         protected override void Configure()
         {
             IEnumerable<AssemblyCatalog> assemblyCatalog = AssemblySource.Instance.Select(x => new AssemblyCatalog(x));
-            // ReSharper disable once RedundantEnumerableCastCall
+            // ReSharper disable RedundantEnumerableCastCall
             IEnumerable<ComposablePartCatalog> ofType = assemblyCatalog.OfType<ComposablePartCatalog>();
+            // ReSharper restore RedundantEnumerableCastCall
             _container = new CompositionContainer(new AggregateCatalog(ofType));
 
             var batch = new CompositionBatch();
@@ -195,10 +195,8 @@ namespace Dev2
                     popup.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                 }
-                else
-                {
-                    _serverServiceStartedFromStudio = true;
-                }
+
+                _serverServiceStartedFromStudio = true;
             }
 
             return true;
@@ -224,8 +222,9 @@ namespace Dev2
                         Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
                         LoadReferences(loaded, inspected);
                     }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
                     }

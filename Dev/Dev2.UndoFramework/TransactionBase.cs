@@ -1,53 +1,53 @@
 ﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
 {
-    using System;
-    using System.Runtime.CompilerServices;
 
-    internal  class TransactionBase : ITransaction, IDisposable
+    internal class TransactionBase : ITransaction
     {
         protected IMultiAction accumulatingAction;
 
         public TransactionBase()
         {
-            this.IsDelayed = true;
+            IsDelayed = true;
         }
 
-        public TransactionBase(Unlimited.Applications.BusinessDesignStudio.Undo.ActionManager am) : this()
+        public TransactionBase(ActionManager am)
+            : this()
         {
-            this.ActionManager = am;
-            if (am != null)
+            ActionManager = am;
+            if(am != null)
             {
                 am.OpenTransaction(this);
             }
         }
 
-        public TransactionBase(Unlimited.Applications.BusinessDesignStudio.Undo.ActionManager am, bool isDelayed) : this(am)
+        public TransactionBase(ActionManager am, bool isDelayed)
+            : this(am)
         {
-            this.IsDelayed = isDelayed;
+            IsDelayed = isDelayed;
         }
 
         public virtual void Commit()
         {
-            if (this.ActionManager != null)
+            if(ActionManager != null)
             {
-                this.ActionManager.CommitTransaction();
+                ActionManager.CommitTransaction();
             }
         }
 
         public virtual void Dispose()
         {
-            if (!this.Aborted)
+            if(!Aborted)
             {
-                this.Commit();
+                Commit();
             }
         }
 
         public virtual void Rollback()
         {
-            if (this.ActionManager != null)
+            if(ActionManager != null)
             {
-                this.ActionManager.RollBackTransaction();
-                this.Aborted = true;
+                ActionManager.RollBackTransaction();
+                Aborted = true;
             }
         }
 
@@ -57,11 +57,11 @@
         {
             get
             {
-                return this.accumulatingAction;
+                return accumulatingAction;
             }
         }
 
-        public Unlimited.Applications.BusinessDesignStudio.Undo.ActionManager ActionManager { get; private set; }
+        public ActionManager ActionManager { get; private set; }
 
         public bool IsDelayed { get; set; }
     }

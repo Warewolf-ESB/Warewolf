@@ -20,7 +20,7 @@ namespace Dev2.CustomControls
         #region ctor and overrides
         public SimpleGridSplitter()
         {
-            this.DefaultStyleKey = typeof (SimpleGridSplitter);
+            DefaultStyleKey = typeof(SimpleGridSplitter);
         }
 
         public override void OnApplyTemplate()
@@ -29,12 +29,12 @@ namespace Dev2.CustomControls
 
             _thumb = GetTemplateChild(PART_Thumb) as Thumb;
 
-            if (_thumb != null)
+            if(_thumb != null)
             {
                 _thumb.DragDelta += ThumbDragDelta;
                 _containingGrid = Parent as Grid;
 
-                if (_containingGrid == null)
+                if(_containingGrid == null)
                     throw new InvalidOperationException("Gridsplitter only works in grid");
             }
 
@@ -54,7 +54,7 @@ namespace Dev2.CustomControls
 
         private static void OrientationChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var gridSplitter = (SimpleGridSplitter) dependencyObject;
+            var gridSplitter = (SimpleGridSplitter)dependencyObject;
             gridSplitter.SetCursor();
         }
         #endregion
@@ -63,26 +63,26 @@ namespace Dev2.CustomControls
         private void ThumbDragDelta(object sender, DragDeltaEventArgs e)
         {
 
-            switch (Orientation)
+            switch(Orientation)
             {
-                    case Orientation.Horizontal:
-                        ResizeColumns(e.HorizontalChange);
-                        break;
-                    case Orientation.Vertical:
-                        ResizeRows(e.VerticalChange);
-                        break;
+                case Orientation.Horizontal:
+                    ResizeColumns(e.HorizontalChange);
+                    break;
+                case Orientation.Vertical:
+                    ResizeRows(e.VerticalChange);
+                    break;
             }
         }
 
         private void SetCursor()
         {
-            switch (Orientation)
+            switch(Orientation)
             {
                 case Orientation.Horizontal:
-                    if (_thumb != null) _thumb.Cursor = Cursors.ScrollWE;
+                    if(_thumb != null) _thumb.Cursor = Cursors.ScrollWE;
                     break;
                 case Orientation.Vertical:
-                    if (_thumb != null) _thumb.Cursor = Cursors.ScrollNS;
+                    if(_thumb != null) _thumb.Cursor = Cursors.ScrollNS;
                     break;
             }
         }
@@ -90,27 +90,27 @@ namespace Dev2.CustomControls
         private void ResizeRows(double delta)
         {
             //if no change just return;
-            if (delta.CompareTo(0D) == 0) return;
+            if(delta.CompareTo(0D) == 0) return;
 
             //Only works when the grid has at least 3 rows
             var containingGridRows = _containingGrid.RowDefinitions.Count;
-            if (containingGridRows < 3) return;
+            if(containingGridRows < 3) return;
 
             var row = Grid.GetRow(this);
 
-            if (row < 1) return; //Do nothing if in top row - introduce ResizeBehavior
-            if (row == containingGridRows - 1) return; //Do nothing if in last row - introduce ResizeBehavior
+            if(row < 1) return; //Do nothing if in top row - introduce ResizeBehavior
+            if(row == containingGridRows - 1) return; //Do nothing if in last row - introduce ResizeBehavior
 
             var upperRow = row - 1;
             var lowerRow = row + 1;
 
-            bool isUpperContentMaxed = false;
-            bool isLowerContentMaxed = false;
-            
+            bool isUpperContentMaxed;
+            bool isLowerContentMaxed;
+
             var upperScrollViewer = GetScrollViewer(_containingGrid, upperRow);
             var lowerScrollViewer = GetScrollViewer(_containingGrid, lowerRow);
 
-            if (upperScrollViewer != null)
+            if(upperScrollViewer != null)
                 isUpperContentMaxed = upperScrollViewer.ExtentHeight.CompareTo(upperScrollViewer.ViewportHeight) == 0;
             else
             {
@@ -118,7 +118,7 @@ namespace Dev2.CustomControls
                 isUpperContentMaxed = upperScrollBar.Visibility == Visibility.Collapsed;
             }
 
-            if (lowerScrollViewer != null)
+            if(lowerScrollViewer != null)
                 isLowerContentMaxed = lowerScrollViewer.ExtentHeight.CompareTo(lowerScrollViewer.ViewportHeight) == 0;
             else
             {
@@ -126,8 +126,8 @@ namespace Dev2.CustomControls
                 isLowerContentMaxed = lowerScrollBar.Visibility == Visibility.Collapsed;
             }
 
-            if (delta < 0 && isLowerContentMaxed) return;
-            if (delta > 0 && isUpperContentMaxed) return;
+            if(delta < 0 && isLowerContentMaxed) return;
+            if(delta > 0 && isUpperContentMaxed) return;
 
             var upperRowDefinition = _containingGrid.RowDefinitions[upperRow];
             var lowerRowDefinition = _containingGrid.RowDefinitions[lowerRow];
@@ -141,7 +141,7 @@ namespace Dev2.CustomControls
             var lowerRowMinHeight = lowerRowDefinition.MinHeight;
 
             delta = AdjustDelta(upperRowActualHeight, upperRowMinHeight, upperRowMaxHeight, 1, delta);
-            delta = AdjustDelta(lowerRowActualHeight, lowerRowMinHeight, lowerRowMaxHeight, -1, delta); 
+            delta = AdjustDelta(lowerRowActualHeight, lowerRowMinHeight, lowerRowMaxHeight, -1, delta);
 
             var newUpperRowActualHeight = upperRowActualHeight + delta;
             var newLowerRowActualHeight = lowerRowActualHeight - delta;
@@ -178,16 +178,18 @@ namespace Dev2.CustomControls
 
         private double AdjustDelta(double actualHeight, double minHeight, double maxHeight, int multiplier, double delta)
         {
-            if (actualHeight + multiplier*delta > maxHeight)
+            if(actualHeight + multiplier * delta > maxHeight)
                 delta = multiplier * Math.Max(0, maxHeight - actualHeight);
 
-            if (actualHeight + multiplier * delta < minHeight)
+            if(actualHeight + multiplier * delta < minHeight)
                 delta = multiplier * Math.Min(0, minHeight - actualHeight);
 
             return delta;
         }
 
+        // ReSharper disable UnusedParameter.Local
         private void ResizeColumns(double horizontalChange)
+        // ReSharper restore UnusedParameter.Local
         {
             throw new NotImplementedException();
         }

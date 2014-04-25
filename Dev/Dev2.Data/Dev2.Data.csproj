@@ -331,7 +331,6 @@
     <Compile Include="Parsers\InputLanguageParser.cs" />
     <Compile Include="Parsers\LanguageParser.cs" />
     <Compile Include="Parsers\OutputLanguageParser.cs" />
-    <Compile Include="DataListCache\DataListChannelProvider.cs" />
     <Compile Include="DataListCache\DataListPersistenceProviderFactory.cs" />
     <Compile Include="DataListCache\DataListTemporalProvider.cs" />
     <Compile Include="DataListCache\IDatalistPersistenceProvider.cs" />

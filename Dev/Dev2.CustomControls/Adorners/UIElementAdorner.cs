@@ -25,12 +25,12 @@ namespace WPF.JoshSmith.Adorners
         public UIElementAdorner(UIElement adornedElement, UIElement childElement)
             : base(adornedElement)
         {
-            if (childElement == null)
+            if(childElement == null)
                 throw new ArgumentNullException("childElement");
 
-            this.child = childElement;
-            this.AddLogicalChild(childElement);
-            this.AddVisualChild(childElement);
+            child = childElement;
+            AddLogicalChild(childElement);
+            AddVisualChild(childElement);
         }
 
         #endregion // Constructor
@@ -44,8 +44,7 @@ namespace WPF.JoshSmith.Adorners
         {
             get
             {
-                ArrayList list = new ArrayList();
-                list.Add(this.child);
+                ArrayList list = new ArrayList { child };
                 return list.GetEnumerator();
             }
         }

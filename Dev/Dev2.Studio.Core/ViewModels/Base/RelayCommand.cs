@@ -13,8 +13,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
         {
             if(handlingMethod == null)
             {
-                // ReSharper disable once NotResolvedInText
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("HandingMethod");
+                // ReSharper restore NotResolvedInText
             }
 
             _handlingMethod = handlingMethod;

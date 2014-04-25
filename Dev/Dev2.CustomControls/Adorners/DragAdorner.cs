@@ -25,12 +25,8 @@ namespace WPF.JoshSmith.Adorners
         public DragAdorner(UIElement adornedElement, Size size, Brush brush)
             : base(adornedElement)
         {
-            Rectangle rect = new Rectangle();
-            rect.Fill = brush;
-            rect.Width = size.Width;
-            rect.Height = size.Height;
-            rect.IsHitTestVisible = false;
-            base.child = rect;
+            Rectangle rect = new Rectangle { Fill = brush, Width = size.Width, Height = size.Height, IsHitTestVisible = false };
+            child = rect;
         }
 
         #endregion // Constructor

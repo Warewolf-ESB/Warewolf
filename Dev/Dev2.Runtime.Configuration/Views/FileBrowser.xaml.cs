@@ -8,7 +8,7 @@ namespace Dev2.Runtime.Configuration.Views
     /// <summary>
     /// Interaction logic for FileBrowser.xaml
     /// </summary>
-    public partial class FileBrowser : Window
+    public partial class FileBrowser
     {
         public FileBrowser()
         {
@@ -25,10 +25,10 @@ namespace Dev2.Runtime.Configuration.Views
         private void TreeItemExpanded(object sender, RoutedEventArgs e)
         {
             var item = e.OriginalSource as TreeViewItem;
-            if (item == null)
+            if(item == null)
             { return; }
             var cat = item.DataContext as ComputerDrive;
-            if (cat == null)
+            if(cat == null)
             { return; }
             cat.LoadChildren();
         }

@@ -48,7 +48,7 @@ namespace WPF.JoshSmith.Input
                 if(_commands == null)
                 {
                     _commands = new ObservableCollection<ICommand>();
-                    _commands.CollectionChanged += this.OnCommandsCollectionChanged;
+                    _commands.CollectionChanged += OnCommandsCollectionChanged;
                 }
 
                 return _commands;
@@ -58,18 +58,18 @@ namespace WPF.JoshSmith.Input
         void OnCommandsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // We have a new child command so our ability to execute may have changed.
-            this.OnCanExecuteChanged();
+            OnCanExecuteChanged();
 
             if(e.NewItems != null && 0 < e.NewItems.Count)
             {
                 foreach(ICommand cmd in e.NewItems)
-                    cmd.CanExecuteChanged += this.OnChildCommandCanExecuteChanged;
+                    cmd.CanExecuteChanged += OnChildCommandCanExecuteChanged;
             }
 
             if(e.OldItems != null && 0 < e.OldItems.Count)
             {
                 foreach(ICommand cmd in e.OldItems)
-                    cmd.CanExecuteChanged -= this.OnChildCommandCanExecuteChanged;
+                    cmd.CanExecuteChanged -= OnChildCommandCanExecuteChanged;
             }
         }
 
@@ -77,7 +77,7 @@ namespace WPF.JoshSmith.Input
         {
             // Bubble up the child commands CanExecuteChanged event so that
             // it will be observed by WPF.
-            this.OnCanExecuteChanged();
+            OnCanExecuteChanged();
         }
 
         #endregion // Commands
@@ -89,7 +89,9 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         public bool CanExecute(object parameter)
         {
-            foreach(ICommand cmd in this.Commands)
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(ICommand cmd in Commands)
+                // ReSharper restore LoopCanBeConvertedToQuery
                 if(!cmd.CanExecute(parameter))
                     return false;
 
@@ -106,8 +108,8 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         protected virtual void OnCanExecuteChanged()
         {
-            if(this.CanExecuteChanged != null)
-                this.CanExecuteChanged(this, EventArgs.Empty);
+            if(CanExecuteChanged != null)
+                CanExecuteChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace WPF.JoshSmith.Input
         /// </summary>
         public void Execute(object parameter)
         {
-            foreach(ICommand cmd in this.Commands)
+            foreach(ICommand cmd in Commands)
                 cmd.Execute(parameter);
         }
 

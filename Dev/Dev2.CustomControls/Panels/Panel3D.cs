@@ -110,13 +110,13 @@ namespace Dev2.CustomControls.Panels
         {
             // Setting the Camera property must be delayed until Loaded fires,
             // otherwise setting it from XAML has no effect.  Not sure why...
-            if (Camera == null)
+            if(Camera == null)
                 Camera = _viewport.Camera;
 
             // We raise this custom routed event because the Loaded event of an items host
             // is not raised on the control that contains it.  This event will make it
             // to the outside world, so that consumers can get a reference to the panel.
-            if (ItemsControl.GetItemsOwner(this) != null)
+            if(ItemsControl.GetItemsOwner(this) != null)
                 RaiseEvent(new RoutedEventArgs(ItemsHostLoadedEvent));
         }
 
@@ -196,12 +196,12 @@ namespace Dev2.CustomControls.Panels
         static void OnAllowTransparencyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             Panel3D panel3D = depObj as Panel3D;
-            if (panel3D != null)
+            if(panel3D != null)
             {
                 var frontModel = panel3D._viewport.FrontModel;
                 panel3D._viewport.AllowTransparency = (bool)e.NewValue;
 
-                if (frontModel != null)
+                if(frontModel != null)
                     panel3D.BuildScene(frontModel);
             }
         }
@@ -231,7 +231,7 @@ namespace Dev2.CustomControls.Panels
             typeof(Panel3D),
             new UIPropertyMetadata(
                 true,
-                (depObj, e) => ((Panel3D) depObj).BuildScene()
+                (depObj, e) => ((Panel3D)depObj).BuildScene()
                 ));
 
         #endregion // AutoAdjustOpacity
@@ -267,7 +267,7 @@ namespace Dev2.CustomControls.Panels
         {
             Panel3D panel3D = depObj as Panel3D;
             Camera camera = e.NewValue as Camera;
-            if (panel3D._viewport.Camera != camera)
+            if(panel3D._viewport.Camera != camera)
                 panel3D._viewport.Camera = camera;
         }
 
@@ -402,7 +402,7 @@ namespace Dev2.CustomControls.Panels
         public void MoveItems(int itemCount, bool forward, TimeSpan animationLength)
         {
             bool go = MoveItems_CanExecute(itemCount, forward, animationLength);
-            if (!go)
+            if(!go)
                 return;
 
             MoveItems_VerifyItemCount(itemCount);
@@ -430,7 +430,7 @@ namespace Dev2.CustomControls.Panels
 
         bool MoveItems_CanExecute(int itemCount, bool forward, TimeSpan animationLength)
         {
-            if (IsMovingItems)
+            if(IsMovingItems)
             {
                 var req = new MoveItemsRequest(
                             itemCount,
@@ -443,10 +443,10 @@ namespace Dev2.CustomControls.Panels
 
             // We cannot move less than two items.
             // The first item is a light source, so ignore it.
-            if (_viewport.ModelCount < 2)
+            if(_viewport.ModelCount < 2)
                 return false;
 
-            if (itemCount < 1)
+            if(itemCount < 1)
                 return false;
 
             return true;
@@ -459,7 +459,7 @@ namespace Dev2.CustomControls.Panels
         void MoveItems_VerifyItemCount(int itemCount)
         {
             // TODO: Make this smarter so that it does not throw an exception...
-            if (IsVirtualizing && _models.Count < itemCount)
+            if(IsVirtualizing && _models.Count < itemCount)
                 throw new InvalidOperationException("ARTIFICAL LIMITATION: Cannot move more items than the Panel3D contains when it is virtualizing.");
         }
 
@@ -470,21 +470,21 @@ namespace Dev2.CustomControls.Panels
         void MoveItems_RelocateModels(int itemCount, bool forward)
         {
             // Move the first or last models to the opposite end of the list.
-            if (forward)
+            if(forward)
             {
-                if (IsVirtualizing)
+                if(IsVirtualizing)
                 {
                     // There are more models than can be shown at once, so
                     // add some to the scene by appending them to the 
                     // viewport's list of child elements.  By the time
                     // the items stop moving, the MaxVisibleModels setting
                     // will be honored.
-                    for (int i = 0; i < itemCount; ++i)
+                    for(int i = 0; i < itemCount; ++i)
                     {
                         // Find an element to add to the back of the list.
                         var backModel = GetNextModel(_viewport.BackModel);
 
-                        if (_viewport.Children.Contains(backModel))
+                        if(_viewport.Children.Contains(backModel))
                             break;
 
                         // Make sure the model is in the correct location, so that it 
@@ -497,7 +497,7 @@ namespace Dev2.CustomControls.Panels
                     }
                 }
 
-                for (int i = 0; i < itemCount; ++i)
+                for(int i = 0; i < itemCount; ++i)
                 {
                     var frontModel = _viewport.RemoveFrontModel();
 
@@ -508,20 +508,20 @@ namespace Dev2.CustomControls.Panels
             }
             else
             {
-                for (int i = 0; i < itemCount; ++i)
+                for(int i = 0; i < itemCount; ++i)
                 {
                     var frontModel = _viewport.FrontModel;
-                    frontModel = this.GetPreviousModel(frontModel);
+                    frontModel = GetPreviousModel(frontModel);
 
-                    if (_viewport.Children.Contains(frontModel))
+                    if(_viewport.Children.Contains(frontModel))
                         _viewport.Children.Remove(frontModel);
 
                     _viewport.AddToFront(frontModel);
 
                     // Make it look like the new front item(s) 
                     // is coming from the back of the list.
-                    if (this.IsVirtualizing)
-                        this.ConfigureModel(frontModel, this.MaxVisibleModels - i);
+                    if(IsVirtualizing)
+                        ConfigureModel(frontModel, MaxVisibleModels - i);
                 }
             }
         }
@@ -532,16 +532,16 @@ namespace Dev2.CustomControls.Panels
 
         void MoveItems_SelectFrontItem()
         {
-            if (_itemsOwner == null || _viewport.ModelCount == 0)
+            if(_itemsOwner == null || _viewport.ModelCount == 0)
                 return;
 
             var container = _viewport.FrontModel.Visual as FrameworkElement;
-            if (container != null)
+            if(container != null)
             {
                 // If the owner has an ItemsSource it will
                 // contain the item's DataContext, otherwise
                 // the item is the container itself.
-                if (_itemsOwner.Items.Contains(container))
+                if(_itemsOwner.Items.Contains(container))
                     _itemsOwner.SelectedItem = container;
                 else
                     _itemsOwner.SelectedItem = container.DataContext;
@@ -556,7 +556,7 @@ namespace Dev2.CustomControls.Panels
         {
             Duration duration = new Duration(animationLength);
             int index = 0;
-            foreach (Viewport2DVisual3D model in _viewport.GetModels())
+            foreach(Viewport2DVisual3D model in _viewport.GetModels())
             {
                 var offsets = GetModelOffsets(index);
 
@@ -585,11 +585,14 @@ namespace Dev2.CustomControls.Panels
                 };
 
                 var transform = model.Transform as TranslateTransform3D;
-                transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, xAnimation);
-                transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, yAnimation);
-                transform.BeginAnimation(TranslateTransform3D.OffsetZProperty, zAnimation);
+                if(transform != null)
+                {
+                    transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, xAnimation);
+                    transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, yAnimation);
+                    transform.BeginAnimation(TranslateTransform3D.OffsetZProperty, zAnimation);
+                }
 
-                if (AutoAdjustOpacity)
+                if(AutoAdjustOpacity)
                 {
                     DoubleAnimation opacityAnimation = new DoubleAnimation
                     {
@@ -600,7 +603,10 @@ namespace Dev2.CustomControls.Panels
                     };
 
                     var element = model.Visual as UIElement;
-                    element.BeginAnimation(OpacityProperty, opacityAnimation);
+                    if(element != null)
+                    {
+                        element.BeginAnimation(OpacityProperty, opacityAnimation);
+                    }
                 }
 
                 ++index;
@@ -628,16 +634,16 @@ namespace Dev2.CustomControls.Panels
         {
             _moveItemsCompletionTimer.Stop();
 
-            if (_abortMoveItems)
+            if(_abortMoveItems)
                 return;
 
             // Remove any extra models from the scene.
-            while (MaxVisibleModels < _viewport.ModelCount)
+            while(MaxVisibleModels < _viewport.ModelCount)
                 _viewport.RemoveBackModel();
 
             IsMovingItems = false;
 
-            if (0 < _moveItemsRequestQueue.Count)
+            if(0 < _moveItemsRequestQueue.Count)
             {
                 MoveItemsRequest req = _moveItemsRequestQueue.Dequeue();
                 MoveItems(req.ItemCount, req.Forward, req.AnimationLength);
@@ -662,11 +668,11 @@ namespace Dev2.CustomControls.Panels
         /// <param name="childIndex">A zero-based index of an element in the Children collection.</param>
         public int GetVisibleIndexFromChildIndex(int childIndex)
         {
-            if (childIndex < 0 || Children.Count <= childIndex)
+            if(childIndex < 0 || Children.Count <= childIndex)
                 throw new IndexOutOfRangeException("childIndex is invalid");
 
             var elem = Children[childIndex];
-            if (elem == null)
+            if(elem == null)
                 throw new InvalidOperationException("Cannot get visible index of null/missing element.");
 
             var model = _elementTo3DModelMap[elem];
@@ -695,7 +701,7 @@ namespace Dev2.CustomControls.Panels
         protected override Size MeasureOverride(Size availableSize)
         {
             // Make sure the viewport is parented on first measure.
-            if (!_hasAddedViewport)
+            if(!_hasAddedViewport)
             {
                 _hasAddedViewport = true;
                 AddVisualChild(_viewport);
@@ -717,21 +723,21 @@ namespace Dev2.CustomControls.Panels
         protected override void OnLogicalChildrenChanged(UIElement elementAdded, UIElement elementRemoved)
         {
             // Do not create a model for the Viewport3D.
-            if (elementAdded == _viewport)
+            if(elementAdded == _viewport)
                 return;
 
             bool add =
                 elementAdded != null &&
                 !_elementTo3DModelMap.ContainsKey(elementAdded);
 
-            if (add)
+            if(add)
                 AddModelForElement(elementAdded);
 
             bool remove =
                 elementRemoved != null &&
                 _elementTo3DModelMap.ContainsKey(elementRemoved);
 
-            if (remove)
+            if(remove)
                 RemoveModelForElement(elementRemoved);
         }
 
@@ -764,7 +770,7 @@ namespace Dev2.CustomControls.Panels
             _models.Remove(model);
             _elementTo3DModelMap.Remove(element);
 
-            if (_viewport.Children.Contains(model))
+            if(_viewport.Children.Contains(model))
             {
                 _viewport.Children.Remove(model);
                 BuildScene();
@@ -821,7 +827,7 @@ namespace Dev2.CustomControls.Panels
         /// </summary>
         void BuildScene()
         {
-            if (0 < _viewport.ModelCount)
+            if(0 < _viewport.ModelCount)
                 BuildScene(_viewport.FrontModel);
         }
 
@@ -835,14 +841,14 @@ namespace Dev2.CustomControls.Panels
 
             // Add in some 3D models, starting with the one in front.
             var current = frontModel;
-            for (int i = 0; _viewport.ModelCount < this.MaxVisibleModels; ++i)
+            for(int i = 0; _viewport.ModelCount < MaxVisibleModels; ++i)
             {
                 ConfigureModel(current, i);
 
                 _viewport.AddToBack(current);
 
                 current = GetNextModel(current);
-                if (_viewport.Children.Contains(current))
+                if(_viewport.Children.Contains(current))
                     break;
             }
         }
@@ -858,30 +864,30 @@ namespace Dev2.CustomControls.Panels
         {
             base.OnIsItemsHostChanged(oldIsItemsHost, newIsItemsHost);
 
-            if (oldIsItemsHost && _itemsOwner != null)
+            if(oldIsItemsHost && _itemsOwner != null)
             {
                 _itemsOwner.SelectionChanged -= OnItemsOwnerSelectionChanged;
                 _itemsOwner = null;
             }
 
-            if (newIsItemsHost)
+            if(newIsItemsHost)
             {
                 _itemsOwner = ItemsControl.GetItemsOwner(this) as Selector;
-                if (_itemsOwner != null)
+                if(_itemsOwner != null)
                     _itemsOwner.SelectionChanged += OnItemsOwnerSelectionChanged;
             }
         }
 
         void OnItemsOwnerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_itemsOwner == null ||
+            if(_itemsOwner == null ||
                 _itemsOwner.SelectedIndex < 0 ||
                 (_itemsOwner.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated &&
                 _itemsOwner.ItemContainerGenerator.Status != GeneratorStatus.GeneratingContainers))
                 return;
 
             var elem = _itemsOwner.ItemContainerGenerator.ContainerFromIndex(_itemsOwner.SelectedIndex) as UIElement;
-            if (elem == null)
+            if(elem == null)
                 return;
 
             Debug.Assert(_elementTo3DModelMap.ContainsKey(elem), "Why does the map not contain this element?");
@@ -890,9 +896,9 @@ namespace Dev2.CustomControls.Panels
 
             bool isSelectedItemInFront = _viewport.FrontModel == model;
 
-            if (!isSelectedItemInFront)
+            if(!isSelectedItemInFront)
             {
-                if (IsMovingItems)
+                if(IsMovingItems)
                 {
                     IsMovingItems = false;
                     _abortMoveItems = true;
@@ -938,8 +944,8 @@ namespace Dev2.CustomControls.Panels
         {
             int ordinalIndex = index + 1;
 
-            bool isinView = 0 < ordinalIndex && ordinalIndex <= this.MaxVisibleModels;
-            if (!isinView)
+            bool isinView = 0 < ordinalIndex && ordinalIndex <= MaxVisibleModels;
+            if(!isinView)
                 return 0.0;
 
             return 1.0 / Math.Max(ordinalIndex, 1) + 0.1;
@@ -947,12 +953,12 @@ namespace Dev2.CustomControls.Panels
 
         Viewport2DVisual3D GetNextModel(Viewport2DVisual3D current)
         {
-            if (!_models.Contains(current))
+            if(!_models.Contains(current))
                 throw new ArgumentException("current");
 
             // Wrap to the start of the list if necessary.
             int idx = _models.IndexOf(current) + 1;
-            if (idx == _models.Count)
+            if(idx == _models.Count)
                 idx = 0;
 
             return _models[idx];
@@ -960,12 +966,12 @@ namespace Dev2.CustomControls.Panels
 
         Viewport2DVisual3D GetPreviousModel(Viewport2DVisual3D current)
         {
-            if (!_models.Contains(current))
+            if(!_models.Contains(current))
                 throw new ArgumentException("current");
 
             // Wrap to the end of the list if necessary.
             int idx = _models.IndexOf(current) - 1;
-            if (idx == -1)
+            if(idx == -1)
                 idx = _models.Count - 1;
 
             return _models[idx];

@@ -9,7 +9,7 @@ namespace Dev2.Studio.AppResources.Behaviors
     {
         #region Class Members
 
-        private bool _isButtonDown = false;
+        private bool _isButtonDown;
 
         #endregion Class Members
 

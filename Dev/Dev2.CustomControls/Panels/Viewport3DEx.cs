@@ -20,10 +20,10 @@ namespace WPF.JoshSmith.Panels
         /// <param name="model">The rear item in the scene.</param>
         internal void AddToBack(Viewport2DVisual3D model)
         {
-            if (this.AllowTransparency)
-                base.Children.Insert(1, model);                
+            if(AllowTransparency)
+                Children.Insert(1, model);
             else
-                base.Children.Add(model);
+                Children.Add(model);
         }
 
         /// <summary>
@@ -32,10 +32,10 @@ namespace WPF.JoshSmith.Panels
         /// <param name="model">The front item in the scene.</param>
         internal void AddToFront(Viewport2DVisual3D model)
         {
-            if (this.AllowTransparency)
-                base.Children.Add(model);
+            if(AllowTransparency)
+                Children.Add(model);
             else
-                base.Children.Insert(1, model);
+                Children.Insert(1, model);
         }
 
         /// <summary>
@@ -51,13 +51,13 @@ namespace WPF.JoshSmith.Panels
         {
             get
             {
-                if (base.Children.Count < 2)
+                if(Children.Count < 2)
                     return null;
 
-                if (this.AllowTransparency)
-                    return base.Children[1] as Viewport2DVisual3D;
-                else
-                    return base.Children[base.Children.Count - 1] as Viewport2DVisual3D;
+                if(AllowTransparency)
+                    return Children[1] as Viewport2DVisual3D;
+
+                return Children[Children.Count - 1] as Viewport2DVisual3D;
             }
         }
 
@@ -67,7 +67,7 @@ namespace WPF.JoshSmith.Panels
         internal Viewport2DVisual3D GetModelAt(int modelIndex)
         {
             // Add 1 to account for the scene's light source, which is the first element.
-            return base.Children[modelIndex + 1] as Viewport2DVisual3D;
+            return Children[modelIndex + 1] as Viewport2DVisual3D;
         }
 
         /// <summary>
@@ -75,15 +75,15 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         internal IEnumerable<Viewport2DVisual3D> GetModels()
         {
-            if (this.AllowTransparency)
+            if(AllowTransparency)
             {
-                for (int i = base.Children.Count - 1; 0 < i; --i)
-                    yield return base.Children[i] as Viewport2DVisual3D;
+                for(int i = Children.Count - 1; 0 < i; --i)
+                    yield return Children[i] as Viewport2DVisual3D;
             }
-            else 
+            else
             {
-                for (int i = 1; i < base.Children.Count; ++i)
-                    yield return base.Children[i] as Viewport2DVisual3D;
+                for(int i = 1; i < Children.Count; ++i)
+                    yield return Children[i] as Viewport2DVisual3D;
             }
         }
 
@@ -94,13 +94,13 @@ namespace WPF.JoshSmith.Panels
         {
             get
             {
-                if (base.Children.Count < 2)
+                if(Children.Count < 2)
                     return null;
 
-                if (this.AllowTransparency)
-                    return base.Children[base.Children.Count - 1] as Viewport2DVisual3D;
-                else
-                    return base.Children[1] as Viewport2DVisual3D;
+                if(AllowTransparency)
+                    return Children[Children.Count - 1] as Viewport2DVisual3D;
+
+                return Children[1] as Viewport2DVisual3D;
             }
         }
 
@@ -110,14 +110,14 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         internal int GetVisualIndex(Viewport2DVisual3D model)
         {
-            int modelIndex = base.Children.IndexOf(model);
-            if (modelIndex < 0)
-                return -1;            
+            int modelIndex = Children.IndexOf(model);
+            if(modelIndex < 0)
+                return -1;
 
-            if (this.AllowTransparency)
-                return this.ModelCount - modelIndex;
-            else
-                return modelIndex - 1;
+            if(AllowTransparency)
+                return ModelCount - modelIndex;
+
+            return modelIndex - 1;
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         internal int ModelCount
         {
-            get { return base.Children.Count - 1; }
+            get { return Children.Count - 1; }
         }
 
         /// <summary>
@@ -134,8 +134,8 @@ namespace WPF.JoshSmith.Panels
         internal void RemoveAllModels()
         {
             // Remove all models, except for the light source.
-            for (int i = base.Children.Count - 1; 0 < i; --i)
-                base.Children.RemoveAt(i);
+            for(int i = Children.Count - 1; 0 < i; --i)
+                Children.RemoveAt(i);
         }
 
         /// <summary>
@@ -143,12 +143,12 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         internal Viewport2DVisual3D RemoveBackModel()
         {
-            var backModel = this.BackModel;
+            var backModel = BackModel;
 
-            if (backModel == null)
+            if(backModel == null)
                 return null;
 
-            base.Children.Remove(backModel);
+            Children.Remove(backModel);
             return backModel;
         }
 
@@ -157,12 +157,12 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         internal Viewport2DVisual3D RemoveFrontModel()
         {
-            var frontModel = this.FrontModel;
+            var frontModel = FrontModel;
 
-            if (frontModel == null)
+            if(frontModel == null)
                 return null;
 
-            base.Children.Remove(frontModel);
+            Children.Remove(frontModel);
             return frontModel;
         }
     }

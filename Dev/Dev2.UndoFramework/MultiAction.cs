@@ -1,50 +1,35 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
+﻿using System.Linq;
 
-    internal class MultiAction : List<IAction>, IMultiAction, IAction, IList<IAction>, ICollection<IAction>, IEnumerable<IAction>, IEnumerable
+namespace Unlimited.Applications.BusinessDesignStudio.Undo
+{
+    using System.Collections.Generic;
+
+    internal class MultiAction : List<IAction>, IMultiAction
     {
         public MultiAction()
         {
-            this.IsDelayed = true;
+            IsDelayed = true;
         }
 
         public bool CanExecute()
         {
-            foreach (IAction action in this)
-            {
-                if (!action.CanExecute())
-                {
-                    return false;
-                }
-            }
-            return true;
+            return this.All(action => action.CanExecute());
         }
 
         public bool CanUnExecute()
         {
-            foreach (IAction action in this)
-            {
-                if (!action.CanUnExecute())
-                {
-                    return false;
-                }
-            }
-            return true;
+            return this.All(action => action.CanUnExecute());
         }
 
         public void Execute()
         {
-            if (!this.IsDelayed)
+            if(!IsDelayed)
             {
-                this.IsDelayed = true;
+                IsDelayed = true;
             }
             else
             {
-                foreach (IAction action in this)
+                foreach(IAction action in this)
                 {
                     action.Execute();
                 }
@@ -60,7 +45,7 @@
         {
             List<IAction> list = new List<IAction>(this);
             list.Reverse();
-            foreach (IAction action in list)
+            foreach(IAction action in list)
             {
                 action.UnExecute();
             }

@@ -108,7 +108,7 @@ namespace WPF.JoshSmith.Controls
         static void OnNumericSlidePropertyChanged<T>(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
             where T : IComparable
         {
-            if (((T)e.NewValue).CompareTo(default(T)) < 0)
+            if(((T)e.NewValue).CompareTo(default(T)) < 0)
                 throw new ArgumentOutOfRangeException(e.Property.Name);
         }
 
@@ -124,21 +124,25 @@ namespace WPF.JoshSmith.Controls
         {
             base.OnSelectionChanged(e);
 
-            ItemContainerGenerator generator = this.ItemContainerGenerator;
-            if (generator.Status != GeneratorStatus.ContainersGenerated)
+            ItemContainerGenerator generator = ItemContainerGenerator;
+            if(generator.Status != GeneratorStatus.ContainersGenerated)
                 return;
 
-            for (int i = 0; i < this.Items.Count; ++i)
+            for(int i = 0; i < Items.Count; ++i)
             {
                 ListBoxItem item = generator.ContainerFromIndex(i) as ListBoxItem;
-                if (VisualTreeHelper.GetChildrenCount(item) == 0)
+                // ReSharper disable AssignNullToNotNullAttribute
+                if(VisualTreeHelper.GetChildrenCount(item) == 0)
+                    // ReSharper restore AssignNullToNotNullAttribute
                     continue;
 
+                // ReSharper disable AssignNullToNotNullAttribute
                 Border rootBorder = VisualTreeHelper.GetChild(item, 0) as Border;
-                if (rootBorder == null)
+                // ReSharper restore AssignNullToNotNullAttribute
+                if(rootBorder == null)
                     continue;
 
-                this.AnimateItem(item, rootBorder);
+                AnimateItem(item, rootBorder);
             }
         }
 
@@ -148,24 +152,24 @@ namespace WPF.JoshSmith.Controls
             // is 2, so the animation logic ensures that the Padding's Left
             // is always at 2 or the "slide distance".
             Thickness thickness;
-            if (item.IsSelected)
+            if(item.IsSelected)
             {
-                ListBoxItemSlideDirection direction = this.SlideDirection;
-                if (direction == ListBoxItemSlideDirection.Up)
-                    thickness = new Thickness(2, 0, 0, this.SlideDistance);
-                else if (direction == ListBoxItemSlideDirection.Right)
-                    thickness = new Thickness(2 + this.SlideDistance, 0, 0, 0);
-                else if (direction == ListBoxItemSlideDirection.Down)
-                    thickness = new Thickness(2, this.SlideDistance, 0, 0);
+                ListBoxItemSlideDirection direction = SlideDirection;
+                if(direction == ListBoxItemSlideDirection.Up)
+                    thickness = new Thickness(2, 0, 0, SlideDistance);
+                else if(direction == ListBoxItemSlideDirection.Right)
+                    thickness = new Thickness(2 + SlideDistance, 0, 0, 0);
+                else if(direction == ListBoxItemSlideDirection.Down)
+                    thickness = new Thickness(2, SlideDistance, 0, 0);
                 else
-                    thickness = new Thickness(2, 0, this.SlideDistance, 0);
+                    thickness = new Thickness(2, 0, SlideDistance, 0);
             }
             else
             {
                 thickness = new Thickness(2, 0, 0, 0);
             }
 
-            TimeSpan timeSpan = TimeSpan.FromMilliseconds(this.SlideDuration);
+            TimeSpan timeSpan = TimeSpan.FromMilliseconds(SlideDuration);
             Duration duration = new Duration(timeSpan);
             ThicknessAnimation anim = new ThicknessAnimation(thickness, duration);
             rootBorder.BeginAnimation(Border.PaddingProperty, anim);

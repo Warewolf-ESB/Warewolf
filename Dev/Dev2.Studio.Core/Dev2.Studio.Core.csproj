@@ -235,7 +235,6 @@
     <Compile Include="AppResources\EventArgs\DomainControllerUncontactableEventArgs.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceRemoveFailedException.cs" />
     <Compile Include="AppResources\Exceptions\WebResourceUploadFailedException.cs" />
-    <Compile Include="AppResources\ExecutionRequestExtractor.cs" />
     <Compile Include="AppResources\Expression\ExpressionEvaluator.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitor.cs" />
     <Compile Include="AppResources\Expression\ExpressionVisitorDSFImpl.cs" />
