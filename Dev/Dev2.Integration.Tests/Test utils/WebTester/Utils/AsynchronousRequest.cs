@@ -37,7 +37,6 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             state = new RequestState(request);
 
             MethodPost(url, postData);
-
         }
 
         static WebRequest CreateRequest(string url)
