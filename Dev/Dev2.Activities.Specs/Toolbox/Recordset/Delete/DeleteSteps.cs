@@ -133,7 +133,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
-            string recordsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, recordset);
+            string recordsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, recordset);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, recordset);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordsetName,

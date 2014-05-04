@@ -63,7 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
 
-                string rawRecsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, SortField);
+                string rawRecsetName = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, SortField);
                 string sortField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, SortField);
 
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string rawRef = DataListUtil.StripBracketsFromValue(value);
             string objRef = string.Empty;
 
-            if (partType == enIntellisensePartType.RecorsetsOnly)
+            if (partType == enIntellisensePartType.RecordsetsOnly)
             {
                 objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
             }

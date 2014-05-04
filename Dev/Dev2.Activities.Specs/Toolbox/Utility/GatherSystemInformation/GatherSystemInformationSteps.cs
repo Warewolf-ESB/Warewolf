@@ -87,7 +87,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);

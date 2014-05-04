@@ -661,7 +661,7 @@ namespace Dev2.UI
             _toolTip = new ToolTip();
             _listBox = new ListBox();
         }
-
+        
         #region Overrides of TextBoxBase
 
 
@@ -1128,7 +1128,7 @@ namespace Dev2.UI
 
                         if(text.Contains("[[") && text.Contains("]]"))
                         {
-                            if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecorsetsOnly)
+                            if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
                             {
                                 if(!(text.Contains("(") && text.Contains(")")))
                                 {
@@ -1439,7 +1439,7 @@ namespace Dev2.UI
                             //box should simbly ignore that provider.
                         }
 
-                        Select(context.CaretPositionOnPopup, 0);
+                        Select(context.CaretPosition, 0);
 
                         IsOpen = false;
                         appendText = null;
@@ -1501,7 +1501,7 @@ namespace Dev2.UI
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
 
-            base.OnPreviewKeyDown(e);
+             base.OnPreviewKeyDown(e);
             bool isOpen = IsOpen;
 
             if(e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)

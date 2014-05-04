@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         [Then(@"the sorted recordset ""(.*)""  will be")]
         public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;

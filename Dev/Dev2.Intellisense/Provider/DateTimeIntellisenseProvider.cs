@@ -5,8 +5,10 @@ using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class DateTimeIntellisenseProvider : IIntellisenseProvider
@@ -70,6 +72,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private IList<IIntellisenseResult> GetIntellisenseResultsImpl(IntellisenseProviderContext context)
         {
+            string searchText = context.FindTextToSearch();
             List<IIntellisenseResult> results = new List<IIntellisenseResult>();
 
             if (context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
@@ -78,61 +81,12 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else if (!InLiteralRegion(context.InputText, context.CaretPosition))
             {
-                if (context.CaretPosition > context.CaretPositionOnPopup)
-                {
-                    string searchText = context.InputText.Substring(context.CaretPositionOnPopup, (context.CaretPosition - context.CaretPositionOnPopup));
-                    var filteredResults = _intellisenseResults.Where(i =>
-                        {
-                            bool forwardMatch = i.Option.DisplayValue.ToLower().StartsWith(searchText.ToLower()) && searchText != i.Option.DisplayValue;
-
-                            bool backwardMatch = false;
-                            int index = i.Option.DisplayValue.IndexOf(searchText.ToLower());
-                            if (index >= 0)
-                            {
-                                int startIndex = (context.CaretPositionOnPopup - index);
-                                int length = (context.CaretPosition - startIndex);
-                                
-                                if (startIndex >= 0 && (startIndex + length) <=context.InputText.Length)
-                                {
-                                    string tmp = context.InputText.Substring(startIndex, length);
-                                    backwardMatch = i.Option.DisplayValue.ToLower().StartsWith(tmp.ToLower()) && tmp != i.Option.DisplayValue;
-                                }
-                            }
-
-                            return forwardMatch || backwardMatch;
-                        });
-
-                    results.AddRange(filteredResults);
-                }
-                else if (context.CaretPositionOnPopup >= context.CaretPosition && context.CaretPosition > 0)
-                {
-                    string searchText = context.InputText.Substring(context.CaretPosition - 1, 1);
-                    var filteredResults = _intellisenseResults.Where(i =>
-                    {
-                        bool backwardMatch = false;
-                        int index = i.Option.DisplayValue.ToLower().IndexOf(searchText);
-                        if (index >= 0)
-                        {
-                            int startIndex = context.CaretPosition - index - 1;
-                            int length = context.CaretPosition - startIndex;
-
-                            if (startIndex >= 0 && (startIndex + length) <= context.InputText.Length)
-                            {
-                                string tmp = context.InputText.Substring(startIndex, length);
-                                backwardMatch = i.Option.DisplayValue.ToLower().StartsWith(tmp.ToLower()) && tmp != i.Option.DisplayValue;
-                            }
-                        }
-
-                        return backwardMatch;
-                    });
-
-                    results.AddRange(filteredResults);                   
-                }
+                var filteredResults = _intellisenseResults.Where(i => i.Option.DisplayValue.ToLower().StartsWith(searchText.ToLower()));
+                results.AddRange(filteredResults);
             }
-
             return results;
         }
-
+        
         public void Dispose()
         {
             _intellisenseResults = null;

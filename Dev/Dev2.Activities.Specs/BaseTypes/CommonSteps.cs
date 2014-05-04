@@ -215,7 +215,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);
@@ -304,7 +304,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             string rawRef = DataListUtil.StripBracketsFromValue(value);
             string objRef = string.Empty;
 
-            if(partType == enIntellisensePartType.RecorsetsOnly)
+            if(partType == enIntellisensePartType.RecordsetsOnly)
             {
                 objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
             }

@@ -116,7 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Then(@"the xpath result for this varibale ""(.*)"" will be")]
         public void ThenTheXpathResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;

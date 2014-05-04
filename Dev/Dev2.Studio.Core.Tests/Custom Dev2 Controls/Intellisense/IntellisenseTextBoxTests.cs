@@ -236,7 +236,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 
         private static void RunWrappedKeyPress(Key key)
         {
-//------------Setup for test--------------------------
+            //------------Setup for test--------------------------
             var textBox = new IntellisenseTextBox();
             textBox.FilterType = enIntellisensePartType.RecordsetFields;
             textBox.WrapInBrackets = false;

@@ -117,6 +117,7 @@
     <Compile Include="Provider\DateTimeIntellisenseProvider.cs" />
     <Compile Include="Provider\DefaultIntellisenseProvider.cs" />
     <Compile Include="Provider\FileSystemIntellisenseProvider.cs" />
+    <Compile Include="Provider\ProviderExtensions.cs" />
     <Compile Include="Validation\IsValidCalculateRule.cs">
       <SubType>Code</SubType>
     </Compile>

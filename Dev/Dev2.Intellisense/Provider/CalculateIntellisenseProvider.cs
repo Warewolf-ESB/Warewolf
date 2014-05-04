@@ -1,14 +1,17 @@
-﻿using System;
+﻿using System.Globalization;
+using Dev2.Common;
+using Dev2.Intellisense.Provider;
+using Dev2.MathOperations;
+using Dev2.Studio.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Parsing;
 using System.Parsing.Intellisense;
 using System.Text;
 using System.Windows.Data;
-using Dev2.Common;
-using Dev2.MathOperations;
-using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
 {
     public sealed class CalculateIntellisenseProvider : IIntellisenseProvider
@@ -17,7 +20,7 @@ namespace Dev2.Studio.InterfaceImplementors
         private static HashSet<string> _functionNames;
         //private static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
         //private static string _emptyADL = "<ADL></ADL>";
-        private static readonly IList<IntellisenseProviderResult> _emptyResults = new List<IntellisenseProviderResult>();
+        private static readonly IList<IntellisenseProviderResult> EmptyResults = new List<IntellisenseProviderResult>();
         #endregion
 
         #region Instance Fields
@@ -85,33 +88,27 @@ namespace Dev2.Studio.InterfaceImplementors
             if(context.IsInCalculateMode)
             {
                 Token[] tokens;
-                Node[] nodes;
 
                 if(context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                 {
                     if(_builder.EventLog != null) _builder.EventLog.Clear();
-                    nodes = _builder.Build(context.InputText, out tokens);
 
-                    if(_builder.EventLog.HasEventLogs)
+                    if(_builder.EventLog != null && _builder.EventLog.HasEventLogs)
                     {
                         List<IntellisenseProviderResult> tResults = new List<IntellisenseProviderResult>();
                         tResults.AddRange(_intellisenseResult);
-                        return EvaluateEventLogs(tResults, _builder.EventLog.GetEventLogs(), context.InputText);
+                        return EvaluateEventLogs(tResults, context.InputText);
                     }
 
                     return _intellisenseResult;
                 }
-                else if(context.DesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch)
+                if(context.DesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch)
                 {
                     int start = -1;
-                    int length = 0;
-
+                   
                     for(int i = context.CaretPosition - 1; i >= 0; i--)
                     {
-                        if(Char.IsWhiteSpace(context.InputText[i])) break;
-                        if(!Char.IsLetter(context.InputText[i])) break;
                         start = i;
-                        length++;
                     }
 
                     if(start != -1)
@@ -119,9 +116,8 @@ namespace Dev2.Studio.InterfaceImplementors
                         if(start - 1 >= 0)
                         {
                             if(_builder.EventLog != null) _builder.EventLog.Clear();
-                            nodes = _builder.Build(context.InputText, out tokens);
 
-                            if(tokens == null && _builder.EventLog.HasEventLogs)
+                            if(_builder.EventLog != null && _builder.EventLog.HasEventLogs)
                             {
                                 ParseEventLogEntry[] examineEntries = _builder.EventLog.GetEventLogs();
 
@@ -131,20 +127,18 @@ namespace Dev2.Studio.InterfaceImplementors
                                     {
                                         _builder.EventLog.Clear();
                                         _builder.Build(context.InputText, true, out tokens);
-                                        return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), examineEntries, context.InputText);
+                                        return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), context.InputText);
                                     }
                                 }
                             }
                         }
 
-                        string sub = context.InputText.Substring(start, length);
-                        List<IntellisenseProviderResult> subResults = new List<IntellisenseProviderResult>();
+                        var searchText = context.FindTextToSearch();
+                        string sub = string.IsNullOrEmpty(searchText) ? context.InputText : searchText;
 
-                        for(int i = 0; i < _intellisenseResult.Count; i++)
-                            if(_intellisenseResult[i].Name.StartsWith(sub))
-                                subResults.Add(_intellisenseResult[i]);
+                        List<IntellisenseProviderResult> subResults = _intellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
 
-                        if(_builder.EventLog != null && _builder.EventLog.HasEventLogs && subResults.Count == 0) return EvaluateEventLogs(_builder.EventLog.GetEventLogs(), context.InputText);
+                        if(_builder.EventLog != null && _builder.EventLog.HasEventLogs && subResults.Count == 0) return EvaluateEventLogs(context.InputText);
 
                         if(_builder.EventLog != null && _builder.EventLog.HasEventLogs)
                         {
@@ -157,17 +151,14 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
 
                 if(_builder.EventLog != null) _builder.EventLog.Clear();
-                nodes = _builder.Build(context.InputText, out tokens);
+                Node[] nodes = _builder.Build(context.InputText, out tokens);
 
                 if(_builder.EventLog.HasEventLogs)
                 {
-                    ParseEventLogEntry[] examineEntries = _builder.EventLog.GetEventLogs();
-                    if(tokens == null) return EvaluateMethodContext(context, true, tokens);
-                    else
-                    {
-                        _builder.EventLog.Clear();
-                        return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), examineEntries, context.InputText);
-                    }
+                    _builder.EventLog.GetEventLogs();
+                    if(tokens == null) return EvaluateMethodContext(context, true, null);
+                    _builder.EventLog.Clear();
+                    return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), context.InputText);
                 }
 
                 if(nodes != null && nodes.Length == 1)
@@ -177,11 +168,11 @@ namespace Dev2.Studio.InterfaceImplementors
                     List<Node> allNodes = new List<Node>();
                     nodes[0].CollectNodes(allNodes);
 
-                    for(int i = 0; i < allNodes.Count; i++)
+                    foreach(Node t in allNodes)
                     {
-                        if(allNodes[i] is MethodInvocationNode)
+                        if(t is MethodInvocationNode)
                         {
-                            string methodName = allNodes[i].Identifier.Content;
+                            string methodName = t.Identifier.Content;
 
                             if(!_functionNames.Contains(methodName))
                             {
@@ -191,7 +182,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                     _errors.Clear();
                                 }
 
-                                _errors.Add(new IntellisenseProviderResult(this, allNodes[i].Identifier.Content, null, "An error occurred while parsing { " + methodName + " }, the function does not exist.", true, allNodes[i].Identifier.Start.SourceIndex, allNodes[i].Identifier.End.SourceIndex + allNodes[i].Identifier.End.SourceLength));
+                                _errors.Add(new IntellisenseProviderResult(this, t.Identifier.Content, null, "An error occurred while parsing { " + methodName + " }, the function does not exist.", true, t.Identifier.Start.SourceIndex, t.Identifier.End.SourceIndex + t.Identifier.End.SourceLength));
                             }
                             else
                             {
@@ -200,13 +191,13 @@ namespace Dev2.Studio.InterfaceImplementors
                                     _errors.Clear();
                                 }
 
-                                MethodInvocationNode mNode = allNodes[i] as MethodInvocationNode;
+                                MethodInvocationNode mNode = t as MethodInvocationNode;
                                 if(!VerifyMethodInvocationArguments(mNode)) hasError = true;
                             }
                         }
-                        else if(allNodes[i] is BinaryOperatorNode && allNodes[i].Identifier.Start.Definition == TokenKind.Colon)
+                        else if(t is BinaryOperatorNode && t.Identifier.Start.Definition == TokenKind.Colon)
                         {
-                            BinaryOperatorNode biNode = (BinaryOperatorNode)allNodes[i];
+                            BinaryOperatorNode biNode = (BinaryOperatorNode)t;
                             bool escape = false;
 
                             if(!(biNode.Left is DatalistRecordSetFieldNode))
@@ -285,7 +276,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 return _intellisenseResult;
             }
 
-            return _emptyResults;
+            return EmptyResults;
         }
 
         private bool VerifyMethodInvocationArguments(MethodInvocationNode mNode)
@@ -297,89 +288,79 @@ namespace Dev2.Studio.InterfaceImplementors
                 paramCount = mNode.Parameters.Items.Length;
             }
 
-            string methodName = mNode.Identifier.Content;
-            IntellisenseProviderResult templateResult = null;
-
-            for(int i = 0; i < _intellisenseResult.Count; i++)
+            if(mNode != null)
             {
-                if(String.Equals(methodName, _intellisenseResult[i].Name, StringComparison.Ordinal))
+                string methodName = mNode.Identifier.Content;
+                IntellisenseProviderResult templateResult = _intellisenseResult.FirstOrDefault(t => String.Equals(methodName, t.Name, StringComparison.Ordinal));
+
+                bool result = true;
+
+                if(templateResult == null)
                 {
-                    templateResult = _intellisenseResult[i];
-                    break;
-                }
-            }
-
-            bool result = true;
-
-            if(templateResult == null)
-            {
-                _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function does not exist.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
-                result = false;
-            }
-            else
-            {
-                int minArguments = -1;
-                int maxArguments = -1;
-
-                if(templateResult.Arguments != null && templateResult.Arguments.Count() > 0)
-                {
-                    for(int i = 0; i < templateResult.Arguments.Length; i++)
-                    {
-                        string currentName = templateResult.Arguments[i];
-
-                        int startIndex = -1;
-
-                        if((startIndex = currentName.IndexOf("{")) != -1)
-                        {
-                            minArguments = i + 1;
-                            int endIndex = currentName.IndexOf("}", startIndex + 1);
-
-                            if(endIndex != -1)
-                            {
-                                maxArguments = 65535;
-                                currentName = currentName.Substring(0, startIndex);
-                            }
-                            else
-                            {
-                                currentName = currentName.Substring(0, startIndex);
-                            }
-                        }
-                        else
-                        {
-                            minArguments = i + 1;
-                        }
-                    }
+                    _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function does not exist.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                    result = false;
                 }
                 else
                 {
-                    if(mNode.Parameters.Items.Length > 0)
+                    int minArguments = -1;
+                    int maxArguments = -1;
+
+                    if(templateResult.Arguments != null && templateResult.Arguments.Any())
                     {
-                        minArguments = -1;
+                        for(int i = 0; i < templateResult.Arguments.Length; i++)
+                        {
+                            string currentName = templateResult.Arguments[i];
+
+                            int startIndex;
+
+                            if((startIndex = currentName.IndexOf("{", StringComparison.Ordinal)) != -1)
+                            {
+                                minArguments = i + 1;
+                                int endIndex = currentName.IndexOf("}", startIndex + 1, StringComparison.Ordinal);
+
+                                if(endIndex != -1)
+                                {
+                                    maxArguments = 65535;
+                                }
+                            }
+                            else
+                            {
+                                minArguments = i + 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(mNode.Parameters != null && (mNode.Parameters.Items != null && (mNode.Parameters != null && mNode.Parameters.Items.Length > 0)))
+                        {
+                            minArguments = -1;
+                        }
+
                     }
 
+                    if(minArguments != -1)
+                    {
+                        if(paramCount < minArguments)
+                        {
+                            _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs at least " + minArguments.ToString(CultureInfo.InvariantCulture) + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                            result = false;
+                        }
+                        else if(maxArguments == -1 && paramCount != minArguments)
+                        {
+                            _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs exactly " + minArguments.ToString(CultureInfo.InvariantCulture) + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                            result = false;
+                        }
+                    }
+                    else if(paramCount > 0 && minArguments == -1)
+                    {
+                        _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function must be called without arguments", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
+                        result = false;
+                    }
                 }
 
-                if(minArguments != -1)
-                {
-                    if(paramCount < minArguments)
-                    {
-                        _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs at least " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
-                        result = false;
-                    }
-                    else if(maxArguments == -1 && paramCount != minArguments)
-                    {
-                        _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function needs exactly " + minArguments.ToString() + " arguments.", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
-                        result = false;
-                    }
-                }
-                else if(paramCount > 0 && minArguments == -1)
-                {
-                    _errors.Add(new IntellisenseProviderResult(this, mNode.Identifier.Content, null, "An error occured while parsing { " + methodName + " }, the function must be called without arguments", true, mNode.Identifier.Start.SourceIndex, mNode.Identifier.End.SourceIndex + mNode.Identifier.End.SourceLength));
-                    result = false;
-                }
+                return result;
             }
-
-            return result;
+            return false;
         }
 
         private IList<IntellisenseProviderResult> EvaluateMethodContext(IntellisenseProviderContext context, bool tryRebuildNullTokens, Token[] tokens)
@@ -397,17 +378,17 @@ namespace Dev2.Studio.InterfaceImplementors
                     {
                         _builder.EventLog.Clear();
                         _builder.Build(context.InputText, true, out tokens);
-                        return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), examineEntries, context.InputText);
+                        return EvaluateEventLogs(EvaluateMethodContext(context, false, tokens), context.InputText);
                     }
                 }
             }
 
             if(tokens != null && tokens.Length > 0)
             {
-                for(int i = 0; i < tokens.Length; i++)
-                    if(tokens[i].TokenIndex == 0)
+                foreach(Token t in tokens)
+                    if(t.TokenIndex == 0)
                     {
-                        start = tokens[i];
+                        start = t;
                         break;
                     }
 
@@ -469,14 +450,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             {
                                 usedStart = true;
                                 string methodName = methodIdentifier.Content;
-                                IntellisenseProviderResult templateResult = null;
-
-                                for(int i = 0; i < _intellisenseResult.Count; i++)
-                                    if(String.Equals(methodName, _intellisenseResult[i].Name, StringComparison.Ordinal))
-                                    {
-                                        templateResult = _intellisenseResult[i];
-                                        break;
-                                    }
+                                IntellisenseProviderResult templateResult = _intellisenseResult.FirstOrDefault(t => String.Equals(methodName, t.Name, StringComparison.Ordinal));
 
                                 if(templateResult != null)
                                 {
@@ -489,19 +463,19 @@ namespace Dev2.Studio.InterfaceImplementors
                                         builder.Append(templateResult.Name + "(");
                                         int paramsIndex = -1;
                                         string paramsInsert = null;
-                                        string currentName = null;
+                                        string currentName;
                                         string paramsDescription = null;
 
                                         for(int i = 0; i < templateResult.Arguments.Length; i++)
                                         {
                                             if(i != 0) builder.Append(", ");
                                             currentName = templateResult.Arguments[i];
-                                            int startIndex = -1;
+                                            int startIndex;
                                             string rangeStart = null;
 
-                                            if((startIndex = currentName.IndexOf("{")) != -1)
+                                            if((startIndex = currentName.IndexOf("{", StringComparison.Ordinal)) != -1)
                                             {
-                                                int endIndex = currentName.IndexOf("}", startIndex + 1);
+                                                int endIndex = currentName.IndexOf("}", startIndex + 1, StringComparison.Ordinal);
 
                                                 if(endIndex != -1)
                                                 {
@@ -536,8 +510,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
                                             currentName = templateResult.Arguments[argumentNumber];
 
-                                            int startIndex = -1;
-                                            if((startIndex = currentName.IndexOf("{")) != -1) currentName = currentName.Substring(0, startIndex);
+                                            int startIndex;
+                                            if((startIndex = currentName.IndexOf("{", StringComparison.Ordinal)) != -1) currentName = currentName.Substring(0, startIndex);
 
                                             builder.AppendLine();
 
@@ -572,7 +546,7 @@ namespace Dev2.Studio.InterfaceImplementors
                                             {
                                                 _builder.EventLog.Clear();
                                                 _errors.Clear();
-                                                _errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, "Function \"" + methodName + "\" only accepts " + templateResult.Arguments.Length.ToString() + " arguments.", true, methodIdentifier.SourceIndex, methodIdentifier.SourceIndex + methodIdentifier.SourceLength));
+                                                _errors.Add(new IntellisenseProviderResult(this, "Syntax Error", null, "Function \"" + methodName + "\" only accepts " + templateResult.Arguments.Length.ToString(CultureInfo.InvariantCulture) + " arguments.", true, methodIdentifier.SourceIndex, methodIdentifier.SourceIndex + methodIdentifier.SourceLength));
                                                 return _errors;
                                             }
                                         }
@@ -603,18 +577,18 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
             }
 
-            return EvaluateEventLogs(_builder.EventLog.GetEventLogs(), context.InputText);
+            return EvaluateEventLogs(context.InputText);
         }
 
-        private IList<IntellisenseProviderResult> EvaluateEventLogs(ParseEventLogEntry[] parseEventLogEntry, string expression)
+        private IList<IntellisenseProviderResult> EvaluateEventLogs(string expression)
         {
             _errors.Clear();
-            return EvaluateEventLogs(_errors, parseEventLogEntry, expression);
+            return EvaluateEventLogs(_errors, expression);
         }
 
-        private IList<IntellisenseProviderResult> EvaluateEventLogs(IList<IntellisenseProviderResult> errors, ParseEventLogEntry[] parseEventLogEntry, string expression)
+        private IList<IntellisenseProviderResult> EvaluateEventLogs(IList<IntellisenseProviderResult> errors, string expression)
         {
-            if(errors == _intellisenseResult)
+            if(errors.Equals(_intellisenseResult))
             {
                 List<IntellisenseProviderResult> clone = new List<IntellisenseProviderResult>();
                 clone.AddRange(errors);
@@ -636,7 +610,7 @@ namespace Dev2.Studio.InterfaceImplementors
     [ValueConversion(typeof(string), typeof(string), ParameterType = typeof(string))]
     public class CalculateIntellisenseTextConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value != null)
             {
@@ -657,10 +631,10 @@ namespace Dev2.Studio.InterfaceImplementors
                 return text;
             }
 
-            return value;
+            return null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value != null)
             {
@@ -678,7 +652,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 return text;
             }
 
-            return value;
+            return null;
         }
     }
     #endregion

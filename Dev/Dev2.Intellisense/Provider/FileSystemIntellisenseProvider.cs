@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Dev2.Intellisense.Helper;
+﻿using Dev2.Intellisense.Helper;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.InterfaceImplementors;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Intellisense.Provider
 {
@@ -32,9 +31,26 @@ namespace Dev2.Intellisense.Provider
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-            context.CaretPosition = input.Length;
-            context.CaretPositionOnPopup = input.Length;
-            return input;
+
+            var regions = context.InputText.Split(new[] { ' ' });
+            var sum = 0;
+            var regionsText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
+            {
+                sum = sum + context.CaretPosition;
+                return sum >= context.CaretPosition;
+            }).Select(a => a.a).ToList();
+            regionsText[regionsText.Count - 1] = input;
+            var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(new[] { ' ' });
+            context.CaretPositionOnPopup = prefix.Length;
+            context.CaretPosition = prefix.Length;
+            int i = 0;
+            var inner = regions.SkipWhile(a =>
+                {
+                    i = i + 1;
+                    return i < regionsText.Count + 1;
+                }).Aggregate("", (a, b) => a + " " + b);
+            return prefix + inner;
+
         }
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
@@ -51,7 +67,13 @@ namespace Dev2.Intellisense.Provider
                 if(!InLiteralRegion(context.InputText, context.CaretPosition))
                 {
                     _intellisenseResults.Clear();
-                    string searchText = context.InputText; //context.InputText.Substring(context.CaretPositionOnPopup, (context.CaretPosition - context.CaretPositionOnPopup));
+                    var regions = context.InputText.Split(new[] { ' ' });
+                    var sum = 0;
+                    string searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
+                        {
+                            sum = sum + context.CaretPosition;
+                            return sum >= context.CaretPosition;
+                        }).Last().a;
                     FileSystemQuery.QueryList(searchText);
                     FileSystemQuery.QueryCollection.ForEach(s => _intellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
                     results.AddRange(_intellisenseResults);

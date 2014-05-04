@@ -111,7 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Then(@"the case convert result for this varibale ""(.*)"" will be")]
         public void ThenTheCaseConvertResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;

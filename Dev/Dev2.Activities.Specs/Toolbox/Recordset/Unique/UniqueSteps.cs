@@ -131,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
 
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resultVariable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, resultVariable);
             string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
 
             //string error;

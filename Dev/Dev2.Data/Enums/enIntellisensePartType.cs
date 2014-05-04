@@ -5,7 +5,7 @@ namespace Dev2.DataList.Contract
     public enum enIntellisensePartType
     {
         All,
-        RecorsetsOnly,
+        RecordsetsOnly,
         ScalarsOnly,
         RecordsetFields
     }

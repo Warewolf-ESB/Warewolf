@@ -118,7 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             inputMappings.Append("<Inputs>");
 
             var inMapTo = ScenarioContext.Current.Get<string>("inMapTo");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, inMapTo);
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
             string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
 
             var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             outputMappings.Append("<Outputs>");
 
             var outMapFrom = ScenarioContext.Current.Get<string>("outMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, outMapFrom);
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
             string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
 
             var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
@@ -240,10 +240,10 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var outputDefs = ScenarioContext.Current.Get<List<string>>("outputDefs");
 
             var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, inMapFrom);
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapFrom);
             string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapFrom);
             var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
-            string outRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, outMapTo);
+            string outRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapTo);
             string outColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapTo);
 
             int inCount = 0;
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void ThenTheForeachExecutesTimes(int numOfIterations)
         {
             string error;
-            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultRecordsetVariable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultRecordsetVariable);
             var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultRecordsetVariable);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             var recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column, out error);

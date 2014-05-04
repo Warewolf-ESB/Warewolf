@@ -401,7 +401,6 @@ namespace Dev2.Data.Parsers
             StringBuilder tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
 
-
             // region to evaluate
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(payload != null)
@@ -409,9 +408,8 @@ namespace Dev2.Data.Parsers
             {
                 string[] parts = tmp.ToString().Split('.');
                 string search = parts[0].ToLower();
-                bool isRs = false;
+                bool isRs = search.Contains("(");
 
-                // remove ()
                 if(search.Contains("("))
                 {
                     isRs = true;
@@ -421,7 +419,16 @@ namespace Dev2.Data.Parsers
 
                 try
                 {
-                    var results = CreateResultsGeneric(refParts, payload, search, addCompleteParts);
+                    IEnumerable<IIntellisenseResult> results;
+
+                    if(parts.Length == 1)
+                    {
+                        results = CreateResultsGeneric(refParts, payload, search, addCompleteParts);
+                    }
+                    else
+                    {
+                        results = CreateResultsGeneric(refParts, payload, parts[1], addCompleteParts);
+                    }
 
                     // we need to search recordset fields to filter ;)
                     if(parts.Length == 2)
@@ -496,10 +503,17 @@ namespace Dev2.Data.Parsers
 
             if(payload.HangingOpen)
             {
-
-                if(payload.Payload.Contains("(") && !payload.Payload.Contains(")") && payload.Child == null)
+                bool hasIndex = false;
+                var openBraceIndex = search.LastIndexOf("(");
+                var closeBraceIndex = search.LastIndexOf(")");
+                if(openBraceIndex != -1 && openBraceIndex < search.Length && closeBraceIndex > openBraceIndex)
                 {
-                    // allow the user to 
+                    hasIndex = true;
+                }
+
+                if(payload.Payload.Contains("(") && !payload.Payload.Contains(")") && payload.Child == null && !hasIndex)
+                {
+                    //// allow the user to 
                     foreach(IDev2DataLanguageIntellisensePart t in refParts)
                     {
                         // add closed recordset

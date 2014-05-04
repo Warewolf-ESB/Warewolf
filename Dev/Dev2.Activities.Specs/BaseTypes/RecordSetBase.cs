@@ -63,7 +63,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if(DataListUtil.IsValueRecordset(variable.Item1))
             {
-                dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
+                dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable.Item1);
                 dynamic recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
 
                 List<string> addedRecordsets;

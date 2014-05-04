@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Studio.Core.Interfaces;
 
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class CompositeIntellisenseProvider : List<IIntellisenseProvider>, IIntellisenseProvider
@@ -29,7 +30,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(provider.Optional)
                 {
-                    if(results.Where(r => r.IsError == false).Count() == 0 || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
+                    if(!results.Any(r => r.IsError == false) || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                     {
                         IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
                         results.AddRange(subset);
@@ -37,6 +38,13 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
                 else
                 {
+                    if((context.InputText.EndsWith("]") || context.InputText.EndsWith(")"))
+                        && (provider is DefaultIntellisenseProvider)
+                        && context.CaretPosition == context.InputText.Length)
+                    {
+                       return results;
+                    }
+
                     IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
                     results.AddRange(subset);
                 }

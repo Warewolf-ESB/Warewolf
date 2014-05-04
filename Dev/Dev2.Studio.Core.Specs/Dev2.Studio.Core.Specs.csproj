@@ -56,16 +56,20 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="SpecRun.SpecFlowPlugin">
       <HintPath>..\packages\SpecRun.SpecFlow.1.2.0\lib\net35\SpecRun.SpecFlowPlugin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="TechTalk.SpecRun">
       <HintPath>..\packages\SpecRun.SpecFlow.1.2.0\lib\net35\TechTalk.SpecRun.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -86,6 +90,12 @@
       <DependentUpon>Deploy.feature</DependentUpon>
     </Compile>
     <Compile Include="Deploy\DeploySteps.cs" />
+    <Compile Include="IntellisenseSpecs\IntellisenseProvider.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IntellisenseProvider.feature</DependentUpon>
+    </Compile>
+    <Compile Include="IntellisenseSpecs\IntellisenseProviderSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +106,10 @@
     <None Include="Deploy\Deploy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Deploy.feature.cs</LastGenOutput>
+    </None>
+    <None Include="IntellisenseSpecs\IntellisenseProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>IntellisenseProvider.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="runtests.cmd" />
@@ -108,9 +122,17 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
       <Project>{1fd73e36-fc73-4bdf-bcba-278a44f06550}</Project>
@@ -128,6 +150,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

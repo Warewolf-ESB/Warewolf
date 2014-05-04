@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -89,7 +90,7 @@ namespace Dev2.Core.Tests
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual(0, getResults.Count(r => !r.IsError));
 
         }
 
@@ -101,7 +102,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var context = new IntellisenseProviderContext
             {
-                CaretPosition = 6,
+                CaretPosition = 4,
                 InputText = "city()",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
@@ -129,7 +130,8 @@ namespace Dev2.Core.Tests
             {
                 CaretPosition = 7,
                 InputText = "city().",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                FilterType = enIntellisensePartType.RecordsetFields
             };
 
             //------------Execute Test---------------------------
@@ -154,7 +156,7 @@ namespace Dev2.Core.Tests
             // vs Rs().
             var context = new IntellisenseProviderContext
             {
-                CaretPosition = 5,
+                CaretPosition = 4,
                 InputText = "city(",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
@@ -180,7 +182,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var context = new IntellisenseProviderContext
             {
-                CaretPosition = 7,
+                CaretPosition = 6,
                 InputText = "[[city(",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
@@ -198,34 +200,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City(*).GeoLocation]]", getResults[4].ToString());
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
         }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
-        public void IntellisenseProvider_GetIntellisenseResults_WhenOpeningBracketsAndNoRecordsetNoDot_ValidResults()
-        {
-            //------------Setup for test--------------------------
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 8,
-                InputText = "[[city()",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            //------------Execute Test---------------------------
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(6, getResults.Count);
-
-            Assert.AreEqual("[[City(", getResults[0].ToString());
-            Assert.AreEqual("[[City().Name]]", getResults[1].ToString());
-            Assert.AreEqual("[[City(*).Name]]", getResults[2].ToString());
-            Assert.AreEqual("[[City().GeoLocation]]", getResults[3].ToString());
-            Assert.AreEqual("[[City(*).GeoLocation]]", getResults[4].ToString());
-            Assert.AreEqual("Invalid Expression", getResults[5].ToString());
-        }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
@@ -236,7 +211,8 @@ namespace Dev2.Core.Tests
             {
                 CaretPosition = 9,
                 InputText = "[[city().",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                FilterType = enIntellisensePartType.RecordsetFields
             };
 
             //------------Execute Test---------------------------
@@ -260,7 +236,7 @@ namespace Dev2.Core.Tests
         {
             var context = new IntellisenseProviderContext
             {
-                CaretPosition = 2,
+                CaretPosition = 3,
                 InputText = "[[4]]",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
@@ -338,11 +314,8 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(4, getResults.Count);
-            Assert.AreEqual("[[city([[Scalar]])]]", getResults[0].ToString());
-            Assert.AreEqual("[[city([[Country]])]]", getResults[1].ToString());
-            Assert.AreEqual("[[city([[State]])]]", getResults[2].ToString());
-            Assert.AreEqual("Invalid Expression", getResults[3].ToString());
+            Assert.AreEqual(1, getResults.Count);
+            Assert.AreEqual("Invalid Expression", getResults[0].ToString());
         }
 
         //BUG 8755
@@ -539,10 +512,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(3, getResults.Count);
+            Assert.AreEqual(2, getResults.Count);
             Assert.AreEqual("[[City().Name]]", getResults[0].ToString());
-            Assert.AreEqual("[[City(*).Name]]", getResults[1].ToString());
-            Assert.AreEqual("Invalid Expression", getResults[2].ToString());
+            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
 
         }
 
@@ -559,10 +531,9 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(3, getResults.Count);
+            Assert.AreEqual(2, getResults.Count);
             Assert.AreEqual("[[City().Name]]", getResults[0].ToString());
-            Assert.AreEqual("[[City(*).Name]]", getResults[1].ToString());
-            Assert.AreEqual("Invalid Expression", getResults[2].ToString());
+            Assert.AreEqual("Invalid Expression", getResults[1].ToString());
         }
 
 
@@ -589,24 +560,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
 
         }
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void GetIntellisenseResults_With_Expression_Expected_NoResults()
-        // ReSharper restore InconsistentNaming
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 10,
-                InputText = "{{var r  = \"[[xpath('//result/node()')]]\";if(r.indexOf(\"success\") == -1){var s = \"No\";}else{var s =\"Yes\";}}}",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(0, getResults.Count);
-        }
-
+        
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_CommaSeperatedRegions_Expected_AllVarsInResults()
@@ -668,7 +622,7 @@ namespace Dev2.Core.Tests
             {
                 CaretPosition = 19,
                 InputText = "[[Scalar]],[[City(*).Name]],[[Country]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
@@ -706,7 +660,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[8].Description);
         }
 
         [TestMethod]
@@ -800,7 +754,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[8].Description);
         }
 
         [TestMethod]
@@ -817,7 +771,7 @@ namespace Dev2.Core.Tests
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[0].Description);
+            Assert.AreEqual(StringResources.IntellisenseErrorMisMacthingBrackets, getResults[8].Description);
         }
 
         //BUG 8736
@@ -860,23 +814,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(0, getResults.Count);
         }
-
-        //BUG 8736
-        [TestMethod]
-        public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedAndThereIsAFieldAfterClosedBracketAndNumberIndexExpectedNoResultsAndException()
-        {
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 10,
-                InputText = "[[City(44).Name]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(0, getResults.Count);
-        }
-
+        
         //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedAndThereIsAFieldAfterClosedBracketAndStarIndexExpectedNoResultsAndException()
@@ -1089,7 +1027,7 @@ namespace Dev2.Core.Tests
                 InputText = "[[Cit",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
                 State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                FilterType = enIntellisensePartType.RecordsetsOnly
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
@@ -1106,7 +1044,7 @@ namespace Dev2.Core.Tests
                 InputText = "[[C",
                 DesiredResultSet = IntellisenseDesiredResultSet.Default,
                 State = true,
-                FilterType = enIntellisensePartType.RecorsetsOnly
+                FilterType = enIntellisensePartType.RecordsetsOnly
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
@@ -1480,7 +1418,8 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            Assert.AreEqual("[[recset([[anotherRecset().newfield]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[anotherRecset().newfield]]", context));
+            var actual = new DefaultIntellisenseProvider().PerformResultInsertion("[[anotherRecset().newfield]]", context);
+            Assert.AreEqual("[[recset([[anotherRecset().newfield]]).field]]", actual);
         }
 
         [TestMethod]
@@ -1496,7 +1435,8 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            Assert.AreEqual("[[recset([[recset([[scalar]]).field]]).field]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context));
+            var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);   
+            Assert.AreEqual("[[recset([[recset([[scalar]]).field]]).field]]", performResultInsertion);
         }
 
         [TestMethod]
@@ -1511,7 +1451,8 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = 0
             };
 
-            Assert.AreEqual("[[recset().field]]+[[Scalar]]+[[Car]]+[[fail]]", new DefaultIntellisenseProvider().PerformResultInsertion("[[Car]]", context));
+            var actual = new DefaultIntellisenseProvider().PerformResultInsertion("[[Car]]", context);
+            Assert.AreEqual("[[recset().field]]+[[Scalar]]+[[Car]]+[[fail]]", actual);
         }
 
         [TestMethod]
@@ -1603,30 +1544,30 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
 
-            const string exprected = "[[Scalar]]]]";
+            const string exprected = "[[Scalar]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[Scalar]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
         }
 
-        //Bug 8736
-        [TestMethod]
-        public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
-        {
-            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
-            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
-            {
-                CaretPosition = 7,
-                InputText = "[[City(]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
-            };
+        ////Bug 8736 TJ-TODO:- Discuss with Barney
+        //[TestMethod]
+        //public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
+        //{
+        //    DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+        //    IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
+        //    {
+        //        CaretPosition = 6,
+        //        InputText = "[[City(]]",
+        //        DesiredResultSet = IntellisenseDesiredResultSet.Default,
+        //        State = true
+        //    };
 
-            const string exprected = "[[City().GeoLocation]]]]";
-            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
+        //    const string exprected = "[[City().GeoLocation]]";
+        //    string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
-            Assert.AreEqual(exprected, actual);
-        }
+        //    Assert.AreEqual(exprected, actual);
+        //}
 
         //Bug 8736
         [TestMethod]
@@ -1694,7 +1635,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City().GeoLocation]]]]";
+            const string exprected = "[[City().GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1712,7 +1653,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City(44).GeoLocation]]]]";
+            const string exprected = "[[City(44).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(44).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1730,7 +1671,7 @@ namespace Dev2.Core.Tests
                 DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
             };
 
-            const string exprected = "[[City(*).GeoLocation]]]]";
+            const string exprected = "[[City(*).GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City(*).GeoLocation]]", intellisenseProviderContext);
 
             Assert.AreEqual(exprected, actual);
@@ -1823,7 +1764,7 @@ namespace Dev2.Core.Tests
                 CaretPosition = intellisenseText.Length,
                 InputText = intellisenseText,
                 IsInCalculateMode = true,
-                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+                DesiredResultSet = IntellisenseDesiredResultSet.EntireSet
             };
 
             var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
@@ -1850,7 +1791,7 @@ namespace Dev2.Core.Tests
 
             var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.IsFalse(results[0].IsError);
+            Assert.AreEqual(0, results.Count);
         }
 
         // BUG 7858
@@ -1868,7 +1809,7 @@ namespace Dev2.Core.Tests
 
             var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
             IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
-            Assert.IsTrue(results[0].IsError);
+            Assert.AreEqual(0, results.Count);
         }
 
         #endregion CalculateIntellisenseProvider Tests
@@ -1891,7 +1832,7 @@ namespace Dev2.Core.Tests
             var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
             IList<IntellisenseProviderResult> results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
 
-            Assert.AreEqual(5, results.Count);
+            Assert.AreEqual(6, results.Count);
         }
 
 

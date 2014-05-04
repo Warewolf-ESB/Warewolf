@@ -210,7 +210,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
 
             if(DataListUtil.IsValueRecordset(ResultVariable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultVariable);
+                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultVariable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);
