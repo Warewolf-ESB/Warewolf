@@ -17,4 +17,27 @@ Scenario: Simple workflow executing against the server
 	  | # |                          |
 	  | 1 | [[rec(1).a]] =  yes      |
 	
-	 
+Scenario: Simple workflow executing against the server with a database service
+	 Given I have a workflow "TestDbServiceWF"
+	 And "TestDbServiceWF" contains a database service "Fetch" with mappings
+	  | Input to Service | From Variable | Output from Service          | To Variable     |
+	  |                  |               | dbo_proc_SmallFetch(*).Value | [[rec().fetch]] |
+	 And "TestDbServiceWF" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
+	  When "TestDbServiceWF" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Count' in WorkFlow 'TestDbServiceWF' debug inputs as
+	  | Recordset            |
+	  | [[rec(1).fetch]] = 1 |
+	  | [[rec(2).fetch]] = 2 |
+	  | [[rec(3).fetch]] = 1 |
+	  | [[rec(4).fetch]] = 2 |
+	  | [[rec(5).fetch]] = 1 |
+	  | [[rec(6).fetch]] = 2 |
+	  | [[rec(7).fetch]] = 1 |
+	  | [[rec(8).fetch]] = 2 |
+	  | [[rec(9).fetch]] = 5 |
+	 And the 'Count' in Workflow 'TestDbServiceWF' debug outputs as    
+	 |               |
+	 | [[count]] = 9 |
+	
+	  

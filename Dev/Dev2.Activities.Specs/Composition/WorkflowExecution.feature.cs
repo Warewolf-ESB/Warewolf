@@ -115,6 +115,69 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow executing against the server with a database service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void SimpleWorkflowExecutingAgainstTheServerWithADatabaseService()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow executing against the server with a database service", ((string[])(null)));
+#line 20
+this.ScenarioSetup(scenarioInfo);
+#line 21
+  testRunner.Given("I have a workflow \"TestDbServiceWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table4.AddRow(new string[] {
+                        "",
+                        "",
+                        "dbo_proc_SmallFetch(*).Value",
+                        "[[rec().fetch]]"});
+#line 22
+  testRunner.And("\"TestDbServiceWF\" contains a database service \"Fetch\" with mappings", ((string)(null)), table4, "And ");
+#line 25
+  testRunner.And("\"TestDbServiceWF\" contains Count Record \"Count\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+   testRunner.When("\"TestDbServiceWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset"});
+            table5.AddRow(new string[] {
+                        "[[rec(1).fetch]] = 1"});
+            table5.AddRow(new string[] {
+                        "[[rec(2).fetch]] = 2"});
+            table5.AddRow(new string[] {
+                        "[[rec(3).fetch]] = 1"});
+            table5.AddRow(new string[] {
+                        "[[rec(4).fetch]] = 2"});
+            table5.AddRow(new string[] {
+                        "[[rec(5).fetch]] = 1"});
+            table5.AddRow(new string[] {
+                        "[[rec(6).fetch]] = 2"});
+            table5.AddRow(new string[] {
+                        "[[rec(7).fetch]] = 1"});
+            table5.AddRow(new string[] {
+                        "[[rec(8).fetch]] = 2"});
+            table5.AddRow(new string[] {
+                        "[[rec(9).fetch]] = 5"});
+#line 28
+   testRunner.And("the \'Count\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table6.AddRow(new string[] {
+                        "[[count]] = 9"});
+#line 39
+  testRunner.And("the \'Count\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table6, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

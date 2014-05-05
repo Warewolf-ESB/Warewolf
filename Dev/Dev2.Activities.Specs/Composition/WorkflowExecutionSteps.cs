@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Services;
 using Dev2.Session;
@@ -28,7 +29,7 @@ namespace Dev2.Activities.Specs.Composition
     public class WorkflowExecutionSteps : RecordSetBases
     {
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
-        private AutoResetEvent _resetEvt = new AutoResetEvent(false);
+        private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -100,6 +101,76 @@ namespace Dev2.Activities.Specs.Composition
         //            }
         //            CommonSteps.AddActivityToActivityList(activityName, assignActivity);
         //        }
+
+        [Given(@"""(.*)"" contains a database service ""(.*)"" with mappings")]
+        public void GivenContainsADatabaseServiceWithMappings(string wf, string dbServiceName, Table table)
+        {
+            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            ResourceRepository repository = new ResourceRepository(environmentModel);
+            repository.Load();
+            var resource  = repository.Find(r => r.ResourceName.Equals(dbServiceName)).ToList();
+
+            var dbServiceActivity = new DsfDatabaseActivity();
+            dbServiceActivity.ResourceID = resource[0].ID;
+            dbServiceActivity.ServiceName = resource[0].ResourceName;
+
+            CommonSteps.AddActivityToActivityList(dbServiceName, dbServiceActivity);
+
+            var outputSb = new StringBuilder();
+            outputSb.Append("<Output>");
+
+            foreach(var tableRow in table.Rows)
+            {
+                var input = tableRow["Input to Service"];
+                var fromVariable = tableRow["From Variable"];
+                var output = tableRow["Output from Service"];
+                var toVariable = tableRow["To Variable"];
+
+                CommonSteps.AddVariableToVariableList(output);
+                CommonSteps.AddVariableToVariableList(input);
+                
+                if(resource.Count > 0)
+                {
+                    var outputs = XDocument.Parse(resource[0].Outputs);
+                    
+                    string recordsetName;
+                    string fieldName;
+                   
+                    if (DataListUtil.IsValueRecordset(output))
+                    {
+                        recordsetName =  DataListUtil.ExtractRecordsetNameFromValue(output);
+                        fieldName = DataListUtil.ExtractFieldNameFromValue(output);
+                    }
+                    else
+                    {
+                        recordsetName = fieldName = output;
+                    }
+
+                    var element = (from elements in outputs.Descendants("Output")
+                                  where (string)elements.Attribute("Recordset") == recordsetName &&
+                                        (string)elements.Attribute("OriginalName") == fieldName
+                                  select elements).SingleOrDefault();
+
+                    if (element != null)
+                    {
+                        element.SetAttributeValue("Value", toVariable);
+                    }
+
+                    outputSb.Append(element);
+                }
+            }
+
+            outputSb.Append("</Outputs>");
+            resource[0].Outputs = outputSb.ToString();
+        }
+
+        //[Given(@"""(.*)"" contains a Count ""(.*)"" as")]
+        //public void GivenContainsACountAs(string wfName, string toolName, Table table)
+        //{
+            
+        //}
+            
+
 
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
