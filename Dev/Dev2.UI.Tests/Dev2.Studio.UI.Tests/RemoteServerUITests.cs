@@ -16,7 +16,7 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class RemoteServerUiTests : UIMapBase
     {
-        #region Fields
+        #region Const
 
         const string RemoteServerName = "Remote Connection";
         const string LocalHostServerName = "localhost";
@@ -29,6 +29,7 @@ namespace Dev2.Studio.UI.Tests
         {
             Init();
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            ExplorerUIMap.Server_RightClick_Connect(RemoteServerName);
         }
 
         [TestCleanup]
@@ -187,6 +188,7 @@ namespace Dev2.Studio.UI.Tests
                 DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
                 DatabaseSourceUIMap.EnterUsernameAndPassword();
                 DatabaseSourceUIMap.TestConnection();
+                Playback.Wait(5000);
                 DatabaseSourceUIMap.ClickSaveDbConnectionFromTestConnection();
 
                 SaveDialogUIMap.ClickSave();
@@ -255,20 +257,22 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
             const string TextToSearchWith = "RemoteDBService";
-            string actionName;
 
             //Edit remote db service
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             DatabaseServiceWizardUIMap.ClickScrollActionListUp();
             DatabaseServiceWizardUIMap.ClickFirstAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
-            DatabaseServiceWizardUIMap.ClickOK();
+            KeyboardCommands.SendTabs(5);
+            KeyboardCommands.SendEnter();
+
             //Change it back
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
-            actionName = DatabaseServiceWizardUIMap.GetActionName();
+            string actionName = DatabaseServiceWizardUIMap.GetActionName();
             DatabaseServiceWizardUIMap.ClickSecondAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
-            DatabaseServiceWizardUIMap.ClickOK();
+            KeyboardCommands.SendTabs(5);
+            KeyboardCommands.SendEnter();
             //Assert remote db service changed its action
             Assert.AreEqual("dbo.fn_diagram", actionName, "Cannot edit remote db service");
         }
@@ -281,7 +285,6 @@ namespace Dev2.Studio.UI.Tests
             var emailServer = TestUtils.StartEmailServer();
             var machineName = Environment.MachineName;
             const string TextToSearchWith = "EmailSource";
-            string timeout;
 
             //Edit remote email source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
@@ -312,7 +315,7 @@ namespace Dev2.Studio.UI.Tests
             EmailSourceWizardUIMap.PressCtrlC();
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "100");
             EmailSourceWizardUIMap.PressButtonOnWizard(1);
-            timeout = Clipboard.GetText();
+            string timeout = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
 
             //Test Email Source
@@ -334,7 +337,6 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
             const string TextToSearchWith = "PluginSource";
-            string path;
 
             //Edit remote plugin source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
@@ -353,7 +355,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Change it back                        
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
-            path = PluginSourceMap.GetAssemblyPathText();
+            string path = PluginSourceMap.GetAssemblyPathText();
             PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}"), 100);
             PluginServiceWizardUIMap.PressButtonOnWizard(1);
             SaveDialogUIMap.ClickSave();
@@ -367,7 +369,6 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
             const string TextToSearchWith = "PluginService";
-            string actionName;
 
             //Edit remote plugin service
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
@@ -377,7 +378,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Change it back
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
-            actionName = PluginServiceWizardUIMap.GetActionName();
+            string actionName = PluginServiceWizardUIMap.GetActionName();
             PluginServiceWizardUIMap.ClickActionAtIndex(4);
             PluginServiceWizardUIMap.ClickTest();
             PluginServiceWizardUIMap.ClickOK();

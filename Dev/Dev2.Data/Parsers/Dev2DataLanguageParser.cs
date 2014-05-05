@@ -504,8 +504,8 @@ namespace Dev2.Data.Parsers
             if(payload.HangingOpen)
             {
                 bool hasIndex = false;
-                var openBraceIndex = search.LastIndexOf("(");
-                var closeBraceIndex = search.LastIndexOf(")");
+                var openBraceIndex = search.LastIndexOf("(", StringComparison.Ordinal);
+                var closeBraceIndex = search.LastIndexOf(")", StringComparison.Ordinal);
                 if(openBraceIndex != -1 && openBraceIndex < search.Length && closeBraceIndex > openBraceIndex)
                 {
                     hasIndex = true;

@@ -28,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets the selected sort.
         /// </summary>
-        [Inputs("SelectedSort")]        
+        [Inputs("SelectedSort")]
         public string SelectedSort { get; set; }
 
         public DsfSortRecordsActivity()
@@ -39,12 +39,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Sort Records";
         }
 
-// ReSharper disable RedundantOverridenMember
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-// ReSharper restore RedundantOverridenMember
+        // ReSharper restore RedundantOverridenMember
 
 
         protected override void OnExecute(NativeActivityContext context)
@@ -55,7 +55,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-            string error;
             Guid executionID = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
@@ -69,38 +68,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
 
                 // Travis.Frisinger : New Stuff....
-                if (!string.IsNullOrEmpty(rawRecsetName))
+                if(!string.IsNullOrEmpty(rawRecsetName))
                 {
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
                     IBinaryDataListEntry rsData;
+                    string error;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                    if (dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
                     }
 
                     allErrors.AddError(error);
 
-                        // Check for fields
-                        if (rsData != null && rsData.HasField(sortField))
-                        {
-                            rsData.Sort(sortField, descOrder, out error);
-                            errors.AddError(error);
+                    // Check for fields
+                    if(rsData != null && rsData.HasField(sortField))
+                    {
+                        rsData.Sort(sortField, descOrder, out error);
+                        errors.AddError(error);
 
-                            // Push back against the datalist
-                            compiler.PushBinaryDataList(executionID, bdl, out errors);
-                            allErrors.MergeErrors(errors);
-                        if (dataObject.IsDebugMode())
+                        // Push back against the datalist
+                        compiler.PushBinaryDataList(executionID, bdl, out errors);
+                        allErrors.MergeErrors(errors);
+                        if(dataObject.IsDebugMode())
+                        {
+                            bdl.TryGetEntry(rawRecsetName, out rsData, out error);
+                            //Added for Bug 9479 
+                            string tmpExpression = SortField;
+                            if(tmpExpression.Contains("()."))
                             {
-                                bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                                //Added for Bug 9479 
-                                string tmpExpression = SortField;
-                                if (tmpExpression.Contains("()."))
-                                {
-                                    tmpExpression = tmpExpression.Replace("().", "(*).");
-                                }
-                                AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionID));
+                                tmpExpression = tmpExpression.Replace("().", "(*).");
                             }
+                            AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionID));
+                        }
                     }
                 }
                 else
@@ -111,14 +111,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
 
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfSortRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
@@ -129,8 +129,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Private Methods
 
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {    
-            if (valueEntry != null)
+        {
+            if(valueEntry != null)
             {
                 //Added for Bug 9479 - Massimo Guerrera
                 if(expression.Contains("()."))
@@ -140,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
             AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
-        }        
+        }
 
         private string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
@@ -148,11 +148,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string rawRef = DataListUtil.StripBracketsFromValue(value);
             string objRef = string.Empty;
 
-            if (partType == enIntellisensePartType.RecordsetsOnly)
+            if(partType == enIntellisensePartType.RecordsetsOnly)
             {
                 objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
             }
-            else if (partType == enIntellisensePartType.RecordsetFields)
+            else if(partType == enIntellisensePartType.RecordsetFields)
             {
                 objRef = DataListUtil.ExtractFieldNameFromValue(rawRef);
             }
@@ -166,15 +166,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-            foreach (Tuple<string, string> t in updates)
-            {
-
-                if (t.Item1 == SortField)
+                foreach(Tuple<string, string> t in updates)
                 {
-                    SortField = t.Item2;
+
+                    if(t.Item1 == SortField)
+                    {
+                        SortField = t.Item2;
+                    }
                 }
             }
-        }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
@@ -183,12 +183,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 foreach(Tuple<string, string> t in updates)
                 {
-           
+
                     if(t.Item1 == SortField)
                     {
                         SortField = t.Item2;
                     }
-        }
+                }
             }
         }
 
@@ -213,7 +213,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -226,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

@@ -81,7 +81,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // Find the explorer main window
             UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
             anItem.Find();
-            UITestControlCollection subItems = anItem.GetChildren();
 
             // Find the explorer sub window
             UITestControl explorerMenu = new UITestControl(anItem);
@@ -99,7 +98,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // Find the explorer main window
             UITestControl anItem = this.UIBusinessDesignStudioWindow.UIExplorerCustom;
             anItem.Find();
-            UITestControlCollection subItems = anItem.GetChildren();
 
             // Find the explorer sub window
             UITestControl explorerMenu = new UITestControl(anItem);
@@ -180,6 +178,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// Enters the explorer search text.
         /// </summary>
         /// <param name="textToSearchWith">The text automatic search with.</param>
+        /// <param name="waitAmt"></param>
         public void EnterExplorerSearchText(string textToSearchWith, int waitAmt = 0)
         {
             _explorerSearch.EnterText(textToSearchWith);
@@ -308,10 +307,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         private UITestControl GetConnectedServer(string serverName)
         {
-            UITestControl returnControl = new UITestControl();
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UINavigationViewUserCoCustom.UITvExplorerTree;
             UITestControl server = null;
-            foreach(UITestControl serverListItem in uITvExplorerTree.GetChildren()) // 0 for the first server in the list
+            var kids = _explorerTree.GetChildren();
+            foreach(UITestControl serverListItem in kids) // 0 for the first server in the list
             {
                 if(serverListItem.GetProperty(WpfTree.PropertyNames.AutomationId).ToString().Contains(serverName))
                 {
