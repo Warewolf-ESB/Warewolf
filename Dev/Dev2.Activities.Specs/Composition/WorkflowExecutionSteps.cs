@@ -2,6 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Diagnostics;
@@ -25,6 +26,8 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
+        private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
+        private AutoResetEvent _resetEvt = new AutoResetEvent(false);
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -48,8 +51,9 @@ namespace Dev2.Activities.Specs.Composition
             resourceModel.ResourceType = ResourceType.WorkflowService;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Add(resourceModel);
-            var debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
-            debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+            
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
             ScenarioContext.Current.Add(workflowName, resourceModel);
             ScenarioContext.Current.Add("environment", environmentModel);
             ScenarioContext.Current.Add("resourceRepo", repository);
@@ -60,7 +64,10 @@ namespace Dev2.Activities.Specs.Composition
         {
             List<IDebugState> debugStates;
             ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
+           
             debugStates.Add(debugState);
+            if (debugState.IsFinalStep())
+                _resetEvt.Set();
 
         }
         //
@@ -115,7 +122,8 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.TryGetValue("environment", out environmentModel);
             ScenarioContext.Current.TryGetValue("resourceRepo", out repository);
 
-            resourceModel.DataList = CurrentDl;
+            string currentDl = CurrentDl.ToString();
+            resourceModel.DataList = currentDl.Replace("root","DataList");
             WorkflowHelper helper = new WorkflowHelper();
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
@@ -145,6 +153,7 @@ namespace Dev2.Activities.Specs.Composition
                 dataList.Add(new XElement("DebugSessionID", debugTO.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
+                _resetEvt.WaitOne();
             }
         }
     }
