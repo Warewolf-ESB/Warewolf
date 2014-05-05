@@ -1,9 +1,10 @@
-﻿using Dev2.Core.Tests;
+﻿using System;
+using System.Linq;
+using Dev2.Core.Tests;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
-using Dev2.InterfaceImplementors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -12,8 +13,6 @@ using Dev2.Studio.Core.Specs.Helper;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
@@ -101,7 +100,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         static IIntellisenseProvider GetProvider(string providerName)
         {
             IIntellisenseProvider provider = new DefaultIntellisenseProvider();
-            
+
             switch(providerName.Trim())
             {
                 case "Calculate":
@@ -116,7 +115,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                     provider = new DateTimeIntellisenseProvider();
                     break;
             }
-            
+
             return provider;
         }
 
@@ -157,16 +156,16 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             {
                 if(DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
                 {
-                    result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);    
+                    result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
                 }
                 else
                 {
-                    result = new FileSystemIntellisenseProvider().PerformResultInsertion(option, context);     
+                    result = new FileSystemIntellisenseProvider().PerformResultInsertion(option, context);
                 }
             }
             else
             {
-                result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);    
+                result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
             }
 
             ScenarioContext.Current.Add("result", result);

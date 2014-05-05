@@ -66,12 +66,16 @@ namespace Dev2.Studio.UI.Tests
             }
 
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false);
-            activityUiMap.Activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)");
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "Error button should be showing");
-            activityUiMap.ClickFixErrors();
-            activityUiMap.ClickDoneButton();
-            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "Error button shouldn't be showing");
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false))
+            {
+                activityUiMap.Activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)");
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "Error button should be showing");
+                activityUiMap.ClickFixErrors();
+                activityUiMap.ClickDoneButton();
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "Error button shouldn't be showing");
+
+                Assert.Fail("Need to click Done twice");
+            }
         }
 
         [TestMethod]
@@ -104,13 +108,17 @@ namespace Dev2.Studio.UI.Tests
 
             UITestControl activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, dbResourceName);
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { TheTab = theTab, Activity = activity };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { TheTab = theTab, Activity = activity })
+            {
 
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button not visible");
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button not visible");
 
-            activityUiMap.ClickFixErrors();
-            activityUiMap.ClickCloseMapping();
-            //Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
+                activityUiMap.ClickFixErrors();
+                activityUiMap.ClickCloseMapping();
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
+
+                Assert.Fail("Need to click Done twice");
+            }
         }
 
         [TestMethod]
@@ -124,29 +132,35 @@ namespace Dev2.Studio.UI.Tests
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
+            {
 
-            activityUiMap.ClickEdit();
-            WizardsUIMap.WaitForWizard();
+                activityUiMap.ClickEdit();
+                WizardsUIMap.WaitForWizard();
 
-            //Wizard actions
-            DatabaseServiceWizardUIMap.ClickMappingTab();
-            DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
-            DatabaseServiceWizardUIMap.ClickSaveButton(3);
-            ResourceChangedPopUpUIMap.ClickCancel();
-            //Assert the the error button is there
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
-            //Click the fix errors button
-            activityUiMap.ClickOpenMapping();
-            Assert.AreEqual("Fix", activityUiMap.GetDoneButtonDisplayName());
-            activityUiMap.ClickDoneButton();
-            Assert.AreEqual("Done", activityUiMap.GetDoneButtonDisplayName());
-            activityUiMap.ClickDoneButton();
-            //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
-            //------------Execute Test---------------------------
+                //Wizard actions
+                DatabaseServiceWizardUIMap.ClickMappingTab();
+                DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
+                DatabaseServiceWizardUIMap.ClickSaveButton(2);
+                ResourceChangedPopUpUIMap.ClickCancel();
 
-            //------------Assert Results-------------------------
+
+                //------------Assert Results-------------------------
+
+                //Assert the the error button is there
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
+                //Click the fix errors button
+                activityUiMap.ClickOpenMapping();
+                Assert.AreEqual("Fix", activityUiMap.GetDoneButtonDisplayName());
+                activityUiMap.ClickDoneButton();
+                Assert.AreEqual("Done", activityUiMap.GetDoneButtonDisplayName());
+                activityUiMap.ClickDoneButton();
+                //Assert that the fix errors button isnt there anymore
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+                //------------Execute Test---------------------------
+
+                Assert.Fail("Need to click Done twice");
+            }
         }
     }
 }

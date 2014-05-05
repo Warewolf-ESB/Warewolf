@@ -1,7 +1,7 @@
-﻿using Dev2.Intellisense.Helper;
-using Dev2.Studio.Core.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Dev2.Intellisense.Helper;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Intellisense.Provider
 {
@@ -10,8 +10,6 @@ namespace Dev2.Intellisense.Provider
         #region Class Members
 
         List<IntellisenseProviderResult> _intellisenseResults;
-
-        IFileSystemQuery _fileSystemQuery;
 
         #endregion Class Members
 
@@ -22,7 +20,7 @@ namespace Dev2.Intellisense.Provider
             Optional = false;
             HandlesResultInsertion = true;
             _intellisenseResults = new List<IntellisenseProviderResult>();
-            _fileSystemQuery = new FileSystemQuery();
+            FileSystemQuery = new FileSystemQuery();
         }
 
         #endregion Constructors
@@ -118,18 +116,6 @@ namespace Dev2.Intellisense.Provider
 
         #endregion Properties
 
-
-
-        public IFileSystemQuery FileSystemQuery
-        {
-            get
-            {
-                return _fileSystemQuery;
-            }
-            set
-            {
-                _fileSystemQuery = value;
-            }
-        }
+        public IFileSystemQuery FileSystemQuery { get; set; }
     }
 }

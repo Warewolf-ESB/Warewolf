@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Threading;
 using Dev2.Composition;
 using Dev2.Studio.Core;
@@ -12,7 +12,6 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileSystemIntellisenseProvider = Dev2.Intellisense.Provider.FileSystemIntellisenseProvider;
 using IFileSystemQuery = Dev2.Intellisense.Helper.IFileSystemQuery;
-using Moq;
 
 namespace Dev2.Core.Tests
 {
@@ -33,7 +32,7 @@ namespace Dev2.Core.Tests
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 
-            
+
 
             _resourceModel = new ResourceModel(testEnvironmentModel.Object)
             {
@@ -277,8 +276,7 @@ namespace Dev2.Core.Tests
 
         static FileSystemIntellisenseProvider CreateIntellisenseProvider()
         {
-            var intellisenseProvider = new FileSystemIntellisenseProvider();
-            intellisenseProvider.FileSystemQuery = new FileSystemQueryForTest();
+            var intellisenseProvider = new FileSystemIntellisenseProvider { FileSystemQuery = new FileSystemQueryForTest() };
             return intellisenseProvider;
         }
     }
@@ -335,7 +333,7 @@ namespace Dev2.Core.Tests
         {
             for(int i = 0; i < times; i++)
             {
-                QueryCollection.Add(i.ToString());
+                QueryCollection.Add(i.ToString(CultureInfo.InvariantCulture));
             }
         }
 

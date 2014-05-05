@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
@@ -14,9 +17,6 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 
 namespace Dev2.Core.Tests
 {
@@ -200,7 +200,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City(*).GeoLocation]]", getResults[4].ToString());
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
         }
-        
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
@@ -560,7 +560,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
 
         }
-        
+
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_CommaSeperatedRegions_Expected_AllVarsInResults()
@@ -814,7 +814,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(0, getResults.Count);
         }
-        
+
         //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedAndThereIsAFieldAfterClosedBracketAndStarIndexExpectedNoResultsAndException()
@@ -1435,7 +1435,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);   
+            var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);
             Assert.AreEqual("[[recset([[recset([[scalar]]).field]]).field]]", performResultInsertion);
         }
 
@@ -1780,7 +1780,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetIntellisenseResult_MethodExpectingNoParams_Given_NoParams_Expected_NoErrorInResultSet()
         {
-            string intellisenseText = "pi()";
+            const string intellisenseText = "pi()";
             IntellisenseProviderContext context = new IntellisenseProviderContext
             {
                 CaretPosition = intellisenseText.Length,
@@ -1798,7 +1798,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetIntellisenseResult_MethodExpectingNoParams_Given_Params_Expected_ErrorInResultSet()
         {
-            string intellisenseText = "pi(1)";
+            const string intellisenseText = "pi(1)";
             IntellisenseProviderContext context = new IntellisenseProviderContext
             {
                 CaretPosition = intellisenseText.Length,

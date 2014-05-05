@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
@@ -23,26 +22,33 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
         public void CreateWebSource(string sourceUrl, string sourceName)
         {
             //Web Source Details
-            SendKeys.SendWait(sourceUrl);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}");
+            KeyboardCommands.SendKey(sourceUrl);
+            KeyboardCommands.SendTabs(3);
             Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendEnter();
             Playback.Wait(1000);
             WebSourceWizardUIMap.ClickSave();
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(sourceName);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
             Playback.Wait(1000);
         }
 
         public void SaveWebService(string serviceName)
         {
             //Web Service Details
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            KeyboardCommands.SendTabs(8);
             Playback.Wait(500);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(1000);//wait for test
-            SendKeys.SendWait("{TAB}{ENTER}");
-            Playback.Wait(2000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");
+            KeyboardCommands.SendEnter();
+            Playback.Wait(500);//wait for test
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
+            Playback.Wait(500);
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(serviceName);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
         }
     }
 }

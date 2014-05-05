@@ -103,14 +103,11 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-
                 Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
                 Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
                 Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
                 Assert.AreEqual("d", activity.GetInputMappingToServiceValue(4));
                 Assert.AreEqual("fe", activity.GetInputMappingToServiceValue(5));
-
-                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
             }
         }
 
@@ -146,12 +143,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-
                 Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
                 Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
                 Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
-
-                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
             }
         }
 
@@ -187,11 +181,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-
                 Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
                 Assert.AreEqual("foobar", activity.GetInputMappingToServiceValue(2));
-
-                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
             }
         }
 
@@ -227,9 +218,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-
                 Assert.AreEqual(0, activity.GetInputMappingRows().Count);
-                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
             }
         }
     }
