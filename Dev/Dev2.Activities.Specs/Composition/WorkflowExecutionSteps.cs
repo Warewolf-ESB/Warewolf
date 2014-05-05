@@ -182,41 +182,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.Outputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
-
-        #region Overrides of RecordSetBases
-
-        protected override List<DebugItemResult> GetDebugInputItemResults(Activity activity)
-        {
-            List<IDebugState> debugStates;
-            ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
-            List<DebugItem> debugInputItemResults = debugStates.Find(state => state.DisplayName == activity.DisplayName).Inputs;
-            List<DebugItemResult> results = new List<DebugItemResult>();
-            foreach(var debugInputItemResult in debugInputItemResults)
-            {
-                results.AddRange(debugInputItemResult.ResultsList);
-            }
-            return results;
-        }
-
-        #region Overrides of RecordSetBases
-
-        protected override List<DebugItemResult> GetDebugOutputItemResults(Activity activity)
-        {
-            List<IDebugState> debugStates;
-            ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
-            List<DebugItem> debugInputItemResults = debugStates.Find(state => state.DisplayName == activity.DisplayName).Outputs;
-            List<DebugItemResult> results = new List<DebugItemResult>();
-            foreach(var debugInputItemResult in debugInputItemResults)
-            {
-                results.AddRange(debugInputItemResult.ResultsList);
-            }
-            return results;
-        }
-
-        #endregion
-
-        #endregion
-
+        
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null || resourceModel.Environment == null)
