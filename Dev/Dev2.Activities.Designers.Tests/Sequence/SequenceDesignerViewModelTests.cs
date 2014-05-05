@@ -26,6 +26,21 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         }
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SequenceDesignerViewModel_Constructor")]
+        public void SequenceDesignerViewModel_Constructor_SetSmallViewItem_AlwaysReturnsNull()
+        {
+            //------------Setup for test--------------------------
+            var sequenceActivity = new DsfSequenceActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
+            //------------Execute Test---------------------------
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);
+            sequenceDesignerViewModel.SmallViewItem = "test";
+            //------------Assert Results-------------------------
+            Assert.IsNull(sequenceDesignerViewModel.SmallViewItem,"This item should always be null");
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceDesignerViewModel_Constructor")]
         public void SequenceDesignerViewModel_Constructor_Constructed_IsInstanceOfActivityDesignerViewModel()

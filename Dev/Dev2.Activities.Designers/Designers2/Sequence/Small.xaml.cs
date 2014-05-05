@@ -39,7 +39,11 @@ namespace Dev2.Activities.Designers2.Sequence
             if(viewModel != null)
             {
                 viewModel.DoDrop(e.Data);
-                e.Handled = true;
+            }
+
+            if(DropPoint.Item != null)
+            {
+                DropPoint.Item = null;
             }
         }
 
@@ -48,7 +52,5 @@ namespace Dev2.Activities.Designers2.Sequence
             AllowDrag(e);
             base.OnDragOver(e);
         }
-
-
     }
 }

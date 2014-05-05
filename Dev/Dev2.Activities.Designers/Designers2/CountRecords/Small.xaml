@@ -40,7 +40,7 @@
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 DefaultText="[[Recordset()]]"
-                                FilterType="RecorsetsOnly"
+                                FilterType="RecordsetsOnly"
                                 ToolTip="{x:Static help:HelpTextResources.CountRecordsToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

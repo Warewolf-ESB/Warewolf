@@ -20,11 +20,27 @@ namespace Dev2.Activities.Designers2.Sequence
 {
     public class SequenceDesignerViewModel : ActivityDesignerViewModel
     {
+        object _smallViewItem;
+
         public SequenceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarHelpToggle();
             AddTitleBarLargeToggle();
+        }
+
+        public object SmallViewItem
+        {
+            get
+            {
+                return _smallViewItem;
+            }
+            // ReSharper disable ValueParameterNotUsed
+            set
+            // ReSharper restore ValueParameterNotUsed
+            {
+                _smallViewItem = null;
+            }
         }
 
         public List<String> ActivityNames

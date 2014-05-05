@@ -70,6 +70,7 @@
                                        BorderBrush="Black"
                                        BorderThickness="2"
                                        Height="35"
+                                       Item="{Binding SmallViewItem}"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_DropPoint_AutoID">
