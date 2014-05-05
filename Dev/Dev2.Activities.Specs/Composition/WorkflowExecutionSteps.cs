@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,6 @@ using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
 using TechTalk.SpecFlow;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -122,8 +122,8 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.TryGetValue("environment", out environmentModel);
             ScenarioContext.Current.TryGetValue("resourceRepo", out repository);
 
-            string currentDl = CurrentDl.ToString();
-            resourceModel.DataList = currentDl.Replace("root","DataList");
+            string currentDl = CurrentDl;
+            resourceModel.DataList = currentDl.Replace("root", "DataList");
             WorkflowHelper helper = new WorkflowHelper();
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
@@ -132,6 +132,40 @@ namespace Dev2.Activities.Specs.Composition
 
             ExecuteWorkflow(resourceModel);
         }
+
+        #region Overrides of RecordSetBases
+
+        protected override List<DebugItemResult> GetDebugInputItemResults(Activity activity)
+        {
+            List<IDebugState> debugStates;
+            ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
+            List<DebugItem> debugInputItemResults = debugStates.Find(state => state.DisplayName == activity.DisplayName).Inputs;
+            List<DebugItemResult> results = new List<DebugItemResult>();
+            foreach(var debugInputItemResult in debugInputItemResults)
+            {
+                results.AddRange(debugInputItemResult.ResultsList);
+            }
+            return results;
+        }
+
+        #region Overrides of RecordSetBases
+
+        protected override List<DebugItemResult> GetDebugOutputItemResults(Activity activity)
+        {
+            List<IDebugState> debugStates;
+            ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
+            List<DebugItem> debugInputItemResults = debugStates.Find(state => state.DisplayName == activity.DisplayName).Outputs;
+            List<DebugItemResult> results = new List<DebugItemResult>();
+            foreach(var debugInputItemResult in debugInputItemResults)
+            {
+                results.AddRange(debugInputItemResult.ResultsList);
+            }
+            return results;
+        }
+
+        #endregion
+
+        #endregion
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {

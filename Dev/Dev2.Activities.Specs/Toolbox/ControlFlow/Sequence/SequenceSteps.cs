@@ -519,7 +519,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             Dictionary<string, Activity> activityList;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
-            var actualDebugItems = GetDebugItemResults(activityList[toolName]);
+            var actualDebugItems = GetDebugInputItemResults(activityList[toolName]);
             CommonSteps commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
         }
@@ -529,7 +529,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             Dictionary<string, Activity> activityList;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
-            var actualDebugItems = CommonSteps.GetOutputDebugItems(activityList[toolName]);
+            var actualDebugItems = GetDebugOutputItemResults(activityList[toolName]);
             CommonSteps commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugOutputAs(table, actualDebugItems);
         }

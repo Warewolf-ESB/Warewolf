@@ -4,12 +4,12 @@
 	I want to be able to build workflows and execute them against the server
 
 Scenario: Simple workflow executing against the server
-	 Given I have a workflow "TestWF"
+	 Given I have a workflow "TestThisWF"
 	 And "TestWF" contains an Assign "Rec To Convert" as
 	  | variable    | value    |
 	  | [[rec().a]] | yes      |
 	  | [[rec().a]] | warewolf |
-	  When "TestWF" is executed
+	  When "TestThisWF" is executed
 	  Then the workflow execution has "NO" error
 	  And the "Rec To Convert" debug inputs as
 	  | # | Variable      | New Value |

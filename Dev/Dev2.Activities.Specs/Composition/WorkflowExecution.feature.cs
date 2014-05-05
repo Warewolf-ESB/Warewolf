@@ -78,7 +78,7 @@ namespace Dev2.Activities.Specs.Composition
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
-  testRunner.Given("I have a workflow \"TestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("I have a workflow \"TestThisWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -92,7 +92,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
   testRunner.And("\"TestWF\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
 #line 12
-   testRunner.When("\"TestWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"TestThisWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

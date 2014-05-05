@@ -20,9 +20,14 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected abstract void BuildDataList();
 
-        protected virtual List<DebugItemResult> GetDebugItemResults(Activity activity)
+        protected virtual List<DebugItemResult> GetDebugInputItemResults(Activity activity)
         {
             return CommonSteps.GetInputDebugItems(activity);
+        }
+
+        protected virtual List<DebugItemResult> GetDebugOutputItemResults(Activity activity)
+        {
+            return CommonSteps.GetOutputDebugItems(activity);
         }
 
         protected void BuildShapeAndTestData()
