@@ -203,7 +203,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// Clicks the server information server DDL.
         /// </summary>
         /// <param name="serverName">Name of the server.</param>
-        public void ClickServerInServerDDL(string serverName)
+        public void ClickServerInServerDDL(string serverName, bool ingoredEnabled = true)
         {
             // Get the base control
             UITestControl ddlBase = GetServerDDL();
@@ -230,16 +230,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             Mouse.Click(item, new Point(5, 5));
 
-            //Wait for the connect control to be ready
-            int afterCounter = 0;
-            while(!ddlBase.Enabled && afterCounter < 10)
+            if(ingoredEnabled)
             {
-                Playback.Wait(2000);
-                afterCounter++;
-            }
-            if(!ddlBase.Enabled)
-            {
-                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+                //Wait for the connect control to be ready
+                int afterCounter = 0;
+                while(!ddlBase.Enabled && afterCounter < 10)
+                {
+                    Playback.Wait(2000);
+                    afterCounter++;
+                }
+                if(!ddlBase.Enabled)
+                {
+                    throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+                }
             }
         }
 

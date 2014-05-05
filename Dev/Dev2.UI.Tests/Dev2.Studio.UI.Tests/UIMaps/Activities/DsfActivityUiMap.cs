@@ -30,12 +30,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void ClickOpenMapping()
         {
-            ClickButton("Open Mapping");
+            Activity.DoubleClick();
         }
 
         public void ClickCloseMapping(int waitAmt = 0)
         {
-            ClickButton("Close Mapping");
+            Activity.DoubleClick();
         }
 
         public bool IsFixErrorButtonShowing()

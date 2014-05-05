@@ -133,7 +133,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void DoubleClick(this UITestControl control)
         {
-            Point point = new Point(control.BoundingRectangle.X + 30, control.BoundingRectangle.Y + 5);
+            Point point = new Point(control.BoundingRectangle.X + 20, control.BoundingRectangle.Y + 5);
             Mouse.Move(point);
             Mouse.DoubleClick();
         }

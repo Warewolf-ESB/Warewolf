@@ -446,7 +446,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            ExplorerUIMap.ClickNewServerButton(3000);
+            ExplorerUIMap.ClickServerInServerDDL("New Remote Server...",false);
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if(uiTestControl == null)
             {

@@ -36,39 +36,42 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.Clear();
 
             // Open the Workflow
-            var theTab = ExplorerUIMap.DoubleClickWorkflow(workflowToUse, "BUGS");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow(workflowToUse, "TESTCATEGORY");
 
             // Edit the DbService
             ExplorerUIMap.DoubleClickService(serviceToUse, "UTILITY");
 
+            //Test the service to get output mappings
+            KeyboardCommands.SendTabs(11);
+            KeyboardCommands.SendKey("a");
+            KeyboardCommands.SendTabs(11);
+            KeyboardCommands.SendEnter();
+            Playback.Wait(2000);
+
             // Tab to mappings
-            DatabaseServiceWizardUIMap.TabToOutputMappings();
+            DatabaseServiceWizardUIMap.ClickMappingTab(320);
+
             // Remove column 1+2's mapping
             KeyboardCommands.SendTabs(4);
             KeyboardCommands.SendDel();
             KeyboardCommands.SendTab();
             KeyboardCommands.SendDel();
 
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendEnter();
             // Save
-            DatabaseServiceWizardUIMap.ClickOK();
             if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
                 ResourceChangedPopUpUIMap.ClickCancel();
             }
 
-            // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
-            {
-                // Assert mapping does not exist
-                Assert.IsFalse(
-                    WorkflowDesignerUIMap.DoesActivityDataMappingContainText(
-                        WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)"),
-                        "[[get_Rows().Column2]]"), "Mappings not fixed, removed mapping still in use");
-            }
-            else
-            {
-                Assert.Fail("'Fix Errors' button not visible");
-            }
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false);
+            activityUiMap.Activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, serviceToUse + "(ServiceDesigner)");
+            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "Error button should be showing");
+            activityUiMap.ClickFixErrors();
+            activityUiMap.ClickDoneButton();
+            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "Error button shouldn't be showing");
         }
 
         [TestMethod]
