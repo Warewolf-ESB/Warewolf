@@ -135,7 +135,7 @@
                                           UpdateSourceTrigger=PropertyChanged}" 
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 MinWidth="106"
-                                FilterType="RecorsetsOnly"
+                                FilterType="RecordsetsOnly"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
                 <i:Interaction.Behaviors>
