@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -108,12 +109,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
-// ReSharper disable RedundantOverridenMember
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-// ReSharper restore RedundantOverridenMember
+        // ReSharper restore RedundantOverridenMember
 
         /// <summary>
         /// Executes the logic of the activity and calls the backend code to do the work
@@ -277,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             _debugInputs.Add(itemToAdd);
         }
-        
+
         /// <summary>
         /// Creates a new instance of the SearchTO object
         /// </summary>
@@ -332,9 +333,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

@@ -437,7 +437,7 @@ WallisBuchan
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
             DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
 
-            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------

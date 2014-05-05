@@ -2,6 +2,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -200,9 +201,13 @@ namespace Dev2.Activities.PathOperations
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

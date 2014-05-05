@@ -606,7 +606,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[OutVar1]]";
             var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = result };
 
-            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple1 = new Tuple<string, string>("[[OutVar1]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------

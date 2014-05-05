@@ -1,4 +1,5 @@
-﻿using Dev2;
+﻿using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
@@ -248,9 +249,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

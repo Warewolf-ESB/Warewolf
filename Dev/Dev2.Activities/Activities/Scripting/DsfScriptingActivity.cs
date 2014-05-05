@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Enums;
 using Dev2.Common.ExtMethods;
@@ -170,9 +171,13 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

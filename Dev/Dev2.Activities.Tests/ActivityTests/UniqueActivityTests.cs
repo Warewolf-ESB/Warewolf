@@ -416,7 +416,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Result = "[[res]]";
             var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
 
-            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------

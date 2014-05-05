@@ -324,7 +324,7 @@ namespace ActivityUnitTests.ActivityTest
             const string result = "[[res]]";
             var act = new DsfWebGetRequestActivity { Url = Url, Result = result };
 
-            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------

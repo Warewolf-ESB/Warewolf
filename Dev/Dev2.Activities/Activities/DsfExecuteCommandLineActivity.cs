@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading;
@@ -423,9 +424,13 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                CommandResult = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == CommandResult);
+                if(itemUpdate != null)
+                {
+                    CommandResult = itemUpdate.Item2;
+                }
             }
         }
 

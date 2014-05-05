@@ -141,7 +141,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemVariableParams(InField, "In Field", expressionsEntry, executionId));
                     AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
@@ -151,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var completeResultList = new List<string>();
 
-                while (outerIteratorCollection.HasMoreData())
+                while(outerIteratorCollection.HasMoreData())
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
@@ -159,12 +159,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     innerIteratorCollection.AddIterator(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextRow(itrChar).TheValue;
-                    while (innerIteratorCollection.HasMoreData())
+                    while(innerIteratorCollection.HasMoreData())
                     {
-                        if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+                        if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
                             var val = innerIteratorCollection.FetchNextRow(itrInField);
-                            if (val != null)
+                            if(val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
                                 completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
@@ -176,18 +176,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 }
 
-                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
                     var rsType = DataListUtil.GetRecordsetIndexType(region);
-                    if (rsType == enRecordsetIndexType.Numeric)
+                    if(rsType == enRecordsetIndexType.Numeric)
                     {
 
                         toUpsertScalar.Add(region, string.Join(",", completeResultList));
                         compiler.Upsert(executionId, toUpsertScalar, out errors);
                         allErrors.MergeErrors(errors);
-                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
-                            foreach (var debugOutputTO in toUpsertScalar.DebugOutputs)
+                            foreach(var debugOutputTO in toUpsertScalar.DebugOutputs)
                             {
                                 AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                             }
@@ -199,9 +199,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         toUpsert.Add(region, completeResultList);
                         compiler.Upsert(executionId, toUpsert, out errors);
                         allErrors.MergeErrors(errors);
-                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
-                            foreach (var debugOutputTO in toUpsert.DebugOutputs)
+                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
                             {
                                 AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                             }
@@ -213,7 +213,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -221,7 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 #region Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -229,11 +229,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    if (hasErrors)
+                    if(hasErrors)
                     {
-                        foreach (var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
                         {
                             AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                         }
@@ -248,13 +248,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        #endregion Private Methods       
+        #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -263,7 +263,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -276,17 +276,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null)
+            if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
 
-                    if (t.Item1 == InField)
+                    if(t.Item1 == InField)
                     {
                         InField = t.Item2;
                     }
 
-                    if (t.Item1 == Characters)
+                    if(t.Item1 == Characters)
                     {
                         Characters = t.Item2;
                     }
@@ -296,9 +296,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

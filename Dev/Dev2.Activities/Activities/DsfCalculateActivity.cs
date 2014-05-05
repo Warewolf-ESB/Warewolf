@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -80,7 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 allErrors.MergeErrors(errors);
 
                 compiler.Upsert(executionId, Result, result, out errors);
-               
+
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, executionId);
@@ -168,9 +169,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

@@ -452,6 +452,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Callback<EmailSource, MailMessage>((client, message) =>
                 { });
             var activity = GetSendEmailActivity(mock);
+            activity.Result = "[[Result]]";
             TestStartNode = new FlowStep
             {
                 Action = activity
