@@ -14,6 +14,7 @@ namespace Dev2.Intellisense.Provider
             int foundMinimum = -1;
             int foundLength = 0;
             int maxStringLength = Math.Min(context.CaretPosition, context.InputText.Length);
+            
             bool closedBraceFound = false;
 
             for(int i = maxStringLength - 1; i >= 0; i--)

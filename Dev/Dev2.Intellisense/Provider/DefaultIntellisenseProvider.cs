@@ -152,6 +152,10 @@ namespace Dev2.Studio.InterfaceImplementors
 
             string replace = context.FindTextToSearch();
 
+            var substr = string.IsNullOrEmpty(context.InputText) ? "" : context.InputText.Replace(replace, "");
+
+            replace = substr.StartsWith("(") ? context.InputText : replace;
+
             if(replace.StartsWith("=") && context.InputText.StartsWith("="))
             {
                 replace = replace.Remove(0, 1);

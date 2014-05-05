@@ -1550,24 +1550,24 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(exprected, actual);
         }
 
-        ////Bug 8736 TJ-TODO:- Discuss with Barney
-        //[TestMethod]
-        //public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
-        //{
-        //    DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
-        //    IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
-        //    {
-        //        CaretPosition = 6,
-        //        InputText = "[[City(]]",
-        //        DesiredResultSet = IntellisenseDesiredResultSet.Default,
-        //        State = true
-        //    };
+        //Bug 8736
+        [TestMethod]
+        public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
+        {
+            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
+            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
+            {
+                CaretPosition = 6,
+                InputText = "[[City(]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                State = true
+            };
 
-        //    const string exprected = "[[City().GeoLocation]]";
-        //    string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
+            const string exprected = "[[City().GeoLocation]]";
+            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
-        //    Assert.AreEqual(exprected, actual);
-        //}
+            Assert.AreEqual(exprected, actual);
+        }
 
         //Bug 8736
         [TestMethod]
