@@ -11,12 +11,15 @@ namespace Dev2.Studio.UI.Tests.Tests.Scheduler
     [CodedUITest]
     public class SchedulerUiTests : UIMapBase
     {
-
+        #region Setup
         [TestInitialize]
         public void TestInit()
         {
             Init();
         }
+
+        #endregion
+
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
@@ -32,8 +35,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Scheduler
                 Assert.AreEqual(false, schedulerUiMap.GetRunAsap());
                 Assert.AreEqual("", schedulerUiMap.GetUsername());
             }
-
-            Assert.Fail("Clean Up Your Close Dialog ;)");
         }
     }
 }

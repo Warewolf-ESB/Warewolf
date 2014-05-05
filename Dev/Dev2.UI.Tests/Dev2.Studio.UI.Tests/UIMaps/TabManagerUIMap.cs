@@ -181,16 +181,31 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public bool CloseTab_Click_No(UITestControl theTab)
         {
-            bool willHaveDialog = WillTabHaveSaveDialog(theTab);
-
             if(CloseTab(theTab))
             {
+                var tabNameControl = theTab.GetChildren().FirstOrDefault(c => c.ClassName == "Uia.TextBlock");
+
+                UITestControlCollection saveDialogButtons = null;
+                if(tabNameControl != null)
+                {
+                    if(tabNameControl.FriendlyName.EndsWith("*"))
+                    {
+                        saveDialogButtons = GetWorkflowNotSavedButtons();
+                    }
+                    else if(tabNameControl.FriendlyName == "Scheduler")
+                    {
+                        saveDialogButtons = GetWorkflowNotSavedButtons("Scheduler Task has changes");
+                    }
+                    else if(tabNameControl.FriendlyName == "Settings")
+                    {
+                        saveDialogButtons = GetWorkflowNotSavedButtons("Security Settings have changed");
+                    }
+                }
                 // Only if we expect a save dialog should we search for it ;)
-                if(willHaveDialog)
+                if(saveDialogButtons != null)
                 {
                     try
                     {
-                        UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
                         if(saveDialogButtons.Count > 0)
                         {
                             UITestControl theBtn = saveDialogButtons[1];
@@ -225,7 +240,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             Playback.Wait(200);
             var tabNameControl = theTab.GetChildren().FirstOrDefault(c => c.ClassName == "Uia.TextBlock");
 
-            if(tabNameControl != null && tabNameControl.FriendlyName.EndsWith("*"))
+            if(tabNameControl != null && (tabNameControl.FriendlyName.EndsWith("*") || tabNameControl.FriendlyName == "Scheduler" || tabNameControl.FriendlyName == "Settings"))
             {
                 return true;
             }

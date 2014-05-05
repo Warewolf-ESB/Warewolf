@@ -66,12 +66,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             return childCount;
         }
 
-        private UITestControlCollection GetWorkflowNotSavedButtons()
+        private UITestControlCollection GetWorkflowNotSavedButtons(string windowTitle = "Workflow not saved...")
         {
             // Workflow not saved...
             UITestControl theWindow = new UITestControl();
             theWindow.TechnologyName = "MSAA";
-            theWindow.SearchProperties["Name"] = "Workflow not saved...";
+            theWindow.SearchProperties["Name"] = windowTitle;
             theWindow.SearchProperties["ControlType"] = "Window";
             theWindow.Find();
             UITestControlCollection firstChildren = theWindow.GetChildren();
