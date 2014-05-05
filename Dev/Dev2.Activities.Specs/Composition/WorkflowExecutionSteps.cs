@@ -30,6 +30,11 @@ namespace Dev2.Activities.Specs.Composition
             BuildShapeAndTestData();
         }
 
+        [Then(@"the workflow execution has ""(.*)"" error")]
+        public void ThenTheWorkflowExecutionHasError(string p0)
+        {
+        }
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -56,36 +61,37 @@ namespace Dev2.Activities.Specs.Composition
             List<IDebugState> debugStates;
             ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
             debugStates.Add(debugState);
+
         }
-
-        [Given(@"workflow ""(.*)"" contains an Assign ""(.*)"" as")]
-        public void GivenWorkflowContainsAnAssignAs(string workflowName, string activityName, Table table)
-        {
-
-            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = activityName };
-
-            foreach(var tableRow in table.Rows)
-            {
-                var value = tableRow["value"];
-                var variable = tableRow["variable"];
-
-                value = value.Replace('"', ' ').Trim();
-
-                if(value.StartsWith("="))
-                {
-                    value = value.Replace("=", "");
-                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
-                }
-
-                List<ActivityDTO> fieldCollection;
-                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
-
-                CommonSteps.AddVariableToVariableList(variable);
-
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
-            }
-            CommonSteps.AddActivityToActivityList(activityName, assignActivity);
-        }
+        //
+        //        [Given(@"workflow ""(.*)"" contains an Assign ""(.*)"" as")]
+        //        public void GivenWorkflowContainsAnAssignAs(string workflowName, string activityName, Table table)
+        //        {
+        //
+        //            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = activityName };
+        //
+        //            foreach(var tableRow in table.Rows)
+        //            {
+        //                var value = tableRow["value"];
+        //                var variable = tableRow["variable"];
+        //
+        //                value = value.Replace('"', ' ').Trim();
+        //
+        //                if(value.StartsWith("="))
+        //                {
+        //                    value = value.Replace("=", "");
+        //                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+        //                }
+        //
+        //                List<ActivityDTO> fieldCollection;
+        //                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+        //
+        //                CommonSteps.AddVariableToVariableList(variable);
+        //
+        //                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+        //            }
+        //            CommonSteps.AddActivityToActivityList(activityName, assignActivity);
+        //        }
 
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
@@ -135,7 +141,6 @@ namespace Dev2.Activities.Specs.Composition
             if(clientContext != null)
             {
                 var dataList = XElement.Parse(debugTO.XmlData);
-                //
                 dataList.Add(new XElement("BDSDebugMode", debugTO.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTO.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));

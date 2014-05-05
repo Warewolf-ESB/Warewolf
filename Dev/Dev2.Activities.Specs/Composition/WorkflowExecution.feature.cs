@@ -90,7 +90,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec().a]]",
                         "warewolf"});
 #line 8
-  testRunner.And("workflow \"TestWF\" contains an Assign \"Rec To Convert \" as", ((string)(null)), table1, "And ");
+  testRunner.And("\"TestWF\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
 #line 12
    testRunner.When("\"TestWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13

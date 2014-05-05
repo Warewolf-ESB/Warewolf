@@ -519,7 +519,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             Dictionary<string, Activity> activityList;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
-            var actualDebugItems = CommonSteps.GetInputDebugItems(activityList[toolName]);
+            var actualDebugItems = GetDebugItemResults(activityList[toolName]);
             CommonSteps commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
         }

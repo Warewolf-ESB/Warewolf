@@ -5,7 +5,7 @@
 
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "TestWF"
-	 And workflow "TestWF" contains an Assign "Rec To Convert " as
+	 And "TestWF" contains an Assign "Rec To Convert" as
 	  | variable    | value    |
 	  | [[rec().a]] | yes      |
 	  | [[rec().a]] | warewolf |

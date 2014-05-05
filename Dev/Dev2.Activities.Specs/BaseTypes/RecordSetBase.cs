@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -6,6 +7,7 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -17,6 +19,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         private int _lastAddedIndex;
 
         protected abstract void BuildDataList();
+
+        protected virtual List<DebugItemResult> GetDebugItemResults(Activity activity)
+        {
+            return CommonSteps.GetInputDebugItems(activity);
+        }
 
         protected void BuildShapeAndTestData()
         {
@@ -93,29 +100,29 @@ namespace Dev2.Activities.Specs.BaseTypes
                     addedFieldset.Add(recordField);
                 }
 
-                 var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(variable.Item1);
+                var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(variable.Item1);
 
-                 if(!string.IsNullOrEmpty(indexRegionFromRecordset))
-                 {
-                     int indexForRecset;
-                     int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                if(!string.IsNullOrEmpty(indexRegionFromRecordset))
+                {
+                    int indexForRecset;
+                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
 
-                     var blankRowsToAdd = rowIndex == 0 ? 0 : (indexForRecset -1) - _lastAddedIndex;
-                     
-                     if(blankRowsToAdd > 0)
-                     {
-                         for(int i = 0; i < blankRowsToAdd; i++)
-                         {
-                             if(!String.IsNullOrEmpty(variable.Item2))
-                             {
-                                 data.Append(string.Format("<{0}>", recordset));
-                                 data.Append(string.Format("<{0}></{0}>", recordField));
-                                 data.Append(string.Format("</{0}>", recordset));
-                             }
-                             _lastAddedIndex++;
-                         }
-                     }
-                 }
+                    var blankRowsToAdd = rowIndex == 0 ? 0 : (indexForRecset - 1) - _lastAddedIndex;
+
+                    if(blankRowsToAdd > 0)
+                    {
+                        for(int i = 0; i < blankRowsToAdd; i++)
+                        {
+                            if(!String.IsNullOrEmpty(variable.Item2))
+                            {
+                                data.Append(string.Format("<{0}>", recordset));
+                                data.Append(string.Format("<{0}></{0}>", recordField));
+                                data.Append(string.Format("</{0}>", recordset));
+                            }
+                            _lastAddedIndex++;
+                        }
+                    }
+                }
 
 
                 if(!String.IsNullOrEmpty(variable.Item2))
