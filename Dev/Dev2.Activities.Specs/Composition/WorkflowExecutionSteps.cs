@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
            
             debugStates.Add(debugState);
-            if (debugState.IsFinalStep())
+            if(debugState.IsFinalStep())
                 _resetEvt.Set();
 
         }
@@ -141,6 +141,7 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
+            repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
@@ -182,7 +183,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.Outputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
-        
+
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null || resourceModel.Environment == null)

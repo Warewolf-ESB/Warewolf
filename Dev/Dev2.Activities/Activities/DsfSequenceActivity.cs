@@ -125,9 +125,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            InitializeDebug(context.GetExtension<IDSFDataObject>());
-            DispatchDebugState(context, StateType.Before);
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            InitializeDebug(context.GetExtension<IDSFDataObject>());
+            if(dataObject.IsDebugMode())
+            {
+                DispatchDebugState(context, StateType.Before);
+            }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
             innerSequence.Activities.Clear();
@@ -136,7 +139,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 innerSequence.Activities.Add(dsfActivity);
             }
             context.ScheduleActivity(innerSequence, OnCompleted);
-            DispatchDebugState(context, StateType.After);
+            if(dataObject.IsDebugMode())
+            {
+                DispatchDebugState(context, StateType.After);
+            }
         }
 
         void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)

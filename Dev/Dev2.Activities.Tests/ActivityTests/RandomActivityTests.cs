@@ -536,7 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfRandomActivity_UpdateForEachOutputs")]
-        public void DsfRandomActivity_UpdateForEachOutputs_MoreThan1Updates_DoesNothing()
+        public void DsfRandomActivity_UpdateForEachOutputs_MoreThan1Updates()
         {
             //------------Setup for test--------------------------
             const string From = "[[Numeric(1).num]]";
@@ -565,7 +565,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string Length = "2";
             var act = new DsfRandomActivity { From = From, To = To, Length = Length, Result = Result };
 
-            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Enums;
@@ -86,7 +87,7 @@ namespace Dev2.Activities
             {
                 if(!errors.HasErrors())
                 {
-                   
+
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator lengthItr = CreateDataListEvaluateIterator(Length, executionId, compiler, colItr, allErrors);
@@ -163,7 +164,7 @@ namespace Dev2.Activities
                         }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
-                   
+
                     if(dataObject.IsDebugMode())
                     {
                         if(string.IsNullOrEmpty(Result))
@@ -233,9 +234,13 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if(updates != null)
             {
-                Result = updates[0].Item2;
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if(itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 

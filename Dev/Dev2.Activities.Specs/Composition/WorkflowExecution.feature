@@ -4,16 +4,16 @@
 	I want to be able to build workflows and execute them against the server
 
 Scenario: Simple workflow executing against the server
-	 Given I have a workflow "TestWF"
+	 Given I have a workflow "WorkflowWithAssign"
 	 And "TestWF" contains an Assign "Rec To Convert" as
 	  | variable    | value    |
 	  | [[rec().a]] | yes      |	 
-	  When "TestWF" is executed
+	  When "WorkflowWithAssign" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Rec To Convert' in WorkFlow 'TestWF' debug inputs as
+	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssign' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | yes       |	
-	  And the 'Rec To Convert' in Workflow 'TestWF' debug outputs as    
+	  And the 'Rec To Convert' in Workflow 'WorkflowWithAssign' debug outputs as    
 	  | # |                          |
 	  | 1 | [[rec(1).a]] =  yes      |
 	
