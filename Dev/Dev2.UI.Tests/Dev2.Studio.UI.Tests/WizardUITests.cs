@@ -142,10 +142,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void WizardUiTests_DbServiceWizard_CreateNewService_ExpectedServiceCreated()
         {
             //Initialization
-            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
             var sourceNameID = Guid.NewGuid().ToString().Substring(0, 5);
             var serviceNameID = Guid.NewGuid().ToString().Substring(0, 5);
-            var cat = "CODEDUITESTS" + serverSourceCategoryName.ToUpper();
+            const string cat = "UNASSIGNED";
             var serviceName = "codeduitest" + serviceNameID;
             var sourceName = "codeduitest" + sourceNameID;
             const string sourcePath = "RSAKLFSVRGENDEV";
@@ -159,10 +158,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             DatabaseServiceWizardUIMap.ClickNewDbSource();
 
             //Create the new Db Source
-            DatabaseServiceWizardUIMap.CreateDbSource(sourcePath, sourceName, cat);
+            DatabaseServiceWizardUIMap.CreateDbSource(sourcePath, sourceName);
 
             //Create the Db Service
-            DatabaseServiceWizardUIMap.CreateDbService(serviceName, cat);
+            DatabaseServiceWizardUIMap.CreateDbService(serviceName);
 
             //Assert
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists(serviceName, cat));
@@ -451,7 +450,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            ExplorerUIMap.ClickServerInServerDDL("New Remote Server...",false);
+            ExplorerUIMap.ClickServerInServerDDL("New Remote Server...", false);
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if(uiTestControl == null)
             {

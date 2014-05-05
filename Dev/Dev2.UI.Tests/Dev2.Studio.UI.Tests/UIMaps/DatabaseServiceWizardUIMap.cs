@@ -63,50 +63,40 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Playback.Wait(500);
         }
 
-        public void CreateDbSource(string sourcePath, string sourceName, string category)
+        public void CreateDbSource(string sourcePath, string sourceName)
         {
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait(sourcePath);
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}{RIGHT}{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait(@"testuser");
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait("test123");
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}{ENTER}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
-            Playback.Wait(10);
-            SendKeys.SendWait(category);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait(sourceName);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(5500);
+            //KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey(sourcePath);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendRightArrows(1);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey(@"testuser");
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey("test123");
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
+            Playback.Wait(2500);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendDownArrows(1);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
+            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendKey(sourceName);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
+            Playback.Wait(1500);
         }
 
-        public void CreateDbService(string serviceName, string category)
+        public void CreateDbService(string serviceName)
         {
             ClickFirstAction();
             ClickTestAction();
-            KeyboardOK();
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(10);
-            SendKeys.SendWait(category);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}{TAB}{TAB}{TAB}{TAB}");
-            Playback.Wait(10);
+            KeyboardCommands.SendTabs(5);
+            KeyboardCommands.SendEnter();
+            KeyboardCommands.SendTabs(3);
             SendKeys.SendWait(serviceName);
             Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendEnter();
         }
     }
 }

@@ -31,29 +31,32 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
 
         public void CreateEmailSource(string sourceName)
         {
-            SendKeys.SendWait("{TAB}");
+            KeyboardCommands.SendTab();
             Playback.Wait(50);
-            SendKeys.SendWait("localhost{TAB}");
+            KeyboardCommands.SendKey("localhost");
+            KeyboardCommands.SendTab();
             Playback.Wait(50);
-            SendKeys.SendWait("test{TAB}");
+            KeyboardCommands.SendKey("test");
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey("test");
+            KeyboardCommands.SendTabs(2);
             Playback.Wait(50);
-            SendKeys.SendWait("test{TAB}{TAB}");
+            KeyboardCommands.SendTabs(2);
             Playback.Wait(50);
-            SendKeys.SendWait("{TAB}{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendEnter();
             SendKeys.SendWait("^AThorLocal@norsegods.com{TAB}");
             SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
             Playback.Wait(50);
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendEnter();
             Playback.Wait(5000);//wait for test
             ClickSave();
 
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");
+            KeyboardCommands.SendTabs(3);
             Playback.Wait(50);
-            SendKeys.SendWait(sourceName);
+            KeyboardCommands.SendKey(sourceName);
             Playback.Wait(50);
-            SendKeys.SendWait("{TAB}{ENTER}");
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendEnter();
         }
     }
 }
