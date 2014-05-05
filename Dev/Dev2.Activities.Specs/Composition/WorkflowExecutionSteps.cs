@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
@@ -106,12 +107,24 @@ namespace Dev2.Activities.Specs.Composition
             BuildDataList();
 
             var activityList = CommonSteps.GetActivityList();
+
+            var flowSteps = new List<FlowStep>();
+
             TestStartNode = new FlowStep();
+            flowSteps.Add(TestStartNode);
+          
             foreach(var activity in activityList)
             {
                 if(TestStartNode.Action == null)
                 {
                     TestStartNode.Action = activity.Value;
+                }
+                else
+                {
+                    var flowStep = new FlowStep();
+                    flowStep.Action = activity.Value;
+                    flowSteps.Last().Next = flowStep;
+                    flowSteps.Add(flowStep);
                 }
             }
 
@@ -131,6 +144,43 @@ namespace Dev2.Activities.Specs.Composition
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
+        }
+
+        [Then(@"the '(.*)' in WorkFlow '(.*)' debug inputs as")]
+        public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+
+            var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
+
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.OriginalInstanceID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+                                                    .SelectMany(s => s.Inputs)
+                                                    .SelectMany(s => s.ResultsList).ToList());
+        }
+            
+        [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
+        public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            ScenarioContext.Current.TryGetValue("activityList", out activityList);
+           
+            var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.OriginalInstanceID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
+                                                    .SelectMany(s => s.Outputs)
+                                                    .SelectMany(s => s.ResultsList).ToList());
         }
 
         #region Overrides of RecordSetBases
