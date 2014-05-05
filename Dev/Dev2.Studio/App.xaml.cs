@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common.Common;
+using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
 using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
+using Dev2.Threading;
 using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
