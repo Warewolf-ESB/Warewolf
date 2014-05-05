@@ -271,8 +271,6 @@
     <Compile Include="Helpers\PropertyHelper.cs" />
     <Compile Include="Helpers\RetryUtility.cs" />
     <Compile Include="Helpers\SystemHelper.cs" />
-    <Compile Include="InterfaceImplementors\FileSystemQuery.cs" />
-    <Compile Include="InterfaceImplementors\IFileSystemQuery.cs" />
     <Compile Include="InterfaceImplementors\NetworkShareInformation.cs" />
     <Compile Include="Factories\DataListItemModelFactory.cs" />
     <Compile Include="Factories\Dev2MessageFactory.cs" />

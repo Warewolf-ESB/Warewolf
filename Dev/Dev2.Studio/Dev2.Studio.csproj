@@ -391,7 +391,6 @@
     <Compile Include="ViewModels\WorkSurface\BaseWorkSurfaceViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\WorkSurfaceContextViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\Dev2MessageBoxViewModel.cs" />
-    <Compile Include="InterfaceImplementors\FileSystemIntellisenseProvider.cs" />
     <Compile Include="ViewModels\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceViewModel.cs" />
     <Compile Include="Views\Diagnostics\ReportsViewerView.xaml.cs">

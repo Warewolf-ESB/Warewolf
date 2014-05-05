@@ -90,6 +90,7 @@
       <DependentUpon>Deploy.feature</DependentUpon>
     </Compile>
     <Compile Include="Deploy\DeploySteps.cs" />
+    <Compile Include="Helper\FileQueryHelper.cs" />
     <Compile Include="IntellisenseSpecs\IntellisenseProvider.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

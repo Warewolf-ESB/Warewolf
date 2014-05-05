@@ -1,9 +1,14 @@
 ﻿using Dev2.Core.Tests;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Intellisense.Helper;
+using Dev2.Intellisense.Provider;
+using Dev2.InterfaceImplementors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Specs.Helper;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,22 +83,40 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             ScenarioContext.Current.Add("provider", provider);
         }
 
+        [Given(@"the file path structure is '(.*)'")]
+        public void GivenTheFilePathStructureIs(string pathStructure)
+        {
+            var fileQueryHelper = new FileQueryHelper();
+
+            if(!string.IsNullOrEmpty(pathStructure))
+            {
+                var paths = pathStructure.Split(',').ToList();
+                paths.ForEach(fileQueryHelper.Add);
+            }
+
+            ScenarioContext.Current.Add("fileQueryHelper", fileQueryHelper);
+        }
+
+
         static IIntellisenseProvider GetProvider(string providerName)
         {
             IIntellisenseProvider provider = new DefaultIntellisenseProvider();
-
+            
             switch(providerName.Trim())
             {
                 case "Calculate":
                     provider = new CalculateIntellisenseProvider();
                     break;
                 case "File":
-                    provider = new FileSystemIntellisenseProvider();
+                    var fileSystemIntellisenseProvider = new FileSystemIntellisenseProvider { FileSystemQuery = ScenarioContext.Current.Get<IFileSystemQuery>("fileQueryHelper") };
+                    provider = fileSystemIntellisenseProvider;
+                    ScenarioContext.Current.Add("isFileProvider", true);
                     break;
                 case "DateTime":
                     provider = new DateTimeIntellisenseProvider();
                     break;
             }
+            
             return provider;
         }
 
@@ -108,7 +131,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                 CaretPosition = ScenarioContext.Current.Get<int>("cursorIndex"),
                 CaretPositionOnPopup = ScenarioContext.Current.Get<int>("cursorIndex"),
                 InputText = ScenarioContext.Current.Get<string>("inputText"),
-                DesiredResultSet = calc ? IntellisenseDesiredResultSet.ClosestMatch : IntellisenseDesiredResultSet.Default, //PLease find out what this is used for and when it should different
+                DesiredResultSet = calc ? IntellisenseDesiredResultSet.ClosestMatch : IntellisenseDesiredResultSet.Default,
                 FilterType = ScenarioContext.Current.Get<enIntellisensePartType>("filterType"),
                 IsInCalculateMode = calc
             };
@@ -119,7 +142,6 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => !i.IsError).Select(i => i.Name).ToArray();
-
             Assert.AreEqual(expectedList.Length, actualist.Length);
             CollectionAssert.AreEqual(expectedList, actualist);
         }
@@ -128,10 +150,28 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         public void WhenISelectTheFollowingOption(string option)
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
-            var result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
+            string result;
+            bool isFileProvider;
+
+            if(ScenarioContext.Current.TryGetValue("isFileProvider", out isFileProvider))
+            {
+                if(DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
+                {
+                    result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);    
+                }
+                else
+                {
+                    result = new FileSystemIntellisenseProvider().PerformResultInsertion(option, context);     
+                }
+            }
+            else
+            {
+                result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);    
+            }
+
             ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the result text should be '(.*)'")]
         public void ThenTheResultTextShouldBe(string result)
         {
@@ -148,4 +188,3 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
     }
 }
-    

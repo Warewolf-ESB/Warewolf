@@ -31,7 +31,6 @@ namespace Dev2.Intellisense.Provider
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-
             var regions = context.InputText.Split(new[] { ' ' });
             var sum = 0;
             var regionsText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>

@@ -60,6 +60,7 @@ Scenario Outline: Insert for All FilterType and DateTime Provider
 	
 Scenario Outline: Insert for All FilterType and File Provider
 	Given I have the following variable list '<varlist>'
+	And the file path structure is '<pathStructure>'
 	And the filter type is '<filterType>'
 	And the current text in the textbox is '<input>'
 	And the cursor is at index '<index>'		
@@ -69,13 +70,18 @@ Scenario Outline: Insert for All FilterType and File Provider
 	Then the result text should be '<result>'
 	And the caret position will be '<caretposition>'
 	Examples: 
-	| testName | varlist                       | filterType | input              | index | dropDownList                                        | option          | result                       | provider      | caretposition |
-	| 1        | <myfile/><file><name/></file> | All        | c:\[[fil           | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]      | c:\[[myfile]]                | Default, File | 13            |
-	| 2        | <myfile/><file><name/></file> | All        | c:\[[fil]]         | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]      | c:\[[myfile]]                | Default, File | 13            |
-	| 3        | <myfile/><file><name/></file> | All        | c:\[[fil]]         | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]] | c:\[[file().name]]           | Default, File | 18            |
-	| 4        | <myfile/><file><name/></file> | All        | c:\[[myfile]][[    | 13    |                                                     |                 | c:\[[myfile]][[              | Default, File | 13            |
-	| 5        | <myfile/><file><name/></file> | All        | c:\[[myfile]][[fil | 18    | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]] | c:\[[myfile]][[file().name]] | Default, File | 28            |
-	| 6        | <myfile/><file><name/></file> | All        | [[myfile]].        | 11    |                                                     |                 | [[myfile]].                  | Default, File | 11            |
+	| testName | pathStructure                       | varlist                       | filterType | input               | index | dropDownList                                        | option               | result                              | provider      | caretposition |
+	| 1        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil            | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
+	| 2        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
+	| 3        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]]      | c:\[[file().name]]                  | Default, File | 18            |
+	| 4        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[     | 13    |                                                     |                      | c:\[[myfile]][[                     | Default, File | 13            |
+	| 5        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[fil  | 18    | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]]      | c:\[[myfile]][[file().name]]        | Default, File | 28            |
+	| 6        |                                     | <myfile/><file><name/></file> | All        | [[myfile]].         | 11    |                                                     |                      | [[myfile]].                         | Default, File | 11            |
+	| 7        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c               | 5     | c:\,c:\FolderA,c:\FolderA\FileA.txt                 | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
+	| 8        | c:\,c:\FolderA,c:\FolderA\FileA.txt | <a/><ab/>                     | All        | del c:\[[myfile]]\a | 19    | [[a]],[[ab]]                                        | [[a]]                | del c:\[[myfile]]\[[a]]             | Default, File | 23            |
+	| 9        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c:\FolderA c    | 16    | c:\,c:\FolderA,c:\FolderA\FileA.txt                 | c:\FolderA\FileA.txt | del c:\FolderA c:\FolderA\FileA.txt | Default, File | 35            |
+	| 10       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA c    | 16    | [[c]],[[cd]],c:\,c:\FolderA,c:\FolderA\FileA.txt    | [[cd]]               | del c:\FolderA [[cd]]               | Default, File | 21            |
+	| 11       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA\     | 15    | c:\FolderA\FileA.txt                                | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
 
 Scenario Outline: Insert for All FilterType and Calculate Provider
 	Given I have the following variable list '<varlist>'
