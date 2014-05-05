@@ -181,13 +181,10 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
-            dataObjectMock.Setup(o => o.GetData("ModelItemFormat")).Returns(ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()));
+            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
@@ -237,7 +234,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceDesignerViewModel_DoDrop")]
-        public void SequenceDesignerViewModel_DoDrop_WhenWorkflowItemTypeNameFormatHasModelItemData_ActivityAdded()
+        public void SequenceDesignerViewModel_DoDrop_WhenModelItemFormatHasModelStringType_Valid_ActivityAdded()
         {
             //------------Setup for test--------------------------
             var dsfSequenceActivity = new DsfSequenceActivity();
@@ -246,58 +243,11 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
-            dataObjectMock.Setup(o => o.GetData("WorkflowItemTypeNameFormat")).Returns(ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()));
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_DoDrop")]
-        public void SequenceDesignerViewModel_DoDrop_WhenModelItemFormatHasModelStringType_NotValid_ActivityNotAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
-            dataObjectMock.Setup(o => o.GetData("ModelItemFormat")).Returns(new DsfGatherSystemInformationActivity().GetType().FullName);
-            //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_DoDrop")]
-        public void SequenceDesignerViewModel_DoDrop_WhenWorkflowItemTypeNameFormatHasStringType_NotValid_ActivityNotAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
-            dataObjectMock.Setup(o => o.GetData("WorkflowItemTypeNameFormat")).Returns(new DsfGatherSystemInformationActivity().GetType().FullName);
-            //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -312,13 +262,10 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
-            dataObjectMock.Setup(o => o.GetData("ModelItemFormat")).Returns(new DsfGatherSystemInformationActivity().GetType().AssemblyQualifiedName);
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
@@ -342,28 +289,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(4, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_DoDrop")]
-        public void SequenceDesignerViewModel_DoDrop_WhenWorkflowItemTypeNameFormatHasStringType_ActivityAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObjectMock = new Mock<IDataObject>();
-            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
-            dataObjectMock.Setup(o => o.GetData("WorkflowItemTypeNameFormat")).Returns(new DsfGatherSystemInformationActivity().GetType().AssemblyQualifiedName);
-            //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(doDrop);
-            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -448,19 +373,11 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
             var dataObject = new DataObject(GlobalConstants.ResourceTreeViewModelFormat, new TestDataWithContexResourceModel());
             //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
+            bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
-            Assert.IsTrue(dataPresent);
-            var modelItem = dataObject.GetData(DragDropHelper.ModelItemDataFormat) as ModelItem;
-            string serviceName = modelItem.GetProperty<string>("ServiceName");
-            string displayName = modelItem.GetProperty<string>("DisplayName");
-            string toolboxName = modelItem.GetProperty<string>("ToolboxFriendlyName");
-            string iconPath = modelItem.GetProperty<string>("IconPath");
-            Assert.AreEqual("MyDBService", serviceName);
-            Assert.AreEqual("MyDBService", displayName);
-            Assert.AreEqual("MyDBService", toolboxName);
-            Assert.AreEqual("IconPath", iconPath);
+            Assert.IsTrue(added);
+            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+
         }
 
         static ModelItem CreateModelItem()

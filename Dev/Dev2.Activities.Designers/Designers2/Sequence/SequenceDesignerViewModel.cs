@@ -1,6 +1,5 @@
 using System;
 using System.Activities;
-using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +38,17 @@ namespace Dev2.Activities.Designers2.Sequence
             set
             // ReSharper restore ValueParameterNotUsed
             {
+                var test = value as ModelItem;
+
+                if(test != null)
+                {
+                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
+                    {
+                        dynamic mi = ModelItem;
+                        ModelItemCollection activitiesCollection = mi.Activities;
+                        activitiesCollection.Insert(activitiesCollection.Count, test);
+                    }
+                }
                 _smallViewItem = null;
             }
         }
@@ -64,7 +74,7 @@ namespace Dev2.Activities.Designers2.Sequence
             }
         }
 
-        public void SetModelItemForServiceTypes(IDataObject dataObject)
+        public bool SetModelItemForServiceTypes(IDataObject dataObject)
         {
             if(dataObject != null && dataObject.GetDataPresent(GlobalConstants.ResourceTreeViewModelFormat))
             {
@@ -81,7 +91,10 @@ namespace Dev2.Activities.Designers2.Sequence
                         ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
                         if(modelItem != null)
                         {
-                            dataObject.SetData(DragDropHelper.ModelItemDataFormat, modelItem);
+                            dynamic mi = ModelItem;
+                            ModelItemCollection activitiesCollection = mi.Activities;
+                            activitiesCollection.Insert(activitiesCollection.Count, d);
+                            return true;
                         }
                     }
                 }
@@ -90,8 +103,8 @@ namespace Dev2.Activities.Designers2.Sequence
                     this.LogError(e);
                 }
             }
+            return false;
         }
-
 
         public bool DoDrop(IDataObject dataObject)
         {
@@ -113,42 +126,10 @@ namespace Dev2.Activities.Designers2.Sequence
                     {
                         activitiesCollection.Insert(activitiesCollection.Count, item);
                     }
-                }
-                return true;
-            }
-            modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
-            if(String.IsNullOrEmpty(modelItemString))
-            {
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
-                if(String.IsNullOrEmpty(modelItemString))
-                {
-                    return false;
+                    return true;
                 }
             }
-            ModelItem modelItem = CreateModelItemFromDataObject(dataObject, modelItemString);
-            if(modelItem != null)
-            {
-                activitiesCollection.Insert(activitiesCollection.Count, modelItem);
-            }
-
-            return true;
-        }
-
-        ModelItem CreateModelItemFromDataObject(IDataObject dataObject, string modelItemString)
-        {
-            var objectData = dataObject.GetData(modelItemString);
-            var data = objectData as ModelItem;
-            Type type = null;
-            if(data != null)
-            {
-                return data;
-            }
-            var stringValue = objectData as string;
-            if(stringValue != null)
-            {
-                type = Type.GetType(stringValue);
-            }
-            return type == null ? null : ModelItemUtils.CreateModelItem(Activator.CreateInstance(type) as Activity);
+            return SetModelItemForServiceTypes(dataObject);
         }
 
         public override void Validate()

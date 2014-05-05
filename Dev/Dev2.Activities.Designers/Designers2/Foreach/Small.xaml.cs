@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Foreach
@@ -44,6 +46,14 @@ namespace Dev2.Activities.Designers2.Foreach
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
+                }
+                else
+                {
+                    if(ViewModel.MultipleItemsToSequence(e.Data))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
                 }
             }
         }

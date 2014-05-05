@@ -23,6 +23,7 @@ namespace Dev2.Activities.Utils
             {
                 return true;
             }
+
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
             if(String.IsNullOrEmpty(modelItemString))
             {

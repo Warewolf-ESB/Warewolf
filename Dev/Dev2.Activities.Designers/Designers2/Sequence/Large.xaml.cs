@@ -30,7 +30,10 @@ namespace Dev2.Activities.Designers2.Sequence
         void DoDrop(object sender, DragEventArgs e)
         {
             DropPointOnDragEnter(sender, e);
-            ViewModel.SetModelItemForServiceTypes(e.Data);
+            if(ViewModel.SetModelItemForServiceTypes(e.Data))
+            {
+                e.Handled = true;
+            }
         }
 
 
