@@ -38,12 +38,11 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ToolDesigners_XpathlargeView")]
         public void ToolDesigners_XpathlargeView_TabbingToDone_FocusIsSetToDone()
-
         {
             var dsfActivityUiMap = new DsfXpathUiMap();
             dsfActivityUiMap.ClickOpenLargeView();
             // Tab to the result box
-            for(int j = 0; j < 11; j++)
+            for(int j = 0; j < 12; j++)
             {
                 KeyboardCommands.SendTab();
             }

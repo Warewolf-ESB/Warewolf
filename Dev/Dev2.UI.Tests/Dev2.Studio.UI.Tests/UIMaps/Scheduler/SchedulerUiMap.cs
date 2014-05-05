@@ -7,8 +7,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 {
     public class SchedulerUiMap : UIMapBase, IDisposable
     {
-
-        UITestControl _activeTab;
+        readonly UITestControl _activeTab;
         readonly VisualTreeWalker _visualTreeWalker;
         readonly string[] _newButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "New" };
         readonly string[] _nameTextboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_NameTextbox" };
@@ -22,7 +21,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
             _visualTreeWalker = new VisualTreeWalker();
             RibbonUIMap.SchedulerShortcutKeyPress();
             _activeTab = TabManagerUIMap.GetActiveTab();
-            Playback.Wait(3000);
+            Playback.Wait(1500);
         }
 
         #region Implementation of IDisposable

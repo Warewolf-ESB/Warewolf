@@ -2,7 +2,6 @@
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,9 +44,6 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            StudioWindow.WaitForControlReady();
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
             StudioWindow.SetFocus();
             Keyboard.SendKeys(StudioWindow, "{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();

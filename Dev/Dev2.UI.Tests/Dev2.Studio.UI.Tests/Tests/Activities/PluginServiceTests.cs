@@ -12,10 +12,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class PluginServiceTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -46,21 +42,23 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DummyService");
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
+            {
 
-            activityUiMap.ClickEdit();
-            //Wizard actions
-            PluginServiceWizardUIMap.ClickMappingTab();
-            PluginServiceWizardUIMap.EnterDataIntoMappingTextBox(3, newMapping);
-            PluginServiceWizardUIMap.ClickSaveButton(1);
-            ResourceChangedPopUpUIMap.ClickCancel();
-            //Assert the the error button is there
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
-            //Click the fix errors button
-            activityUiMap.ClickFixErrors();
-            activityUiMap.ClickCloseMapping();
-            //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+                activityUiMap.ClickEdit();
+                //Wizard actions
+                PluginServiceWizardUIMap.ClickMappingTab();
+                PluginServiceWizardUIMap.EnterDataIntoMappingTextBox(3, newMapping);
+                PluginServiceWizardUIMap.ClickSaveButton(1);
+                ResourceChangedPopUpUIMap.ClickCancel();
+                //Assert the the error button is there
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
+                //Click the fix errors button
+                activityUiMap.ClickFixErrors();
+                activityUiMap.ClickCloseMapping();
+                //Assert that the fix errors button isnt there anymore
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+            }
         }
 
         [TestMethod]
@@ -75,20 +73,22 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DummyService");
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
+            {
 
-            //------------Execute Test---------------------------
-            activityUiMap.ClickEdit();
-            PluginServiceWizardUIMap.EditSource();
-            var contents = PluginServiceWizardUIMap.GetWindowContents();
-            PluginServiceWizardUIMap.CancelEntireOperation();
+                //------------Execute Test---------------------------
+                activityUiMap.ClickEdit();
+                PluginServiceWizardUIMap.EditSource();
+                var contents = PluginServiceWizardUIMap.GetWindowContents();
+                PluginServiceWizardUIMap.CancelEntireOperation();
 
-            var result = (contents.IndexOf("Name already exists.", StringComparison.Ordinal) >= 0);
-            var isEmpty = (contents.Length == 0);
+                var result = (contents.IndexOf("Name already exists.", StringComparison.Ordinal) >= 0);
+                var isEmpty = (contents.Length == 0);
 
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isEmpty, "Copy did not copy content of Edit Source Wizard!");
-            Assert.IsFalse(result, "Plugin Source Window Contains Save Message?! Check your warewolf-utils.js - updateSaveValidationSpan method");
+                //------------Assert Results-------------------------
+                Assert.IsFalse(isEmpty, "Copy did not copy content of Edit Source Wizard!");
+                Assert.IsFalse(result, "Plugin Source Window Contains Save Message?! Check your warewolf-utils.js - updateSaveValidationSpan method");
+            }
 
         }
     }

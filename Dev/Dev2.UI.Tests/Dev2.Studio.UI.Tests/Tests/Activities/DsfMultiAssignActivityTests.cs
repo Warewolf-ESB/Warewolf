@@ -12,12 +12,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class DsfMultiAssignActivityTests : UIMapBase
     {
-        #region Fields
-
-        private static DsfMultiAssignUiMap _dsfActivityUiMap;
-
-        #endregion
-
         #region Setup
         [TestInitialize]
         public void TestInit()
@@ -32,7 +26,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            _dsfActivityUiMap.Dispose();
         }
 
         #endregion
@@ -42,18 +35,20 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_AssignLargeView")]
         public void ToolDesigners_AssignLargeView_EnteringMultipleRows_IndexingWorksFine()
         {
-            _dsfActivityUiMap = new DsfMultiAssignUiMap();
-            _dsfActivityUiMap.ClickOpenLargeView();
-            // Add the data!
-            // moved from 100 to 10 for time
-            for(int j = 0; j < 10; j++)
+            using(var dsfActivityUiMap = new DsfMultiAssignUiMap())
             {
-                _dsfActivityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                _dsfActivityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
-            }
+                dsfActivityUiMap.ClickOpenLargeView();
+                // Add the data!
+                // moved from 100 to 10 for time
+                for(int j = 0; j < 10; j++)
+                {
+                    dsfActivityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                    dsfActivityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
+                }
 
-            // Click it
-            Assert.AreEqual("[[theVar9]]", _dsfActivityUiMap.GetTextFromVariable(9));
+                // Click it
+                Assert.AreEqual("[[theVar9]]", dsfActivityUiMap.GetTextFromVariable(9));
+            }
         }
 
         [TestMethod]
@@ -61,18 +56,20 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_AssignSmallView")]
         public void ToolDesigners_AssignSmallView_EnteringMultipleRows_IndexingWorksFine()
         {
-            _dsfActivityUiMap = new DsfMultiAssignUiMap();
-
-            // Add the data!
-            // moved from 100 to 10 for time
-            for(int j = 0; j < 10; j++)
+            using(var dsfActivityUiMap = new DsfMultiAssignUiMap())
             {
-                _dsfActivityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                _dsfActivityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
-            }
 
-            // Click it
-            Assert.AreEqual("[[theVar9]]", _dsfActivityUiMap.GetTextFromVariable(9));
+                // Add the data!
+                // moved from 100 to 10 for time
+                for(int j = 0; j < 10; j++)
+                {
+                    dsfActivityUiMap.EnterTextIntoVariable(j, "[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                    dsfActivityUiMap.EnterTextIntoValue(j, j.ToString(CultureInfo.InvariantCulture));
+                }
+
+                // Click it
+                Assert.AreEqual("[[theVar9]]", dsfActivityUiMap.GetTextFromVariable(9));
+            }
         }
 
     }

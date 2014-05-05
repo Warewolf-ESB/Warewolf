@@ -94,9 +94,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
-            uIItemImage.WaitForControlEnabled();
-            Mouse.Click(uIItemImage, new Point(874, 533));
+            KeyboardCommands.SendEsc();
         }
 
         public void TabToMappingsTab()

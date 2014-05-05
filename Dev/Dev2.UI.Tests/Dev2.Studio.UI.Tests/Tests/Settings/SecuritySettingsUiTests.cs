@@ -14,8 +14,13 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    public class SecuritySettingsUiTests
+    public class SecuritySettingsUiTests : UIMapBase
     {
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -24,7 +29,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
         {
             using(var securityWrapper = new SecuritySettingsUiMap())
             {
-                //Add resource and set priviledges
+                //Add resource and set privileges
                 securityWrapper.AddResource("Utility - Email", "WORKFLOWS", "EXAMPLES");
                 securityWrapper.SetWindowsGroupText("Administrators");
                 securityWrapper.ClickSaveButton();
@@ -39,7 +44,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
                 securityWrapper.ClickSaveButton();
                 Assert.IsFalse(securityWrapper.IsSaveButtonEnabled());
 
-                //Remove resources and associated priviledges
+                //Remove resources and associated privileges
                 securityWrapper.SetWindowsGroupText(string.Empty);
                 securityWrapper.SetViewCheckBox(false);
                 securityWrapper.ClickSaveButton();

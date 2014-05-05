@@ -45,24 +45,28 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FetchCities");
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
+            {
 
-            activityUiMap.ClickEdit();
+                activityUiMap.ClickEdit();
 
-            //Wizard actions
+                //Wizard actions
 
-            WebServiceWizardUIMap.ClickMappingTab();
-            WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
-            WebServiceWizardUIMap.ClickSaveButton(2);
-            ResourceChangedPopUpUIMap.ClickCancel();
+                WebServiceWizardUIMap.ClickMappingTab();
+                WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
+                WebServiceWizardUIMap.ClickSaveButton(2);
+                ResourceChangedPopUpUIMap.ClickCancel();
 
-            //Assert the the error button is there
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
-            //Click the fix errors button
-            activityUiMap.ClickFixErrors();
-            activityUiMap.ClickCloseMapping();
-            //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+                //Assert the the error button is there
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
+                //Click the fix errors button
+                activityUiMap.ClickFixErrors();
+                activityUiMap.ClickCloseMapping();
+                //Assert that the fix errors button isnt there anymore
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+
+                Assert.Fail("Need to double click Done button Bug");
+            }
         }
 
         [TestMethod]
@@ -97,15 +101,17 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
 
-            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+            using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
+            {
 
-            Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
-            Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
-            Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
-            Assert.AreEqual("d", activity.GetInputMappingToServiceValue(4));
-            Assert.AreEqual("fe", activity.GetInputMappingToServiceValue(5));
+                Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
+                Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
+                Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
+                Assert.AreEqual("d", activity.GetInputMappingToServiceValue(4));
+                Assert.AreEqual("fe", activity.GetInputMappingToServiceValue(5));
 
-            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+            }
         }
 
         [TestMethod]
@@ -138,13 +144,15 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
 
-            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+            using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
+            {
 
-            Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
-            Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
-            Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
+                Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
+                Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
+                Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
 
-            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+            }
         }
 
         [TestMethod]
@@ -177,12 +185,14 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
 
-            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+            using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
+            {
 
-            Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
-            Assert.AreEqual("foobar", activity.GetInputMappingToServiceValue(2));
+                Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
+                Assert.AreEqual("foobar", activity.GetInputMappingToServiceValue(2));
 
-            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+            }
         }
 
         [TestMethod]
@@ -215,10 +225,12 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
 
-            var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab };
+            using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
+            {
 
-            Assert.AreEqual(0, activity.GetInputMappingRows().Count);
-            ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+                Assert.AreEqual(0, activity.GetInputMappingRows().Count);
+                ExplorerUIMap.RightClickDeleteResource(newWebserviceName, "Unassigned", ServiceType.Services, "localhost");
+            }
         }
     }
 }

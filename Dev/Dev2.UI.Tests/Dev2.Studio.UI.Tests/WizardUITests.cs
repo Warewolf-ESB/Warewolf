@@ -46,7 +46,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
-            KeyboardCommands.SendEsc();
+
+            StudioWindow.SetFocus();
+            PluginServiceWizardUIMap.ClickCancel();
         }
 
         /// <summary>
@@ -56,12 +58,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
-            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            if(!WizardsUIMap.TryWaitForWizard(15000))
+            if(!WizardsUIMap.TryWaitForWizard())
             {
                 Assert.Fail("New Database service shortcut key doesnt work");
             }
+
+            StudioWindow.SetFocus();
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
@@ -69,12 +72,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
-            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}P");
             if(!WizardsUIMap.TryWaitForWizard())
             {
                 Assert.Fail("New plugin service shortcut key doesnt work");
             }
+
+            StudioWindow.SetFocus();
             PluginServiceWizardUIMap.ClickCancel();
         }
 
@@ -82,12 +86,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
-            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
             if(!WizardsUIMap.TryWaitForWizard())
             {
                 Assert.Fail("New web service shortcut key doesnt work");
             }
+
+            StudioWindow.SetFocus();
             WebServiceWizardUIMap.Cancel();
         }
 

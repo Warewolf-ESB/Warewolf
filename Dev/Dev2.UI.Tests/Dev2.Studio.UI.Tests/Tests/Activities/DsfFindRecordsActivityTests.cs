@@ -10,10 +10,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class DsfFindRecordsActivityTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -38,15 +34,17 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_FindRecordslargeView")]
         public void ToolDesigners_FindRecordslargeView_TabbingToResultBox_FocusIsSetToResultBox()
         {
-            var _dsfActivityUiMap = new DsfFindRecordsUiMap();
-            _dsfActivityUiMap.ClickOpenLargeView();
-            // Tab to the result box
-            for(int j = 0; j < 7; j++)
+            using(var dsfActivityUiMap = new DsfFindRecordsUiMap())
             {
-                KeyboardCommands.SendTab();
+                dsfActivityUiMap.ClickOpenLargeView();
+                // Tab to the result box
+                for(int j = 0; j < 8; j++)
+                {
+                    KeyboardCommands.SendTab();
+                }
+                //Check that the focus is in the result box
+                Assert.IsTrue(dsfActivityUiMap.GetResultTextBoxControl(ToolsUiMapBase.ViewType.Large).HasFocus);
             }
-            //Check that the focus is in the result box
-            Assert.IsTrue(_dsfActivityUiMap.GetResultTextBoxControl(ToolsUiMapBase.ViewType.Large).HasFocus);
         }
 
         [TestMethod]
@@ -54,10 +52,12 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_FindRecordsSmallView")]
         public void ToolDesigners_FindRecordsSmallView_SelectingOptionInDopdownWithKeyboard_MatchesBoxEnabled()
         {
-            var _dsfActivityUiMap = new DsfFindRecordsUiMap();
-            _dsfActivityUiMap.SetFocusToConditionDropDown(1, ToolsUiMapBase.ViewType.Small);
-            KeyboardCommands.SendDownArrows(13);
-            Assert.IsFalse(_dsfActivityUiMap.IsMatchTextBoxEnabled(1, ToolsUiMapBase.ViewType.Small));
+            using(var dsfActivityUiMap = new DsfFindRecordsUiMap())
+            {
+                dsfActivityUiMap.SetFocusToConditionDropDown(1, ToolsUiMapBase.ViewType.Small);
+                KeyboardCommands.SendDownArrows(13);
+                Assert.IsFalse(dsfActivityUiMap.IsMatchTextBoxEnabled(1, ToolsUiMapBase.ViewType.Small));
+            }
         }
     }
 }

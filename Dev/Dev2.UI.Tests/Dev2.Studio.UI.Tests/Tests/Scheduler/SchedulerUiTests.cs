@@ -9,8 +9,15 @@ namespace Dev2.Studio.UI.Tests.Tests.Scheduler
     /// Summary description for CodedUITest1
     /// </summary>
     [CodedUITest]
-    public class SchedulerUiTests
+    public class SchedulerUiTests : UIMapBase
     {
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            Init();
+        }
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerUiTests")]
@@ -25,8 +32,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Scheduler
                 Assert.AreEqual(false, schedulerUiMap.GetRunAsap());
                 Assert.AreEqual("", schedulerUiMap.GetUsername());
             }
+
+            Assert.Fail("Clean Up Your Close Dialog ;)");
         }
-
-
     }
 }

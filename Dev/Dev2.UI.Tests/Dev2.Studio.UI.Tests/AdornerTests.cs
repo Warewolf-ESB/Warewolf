@@ -73,8 +73,8 @@ namespace Dev2.Studio.UI.Tests
             //Click the done button
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
-            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType,theTab);
-            
+            WorkflowDesignerUIMap.OpenCloseLargeView(ToolType, theTab);
+
             //Try get the error controls
             errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
                                                                                   "Password must have a value");
@@ -577,9 +577,9 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
 
             // Get a point underneath the start button for the workflow
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new Point(theStartButton.BoundingRectangle.X - 100,
-// ReSharper restore ObjectCreationAsStatement
+                // ReSharper restore ObjectCreationAsStatement
                                                 theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow
@@ -663,7 +663,7 @@ namespace Dev2.Studio.UI.Tests
                                                                                 "Prefix contains invalid characters");
             Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
-            // Assert clicking an error focusses the correct textbox
+            // Assert clicking an error focuses the correct text-box
             MouseCommands.ClickControl(errorControl.GetChildren()[0]);
 
             // enter some correct data

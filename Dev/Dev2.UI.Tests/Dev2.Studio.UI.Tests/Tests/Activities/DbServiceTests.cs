@@ -40,23 +40,29 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
 
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
+            {
 
-            activityUiMap.ClickEdit();
-            WizardsUIMap.WaitForWizard();
+                activityUiMap.ClickEdit();
+                WizardsUIMap.WaitForWizard();
 
-            //Wizard actions
-            DatabaseServiceWizardUIMap.ClickMappingTab();
-            DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
-            DatabaseServiceWizardUIMap.ClickSaveButton(3);
-            ResourceChangedPopUpUIMap.ClickCancel();
-            //Assert the the error button is there
-            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
-            //Click the fix errors button
-            activityUiMap.ClickFixErrors();
-            activityUiMap.ClickCloseMapping(5000);
-            //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+                //Wizard actions
+                DatabaseServiceWizardUIMap.ClickMappingTab();
+                DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
+                DatabaseServiceWizardUIMap.ClickSaveButton(2);
+                ResourceChangedPopUpUIMap.ClickCancel();
+                //Assert the the error button is there
+                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
+                //Click the fix errors button
+                activityUiMap.ClickFixErrors();
+                activityUiMap.ClickCloseMapping(5000);
+                //Assert that the fix errors button isnt there anymore
+                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
+
+
+                Assert.Fail("Need to click the done button twice - Bug");
+
+            }
         }
     }
 }
