@@ -148,7 +148,7 @@ namespace Dev2.Activities.Designers2.Foreach
                     if(data != null && data.Count > 1)
                     {
 
-                        return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackel this issue
+                        return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackle this issue
                         //                        DsfSequenceActivity dsfSequenceActivity = new DsfSequenceActivity();
                         //                        foreach(var item in data)
                         //                        {

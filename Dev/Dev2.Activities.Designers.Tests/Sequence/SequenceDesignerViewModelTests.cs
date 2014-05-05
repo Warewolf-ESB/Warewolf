@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
@@ -37,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);
             sequenceDesignerViewModel.SmallViewItem = "test";
             //------------Assert Results-------------------------
-            Assert.IsNull(sequenceDesignerViewModel.SmallViewItem,"This item should always be null");
+            Assert.IsNull(sequenceDesignerViewModel.SmallViewItem, "This item should always be null");
         }
 
         [TestMethod]
@@ -319,6 +320,28 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SequenceDesignerViewModel_DoDrop")]
+        public void SequenceDesignerViewModel_DoDrop_WhenModelItemsFormatHasMultipleItems_ActivitiesAdded()
+        {
+            //------------Setup for test--------------------------
+            var dsfSequenceActivity = new DsfSequenceActivity();
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
+            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
+            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
+            var dataObjectMock = new Mock<IDataObject>();
+            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
+            dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()), ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
+            //------------Execute Test---------------------------
+            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(doDrop);
+            Assert.AreEqual(4, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]

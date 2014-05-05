@@ -102,7 +102,21 @@ namespace Dev2.Activities.Designers2.Sequence
             }
             dynamic mi = ModelItem;
             ModelItemCollection activitiesCollection = mi.Activities;
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
+            if(!String.IsNullOrEmpty(modelItemString))
+            {
+                var objectData = dataObject.GetData(modelItemString);
+                var data = objectData as List<ModelItem>;
+                if(data != null && data.Count > 1)
+                {
+                    foreach(var item in data)
+                    {
+                        activitiesCollection.Insert(activitiesCollection.Count, item);
+                    }
+                }
+                return true;
+            }
+            modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
             if(String.IsNullOrEmpty(modelItemString))
             {
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
@@ -116,6 +130,7 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 activitiesCollection.Insert(activitiesCollection.Count, modelItem);
             }
+
             return true;
         }
 
@@ -126,15 +141,12 @@ namespace Dev2.Activities.Designers2.Sequence
             Type type = null;
             if(data != null)
             {
-                type = data.ItemType;
+                return data;
             }
-            else
+            var stringValue = objectData as string;
+            if(stringValue != null)
             {
-                var stringValue = objectData as string;
-                if(stringValue != null)
-                {
-                    type = Type.GetType(stringValue);
-                }
+                type = Type.GetType(stringValue);
             }
             return type == null ? null : ModelItemUtils.CreateModelItem(Activator.CreateInstance(type) as Activity);
         }
