@@ -471,22 +471,21 @@ Scenario: Split text into negative recordset index
 	| # |                            |
 	| 1 | [[vowels(-1).letters]] =   |
 	
-Scenario Outline: Split Text by using two variables in one row
-	Given A string to split with value "abcd"
-	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
-	When the data split tool is executed
-	Then the execution has "AN" error	 
-	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
-	And the debug output as
-	| #               |                   |
-	| 1               | <variables> =     |
-
-Examples: 
-	| No | varaibles                  |
-	| 1  | [[vowels(1).letters]][[a]] |
-	| 2  | [[a]][[b]]                 |
+#Scenario Outline: Split Text by using two variables in one row
+#	Given A string to split with value "abcd"
+#	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
+#	When the data split tool is executed
+#	Then the execution has "AN" error	 
+#	And the debug inputs as  
+#	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+#	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
+#	And the debug output as
+#	| #               |                   |
+#	| 1               | <variables> =     |
+#Examples: 
+#	| No | varaibles                  |
+#	| 1  | [[vowels(1).letters]][[a]] |
+#	| 2  | [[a]][[b]]                 |
 
 #Scenario: Split Text by using variable inside varaibles
 #    Given a variable [[a]] equal to "rec().a"
@@ -500,8 +499,24 @@ Examples:
 #	And the debug output as
 #	| # |                            |
 #	| 1 | [[rec().a]] = abcd         |
-	
 
+#Scenario Outline: Split Text by using two variables in one row
+#	Given A string to split with value "abcd"
+#	And assign to variable "[[rec().a]]" split type "Index" at '<Type>' and Include "Selected" and Escape ''	
+#	When the data split tool is executed
+#	Then the execution has "AN" error	 
+#	And the debug inputs as  
+#	| # | #  | String to Split | Process Direction | Skip blank rows | # |              | With  | Using | Include | Escape |
+#	| # | #  | abcd            | Forward           | No              | 1 | [[rec().a]]= | Index | 4     | Yes     |  |
+#	And the debug output as
+#	| # | #  |                 |
+#	| # | 1  | [[rec().a]] =   |
+#Examples: 
+#	| # | No | Type            |
+#	| # | 1  |                 |
+#	| # | 2  | [[%#$]]         |
+
+@ignore	
 #Scenario Outline: Debug output Validation errors
 #	Given A string to split with value "Warewolf"
 #	And assign to variable '<Varaible>' split type "Index" at "5" and Include "Selected" and Escape ''	
@@ -599,7 +614,7 @@ Examples:
 #	 | 84 | [[rec{a]]                                 | Variable name [[rec{a]] contains invalid character(s)                                                                                                                                                                                                   |
 #	 | 85 | [[rec{a}]]                                | Variable name [[rec{a}]] contains invalid character(s)                                                                                                                                                                                                  |
 #	 | 86 | [[rec()*.a]]                              | Recordset name [[rec()*]] contains invalid character(s)                                                                                                                                                                                                 |
-#	 | 87 | [[rec().a[[a]]                            | Invalid region detected: An open [[ without a related close ]]                                                                                                                                                                                          |  |
+#	 | 87 | [[rec().a[[a]]                            | Invalid region detected: An open [[ without a related close ]]                                                                                                                                                                                          |  
 #	 | 89 | [[rec(-1).a                               | Recordset index -1]is not greater than zero                                                                                                                                                                                                             |
 #	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |  
 #	                                                                                                                                                                                                                                                  

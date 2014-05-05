@@ -109,7 +109,7 @@ Scenario: Count a number of records in a recordset with 0 rows
 #	|              |
 #	| [[result]] = |
 
-#Scenario: Count only one column record
+#Scenario: Count only one coloumn record
 #	Given I have a recordset with this shape
 #	| rs       |   |
 #	| rs().row | 1 |
@@ -130,6 +130,26 @@ Scenario: Count a number of records in a recordset with 0 rows
 #	|              |
 #	| [[result]] = |
 
+#Scenario: Count only one coloumn record
+#	Given I have a recordset with this shape
+#	| rs       |   |
+#	| rs().row | 1 |
+#	| rs().row | 2 |
+#	| rs().row | 3 |
+#	| rs().row | 4 |
+#	| fs().row | 5 |
+#	| fs().row | 6 |
+#	| fs().row | 7 |
+#	| fs().row | 8 |
+#	And count on record "[[rs().row]],[[fs().row]]"	
+#	When the count tool is executed
+#	Then the result count should be 8
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	| Recordset          |
+#	And the debug output as 
+#	|              |
+#	| [[result]] = |
 
 #Scenario: Count a number of records when two recordsets are defined.
 	#Given I have a recordset with this shape
@@ -155,4 +175,20 @@ Scenario: Count a number of records in a recordset with 0 rows
 	#And the debug output as 
 	#| [[result]] = 5|
 
-
+#Scenario: Executing Count with two variables in result field
+#	Given I have a recordset with this shape
+#	| rs        |   |
+#	| rs(1).row | 1 |
+#	| rs(2).row | 2 |
+#	| rs(3).row | 3 |
+#	| rs(4).row | 4 |
+#	And count on record "[[rs()]]"
+#    And result varaible as "[[rs().r]][[a]]"	
+#	When the count tool is executed
+#	Then the result count should be 8
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	| Recordset          |
+#	And the debug output as 
+#	|                   |
+#	| [[rs().r]][[a]] = |
