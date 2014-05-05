@@ -1,12 +1,12 @@
-﻿using Dev2.Studio.UI.Tests.Enums;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 namespace Dev2.Studio.UI.Tests
@@ -210,7 +210,6 @@ namespace Dev2.Studio.UI.Tests
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
-            ExplorerUIMap.ClickServerInServerDDL("localhost");
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
 

@@ -73,7 +73,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "BUGS");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TESTCATEGORY");
             UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
             //Drag a tool to the design surface
@@ -106,7 +106,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "BUGS");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TESTCATEGORY");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
 
             // slow it down so it works ;)
@@ -152,7 +152,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragADecisionOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
 
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "BUGS");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TESTCATEGORY");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
             //Drag a decision to the design surface

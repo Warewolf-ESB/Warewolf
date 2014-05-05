@@ -134,7 +134,7 @@ namespace Dev2.CodedUI.Tests
             WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
 
             UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            Playback.Wait(350);
+            Playback.Wait(550);
             WpfEdit realfxBox = new WpfEdit();
             foreach(WpfEdit theBox in boxCollection)
             {
@@ -299,7 +299,7 @@ namespace Dev2.CodedUI.Tests
         {
             //Open the correct workflow
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "Bug8372");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "Bug8372");
 
             // Run debug
             RibbonUIMap.ClickRibbonMenuItem("Debug");
