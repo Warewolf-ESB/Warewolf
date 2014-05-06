@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -24,7 +25,22 @@ namespace Dev2.Activities.Utils
                 return true;
             }
 
-            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
+
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
+            if(!String.IsNullOrEmpty(modelItemString))
+            {
+                var innnerObjectData = data.GetData(modelItemString);
+                var modelList = innnerObjectData as List<ModelItem>;
+                if(modelList != null && modelList.Count > 1)
+                {
+                    if(modelList.FirstOrDefault(c => c.ItemType == typeof(FlowDecision) || c.ItemType == typeof(FlowSwitch<string>)) != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemFormat", StringComparison.Ordinal) >= 0);
             if(String.IsNullOrEmpty(modelItemString))
             {
                 modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
@@ -35,7 +51,6 @@ namespace Dev2.Activities.Utils
             }
             var objectData = data.GetData(modelItemString);
             return ForeachDropPointOnDragEnter(objectData);
-
         }
 
 
