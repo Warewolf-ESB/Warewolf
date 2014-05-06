@@ -2,8 +2,8 @@
 <!DOCTYPE dotfuscator SYSTEM "http://www.preemptive.com/dotfuscator/dtd/dotfuscator_v2.3.dtd">
 <dotfuscator version="2.3">
     <propertylist>
-        <property name="targetdir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Artifacts" />
-        <property name="sourcedir" value="D:\Automated Builds\NightlyBuild\Obfuscated_Staging" />
+        <property name="targetdir" value="D:\AutomatedBuilds\NightlyBuild\Obfuscated_Artifacts" />
+        <property name="sourcedir" value="D:\AutomatedBuilds\NightlyBuild\Obfuscated_Staging" />
     </propertylist>
     <global>
         <option>debug</option>
