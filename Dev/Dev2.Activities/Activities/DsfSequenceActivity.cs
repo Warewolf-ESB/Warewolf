@@ -15,7 +15,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfSequenceActivity : DsfActivityAbstract<string>
     {
-        private Sequence innerSequence = new Sequence();
+        private readonly Sequence innerSequence = new Sequence();
         string _previousParentID;
 
         public DsfSequenceActivity()

@@ -91,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         /// <summary>
-        /// Resumeds the specified context.
+        /// Resumed the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="bookmark">The bookmark.</param>

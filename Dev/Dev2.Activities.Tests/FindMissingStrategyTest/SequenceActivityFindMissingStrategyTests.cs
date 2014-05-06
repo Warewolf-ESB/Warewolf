@@ -23,19 +23,13 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDataMerge_ReturnsAllVariables()
         {
             //------------Setup for test--------------------------
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity();
-            multiAssignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
 
-            DsfDataMergeActivity dataMergeActivity = new DsfDataMergeActivity();
-            dataMergeActivity.Result = "[[Result]]";
+            DsfDataMergeActivity dataMergeActivity = new DsfDataMergeActivity { Result = "[[Result]]" };
             dataMergeActivity.MergeCollection.Add(new DataMergeDTO("[[rec().a]]", "Index", "6", 1, "[[b]]", "Left"));
 
-            DsfActivity dsfActivity = new DsfActivity();
-            dsfActivity.InputMapping = @"<Inputs><Input Name=""reg"" Source=""NUD2347"" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source=""[[number]]"" /></Inputs>";
-            dsfActivity.OutputMapping = @"<Outputs><Output Name=""vehicleVin"" MapsTo=""VIN"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""VehicleColor"" Value="""" /><Output Name=""speed"" MapsTo=""speed"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""location"" Value="""" Recordset=""Fines"" /></Outputs>";
-            DsfForEachActivity forEachActivity = new DsfForEachActivity();
-            forEachActivity.ForEachElementName = "5";
-            forEachActivity.DataFunc.Handler = dsfActivity;
+            DsfActivity dsfActivity = new DsfActivity { InputMapping = @"<Inputs><Input Name=""reg"" Source=""NUD2347"" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source=""[[number]]"" /></Inputs>", OutputMapping = @"<Outputs><Output Name=""vehicleVin"" MapsTo=""VIN"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""VehicleColor"" Value="""" /><Output Name=""speed"" MapsTo=""speed"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""location"" Value="""" Recordset=""Fines"" /></Outputs>" };
+            DsfForEachActivity forEachActivity = new DsfForEachActivity { ForEachElementName = "5", DataFunc = { Handler = dsfActivity } };
 
             DsfSequenceActivity activity = new DsfSequenceActivity();
             activity.Activities.Add(multiAssignActivity);

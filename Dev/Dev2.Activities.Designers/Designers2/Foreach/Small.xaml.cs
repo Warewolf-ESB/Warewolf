@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using Dev2.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Foreach
