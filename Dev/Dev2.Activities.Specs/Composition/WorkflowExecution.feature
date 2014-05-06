@@ -6,16 +6,19 @@
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "TestWF" contains an Assign "Rec To Convert" as
-	  | variable    | value    |
-	  | [[rec().a]] | yes      |	 
+	  | variable    | value |
+	  | [[rec().a]] | yes   |
+	  | [[rec().a]] | no    |	 
 	  When "WorkflowWithAssign" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssign' debug inputs as
 	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |	
+	  | 1 | [[rec().a]] = | yes       |
+	  | 2 | [[rec().a]] = | no        |
 	  And the 'Rec To Convert' in Workflow 'WorkflowWithAssign' debug outputs as    
-	  | # |                          |
-	  | 1 | [[rec(1).a]] =  yes      |
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = yes |
+	  | 2 | [[rec(2).a]] = no  |
 	
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestDbServiceWF"

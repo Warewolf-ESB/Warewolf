@@ -54,7 +54,7 @@ namespace Dev2.Activities.Specs.Composition
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
-            
+
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
             ScenarioContext.Current.Add(workflowName, resourceModel);
             ScenarioContext.Current.Add("environment", environmentModel);
@@ -66,41 +66,12 @@ namespace Dev2.Activities.Specs.Composition
         {
             List<IDebugState> debugStates;
             ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
-           
+
             debugStates.Add(debugState);
             if(debugState.IsFinalStep())
                 _resetEvt.Set();
 
         }
-        //
-        //        [Given(@"workflow ""(.*)"" contains an Assign ""(.*)"" as")]
-        //        public void GivenWorkflowContainsAnAssignAs(string workflowName, string activityName, Table table)
-        //        {
-        //
-        //            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = activityName };
-        //
-        //            foreach(var tableRow in table.Rows)
-        //            {
-        //                var value = tableRow["value"];
-        //                var variable = tableRow["variable"];
-        //
-        //                value = value.Replace('"', ' ').Trim();
-        //
-        //                if(value.StartsWith("="))
-        //                {
-        //                    value = value.Replace("=", "");
-        //                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
-        //                }
-        //
-        //                List<ActivityDTO> fieldCollection;
-        //                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
-        //
-        //                CommonSteps.AddVariableToVariableList(variable);
-        //
-        //                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
-        //            }
-        //            CommonSteps.AddActivityToActivityList(activityName, assignActivity);
-        //        }
 
         [Given(@"""(.*)"" contains a database service ""(.*)"" with mappings")]
         public void GivenContainsADatabaseServiceWithMappings(string wf, string dbServiceName, Table table)
@@ -108,7 +79,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource  = repository.Find(r => r.ResourceName.Equals(dbServiceName)).ToList();
+            var resource = repository.Find(r => r.ResourceName.Equals(dbServiceName)).ToList();
 
             var dbServiceActivity = new DsfDatabaseActivity();
             dbServiceActivity.ResourceID = resource[0].ID;
@@ -128,17 +99,17 @@ namespace Dev2.Activities.Specs.Composition
 
                 CommonSteps.AddVariableToVariableList(output);
                 CommonSteps.AddVariableToVariableList(input);
-                
+
                 if(resource.Count > 0)
                 {
                     var outputs = XDocument.Parse(resource[0].Outputs);
-                    
+
                     string recordsetName;
                     string fieldName;
-                   
-                    if (DataListUtil.IsValueRecordset(output))
+
+                    if(DataListUtil.IsValueRecordset(output))
                     {
-                        recordsetName =  DataListUtil.ExtractRecordsetNameFromValue(output);
+                        recordsetName = DataListUtil.ExtractRecordsetNameFromValue(output);
                         fieldName = DataListUtil.ExtractFieldNameFromValue(output);
                     }
                     else
@@ -147,11 +118,11 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var element = (from elements in outputs.Descendants("Output")
-                                  where (string)elements.Attribute("Recordset") == recordsetName &&
-                                        (string)elements.Attribute("OriginalName") == fieldName
-                                  select elements).SingleOrDefault();
+                                   where (string)elements.Attribute("Recordset") == recordsetName &&
+                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   select elements).SingleOrDefault();
 
-                    if (element != null)
+                    if(element != null)
                     {
                         element.SetAttributeValue("Value", toVariable);
                     }
@@ -167,9 +138,9 @@ namespace Dev2.Activities.Specs.Composition
         //[Given(@"""(.*)"" contains a Count ""(.*)"" as")]
         //public void GivenContainsACountAs(string wfName, string toolName, Table table)
         //{
-            
+
         //}
-            
+
 
 
         [When(@"""(.*)"" is executed")]
@@ -183,7 +154,7 @@ namespace Dev2.Activities.Specs.Composition
 
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
-          
+
             foreach(var activity in activityList)
             {
                 if(TestStartNode.Action == null)
@@ -230,19 +201,19 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.OriginalInstanceID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
-            
+
             var commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
-            
+
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
-           
+
             var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
