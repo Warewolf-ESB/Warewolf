@@ -5,7 +5,7 @@
 
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
-	 And "TestWF" contains an Assign "Rec To Convert" as
+	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
 	  | variable    | value |
 	  | [[rec().a]] | yes   |
 	  | [[rec().a]] | no    |	 
@@ -19,6 +19,31 @@ Scenario: Simple workflow executing against the server
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = yes |
 	  | 2 | [[rec(2).a]] = no  |
+	  
+Scenario: Workflow with multiple tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignAndCount"
+	  And "WorkflowWithAssignAndCount" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | yes   |
+	  | [[rec().a]] | no    |
+	  And "WorkflowWithAssignAndCount" contains Count Record "CountRec" on "[[rec()]]" into "[[count]]"
+	  When "WorkflowWithAssignAndCount" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssignAndCount' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | yes       |
+	  | 2 | [[rec().a]] = | no        |
+	  And the 'Rec To Convert' in Workflow 'WorkflowWithAssignAndCount' debug outputs as    
+	  | # |                    |
+	  | 1 | [[rec(1).a]] = yes |
+	  | 2 | [[rec(2).a]] = no  |
+	  And the 'CountRec' in WorkFlow 'WorkflowWithAssignAndCount' debug inputs as
+	  | Recordset            |
+	  | [[rec(1).a]] = yes |
+	  | [[rec(2).a]] = no |
+	  And the 'CountRec' in Workflow 'WorkflowWithAssignAndCount' debug outputs as    
+	  |               |
+	  | [[count]] = 2 |
 	
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestDbServiceWF"

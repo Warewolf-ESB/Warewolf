@@ -90,7 +90,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec().a]]",
                         "no"});
 #line 8
-  testRunner.And("\"TestWF\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
+  testRunner.And("\"WorkflowWithAssign\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
 #line 12
    testRunner.When("\"WorkflowWithAssign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 13
@@ -127,64 +127,140 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with multiple tools executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void WorkflowWithMultipleToolsExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with multiple tools executing against the server", ((string[])(null)));
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+   testRunner.Given("I have a workflow \"WorkflowWithAssignAndCount\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table4.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "yes"});
+            table4.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "no"});
+#line 25
+   testRunner.And("\"WorkflowWithAssignAndCount\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table4, "And ");
+#line 29
+   testRunner.And("\"WorkflowWithAssignAndCount\" contains Count Record \"CountRec\" on \"[[rec()]]\" into" +
+                    " \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+   testRunner.When("\"WorkflowWithAssignAndCount\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table5.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "yes"});
+            table5.AddRow(new string[] {
+                        "2",
+                        "[[rec().a]] =",
+                        "no"});
+#line 32
+   testRunner.And("the \'Rec To Convert\' in WorkFlow \'WorkflowWithAssignAndCount\' debug inputs as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table6.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = yes"});
+            table6.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = no"});
+#line 36
+   testRunner.And("the \'Rec To Convert\' in Workflow \'WorkflowWithAssignAndCount\' debug outputs as", ((string)(null)), table6, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset"});
+            table7.AddRow(new string[] {
+                        "[[rec(1).a]] = yes"});
+            table7.AddRow(new string[] {
+                        "[[rec(2).a]] = no"});
+#line 40
+   testRunner.And("the \'CountRec\' in WorkFlow \'WorkflowWithAssignAndCount\' debug inputs as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table8.AddRow(new string[] {
+                        "[[count]] = 2"});
+#line 44
+   testRunner.And("the \'CountRec\' in Workflow \'WorkflowWithAssignAndCount\' debug outputs as", ((string)(null)), table8, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow executing against the server with a database service")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         public virtual void SimpleWorkflowExecutingAgainstTheServerWithADatabaseService()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow executing against the server with a database service", ((string[])(null)));
-#line 23
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 49
   testRunner.Given("I have a workflow \"TestDbServiceWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table4.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "",
                         "",
                         "dbo_proc_SmallFetch(*).Value",
                         "[[rec().fetch]]"});
-#line 25
-  testRunner.And("\"TestDbServiceWF\" contains a database service \"Fetch\" with mappings", ((string)(null)), table4, "And ");
-#line 28
+#line 50
+  testRunner.And("\"TestDbServiceWF\" contains a database service \"Fetch\" with mappings", ((string)(null)), table9, "And ");
+#line 53
   testRunner.And("\"TestDbServiceWF\" contains Count Record \"Count\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 54
    testRunner.When("\"TestDbServiceWF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
+#line 55
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(1).fetch]] = 1"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(2).fetch]] = 2"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(3).fetch]] = 1"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(4).fetch]] = 2"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(5).fetch]] = 1"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(6).fetch]] = 2"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(7).fetch]] = 1"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(8).fetch]] = 2"});
-            table5.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[rec(9).fetch]] = 5"});
-#line 31
-   testRunner.And("the \'Count\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table5, "And ");
+#line 56
+   testRunner.And("the \'Count\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table6.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "[[count]] = 9"});
-#line 42
-  testRunner.And("the \'Count\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table6, "And ");
+#line 67
+  testRunner.And("the \'Count\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table11, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

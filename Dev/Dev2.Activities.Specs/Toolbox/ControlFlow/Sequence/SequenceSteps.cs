@@ -71,7 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             CommonSteps.AddVariableToVariableList(resultVariable);
 
-            DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable };
+            DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
             CommonSteps.AddActivityToActivityList(activityName, calculateActivity);
 
@@ -84,7 +84,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             CommonSteps.AddVariableToVariableList(result);
 
-            DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet };
+            DsfCountRecordsetActivity countRecordsetActivity = new DsfCountRecordsetActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
             CommonSteps.AddActivityToActivityList(activityName, countRecordsetActivity);
         }
@@ -93,6 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
             DsfDeleteRecordActivity activity = new DsfDeleteRecordActivity();
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -113,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             var recset = recsetToSearch;
             CommonSteps.AddVariableToVariableList(result);
             DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset };
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var matchType = tableRow["Match Type"];
@@ -129,6 +130,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainFindUniqueAs(string parentName, string activityName, Table table)
         {
             DsfUniqueActivity activity = new DsfUniqueActivity();
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Fields"];
@@ -148,7 +150,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsCaseConvertAs(string parentName, string activityName, Table table)
         {
             DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -164,7 +166,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsGatherSystemInfoAs(string parentName, string activityName, Table table)
         {
             var activity = new DsfGatherSystemInformationActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -182,7 +184,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsRandomAs(string parentName, string activityName, Table table)
         {
             var activity = new DsfRandomActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var type = (enRandomType)Enum.Parse(typeof(enRandomType), tableRow["Type"]);
@@ -206,7 +208,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsFormatNumberAs(string parentName, string activityName, Table table)
         {
             var activity = new DsfNumberFormatActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var number = tableRow["Number"];
@@ -233,7 +235,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsDateAndTimeAs(string parentName, string activityName, Table table)
         {
             var activity = new DsfDateTimeActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input"];
@@ -261,7 +263,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsDateAndTimeDifferenceAs(string parentName, string activityName, Table table)
         {
             var activity = new DsfDateTimeDifferenceActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input1"];
@@ -288,7 +290,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsDataSplitAs(string parentName, string activityName, Table table)
         {
             DsfDataSplitActivity activity = new DsfDataSplitActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var valueToSplit = string.IsNullOrEmpty(tableRow["String"]) ? "" : tableRow["String"];
@@ -313,7 +315,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsReplaceIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
             DsfReplaceActivity activity = new DsfReplaceActivity { Result = resultVariable };
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -333,7 +335,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsFindIndexIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
             DsfIndexActivity activity = new DsfIndexActivity { Result = resultVariable };
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -355,6 +357,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
             DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable };
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -373,7 +376,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
         {
             DsfBaseConvertActivity activity = new DsfBaseConvertActivity();
-
+            activity.DisplayName = activityName;
             foreach(var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -468,7 +471,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         public void GivenIHaveAForEachAsExecutions(string activityName, string forEachType, string numberOfExecutions)
         {
             DsfForEachActivity forEachActivity = new DsfForEachActivity();
-
+            forEachActivity.DisplayName = activityName;
             enForEachType typeOfForEach;
             Enum.TryParse(forEachType, out typeOfForEach);
 
