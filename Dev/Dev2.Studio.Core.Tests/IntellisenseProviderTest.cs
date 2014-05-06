@@ -1563,10 +1563,10 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            const string exprected = "[[City().GeoLocation]]";
+            const string expected = "[[City().GeoLocation]]";
             string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
 
-            Assert.AreEqual(exprected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         //Bug 8736

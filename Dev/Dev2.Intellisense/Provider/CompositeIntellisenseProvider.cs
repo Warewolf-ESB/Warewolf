@@ -38,9 +38,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
                 else
                 {
-                    if((context.InputText.EndsWith("]") || context.InputText.EndsWith(")"))
+                    var inputText = context.InputText;
+
+                    if((!string.IsNullOrEmpty(inputText) && (inputText.EndsWith("]") || inputText.EndsWith(")")))
                         && (provider is DefaultIntellisenseProvider)
-                        && context.CaretPosition == context.InputText.Length)
+                        && context.CaretPosition == inputText.Length)
                     {
                        return results;
                     }

@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using Dev2.Data.Enums;
-using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Intellisense.Provider;
@@ -145,41 +144,46 @@ namespace Dev2.Studio.InterfaceImplementors
         #region Result Handling
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
+            var inputText = context.InputText ?? string.Empty;
+
             if(string.IsNullOrEmpty(input))
             {
-                return context.InputText;
+                return inputText;
             }
 
             string replace = context.FindTextToSearch();
 
-            var substr = string.IsNullOrEmpty(context.InputText) ? "" : context.InputText.Replace(replace, "");
-
-            replace = substr.StartsWith("(") ? context.InputText : replace;
-
-            if(replace.StartsWith("=") && context.InputText.StartsWith("="))
+            if(replace.StartsWith("=") && inputText.StartsWith("="))
             {
                 replace = replace.Remove(0, 1);
             }
 
-            var region = context.InputText.RegionInPostion(context.CaretPosition);
+            var caretPosition = context.CaretPosition;
+            var region = inputText.RegionInPostion(caretPosition);
 
-            if(replace.Equals(region.Name))
+            var substr = string.IsNullOrEmpty(inputText) ? "" : inputText.Replace(replace, "");
+            replace = DataListUtil.IsRecordsetOpeningBrace(substr) ? region.Name : replace;
+
+            var regionName = region.Name ?? string.Empty;
+
+            if(replace.Equals(regionName))
             {
-                string updatedInputText = context.InputText
-                                                 .Remove(region.StartIndex, region.Name.Length)
-                                                 .Insert(region.StartIndex, input);
+                var regionStartIndex = region.StartIndex;
+                string updatedInputText = inputText
+                                                 .Remove(regionStartIndex, regionName.Length)
+                                                 .Insert(regionStartIndex, input);
 
-                context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
+                context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
                 return updatedInputText;
             }
 
-            if(DataListUtil.IsValueRecordset(region.Name))
+            if(DataListUtil.IsValueRecordset(regionName))
             {
                 return PerformResultInsertionForRecordsets(input, context, region, replace);
             }
             if(string.IsNullOrEmpty(replace))
             {
-                return context.InputText.Insert(context.CaretPosition, input);
+                return inputText.Insert(caretPosition, input);
             }
             return PerformResultInsertionForScalars(input, context, replace);
         }
@@ -187,184 +191,82 @@ namespace Dev2.Studio.InterfaceImplementors
         static string PerformResultInsertionForScalars(string input, IntellisenseProviderContext context, string replace)
         {
             int replaceStringIndex = 0;
-            IList<int> stringIndexes = context.InputText.AllIndexesOf(replace).ToList();
+            var inputText = context.InputText ?? string.Empty;
+            var caretPosition = context.CaretPosition;
+
+            IList<int> stringIndexes = inputText.AllIndexesOf(replace).ToList();
 
             if(stringIndexes.Count > 0)
             {
-                replaceStringIndex = stringIndexes.Where(i => i < context.CaretPosition).Max();
+                replaceStringIndex = stringIndexes.Where(i => i < caretPosition).Max();
             }
 
-            var region = context.InputText.RegionInPostion(context.CaretPosition);
+            var region = inputText.RegionInPostion(caretPosition);
+            var regionName = region.Name ?? string.Empty;
 
-            if(region.Name.EndsWith("]]"))
+            if(DataListUtil.IsClosedRegion(regionName))
             {
-                var indexOfClosingBracket = input.LastIndexOf("]]", StringComparison.Ordinal);
+                var indexOfClosingBracket = DataListUtil.IndexOfClosingTags(input);
                 input = input.Substring(0, indexOfClosingBracket);
-                context.CaretPosition += 2;
+                caretPosition += 2;
             }
 
-            string updatedInputText = context.InputText.Remove(replaceStringIndex, replace.Length)
+            string updatedInputText = inputText.Remove(replaceStringIndex, replace.Length)
                                              .Insert(replaceStringIndex, input);
 
-            context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
+            context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
             return updatedInputText;
         }
 
         static string PerformResultInsertionForRecordsets(string input, IntellisenseProviderContext context, Region region, string replace)
         {
             string updatedInputText;
-            var indexOfStringToReplace = region.Name.IndexOf(replace, StringComparison.Ordinal);
-            var recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(region.Name) ?? "";
+            var caretPosition = context.CaretPosition;
+            var inputText = context.InputText ?? string.Empty;
+            var name = region.Name ?? string.Empty;
 
-            if(!string.IsNullOrEmpty(recordsetIndex) && indexOfStringToReplace == region.Name.IndexOf(recordsetIndex, StringComparison.Ordinal))
+            var indexOfStringToReplace = name.IndexOf(replace, StringComparison.Ordinal);
+            var recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(name) ?? string.Empty;
+            
+            if(indexOfStringToReplace + replace.Length == caretPosition)
             {
-                return ReplaceAnIndexOfARecordset(input, context,replace, region, recordsetIndex);
-            }
-
-            if(indexOfStringToReplace + replace.Length == context.CaretPosition)
-            {
-                if(replace.Contains(").") && !DataListUtil.IsValueRecordset(replace))
+                if(DataListUtil.IsValueRecordsetWithFields(replace) && !DataListUtil.IsValueRecordset(replace))
                 {
-                    var substitude = context.InputText
-                                            .Replace(context.InputText, input);
+                    var substitude = inputText.Replace(inputText, input);
 
                     if(DataListUtil.IsValueRecordset(input))
                     {
-                        updatedInputText = recordsetIndex == "*" ? substitude : substitude.Insert(context.InputText.IndexOf(recordsetIndex, StringComparison.Ordinal), recordsetIndex);
-                        context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
+                        if(DataListUtil.IsStarIndex(name))
+                        {
+                            updatedInputText = substitude;
+                        }
+                        else
+                        {
+                            updatedInputText = substitude.Insert(inputText.IndexOf(recordsetIndex, StringComparison.Ordinal), recordsetIndex);
+                        }
+
+                        context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
                         return updatedInputText;
                     }
 
                     if(input.Equals(substitude))
                     {
-                        updatedInputText = context.InputText
+                        updatedInputText = inputText
                                                   .Remove(indexOfStringToReplace, replace.Length)
                                                   .Insert(indexOfStringToReplace, ")." + input);
 
-                        context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
+                        context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
                         return updatedInputText;
                     }
                 }
             }
 
-            updatedInputText = context.InputText.Remove(region.StartIndex, region.Name.Length)
+            updatedInputText = inputText.Remove(region.StartIndex, name.Length)
                                       .Insert(region.StartIndex, input);
-            context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
+            context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
             return updatedInputText;
         }
-
-        static string ReplaceAnIndexOfARecordset(string input, IntellisenseProviderContext context, string replace, Region region, string recordsetIndex)
-        {
-            var indexOfIndex = region.Name.IndexOf("(" + replace, StringComparison.Ordinal);
-
-            var updatedRegion = region.Name
-                                      .Remove(indexOfIndex + 1, recordsetIndex.Length)
-                                      .Insert(indexOfIndex + 1, input);
-
-            string updatedInputText = context.InputText
-                                             .Remove(region.StartIndex, region.Name.Length)
-                                             .Insert(region.StartIndex, updatedRegion);
-
-            context.CaretPosition = context.CaretPosition + (updatedInputText.Length - context.InputText.Length);
-            return updatedInputText;
-        }
-
-        private string CleanupInput(string value, int pos, out int newPos)
-        {
-
-            var result = value;
-            newPos = pos;
-
-            // Use language parser to find open parts!
-            var languageParser = new Dev2DataLanguageParser();
-
-            try
-            {
-                var parts = languageParser.MakeParts(value);
-
-                // continue to la-la land if we need do ;)
-                if(parts.Any(c => c.HangingOpen))
-                {
-                    if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
-                        {
-                            result = getBetweenBraces(result, pos, out newPos);
-                            pos = newPos;
-                        }
-
-                    // if empty default back to original value ;)
-                    if(string.IsNullOrEmpty(result))
-                    {
-                        result = value;
-                    }
-
-                    var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
-
-                    // is it recordset notation and the only value present?
-                    if(!String.IsNullOrEmpty(rsName))
-                    {
-                        var case1Len = 1;
-                        var case2Len = 2;
-
-                        if(result.Length == pos && !result.StartsWith("[["))
-                        {
-                            result = string.Concat("[[", result);
-                            newPos += 2;
-                        }
-                        else
-                        {
-                            // adjust len checks for when [[ already exist ;)
-                            case1Len += 2;
-                            case2Len += 3;
-                        }
-
-                        // we have a rs( case ;)
-                        if(rsName.Length + case1Len == value.Length)
-                        {
-                            // fake it to get recordset field data ;)
-                            result = string.Concat(result, ").");
-                            newPos += 2;
-                        }
-
-                        // we have a rs() case ;)
-                        if(rsName.Length + case2Len == value.Length)
-                        {
-                            // fake it to get recordset field data ;)
-                            result = string.Concat(result, ".");
-                            newPos += 1;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                result = value;
-            }
-
-            return result;
-        }
-
-
-        // Travis.Frisinger : Rolled-back to CI 8121 since it was over-writen by 3 other check-ins
-        private bool IsBetweenBraces(string value, int pos)
-        {
-            if(pos < 0 || pos > value.Length - 1) return false;
-            return (value.LastIndexOf('(', pos) != -1 && value.IndexOf(')', pos) != -1);
-        }
-
-        private string getBetweenBraces(string value, int pos, out int newPos)
-        {
-            newPos = pos;
-            if(pos < 0 || pos > value.Length - 1) return "";
-
-            int start = value.LastIndexOf('(', pos) + 1;
-            int length = value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1;
-
-            if(start < 0 || length <= 0 || start + length > value.Length - 1) return "";
-
-            newPos = pos - value.LastIndexOf('(', pos) - 1;
-
-            return value.Substring(start, length);
-        }
+        
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
             if(_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
@@ -383,26 +285,19 @@ namespace Dev2.Studio.InterfaceImplementors
             string recordsetIndex = string.Empty;
             string recordserName = string.Empty;
             var region = context.InputText.RegionInPostion(context.CaretPosition);
-            if (DataListUtil.IsValueRecordset(region.Name))
+
+            if(DataListUtil.IsValueRecordset(region.Name))
             {
                 recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(region.Name);
                 recordserName = DataListUtil.ExtractRecordsetNameFromValue(region.Name);
-                if (!string.IsNullOrEmpty(recordsetIndex) && searchText.Contains(")"))
+                if(!string.IsNullOrEmpty(recordsetIndex) && DataListUtil.IsValueRecordsetWithFields(searchText))
                 {
-                    //searchText = region.Name;
                     altfilterType = enIntellisensePartType.RecordsetFields;
                 }
             }
 
-            if(context.InputText.Equals("[["))
-            {
-                searchText = context.InputText;
-            }
-            else
-            {
-                searchText = searchText.StartsWith("[[") || string.IsNullOrEmpty(searchText) ? searchText : "[[" + searchText;
-            }
-
+            searchText = DataListUtil.IsOpenRegion(searchText) || string.IsNullOrEmpty(searchText) ? searchText : "[[" + searchText;
+            
             switch(desiredResultSet)
             {
                 case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
@@ -414,8 +309,9 @@ namespace Dev2.Studio.InterfaceImplementors
                             results = new List<IIntellisenseResult>();
 
                             string inputText = context.InputText;
-                            int newPos;
-                            inputText = CleanupInput(inputText, context.CaretPosition, out newPos);
+
+                            var regionInPostion = inputText.RegionInPostion(context.CaretPosition);
+                            inputText = !string.IsNullOrEmpty(regionInPostion.Name) ? regionInPostion.Name : inputText;
 
                             var getErrors = GetIntellisenseResultsImpl(inputText, filterType)
                                             .Where(i => i.ErrorCode != enIntellisenseErrorCode.None)
@@ -427,13 +323,13 @@ namespace Dev2.Studio.InterfaceImplementors
                     }
             }
 
-            if (altfilterType == enIntellisensePartType.RecordsetFields)
+            if(altfilterType == enIntellisensePartType.RecordsetFields)
             {
                 var filteredRecordsetFields = results.Where(r => r.Option.Recordset.Equals(recordserName) || r.Option.IsScalar);
 
-                if (!string.IsNullOrEmpty(recordsetIndex))
+                if(!string.IsNullOrEmpty(recordsetIndex))
                 {
-                    results = filteredRecordsetFields.ToList().Where(r => !r.Option.HasRecordsetIndex ||  r.Option.IsScalar).ToList();
+                    results = filteredRecordsetFields.ToList().Where(r => !r.Option.HasRecordsetIndex || r.Option.IsScalar).ToList();
                 }
             }
 
@@ -507,27 +403,7 @@ namespace Dev2.Studio.InterfaceImplementors
             _cachedDataList = null;
             GC.SuppressFinalize(this);
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if(disposing)
-            {
-                // get rid of managed resources
-            }
-            // get rid of unmanaged resources
-        }
-
-        ~DefaultIntellisenseProvider()
-        {
-            Dispose(false);
-
-        }
-
-        public void OnDispose()
-        {
-
-        }
-
+        
         #endregion
 
         #region Properties

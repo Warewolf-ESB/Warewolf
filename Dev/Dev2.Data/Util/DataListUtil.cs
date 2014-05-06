@@ -21,7 +21,7 @@ namespace Dev2.Data.Util
     {
         #region Class Members
 
-        private static readonly HashSet<string> _sysTags = new HashSet<string>();
+        private static readonly HashSet<string> SysTags = new HashSet<string>();
         const string _emptyTag = "<Empty />";
         const string _cdataStart = "<![CDATA[";
         const string _cdataEnd = "]]>";
@@ -48,7 +48,7 @@ namespace Dev2.Data.Util
             // build system tags
             foreach(Enum e in (Enum.GetValues(typeof(enSystemTag))))
             {
-                _sysTags.Add(e.ToString());
+                SysTags.Add(e.ToString());
             }
         }
 
@@ -75,7 +75,7 @@ namespace Dev2.Data.Util
             string extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
             return expression.Replace(extractIndexRegionFromRecordset, "()");
         }
-
+        
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -753,12 +753,12 @@ namespace Dev2.Data.Util
             string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
             // Transfer System Tags
-            bool result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
+            bool result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
             if(!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
             {
                 tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
-                result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
+                result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
             }
 
             return result;
@@ -971,6 +971,16 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
+        /// Determines whether is a recordset with fields
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsValueRecordsetWithFields(string value)
+        {
+            return !string.IsNullOrEmpty(value) && value.Contains(").");
+        }
+
+        /// <summary>
         /// Evaluates if an expression is a root level evaluated variable ie [[x]]
         /// </summary>
         /// <param name="expression"></param>
@@ -1053,8 +1063,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
-
+        
         /// <summary>
         /// Strips the leading and trailing brackets from value.
         /// </summary>
@@ -1075,6 +1084,43 @@ namespace Dev2.Data.Util
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Checks if a region is closed
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsClosedRegion(string value)
+        {
+            return !string.IsNullOrEmpty(value) && value.EndsWith("]]");
+        }
+
+        /// <summary>
+        /// Checks if a region is open
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsOpenRegion(string value)
+        {
+            return !string.IsNullOrEmpty(value) && value.StartsWith("[[");
+        }
+
+        
+
+        /// <summary>
+        /// Get the index of the closing tags in a variable
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int IndexOfClosingTags(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return  0;
+            }
+
+            return value.LastIndexOf("]]", StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -1163,11 +1209,41 @@ namespace Dev2.Data.Util
 
             return result;
         }
+        
 
+        /// <summary>
+        /// Determines if recordset has a star index
+        /// </summary>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        public static bool IsStarIndex(string rs)
+        {
+            if (string.IsNullOrEmpty(rs))
+            {
+                return false;
+            }
+
+            return ExtractIndexRegionFromRecordset(rs) == "*";
+        }
+
+        /// <summary>
+        /// An opening brace for a recordset
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsRecordsetOpeningBrace(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            return value.StartsWith("(");
+        }
 
         /// <summary>
         /// Is the expression evaluated
-        /// </summary>
+        /// </summary>  
         /// <param name="payload">The payload.</param>
         /// <returns>
         ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.

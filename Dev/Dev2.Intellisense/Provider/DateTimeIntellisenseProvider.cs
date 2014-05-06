@@ -81,7 +81,11 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else if (!InLiteralRegion(context.InputText, context.CaretPosition))
             {
-                var filteredResults = _intellisenseResults.Where(i => i.Option.DisplayValue.ToLower().StartsWith(searchText.ToLower()));
+                var filteredResults = _intellisenseResults.Where(i =>
+                    {
+                        var displayValue = i.Option.DisplayValue;
+                        return !string.IsNullOrWhiteSpace(displayValue) && displayValue.ToLower().StartsWith(searchText.ToLower());
+                    }); 
                 results.AddRange(filteredResults);
             }
             return results;
