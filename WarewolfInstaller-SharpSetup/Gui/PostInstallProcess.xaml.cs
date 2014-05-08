@@ -360,6 +360,16 @@ namespace Gui
                     catch { }
                     // ReSharper restore EmptyGeneralCatchClause
 
+                    // Add Warewolf Group
+                    try
+                    {
+                        var groupOps = new WarewolfGroupOps();
+                        groupOps.AddWarewolfGroup();
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch { }
+                    // ReSharper restore EmptyGeneralCatchClause
+
                 };
 
                 worker.RunWorkerCompleted += delegate
