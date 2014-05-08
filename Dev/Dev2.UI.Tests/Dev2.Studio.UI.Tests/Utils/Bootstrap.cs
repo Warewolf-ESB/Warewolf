@@ -59,6 +59,11 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     Thread.Sleep(2500);
                 }
+                else
+                {
+                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate CodedUI Binaries");
+                }
             }
         }
 
@@ -85,6 +90,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                 catch
                 {
                     // most likely a studio is already running, kill it and try again ;)
+                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate Start Studio");
                     startCnt++;
                 }
             }
@@ -116,6 +123,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                 {
                     // most likely a server is already running, kill it and try again ;)
                     startCnt++;
+                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate Start Server");
                 }
                 finally
                 {
