@@ -10,7 +10,7 @@ namespace Dev2.Activities.Utils
     /// <summary>
     /// Utility class used for the foreach activity designer backing logic
     /// </summary>
-    public class ForeachActivityDesignerUtils
+    public class DropEnabledActivityDesignerUtils
     {
         #region Ctor
 
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Utils
                 }
             }
             var objectData = data.GetData(modelItemString);
-            return ForeachDropPointOnDragEnter(objectData);
+            return DropPointOnDragEnter(objectData);
         }
 
 
@@ -61,7 +61,7 @@ namespace Dev2.Activities.Utils
         /// </summary>
         /// <param name="objectData">The ModelItem of the dragged activity</param>
         /// <returns>If the activity is dropable into a foreach</returns>
-        bool ForeachDropPointOnDragEnter(object objectData)
+        bool DropPointOnDragEnter(object objectData)
         {
             bool dropEnabled = true;
 

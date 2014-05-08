@@ -8,7 +8,7 @@ namespace Dev2.Activities.Designers2.Sequence
     /// </summary>
     public partial class Large
     {
-        readonly ForeachActivityDesignerUtils _foreachActivityDesignerUtils;
+        readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
 
         public Large()
         {
@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers2.Sequence
             Loaded += (sender, args) => SetProperties();
             ActivitiesPresenter.PreviewDrop += DoDrop;
             ActivitiesPresenter.PreviewDragOver += DropPointOnDragEnter;
-            _foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
+            _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
         SequenceDesignerViewModel ViewModel
@@ -40,9 +40,9 @@ namespace Dev2.Activities.Designers2.Sequence
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
-            if(_foreachActivityDesignerUtils != null)
+            if(_dropEnabledActivityDesignerUtils != null)
             {
-                var dropEnabled = _foreachActivityDesignerUtils.LimitDragDropOptions(e.Data);
+                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
                 if(!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;

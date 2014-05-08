@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -33,15 +34,10 @@ namespace Dev2.FindMissingStrategies
             {
                 foreach(var innerActivity in sequenceActivity.Activities)
                 {
-                    DsfActivityAbstract<string> dsfActivityAbstractString = innerActivity as DsfActivityAbstract<string>;
+                    IDev2Activity dsfActivityAbstractString = innerActivity as IDev2Activity;
                     if(dsfActivityAbstractString != null)
                     {
                         GetResults(dsfActivityAbstractString, stratFac, results);
-                    }
-                    DsfActivityAbstract<bool> dsfActivityAbstractBool = innerActivity as DsfActivityAbstract<bool>;
-                    if(dsfActivityAbstractBool != null)
-                    {
-                        GetResults(dsfActivityAbstractBool, stratFac, results);
                     }
                 }
             }
@@ -59,7 +55,7 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        static void GetResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, Dev2FindMissingStrategyFactory stratFac, List<string> results)
+        static void GetResults(IDev2Activity dsfActivityAbstractString, Dev2FindMissingStrategyFactory stratFac, List<string> results)
         {
             enFindMissingType findMissingType = dsfActivityAbstractString.GetFindMissingType();
             IFindMissingStrategy strategy = stratFac.CreateFindMissingStrategy(findMissingType);

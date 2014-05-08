@@ -5,21 +5,21 @@ namespace Dev2.Activities.Designers2.Sequence
 {
     public partial class Small
     {
-        readonly ForeachActivityDesignerUtils _foreachActivityDesignerUtils;
+        readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
 
         public Small()
         {
             InitializeComponent();
             DropPoint.PreviewDragOver += DropPoint_OnDragOver;
             DropPoint.PreviewDrop += DropPoint_OnPreviewDrop;
-            _foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
+            _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
         void AllowDrag(DragEventArgs e)
         {
-            if(_foreachActivityDesignerUtils != null)
+            if(_dropEnabledActivityDesignerUtils != null)
             {
-                var dropEnabled = _foreachActivityDesignerUtils.LimitDragDropOptions(e.Data);
+                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
                 if(!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;
@@ -40,11 +40,7 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 viewModel.DoDrop(e.Data);
             }
-
-            if(DropPoint.Item != null)
-            {
-                DropPoint.Item = null;
-            }
+            DropPoint.Item = null;
         }
 
         void DropPoint_OnDragOver(object sender, DragEventArgs e)

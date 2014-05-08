@@ -121,6 +121,8 @@
     <Compile Include="Enums\ToolType.cs" />
     <Compile Include="Tests\Activities\DsfCommentTests.cs" />
     <Compile Include="Tests\Activities\DsfDataMergeActivityTests.cs" />
+    <Compile Include="Tests\Activities\DsfForEachActivityTests.cs" />
+    <Compile Include="Tests\Activities\DsfSequenceActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfXPathActivityTests.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
     <Compile Include="Tests\Activities\DsfFindRecordsActivityTests.cs" />
@@ -135,6 +137,8 @@
     <Compile Include="UIMaps\Activities\DsfCommentUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfDataSplitUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfDataMergeUiMap.cs" />
+    <Compile Include="UIMaps\Activities\DsfForEachUiMap.cs" />
+    <Compile Include="UIMaps\Activities\DsfSequenceUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfXpathUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfFindRecordsUiMap.cs" />
     <Compile Include="UIMaps\Activities\DsfMultiAssignUiMap.cs" />

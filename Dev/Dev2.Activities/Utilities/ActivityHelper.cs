@@ -131,6 +131,7 @@ namespace Dev2.Utilities
 
         public static void HandleDragEnter(DragEventArgs e)
         {
+            //This is to ensure nothing can be dragged onto a Activity Designer
         }
     }
 }

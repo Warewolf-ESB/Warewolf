@@ -5,14 +5,14 @@ namespace Dev2.Activities.Designers2.Foreach
 {
     public partial class Small
     {
-        readonly ForeachActivityDesignerUtils _foreachActivityDesignerUtils;
+        readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
 
         public Small()
         {
             InitializeComponent();
             DropPoint.PreviewDrop += DoDrop;
             DropPoint.PreviewDragOver += DropPointOnDragEnter;
-            _foreachActivityDesignerUtils = new ForeachActivityDesignerUtils();
+            _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
         ForeachDesignerViewModel ViewModel
@@ -37,9 +37,9 @@ namespace Dev2.Activities.Designers2.Foreach
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
-            if(_foreachActivityDesignerUtils != null)
+            if(_dropEnabledActivityDesignerUtils != null)
             {
-                var dropEnabled = _foreachActivityDesignerUtils.LimitDragDropOptions(e.Data);
+                var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
                 if(!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;

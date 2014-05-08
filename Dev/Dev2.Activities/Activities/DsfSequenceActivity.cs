@@ -3,19 +3,17 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Dev2;
-using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
-namespace Unlimited.Applications.BusinessDesignStudio.Activities
+namespace Dev2.Activities
 {
     public class DsfSequenceActivity : DsfActivityAbstract<string>
     {
-        private readonly Sequence innerSequence = new Sequence();
+        private readonly Sequence _innerSequence = new Sequence();
         string _previousParentID;
 
         public DsfSequenceActivity()
@@ -27,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
-            metadata.AddChild(innerSequence);
+            metadata.AddChild(_innerSequence);
         }
 
 
@@ -133,12 +131,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             dataObject.ParentInstanceID = UniqueID;
             dataObject.IsDebugNested = true;
-            innerSequence.Activities.Clear();
+            _innerSequence.Activities.Clear();
             foreach(var dsfActivity in Activities)
             {
-                innerSequence.Activities.Add(dsfActivity);
+                _innerSequence.Activities.Add(dsfActivity);
             }
-            context.ScheduleActivity(innerSequence, OnCompleted);
+            context.ScheduleActivity(_innerSequence, OnCompleted);
             if(dataObject.IsDebugMode())
             {
                 DispatchDebugState(context, StateType.After);

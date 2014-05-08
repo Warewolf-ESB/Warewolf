@@ -55,6 +55,11 @@
         <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSeqence}"
                          DataContext="{Binding}" />
     </i:Interaction.Behaviors>
+            <AutomationProperties.AutomationId>
+                    <MultiBinding StringFormat="UI_{0}_ActivitiesPresenter_AutoID">
+                        <Binding Path="ModelItem.AutomationID" />
+                    </MultiBinding>
+                </AutomationProperties.AutomationId>
         </sap:WorkflowItemsPresenter>    
         </Border>
         

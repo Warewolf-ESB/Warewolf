@@ -125,6 +125,9 @@ namespace Dev2.Studio.UI.Tests.Enums
         [Description("DsfScriptingActivity")]
         [ToolboxName("Script")]
         Script,
+        [Description("DsfSequenceActivity")]
+        [ToolboxName("Sequence")]
+        Sequence,
     }
 
     public class ToolboxNameAttribute : Attribute

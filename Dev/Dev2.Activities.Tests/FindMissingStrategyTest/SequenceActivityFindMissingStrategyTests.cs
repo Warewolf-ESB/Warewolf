@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
 {
     /// <summary>
@@ -15,8 +17,6 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     [ExcludeFromCodeCoverage]
     public class SequenceActivityFindMissingStrategyTests
     {
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceActivityFindMissingStrategy_GetActivityFields")]
@@ -42,6 +42,30 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             List<string> actual = strategy.GetActivityFields(activity);
             //------------Assert Results-------------------------
             List<string> expected = new List<string> { "[[AssignRight1]]", "[[AssignLeft1]]", "[[AssignRight2]]", "[[AssignLeft2]]", "[[b]]", "[[rec().a]]", "6", "[[Result]]", "NUD2347", "registration223", "[[number]]", "Fines.Date", "5" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SequenceActivityFindMissingStrategy_GetActivityFields")]
+        public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDecision_ReturnsAllVariables()
+        {
+            //------------Setup for test--------------------------
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
+
+            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
+            decisionActivity.OnErrorVariable = "[[error]]";
+
+            DsfSequenceActivity activity = new DsfSequenceActivity();
+            activity.Activities.Add(multiAssignActivity);
+            activity.Activities.Add(decisionActivity);
+
+            Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
+            IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.Sequence);
+            //------------Execute Test---------------------------
+            List<string> actual = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            List<string> expected = new List<string> { "[[AssignRight1]]", "[[AssignLeft1]]", "[[AssignRight2]]", "[[AssignLeft2]]", "[[error]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
