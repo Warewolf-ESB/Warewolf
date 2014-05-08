@@ -267,6 +267,19 @@ namespace Gui
 
         }
 
+        private void Rollback()
+        {
+            List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
+            var trans = new PreUnInstallProcess(2, listOfStepNames);
+
+            // remove server service
+            trans.Rollback();
+
+            // Now uninstall?!
+            MsiConnection.Instance.Uninstall();
+            SetSuccessMessasge("Rollback complete");
+        }
+
         /// <summary>
         /// Handles the Entered event of the PostInstallStep control.
         /// </summary>
@@ -292,15 +305,7 @@ namespace Gui
                     SetupApplication.IsCancel = true;
 
                     SetCleanupMessage();
-                    List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
-                    var trans = new PreUnInstallProcess(2, listOfStepNames);
-
-                    // remove server service
-                    trans.Rollback();
-
-                    // Now uninstall?!
-                    MsiConnection.Instance.Uninstall();
-                    SetSuccessMessasge("Rollback complete");
+                    Rollback();
                 }
                 // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
@@ -373,10 +378,11 @@ namespace Gui
                         groupOps.AddUserToWarewolf(userStr);
                     }
                     // ReSharper disable EmptyGeneralCatchClause
-                    catch(Exception e)
+                    catch(Exception e1)
                     {
                         // Big Problems - We needed this to happen ;)
-
+                        MessageBox.Show("An error occurred while installing - " + e1.Message + " Rolling back install.");
+                        Rollback();
                     }
                     // ReSharper restore EmptyGeneralCatchClause
 
