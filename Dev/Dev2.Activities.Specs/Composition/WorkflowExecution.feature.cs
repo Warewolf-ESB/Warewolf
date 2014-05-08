@@ -224,7 +224,7 @@ this.ScenarioSetup(scenarioInfo);
                         "dbo_proc_SmallFetch(*).Value",
                         "[[rec().fetch]]"});
 #line 50
-  testRunner.And("\"TestDbServiceWF\" contains a database service \"Fetch\" with mappings", ((string)(null)), table9, "And ");
+  testRunner.And("\"TestDbServiceWF\" contains a \"database\" service \"Fetch\" with mappings", ((string)(null)), table9, "And ");
 #line 53
   testRunner.And("\"TestDbServiceWF\" contains Count Record \"Count\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54

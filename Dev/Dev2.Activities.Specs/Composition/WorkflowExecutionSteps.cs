@@ -22,6 +22,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -73,21 +74,52 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Given(@"""(.*)"" contains a database service ""(.*)"" with mappings")]
-        public void GivenContainsADatabaseServiceWithMappings(string wf, string dbServiceName, Table table)
+        [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]
+        public void GivenContainsADatabaseServiceWithMappings(string wf, string serviceType, string serviceName, Table table)
         {
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.Find(r => r.ResourceName.Equals(dbServiceName)).ToList();
+            var resource = repository.Find(r => r.ResourceName.Equals(serviceName)).ToList();
 
-            var dbServiceActivity = new DsfDatabaseActivity();
-            dbServiceActivity.ResourceID = resource[0].ID;
-            dbServiceActivity.ServiceName = resource[0].ResourceName;
-            dbServiceActivity.DisplayName = dbServiceName;
+            var outputSb = GetMapping(table, resource);
+            var outputMapping = outputSb.ToString();
+            resource[0].Outputs = outputMapping;
 
-            CommonSteps.AddActivityToActivityList(dbServiceName, dbServiceActivity);
+            var activity = GetServiceActivity(serviceType);
+            if(activity != null)
+            {
+                activity.ResourceID = resource[0].ID;
+                activity.ServiceName = resource[0].ResourceName;
+                activity.DisplayName = serviceName;
+                activity.OutputMapping = outputMapping;
+                CommonSteps.AddActivityToActivityList(serviceName, activity);
+            }
+        }
 
+        static DsfActivity GetServiceActivity(string serviceType)
+        {
+            DsfActivity activity = null;
+            switch(serviceType)
+            {
+                case "database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "plugin":
+                    activity = new DsfPluginActivity();
+                    break;
+                case "web":
+                    activity = new DsfWebserviceActivity();
+                    break;
+                case "workflow":
+                    activity = new DsfWorkflowActivity();
+                    break;
+            }
+            return activity;
+        }
+
+        static StringBuilder GetMapping(Table table, List<IResourceModel> resource)
+        {
             var outputSb = new StringBuilder();
             outputSb.Append("<Outputs>");
 
@@ -135,9 +167,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             outputSb.Append("</Outputs>");
-            var outputMapping = outputSb.ToString();
-            resource[0].Outputs = outputMapping;
-            dbServiceActivity.OutputMapping = outputMapping;
+            return outputSb;
         }
 
         [When(@"""(.*)"" is executed")]

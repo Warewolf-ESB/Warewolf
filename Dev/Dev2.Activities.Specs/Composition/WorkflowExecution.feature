@@ -47,7 +47,7 @@ Scenario: Workflow with multiple tools executing against the server
 	
 Scenario: Simple workflow executing against the server with a database service
 	 Given I have a workflow "TestDbServiceWF"
-	 And "TestDbServiceWF" contains a database service "Fetch" with mappings
+	 And "TestDbServiceWF" contains a "database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  |                  |               | dbo_proc_SmallFetch(*).Value | [[rec().fetch]] |
 	 And "TestDbServiceWF" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
