@@ -54,11 +54,11 @@ Scenario: Simple workflow executing against the server with a database service
 	  When "TestDbServiceWF" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Fetch' in WorkFlow 'TestDbServiceWF' debug inputs as
-	  |  |  |
-	  |  |  |
+	  |  |
+	  |  |
 	  And the 'Fetch' in Workflow 'TestDbServiceWF' debug outputs as
-	  |  |  |
-	  |  |  |
+	  |                      |
+	  | [[rec(9).fetch]] = 5 |
 	  And the 'Count' in WorkFlow 'TestDbServiceWF' debug inputs as
 	  | Recordset            |
 	  | [[rec(1).fetch]] = 1 |

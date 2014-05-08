@@ -233,20 +233,16 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
                         ""});
             table10.AddRow(new string[] {
-                        "",
                         ""});
 #line 56
    testRunner.And("the \'Fetch\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
                         ""});
             table11.AddRow(new string[] {
-                        "",
-                        ""});
+                        "[[rec(9).fetch]] = 5"});
 #line 59
    testRunner.And("the \'Fetch\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table11, "And ");
 #line hidden

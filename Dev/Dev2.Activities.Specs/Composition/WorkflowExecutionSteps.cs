@@ -98,9 +98,9 @@ namespace Dev2.Activities.Specs.Composition
                 var output = tableRow["Output from Service"];
                 var toVariable = tableRow["To Variable"];
 
-                CommonSteps.AddVariableToVariableList(output);
-                CommonSteps.AddVariableToVariableList(fromVariable);
-                CommonSteps.AddVariableToVariableList(input);
+               // CommonSteps.AddVariableToVariableList(output);
+              //  CommonSteps.AddVariableToVariableList(fromVariable);
+               // CommonSteps.AddVariableToVariableList(input);
                 CommonSteps.AddVariableToVariableList(toVariable);
 
                 if(resource.Count > 0)
@@ -246,5 +246,13 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.WaitOne();
             }
         }
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            _debugWriterSubscriptionService.Unsubscribe();
+            _debugWriterSubscriptionService.Dispose();
+            _resetEvt.Close();            
+        }
+
     }
 }
