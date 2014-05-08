@@ -233,34 +233,52 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset"});
+                        "",
+                        ""});
             table10.AddRow(new string[] {
-                        "[[rec(1).fetch]] = 1"});
-            table10.AddRow(new string[] {
-                        "[[rec(2).fetch]] = 2"});
-            table10.AddRow(new string[] {
-                        "[[rec(3).fetch]] = 1"});
-            table10.AddRow(new string[] {
-                        "[[rec(4).fetch]] = 2"});
-            table10.AddRow(new string[] {
-                        "[[rec(5).fetch]] = 1"});
-            table10.AddRow(new string[] {
-                        "[[rec(6).fetch]] = 2"});
-            table10.AddRow(new string[] {
-                        "[[rec(7).fetch]] = 1"});
-            table10.AddRow(new string[] {
-                        "[[rec(8).fetch]] = 2"});
-            table10.AddRow(new string[] {
-                        "[[rec(9).fetch]] = 5"});
+                        "",
+                        ""});
 #line 56
-   testRunner.And("the \'Count\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table10, "And ");
+   testRunner.And("the \'Fetch\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
                         ""});
             table11.AddRow(new string[] {
+                        "",
+                        ""});
+#line 59
+   testRunner.And("the \'Fetch\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table11, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset"});
+            table12.AddRow(new string[] {
+                        "[[rec(1).fetch]] = 1"});
+            table12.AddRow(new string[] {
+                        "[[rec(2).fetch]] = 2"});
+            table12.AddRow(new string[] {
+                        "[[rec(3).fetch]] = 1"});
+            table12.AddRow(new string[] {
+                        "[[rec(4).fetch]] = 2"});
+            table12.AddRow(new string[] {
+                        "[[rec(5).fetch]] = 1"});
+            table12.AddRow(new string[] {
+                        "[[rec(6).fetch]] = 2"});
+            table12.AddRow(new string[] {
+                        "[[rec(7).fetch]] = 1"});
+            table12.AddRow(new string[] {
+                        "[[rec(8).fetch]] = 2"});
+            table12.AddRow(new string[] {
+                        "[[rec(9).fetch]] = 5"});
+#line 62
+   testRunner.And("the \'Count\' in WorkFlow \'TestDbServiceWF\' debug inputs as", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table13.AddRow(new string[] {
                         "[[count]] = 9"});
-#line 67
-  testRunner.And("the \'Count\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table11, "And ");
+#line 73
+  testRunner.And("the \'Count\' in Workflow \'TestDbServiceWF\' debug outputs as", ((string)(null)), table13, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

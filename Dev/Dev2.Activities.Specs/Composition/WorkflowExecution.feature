@@ -53,6 +53,12 @@ Scenario: Simple workflow executing against the server with a database service
 	 And "TestDbServiceWF" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
 	  When "TestDbServiceWF" is executed
 	  Then the workflow execution has "NO" error
+	  And the 'Fetch' in WorkFlow 'TestDbServiceWF' debug inputs as
+	  |  |  |
+	  |  |  |
+	  And the 'Fetch' in Workflow 'TestDbServiceWF' debug outputs as
+	  |  |  |
+	  |  |  |
 	  And the 'Count' in WorkFlow 'TestDbServiceWF' debug inputs as
 	  | Recordset            |
 	  | [[rec(1).fetch]] = 1 |

@@ -104,6 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
+    <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -301,12 +302,6 @@
       <DependentUpon>WebServiceActivity.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Service\WebService\WebServiceActivitySteps.cs" />
-    <Compile Include="Toolbox\Resources\Workflow\WorkflowExecution.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WorkflowExecution.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Workflow\WorkflowExecutionSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -519,10 +514,6 @@
     <None Include="Toolbox\Resources\Service\WebService\WebServiceActivity.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebServiceActivity.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Workflow\WorkflowExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
