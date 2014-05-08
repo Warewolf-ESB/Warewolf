@@ -363,11 +363,21 @@ namespace Gui
                     // Add Warewolf Group
                     try
                     {
+                        var warewolfGroupOps = new WarewolfGroupOps();
+                        var theUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+                        var myPc = Environment.MachineName;
+                        var userStr = warewolfGroupOps.FormatUserForInsert(theUser.Name, myPc);
+
                         var groupOps = new WarewolfGroupOps();
                         groupOps.AddWarewolfGroup();
+                        groupOps.AddUserToWarewolf(userStr);
                     }
                     // ReSharper disable EmptyGeneralCatchClause
-                    catch { }
+                    catch(Exception e)
+                    {
+                        // Big Problems - We needed this to happen ;)
+
+                    }
                     // ReSharper restore EmptyGeneralCatchClause
 
                 };
