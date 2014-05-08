@@ -716,6 +716,7 @@ namespace Dev2.Common.Reflection
         #endregion
     }
 
+
     #region GACAssemblyName
     public sealed class GACAssemblyName
     {
