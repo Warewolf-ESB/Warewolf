@@ -400,7 +400,6 @@
     <Compile Include="Models\DataMapping\TransferObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Debugger\DsfDebuggerDataObject.cs" />
     <Compile Include="Interfaces\ITagCloudItemModel.cs" />
     <Compile Include="Interfaces\ITagModel.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
@@ -566,6 +565,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

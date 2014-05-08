@@ -21,8 +21,7 @@ namespace Dev2.Core.Tests.Workflows
 {
     public class WorkflowDesignerViewModelMock : WorkflowDesignerViewModel
     {
-
-        Mock<WorkflowDesigner> moq = new Mock<WorkflowDesigner>();
+        readonly Mock<WorkflowDesigner> moq = new Mock<WorkflowDesigner>();
 
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
             : base(
@@ -101,7 +100,7 @@ namespace Dev2.Core.Tests.Workflows
         public void LoadXaml()
         {
 
-            base.LoadDesignerXaml();
+            LoadDesignerXaml();
         }
 
         public void SetDataObject(dynamic dataobject)
