@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.DirectoryServices;
 
 namespace Gui.Utility
@@ -36,6 +37,13 @@ namespace Gui.Utility
 
         public bool IsUserInGroup(string username)
         {
+            var theUser = username;
+            var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+            if(domainChar >= 0)
+            {
+                theUser = username.Substring((domainChar + 1));
+            }
+
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
@@ -43,8 +51,22 @@ namespace Gui.Utility
                 {
                     if(dChildEntry.Name == "Warewolf")
                     {
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
 
-                        return true;
+                        if(members != null)
+                        {
+                            foreach(var member in (IEnumerable)members)
+                            {
+                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                {
+                                    if(memberEntry.Name == theUser)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

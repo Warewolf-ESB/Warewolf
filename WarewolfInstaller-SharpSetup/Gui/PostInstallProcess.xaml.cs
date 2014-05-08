@@ -365,17 +365,10 @@ namespace Gui
                     catch { }
                     // ReSharper restore EmptyGeneralCatchClause
 
-                    // Add Warewolf Group
+                    // Add Warewolf Group and current user to it ;)
                     try
                     {
-                        var warewolfGroupOps = new WarewolfGroupOps();
-                        var theUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
-                        var myPc = Environment.MachineName;
-                        var userStr = warewolfGroupOps.FormatUserForInsert(theUser.Name, myPc);
-
-                        var groupOps = new WarewolfGroupOps();
-                        groupOps.AddWarewolfGroup();
-                        groupOps.AddUserToWarewolf(userStr);
+                        AddUserToWarewolfGroup();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch(Exception e1)
@@ -431,6 +424,26 @@ namespace Gui
         }
 
         #region Custom Installer Operations
+
+        private void AddUserToWarewolfGroup()
+        {
+            var warewolfGroupOps = new WarewolfGroupOps();
+            var theUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var myPc = Environment.MachineName;
+            var userStr = warewolfGroupOps.FormatUserForInsert(theUser.Name, myPc);
+
+            var groupOps = new WarewolfGroupOps();
+
+            if(!groupOps.DoesWarewolfGroupExist())
+            {
+                groupOps.AddWarewolfGroup();
+            }
+
+            if(!groupOps.IsUserInGroup(theUser.Name))
+            {
+                groupOps.AddUserToWarewolf(userStr);
+            }
+        }
 
         /// <summary>
         /// Adds the trusted sites.
