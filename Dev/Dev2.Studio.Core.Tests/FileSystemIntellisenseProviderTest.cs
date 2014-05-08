@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
@@ -10,6 +11,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using FileSystemIntellisenseProvider = Dev2.Intellisense.Provider.FileSystemIntellisenseProvider;
 using IFileSystemQuery = Dev2.Intellisense.Helper.IFileSystemQuery;
 
@@ -268,11 +270,104 @@ namespace Dev2.Core.Tests
             };
             //------------Setup for test--------------------------
             var intellisenseProvider = CreateIntellisenseProvider();
+
             //------------Execute Test---------------------------
             var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, intellisenseProviderResults.Count);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_GetIntellisenseResults_EntireSet_ExpectCorrectOutput()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 39,
+                InputText = @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt",
+                IsInCalculateMode = false,
+                DesiredResultSet = IntellisenseDesiredResultSet.EntireSet
+            };
+            //------------Setup for test--------------------------
+            var intellisenseProvider = CreateIntellisenseProvider();
+
+            //------------Execute Test---------------------------
+            var intellisenseProviderResults = intellisenseProvider.GetIntellisenseResults(context);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(8, intellisenseProviderResults.Count);
+        }
+
+        public void FileSystemIntellisenseProvider_ExecuteInsertion(int caretPosition, string inputText, string inserted, string expected)
+        {
+            //------------Setup for test--------------------------
+            var fileSystemIntellisenseProvider = new FileSystemIntellisenseProvider();
+            
+            //------------Execute Test---------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = caretPosition,
+                InputText = inputText,
+                IsInCalculateMode = false,
+                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
+            };
+
+           var resp =  fileSystemIntellisenseProvider.PerformResultInsertion(inserted, context);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resp, expected);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_InsertPath_ExpectCorrectOutput()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(2, "a ", @"c:\", @"a c:\");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_InsertPathAfterLanguageElement_ExpectCorrectOutput()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(2, "[[a]] ", @"c:\", @"c:\");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_EmptyInput_ExpectCorrectOutput()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(0, "", @"c:\", @"c:\");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_NegativeCaret_ExpectEmptyOutput()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(-1, "", @"c:\", @"");
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_NullText_ExpectException()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(-1, null, @"c:\", @"");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_InsertPathinsideText_ExpectCorrectOutput()
+        {
+            FileSystemIntellisenseProvider_ExecuteInsertion(2, "bobthebuilder", @"c:\", @"c:\");
+            FileSystemIntellisenseProvider_ExecuteInsertion(2, "bobthebuilder doratheexplorer", @"c:\", @"c:\ doratheexplorer");
+        }
+
 
         static FileSystemIntellisenseProvider CreateIntellisenseProvider()
         {

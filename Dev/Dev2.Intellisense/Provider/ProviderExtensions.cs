@@ -10,16 +10,20 @@ namespace Dev2.Intellisense.Provider
     {
         public static string FindTextToSearch(this IntellisenseProviderContext context)
         {
+            VerifyArgument.IsNotNull("context",context);
             string searchString = string.Empty;
             int foundMinimum = -1;
             int foundLength = 0;
-            int maxStringLength = Math.Min(context.CaretPosition, context.InputText.Length);
+            string inputText = context.InputText;
+            int caretPosition = context.CaretPosition;
+
+            int maxStringLength = Math.Min(caretPosition, inputText.Length);
             
             bool closedBraceFound = false;
 
             for(int i = maxStringLength - 1; i >= 0; i--)
             {
-                char currentChar = context.InputText[i];
+                char currentChar = inputText[i];
 
                 if(currentChar == ')')
                 {
@@ -32,7 +36,8 @@ namespace Dev2.Intellisense.Provider
                 }
                 else
                 {
-                    if(currentChar == '[' && context.InputText[i - 1] == '[')
+                    
+                    if(currentChar == '[' && i>0 && inputText[i - 1] == '[')
                     {
                         foundMinimum = i - 1;
                         foundLength = maxStringLength - foundMinimum;
@@ -42,7 +47,7 @@ namespace Dev2.Intellisense.Provider
                     {
                         i = -1;
                     }
-                    else if(Char.IsSymbol(currentChar))
+                    else if (Char.IsSymbol(currentChar))
                     {
                         i = -1;
                     }
@@ -52,14 +57,9 @@ namespace Dev2.Intellisense.Provider
                     }
                     else if(currentChar == '(')
                     {
-                        if(context.InputText.Length > i && context.InputText[i + 1] == ')')
+                        if(inputText.Length > i && i < inputText.Length &&  inputText[i + 1] == ')')
                         {
                             i = -1;
-                        }
-                        else
-                        {
-                            foundMinimum = i;
-                            foundLength = maxStringLength - i;
                         }
                     }
                     else
@@ -92,7 +92,7 @@ namespace Dev2.Intellisense.Provider
 
             if(foundMinimum != -1)
             {
-                searchString = context.InputText.Substring(foundMinimum, foundLength);
+                searchString = inputText.Substring(foundMinimum, foundLength);
             }
 
             var charArray = searchString.ToCharArray().ToList();
@@ -102,8 +102,8 @@ namespace Dev2.Intellisense.Provider
                 return string.Empty;
             }
 
-            var indexOfOpenBrace = context.InputText.IndexOf('(');
-            if(indexOfOpenBrace > 0 && context.InputText[indexOfOpenBrace - 1] == '[')
+            var indexOfOpenBrace = inputText.IndexOf('(');
+            if(indexOfOpenBrace > 0 && inputText[indexOfOpenBrace - 1] == '[')
             {
                 return string.Empty;
             }

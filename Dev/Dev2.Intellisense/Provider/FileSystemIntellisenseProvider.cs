@@ -29,15 +29,26 @@ namespace Dev2.Intellisense.Provider
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-            var regions = context.InputText.Split(new[] { ' ' });
+            VerifyArgument.IsNotNull("Context",context);
+            VerifyArgument.IsNotNull("InputText", context.InputText);
+            string inputText = context.InputText;
+            int caretPosition = context.CaretPosition;  
+            if (caretPosition < 0 || caretPosition>inputText.Length)
+                return string.Empty;
+
+            var regions = inputText.Split(new[] { ' ' }); // we can safely do this because the default provider handles the language features
+
             var sum = 0;
+            int items = 0;
             var regionsText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
             {
-                sum = sum + context.CaretPosition;
-                return sum >= context.CaretPosition;
+                sum = sum + a.Length;
+                items++;
+                return sum <= caretPosition || items==1;
             }).Select(a => a.a).ToList();
-            regionsText[regionsText.Count - 1] = input;
-            var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(new[] { ' ' });
+            regionsText[regionsText.Count - 1] = input;// set caret region to replacement text
+
+            var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(new[] { ' ' }); // fold back together
             context.CaretPositionOnPopup = prefix.Length;
             context.CaretPosition = prefix.Length;
             int i = 0;
@@ -46,7 +57,7 @@ namespace Dev2.Intellisense.Provider
                     i = i + 1;
                     return i < regionsText.Count + 1;
                 }).Aggregate("", (a, b) => a + " " + b);
-            return prefix + inner;
+            return (prefix + inner).TrimEnd();
 
         }
 
