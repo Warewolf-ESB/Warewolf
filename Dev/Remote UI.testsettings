@@ -6,6 +6,7 @@
     <DeploymentItem filename="Dev2.Server\Bin\Test\" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
+    <Scripts setupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Startup - Studio.bat" cleanupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Cleanup - Studio.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
@@ -29,7 +30,7 @@
     </TestTypeSpecific>
     <AgentRule name="Run in Ashley's Testing Environment Pool">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Test" />
+        <AgentProperty name="Pool" value="Hyper-V Test" />
       </SelectionCriteria>
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">

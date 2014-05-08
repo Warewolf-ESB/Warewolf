@@ -5,6 +5,7 @@
     <DeploymentItem filename="Dev2.Server\Bin\Test\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
+  <Scripts setupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Startup.bat" cleanupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="120000" />
@@ -27,7 +28,7 @@
     </TestTypeSpecific>
     <AgentRule name="Run in Ashley's Testing Environment Pool">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Test" />
+        <AgentProperty name="Pool" value="Integration Testing" />
       </SelectionCriteria>
     </AgentRule>
   </Execution>
