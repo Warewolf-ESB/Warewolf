@@ -368,7 +368,18 @@ namespace Dev2.Core.Tests
             FileSystemIntellisenseProvider_ExecuteInsertion(2, "bobthebuilder doratheexplorer", @"c:\", @"c:\ doratheexplorer");
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FileSystemIntellisenseProvider_Dispose")]
+        public void FileSystemIntellisenseProvider_PerformMethodInsertion_Dispose()
+        {
 
+            var intellisenseProvider = CreateIntellisenseProvider();
+            Assert.IsNotNull(intellisenseProvider.IntellisenseResults);
+            intellisenseProvider.Dispose();
+            Assert.IsNull(intellisenseProvider.IntellisenseResults);
+
+        }
         static FileSystemIntellisenseProvider CreateIntellisenseProvider()
         {
             var intellisenseProvider = new FileSystemIntellisenseProvider { FileSystemQuery = new FileSystemQueryForTest() };

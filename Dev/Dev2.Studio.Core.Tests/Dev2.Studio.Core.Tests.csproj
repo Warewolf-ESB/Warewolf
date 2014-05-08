@@ -196,6 +196,7 @@
     <Compile Include="Custom Dev2 Controls\Intellisense\MockIntellisenseTextbox.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
+    <Compile Include="DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
     <Compile Include="Deploy\DeployUnitTestIsolation.cs" />

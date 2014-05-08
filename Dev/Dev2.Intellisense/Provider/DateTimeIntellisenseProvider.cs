@@ -15,7 +15,7 @@ namespace Dev2.Studio.InterfaceImplementors
     {
         #region Class Members
 
-        List<IIntellisenseResult> _intellisenseResults;
+        private List<IIntellisenseResult>  _intellisenseResults;
 
         #endregion Class Members
 
@@ -33,6 +33,12 @@ namespace Dev2.Studio.InterfaceImplementors
                 }).OrderBy(p => p.Option.DisplayValue).ToList();
         }
 
+        public DateTimeIntellisenseProvider(List<IIntellisenseResult> intellisenseResults)
+        {
+            Optional = false;
+            _intellisenseResults = intellisenseResults;
+        }
+
         #endregion Constructors
 
         #region Override Methods
@@ -44,14 +50,12 @@ namespace Dev2.Studio.InterfaceImplementors
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
             IList<IIntellisenseResult> oldResults = GetIntellisenseResultsImpl(context);
-            List<IntellisenseProviderResult> results = new List<IntellisenseProviderResult>();
+            var results = new List<IntellisenseProviderResult>();
 
             if (oldResults != null)
             {
-                for (int i = 0; i < oldResults.Count; i++)
+                foreach (IIntellisenseResult currentResult in oldResults)
                 {
-                    IIntellisenseResult currentResult = oldResults[i];
-
                     if (currentResult.ErrorCode != enIntellisenseErrorCode.None)
                     {
                         if (currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
@@ -70,22 +74,18 @@ namespace Dev2.Studio.InterfaceImplementors
             return results;
         }
 
-        private IList<IIntellisenseResult> GetIntellisenseResultsImpl(IntellisenseProviderContext context)
+        public IList<IIntellisenseResult> GetIntellisenseResultsImpl(IntellisenseProviderContext context)
         {
             string searchText = context.FindTextToSearch();
-            List<IIntellisenseResult> results = new List<IIntellisenseResult>();
+            var results = new List<IIntellisenseResult>();
 
             if (context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
             {
-                results.AddRange(_intellisenseResults);
+                results.AddRange(IntellisenseResults);
             }
             else if (!InLiteralRegion(context.InputText, context.CaretPosition))
             {
-                var filteredResults = _intellisenseResults.Where(i =>
-                    {
-                        var displayValue = i.Option.DisplayValue;
-                        return !string.IsNullOrWhiteSpace(displayValue) && displayValue.ToLower().StartsWith(searchText.ToLower());
-                    }); 
+                var filteredResults = IntellisenseResults.Where(i => i.Option.DisplayValue.ToLower().StartsWith(searchText.ToLower()));
                 results.AddRange(filteredResults);
             }
             return results;
@@ -103,20 +103,19 @@ namespace Dev2.Studio.InterfaceImplementors
         /// <summary>
         /// Determines if the caret in a literal region
         /// </summary>
-        private bool InLiteralRegion(string inputText, int caretPosition)
+        public static bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralResionRegion = false;
+            bool inLiteralRegion = false;
 
-            if (caretPosition <= inputText.Length)
+            string text = inputText;
+            if (caretPosition <= text.Length)
             {
-                inputText = inputText.Replace("\\\\", "##");
-                inputText = inputText.Replace("\\'", "##");
-                inputText = inputText.Replace("'''", "###");
+                text = text.Replace("\\\\", "##").Replace("\\'", "##").Replace("'''", "###");
 
-                inLiteralResionRegion = inputText.Substring(0, caretPosition).Count(s => s == '\'') % 2 != 0;
+                inLiteralRegion = text.Substring(0, caretPosition).Count(s => s == '\'') % 2 != 0;
             }
 
-            return inLiteralResionRegion;
+            return inLiteralRegion;
         }
 
         #endregion Private Methods
@@ -125,6 +124,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public bool Optional { get; set; }
         public bool HandlesResultInsertion { get; set; }
+
+        public List<IIntellisenseResult> IntellisenseResults
+        {
+            get { return _intellisenseResults; }
+        }
 
         #endregion Properties
     }

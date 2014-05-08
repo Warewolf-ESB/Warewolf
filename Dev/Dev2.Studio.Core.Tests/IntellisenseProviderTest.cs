@@ -27,6 +27,7 @@ namespace Dev2.Core.Tests
         // ReSharper disable InconsistentNaming
         private IResourceModel _resourceModel;
 
+
         #region Test Initialization
 
         [TestInitialize]
@@ -200,7 +201,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City(*).GeoLocation]]", getResults[4].ToString());
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
         }
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
@@ -560,7 +561,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Invalid Expression", getResults[5].ToString());
 
         }
-
+        
         [TestMethod]
         // ReSharper disable InconsistentNaming
         public void GetIntellisenseResults_With_CommaSeperatedRegions_Expected_AllVarsInResults()
@@ -814,7 +815,7 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(0, getResults.Count);
         }
-
+        
         //BUG 8755
         [TestMethod]
         public void GetIntellisenseResultsWhereBracketOfRecordsetIsClosedAndThereIsAFieldAfterClosedBracketAndStarIndexExpectedNoResultsAndException()
@@ -1435,7 +1436,7 @@ namespace Dev2.Core.Tests
                 State = true
             };
 
-            var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);
+            var performResultInsertion = new DefaultIntellisenseProvider().PerformResultInsertion("[[scalar]]", context);   
             Assert.AreEqual("[[recset([[recset([[scalar]]).field]]).field]]", performResultInsertion);
         }
 
@@ -1814,28 +1815,6 @@ namespace Dev2.Core.Tests
 
         #endregion CalculateIntellisenseProvider Tests
 
-        #region DateTimeIntellisenseProvider Tests
 
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("DateTimeIntellisenseProvider_GetIntellisenseResults")]
-        public void DateTimeIntellisenseProvider_GetIntellisenseResults_PartialMethodMatch_ClosestMatchesReturned()
-        {
-            IntellisenseProviderContext context = new IntellisenseProviderContext
-            {
-                CaretPosition = 1,
-                InputText = "d",
-                IsInCalculateMode = false,
-                DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
-            };
-
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
-            IList<IntellisenseProviderResult> results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
-
-            Assert.AreEqual(6, results.Count);
-        }
-
-
-        #endregion
     }
 }

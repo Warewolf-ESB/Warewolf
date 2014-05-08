@@ -9,7 +9,7 @@ namespace Dev2.Intellisense.Provider
     {
         #region Class Members
 
-        List<IntellisenseProviderResult> _intellisenseResults;
+        private List<IntellisenseProviderResult> _intellisenseResults;
 
         #endregion Class Members
 
@@ -67,14 +67,14 @@ namespace Dev2.Intellisense.Provider
             if(context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
             {
                 FileSystemQuery.QueryList("");
-                FileSystemQuery.QueryCollection.ForEach(s => _intellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
-                results.AddRange(_intellisenseResults);
+                FileSystemQuery.QueryCollection.ForEach(s => IntellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
+                results.AddRange(IntellisenseResults);
             }
             else
             {
                 if(!InLiteralRegion(context.InputText, context.CaretPosition))
                 {
-                    _intellisenseResults.Clear();
+                    IntellisenseResults.Clear();
                     var regions = context.InputText.Split(new[] { ' ' });
                     var sum = 0;
                     string searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
@@ -83,8 +83,8 @@ namespace Dev2.Intellisense.Provider
                             return sum >= context.CaretPosition;
                         }).Last().a;
                     FileSystemQuery.QueryList(searchText);
-                    FileSystemQuery.QueryCollection.ForEach(s => _intellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
-                    results.AddRange(_intellisenseResults);
+                    FileSystemQuery.QueryCollection.ForEach(s => IntellisenseResults.Add(new IntellisenseProviderResult(this, s, string.Empty, string.Empty, false)));
+                    results.AddRange(IntellisenseResults);
                 }
             }
             return results;
@@ -128,5 +128,10 @@ namespace Dev2.Intellisense.Provider
         #endregion Properties
 
         public IFileSystemQuery FileSystemQuery { get; set; }
+
+        public List<IntellisenseProviderResult> IntellisenseResults
+        {
+            get { return _intellisenseResults; }
+        }
     }
 }
