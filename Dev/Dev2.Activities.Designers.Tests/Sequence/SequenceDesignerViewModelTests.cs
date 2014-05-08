@@ -35,8 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceActivity = new DsfSequenceActivity();
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             //------------Execute Test---------------------------
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);
-            sequenceDesignerViewModel.SmallViewItem = "test";
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem) { SmallViewItem = "test" };
             //------------Assert Results-------------------------
             Assert.IsNull(sequenceDesignerViewModel.SmallViewItem, "This item should always be null");
         }
@@ -47,8 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         public void SequenceDesignerViewModel_Constructor_Constructed_IsInstanceOfActivityDesignerViewModel()
         {
             //------------Setup for test--------------------------
-            var sequenceActivity = new DsfSequenceActivity();
-            sequenceActivity.DisplayName = "Created Sequence";
+            var sequenceActivity = new DsfSequenceActivity { DisplayName = "Created Sequence" };
             var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
             //------------Execute Test---------------------------
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(modelItem);

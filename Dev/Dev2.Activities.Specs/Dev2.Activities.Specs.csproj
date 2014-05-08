@@ -104,7 +104,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
-    <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

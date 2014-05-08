@@ -76,9 +76,7 @@ namespace Dev2.Core.Tests.Activities
             var forEachUtils = new ForeachActivityDesignerUtils();
             var dataObject = new Mock<IDataObject>();
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
-            var modelItemList = new List<ModelItem>();
-            modelItemList.Add(ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity()));
-            modelItemList.Add(ModelItemUtils.CreateModelItem(new FlowDecision()));
+            var modelItemList = new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity()), ModelItemUtils.CreateModelItem(new FlowDecision()) };
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItemList);
             //------------Execute Test---------------------------
             var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);
@@ -95,9 +93,7 @@ namespace Dev2.Core.Tests.Activities
             var forEachUtils = new ForeachActivityDesignerUtils();
             var dataObject = new Mock<IDataObject>();
             dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
-            var modelItemList = new List<ModelItem>();
-            modelItemList.Add(ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity()));
-            modelItemList.Add(ModelItemUtils.CreateModelItem(new FlowSwitch<string>()));
+            var modelItemList = new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfCountRecordsetActivity()), ModelItemUtils.CreateModelItem(new FlowSwitch<string>()) };
             dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns(modelItemList);
             //------------Execute Test---------------------------
             var dropEnabled = forEachUtils.LimitDragDropOptions(dataObject.Object);

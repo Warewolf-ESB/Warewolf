@@ -27,8 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"I have a Sequence ""(.*)""")]
         public void GivenIHaveASequence(string sequenceName)
         {
-            var dsfSequence = new DsfSequenceActivity();
-            dsfSequence.DisplayName = sequenceName;
+            var dsfSequence = new DsfSequenceActivity { DisplayName = sequenceName };
             ScenarioContext.Current.Add("activityList", new Dictionary<string, Activity>());
             ScenarioContext.Current.Add("activity", dsfSequence);
 
@@ -438,7 +437,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         }
 
-        void CheckDebugStates(List<IDebugState> debugStates)
+        void CheckDebugStates(IEnumerable<IDebugState> debugStates)
         {
             DsfSequenceActivity sequence;
             ScenarioContext.Current.TryGetValue("activity", out sequence);
