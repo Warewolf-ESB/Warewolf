@@ -740,7 +740,7 @@ namespace Dev2.Studio.UI.Tests
             // only bootstrap if we have build in test mode ;)
             #if TEST
             Bootstrap.Init();
-#endif
+            #endif
         }
         #endregion
     }

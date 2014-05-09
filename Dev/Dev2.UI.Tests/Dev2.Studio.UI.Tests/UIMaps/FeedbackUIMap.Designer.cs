@@ -10,7 +10,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class FeedbackUIMap : UIMapBase
     {
-        
+
         /// <summary>
         /// RecordedFeedbackWindowExists
         /// </summary>
@@ -37,9 +37,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         private WpfWindow GetFeedbackWindow()
         {
-            var findFeedbackWindow = StudioWindow.GetParent().GetChildren().FirstOrDefault(c=>c.Name == "Feedback");
-            
-            if (findFeedbackWindow != null)
+            var parentWindow = StudioWindow.GetParent();
+            var parentChildern = parentWindow.GetChildren();
+
+            var childCount = parentChildern.Count;
+
+            childCount += 1;
+
+            var findFeedbackWindow = parentChildern.FirstOrDefault(c => c.Name == "Feedback");
+
+            if(findFeedbackWindow != null)
             {
                 return findFeedbackWindow as WpfWindow;
             }
@@ -59,9 +66,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var feedbackWindow = GetFeedbackWindow();
             var children = feedbackWindow.GetChildren();
-            foreach (var child in children)
+            foreach(var child in children)
             {
-                if (child.GetProperty("AutomationId").ToString() == "FeebackView_Send")
+                if(child.GetProperty("AutomationId").ToString() == "FeebackView_Send")
                 {
                     return child as WpfButton;
                 }
@@ -77,7 +84,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             get
             {
-                if ((this.mUIRecordedFeedbackWindow == null))
+                if((this.mUIRecordedFeedbackWindow == null))
                 {
                     this.mUIRecordedFeedbackWindow = new UIRecordedFeedbackWindow();
                 }
@@ -85,16 +92,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
         #endregion
-        
+
         #region Fields
         private UIRecordedFeedbackWindow mUIRecordedFeedbackWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIRecordedFeedbackWindow : WinWindow
     {
-        
+
         public UIRecordedFeedbackWindow()
         {
             #region Search Criteria

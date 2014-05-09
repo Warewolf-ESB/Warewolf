@@ -3267,6 +3267,8 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table148 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
+            table148.AddRow(new string[] {
+                        "NO"});
 #line 1074
  testRunner.And("the debug output as", ((string)(null)), table148, "And ");
 #line hidden

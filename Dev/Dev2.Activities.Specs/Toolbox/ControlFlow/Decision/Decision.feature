@@ -1073,6 +1073,7 @@ Scenario: decide if There Is No Error (False)
 	|  | String    | YES                              |
 	And the debug output as 
 	|    |
+	| NO |
 
 #Scenario: decide if text with space is equal to same text with extra space (False)
 #	Given a decision variable "[[A]]" value "123 234"		

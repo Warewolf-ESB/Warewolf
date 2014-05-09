@@ -209,6 +209,7 @@ namespace Dev2.UI
                         case ConnectControlInstanceType.Explorer:
                             viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
                             viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
+                            viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
                             break;
                         case ConnectControlInstanceType.DeploySource:
                             viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));

@@ -311,7 +311,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             var kids = _explorerTree.GetChildren();
             foreach(UITestControl serverListItem in kids) // 0 for the first server in the list
             {
-                if(serverListItem.GetProperty(WpfTree.PropertyNames.AutomationId).ToString().Contains(serverName))
+                var automationID = serverListItem.GetProperty(WpfTree.PropertyNames.AutomationId).ToString();
+                if(automationID.Contains(serverName))
                 {
                     server = serverListItem;
                     break;

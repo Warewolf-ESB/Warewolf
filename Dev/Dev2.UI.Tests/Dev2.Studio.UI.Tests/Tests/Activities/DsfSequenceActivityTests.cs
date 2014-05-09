@@ -42,6 +42,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceSmallView_DraggingDecision_NotAllowed()
         {
+            Mouse.MouseDragSpeed = 500;
+
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
@@ -58,6 +60,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceSmallView_DraggingSwitch_NotAllowed()
         {
+            Mouse.MouseDragSpeed = 500;
+
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
@@ -107,6 +111,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceLargeView_DraggingDecision_NotAllowed()
         {
+            Mouse.MouseDragSpeed = 500;
+
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
@@ -124,6 +130,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceLargeView_DraggingSwitch_NotAllowed()
         {
+            Mouse.MouseDragSpeed = 500;
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);

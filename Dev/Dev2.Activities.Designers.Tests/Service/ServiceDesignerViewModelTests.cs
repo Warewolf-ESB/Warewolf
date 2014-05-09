@@ -367,6 +367,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
             Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
             Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
+            Assert.IsTrue(vm.IsFixed);
             Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
         }
 
@@ -386,6 +387,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
             Assert.AreEqual(1, vm.LastValidationMemo.Errors.Count, "Constructor did not remove non delete errors.");
             Assert.IsTrue(vm.IsWorstErrorReadOnly, "Constructor did set IsWorstErrorReadOnly to true for Delete.");
+            Assert.IsTrue(vm.IsFixed);
             Assert.IsFalse(vm.IsEditable, "Constructor did set IsEditable to false for Delete.");
         }
 
@@ -474,7 +476,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
                 Assert.AreEqual(ErrorType.Critical, model.WorstError);
 
-                foreach (var error in m.Errors)
+                foreach(var error in m.Errors)
                 {
                     ErrorInfo currentError = error;
                     var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
@@ -749,6 +751,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual(1, vm.DesignValidationErrors.Count, "Fix errors failed to remove the worst error from the activity.");
 
             Assert.AreEqual(0, vm.RootModel.Errors.Count, "Fix errors failed to remove the worst error from the activity's root model.");
+            Assert.IsTrue(vm.IsWorstErrorReadOnly);
+            vm.DoneCompletedCommand.Execute(null);
+            Assert.IsTrue(vm.IsFixed);
         }
 
         [TestMethod]
@@ -783,11 +788,16 @@ namespace Dev2.Activities.Designers.Tests.Service
             vm.RootModel.AddError(resourceErrors[0]);
             vm.RootModel.AddError(resourceErrors[1]);
             //-----------------------------Assert Preconditions----------------------------------------------------------------------------
+            Assert.IsFalse(vm.IsWorstErrorReadOnly);
+            Assert.IsFalse(vm.IsFixed);
             Assert.AreEqual(3, vm.RootModel.Errors.Count);
             //-----------------------------Execute-----------------------------------------------------------------------------------------
             vm.DesignValidationErrors.RemoveAt(2);
             vm.DesignValidationErrors.RemoveAt(1);
             vm.FixErrorsCommand.Execute(null);
+            Assert.IsTrue(vm.IsWorstErrorReadOnly);
+            vm.DoneCompletedCommand.Execute(null);
+            Assert.IsTrue(vm.IsFixed);
             Assert.IsTrue(vm.RootModel.HasErrors);
             Assert.AreEqual(2, vm.RootModel.Errors.Count);
             Assert.IsFalse(vm.RootModel.IsValid);
@@ -1354,7 +1364,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             viewModel.FixErrorsCommand.Execute(this);
             Assert.IsTrue(viewModel.DesignValidationErrors.First().Message.Contains("Service Working Normally"));
         }
-                
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
@@ -1804,7 +1814,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             const int OffSet = 3;
             var startIndex = 0;
-            if (modelProperties == null)
+            if(modelProperties == null)
             {
                 modelProperties = new ModelProperty[OffSet];
             }
@@ -1820,7 +1830,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var properties = new Mock<ModelPropertyCollection>();
 
-            foreach (var modelProperty in modelProperties)
+            foreach(var modelProperty in modelProperties)
             {
                 properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
             }
@@ -1872,9 +1882,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(e => e.HasLoadedResources).Returns(true);
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if (resourceErrors != null)
+            if(resourceErrors != null)
             {
-                foreach (var resourceError in resourceErrors)
+                foreach(var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }

@@ -25,6 +25,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, 179));
         }
 
+        public void ClickFourthAction()
+        {
+            var kids = StudioWindow.GetChildren();
+            var grandKids = kids[0].GetChildren();
+            Mouse.Click(grandKids[2], new Point(172, 229));
+        }
+
+        public void ClickThirdAction()
+        {
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, 199));
+        }
+
         public string GetActionName()
         {
             var persistClipboard = System.Windows.Clipboard.GetText();

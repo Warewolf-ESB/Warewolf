@@ -80,7 +80,11 @@ namespace Dev2.Activities.Designers2.Service
             ShowExampleWorkflowLink = Visibility.Collapsed;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => FixErrors());
+            FixErrorsCommand = new Studio.Core.ViewModels.Base.RelayCommand(o =>
+            {
+                FixErrors();
+                IsFixed = IsWorstErrorReadOnly;
+            });
             DoneCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => Done());
             DoneCompletedCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => DoneCompleted());
 

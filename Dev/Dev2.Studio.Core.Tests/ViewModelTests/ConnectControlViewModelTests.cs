@@ -194,6 +194,32 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("ConnectControl_SelectionChanged")]
+        public void ConnectControlViewModel_SelectionChanged_WhenHasItem_NotBoundToActiveEnvironmentAndInstanceTypeExplorer_ShouldFireMessages()
+        {
+            //------------Setup for test--------------------------
+            var localhostServer = CreateServer("localhost", true);
+            var remoteServer = CreateServer("remote", false);
+            var otherServer = CreateServer("disconnected", false);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
+            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.Explorer;
+            connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
+            connectControlViewModel.BindToActiveEnvironment = false;
+            //------------Execute Test---------------------------
+            connectControlViewModel.SelectedServer = remoteServer;
+            //------------Assert Results-------------------------
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddServerToExplorerMessage>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ConnectControl_SelectionChanged")]
         public void ConnectControlViewModel_SelectionChanged_WhenHasItem_NotBoundToActiveEnvironmentAndInstanceTypeDeploySource_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------

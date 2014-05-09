@@ -32,10 +32,6 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickRenameResource(OldResourceName, "Unassigned", ServiceType.Workflows, NewTestResourceWithDashes);
             Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(NewTestResourceWithDashes, "Unassigned"));
             ExplorerUIMap.DoubleClickWorkflow(NewTestResourceWithDashes, "Unassigned");
-            //Rename the resource back to the original name
-            ExplorerUIMap.RightClickRenameResource(NewTestResourceWithDashes, "Unassigned", ServiceType.Workflows, OldResourceName);
-            Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(OldResourceName, "Unassigned"));
-            ExplorerUIMap.DoubleClickWorkflow(OldResourceName, "Unassigned");
         }
     }
 }

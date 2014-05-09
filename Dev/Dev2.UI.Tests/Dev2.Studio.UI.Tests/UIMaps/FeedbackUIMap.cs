@@ -10,14 +10,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public bool DoesRecordedFeedbackWindowExist()
         {
             WinWindow RecordedFeedbackWindow = GetRecordedFeedbackWindow();
-            Point p = new Point();
+            Point p;
             return RecordedFeedbackWindow.TryGetClickablePoint(out p);
         }
 
         public bool DoesFeedbackWindowExist()
         {
             WpfWindow theWindow = GetFeedbackWindow();
-            Point p = new Point();
+            Point p;
             return theWindow.TryGetClickablePoint(out p);
         }
 

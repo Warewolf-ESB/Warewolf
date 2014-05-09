@@ -64,8 +64,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 activityUiMap.ClickCloseMapping();
                 //Assert that the fix errors button isnt there anymore
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
-
-                Assert.Fail("Need to double click Done button Bug");
             }
         }
 
@@ -81,8 +79,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             //Open wizard
             RibbonUIMap.ClickNewWebService();
             KeyboardCommands.SendTabs(2);
-            KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(8);
             KeyboardCommands.SendDownArrows(1);
             KeyboardCommands.SendTabs(4);
             KeyboardCommands.SelectAllText();
@@ -123,8 +119,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             //Open wizard
             RibbonUIMap.ClickNewWebService();
             KeyboardCommands.SendTabs(2);
-            KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(8);
             KeyboardCommands.SendDownArrows(1);
             KeyboardCommands.SendTabs(4);
             KeyboardCommands.SelectAllText();

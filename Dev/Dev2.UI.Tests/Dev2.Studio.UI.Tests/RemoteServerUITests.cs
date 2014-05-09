@@ -76,6 +76,8 @@ namespace Dev2.Studio.UI.Tests
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
 
+            Assert.Fail("You cannot continue to drop an activity on top of its self, then it fails to see the change ;(");
+
         }
 
         [TestMethod]
@@ -115,16 +117,20 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
 
             //Create new workflow and drag a remote workflow onto it
-            DsfActivityUiMap activityUiMap = new DsfActivityUiMap();
-            activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "UTILITY", RemoteServerName);
+            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
+            {
+                activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "UTILITY", RemoteServerName);
 
-            //Should be able to get clean debug output
-            RibbonUIMap.DebugShortcutKeyPress();
-            OutputUIMap.WaitForExecution();
+                //Should be able to get clean debug output
+                RibbonUIMap.DebugShortcutKeyPress();
+                OutputUIMap.WaitForExecution();
 
-            //Assert that the workflow really is on the design surface and debug output is clean
-            Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
-            Assert.IsNotNull(activityUiMap.Activity);
+                //Assert that the workflow really is on the design surface and debug output is clean
+                Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
+                Assert.IsNotNull(activityUiMap.Activity);
+
+                Assert.Fail("Workflow created for wrong environment, Remote Server, NOT LOCALHOST");
+            }
         }
 
         [TestMethod]
@@ -183,7 +189,7 @@ namespace Dev2.Studio.UI.Tests
                 var actualRightTitleText = DatabaseSourceUIMap.GetRightTitleText();
 
                 Assert.AreEqual("Edit - DBSource", actualLeftTitleText);
-                Assert.AreEqual("Remote Connection (http://TST-CI-REMOTE:3142/dsf)", actualRightTitleText);
+                Assert.AreEqual("Remote Connection (http://tst-ci-remote:3142/dsf)", actualRightTitleText);
 
                 DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
                 DatabaseSourceUIMap.EnterUsernameAndPassword();
@@ -261,7 +267,7 @@ namespace Dev2.Studio.UI.Tests
             //Edit remote db service
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             DatabaseServiceWizardUIMap.ClickScrollActionListUp();
-            DatabaseServiceWizardUIMap.ClickFirstAction();
+            DatabaseServiceWizardUIMap.ClickFourthAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
             KeyboardCommands.SendTabs(5);
             KeyboardCommands.SendEnter();
@@ -269,12 +275,12 @@ namespace Dev2.Studio.UI.Tests
             //Change it back
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             string actionName = DatabaseServiceWizardUIMap.GetActionName();
-            DatabaseServiceWizardUIMap.ClickSecondAction();
+            DatabaseServiceWizardUIMap.ClickThirdAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
             KeyboardCommands.SendTabs(5);
             KeyboardCommands.SendEnter();
             //Assert remote db service changed its action
-            Assert.AreEqual("dbo.fn_diagram", actionName, "Cannot edit remote db service");
+            Assert.AreEqual("dbo.FetchHtmlFr", actionName, "Cannot edit remote db service");
         }
 
         [TestMethod]

@@ -373,7 +373,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Keyboard.SendKeys("{Down}");
             Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
-            Playback.Wait(500);
+            Playback.Wait(9500);
         }
 
         public void Server_RightClick_NewWorkflow(string serverName)

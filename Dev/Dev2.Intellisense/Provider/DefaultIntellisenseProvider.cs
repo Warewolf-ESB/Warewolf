@@ -296,7 +296,14 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
             }
 
-            searchText = DataListUtil.IsOpenRegion(searchText) || string.IsNullOrEmpty(searchText) ? searchText : "[[" + searchText;
+            if(context.InputText.Equals("[["))
+            {
+                searchText = context.InputText;
+            }
+            else
+            {
+                searchText = searchText.StartsWith("[[") || string.IsNullOrEmpty(searchText) ? searchText : "[[" + searchText;
+            }
             
             switch(desiredResultSet)
             {
