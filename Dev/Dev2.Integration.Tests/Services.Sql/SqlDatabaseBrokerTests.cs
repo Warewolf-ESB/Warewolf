@@ -143,11 +143,14 @@ namespace Dev2.Integration.Tests.Services.Sql
                     // Need to do this because exceptions get swallowed by impersonator
                     exception = ex;
                 }
+
+                Assert.IsNotNull(exception);
+                Assert.IsInstanceOfType(exception, typeof(SqlException));
+                Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
+
             });
 
-            Assert.IsNotNull(exception);
-            Assert.IsInstanceOfType(exception, typeof(SqlException));
-            Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
+            
         }
 
         [TestMethod]

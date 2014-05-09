@@ -51,7 +51,7 @@ namespace Dev2.Scheduler.Test
 
 
             ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
-            mockTask.VerifySet(a => a.XmlText = "bob");
+            mockTask.VerifyGet(a => a.XmlText);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
 

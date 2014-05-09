@@ -1,61 +1,61 @@
 ﻿<DataList>
     <Locales index="1">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>1</LocationID>
         <Address>19 Pineside Road, New Germany</Address>
     </Locales>
     <Locales index="2">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>2</LocationID>
         <Address>1244 Old North Coast Rd, Redhill</Address>
     </Locales>
     <Locales index="3">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>3</LocationID>
         <Address>Westmead Road, Westmead</Address>
     </Locales>
     <Locales index="4">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>4</LocationID>
         <Address>Turquoise Road, Queensmead</Address>
     </Locales>
     <Locales index="5">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>5</LocationID>
         <Address>Old Main Road, Isipingo</Address>
     </Locales>
     <Locales index="6">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>7</LocationID>
         <Address>2 Brook Street North, Warwick Junction</Address>
     </Locales>
     <Locales index="7">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>8</LocationID>
         <Address>Bellair Road, Corner Bellair &amp; Edwin Swales/Sarnia Arterial</Address>
     </Locales>
     <Locales index="8">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>9</LocationID>
         <Address>Riverside Road, Durban North</Address>
     </Locales>
     <Locales index="9">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>10</LocationID>
         <Address>Malacca Road, Durban North</Address>
     </Locales>
     <Locales index="10">
-        <Latitude></Latitude>
-        <Longitude></Longitude>
+        <Latitude>99.99</Latitude>
+        <Longitude>66.6</Longitude>
         <LocationID>11</LocationID>
         <Address>Glanville Road, Woodlands</Address>
     </Locales>
