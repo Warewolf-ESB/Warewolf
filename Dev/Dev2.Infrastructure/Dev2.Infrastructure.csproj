@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Test\</OutputPath>
+    <OutputPath>..\TestBinaries\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
@@ -121,7 +121,7 @@
     <Compile Include="Providers\Validation\IErrorsSource.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
-	 <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
+    <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXmlRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXpathRule.cs" />
