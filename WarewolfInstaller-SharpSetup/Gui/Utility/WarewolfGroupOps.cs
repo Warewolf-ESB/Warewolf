@@ -7,13 +7,16 @@ namespace Gui.Utility
 {
     public class WarewolfGroupOps
     {
+        public const string WarewolfGroup = "Warewolf Administrators";
+        public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
+        // Administrators have complete and unrestricted access to the computer/domain
         public void AddWarewolfGroup()
         {
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                DirectoryEntry newGroup = ad.Children.Add("Warewolf", "Group");
-                newGroup.Invoke("Put", new object[] { "Description", "Warewolf Group" });
+                DirectoryEntry newGroup = ad.Children.Add(WarewolfGroup, "Group");
+                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
                 newGroup.CommitChanges();
             }
         }
@@ -25,7 +28,7 @@ namespace Gui.Utility
                 ad.Children.SchemaFilter.Add("group");
                 foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == "Warewolf")
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         return true;
                     }
@@ -49,7 +52,7 @@ namespace Gui.Utility
                 ad.Children.SchemaFilter.Add("group");
                 foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == "Warewolf")
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         // Now check group membership ;)
                         var members = dChildEntry.Invoke("Members");
@@ -87,7 +90,7 @@ namespace Gui.Utility
                 ad.Children.SchemaFilter.Add("group");
                 foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == "Warewolf")
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         dChildEntry.Invoke("Add", new object[] { currentUser });
                     }
@@ -102,7 +105,7 @@ namespace Gui.Utility
                 ad.Children.SchemaFilter.Add("group");
                 foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == "Warewolf")
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         ad.Children.Remove(dChildEntry);
                     }
