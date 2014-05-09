@@ -74,4 +74,40 @@ Scenario: Simple workflow executing against the server with a database service
 	 |               |
 	 | [[count]] = 9 |
 	
-	  
+Scenario: Workflow with an assign and remote workflow
+	Given I have a workflow "TestWFWithAssignAndRemote"
+	 And "TestWFWithAssignAndRemote" contains an Assign "AssignData" as
+	  | variable      | value |
+	  | [[inputData]] | hello |
+	And "TestWFWithAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	| input            | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).upper     | [[values().up]]  |
+	|                  |               | values(*).lower     | [[values().low]] |
+	  When "TestWFWithAssignAndRemote" is executed
+	  Then the workflow execution has "NO" error
+	   And the 'AssignData' in WorkFlow 'TestWFWithAssignAndRemote' debug inputs as
+	  | # | Variable        | New Value |
+	  | 1 | [[inputData]] = | hello     |
+	  And the 'AssignData' in Workflow 'TestWFWithAssignAndRemote' debug outputs as    
+	  | # |                       |
+	  | 1 | [[inputData]] = hello |
+	  And the 'Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # | Variable       |
+	  | 1 | [[in]] = hello |
+	  And the 'Case Conversion (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # | Variable       |
+	  | 1 | [[in]] = HELLO |
+	  And the 'Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # | Variable       |
+	  | 1 | [[output]] = HELLO |
+	  | 1 | [[values(1).upper]] = HELLO |
+	  | 1 | [[values(1).lower]] = hello |	  
+	  And the 'WorkflowUsedBySpecs' in WorkFlow 'TestWFWithAssignAndRemote' debug inputs as
+	  |                       |
+	  | [[inputData]] = hello |
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestWFWithAssignAndRemote' debug outputs as
+	  |                           |
+	  | [[output]] = HELLO        |
+	  | [[values(1).up]] = HELLO  |
+	  | [[values(1).low]] = hello |

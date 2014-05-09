@@ -185,6 +185,7 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected && CanStudioExecute)
             {
                 ResourceRepository.ForceLoad();
+                HasLoadedResources = true;
             }
         }
 

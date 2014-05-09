@@ -278,6 +278,130 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with an assign and remote workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void WorkflowWithAnAssignAndRemoteWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with an assign and remote workflow", ((string[])(null)));
+#line 77
+this.ScenarioSetup(scenarioInfo);
+#line 78
+ testRunner.Given("I have a workflow \"TestWFWithAssignAndRemote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table14.AddRow(new string[] {
+                        "[[inputData]]",
+                        "hello"});
+#line 79
+  testRunner.And("\"TestWFWithAssignAndRemote\" contains an Assign \"AssignData\" as", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table15.AddRow(new string[] {
+                        "input",
+                        "[[inputData]]",
+                        "output",
+                        "[[output]]"});
+            table15.AddRow(new string[] {
+                        "",
+                        "",
+                        "values(*).upper",
+                        "[[values().up]]"});
+            table15.AddRow(new string[] {
+                        "",
+                        "",
+                        "values(*).lower",
+                        "[[values().low]]"});
+#line 82
+ testRunner.And("\"TestWFWithAssignAndRemote\" contains \"WorkflowUsedBySpecs\" from server \"Remote Co" +
+                    "nnection\" with mapping as", ((string)(null)), table15, "And ");
+#line 87
+   testRunner.When("\"TestWFWithAssignAndRemote\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 88
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table16.AddRow(new string[] {
+                        "1",
+                        "[[inputData]] =",
+                        "hello"});
+#line 89
+    testRunner.And("the \'AssignData\' in WorkFlow \'TestWFWithAssignAndRemote\' debug inputs as", ((string)(null)), table16, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table17.AddRow(new string[] {
+                        "1",
+                        "[[inputData]] = hello"});
+#line 92
+   testRunner.And("the \'AssignData\' in Workflow \'TestWFWithAssignAndRemote\' debug outputs as", ((string)(null)), table17, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable"});
+            table18.AddRow(new string[] {
+                        "1",
+                        "[[in]] = hello"});
+#line 95
+   testRunner.And("the \'Assign (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable"});
+            table19.AddRow(new string[] {
+                        "1",
+                        "[[in]] = HELLO"});
+#line 98
+   testRunner.And("the \'Case Conversion (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "[[output]] = HELLO"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "[[values(1).upper]] = HELLO"});
+            table20.AddRow(new string[] {
+                        "1",
+                        "[[values(1).lower]] = hello"});
+#line 101
+   testRunner.And("the \'Assign (3)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table20, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table21.AddRow(new string[] {
+                        "[[inputData]] = hello"});
+#line 106
+   testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestWFWithAssignAndRemote\' debug inputs as" +
+                    "", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table22.AddRow(new string[] {
+                        "[[output]] = HELLO"});
+            table22.AddRow(new string[] {
+                        "[[values(1).up]] = HELLO"});
+            table22.AddRow(new string[] {
+                        "[[values(1).low]] = hello"});
+#line 109
+   testRunner.And("the \'WorkflowUsedBySpecs\' in Workflow \'TestWFWithAssignAndRemote\' debug outputs a" +
+                    "s", ((string)(null)), table22, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

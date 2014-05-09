@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -52,24 +53,27 @@ namespace Dev2.Activities.Specs.Composition
             resourceModel.ResourceName = workflowName;
             resourceModel.ID = Guid.NewGuid();
             resourceModel.ResourceType = ResourceType.WorkflowService;
-            ResourceRepository repository = new ResourceRepository(environmentModel);
-            repository.Add(resourceModel);
+
+            environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
 
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
             ScenarioContext.Current.Add(workflowName, resourceModel);
+            ScenarioContext.Current.Add("parentWorkflowName", workflowName);
             ScenarioContext.Current.Add("environment", environmentModel);
-            ScenarioContext.Current.Add("resourceRepo", repository);
+            ScenarioContext.Current.Add("resourceRepo", environmentModel.ResourceRepository);
             ScenarioContext.Current.Add("debugStates", new List<IDebugState>());
         }
 
         void Append(IDebugState debugState)
         {
             List<IDebugState> debugStates;
+            string workflowName;
             ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
+            ScenarioContext.Current.TryGetValue("parentWorkflowName", out workflowName);
 
             debugStates.Add(debugState);
-            if(debugState.IsFinalStep())
+            if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
                 _resetEvt.Set();
 
         }
@@ -80,21 +84,95 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             ResourceRepository repository = new ResourceRepository(environmentModel);
             repository.Load();
-            var resource = repository.Find(r => r.ResourceName.Equals(serviceName)).ToList();
+            var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName));
 
-            var outputSb = GetMapping(table, resource);
-            var outputMapping = outputSb.ToString();
-            resource[0].Outputs = outputMapping;
 
             var activity = GetServiceActivity(serviceType);
             if(activity != null)
             {
-                activity.ResourceID = resource[0].ID;
-                activity.ServiceName = resource[0].ResourceName;
+                var outputSb = GetOutputMapping(table, resource);
+                var inputSb = GetInputMapping(table, resource);
+                var outputMapping = outputSb.ToString();
+                var inputMapping = inputSb.ToString();
+                resource.Outputs = outputMapping;
+                resource.Inputs = inputMapping;
+
+                activity.ResourceID = resource.ID;
+                activity.ServiceName = resource.ResourceName;
                 activity.DisplayName = serviceName;
                 activity.OutputMapping = outputMapping;
+                activity.InputMapping = inputMapping;
                 CommonSteps.AddActivityToActivityList(serviceName, activity);
             }
+        }
+
+        [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
+        public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
+        {
+            var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == "Remote Connection");
+            if(remoteEnvironment != null)
+            {
+                remoteEnvironment.Connect();
+                remoteEnvironment.ForceLoadResources();
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == "RemoteWFForSpecs", true);
+                if(remoteResourceModel != null)
+                {
+                    var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
+
+                    var inputMapping = dataMappingViewModel.GetInputString(dataMappingViewModel.Inputs);
+                    var outputMapping = dataMappingViewModel.GetOutputString(dataMappingViewModel.Outputs);
+
+                    var activity = new DsfWorkflowActivity();
+                    remoteResourceModel.Outputs = outputMapping;
+                    remoteResourceModel.Inputs = inputMapping;
+                    var remoteServerID = remoteEnvironment.ID;
+                    activity.ServiceServer = remoteServerID;
+                    activity.EnvironmentID = remoteServerID;
+                    activity.ServiceUri = remoteEnvironment.Connection.AppServerUri.ToString();
+                    activity.ResourceID = remoteResourceModel.ID;
+                    activity.ServiceName = remoteResourceModel.ResourceName;
+                    activity.DisplayName = remoteWf;
+                    activity.OutputMapping = outputMapping;
+                    activity.InputMapping = inputMapping;
+                    CommonSteps.AddActivityToActivityList(remoteWf, activity);
+                }
+            }
+        }
+
+        static DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
+        {
+            var webActivity = new WebActivity();
+            webActivity.ResourceModel = remoteResourceModel as ResourceModel;
+            DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
+            foreach(var tableRow in mappings.Rows)
+            {
+                var output = tableRow["Output from Service"];
+                var toVariable = tableRow["To Variable"];
+                if(!string.IsNullOrEmpty(output) && !string.IsNullOrEmpty(toVariable))
+                {
+                    var inputOutputViewModel = dataMappingViewModel.Outputs.FirstOrDefault(model => model.DisplayName == output);
+                    if(inputOutputViewModel != null)
+                    {
+                        inputOutputViewModel.Value = toVariable;
+                        CommonSteps.AddVariableToVariableList(toVariable);
+                    }
+                }
+
+                var input = tableRow["Input to Service"];
+                var fromVariable = tableRow["From Variable"];
+
+                if(!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(fromVariable))
+                {
+                    var inputOutputViewModel = dataMappingViewModel.Inputs.FirstOrDefault(model => model.DisplayName == input);
+                    if(inputOutputViewModel != null)
+                    {
+                        inputOutputViewModel.MapsTo = fromVariable;
+                        CommonSteps.AddVariableToVariableList(fromVariable);
+                    }
+                }
+
+            }
+            return dataMappingViewModel;
         }
 
         static DsfActivity GetServiceActivity(string serviceType)
@@ -118,26 +196,22 @@ namespace Dev2.Activities.Specs.Composition
             return activity;
         }
 
-        static StringBuilder GetMapping(Table table, List<IResourceModel> resource)
+        static StringBuilder GetOutputMapping(Table table, IResourceModel resource)
         {
             var outputSb = new StringBuilder();
             outputSb.Append("<Outputs>");
 
             foreach(var tableRow in table.Rows)
             {
-                var input = tableRow["Input to Service"];
-                var fromVariable = tableRow["From Variable"];
                 var output = tableRow["Output from Service"];
                 var toVariable = tableRow["To Variable"];
 
-                // CommonSteps.AddVariableToVariableList(output);
-                //  CommonSteps.AddVariableToVariableList(fromVariable);
-                // CommonSteps.AddVariableToVariableList(input);
                 CommonSteps.AddVariableToVariableList(toVariable);
 
-                if(resource.Count > 0)
+                if(resource != null)
                 {
-                    var outputs = XDocument.Parse(resource[0].Outputs);
+
+                    var outputs = XDocument.Parse(resource.Outputs);
 
                     string recordsetName;
                     string fieldName;
@@ -168,6 +242,53 @@ namespace Dev2.Activities.Specs.Composition
 
             outputSb.Append("</Outputs>");
             return outputSb;
+        }
+
+        static StringBuilder GetInputMapping(Table table, IResourceModel resource)
+        {
+            var inputSb = new StringBuilder();
+            inputSb.Append("<Inputs>");
+
+            foreach(var tableRow in table.Rows)
+            {
+                var input = tableRow["Input to Service"];
+                var fromVariable = tableRow["From Variable"];
+
+                CommonSteps.AddVariableToVariableList(fromVariable);
+
+                if(resource != null)
+                {
+                    var outputs = XDocument.Parse(resource.Inputs);
+
+                    string recordsetName;
+                    string fieldName;
+
+                    if(DataListUtil.IsValueRecordset(input))
+                    {
+                        recordsetName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                        fieldName = DataListUtil.ExtractFieldNameFromValue(input);
+                    }
+                    else
+                    {
+                        recordsetName = fieldName = input;
+                    }
+
+                    var element = (from elements in outputs.Descendants("Input")
+                                   where (string)elements.Attribute("Recordset") == recordsetName &&
+                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   select elements).SingleOrDefault();
+
+                    if(element != null)
+                    {
+                        element.SetAttributeValue("Value", fromVariable);
+                    }
+
+                    inputSb.Append(element);
+                }
+            }
+
+            inputSb.Append("</Inputs>");
+            return inputSb;
         }
 
         [When(@"""(.*)"" is executed")]
@@ -220,14 +341,20 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
-
+            ScenarioContext.Current.TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
 
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
+            if(parentWorkflowName == workflowName)
+            {
+                workflowId = Guid.Empty;
+            }
+
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.OriginalInstanceID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             var commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
@@ -239,13 +366,20 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
             ScenarioContext.Current.TryGetValue("activityList", out activityList);
+            ScenarioContext.Current.TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
+            if(parentWorkflowName == workflowName)
+            {
+                workflowId = Guid.Empty;
+            }
+
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.OriginalInstanceID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             var commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
