@@ -10,7 +10,6 @@ namespace Gui.Utility
         public const string WarewolfGroup = "Warewolf Administrators";
         public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
-        // Administrators have complete and unrestricted access to the computer/domain
         public void AddWarewolfGroup()
         {
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
