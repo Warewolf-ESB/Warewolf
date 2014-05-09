@@ -266,7 +266,7 @@ Scenario: Calculate with negative recordset index for Format
 	| Input 1    | Input 2    | Input Format        | Output In |
 	| 2014-11-01 | 2014-11-01 | [[my(-1).format]] = | Minutes   |
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
 
 Scenario: Calculate the number of weeks between two given dates format has quoted strings
@@ -281,5 +281,21 @@ Scenario: Calculate the number of weeks between two given dates format has quote
 	| Input 1         | Input 2         | Input Format      | Output In |
 	| 2013-11-29 date | 2014-11-01 date | yyyy-mm-dd 'date' | Hours     |
 	And the debug output as 
-	|                    |
+	|                   |
 	| [[result]] = 8088 |
+
+#Scenario: Calculate the number of years with incorrect inputs
+#	Given I have a DateAndTimeDifference variable "[[a]]" equal to 01.
+#	And I have a first date "2014/[[a]]/01" 
+#	And I have a second date "2030/01/01" 
+#	And the date format as "yyyy/mm/dd"
+#	And I selected output in "Years" 	
+#	When the datetime difference tool is executed
+#	Then the difference should be ""
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	| Input 1                  | Input 2    | Input Format | Output In |
+#	| 2014/[[b]]/29 = 2030/01./01 | 2030-01-01 | yyyy/mm/dd   | Years     |
+#	And the debug output as 
+#	|              |
+#	| [[result]] = |
