@@ -337,6 +337,7 @@ xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 GOTO exit
 :getTestResources
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs" "$(TargetDir)Webs\"
 GOTO exit
 :getReleaseResources
