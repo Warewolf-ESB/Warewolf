@@ -192,7 +192,7 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	   | variable   | value        |
 	   | [[rec(1)]] | [[result2]]] |
 	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
-      Then the execution has "AN" error
+      Then the workflow execution has "NO" error
 	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | 50        |
@@ -225,20 +225,20 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | variable | value        |
 	  | [[new]]  | [[[[test]]]] |
 	  When "WorkflowWith3Assigntools" is executed
-	  Then the execution has "NO" error
+	  Then the workflow execution has "NO" error
 	  And the 'Assigntool1' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | rec(1).a  |
 	  And the 'Assigntool1' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
-	  | # |                        |
-	  | 1 | [[rec().a]] = rec(1).a |
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = rec(1).a |
 	  And the 'Assigntool2' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[test]] =    | rec(1).a  |
-	  | 2 | [[rec(1).a]]= | Warewolf  |
+	  | # | Variable                | New Value |
+	  | 1 | [[test]] =              | rec(1).a  |
+	  | 2 | [[rec(1).a]] = rec(1).a | Warewolf  |
 	  And the 'Assigntool2' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                         |
-	  | 1 | [[rec().a]] = rec(1).a  |
+	  | 1 | [[test]] = rec(1).a     |
 	  | 2 | [[rec(1).a]] = Warewolf |
 	  And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
@@ -293,7 +293,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | [[result]][[split().a]] | [[rec(1).b]] | Index | 8  | Unselected |        |
 	  |                         | [[rec(2).b]] | Index | 8  | Unselected |        |
 	  When the Sequence tool is executed
-	  Then the execution has "NO" error
+	  Then the workflow execution has "NO" error
 	  And the 'Assign To merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
 	  | # | Variable        | New Value |
 	  | 1 | [[a]] =         | Test      |
