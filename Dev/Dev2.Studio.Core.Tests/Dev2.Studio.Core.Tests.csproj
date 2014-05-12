@@ -181,6 +181,7 @@
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
+    <Compile Include="ConverterTests\CalculateIntellisenseTextConverterTests.cs" />
     <Compile Include="ConverterTests\GridRowNumberConverterTests.cs" />
     <Compile Include="ConverterTests\PaddingThicknessConverterTests.cs" />
     <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
@@ -196,7 +197,8 @@
     <Compile Include="Custom Dev2 Controls\Intellisense\MockIntellisenseTextbox.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
-    <Compile Include="DateTimeIntellisenseProviderTests.cs" />
+    <Compile Include="FileSystemIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
     <Compile Include="Deploy\DeployUnitTestIsolation.cs" />
@@ -209,6 +211,9 @@
     <Compile Include="EnvironmentTreeViewModelTests.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
+    <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
@@ -261,7 +266,6 @@
     <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />
     <Compile Include="Feedback\FeedbackRecorderTests.cs" />
-    <Compile Include="FileSystemIntellisenseProviderTest.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\ProgressFileDownloaderTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />

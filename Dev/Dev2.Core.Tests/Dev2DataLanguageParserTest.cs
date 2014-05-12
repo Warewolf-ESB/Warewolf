@@ -593,6 +593,240 @@ namespace Dev2.Tests
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type, "Dev2DataLanguageParser returned an incorrect result type");
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_MakeParts")]
+        public void Dev2DataLanguageParser_MakeParts_PayloadIsEmpty_NoParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.MakeParts("");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_MakeParts")]
+        public void Dev2DataLanguageParser_MakeParts_PayloadIsNull_NoParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.MakeParts(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_MakePartsWithOutRecsetIndex")]
+        public void Dev2DataLanguageParser_MakePartsWithOutRecsetIndex_PayloadIsNull_NoParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.MakePartsWithOutRecsetIndex(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_MakePartsWithOutRecsetIndex")]
+        public void Dev2DataLanguageParser_MakePartsWithOutRecsetIndex_PayloadIsEmpty_NoParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.MakePartsWithOutRecsetIndex("");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseDataLanguageForIntellisense")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_PayloadIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense(null, "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseDataLanguageForIntellisense")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_PayloadIsEmpty_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense("","");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseDataLanguageForIntellisense")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_DataListIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense(null, "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseDataLanguageForIntellisense")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_DataListIsEmpty_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense("", "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseExpressionIntoParts")]
+        public void Dev2DataLanguageParser_ParseExpressionIntoParts_ExpressionIsEmpty_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseExpressionIntoParts("", new List<IDev2DataLanguageIntellisensePart>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseExpressionIntoParts")]
+        public void Dev2DataLanguageParser_ParseExpressionIntoParts_ExpressionIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseExpressionIntoParts(null, new List<IDev2DataLanguageIntellisensePart>());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseExpressionIntoParts")]
+        public void Dev2DataLanguageParser_ParseExpressionIntoParts_DataListPartsIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseExpressionIntoParts("[[var]]", null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseForActivityDataItems")]
+        public void Dev2DataLanguageParser_ParseForActivityDataItems_PayloadIsNull_NoDataListParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseForActivityDataItems(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseForActivityDataItems")]
+        public void Dev2DataLanguageParser_ParseForActivityDataItems_PayloadIsEmpty_NoDataListParts()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseForActivityDataItems("");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
+        public void Dev2DataLanguageParser_ParseForMissingDataListItems_PartsIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseForMissingDataListItems(null, "<a></a>");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
+        public void Dev2DataLanguageParser_ParseForMissingDataListItems_DataListIsEmpty_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseForMissingDataListItems(new List<IDataListVerifyPart>(), "");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
+        public void Dev2DataLanguageParser_ParseForMissingDataListItems_DataListIsNull_NoIntellisenseResult()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var parts = dev2LanuageParser.ParseForMissingDataListItems(new List<IDataListVerifyPart>(), null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, parts.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ValidateName")]
+        public void Dev2DataLanguageParser_ValidateName_NameIsNull_Null()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var res = dev2LanuageParser.ValidateName(null, "");
+            //------------Assert Results-------------------------
+            Assert.IsNull(res);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("Dev2DataLanguageParser_ValidateName")]
+        public void Dev2DataLanguageParser_ValidateName_NameIsEmpty_Null()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            //------------Execute Test---------------------------
+            var res = dev2LanuageParser.ValidateName("", "");
+            //------------Assert Results-------------------------
+            Assert.IsNull(res);
+        }
+
         #endregion
 
         #region Negative Test
@@ -969,5 +1203,6 @@ namespace Dev2.Tests
 
 
         #endregion
+
     }
 }

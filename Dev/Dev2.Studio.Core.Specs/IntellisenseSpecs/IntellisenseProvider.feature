@@ -34,7 +34,8 @@ Scenario Outline: Insert for All FilterType and Default Provider
 	| 15       | <var/><var2/><rec><var/><var2/></rec> | All        | r                     | 1     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec().var2]]  | [[rec().var2]]              | Default  | 14            |
 	| 16       | <var/><var2/><rec><var/><var2/></rec> | All        | re                    | 2     | [[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]                  | [[rec(          | [[rec(                      | Default  | 6             |
 	| 17       | <var/><var2/><rec><var/><var2/></rec> | All        | [[rec([[va]]).var]]   | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]        | Default  | 13            |
-	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]             | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |	
+	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]             | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |
+	| 19       | <var/><var2/><rec><var/><var2/></rec> | All        | [[                    | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                     | Default  | 7             |
 
 Scenario Outline: Insert for All FilterType and DateTime Provider
 	Given I have the following variable list '<varlist>'

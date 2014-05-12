@@ -30,6 +30,8 @@ namespace Dev2.UI
     /// </summary>
     public class IntellisenseTextBox : TextBox, INotifyPropertyChanged
     {
+        public bool IsEventFree { get; set; }
+
         #region Static Constructor
         static IntellisenseTextBox()
         {
@@ -661,7 +663,13 @@ namespace Dev2.UI
             _toolTip = new ToolTip();
             _listBox = new ListBox();
         }
-        
+
+        public IntellisenseTextBox(bool isEventFree)
+        {
+            IsEventFree = isEventFree;
+            _toolTip = new ToolTip();
+        }
+
         #region Overrides of TextBoxBase
 
 

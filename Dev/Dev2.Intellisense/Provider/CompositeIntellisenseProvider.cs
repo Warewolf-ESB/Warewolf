@@ -30,7 +30,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(provider.Optional)
                 {
-                    if(!results.Any(r => r.IsError == false) || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
+                    if(results.All(r => r.IsError) || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                     {
                         IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
                         results.AddRange(subset);

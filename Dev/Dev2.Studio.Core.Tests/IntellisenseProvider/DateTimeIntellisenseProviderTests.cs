@@ -8,9 +8,10 @@ using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
+   // ReSharper disable InconsistentNaming
     public class DateTimeIntellisenseProviderTests
     {
         [TestMethod]
@@ -56,7 +57,7 @@ namespace Dev2.Core.Tests
             res.Setup(a => a.ErrorCode).Returns(enIntellisenseErrorCode.InvalidRecordsetNotation);
             res.Setup(a => a.Type).Returns(enIntellisenseResultType.Error);
             res.Setup(a => a.IsClosedRegion).Returns(true);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>() { res.Object });
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> { res.Object });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(dateTimeIntellisenseProvider.Optional);
@@ -175,7 +176,7 @@ namespace Dev2.Core.Tests
             res.Setup(a => a.IsClosedRegion).Returns(false);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>(){res.Object});
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{res.Object});
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------
@@ -211,7 +212,7 @@ namespace Dev2.Core.Tests
             res.Setup(a => a.IsClosedRegion).Returns(true);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>() { res.Object });
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{ res.Object });
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------
@@ -246,7 +247,7 @@ namespace Dev2.Core.Tests
             res.Setup(a => a.IsClosedRegion).Returns(false);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>() { res.Object });
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{ res.Object });
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------

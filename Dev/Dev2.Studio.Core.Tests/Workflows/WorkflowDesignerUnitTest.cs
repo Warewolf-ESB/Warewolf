@@ -53,6 +53,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Core.Tests.Workflows
 {
     [TestClass]
+    [Ignore]
     [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {

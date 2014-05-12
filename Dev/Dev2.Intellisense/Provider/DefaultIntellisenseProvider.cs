@@ -51,11 +51,12 @@ namespace Dev2.Studio.InterfaceImplementors
 
         #region Instance Fields
 
-        private bool _isDisposed;
-        private bool _isUpdated;
+        public bool IsDisposed {get; private set;}
+        public string CachedDataList { get; private set; }
+        public IntellisenseTextBox TextBox { get; private set; }
+        public bool IsUpdated { get; private set; }
+
         private bool _hasCachedDatalist;
-        private string _cachedDataList;
-        private IntellisenseTextBox _textBox;
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace Dev2.Studio.InterfaceImplementors
             EventPublishers.Aggregator.Subscribe(this);
             if(DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
-                _isUpdated = true;
+                IsUpdated = true;
                 CreateDataList();
             }
         }
@@ -77,8 +78,11 @@ namespace Dev2.Studio.InterfaceImplementors
         #region Update Handling
         private void OnUpdateIntellisense()
         {
-            _isUpdated = true;
-            if(_textBox != null) _textBox.UpdateErrorState();
+            IsUpdated = true;
+            if(TextBox != null)
+            {
+                TextBox.UpdateErrorState();
+            }
         }
         #endregion
 
@@ -100,10 +104,10 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if(dataList != null)
             {
-                if(!_hasCachedDatalist || _isUpdated)
+                if(!_hasCachedDatalist || IsUpdated)
                 {
                     _hasCachedDatalist = true;
-                    _isUpdated = false;
+                    IsUpdated = false;
                 }
             }
 
@@ -124,14 +128,14 @@ namespace Dev2.Studio.InterfaceImplementors
                         }
                         else
                         {
-                            _cachedDataList = activeDataList.Resource.DataList;
+                            CachedDataList = activeDataList.Resource.DataList;
                             succeeded = true;
                         }
                     }
                 }
                 else
                 {
-                    _cachedDataList = activeDataList.Resource.DataList;
+                    CachedDataList = activeDataList.Resource.DataList;
                     succeeded = true;
                 }
             }
@@ -152,17 +156,22 @@ namespace Dev2.Studio.InterfaceImplementors
             }
 
             string replace = context.FindTextToSearch();
-
-            if(replace.StartsWith("=") && inputText.StartsWith("="))
-            {
-                replace = replace.Remove(0, 1);
-            }
-
             var caretPosition = context.CaretPosition;
             var region = inputText.RegionInPostion(caretPosition);
 
-            var substr = string.IsNullOrEmpty(inputText) ? "" : inputText.Replace(replace, "");
+            string substr;
+
+            if(string.IsNullOrEmpty(inputText))
+            {
+                substr = "";
+            }
+            else
+            {
+                substr = string.IsNullOrEmpty(replace) ? inputText : inputText.Replace(replace, "");
+            }
+            
             replace = DataListUtil.IsRecordsetOpeningBrace(substr) ? region.Name : replace;
+            replace = replace ?? string.Empty;
 
             var regionName = region.Name ?? string.Empty;
 
@@ -183,6 +192,7 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             if(string.IsNullOrEmpty(replace))
             {
+                context.CaretPosition = caretPosition + input.Length;
                 return inputText.Insert(caretPosition, input);
             }
             return PerformResultInsertionForScalars(input, context, replace);
@@ -204,9 +214,10 @@ namespace Dev2.Studio.InterfaceImplementors
             var region = inputText.RegionInPostion(caretPosition);
             var regionName = region.Name ?? string.Empty;
 
-            if(DataListUtil.IsClosedRegion(regionName))
+            if(DataListUtil.EndsWithClosingTags(regionName))
             {
                 var indexOfClosingBracket = DataListUtil.IndexOfClosingTags(input);
+                indexOfClosingBracket = indexOfClosingBracket > 0 ? indexOfClosingBracket : 0;
                 input = input.Substring(0, indexOfClosingBracket);
                 caretPosition += 2;
             }
@@ -224,10 +235,11 @@ namespace Dev2.Studio.InterfaceImplementors
             var caretPosition = context.CaretPosition;
             var inputText = context.InputText ?? string.Empty;
             var name = region.Name ?? string.Empty;
+            var startIndex = region.StartIndex;
 
             var indexOfStringToReplace = name.IndexOf(replace, StringComparison.Ordinal);
             var recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(name) ?? string.Empty;
-            
+
             if(indexOfStringToReplace + replace.Length == caretPosition)
             {
                 if(DataListUtil.IsValueRecordsetWithFields(replace) && !DataListUtil.IsValueRecordset(replace))
@@ -258,21 +270,38 @@ namespace Dev2.Studio.InterfaceImplementors
                         context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
                         return updatedInputText;
                     }
+
                 }
             }
+            
+            updatedInputText = inputText.Remove(startIndex, name.Length)
+                                         .Insert(startIndex, input);
 
-            updatedInputText = inputText.Remove(region.StartIndex, name.Length)
-                                      .Insert(region.StartIndex, input);
             context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
             return updatedInputText;
         }
         
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
-            if(_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
-            if(!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
+            if(context == null)
+            {
+                return new List<IntellisenseProviderResult>();
+            }
+
+            if(IsDisposed)
+            {
+                throw new ObjectDisposedException("DefaultIntellisenseProvider");
+            }
+           
+            if(!Equals(TextBox, context.TextBox))
+            {
+                TextBox = context.TextBox as IntellisenseTextBox;
+            }
             IList<IIntellisenseResult> results;
-            if(context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
+            var input = context.InputText ?? string.Empty;
+            var caretPosition = context.CaretPosition;
+
+            if(caretPosition > input.Length || caretPosition < 0)
             {
                 return new List<IntellisenseProviderResult>();
             }
@@ -284,40 +313,40 @@ namespace Dev2.Studio.InterfaceImplementors
             string searchText = context.FindTextToSearch();
             string recordsetIndex = string.Empty;
             string recordserName = string.Empty;
-            var region = context.InputText.RegionInPostion(context.CaretPosition);
+            var region = input.RegionInPostion(caretPosition);
+            var regionName = region.Name;
 
-            if(DataListUtil.IsValueRecordset(region.Name))
+            if(DataListUtil.IsValueRecordset(regionName))
             {
-                recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(region.Name);
-                recordserName = DataListUtil.ExtractRecordsetNameFromValue(region.Name);
+                recordsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(regionName);
+                recordserName = DataListUtil.ExtractRecordsetNameFromValue(regionName);
                 if(!string.IsNullOrEmpty(recordsetIndex) && DataListUtil.IsValueRecordsetWithFields(searchText))
                 {
                     altfilterType = enIntellisensePartType.RecordsetFields;
                 }
             }
-
-            if(context.InputText.Equals("[["))
+            
+            if(context.InputText.Equals(DataListUtil.OpeningSquareBrackets))
             {
                 searchText = context.InputText;
             }
             else
             {
-                searchText = searchText.StartsWith("[[") || string.IsNullOrEmpty(searchText) ? searchText : "[[" + searchText;
+                searchText = searchText.StartsWith(DataListUtil.OpeningSquareBrackets) || string.IsNullOrEmpty(searchText) ? searchText : DataListUtil.OpeningSquareBrackets + searchText;
             }
             
             switch(desiredResultSet)
             {
-                case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
+                case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl(DataListUtil.OpeningSquareBrackets, filterType); break;
                 default:
                     {
                         results = GetIntellisenseResultsImpl(searchText, filterType);
                         if(results == null || results.Count == 0 && HandlesResultInsertion)
                         {
                             results = new List<IIntellisenseResult>();
+                            string inputText = input;
+                            var regionInPostion = inputText.RegionInPostion(caretPosition);
 
-                            string inputText = context.InputText;
-
-                            var regionInPostion = inputText.RegionInPostion(context.CaretPosition);
                             inputText = !string.IsNullOrEmpty(regionInPostion.Name) ? regionInPostion.Name : inputText;
 
                             var getErrors = GetIntellisenseResultsImpl(inputText, filterType)
@@ -342,8 +371,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IList<IntellisenseProviderResult> trueResults = new List<IntellisenseProviderResult>();
 
-            string[] openParts = Regex.Split(context.InputText, @"\[\[");
-            string[] closeParts = Regex.Split(context.InputText, @"\]\]");
+            string[] openParts = Regex.Split(input, @"\[\[");
+            string[] closeParts = Regex.Split(input, @"\]\]");
             if(openParts.Length != closeParts.Length)
             {
                 if(results != null)
@@ -391,7 +420,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            results = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
+            results = parser.ParseDataLanguageForIntellisense(input, CachedDataList, false, filterTO, true);
 
             return results;
         }
@@ -402,12 +431,12 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Dispose()
         {
-            if(_isDisposed)
+            if(IsDisposed)
                 return;
-            _isDisposed = true;
+            IsDisposed = true;
 
             EventPublishers.Aggregator.Unsubscribe(this);
-            _cachedDataList = null;
+            CachedDataList = null;
             GC.SuppressFinalize(this);
         }
         

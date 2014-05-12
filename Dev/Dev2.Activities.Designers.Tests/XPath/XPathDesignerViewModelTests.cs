@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             Assert.AreEqual(5, mi.ResultsCollection.Count);
         }
 
-        [TestMethod]
+        [TestMethod][Ignore]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("XPathDesignerViewModel_ValidateThis")]
         public void XPathDesignerViewModel_ValidateThis_SourceStringIsNotEmpty_DoesNotHaveErrors()
@@ -120,6 +120,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         }
 
         [TestMethod]
+        [Ignore]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("XPathDesignerViewModel_ValidateThis")]
         public void XPathDesignerViewModel_ValidateThis_XPathIsValidButNoOuputVariable_DoesHaveErrors()
