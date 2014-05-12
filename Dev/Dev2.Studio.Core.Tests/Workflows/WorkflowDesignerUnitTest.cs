@@ -216,7 +216,6 @@ namespace Dev2.Core.Tests.Workflows
         /// Test the FindUnusedDataListItems method that it sets all the unused data list items to unused
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void FindUnusedDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
         {
             var eventAggregator = new EventAggregator();
@@ -253,7 +252,6 @@ namespace Dev2.Core.Tests.Workflows
         #region NotifyItemSelected Tests
 
         [TestMethod]
-        [Ignore]
         public void NotifyItemSelected_WebpagePreviewNullReferenceBugFix()
         {
             Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock(); //new Mock<IContextualResourceModel>();
@@ -995,7 +993,6 @@ namespace Dev2.Core.Tests.Workflows
 
         //2013.02.11: Ashley Lewis - Bug 8553
         [TestMethod]
-        [Ignore]
         public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
         {
             var eventAggregator = new EventAggregator();
@@ -1019,7 +1016,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_BuildDataPart")]
         public void WorkflowDesignerViewModel_BuildDataPart_ValidItem_ShouldAddItemToDataList()
@@ -1041,7 +1037,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_BuildDataPart")]
         public void WorkflowDesignerViewModel_BuildDataPart_InValidItems_ShouldNotAddItemToDataList()
