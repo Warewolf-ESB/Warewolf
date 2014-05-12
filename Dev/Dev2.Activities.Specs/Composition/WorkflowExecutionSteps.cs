@@ -109,12 +109,12 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == "Remote Connection");
+            var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
             if(remoteEnvironment != null)
             {
                 remoteEnvironment.Connect();
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == "RemoteWFForSpecs", true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -186,7 +186,7 @@ namespace Dev2.Activities.Specs.Composition
                 case "plugin":
                     activity = new DsfPluginActivity();
                     break;
-                case "web":
+                case "webservice":
                     activity = new DsfWebserviceActivity();
                     break;
                 case "workflow":
@@ -258,32 +258,45 @@ namespace Dev2.Activities.Specs.Composition
 
                 if(resource != null)
                 {
-                    var outputs = XDocument.Parse(resource.Inputs);
+                    var inputs = XDocument.Parse(resource.Inputs);
 
                     string recordsetName;
-                    string fieldName;
-
+                    XElement element;
                     if(DataListUtil.IsValueRecordset(input))
                     {
                         recordsetName = DataListUtil.ExtractRecordsetNameFromValue(input);
-                        fieldName = DataListUtil.ExtractFieldNameFromValue(input);
+                        string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
+
+                        element = (from elements in inputs.Descendants("Input")
+                                       where (string)elements.Attribute("Recordset") == recordsetName &&
+                                             (string)elements.Attribute("OriginalName") == fieldName
+                                       select elements).SingleOrDefault();
+
+                        if(element != null)
+                        {
+                            element.SetAttributeValue("Value", fromVariable);
+                        }
+
+                        inputSb.Append(element);
                     }
                     else
                     {
-                        recordsetName = fieldName = input;
-                    }
+                        recordsetName = input;
 
-                    var element = (from elements in outputs.Descendants("Input")
-                                   where (string)elements.Attribute("Recordset") == recordsetName &&
-                                         (string)elements.Attribute("OriginalName") == fieldName
-                                   select elements).SingleOrDefault();
+                        element = (from elements in inputs.Descendants("Input")
+                                       where (string)elements.Attribute("Name") == recordsetName
+                                       select elements).SingleOrDefault();
+
+                        if(element != null)
+                        {
+                            element.SetAttributeValue("Source", fromVariable);
+                        }
+                    }
 
                     if(element != null)
                     {
-                        element.SetAttributeValue("Value", fromVariable);
+                        inputSb.Append(element);
                     }
-
-                    inputSb.Append(element);
                 }
             }
 

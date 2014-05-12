@@ -73,40 +73,70 @@ Scenario: Simple workflow executing against the server with a database service
 	 And the 'Count' in Workflow 'TestDbServiceWF' debug outputs as    
 	 |               |
 	 | [[count]] = 9 |
+
+Scenario: Workflow with an assign and webservice
+	 Given I have a workflow "TestWebServiceWF"
+	 And "TestWebServiceWF" contains an Assign "Inputs" as
+	  | variable   | value |
+	  | [[ext]]    | json  |
+	  | [[prefix]] | a     |
+	 And "TestWebServiceWF" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+	  | Input to Service | From Variable | Output from Service      | To Variable                 |
+	  | extension        | [[ext]]       | Countries(*).CountryID   | [[Countries().CountryID]]   |
+	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
+	  When "TestWebServiceWF" is executed
+	  Then the workflow execution has "NO" error
+	   And the 'Inputs' in WorkFlow 'TestWebServiceWF' debug inputs as
+	  | # | Variable     | New Value |
+	  | 1 | [[ext]] =    | json      |
+	  | 2 | [[prefix]] = | a         |
+	  And the 'Inputs' in Workflow 'TestWebServiceWF' debug outputs as    
+	  | # |                |
+	  | 1 | [[ext]] = json |
+	  | 2 | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestWebServiceWF' debug inputs as
+	  |  |
+	  | [[ext]] = json |
+	  | [[prefix]] = a |
+	  And the 'InternalCountriesServiceTest' in Workflow 'TestWebServiceWF' debug outputs as
+	  |                                            |
+	  | [[Countries(10).CountryID]] = 10           |
+	  | [[Countries(10).Description]] = Azerbaijan |
+
 	
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestWFWithAssignAndRemote"
-	 And "TestWFWithAssignAndRemote" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignAndRemote"
+	 And "TestAssignAndRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestWFWithAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection" with mapping as
+	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| input            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).upper     | [[values().up]]  |
 	|                  |               | values(*).lower     | [[values().low]] |
-	  When "TestWFWithAssignAndRemote" is executed
+	  When "TestAssignAndRemote" is executed
 	  Then the workflow execution has "NO" error
-	   And the 'AssignData' in WorkFlow 'TestWFWithAssignAndRemote' debug inputs as
+	   And the 'AssignData' in WorkFlow 'TestAssignAndRemote' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestWFWithAssignAndRemote' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignAndRemote' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	  And the 'Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
-	  | # | Variable       |
-	  | 1 | [[in]] = hello |
-	  And the 'Case Conversion (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
-	  | # | Variable       |
-	  | 1 | [[in]] = HELLO |
-	  And the 'Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
-	  | # | Variable       |
-	  | 1 | [[output]] = HELLO |
-	  | 1 | [[values(1).upper]] = HELLO |
-	  | 1 | [[values(1).lower]] = hello |	  
-	  And the 'WorkflowUsedBySpecs' in WorkFlow 'TestWFWithAssignAndRemote' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignAndRemote' debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
-	  And the 'WorkflowUsedBySpecs' in Workflow 'TestWFWithAssignAndRemote' debug outputs as
+	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                |
+	  | 1 | [[in]] = hello |
+	  And the 'Convert Case (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                |
+	  | 1 | [[in]] = HELLO |
+	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                             |
+	  | 1 | [[output]] = HELLO          |
+	  | 2 | [[values(1).upper]] = HELLO |
+	  | 3 | [[values(1).lower]] = hello |	  	 
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignAndRemote' debug outputs as
 	  |                           |
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
