@@ -332,6 +332,8 @@ IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
 :getDebugResources
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Debug" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 GOTO exit
 :getTestResources
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
