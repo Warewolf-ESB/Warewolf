@@ -1284,7 +1284,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
         [TestMethod]
-        [Ignore]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
@@ -1302,7 +1301,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
             var repo = new Mock<IResourceRepository>();
@@ -1333,7 +1331,6 @@ namespace Dev2.Core.Tests.Workflows
         #region CheckIfRemoteWorkflowTests
 
         [TestMethod]
-        [Ignore]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeNull()
         {
             const string ServiceUri = "http://localhost:1234/";
@@ -1389,7 +1386,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedServiceUriToBeLocalHost()
         {
             const string ServiceUri = "http://localhost:1234/";
@@ -1449,7 +1445,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // BUG 9143 - 2013.07.03 - TWR - added
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingSelfExpectedClearsNext()
         {
             TestModelServiceModelChangedSelfReference(true);
@@ -1457,7 +1452,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // BUG 9143 - 2013.07.03 - TWR - added
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingOtherExpectedDoesNotClearNext()
         {
             TestModelServiceModelChangedSelfReference(false);
@@ -1465,7 +1459,6 @@ namespace Dev2.Core.Tests.Workflows
 
         //Bug 
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelTestStartNodeNotDoubleConnect()
         {
             #region Setup view model constructor parameters
