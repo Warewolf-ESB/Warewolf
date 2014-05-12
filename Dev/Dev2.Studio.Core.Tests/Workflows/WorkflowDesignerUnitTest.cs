@@ -1519,7 +1519,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_UnitTest")]
         [Description("Dropping a decision onto an auto connect node; expects an edit decision message with isnew equal to true to be published")]
         [Owner("Ashley Lewis")]
@@ -1609,7 +1608,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_UnitTest")]
         [Description("Dropping a switch onto an auto connect node; expects an edit switch message with isnew equal to true to be published")]
         [Owner("Ashley Lewis")]
@@ -1706,7 +1704,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_HandleSaveUnsavedWorkflow")]
         public void WorkflowDesignerViewModel_HandleSaveUnsavedWorkflow_MessageWithArgs_Saves()
@@ -1797,7 +1794,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_HandleSaveUnsavedWorkflow")]
         public void WorkflowDesignerViewModel_HandleSaveUnsavedWorkflow_MessageWithArgs_OpenTab_Saves()
@@ -1889,7 +1885,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
@@ -2027,7 +2022,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Description("When the model changes we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
