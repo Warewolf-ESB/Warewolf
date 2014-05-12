@@ -141,3 +141,122 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+
+	  
+Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
+	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  | [[rec().a]] | test  |
+	  | [[rec().a]] | 100   |
+	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains case convert "Case to Convert" as
+	  | Variable     | Type  |
+	  | [[rec(2).a]] | UPPER |
+	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains Base convert "Base to Convert" as
+	  | Variable     | From | To     |
+	  | [[rec(1).a]] | Text | Base64 |
+	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | 50        |
+	  | 2 | [[rec(2).a]] = | test      |
+	  | 3 | [[rec(3).a]] = | 100       |
+	   And the 'Rec To Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                |      |
+	  | 1 | [[rec(1).a]] = | 50   |
+	  | 2 | [[rec(2).a]] = | test |
+	  | 3 | [[rec(3).a]] = | 100  |
+	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | # | Convert             | To    |
+	  | 1 | [[rec(2).a]] = test | UPPER |
+	  And the 'Case to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(2).a]] = TEST |
+	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | 1 | [[rec(1).a]] = 50 | Text  | Base64 |
+      And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = NTA= |
+
+Scenario: Workflow with Assign and 2 Delete tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
+	  And "WorkflowWithAssignand2Deletetools" contains an Assign "Assign to delete" as
+	  | variable    | value |
+	  | [[rec().a]] | 50    |
+	  And "WorkflowWithAssignand2Deletetools" contains Delete "Delet1" as
+	  | Variable   | result      |
+	  | [[rec(1)]] | [[result1]] |
+      And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
+	   | variable   | value        |
+	   | [[rec(1)]] | [[result2]]] |
+	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
+      Then the execution has "AN" error
+	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 50        |
+	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 50 |
+	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | Records          |
+	  | [[rec(1).a]] = 50 |
+	  And the 'Delet1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  |                       |
+	  | [[result1]] = Success |
+	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = |           |
+	 And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                       |
+	  | 1 | [[result2]] = Failure |
+
+Scenario: Workflow with 3 Assigns tools executing against the server
+	  Given I have a workflow "WorkflowWith3Assigntools"
+	  And "WorkflowWith3Assigntools" contains an Assign "Assigntool1" as
+	  | variable    | value    |
+	  | [[rec().a]] | rec(1).a |
+	   And "WorkflowWith3Assigntools" contains an Assign "Assigntool2" as
+	  | variable     | value    |
+	  | [[test]]     | rec(1).a |
+	  | [[rec(1).a]] | Warewolf |
+	   And "WorkflowWith3Assigntools" contains an Assign "Assigntool3" as
+	  | variable | value        |
+	  | [[new]]  | [[[[test]]]] |
+	  When "WorkflowWith3Assigntools" is executed
+	  Then the execution has "NO" error
+	  And the 'Assigntool1' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | rec(1).a  |
+	  And the 'Assigntool1' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
+	  | # |                        |
+	  | 1 | [[rec().a]] = rec(1).a |
+	  And the 'Assigntool2' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[test]] =    | rec(1).a  |
+	  | 2 | [[rec(1).a]]= | Warewolf  |
+	  And the 'Assigntool2' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec().a]] = rec(1).a  |
+	  | 2 | [[rec(1).a]] = Warewolf |
+	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	  | # | Variable  | New Value               |
+	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
+	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
+	  | # |                    |
+	  | 1 | [[new]] = Warewolf |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
