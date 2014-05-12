@@ -141,7 +141,6 @@ namespace Dev2.Core.Tests.Workflows
         /// Test the AddMissingDataListItems method that it adds all missing data list items to the datalist
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void AddMissingDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
         {
             var eventAggregator = new Mock<IEventAggregator>().Object;
@@ -173,7 +172,6 @@ namespace Dev2.Core.Tests.Workflows
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
         [TestMethod]
-        [Ignore]
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
             //Execute
@@ -188,7 +186,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         public void GetDecisionElementsWhenItemAlreadyInDataListShouldStillReturnInList()
         {
             //Execute
