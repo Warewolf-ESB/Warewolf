@@ -366,17 +366,17 @@ namespace Gui
                     // ReSharper restore EmptyGeneralCatchClause
 
                     // Add Warewolf Group and current user to it ;)
-                    try
-                    {
-                        AddUserToWarewolfGroup();
-                    }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch(Exception e1)
-                    {
-                        // Big Problems - We needed this to happen ;)
-                        MessageBox.Show("An error occurred while installing - " + e1.Message + " Rolling back install.");
-                        Rollback();
-                    }
+                    //try
+                    //{
+                    //    AddUserToWarewolfGroup();
+                    //}
+                    //// ReSharper disable EmptyGeneralCatchClause
+                    //catch(Exception e1)
+                    //{
+                    //    // Big Problems - We needed this to happen ;)
+                    //    MessageBox.Show("An error occurred while installing - " + e1.Message + " Rolling back install.");
+                    //    Rollback();
+                    //}
                     // ReSharper restore EmptyGeneralCatchClause
 
                 };
