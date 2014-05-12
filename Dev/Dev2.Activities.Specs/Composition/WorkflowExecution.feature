@@ -240,12 +240,103 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | # |                         |
 	  | 1 | [[rec().a]] = rec(1).a  |
 	  | 2 | [[rec(1).a]] = Warewolf |
-	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	  And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
 	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
+
+#This is test is going to pass after the issue 11785 is fixed
+#@Ignore 
+#Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
+#	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools"
+#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains an Assign "InputDates" as
+#	  | variable | value |
+#	  | [[a]]    | 2014  |
+#	  | [[b]]    | 10    |
+#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains Date and Time Difference "Date&Time" as	
+#	  | Input1        | Input2     | Input Format | Output In | Result     |
+#	  | 2020/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     | [[result]] |  
+#	  When "WorkflowWithAssignAndDateTimeDifferencetools" is executed
+#	  Then the execution has "AN" error
+#	  And the 'InputDates' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | 2014      |
+#	  | 2 | [[b]] =  | 01.       |
+#	  And the 'InputDates' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
+#	  | # |              |
+#	  | 1 | [[a]] = 2014 |
+#	  | 2 | [[b]] = 01.  |
+#	  And the 'Date&Time' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+#	  | Input 1       | Input 2    | Input Format | Output In |
+#	  | 2014/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+#	  And the 'Date&Time' in Workflow 'WorkflowWith3Assigntools' debug outputs as 
+#	  |               |
+#	  | [[result1]] = |
+
+
+
+Scenario: Workflow with Assigns DataMerge and DataSplit executing against the server
+      Given I have a workflow "WorkflowWithAssignDataMergeandDataSplittools""
+	  And "WorkflowWithAssignDataMergeandDataSplittools" contains an Assign "Assign To merge" as
+      | variable      | value    |
+      | [[a]]         | Test     |
+      | [[b]]         | Warewolf |
+      | [[split().a]] | Workflow |
+	  And "WorkflowWithAssignDataMergeandDataSplittools" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable | Type  | Using | Padding | Alignment |
+	  | [[a]]    | Index | 4     |         | Left      |
+	  | [[b]]    | Index | 8     |         | Left      |
+	  And "Test" contains Data Split "Data Split" as
+	  | String                  | Variable     | Type  | At | Include    | Escape |
+	  | [[result]][[split().a]] | [[rec(1).b]] | Index | 8  | Unselected |        |
+	  |                         | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  When the Sequence tool is executed
+	  Then the execution has "NO" error
+	  And the 'Assign To merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+	  | # | Variable        | New Value |
+	  | 1 | [[a]] =         | Test      |
+	  | 2 | [[b]] =         | Warewolf  |
+	  | 3 | [[split().a]] = | Workflow  |
+	 And the 'Assign To merge' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as   
+	  | # |                           |
+	  | 1 | [[a]]         =  Test     |
+	  | 2 | [[b]]         =  Warewolf |
+	  | 3 | [[split().a]] =  Workflow |
+	  And the 'Data Merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+	  | # |                   | With  | Using | Pad | Align |
+	  | 1 | [[a]] =  Test     | Index | "4"   | ""  | Left  |
+	  | 2 | [[b]] =  warewolf | Index | "8"   | ""  | Left  |
+	  And the 'Data Merge' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+	  |                           |
+	  | [[result]] = Testwarewolf |
+	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+	  | String to Split                                 | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
+	  | [[result]][[split(1).a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
+	  |                                                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
+	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Test     |
+	  | 2 | [[rec(2).a]] = Warewolf |
+	  | 3 | [[rec(3).a]] = Workflow |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
