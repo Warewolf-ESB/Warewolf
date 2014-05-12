@@ -103,6 +103,7 @@ namespace Dev2.Core.Tests.Workflows
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             dataListViewModel.RemoveUnusedDataListItems();
+            workflowDesigner.Dispose();
             Assert.AreEqual(0, dataListViewModel.ScalarCollection.Count);
 
         }
@@ -128,9 +129,8 @@ namespace Dev2.Core.Tests.Workflows
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-
+            workflowDesigner.Dispose();
             mockDataListViewModel.Verify(model => model.UpdateDataListItems(It.IsAny<IResourceModel>(), It.IsAny<IList<IDataListVerifyPart>>()), Times.Once());
-
         }
 
         #endregion
@@ -168,6 +168,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             Assert.AreEqual(2, dataListViewModel.ScalarCollection.Count);
             Assert.AreEqual(0, dataListViewModel.RecsetCollection.Count);
+            workflowDesigner.Dispose();
         }
 
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
@@ -180,9 +181,11 @@ namespace Dev2.Core.Tests.Workflows
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var dataListViewModel = CreateDataListViewModel(mockResourceModel);
             var actual = model.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", dataListViewModel);
+            model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
+          
         }
 
         [TestMethod]
@@ -203,6 +206,7 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("f1", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = model.GetDecisionElements(expression, dataListViewModel);
+            model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("RecSet().f1", actual[0], "Find missing found an invalid variable in a decision");
@@ -243,7 +247,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsTrue(dataListViewModel.ScalarCollection[1].IsUsed);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-
+            workflowDesigner.Dispose();
             Assert.IsTrue(!dataListViewModel.ScalarCollection[0].IsUsed);
         }
 
@@ -258,8 +262,8 @@ namespace Dev2.Core.Tests.Workflows
             WorkflowDesignerViewModel wf = CreateWorkflowDesignerViewModel(resource.Object, null, false);
             var page = new DsfWebPageActivity();
             Assert.IsTrue(wf.NotifyItemSelected(page) == false);
+            wf.Dispose();
         }
-
 
         #endregion NotifyItemSelected Tests
 
@@ -1013,6 +1017,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowDesigner.Handle(updatemsg);
 
             Assert.AreEqual("Testing2", workflowDesigner.ResourceModel.Category);
+            workflowDesigner.Dispose();
         }
 
         [TestMethod]
@@ -1033,6 +1038,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().set]]", "[[test()]]", "[[scalar]]" }));
             //------------Assert Results-------------------------
             var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
+            workflowDesigner.Dispose();
             Assert.AreEqual(5, dataListItemModels.Count);
         }
 
@@ -1052,6 +1058,7 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.AddBlankRow(null);
             //------------Execute Test---------------------------
             workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
+            workflowDesigner.Dispose();
             //------------Assert Results-------------------------
             var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
             Assert.AreEqual(3, dataListItemModels.Count);
@@ -1060,7 +1067,6 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual("", dataListItemModels[1].Children[0].DisplayName);
             Assert.AreEqual("", dataListItemModels[2].DisplayName);
         }
-
 
         #endregion
 
@@ -1110,8 +1116,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
         {
-
-
             var ok = true;
             var msg = string.Empty;
             var t = new Thread(() =>
@@ -1240,7 +1244,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(ShellBarItemVisibility.MiniMap, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.MiniMap);
 
             Assert.IsNotNull(wfd.OutlineView);
-
+            
             wfd.Dispose();
         }
 
@@ -1318,7 +1322,7 @@ namespace Dev2.Core.Tests.Workflows
             var attr = new Dictionary<Type, Type>();
 
             wfd.InitializeDesigner(attr);
-
+            wfd.Dispose();
             wh.Verify(h => h.SerializeWorkflow(It.IsAny<ModelService>()));
         }
 
