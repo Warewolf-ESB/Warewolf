@@ -19,9 +19,16 @@ namespace Dev2.Studio.Core.Interfaces
     {
         bool HandlesResultInsertion { get; set; }
         bool Optional { get; set; }
-
+        IntellisenseProviderType IntellisenseProviderType { get; }
         string PerformResultInsertion(string input, IntellisenseProviderContext context);
         IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context);
+    }
+
+    public enum IntellisenseProviderType
+    {
+        NonDefault,
+        Default
+        
     }
 
     public sealed class IntellisenseProviderResult

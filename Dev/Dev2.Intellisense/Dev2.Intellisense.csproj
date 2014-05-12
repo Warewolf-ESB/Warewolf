@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Helper\FileSystemQuery.cs" />
     <Compile Include="Helper\IFileSystemQuery.cs" />
+    <Compile Include="Helper\IShareCollectionFactory.cs" />
     <Compile Include="Helper\NetworkShareInformation.cs" />
     <Compile Include="IntellisenseTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

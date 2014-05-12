@@ -5,6 +5,11 @@ namespace Dev2.Intellisense.Provider
 {
     public class BlankIntellisenseProvider : IIntellisenseProvider
     {
+        public BlankIntellisenseProvider()
+        {
+            IntellisenseProviderType = IntellisenseProviderType.NonDefault;
+        }
+
         #region Properties
 
         public bool HandlesResultInsertion { get; set; }
@@ -14,6 +19,8 @@ namespace Dev2.Intellisense.Provider
         #endregion Properties
 
         #region Methods
+
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {

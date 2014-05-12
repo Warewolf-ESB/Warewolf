@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-
+using System.Linq;
 namespace Dev2.Intellisense.Helper
 {
 
@@ -15,7 +17,9 @@ namespace Dev2.Intellisense.Helper
     {
         Disk,
         Device ,
+// ReSharper disable InconsistentNaming
         IPC,
+// ReSharper restore InconsistentNaming
         Special = -2147483648
     }
 
@@ -32,7 +36,7 @@ namespace Dev2.Intellisense.Helper
 
         readonly string _networkName;
         readonly string _shareServer;
-        readonly ShareType _sharpType;
+        private readonly ShareType _shareType;
 
         #endregion
 
@@ -48,7 +52,7 @@ namespace Dev2.Intellisense.Helper
 
             _shareServer = server;
             _networkName = netName;
-            _sharpType = shareType;
+            _shareType = shareType;
         }
 
         #endregion
@@ -59,23 +63,28 @@ namespace Dev2.Intellisense.Helper
         {
             get
             {
-                if(0 != (_sharpType & ShareType.Device))
+                if(0 != (ShareType & ShareType.Device))
                 {
                     return false;
                 }
 
-                if(0 != (_sharpType & ShareType.IPC))
+                if(0 != (ShareType & ShareType.IPC))
                 {
                     return false;
                 }
 
-                if(0 == (_sharpType & ShareType.Special))
+                if(0 == (ShareType & ShareType.Special))
                 {
                     return true;
                 }
 
-                return ShareType.Special == _sharpType && !string.IsNullOrEmpty(_networkName);
+                return ShareType.Special == ShareType && !string.IsNullOrEmpty(_networkName);
             }
+        }
+
+        public ShareType ShareType
+        {
+            get { return _shareType; }
         }
 
         #endregion
@@ -112,16 +121,21 @@ namespace Dev2.Intellisense.Helper
         /// <summary>
         ///     Default constructor - local machine
         /// </summary>
-        public ShareCollection()
+        internal ShareCollection()
         {
             _server = string.Empty;
             EnumerateShares(_server, this);
         }
 
-        public ShareCollection(string server)
+        internal ShareCollection(string server)
         {
             _server = server;
             EnumerateShares(_server, this);
+        }
+
+        public ShareCollection(IEnumerable<Share> shares)
+        {
+            InnerList.AddRange(shares.ToArray());
         }
 
         #endregion
@@ -130,7 +144,10 @@ namespace Dev2.Intellisense.Helper
 
         #region Enumerate shares
 
+        [ExcludeFromCodeCoverage]
+// ReSharper disable InconsistentNaming
         static void EnumerateSharesNT(string server, ShareCollection shares)
+// ReSharper restore InconsistentNaming
         {
             int level = 2;
             int hResume = 0;

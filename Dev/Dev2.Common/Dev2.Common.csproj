@@ -119,10 +119,19 @@
     <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
+    <Compile Include="Wrappers\DirectoryEntriesWrapper.cs" />
+    <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
+    <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />
+    <Compile Include="Wrappers\DirectoryWrapper.cs" />
+    <Compile Include="Wrappers\FileWrapper.cs" />
+    <Compile Include="Wrappers\Interfaces\IDirectory.cs" />
+    <Compile Include="Wrappers\Interfaces\IDirectoryEntry.cs" />
+    <Compile Include="Wrappers\Interfaces\IDirectoryEntryFactory.cs" />
+    <Compile Include="Wrappers\Interfaces\IFile.cs" />
+    <Compile Include="Wrappers\Interfaces\IPath.cs" />
+    <Compile Include="Wrappers\Interfaces\IWrappedObject.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Wrappers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

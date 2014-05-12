@@ -13,10 +13,14 @@ namespace Dev2.Studio.InterfaceImplementors
         public CompositeIntellisenseProvider()
         {
             Optional = false;
+            IntellisenseProviderType = IntellisenseProviderType.NonDefault;
         }
         #endregion Constructor
 
         #region Override Methods
+
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             throw new NotSupportedException();
@@ -24,9 +28,9 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
-            List<IntellisenseProviderResult> results = new List<IntellisenseProviderResult>();
+            var results = new List<IntellisenseProviderResult>();
 
-            foreach(IIntellisenseProvider provider in this)
+            foreach(IIntellisenseProvider provider in this.OrderBy(a=>a.Optional))
             {
                 if(provider.Optional)
                 {
@@ -39,10 +43,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 else
                 {
                     var inputText = context.InputText;
+                    var caretPosition = context.CaretPosition;
 
                     if((!string.IsNullOrEmpty(inputText) && (inputText.EndsWith("]") || inputText.EndsWith(")")))
-                        && (provider is DefaultIntellisenseProvider)
-                        && context.CaretPosition == inputText.Length)
+                        && (provider.IntellisenseProviderType == IntellisenseProviderType.Default)
+                        && caretPosition == inputText.Length)
                     {
                        return results;
                     }

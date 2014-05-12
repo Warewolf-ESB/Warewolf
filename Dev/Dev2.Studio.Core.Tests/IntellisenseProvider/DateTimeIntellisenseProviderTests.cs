@@ -19,7 +19,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestCategory("DateTimeIntellisenseProvider_GetIntellisenseResults")]
         public void DateTimeIntellisenseProvider_GetIntellisenseResults_PartialMethodMatch_ClosestMatchesReturned()
         {
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
                 {
                     CaretPosition = 1,
                     InputText = "d",
@@ -86,7 +86,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DateTimeIntellisenseProvider_PerformInsertion_ExpectException()
         {
             //------------Setup for test--------------------------
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
                 {
                     CaretPosition = 1,
                     InputText = "d",
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DateTimeIntellisenseProvider_GetIntellisenseResultsImpl_EntireResultSet()
         {
             //------------Setup for test--------------------------
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
             {
                 CaretPosition = 1,
                 InputText = "d",
@@ -159,7 +159,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DateTimeIntellisenseProvider_GetIntellisenseResults_ErrorResult_ExpectNoResult()
         {
             //------------Setup for test--------------------------
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
             {
                 CaretPosition = 1,
                 InputText = "dod",
@@ -176,7 +176,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             res.Setup(a => a.IsClosedRegion).Returns(false);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{res.Object});
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> {res.Object});
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------
@@ -186,7 +186,17 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             //------------Assert Results-------------------------
             Assert.AreEqual(0,results.Count); // check nothing added
             Assert.AreEqual(count,1); // check that there was stuff to add
+        }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_DateTimeIntellisenseProvider")]
+        public void DateTimeIntellisenseProvider_GetIntellisenseResults_ContextIsNull_ResultCountIsZero()
+        {
+            //------------Execute Test---------------------------
+            var getResults = new DateTimeIntellisenseProvider().GetIntellisenseResults(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, getResults.Count);
         }
 
         [TestMethod]
@@ -195,7 +205,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DateTimeIntellisenseProvider_GetIntellisenseResults_ErrorResult_ExpectResultIfInClosedRegion()
         {
             //------------Setup for test--------------------------
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
             {
                 CaretPosition = 1,
                 InputText = "dod",
@@ -212,7 +222,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             res.Setup(a => a.IsClosedRegion).Returns(true);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{ res.Object });
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> { res.Object });
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------
@@ -230,7 +240,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DateTimeIntellisenseProvider_GetIntellisenseResults_ErrorResult_ExpectResultIfNonErrorType()
         {
             //------------Setup for test--------------------------
-            IntellisenseProviderContext context = new IntellisenseProviderContext
+            var context = new IntellisenseProviderContext
             {
                 CaretPosition = 1,
                 InputText = "dod",
@@ -247,7 +257,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             res.Setup(a => a.IsClosedRegion).Returns(false);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult>{ res.Object });
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> { res.Object });
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------

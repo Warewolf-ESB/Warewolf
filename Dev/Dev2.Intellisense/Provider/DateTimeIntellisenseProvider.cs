@@ -24,7 +24,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public DateTimeIntellisenseProvider()
         {
             Optional = false;
-
+            IntellisenseProviderType = IntellisenseProviderType.NonDefault;
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
             _intellisenseResults = dateTimeParser.DateTimeFormatParts.Select(p => 
                 {
@@ -42,6 +42,9 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion Constructors
 
         #region Override Methods
+
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             throw new NotSupportedException();
@@ -49,7 +52,13 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
+            if(context == null)
+            {
+                return new List<IntellisenseProviderResult>();
+            }
+
             IList<IIntellisenseResult> oldResults = GetIntellisenseResultsImpl(context);
+            
             var results = new List<IntellisenseProviderResult>();
 
             if (oldResults != null)

@@ -178,6 +178,7 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
+    <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
@@ -197,7 +198,7 @@
     <Compile Include="Custom Dev2 Controls\Intellisense\MockIntellisenseTextbox.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
-    <Compile Include="FileSystemIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\FileSystemIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="EnvironmentTreeViewModelTests.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
+    <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
@@ -234,6 +236,8 @@
     <Compile Include="Settings\ClientScheduledResourceTests.cs" />
     <Compile Include="Settings\SchedulerViewModelTests.cs" />
     <Compile Include="ProviderExtensionsTest.cs" />
+    <Compile Include="ShareTests.cs" />
+    <Compile Include="TestUtil.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
@@ -321,7 +325,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
     </Compile>
-    <Compile Include="IntellisenseProviderTest.cs" />
     <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
     <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
     <Compile Include="Utils\DataListViewModelTestHelper.cs" />

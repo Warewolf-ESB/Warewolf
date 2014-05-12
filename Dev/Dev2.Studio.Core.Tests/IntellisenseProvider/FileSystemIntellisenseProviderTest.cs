@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using Dev2.Composition;
+using Dev2.Intellisense.Helper;
+using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -11,14 +13,12 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using FileSystemIntellisenseProvider = Dev2.Intellisense.Provider.FileSystemIntellisenseProvider;
-using IFileSystemQuery = Dev2.Intellisense.Helper.IFileSystemQuery;
 
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class FileSystemIntellisenseProviderTest
     {
         private IResourceModel _resourceModel;
@@ -318,6 +318,28 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(resp, expected);
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("FileSystemIntellisenseProvider_PerformResultInsertion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void FileSystemIntellisenseProvider_PerformResultInsertion_ContextIsNull_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var fileSystemIntellisenseProvider = new FileSystemIntellisenseProvider();
+            //------------Execute Test---------------------------
+            fileSystemIntellisenseProvider.PerformResultInsertion("", null);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_FileSystemIntellisenseProvider")]
+        public void FileSystemIntellisenseProvider_GetIntellisenseResults_ContextIsNull_ResultCountIsZero()
+        {
+            //------------Execute Test---------------------------
+            var getResults = new FileSystemIntellisenseProvider().GetIntellisenseResults(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, getResults.Count);
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -350,15 +372,7 @@ namespace Dev2.Core.Tests
         {
             FileSystemIntellisenseProvider_ExecuteInsertion(-1, "", @"c:\", @"");
         }
-
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]
-        public void FileSystemIntellisenseProvider_PerformMethodInsertion_NullText_ExpectException()
-        {
-            FileSystemIntellisenseProvider_ExecuteInsertion(-1, null, @"c:\", @"");
-        }
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FileSystemIntellisenseProvider_PerformMethodInsertion")]

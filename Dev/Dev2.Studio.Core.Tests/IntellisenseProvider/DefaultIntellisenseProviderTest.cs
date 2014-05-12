@@ -1058,6 +1058,18 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_PerformResultInsertion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DefaultIntellisenseProvider_PerformResultInsertion_ContextIsNull_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var provider = new DefaultIntellisenseProvider();
+            //------------Execute Test---------------------------
+            provider.PerformResultInsertion("", null);
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DefaultIntellisenseProvider_PerformResultsInsertion")]
         public void DefaultIntellisenseProvider_PerformResultsInsertion_WhenCaseMisMatched_InsertedNormally()

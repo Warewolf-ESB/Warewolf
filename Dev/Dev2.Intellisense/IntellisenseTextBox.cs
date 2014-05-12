@@ -648,7 +648,7 @@ namespace Dev2.UI
         public IntellisenseTextBox()
         {
             Observable.FromEventPattern(this, "TextChanged")
-                     .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
+                     .Throttle(TimeSpan.FromMilliseconds(200), System.Reactive.Concurrency.Scheduler.ThreadPool)
                      .ObserveOn(SynchronizationContext.Current)
                      .Subscribe(pattern => TheTextHasChanged());
 

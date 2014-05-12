@@ -64,6 +64,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public DefaultIntellisenseProvider()
         {
             Optional = false;
+            IntellisenseProviderType = IntellisenseProviderType.Default;
             HandlesResultInsertion = true;
             EventPublishers.Aggregator.Subscribe(this);
             if(DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
@@ -146,8 +147,13 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Result Handling
+
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
+            VerifyArgument.IsNotNull("Context", context);
+
             var inputText = context.InputText ?? string.Empty;
 
             if(string.IsNullOrEmpty(input))

@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual("second", results[2].Name);
             Assert.AreEqual("seriessum", results[3].Name);
         }
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("CalculateIntellisenseProvider_GetIntellisenseResults")]

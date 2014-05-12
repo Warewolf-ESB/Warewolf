@@ -18,21 +18,25 @@ namespace Dev2.Intellisense.Provider
         public FileSystemIntellisenseProvider()
         {
             Optional = false;
+            IntellisenseProviderType = IntellisenseProviderType.Default;
             HandlesResultInsertion = true;
             _intellisenseResults = new List<IntellisenseProviderResult>();
-            FileSystemQuery = new FileSystemQuery();
+            FileSystemQuery = new FileSystemQuery(); 
         }
 
         #endregion Constructors
 
         #region Override Methods
 
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             VerifyArgument.IsNotNull("Context",context);
-            VerifyArgument.IsNotNull("InputText", context.InputText);
-            string inputText = context.InputText;
+           
+            string inputText = context.InputText ?? string.Empty;
             int caretPosition = context.CaretPosition;  
+
             if (caretPosition < 0 || caretPosition>inputText.Length)
                 return string.Empty;
 
@@ -63,6 +67,11 @@ namespace Dev2.Intellisense.Provider
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
+            if (context == null)
+            {
+                return new List<IntellisenseProviderResult>();
+            }
+
             var results = new List<IntellisenseProviderResult>();
             if(context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
             {

@@ -63,7 +63,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public CalculateIntellisenseProvider(ISyntaxTreeBuilderHelper syntaxTreeBuilderHelper)
         {
             _syntaxTreeBuilderHelper = syntaxTreeBuilderHelper;
-
+            IntellisenseProviderType = IntellisenseProviderType.NonDefault;
             IFrameworkRepository<IFunction> functionList = MathOpsFactory.FunctionRepository();
             functionList.Load();
             bool creatingFunctions = false;
@@ -86,6 +86,8 @@ namespace Dev2.Studio.InterfaceImplementors
         }
         #endregion
 
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             throw new NotSupportedException();
@@ -100,18 +102,18 @@ namespace Dev2.Studio.InterfaceImplementors
 
             var caretPosition = context.CaretPosition;
             var inputText = context.InputText ?? string.Empty;
-
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
+            var intellisenseDesiredResultSet = context.DesiredResultSet;
 
             if((caretPosition == 0 || string.IsNullOrEmpty(inputText))
-                && context.DesiredResultSet != IntellisenseDesiredResultSet.EntireSet)
+                && intellisenseDesiredResultSet != IntellisenseDesiredResultSet.EntireSet)
             {
                 return EmptyResults;
             }
 
             if(context.IsInCalculateMode)
             {
-                if(context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
+                if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                 {
                     if(parseEventLog != null) parseEventLog.Clear();
 
@@ -126,7 +128,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
 
                 Token[] tokens;
-                if(context.DesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch)
+                if(intellisenseDesiredResultSet == IntellisenseDesiredResultSet.ClosestMatch)
                 {
                     var searchText = context.FindTextToSearch();
                     _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);

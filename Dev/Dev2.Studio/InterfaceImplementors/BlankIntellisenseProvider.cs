@@ -16,6 +16,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
         #region Methods
 
+        public IntellisenseProviderType IntellisenseProviderType { get; private set; }
+
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
             return string.Empty;
