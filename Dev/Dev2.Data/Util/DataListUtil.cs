@@ -21,11 +21,6 @@ namespace Dev2.Data.Util
     {
         #region Class Members
 
-        public const string OpeningSquareBrackets = "[[";
-        public const string ClosingSquareBrackets = "]]";
-        public const string RecordsetIndexOpeningBracket = "(";
-        public const string RecordsetIndexClosingBracket = ")";
-        
         private static readonly HashSet<string> SysTags = new HashSet<string>();
         const string _emptyTag = "<Empty />";
         const string _cdataStart = "<![CDATA[";
@@ -67,7 +62,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceStarWithFixedIndex(string exp, int idx)
         {
-            return idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
+            return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
         }
 
         /// <summary>
@@ -336,7 +331,7 @@ namespace Dev2.Data.Util
 
             if(addBrackets)
             {
-                result = OpeningSquareBrackets + result + ClosingSquareBrackets;
+                result = "[[" + result + "]]";
             }
 
             return result;
@@ -355,7 +350,7 @@ namespace Dev2.Data.Util
 
             if(addBrackets)
             {
-                result = OpeningSquareBrackets + result + ClosingSquareBrackets;
+                result = "[[" + result + "]]";
             }
 
             return result;
@@ -966,7 +961,7 @@ namespace Dev2.Data.Util
 
             if(!string.IsNullOrEmpty(value))
             {
-                if(value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
+                if(value.Contains("(") && value.Contains(")"))
                 {
                     result = true;
                 }
@@ -1003,7 +998,7 @@ namespace Dev2.Data.Util
             string[] closeParts = Regex.Split(expression, @"\]\]");
 
             //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if(expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+            if(expression.Contains("[[") && expression.Contains("]]") && openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
             {
                 result = false;
             }
@@ -1026,7 +1021,7 @@ namespace Dev2.Data.Util
             value = StripBracketsFromValue(value);
             string result = string.Empty;
 
-            int openBracket = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            int openBracket = value.IndexOf("(", StringComparison.Ordinal);
             if(openBracket > 0)
             {
                 result = value.Substring(0, openBracket);
@@ -1063,7 +1058,7 @@ namespace Dev2.Data.Util
             string result = string.Empty;
             if(value != null)
             {
-                result = value.Replace(OpeningSquareBrackets, "").Replace(ClosingSquareBrackets, "");
+                result = value.Replace("[[", "").Replace("]]", "");
             }
 
             return result;
@@ -1078,12 +1073,12 @@ namespace Dev2.Data.Util
         {
             string result = value;
 
-            if(result.StartsWith(OpeningSquareBrackets))
+            if(result.StartsWith("[["))
             {
                 result = result.Substring(2, (result.Length - 2));
             }
 
-            if(result.EndsWith(ClosingSquareBrackets))
+            if(result.EndsWith("]]"))
             {
                 result = result.Substring(0, (result.Length - 2));
             }
@@ -1096,9 +1091,9 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool EndsWithClosingTags(string value)
+        public static bool IsClosedRegion(string value)
         {
-            return !string.IsNullOrEmpty(value) && value.EndsWith(ClosingSquareBrackets);
+            return !string.IsNullOrEmpty(value) && value.EndsWith("]]");
         }
 
         /// <summary>
@@ -1106,11 +1101,13 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool StartsWithOpeningTags(string value)
+        public static bool IsOpenRegion(string value)
         {
-            return !string.IsNullOrEmpty(value) && value.StartsWith(OpeningSquareBrackets);
+            return !string.IsNullOrEmpty(value) && value.StartsWith("[[");
         }
+
         
+
         /// <summary>
         /// Get the index of the closing tags in a variable
         /// </summary>
@@ -1120,10 +1117,10 @@ namespace Dev2.Data.Util
         {
             if (string.IsNullOrEmpty(value))
             {
-                return  -1;
+                return  0;
             }
 
-            return value.LastIndexOf(ClosingSquareBrackets, StringComparison.Ordinal);
+            return value.LastIndexOf("]]", StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -1135,17 +1132,17 @@ namespace Dev2.Data.Util
         {
             string result;
 
-            if(!value.Contains(ClosingSquareBrackets))
+            if(!value.Contains("]]"))
             {
                 // missing both
-                if(!value.Contains(OpeningSquareBrackets))
+                if(!value.Contains("[["))
                 {
-                    result = string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets);
+                    result = string.Concat("[[", value, "]]");
                 }
                 else
                 {
                     // only ending brackets ;)
-                    result = string.Concat(value, ClosingSquareBrackets);
+                    result = string.Concat(value, "]]");
                 }
             }
             else
@@ -1173,13 +1170,13 @@ namespace Dev2.Data.Util
 
             string result = StripBracketsFromValue(value);
 
-            if(result.EndsWith(RecordsetIndexOpeningBracket))
+            if(result.EndsWith("("))
             {
-                result = string.Concat(result, RecordsetIndexClosingBracket);
+                result = string.Concat(result, ")");
             }
-            else if(result.EndsWith(RecordsetIndexClosingBracket))
+            else if(result.EndsWith(")"))
             {
-                return result.Replace(RecordsetIndexClosingBracket, inject);
+                return result.Replace(")", inject);
             }
             else if(!result.EndsWith("()"))
             {
@@ -1197,10 +1194,10 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
 
-            int start = rs.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            int start = rs.IndexOf("(", StringComparison.Ordinal);
             if(start > 0)
             {
-                int end = rs.LastIndexOf(RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                int end = rs.LastIndexOf(")", StringComparison.Ordinal);
                 if(end < 0)
                 {
                     end = rs.Length;
@@ -1241,7 +1238,7 @@ namespace Dev2.Data.Util
                 return false;
             }
 
-            return value.StartsWith(RecordsetIndexOpeningBracket);
+            return value.StartsWith("(");
         }
 
         /// <summary>
@@ -1253,7 +1250,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
-            bool result = payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
+            bool result = payload.IndexOf("[[", StringComparison.Ordinal) >= 0;
 
             return result;
         }
@@ -1280,7 +1277,7 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
 
-            int start = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            int start = value.IndexOf("(", StringComparison.Ordinal);
 
             if(start > 0)
             {
@@ -1562,8 +1559,8 @@ namespace Dev2.Data.Util
         public static IList<string> GetRegionsFromExpression(string expression)
         {
             // Retrieve all the regions from an expression
-            const string openRegion = OpeningSquareBrackets;
-            const string closeRegion = ClosingSquareBrackets;
+            const string openRegion = "[[";
+            const string closeRegion = "]]";
             StringBuilder expressionBuilder = new StringBuilder();
             expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion, StringComparison.Ordinal), expression.LastIndexOf(closeRegion, StringComparison.Ordinal) - expression.IndexOf(openRegion, StringComparison.Ordinal)));
             string expressionString = (expressionBuilder.ToString().Remove(0, 2));
@@ -1916,7 +1913,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum)
         {
-            return string.Concat(recsetName, RecordsetIndexOpeningBracket, indexNum, ").", colName);
+            return string.Concat(recsetName, "(", indexNum, ").", colName);
         }
 
         /// <summary>

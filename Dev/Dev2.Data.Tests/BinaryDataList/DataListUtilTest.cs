@@ -1,20 +1,19 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    // ReSharper disable InconsistentNaming
     public class DataListUtilTest
     {
 
@@ -729,138 +728,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             {
                 Assert.AreEqual(string.Format("[[rs(*).f{0}a]]", i + 1), target[i].Key);
             }
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_EndsWithClosingTags")]
-        public void DataListUtil_EndsWithClosingTags_VariableHasNoClosingTags_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.EndsWithClosingTags("[[var");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_EndsWithClosingTags")]
-        public void DataListUtil_EndsWithClosingTags_VariableIsEmpty_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.EndsWithClosingTags("");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_EndsWithClosingTags")]
-        public void DataListUtil_EndsWithClosingTags_VariableHasClosingTags_True()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.EndsWithClosingTags("[[var]]");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableHasNoOpeningTags_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("var]]");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableIsEmpty_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_StartsWithOpeningTags")]
-        public void DataListUtil_StartsWithOpeningTags_VariableHasOpeningTags_True()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.StartsWithOpeningTags("[[var]]");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IndexOfClosingTags")]
-        public void DataListUtil_IndexOfClosingTags_VariableHasNoClosingTags_NegativeOne()
-        {
-            //------------Execute Test---------------------------
-            var index = DataListUtil.IndexOfClosingTags("[[var");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(-1, index);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IndexOfClosingTags")]
-        public void DataListUtil_IndexOfClosingTags_VariableIsEmpty_NegativeOne()
-        {
-            //------------Execute Test---------------------------
-            var index = DataListUtil.IndexOfClosingTags("");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(-1, index);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IndexOfClosingTags")]
-        public void DataListUtil_IndexOfClosingTags_VariableHasClosingTags_Index()
-        {
-            //------------Execute Test---------------------------
-            var index = DataListUtil.IndexOfClosingTags("[[var]]");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(5, index);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IsRecordsetOpeningBrace")]
-        public void DataListUtil_IsRecordsetOpeningBrace_InputDoesnotStartsRecordsetOpeningBrace_False()
-        {
-            //------------Execute Test---------------------------
-            var isClosed = DataListUtil.IsRecordsetOpeningBrace("[[rec([[var");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isClosed);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IsRecordsetOpeningBrace")]
-        public void DataListUtil_IsRecordsetOpeningBrace_VariableIsEmpty_False()
-        {
-            //------------Execute Test---------------------------
-            var isOpeningBrace = DataListUtil.IsRecordsetOpeningBrace("");
-            //------------Assert Results-------------------------
-            Assert.IsFalse(isOpeningBrace);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataListUtil_IsRecordsetOpeningBrace")]
-        public void DataListUtil_IsRecordsetOpeningBrace_InputStartsRecordsetOpeningBrace_True()
-        {
-            //------------Execute Test---------------------------
-            var isOpeningBrace = DataListUtil.IsRecordsetOpeningBrace("([[var");
-            //------------Assert Results-------------------------
-            Assert.IsTrue(isOpeningBrace);
         }
     }
 }
