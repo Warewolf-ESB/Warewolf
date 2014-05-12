@@ -240,14 +240,14 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | # |                         |
 	  | 1 | [[test]] = rec(1).a     |
 	  | 2 | [[rec(1).a]] = Warewolf |
-	  And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
 	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
 
-#This is test is going to pass after the issue 11785 is fixed
+#This test is going to pass after the issue 11785 is fixed
 #@Ignore 
 #Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
 #	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools"
@@ -288,12 +288,12 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | Variable | Type  | Using | Padding | Alignment |
 	  | [[a]]    | Index | 4     |         | Left      |
 	  | [[b]]    | Index | 8     |         | Left      |
-	  And "Test" contains Data Split "Data Split" as
+	  And "WorkflowWithAssignDataMergeandDataSplittools" contains Data Split "Data Split" as
 	  | String                  | Variable     | Type  | At | Include    | Escape |
 	  | [[result]][[split().a]] | [[rec(1).b]] | Index | 8  | Unselected |        |
 	  |                         | [[rec(2).b]] | Index | 8  | Unselected |        |
-	  When the Sequence tool is executed
-	  Then the workflow execution has "NO" error
+	  When "WorkflowWithAssignDataMergeandDataSplittools" is executed
+	  Then the execution has "NO" error
 	  And the 'Assign To merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
 	  | # | Variable        | New Value |
 	  | 1 | [[a]] =         | Test      |
@@ -321,11 +321,87 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | 2 | [[rec(2).a]] = Warewolf |
 	  | 3 | [[rec(3).a]] = Workflow |
 
-
-
-
-
-
+#This test is going to pass after the issue 11804 is fixed
+#@Ignore 
+#Scenario: Workflow with Assigns Calculate and DataSplit executing against the server
+#      Given I have a workflow "WorkflowWithAssignCalculateandDataSplittools""
+#	  And "WorkflowWithAssignCalculateandDataSplittools" contains an Assign "splitvalues1" as
+#      | variable  | value    |
+#      | [[a]]     | 1        |
+#      | [[b]]     | 2        |
+#      | [[c]]     | test     |
+#      | [[split]] | warewolf |
+#	  And "WorkflowWithAssignCalculateandDataSplittools" contains an Assign "splitvalues2" as
+#      | variable | value  |
+#      | [[test]] | result |
+#	  And "WorkflowWithAssignCalculateandDataSplittools" contains Calculate "Calculate" with formula "[[a]]+[[b]]" into "[[result]]"
+#	  And "WorkflowWithAssignCalculateandDataSplittools" contains Data Split "Data Spliting" as
+#	  | String    | Variable     | Type  | At        | Include    | Escape |
+#	  | [[split]] | [[rec(1).b]] | Index | [[[[c]]]] | Unselected |        |
+#	  When "WorkflowWithAssignCalculateandDataSplittools" is executed
+#	  Then the execution has "NO" error
+#	  And the 'splitvalues1' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+#	  | # | Variable        | New Value |
+#	  | 1 | [[a]] =         | 1         |
+#	  | 2 | [[b]] =         | 2         |
+#	  | 3 | [[c]] =         | test      |
+#	  | 4 | [[split]] = | workflow  |
+#	 And the 'splitvalues1' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as   
+#	  | # |                       |
+#	  | 1 | [[a]]         =  1    |
+#	  | 2 | [[b]]         =  2    |
+#	  | 3 | [[c]]         =  test |
+#	  | 4 | [[split]] = workflow  |
+#	  And the 'splitvalues2' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+#      | fx =              |
+#      | [[a]]+[[b]] = 1+2 |          
+#      And the 'splitvalues12' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+#	  |                |
+#	  | [[result]] = 3 |
+#	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+#	  | String to Split      | Process Direction | Skip blank rows | # |                        | With  | Using     | Include | Escape |
+#	  | [[split]] = workflow | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | [[[[c]]]] | No      |        |
+#	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+#	  | # |                   |
+#	  | 1 | [[rec(1).a]] = lf |
+#	
+	  
+Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
+	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
+	  | variable    | value |
+	  | [[rec().a]] | '<value>'    |
+	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
+	  | Variable     | From | To     |
+	  | [[rec(1).a]] | '<text>' | '<to>' |
+	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
+	  |       |          |
+	  | [[a]] | '<cond>' |
+	  When "WorkflowWithAssignBaseConvertandDecision" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | <value>        |
+	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+	  | # |                |      |
+	  | 1 | [[rec(1).a]] = | <value>   |
+	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
+      And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = <result> |
+	  And the 'Decision' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+	  |  | Statement | Require All decisions to be True |
+	  |  | String    | YES                              |
+	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+	  |     |
+	  | <output> |
+Examples: 
+     | no | Value    | from | to     | result       | cond      | output |
+     | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
+     | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
+     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | Yes    |
+  
 
 
 
