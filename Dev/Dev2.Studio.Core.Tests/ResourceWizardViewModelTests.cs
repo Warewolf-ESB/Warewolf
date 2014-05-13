@@ -28,7 +28,6 @@ namespace Dev2.Core.Tests
         #region Dev2Done Tests
 
         [TestMethod]
-        [Ignore]
         public void Dev2Done_Where_ResourceModelExists_Expected_ResourceModelUpdated()
         {
             var mockEventAggregator = Dev2MockFactory.SetupMockEventAggregator();
@@ -59,7 +58,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void TestDev2Done_Where_ResourceModelIsNew_Expected_ResourceModelAdded()
         {
             var mockEventAggregator = Dev2MockFactory.SetupMockEventAggregator();
@@ -85,7 +83,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void TestDev2Done_Where_ResourceModelSavedByWizard_Expected_UpdateExplorerMediatorMessageSent()
         {
             var mockEventAggregator = Dev2MockFactory.SetupMockEventAggregator();
