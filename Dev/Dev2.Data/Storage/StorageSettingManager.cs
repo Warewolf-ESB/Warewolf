@@ -52,6 +52,8 @@ namespace Dev2.Data.Storage
             StorageLayerSegmentSize = () => ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
         }
 
+        public static Func<bool> Is64BitOs = () => OsBitVersionDetector.Is64BitOperatingSystem();
+
         /// <summary>
         /// Gets the segment count.
         /// </summary>
@@ -64,7 +66,7 @@ namespace Dev2.Data.Storage
             int.TryParse(tmp, out result);
 
             // doggy config or 32 bit os, adjust ;)
-            if((result < 1 || !OsBitVersionDetector.Is64BitOperatingSystem()))
+            if((result < 1 || !Is64BitOs()))
             {
                 result = GlobalConstants.DefaultStorageSegments;
             }
@@ -84,7 +86,7 @@ namespace Dev2.Data.Storage
             int.TryParse(tmp, out result);
 
             // doggy config or 32 bit os, adjust ;)
-            if(result < 1 || !OsBitVersionDetector.Is64BitOperatingSystem())
+            if(result < 1 || !Is64BitOs())
             {
                 result = GlobalConstants.DefaultStorageSegmentSize;
             }

@@ -12,6 +12,7 @@ namespace Dev2.Data.Tests.Persistence
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class StorageSettingsManagerTest
     {
         /// <summary>
@@ -45,32 +46,54 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("StorageSettingManager_GetSegmentSize")]
-        public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresent_ExpectConfigurationValue()
+        public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresentAndIs64Bit_ExpectConfigurationValue()
         {
-            //------------Setup for test--------------------------
-
-
-            //------------Execute Test---------------------------
+            StorageSettingManager.Is64BitOs = () => true;
             var segmentCount = StorageSettingManager.GetSegmentSize();
-
             //------------Assert Results-------------------------
             Assert.AreEqual(2097152, segmentCount);
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StorageSettingManager_GetSegmentSize")]
+        public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresentAndIsNot64Bit_ExpectConfigurationValue()
+        {
+            StorageSettingManager.Is64BitOs = () => false;
+            var segmentCount = StorageSettingManager.GetSegmentSize();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(8388608, segmentCount);
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("StorageSettingManager_GetSegmentCount")]
-        public void StorageSettingManager_GetSegmentCount_WhenConfigurationFilePresent_ExpectConfigurationValue()
+        public void StorageSettingManager_GetSegmentCount_WhenConfigurationFilePresentAndIs64BitOS_ExpectConfigurationValue()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            StorageSettingManager.Is64BitOs = () => true;
             var segmentCount = StorageSettingManager.GetSegmentCount();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(2, segmentCount);
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("StorageSettingManager_GetSegmentCount")]
+        public void StorageSettingManager_GetSegmentCount_WhenConfigurationFilePresentAndIsNot64BitOS_ExpectConfigurationValue()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            StorageSettingManager.Is64BitOs = () => false;
+            var segmentCount = StorageSettingManager.GetSegmentCount();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, segmentCount);
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
