@@ -240,7 +240,7 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | # |                         |
 	  | 1 | [[test]] = rec(1).a     |
 	  | 2 | [[rec(1).a]] = Warewolf |
-	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	  And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
 	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
@@ -369,11 +369,11 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
 	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
-	  | variable    | value |
-	  | [[rec().a]] | '<value>'    |
+	  | variable    | value     |
+	  | [[rec().a]] | '<value>' |
 	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
-	  | Variable     | From | To     |
-	  | [[rec(1).a]] | '<text>' | '<to>' |
+	  | Variable     | From     | To     |
+	  | [[rec(1).a]] | '<from>' | '<to>' |
 	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
 	  |       |          |
 	  | [[a]] | '<cond>' |
@@ -381,10 +381,10 @@ Scenario Outline: Workflow with Assign Base Convert and Decision tools executing
 	  Then the workflow execution has "NO" error
 	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
 	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | <value>        |
-	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  | # |                |      |
 	  | 1 | [[rec(1).a]] = | <value>   |
+	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+	  | # |                |         |
+	  | 1 | [[rec(1).a]] = | <value> |
 	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
 	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
       And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
@@ -394,21 +394,88 @@ Scenario Outline: Workflow with Assign Base Convert and Decision tools executing
 	  |  | Statement | Require All decisions to be True |
 	  |  | String    | YES                              |
 	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  |     |
+	  |          |
 	  | <output> |
 Examples: 
      | no | Value    | from | to     | result       | cond      | output |
      | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
      | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
-     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | Yes    |
-  
+     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
+     | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
 
 
 
-
-
-
-
+Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
+      Given I have a workflow "workflowithAssignandsequence"
+       And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
+      | variable    | value    |
+      | [[rec().a]] | test     |
+      | [[rec().b]] | nothing  |
+      | [[rec().a]] | warewolf |
+      | [[rec().b]] | nothing  |
+      And "workflowithAssignandsequence" contains a Sequence "Test1" as
+	  And "Test1" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 4     |         | Left      |
+	  | [[rec(2).a]] | Index | 8     |         | Left      |
+	  And "Test1" contains Data Split "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  And "Test1" contains Find Index "Index" into "[[indexResult]]" as
+	  | In Fields    | Index           | Character | Direction     |
+	  | [[rec().a]] | First Occurence | e         | Left to Right |
+	  And "Test1" contains Replace "Replacing" into "[[replaceResult]]" as	
+	  | In Fields  | Find | Replace With |
+	  | [[rec(*)]] | e    | REPLACED     |
+	  When "workflowithAssignandsequence" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | test      |
+	  | 2 | [[rec().b]] = | nothing   |
+	  | 3 | [[rec().a]] = | warewolf  |
+	  | 4 | [[rec().b]] = | nothing   |
+	   And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = test     |
+	  | 2 | [[rec(1).b]] = nothing  |
+	  | 3 | [[rec(2).a]] = warewolf |
+	  | 4 | [[rec(2).b]] = nothing  |
+	  And the "Data Merge" debug inputs as  
+	  | # |                         | With  | Using | Pad | Align |
+	  | 1 | [[rec(1).a]] = test     | Index | "4"   | ""  | Left  |
+	  | 2 | [[rec(2).a]] = warewolf | Index | "8"   | ""  | Left  |
+	  And the "Data Merge" debug outputs as 
+	  |                           |
+	  | [[result]] = testwarewolf |
+	  And the "Data Split" debug inputs as  
+	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
+	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
+	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
+	  And the "Data Split" debug outputs as
+	  | # |                         |
+	  | 1 | [[rec(1).b]] = test     |
+	  | 2 | [[rec(2).b]] = warewolf |
+      And the "Index" debug inputs as
+	  | In Field                | Index           | Characters | Direction     |
+	  | [[rec(2).a]] = warewolf | First Occurence | e          | Left to Right |
+	  And the "Index" debug outputs as
+	  |                     |
+	  | [[indexResult]] = 4 |
+	  And the "Replacing" debug inputs as 
+	  | In Field(s)             | Find | Replace With |
+	  | [[rec(1).a]] = test     |      |              |
+	  | [[rec(1).b]] = test     |      |              |
+	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
+	  And the "Replacing" debug outputs as 
+	  |                                |
+	  | [[rec(1).a]] = tREPLACEDst     |
+	  | [[rec(1).b]] = tREPLACEDst     |
+	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(2).b]] = warREPLACEDwolf |
+	  | [[replaceResult]] = 4          |
 
 
 
