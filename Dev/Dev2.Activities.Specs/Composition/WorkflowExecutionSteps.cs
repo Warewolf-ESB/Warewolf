@@ -54,19 +54,24 @@ namespace Dev2.Activities.Specs.Composition
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
 
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
-            ScenarioContext.Current.Add(workflowName, resourceModel);
-            ScenarioContext.Current.Add("parentWorkflowName", workflowName);
-            ScenarioContext.Current.Add("environment", environmentModel);
-            ScenarioContext.Current.Add("resourceRepo", environmentModel.ResourceRepository);
-            ScenarioContext.Current.Add("debugStates", new List<IDebugState>());
+            Add(workflowName, resourceModel);
+            Add("parentWorkflowName", workflowName);
+            Add("environment", environmentModel);
+            Add("resourceRepo", environmentModel.ResourceRepository);
+            Add("debugStates", new List<IDebugState>());
+        }
+
+        void Add(string key, object value)
+        {
+            ScenarioContext.Current.Add(key, value);
         }
 
         void Append(IDebugState debugState)
         {
             List<IDebugState> debugStates;
             string workflowName;
-            ScenarioContext.Current.TryGetValue("debugStates", out debugStates);
-            ScenarioContext.Current.TryGetValue("parentWorkflowName", out workflowName);
+            TryGetValue("debugStates", out debugStates);
+            TryGetValue("parentWorkflowName", out workflowName);
 
             debugStates.Add(debugState);
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
@@ -328,9 +333,9 @@ namespace Dev2.Activities.Specs.Composition
             IContextualResourceModel resourceModel;
             IEnvironmentModel environmentModel;
             IResourceRepository repository;
-            ScenarioContext.Current.TryGetValue(workflowName, out resourceModel);
-            ScenarioContext.Current.TryGetValue("environment", out environmentModel);
-            ScenarioContext.Current.TryGetValue("resourceRepo", out repository);
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
 
             string currentDl = CurrentDl;
             resourceModel.DataList = currentDl.Replace("root", "DataList");
@@ -349,9 +354,9 @@ namespace Dev2.Activities.Specs.Composition
         {
             Dictionary<string, Activity> activityList;
             string parentWorkflowName;
-            ScenarioContext.Current.TryGetValue("activityList", out activityList);
-            ScenarioContext.Current.TryGetValue("parentWorkflowName", out parentWorkflowName);
-            var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
 
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
@@ -369,15 +374,25 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
+        T Get<T>(string keyName)
+        {
+            return ScenarioContext.Current.Get<T>(keyName);
+        }
+
+        void TryGetValue<T>(string keyName, out T value)
+        {
+            ScenarioContext.Current.TryGetValue(keyName, out value);
+        }
+
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
             string parentWorkflowName;
-            ScenarioContext.Current.TryGetValue("activityList", out activityList);
-            ScenarioContext.Current.TryGetValue("parentWorkflowName", out parentWorkflowName);
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
 
-            var debugStates = ScenarioContext.Current.Get<List<IDebugState>>("debugStates");
+            var debugStates = Get<List<IDebugState>>("debugStates");
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
             if(parentWorkflowName == workflowName)
