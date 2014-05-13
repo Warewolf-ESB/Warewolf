@@ -1075,7 +1075,6 @@ namespace Dev2.Core.Tests.Workflows
         // - start
 
         [TestMethod]
-        [Ignore]
         [Owner("Travis Frisinger")]
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNull_ExpectWorkflowXamlFetch()
@@ -1113,7 +1112,6 @@ namespace Dev2.Core.Tests.Workflows
 
 
         [TestMethod]
-        [Ignore]
         [Owner("Travis Frisinger")]
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
@@ -1209,7 +1207,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
         {
             var repo = new Mock<IResourceRepository>();
@@ -1253,7 +1250,6 @@ namespace Dev2.Core.Tests.Workflows
 
         // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
         [TestMethod]
-        [Ignore]
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInvokesWorkflowHelper()
         {
             var repo = new Mock<IResourceRepository>();
@@ -2113,7 +2109,6 @@ namespace Dev2.Core.Tests.Workflows
 
 
         [TestMethod]
-        [Ignore]
         [Owner("Travis Frisinger")]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectLoadFromServerDoesNotReflectEdit()
         {
@@ -2202,7 +2197,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Travis Frisinger")]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectFirstFocusDoesNotReflectEdit()
         {
@@ -2291,7 +2285,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Travis Frisinger")]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectLoadUpdateWaterMarkDoesNotReflectEdit()
         {
@@ -2381,7 +2374,6 @@ namespace Dev2.Core.Tests.Workflows
 
 
         [TestMethod]
-        [Ignore]
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
@@ -2474,7 +2466,6 @@ namespace Dev2.Core.Tests.Workflows
         #region EditActivity
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_EditActivity")]
         [Description("WorkflowDesignerViewModel EditActivity must load the workflow when then enviromentID is null")]
         [Owner("Travis Frisinger")]
@@ -2521,7 +2512,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_EditActivity")]
         [Description("WorkflowDesignerViewModel EditActivity must connect and load the resources of a disconnected environment.")]
         [Owner("Trevor Williams-Ros")]
@@ -2569,7 +2559,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_EditActivity")]
         [Description("WorkflowDesignerViewModel EditActivity must rehydrate its environment ID with its parent id if empty.")]
         [Owner("Trevor Williams-Ros")]
@@ -2627,7 +2616,6 @@ namespace Dev2.Core.Tests.Workflows
         #region DebugSelectionChanged
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_NullDebugState_DoesNothing()
@@ -2671,7 +2659,6 @@ namespace Dev2.Core.Tests.Workflows
 
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_DesignerViewHidden_DoesNothing()
@@ -2716,7 +2703,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemNotFound_SelectsFlowchart()
@@ -2725,7 +2711,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemFound_SelectsModelItem()
@@ -2734,7 +2719,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionDecisionOrSwitchItemFound_SelectsDecisionOrSwitch()
@@ -2743,7 +2727,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_AddSelection_SelectsItems()
@@ -2752,7 +2735,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_RemoveSelection_SelectsItems()
@@ -2761,7 +2743,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_DebugSelectionChanged")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_ClearSelection_DeselectsItems()
@@ -2922,7 +2903,6 @@ namespace Dev2.Core.Tests.Workflows
         #region ViewPreviewMouseDown
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_UnitTest")]
         [Description("Clicking a decision publishes configure decision message with isnew equal to false")]
         [Owner("Ashley Lewis")]
@@ -3001,7 +2981,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_UnitTest")]
         [Description("Clicking a switch publishes configure switch message with isnew equal to false")]
         [Owner("Ashley Lewis")]
@@ -3083,7 +3062,6 @@ namespace Dev2.Core.Tests.Workflows
 
 
         [TestMethod]
-        [Ignore]
         [TestCategory("WorkflowDesignerViewModel_CanSave")]
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_CanSave_InvokesResourceModelIsAuthorizedForContribute()
@@ -3129,7 +3107,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
         public void WorkflowDesignerViewModel_DoWorkspaceSave_IsNewResourceModel_ShouldCallSave()
@@ -3171,7 +3148,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
         public void WorkflowDesignerViewModel_DoWorkspaceSave_NotNewResourceModel_ShouldCallSave()
@@ -3211,7 +3187,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Ignore]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_HandleUpdateResourceMessage")]
         public void WorkflowDesignerViewModel_HandleUpdateResourceMessage_WhenMessageHasErrors_ResourceModelShouldHaveErrors()
