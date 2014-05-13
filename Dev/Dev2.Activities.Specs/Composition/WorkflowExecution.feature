@@ -240,7 +240,7 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | # |                         |
 	  | 1 | [[test]] = rec(1).a     |
 	  | 2 | [[rec(1).a]] = Warewolf |
-	  And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
 	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
@@ -403,6 +403,150 @@ Examples:
      | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
      | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
 
+
+
+Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
+      Given I have a workflow "workflowithAssignandsequence"
+       And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
+      | variable    | value    |
+      | [[rec().a]] | test     |
+      | [[rec().b]] | nothing  |
+      | [[rec().a]] | warewolf |
+      | [[rec().b]] | nothing  |
+      And "workflowithAssignandsequence" contains a Sequence "Test1" as
+	  And "Test1" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 4     |         | Left      |
+	  | [[rec(2).a]] | Index | 8     |         | Left      |
+	  And "Test1" contains Data Split "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	  And "Test1" contains Find Index "Index" into "[[indexResult]]" as
+	  | In Fields    | Index           | Character | Direction     |
+	  | [[rec().a]] | First Occurence | e         | Left to Right |
+	  And "Test1" contains Replace "Replacing" into "[[replaceResult]]" as	
+	  | In Fields  | Find | Replace With |
+	  | [[rec(*)]] | e    | REPLACED     |
+	  When "workflowithAssignandsequence" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | test      |
+	  | 2 | [[rec().b]] = | nothing   |
+	  | 3 | [[rec().a]] = | warewolf  |
+	  | 4 | [[rec().b]] = | nothing   |
+	   And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = test     |
+	  | 2 | [[rec(1).b]] = nothing  |
+	  | 3 | [[rec(2).a]] = warewolf |
+	  | 4 | [[rec(2).b]] = nothing  |
+	  And the "Data Merge" debug inputs as  
+	  | # |                         | With  | Using | Pad | Align |
+	  | 1 | [[rec(1).a]] = test     | Index | "4"   | ""  | Left  |
+	  | 2 | [[rec(2).a]] = warewolf | Index | "8"   | ""  | Left  |
+	  And the "Data Merge" debug outputs as 
+	  |                           |
+	  | [[result]] = testwarewolf |
+	  And the "Data Split" debug inputs as  
+	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
+	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
+	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
+	  And the "Data Split" debug outputs as
+	  | # |                         |
+	  | 1 | [[rec(1).b]] = test     |
+	  | 2 | [[rec(2).b]] = warewolf |
+      And the "Index" debug inputs as
+	  | In Field                | Index           | Characters | Direction     |
+	  | [[rec(2).a]] = warewolf | First Occurence | e          | Left to Right |
+	  And the "Index" debug outputs as
+	  |                     |
+	  | [[indexResult]] = 4 |
+	  And the "Replacing" debug inputs as 
+	  | In Field(s)             | Find | Replace With |
+	  | [[rec(1).a]] = test     |      |              |
+	  | [[rec(1).b]] = test     |      |              |
+	  | [[rec(2).a]] = warewolf |      |              |
+	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
+	  And the "Replacing" debug outputs as 
+	  |                                |
+	  | [[rec(1).a]] = tREPLACEDst     |
+	  | [[rec(1).b]] = tREPLACEDst     |
+	  | [[rec(2).a]] = warREPLACEDwolf |
+	  | [[rec(2).b]] = warREPLACEDwolf |
+	  | [[replaceResult]] = 4          |
+
+Scenario: Workflow with Assign Create and Delete Record tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignCreateandDeleteRecord"
+	  And "WorkflowWithAssignCreateandDeleteRecord" contains an Assign "Assign to create" as
+	  | variable    | value           |
+	  | [[rec().a]] | C:\copied00.txt |
+	  And "WorkflowWithAssignCreateandDeleteRecord" contains an Create "Create1" as
+	  | File or Folder | If it exits | Username | Password | Result   |
+	  | [[rec().a]]    | True        |          |          | [[res1]] |
+	  And "WorkflowWithAssignCreateandDeleteRecord" contains an Delete "DeleteFolder" as
+	  | Recordset   | Result   |
+	  | [[rec().a]] | [[res2]] |
+	  When "WorkflowWithAssignCreateandDeleteRecord" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign to create' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecord' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | C:\copied00.txt       |
+	  And the 'Assign to create' in Workflow 'WorkflowWithAssignCreateandDeleteRecord' debug outputs as     
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = C:\copied00.txt      |
+	 And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecord' debug inputs as
+	  | File or Folder                | Overwrite | Username | Password |
+	  | [[rec().a]] = C:\copied00.txt | True      |          |          |  
+	   And the 'Create1' in Workflow 'WorkflowWithAssignCreateandDeleteRecord' debug outputs as    
+	   |                    |
+	   | [[res1]] = Success |
+	  And the 'DeleteFolder' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecord' debug inputs as
+	  | Input Path                    | Username | Password |
+	  | [[rec().a]] = C:\copied00.txt |          |          |
+	  And the 'DeleteFolder' in Workflow 'WorkflowWithAssignCreateandDeleteRecord' debug outputs as    
+	  |                    |
+	  | [[res2]] = Success |
+
+#This Test Scenario should be passed after the Bug 11815 is fixed
+#Scenario Outline: Workflow with Assign Create and Delete Record tools with incorrect input path executing against the server
+#	  Given I have a workflow "WorkflowWithAssignCreateDeleteRecord"
+#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Assign "Assign to create" as
+#	  | variable    | value         |
+#	  | [[rec().a]] | \create.txt |
+#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Create "Create1" as
+#	  | File or Folder | If it exits | Username | Password | Result   |
+#	  | [[rec().a]]    | True        |          |          | [[res1]] |
+#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Delete "DeleteFolder" as
+#	  | Recordset   | Result   |
+#	  | [[rec().a]] | [[res2]] |
+#	  When "WorkflowWithAssignCreateDeleteRecord" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign to create' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
+#	  | # | Variable      | New Value   |
+#	  | 1 | [[rec().a]] = | \create.txt |
+#	  And the 'Assign to create' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as     
+#	  | # |                            |
+#	  | 1 | [[rec(1).a]] = \create.txt |
+#	  And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
+#	  | File or Folder            | Overwrite | Username | Password |
+#	  | [[rec().a]] = \create.txt | True      |          |          | 
+#	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as    
+#	   |                    |
+#	   | [[res1]] = Failure |
+#	  And the 'DeleteFolder' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
+#	  | Input Path                | Username | Password |
+#	  | [[rec().a]] = \create.txt |          |          |
+#	  And the 'DeleteFolder' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as    
+#	  |                    |
+#	  | [[res2]] = Failure |
+
+
+
+
+
+  
 
 
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
