@@ -35,9 +35,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
             Playback.Wait(100);
         }
 
-        public void EnterUsernameAndPassword()
+        public void EnterUsernameAndPassword(string user, string pass)
         {
-            Keyboard.SendKeys("{TAB}testuser{TAB}test123");
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey(user);
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendKey(pass);
             Playback.Wait(100);
         }
 

@@ -39,11 +39,36 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
 
         public void AddResource(string resourceName, string category, string folder)
         {
-            UITestControl addResourceButton = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-              .FindByAutomationId(AddResourceButtonId);
-            addResourceButton.Click();
-            PopupDialogUIMap.WaitForDialog();
-            PopupDialogUIMap.AddAResource("localhost", category, folder, resourceName);
+            UITestControl addResourceGrid = _activeTab.GetChildByAutomationIDPath(_resourceGridPath);
+
+            var kids = addResourceGrid.GetChildren();
+
+            var foundIt = false;
+
+            if(kids.Count == 2)
+            {
+                var theRow = kids[1];
+                var grandKids = theRow.GetChildren();
+                if(grandKids.Count > 0)
+                {
+                    // 0 = header 
+                    var magicCell = grandKids[1];
+                    var grandGrandKids = magicCell.GetChildren();
+                    if(grandGrandKids.Count == 2)
+                    {
+                        var addResourceButton = grandGrandKids[1];
+                        addResourceButton.Click();
+                        PopupDialogUIMap.WaitForDialog();
+                        PopupDialogUIMap.AddAResource("localhost", category, folder, resourceName);
+                        foundIt = true;
+                    }
+                }
+            }
+
+            if(!foundIt)
+            {
+                throw new Exception("Failed to locate resource picker button");
+            }
         }
 
         public void SetWindowsGroupText(string groupName)

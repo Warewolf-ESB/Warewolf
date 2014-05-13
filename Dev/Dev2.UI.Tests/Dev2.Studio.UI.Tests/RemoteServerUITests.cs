@@ -21,6 +21,8 @@ namespace Dev2.Studio.UI.Tests
         const string RemoteServerName = "Remote Connection";
         const string LocalHostServerName = "localhost";
 
+        const string remoteConnectionString = "Remote Connection (http://tst-ci-remote:3142/dsf)";
+
         #endregion
 
         #region Cleanup
@@ -70,14 +72,13 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
         {
             UITestControl tab = ExplorerUIMap.DoubleClickWorkflow("Find Records", "TESTS", RemoteServerName);
-            ActivityUiMapBase activityUiMapBase = new DsfActivityUiMap(false);
-            activityUiMapBase.TheTab = tab;
-            activityUiMapBase.DragToolOntoDesigner(ToolType.Assign);
-            var activeTabName = TabManagerUIMap.GetActiveTabName();
-            Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
-
-            Assert.Fail("You cannot continue to drop an activity on top of its self, then it fails to see the change ;(");
-
+            using(ActivityUiMapBase activityUiMapBase = new DsfActivityUiMap(false))
+            {
+                activityUiMapBase.TheTab = tab;
+                activityUiMapBase.DragToolOntoDesigner(ToolType.Assign);
+                var activeTabName = TabManagerUIMap.GetActiveTabName();
+                Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
+            }
         }
 
         [TestMethod]
@@ -111,7 +112,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDroppedAndCanExecute()
         {
-            const string remoteWorkflowName = "Recursive File Copy";
+            const string remoteWorkflowName = "MyLocalWF";
 
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
@@ -119,7 +120,7 @@ namespace Dev2.Studio.UI.Tests
             //Create new workflow and drag a remote workflow onto it
             using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
             {
-                activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "UTILITY", RemoteServerName);
+                activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "TESTCATEGORY", RemoteServerName);
 
                 //Should be able to get clean debug output
                 RibbonUIMap.DebugShortcutKeyPress();
@@ -128,8 +129,6 @@ namespace Dev2.Studio.UI.Tests
                 //Assert that the workflow really is on the design surface and debug output is clean
                 Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
                 Assert.IsNotNull(activityUiMap.Activity);
-
-                Assert.Fail("Workflow created for wrong environment, Remote Server, NOT LOCALHOST");
             }
         }
 
@@ -189,10 +188,9 @@ namespace Dev2.Studio.UI.Tests
                 var actualRightTitleText = DatabaseSourceUIMap.GetRightTitleText();
 
                 Assert.AreEqual("Edit - DBSource", actualLeftTitleText);
-                Assert.AreEqual("Remote Connection (http://tst-ci-remote:3142/dsf)", actualRightTitleText);
+                Assert.AreEqual(remoteConnectionString, actualRightTitleText);
 
-                DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
-                DatabaseSourceUIMap.EnterUsernameAndPassword();
+                DatabaseSourceUIMap.EnterUsernameAndPassword("testuser2", "pass1234");
                 DatabaseSourceUIMap.TestConnection();
                 Playback.Wait(5000);
                 DatabaseSourceUIMap.ClickSaveDbConnectionFromTestConnection();
@@ -226,7 +224,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = WebSourceWizardUIMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - Dev2GetCountriesWebService", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://TST-CI-REMOTE:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual(remoteConnectionString, actualRightTitleText);
 
             WebSourceWizardUIMap.EnterTextIntoWizardTextBox(3, "?extension=json&prefix=b");
             WebSourceWizardUIMap.PressButtonOnWizard(3);
@@ -299,7 +297,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = EmailSourceWizardUIMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - EmailSource", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://TST-CI-REMOTE:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual(remoteConnectionString, actualRightTitleText);
 
 
             //Change Timeout
@@ -351,7 +349,7 @@ namespace Dev2.Studio.UI.Tests
             var actualRightTitleText = PluginSourceMap.GetRightTitleText();
 
             Assert.AreEqual("Edit - PluginSource", actualLeftTitleText);
-            Assert.AreEqual("Remote Connection (http://TST-CI-REMOTE:3142/dsf)", actualRightTitleText);
+            Assert.AreEqual(remoteConnectionString, actualRightTitleText);
 
 
             PluginSourceMap.ClickPluginSourceAssemblyPath();

@@ -53,8 +53,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             //------------Setup for test--------------------------
             DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
 
-            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
-            decisionActivity.OnErrorVariable = "[[error]]";
+            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity { OnErrorVariable = "[[error]]" };
 
             DsfSequenceActivity activity = new DsfSequenceActivity();
             activity.Activities.Add(multiAssignActivity);

@@ -13,10 +13,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class DsfForEachActivityTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]

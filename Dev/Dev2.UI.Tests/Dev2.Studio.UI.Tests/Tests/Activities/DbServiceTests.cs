@@ -59,9 +59,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 //Assert that the fix errors button isnt there anymore
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
 
-
-                Assert.Fail("Need to click the done button twice - Bug");
-
             }
         }
     }

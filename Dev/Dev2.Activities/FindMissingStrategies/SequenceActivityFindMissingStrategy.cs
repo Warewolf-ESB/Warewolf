@@ -43,7 +43,9 @@ namespace Dev2.FindMissingStrategies
             }
 
             IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(PropertyInfo propertyInfo in properties)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 object property = propertyInfo.GetValue(activity, null);
                 if(property != null)

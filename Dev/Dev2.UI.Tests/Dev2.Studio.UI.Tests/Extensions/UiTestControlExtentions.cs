@@ -135,6 +135,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             Point point = new Point(control.BoundingRectangle.X + 20, control.BoundingRectangle.Y + 5);
             Mouse.Move(point);
+            Mouse.Click();
             Mouse.DoubleClick();
         }
 

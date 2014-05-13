@@ -716,6 +716,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         #region Init
+
         public void Init()
         {
             try
@@ -739,8 +740,20 @@ namespace Dev2.Studio.UI.Tests
 
             // only bootstrap if we have build in test mode ;)
             #if TEST
-            Bootstrap.Init();
+                Bootstrap.Init();
             #endif
+        }
+
+        #endregion
+
+        #region Halt
+
+        public void Halt()
+        {
+            #if TEST
+                Bootstrap.Teardown();
+            #endif
+
         }
         #endregion
     }

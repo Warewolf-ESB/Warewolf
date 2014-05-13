@@ -30,12 +30,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
         }
 
-        public override void UpdateForEachInputs(System.Collections.Generic.IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             throw new NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(System.Collections.Generic.IList<Tuple<string, string>> updates, NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             throw new NotImplementedException();
         }

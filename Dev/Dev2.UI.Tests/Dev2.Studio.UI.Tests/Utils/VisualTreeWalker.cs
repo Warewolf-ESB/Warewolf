@@ -35,8 +35,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 var childAutoID = child.GetProperty("AutomationID").ToString();
 
-                return childAutoID.Contains(automationIDs[bookmark]) || 
-                    child.FriendlyName.Contains(automationIDs[bookmark]) || 
+                return childAutoID.Contains(automationIDs[bookmark]) ||
+                    child.FriendlyName.Contains(automationIDs[bookmark]) ||
                     child.ControlType.Name.Contains(automationIDs[bookmark]) ||
                     child.ClassName.Contains(automationIDs[bookmark]);
             });
@@ -49,8 +49,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                     " and friendly name: " + parent.FriendlyName +
                     " and control type: " + parent.ControlType +
                     " and class name: " + parent.ClassName + ".");
-            } 
-            if (bookmark == automationIDs.Count() - 1)
+            }
+            if(bookmark == automationIDs.Count() - 1)
             {
                 return firstChildFound;
             }
@@ -116,20 +116,20 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(_studioWindow == null)
             {
                 _studioWindow = new UIMapBase.UIStudioWindow();
-                _studioWindow.Find(); 
+                _studioWindow.Find();
             }
 
-            if (automationIDs != null && automationIDs.Length > 0)
+            if(automationIDs != null && automationIDs.Length > 0)
             {
                 UITestControl theControl = new UITestControl(_studioWindow);
 
-                // hande all other pinned panes ;)
-                if (singleSearch)
+                // handle all other pinned panes ;)
+                if(singleSearch)
                 {
                     theControl.SearchProperties[UITestControl.PropertyNames.ClassName] = automationIDs[0];
                     theControl.Find();
 
-                    if (automationIDs.Length > 1)
+                    if(automationIDs.Length > 1)
                     {
                         return GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
                     }
@@ -138,7 +138,9 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
 
                 // handle the explorer ;)
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 if(!singleSearch && automationIDs.Length > 1 && splitPaneIndex >= 0)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
 
                     theControl.SearchProperties[UITestControl.PropertyNames.ClassName] = automationIDs[0];
@@ -148,19 +150,19 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     var parent = tmp[splitPaneIndex];
 
-                    for(int i  =1; i < automationIDs.Length; i++)
+                    for(int i = 1; i < automationIDs.Length; i++)
                     {
-                        if (parent != null)
+                        if(parent != null)
                         {
                             var children = parent.GetChildren();
 
                             UITestControl canidate = null;
-                            foreach (var child in children)
+                            foreach(var child in children)
                             {
                                 var childAutoID = child.GetProperty("AutomationID").ToString();
 
-                                if (childAutoID == automationIDs[i] ||
-                                    childAutoID.Contains(automationIDs[i])||
+                                if(childAutoID == automationIDs[i] ||
+                                    childAutoID.Contains(automationIDs[i]) ||
                                     child.FriendlyName.Contains(automationIDs[i]) ||
                                     child.ControlType.Name.Contains(automationIDs[i]) ||
                                     child.ClassName.Contains(automationIDs[i]))
@@ -171,7 +173,6 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                             // all done, tag it ;)
                             parent = canidate;
-                            canidate = null;
                         }
                     }
                     return parent;

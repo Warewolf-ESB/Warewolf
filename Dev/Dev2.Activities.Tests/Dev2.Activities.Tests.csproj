@@ -184,7 +184,6 @@
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
-    <Compile Include="Utils\TestActivity.cs" />
     <Compile Include="Utils\TestUtil.cs" />
     <Compile Include="WorkflowHelperTests.cs" />
     <Compile Include="XML\XmlResource.cs" />

@@ -116,6 +116,7 @@ namespace Dev2.CodedUI.Tests
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            Point clickPint = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 20);
 
             // Drag a Calculate control on
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
@@ -141,6 +142,7 @@ namespace Dev2.CodedUI.Tests
                 }
             }
 
+            Mouse.Click(clickPint);
             Playback.Wait(500);
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
@@ -258,7 +260,7 @@ namespace Dev2.CodedUI.Tests
 
             // Click it
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
-            Mouse.Click(controlOnWorkflow, new Point(265, 5));
+            Mouse.Click(controlOnWorkflow, new Point(65, 5));
         }
 
         #region Groomed Test

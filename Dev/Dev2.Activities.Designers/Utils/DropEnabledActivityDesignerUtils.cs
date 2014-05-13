@@ -12,11 +12,6 @@ namespace Dev2.Activities.Utils
     /// </summary>
     public class DropEnabledActivityDesignerUtils
     {
-        #region Ctor
-
-        #endregion
-
-
         public bool LimitDragDropOptions(IDataObject data)
         {
             var formats = data.GetFormats();
@@ -60,7 +55,7 @@ namespace Dev2.Activities.Utils
         /// Used to decide if the dragged activity can be dropped onto the foreach activity 
         /// </summary>
         /// <param name="objectData">The ModelItem of the dragged activity</param>
-        /// <returns>If the activity is dropable into a foreach</returns>
+        /// <returns>If the activity is drop-able into a foreach</returns>
         bool DropPointOnDragEnter(object objectData)
         {
             bool dropEnabled = true;

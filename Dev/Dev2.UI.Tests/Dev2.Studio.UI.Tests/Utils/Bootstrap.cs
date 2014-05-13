@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Management;
 using System.Threading;
-using BuildEventLogging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -14,8 +13,6 @@ namespace Dev2.Studio.UI.Tests.Utils
     [TestClass]
     public class Bootstrap
     {
-        private const string ServerName = "Warewolf Server.exe";
-        private const string StudioName = "Warewolf Studio.exe";
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
         private const int ServerTimeOut = 2000;
@@ -26,44 +23,28 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static string StudioLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Warewolf Studio.exe";
         public static Process StudioProc;
 
-
-        private static readonly object _tumbler = new object();
-        private static TestContext testCtx;
-
-        /// <summary>
-        /// Inits the specified test CTX.
-        /// </summary>
-        /// <param name="textCtx">The test CTX.</param>
-        [AssemblyInitialize]
-        public static void AssemblyInit(TestContext textCtx)
-        {
-            testCtx = textCtx;
-        }
+        public static string LogLocation = @"C:\Builds\UITestRunWorkspace\UI_Test.log";
 
         public static void Init()
         {
-            lock(_tumbler)
+            var serverProcess = TryGetProcess(ServerProcName);
+            var studioProcess = TryGetProcess(StudioProcName);
+
+            if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
-                var serverProcess = TryGetProcess(ServerProcName);
-                var studioProcess = TryGetProcess(StudioProcName);
+                // term any existing studio processes ;)
+                KillProcess(studioProcess);
+                // term any existing server processes ;)
+                KillProcess(serverProcess);
 
-                if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
-                {
-                    // term any existing studio processes ;)
-                    KillProcess(studioProcess);
-                    // term any existing server processes ;)
-                    KillProcess(serverProcess);
+                StartServer();
+                StartStudio();
 
-                    StartServer();
-                    StartStudio();
-
-                    Thread.Sleep(2500);
-                }
-                else
-                {
-                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate CodedUI Binaries");
-                }
+                Thread.Sleep(2500);
+            }
+            else
+            {
+                LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
         }
 
@@ -85,13 +66,13 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(StudioProc != null && !StudioProc.HasExited)
                     {
                         started = true;
+                        LogTestRunMessage("Started Studio");
                     }
                 }
                 catch
                 {
                     // most likely a studio is already running, kill it and try again ;)
-                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate Start Studio");
+                    LogTestRunMessage("Could not locate Start Studio [ " + StudioLocation + " ] Attempt Count [ " + startCnt + " ]", true);
                     startCnt++;
                 }
             }
@@ -117,30 +98,31 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(ServerProc != null && !ServerProc.HasExited)
                     {
                         started = true;
+                        LogTestRunMessage("Started Server");
                     }
                 }
                 catch(Exception)
                 {
                     // most likely a server is already running, kill it and try again ;)
+                    LogTestRunMessage("Could not locate Start Server [ " + ServerLocation + " ] Attempt Count [ " + startCnt + " ]", true);
                     startCnt++;
-                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-                    BuildEventLogger.LogBuildEvent(buildLabel, "Could not locate Start Server");
                 }
                 finally
                 {
                     if(!started)
                     {
+                        LogTestRunMessage("Failed To Start Server.... Aborting", true);
                         // term any existing server processes ;)
                         KillProcess(TryGetProcess(ServerProcName));
+                        throw new Exception("Failed To Start Server!!!!");
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Teardowns this instance.
+        /// Tear downs this instance.
         /// </summary>
-        [AssemblyCleanup]
         public static void Teardown()
         {
             if(ServerProc != null && !ServerProc.HasExited)
@@ -148,29 +130,20 @@ namespace Dev2.Studio.UI.Tests.Utils
                 ServerProc.Kill();
             }
 
-            if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName))
-            {
-                //Server was deployed and started, stop it now.
-                KillProcess(TryGetProcess(ServerProcName));
-            }
+
+            //Server was deployed and started, stop it now.
+            KillProcess(TryGetProcess(ServerProcName));
+
 
             if(StudioProc != null && !StudioProc.HasExited)
             {
                 StudioProc.Kill();
             }
 
-            if(File.Exists(testCtx.DeploymentDirectory + @"\" + StudioName))
-            {
-                //Studio was deployed and started, stop it now.
-                KillProcess(TryGetProcess(StudioProcName));
-            }
 
-            var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
-            //Remote by a build agent
-            if(buildLabel.LoggingURL != string.Empty)
-            {
-                BuildEventLogger.LogBuildEvent(buildLabel, "Finished coded UI testing.");
-            }
+            //Studio was deployed and started, stop it now.
+            KillProcess(TryGetProcess(StudioProcName));
+
         }
 
         private static ManagementObjectCollection TryGetProcess(string procName)
@@ -208,12 +181,27 @@ namespace Dev2.Studio.UI.Tests.Utils
                     proc.Kill();
                 }
                 // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception)
+                catch(Exception e)
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
+                    LogTestRunMessage(e.Message, true);
                 }
             }
+        }
+
+        static void LogTestRunMessage(string msg, bool isError = false)
+        {
+            if(isError)
+            {
+                File.AppendAllText("ERROR :: " + LogLocation, msg);
+            }
+            else
+            {
+                File.AppendAllText("INFO :: " + LogLocation, msg);
+            }
+
+            File.AppendAllText(LogLocation, Environment.NewLine);
         }
     }
 }

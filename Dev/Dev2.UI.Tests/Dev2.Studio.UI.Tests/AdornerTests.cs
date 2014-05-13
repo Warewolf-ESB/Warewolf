@@ -514,15 +514,7 @@ namespace Dev2.Studio.UI.Tests
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
             Mouse.Move(controlOnWorkflow, new Point(5, 5));
-            var mappingsBtn =
-                WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
-
-            if(mappingsBtn == null)
-            {
-                Assert.Fail("Could not find mapping button");
-            }
-
-            Mouse.Click(mappingsBtn);
+            Mouse.DoubleClick();
 
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
             Point initialResizerPoint = new Point();
@@ -545,10 +537,11 @@ namespace Dev2.Studio.UI.Tests
 
             // Drag
             Mouse.Move(new Point(resizeThumb.Left + 5, resizeThumb.Top + 5));
+            Mouse.Click();
             Mouse.StartDragging();
 
             // Y - 50 since it starts at the lowest point
-            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y - 50));
+            Mouse.StopDragging(new Point(initialResizerPoint.X + 50, initialResizerPoint.Y + 50));
 
             // Check position to see it dragged
             Point newResizerPoint = new Point();

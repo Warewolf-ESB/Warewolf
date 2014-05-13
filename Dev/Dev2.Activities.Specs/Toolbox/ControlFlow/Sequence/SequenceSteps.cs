@@ -91,8 +91,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
-            DsfDeleteRecordActivity activity = new DsfDeleteRecordActivity();
-            activity.DisplayName = activityName;
+            DsfDeleteRecordActivity activity = new DsfDeleteRecordActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
@@ -112,8 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             var result = resultVariable;
             var recset = recsetToSearch;
             CommonSteps.AddVariableToVariableList(result);
-            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset };
-            activity.DisplayName = activityName;
+            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var matchType = tableRow["Match Type"];
@@ -128,8 +126,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
         public void GivenItContainFindUniqueAs(string parentName, string activityName, Table table)
         {
-            DsfUniqueActivity activity = new DsfUniqueActivity();
-            activity.DisplayName = activityName;
+            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Fields"];
@@ -148,8 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
         public void GivenItContainsCaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
-            activity.DisplayName = activityName;
+            DsfCaseConvertActivity activity = new DsfCaseConvertActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -164,8 +160,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenItContainsGatherSystemInfoAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfGatherSystemInformationActivity();
-            activity.DisplayName = activityName;
+            var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -182,8 +177,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Random ""(.*)"" as")]
         public void GivenItContainsRandomAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfRandomActivity();
-            activity.DisplayName = activityName;
+            var activity = new DsfRandomActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var type = (enRandomType)Enum.Parse(typeof(enRandomType), tableRow["Type"]);
@@ -206,8 +200,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Format Number ""(.*)"" as")]
         public void GivenItContainsFormatNumberAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfNumberFormatActivity();
-            activity.DisplayName = activityName;
+            var activity = new DsfNumberFormatActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var number = tableRow["Number"];
@@ -233,8 +226,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Date and Time ""(.*)"" as")]
         public void GivenItContainsDateAndTimeAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfDateTimeActivity();
-            activity.DisplayName = activityName;
+            var activity = new DsfDateTimeActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input"];
@@ -261,8 +253,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Date and Time Difference ""(.*)"" as")]
         public void GivenItContainsDateAndTimeDifferenceAs(string parentName, string activityName, Table table)
         {
-            var activity = new DsfDateTimeDifferenceActivity();
-            activity.DisplayName = activityName;
+            var activity = new DsfDateTimeDifferenceActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var input1 = tableRow["Input1"];
@@ -288,8 +279,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Data Split ""(.*)"" as")]
         public void GivenItContainsDataSplitAs(string parentName, string activityName, Table table)
         {
-            DsfDataSplitActivity activity = new DsfDataSplitActivity();
-            activity.DisplayName = activityName;
+            DsfDataSplitActivity activity = new DsfDataSplitActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var valueToSplit = string.IsNullOrEmpty(tableRow["String"]) ? "" : tableRow["String"];
@@ -313,8 +303,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsReplaceIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfReplaceActivity activity = new DsfReplaceActivity { Result = resultVariable };
-            activity.DisplayName = activityName;
+            DsfReplaceActivity activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -333,8 +322,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Find Index ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsFindIndexIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfIndexActivity activity = new DsfIndexActivity { Result = resultVariable };
-            activity.DisplayName = activityName;
+            DsfIndexActivity activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
@@ -355,8 +343,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable };
-            activity.DisplayName = activityName;
+            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
@@ -374,8 +361,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
         public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfBaseConvertActivity activity = new DsfBaseConvertActivity();
-            activity.DisplayName = activityName;
+            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
             foreach(var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
@@ -469,8 +455,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"I have a ForEach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
         public void GivenIHaveAForEachAsExecutions(string activityName, string forEachType, string numberOfExecutions)
         {
-            DsfForEachActivity forEachActivity = new DsfForEachActivity();
-            forEachActivity.DisplayName = activityName;
+            DsfForEachActivity forEachActivity = new DsfForEachActivity { DisplayName = activityName };
             enForEachType typeOfForEach;
             Enum.TryParse(forEachType, out typeOfForEach);
 

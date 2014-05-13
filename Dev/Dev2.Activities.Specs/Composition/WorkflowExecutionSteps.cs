@@ -48,11 +48,7 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel);
-            resourceModel.Category = "Acceptance Tests";
-            resourceModel.ResourceName = workflowName;
-            resourceModel.ID = Guid.NewGuid();
-            resourceModel.ResourceType = ResourceType.WorkflowService;
+            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests", ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
@@ -141,8 +137,7 @@ namespace Dev2.Activities.Specs.Composition
 
         static DataMappingViewModel GetDataMappingViewModel(IResourceModel remoteResourceModel, Table mappings)
         {
-            var webActivity = new WebActivity();
-            webActivity.ResourceModel = remoteResourceModel as ResourceModel;
+            var webActivity = new WebActivity { ResourceModel = remoteResourceModel as ResourceModel };
             DataMappingViewModel dataMappingViewModel = new DataMappingViewModel(webActivity);
             foreach(var tableRow in mappings.Rows)
             {
@@ -268,9 +263,9 @@ namespace Dev2.Activities.Specs.Composition
                         string fieldName = DataListUtil.ExtractFieldNameFromValue(input);
 
                         element = (from elements in inputs.Descendants("Input")
-                                       where (string)elements.Attribute("Recordset") == recordsetName &&
-                                             (string)elements.Attribute("OriginalName") == fieldName
-                                       select elements).SingleOrDefault();
+                                   where (string)elements.Attribute("Recordset") == recordsetName &&
+                                         (string)elements.Attribute("OriginalName") == fieldName
+                                   select elements).SingleOrDefault();
 
                         if(element != null)
                         {
@@ -284,8 +279,8 @@ namespace Dev2.Activities.Specs.Composition
                         recordsetName = input;
 
                         element = (from elements in inputs.Descendants("Input")
-                                       where (string)elements.Attribute("Name") == recordsetName
-                                       select elements).SingleOrDefault();
+                                   where (string)elements.Attribute("Name") == recordsetName
+                                   select elements).SingleOrDefault();
 
                         if(element != null)
                         {
@@ -324,8 +319,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 else
                 {
-                    var flowStep = new FlowStep();
-                    flowStep.Action = activity.Value;
+                    var flowStep = new FlowStep { Action = activity.Value };
                     flowSteps.Last().Next = flowStep;
                     flowSteps.Add(flowStep);
                 }
@@ -407,10 +401,7 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var debugTO = new DebugTO();
-            debugTO.XmlData = "<DataList></DataList>";
-            debugTO.SessionID = Guid.NewGuid();
-            debugTO.IsDebugMode = true;
+            var debugTO = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
 
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)

@@ -1,7 +1,4 @@
-﻿using System;
-using Dev2.Studio.UI.Tests.Enums;
-using Dev2.Studio.UI.Tests.UIMaps.Activities;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Tests.TabManager
@@ -41,29 +38,34 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
         //This test could fail because of the really long time it takes to save a workflow and close the old tab
         public void TabManagerTests_CodedUI_CreateTwoWorkflowsSwitchBetween_ExpectStarNotShowingInName()
         {
-            var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
-            var secondName = "Test" + Guid.NewGuid().ToString().Substring(24);
 
-            //Create first workflow
-            DsfActivityUiMap dsfActivityUiMap = new DsfActivityUiMap();
-            dsfActivityUiMap.DragToolOntoDesigner(ToolType.Assign);
-            RibbonUIMap.ClickSave();
+            const string firstName = "Bug_10528";
+            const string secondName = "Bug_10528_InnerWorkFlow";
 
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
-            //Create second workflow
-            DsfActivityUiMap dsfActivityUiMap2 = new DsfActivityUiMap();
-            dsfActivityUiMap2.DragToolOntoDesigner(ToolType.Assign);
-            RibbonUIMap.ClickSave();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
+            ExplorerUIMap.EnterExplorerSearchText("Bug_10528");
+
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", firstName);
+
+            var tab1 = TabManagerUIMap.GetActiveTab();
+
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", secondName);
+
+            var tab2 = TabManagerUIMap.GetActiveTab();
+
             //Switch tabs a couple of times 
-            TabManagerUIMap.ClickTab(firstName);
-            TabManagerUIMap.ClickTab(secondName);
-            TabManagerUIMap.ClickTab(firstName);
+            TabManagerUIMap.Click(tab1);
+            TabManagerUIMap.Click(tab2);
+            TabManagerUIMap.Click(tab1);
 
             //Check that the tabs names dont have stars in them
-            Assert.IsTrue(TabManagerUIMap.GetTabCount() >= 2);
-            Assert.IsFalse(TabManagerUIMap.GetTabNameAtPosition(0).Contains("*"));
-            Assert.IsFalse(TabManagerUIMap.GetTabNameAtPosition(1).Contains("*"));
+
+            var tabCount = TabManagerUIMap.GetTabCount();
+
+            Assert.IsTrue(tabCount >= 2);
+            for(int i = 0; i < tabCount; i++)
+            {
+                Assert.IsFalse(TabManagerUIMap.GetTabNameAtPosition(i).Contains("*"));
+            }
         }
     }
 }

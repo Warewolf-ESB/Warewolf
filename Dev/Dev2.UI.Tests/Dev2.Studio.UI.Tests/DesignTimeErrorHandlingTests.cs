@@ -27,12 +27,13 @@ namespace Dev2.Studio.UI.Tests
 
         [TestMethod]
         [TestCategory("UITest")]
-        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
+        [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is opened, the mappings on the service are changed and hitting the fix errors adorner should change the activity instance's mappings")]
         [Owner("Ashley Lewis")]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_DbServiceMappingsFixed()
         {
             const string workflowToUse = "Bug_10011";
             const string serviceToUse = "Bug_10011_DbService";
+            var newColumnName = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8);
             Clipboard.Clear();
 
             // Open the Workflow
@@ -51,20 +52,16 @@ namespace Dev2.Studio.UI.Tests
             // Tab to mappings
             DatabaseServiceWizardUIMap.ClickMappingTab(320);
 
-            // Remove column 1+2's mapping
             KeyboardCommands.SendTabs(4);
-            KeyboardCommands.SendDel();
-            KeyboardCommands.SendTab();
-            KeyboardCommands.SendDel();
+            KeyboardCommands.SendKey(newColumnName);
 
-            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendTabs(4);
             KeyboardCommands.SendEnter();
             // Save
             if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
                 ResourceChangedPopUpUIMap.ClickCancel();
             }
-
 
             using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false))
             {
@@ -73,8 +70,6 @@ namespace Dev2.Studio.UI.Tests
                 activityUiMap.ClickFixErrors();
                 activityUiMap.ClickDoneButton();
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "Error button shouldn't be showing");
-
-                Assert.Fail("Need to click Done twice");
             }
         }
 
@@ -114,10 +109,10 @@ namespace Dev2.Studio.UI.Tests
                 Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button not visible");
 
                 activityUiMap.ClickFixErrors();
+                KeyboardCommands.SendKey("[[Name]]");
+
                 activityUiMap.ClickCloseMapping();
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
-
-                Assert.Fail("Need to click Done twice");
             }
         }
 
@@ -158,8 +153,6 @@ namespace Dev2.Studio.UI.Tests
                 //Assert that the fix errors button isnt there anymore
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
                 //------------Execute Test---------------------------
-
-                Assert.Fail("Need to click Done twice");
             }
         }
     }
