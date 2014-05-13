@@ -15,6 +15,20 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     public class DateTimeIntellisenseProviderTests
     {
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DateTimeIntellisenseProvider_Construct")]
+        public void DateTimeIntellisenseProvider_Construct_DefaultPropertiesAreSet()
+        {
+            var provider = new DateTimeIntellisenseProvider();
+
+            Assert.IsFalse(provider.HandlesResultInsertion);
+            Assert.AreEqual(IntellisenseProviderType.NonDefault, provider.IntellisenseProviderType);
+            Assert.IsNotNull(provider.IntellisenseResults);
+            Assert.AreEqual(24, provider.IntellisenseResults.Count);
+            Assert.IsFalse(provider.Optional);
+        }
+        
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DateTimeIntellisenseProvider_GetIntellisenseResults")]
         public void DateTimeIntellisenseProvider_GetIntellisenseResults_PartialMethodMatch_ClosestMatchesReturned()

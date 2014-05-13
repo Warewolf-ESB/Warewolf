@@ -341,20 +341,33 @@ namespace Dev2.Core.Tests
            ((IntellisenseProviderContext)null).FindTextToSearch();
          
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProviderExtensions_FindTextToSearch")]
         public void ProviderExtensions_FindTextToSearch_UnbalalancedBoundary_ExpectValue()
         {
-
             FindTextTestHelper(2, "[ba )", "[b");
             FindTextTestHelper(8, "dave [ba)", "[ba");
             FindTextTestHelper(8, "dave (ba]", "ba");
         }
 
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ProviderExtensions_FindTextToSearch")]
+        public void ProviderExtensions_FindTextToSearch_InputTextIsNull_EmptyString()
+        {
+            FindTextTestHelper(2, null, "");
+        }
 
-
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ProviderExtensions_FindTextToSearch")]
+        public void ProviderExtensions_FindTextToSearch_InputTextIsEmpty_EmptyString()
+        {
+            FindTextTestHelper(2, "", "");
+        }
 
         private static void FindTextTestHelper(int caretPosition, string inputText, string expectedResult)
         {

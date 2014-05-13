@@ -55,8 +55,7 @@ namespace Dev2.Studio.InterfaceImplementors
         public string CachedDataList { get; private set; }
         public IntellisenseTextBox TextBox { get; private set; }
         public bool IsUpdated { get; private set; }
-
-        private bool _hasCachedDatalist;
+        public bool HasCachedDatalist { get; private set; }
 
         #endregion
 
@@ -105,9 +104,9 @@ namespace Dev2.Studio.InterfaceImplementors
 
             if(dataList != null)
             {
-                if(!_hasCachedDatalist || IsUpdated)
+                if(!HasCachedDatalist || IsUpdated)
                 {
-                    _hasCachedDatalist = true;
+                    HasCachedDatalist = true;
                     IsUpdated = false;
                 }
             }
@@ -331,8 +330,8 @@ namespace Dev2.Studio.InterfaceImplementors
                     altfilterType = enIntellisensePartType.RecordsetFields;
                 }
             }
-            
-            if(context.InputText.Equals(DataListUtil.OpeningSquareBrackets))
+
+            if(input.Equals(DataListUtil.OpeningSquareBrackets))
             {
                 searchText = context.InputText;
             }

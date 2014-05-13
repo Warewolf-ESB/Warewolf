@@ -14,7 +14,7 @@ namespace Dev2.Intellisense.Provider
             string searchString = string.Empty;
             int foundMinimum = -1;
             int foundLength = 0;
-            string inputText = context.InputText;
+            string inputText = context.InputText ?? string.Empty;
             int caretPosition = context.CaretPosition;
 
             int maxStringLength = Math.Min(caretPosition, inputText.Length);

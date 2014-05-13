@@ -68,7 +68,24 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         }
 
         #endregion Test Initialization
-        
+
+        #region Constructor
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DefaultIntellisenseProvider_Construct")]
+        public void DefaultIntellisenseProvider_Construct_DefaultPropertiesAreSet()
+        {
+            var provider = new DefaultIntellisenseProvider();
+
+            Assert.IsTrue(provider.HandlesResultInsertion);
+            Assert.AreEqual(IntellisenseProviderType.Default, provider.IntellisenseProviderType);
+            Assert.IsFalse(provider.Optional);
+            Assert.IsFalse(provider.IsDisposed);
+            Assert.IsFalse(provider.IsUpdated);
+            Assert.AreEqual(string.Empty, provider.FilterCondition);
+        }
+        #endregion
+
         #region GetIntellisenseResults
 
 

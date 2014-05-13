@@ -1,4 +1,5 @@
-﻿using Dev2.Intellisense;
+﻿using System.Diagnostics;
+using Dev2.Intellisense;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,6 +17,20 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     {
         // ReSharper disable InconsistentNaming
         #region CalculateIntellisenseProvider Tests
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("CalculateIntellisenseProvider_Construct")]
+        public void CalculateIntellisenseProvider_Construct_DefaultPropertiesAreSet()
+        {
+            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
+
+            Assert.IsFalse(calculateIntellisenseProvider.HandlesResultInsertion);
+            Assert.AreEqual(IntellisenseProviderType.NonDefault, calculateIntellisenseProvider.IntellisenseProviderType);
+            Assert.IsNotNull(calculateIntellisenseProvider.IntellisenseResult);
+            Assert.AreEqual(175, calculateIntellisenseProvider.IntellisenseResult.Count);
+            Assert.IsFalse(calculateIntellisenseProvider.Optional);
+        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -39,7 +54,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual("second", results[2].Name);
             Assert.AreEqual("seriessum", results[3].Name);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("CalculateIntellisenseProvider_GetIntellisenseResults")]

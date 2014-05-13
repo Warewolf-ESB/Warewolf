@@ -342,6 +342,7 @@
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />
     <Compile Include="Webs\FileChooserCallbackHandlerTests.cs" />
+    <Compile Include="Webs\WebsiteCallbackHandlerTests.cs" />
     <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
     <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
