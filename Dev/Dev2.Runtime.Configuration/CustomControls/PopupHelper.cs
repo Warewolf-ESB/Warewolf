@@ -130,7 +130,9 @@ namespace System.Windows.Controls
  || Application.Current.Host == null
                 || Application.Current.Host.Content == null
 #endif
+                // ReSharper disable RedundantLogicalConditionalExpressionOperand
  || false)
+            // ReSharper restore RedundantLogicalConditionalExpressionOperand
             {
                 return;
             }
@@ -163,13 +165,15 @@ namespace System.Windows.Controls
             double popupContentWidth = PopupChild.ActualWidth;
             double popupContentHeight = PopupChild.ActualHeight;
 
+            // ReSharper disable CompareOfFloatsByEqualityOperator
             if(rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
+            // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return;
             }
 
-            double rootOffsetX = 0;
-            double rootOffsetY = 0;
+            const double rootOffsetX = 0;
+            const double rootOffsetY = 0;
 
             double myControlHeight = Parent.ActualHeight;
             double myControlWidth = Parent.ActualWidth;
@@ -216,7 +220,6 @@ namespace System.Windows.Controls
                     }
                     else
                     {
-                        below = false;
                         popupY = rootOffsetY - popupContentHeight;
                     }
                 }
@@ -376,19 +379,6 @@ namespace System.Windows.Controls
         private void PopupChild_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Arrange();
-        }
-
-        /// <summary>
-        /// The mouse has clicked outside of the popup.
-        /// </summary>
-        /// <param name="sender">The source object.</param>
-        /// <param name="e">The event data.</param>
-        private void OutsidePopup_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if(Popup != null)
-            {
-                Popup.IsOpen = false;
-            }
         }
 
         /// <summary>

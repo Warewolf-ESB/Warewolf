@@ -390,14 +390,6 @@ namespace Dev2.Util
 
             private static object NullEval(string expr, object value, string context)
             {
-                //
-                // @ symbol in expr must be interpreted specially to resolve
-                // to value. In JavaScript, the implementation would look 
-                // like:
-                //
-                // return obj && value && eval(expr.replace(/@/g, "value"));
-                //
-
                 return null;
             }
         }

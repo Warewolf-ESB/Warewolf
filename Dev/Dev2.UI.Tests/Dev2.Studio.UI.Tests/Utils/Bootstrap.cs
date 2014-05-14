@@ -25,10 +25,18 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string LogLocation = @"C:\Builds\UITestRunWorkspace\UI_Test.log";
 
+        public static int WaitMS = 5000;
+
         public static void Init()
         {
             var serverProcess = TryGetProcess(ServerProcName);
             var studioProcess = TryGetProcess(StudioProcName);
+
+            // Remove old log files ;)
+            if(File.Exists(LogLocation))
+            {
+                File.Delete(LogLocation);
+            }
 
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
@@ -40,7 +48,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 StartServer();
                 StartStudio();
 
-                Thread.Sleep(2500);
+                Thread.Sleep(WaitMS);
             }
             else
             {
@@ -146,6 +154,13 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         }
 
+        // here to force exit all processes 
+        [AssemblyCleanup]
+        public static void RunTeardown()
+        {
+            Teardown();
+        }
+
         private static ManagementObjectCollection TryGetProcess(string procName)
         {
             var processName = procName;
@@ -190,15 +205,15 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        static void LogTestRunMessage(string msg, bool isError = false)
+        public static void LogTestRunMessage(string msg, bool isError = false)
         {
             if(isError)
             {
-                File.AppendAllText("ERROR :: " + LogLocation, msg);
+                File.AppendAllText(LogLocation, "ERROR :: " + msg);
             }
             else
             {
-                File.AppendAllText("INFO :: " + LogLocation, msg);
+                File.AppendAllText(LogLocation, "INFO :: " + msg);
             }
 
             File.AppendAllText(LogLocation, Environment.NewLine);

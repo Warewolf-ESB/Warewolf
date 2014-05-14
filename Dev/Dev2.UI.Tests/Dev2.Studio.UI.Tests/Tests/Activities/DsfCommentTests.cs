@@ -13,11 +13,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class DsfCommentActivityTests : UIMapBase
     {
-        #region Fields
-
-        private static DsfCommentUiMap _dsfActivityUiMap;
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -33,7 +28,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            _dsfActivityUiMap.Dispose();
         }
 
         #endregion
@@ -44,13 +38,15 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_CommentSmallView")]
         public void ToolDesigners_AssignSmallView_EnteringMultipleRows_IndexingWorksFine()
         {
-            _dsfActivityUiMap = new DsfCommentUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) };
-            Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(_dsfActivityUiMap.TheTab);
-            _dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Comment, _dsfActivityUiMap.TheTab, pointToDragTo);
-            RibbonUIMap.DebugShortcutKeyPress();
-            var stepType = OutputUIMap.GetStep(2);
+            using(var dsfActivityUiMap = new DsfCommentUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
+            {
+                Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
+                dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Comment, dsfActivityUiMap.TheTab, pointToDragTo);
+                RibbonUIMap.DebugShortcutKeyPress();
+                var stepType = OutputUIMap.GetStep(2);
 
-            Assert.AreEqual("Comment", stepType.FriendlyName);
+                Assert.AreEqual("Comment", stepType.FriendlyName);
+            }
 
         }
 

@@ -322,6 +322,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                         }
 
+                        // so some silly chicken sent an empty body on POST with GET style query string parameters
+                        // this silly chicken really needs to understand how the flipping request structure should work.
+                        if(pairs.Count == 0)
+                        {
+                            pairs = ctx.Request.QueryString;
+                        }
+
                         // we need to process it as key value pairs ;)
                         return ExtractKeyValuePairs(pairs);
                     }

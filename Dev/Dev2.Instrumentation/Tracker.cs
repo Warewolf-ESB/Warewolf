@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+// ReSharper disable RedundantUsingDirective
 using Dev2.Studio.Utils;
+// ReSharper restore RedundantUsingDirective
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation

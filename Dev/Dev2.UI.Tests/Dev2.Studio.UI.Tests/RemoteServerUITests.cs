@@ -39,7 +39,8 @@ namespace Dev2.Studio.UI.Tests
         {
             TabManagerUIMap.CloseAllTabs();
             Playback.Wait(1500);
-            ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
+            //ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
+            Halt();
         }
 
         #endregion

@@ -11,10 +11,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfWebSiteActivity : DsfActivityAbstract<bool>
     {
         DsfMultiAssignActivity _assignActivity;
-        ActivityAction _delegate;
+        readonly ActivityAction _delegate;
         private string _xmlConfig = "<WebsiteConfig/>";
         private string _html = @"";
-        private IList<ActivityDTO> fields = new List<ActivityDTO>();
+        private readonly IList<ActivityDTO> fields = new List<ActivityDTO>();
 
         public string XMLConfiguration
         {

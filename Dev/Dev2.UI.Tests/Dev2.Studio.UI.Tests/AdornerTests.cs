@@ -25,6 +25,7 @@ namespace Dev2.Studio.UI.Tests
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
 
         #endregion
@@ -576,7 +577,6 @@ namespace Dev2.Studio.UI.Tests
                                                 theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow
-            ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
             ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, resourceToUse, "INTEGRATION TEST SERVICES", ServiceType.Workflows);
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse, 100);

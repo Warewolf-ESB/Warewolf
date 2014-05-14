@@ -738,10 +738,8 @@ namespace Dev2.Studio.UI.Tests
 
             }
 
-            // only bootstrap if we have build in test mode ;)
-            #if TEST
-                Bootstrap.Init();
-            #endif
+            // only bootstrap if we have build in test mode - DOES NOT WORK ;(
+            Bootstrap.Init();
         }
 
         #endregion
@@ -750,10 +748,7 @@ namespace Dev2.Studio.UI.Tests
 
         public void Halt()
         {
-            #if TEST
-                Bootstrap.Teardown();
-            #endif
-
+            Bootstrap.Teardown();
         }
         #endregion
     }

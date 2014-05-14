@@ -282,7 +282,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         // Dynatree Init
         //
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: baseURL + "/Services/FindDriveService",
             data: '',
             success: function(fullResult) {

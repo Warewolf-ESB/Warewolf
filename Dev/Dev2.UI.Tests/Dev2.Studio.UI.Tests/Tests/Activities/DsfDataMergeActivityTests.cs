@@ -32,6 +32,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
 
         #endregion

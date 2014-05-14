@@ -12,18 +12,12 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     // ReSharper disable InconsistentNaming
     public class DsfActivityTests : UIMapBase
     {
-        #region Fields
-
-        private static DsfActivityUiMap _dsfActivityUiMap;
-
-        #endregion
 
         #region Setup
         [TestInitialize]
         public void TestInit()
         {
             Init();
-            _dsfActivityUiMap = new DsfActivityUiMap();
         }
 
         #endregion
@@ -33,7 +27,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            _dsfActivityUiMap.Dispose();
+            Halt();
         }
 
         #endregion
@@ -43,15 +37,19 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("DsfActivityTests_CodedUI")]
         public void DsfActivityTests_CodedUI_SetInitialFocusElementIfNoInputs_HelpTextIsNotEmpty()
         {
-            string expectedHelpText = @"Only variables go in here.
+            const string expectedHelpText = @"Only variables go in here.
 Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.";
 
-            _dsfActivityUiMap.DragWorkflowOntoDesigner("Sql Bulk Insert Test", "TEST");
-            _dsfActivityUiMap.ClickHelp();
-            string actualHelpText = _dsfActivityUiMap.GetHelpText();
-            Assert.AreEqual(expectedHelpText, actualHelpText);
+            using(var dsfActivityUiMap = new DsfActivityUiMap())
+            {
+
+                dsfActivityUiMap.DragWorkflowOntoDesigner("Sql Bulk Insert Test", "TEST");
+                dsfActivityUiMap.ClickHelp();
+                string actualHelpText = dsfActivityUiMap.GetHelpText();
+                Assert.AreEqual(expectedHelpText, actualHelpText);
+            }
         }
 
         [TestMethod]
@@ -59,9 +57,12 @@ Using recordset () will add a new record and (*) will assign every record.";
         [TestCategory("DsfActivityTests_CodedUI")]
         public void DsfActivityTests_CodedUI_GetAServiceWilALongDisplayName_TheDisplayNameBoxWidthSizeWillBe174()
         {
-            _dsfActivityUiMap.DragWorkflowOntoDesigner("this name is so long the display name", "TEST");
-            _dsfActivityUiMap.ClickCloseMapping();
-            Assert.AreEqual(174, _dsfActivityUiMap.GetDisplayNameMaxWidth());
+            using(var dsfActivityUiMap = new DsfActivityUiMap())
+            {
+                dsfActivityUiMap.DragWorkflowOntoDesigner("this name is so long the display name", "TEST");
+                dsfActivityUiMap.ClickCloseMapping();
+                Assert.AreEqual(174, dsfActivityUiMap.GetDisplayNameMaxWidth());
+            }
         }
     }
 }

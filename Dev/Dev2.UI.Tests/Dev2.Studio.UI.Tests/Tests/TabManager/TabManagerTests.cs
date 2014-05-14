@@ -9,10 +9,6 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
     [CodedUITest]
     public class TabManagerTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -28,6 +24,7 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
         #endregion
 

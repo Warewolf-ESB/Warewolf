@@ -12,10 +12,6 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
     [CodedUITest]
     public class ResourcePickerTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -31,6 +27,7 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
         #endregion
 

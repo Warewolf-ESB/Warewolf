@@ -13,10 +13,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     [CodedUITest]
     public class WebServiceTests : UIMapBase
     {
-        #region Fields
-
-
-        #endregion
 
         #region Setup
         [TestInitialize]
@@ -31,6 +27,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
         #endregion
 

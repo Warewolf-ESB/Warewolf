@@ -28,6 +28,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
+            Halt();
         }
 
         #endregion
@@ -74,6 +75,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceSmallView_DraggingNonDecision_Allowed()
         {
+            Mouse.MouseDragSpeed = 500;
+
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
@@ -90,6 +93,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCategory("ToolDesigners_SequenceSmallView")]
         public void ToolDesigners_SequenceLargeView_DraggingNonDecision_Allowed()
         {
+            Mouse.MouseDragSpeed = 500;
+
             using(var dsfActivityUiMap = new DsfSequenceUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);

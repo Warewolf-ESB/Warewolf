@@ -152,7 +152,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             // First, we must create a password, from which the key will be 
             // derived. This password will be generated from the specified 
-            // passphrase and salt value. The password will be created using
+            // pass-phrase and salt value. The password will be created using
             // the specified hash algorithm. Password creation can be done in
             // several iterations.
             var password = new PasswordDeriveBytes(
@@ -189,8 +189,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
 
                     // Since at this point we don't know what the size of decrypted data
-                    // will be, allocate the buffer long enough to hold ciphertext;
-                    // plaintext is never longer than ciphertext.
+                    // will be, allocate the buffer long enough to hold cipher-text
+                    // plain-text is never longer than cipher-text.
                     var plainTextBytes = new byte[cipherTextBytes.Length];
 
                     // Start decrypting.

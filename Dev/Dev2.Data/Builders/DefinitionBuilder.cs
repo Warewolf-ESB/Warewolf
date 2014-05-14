@@ -6,16 +6,15 @@ namespace Dev2.DataList.Contract
 {
     public class DefinitionBuilder
     {
-
-        private static readonly string _nameAttribute = "Name";
-        private static readonly string _mapsToAttribute = "MapsTo";
-        private static readonly string _valueAttribute = "Value";
-        private static readonly string _recordsetAttribute = "Recordset";
-        private static readonly string _defaultValueAttribute = "DefaultValue";
-        private static readonly string _validateTag = "Validator";
-        private static readonly string _typeAttribute = "Type";
-        private static readonly string _requiredValue = "Required";
-        private static readonly string _sourceAttribute = "Source";
+        const string _nameAttribute = "Name";
+        const string _mapsToAttribute = "MapsTo";
+        const string _valueAttribute = "Value";
+        const string _recordsetAttribute = "Recordset";
+        const string _defaultValueAttribute = "DefaultValue";
+        const string _validateTag = "Validator";
+        const string _typeAttribute = "Type";
+        const string _requiredValue = "Required";
+        const string _sourceAttribute = "Source";
 
         public enDev2ArgumentType ArgumentType { get; set; }
 
