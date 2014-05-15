@@ -337,7 +337,6 @@ IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
 :getDebugResources
-xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Debug" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 GOTO exit
@@ -349,7 +348,6 @@ GOTO exit
 :getReleaseResources
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Debug\Webs\Properties\"
-xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Tests" "$(TargetDir)Webs\Tests\"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
 :exit</PostBuildEvent>
   </PropertyGroup>
