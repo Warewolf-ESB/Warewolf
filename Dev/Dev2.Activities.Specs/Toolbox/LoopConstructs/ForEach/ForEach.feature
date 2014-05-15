@@ -318,3 +318,31 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	|                 | Number |
 	| No. of Executes | 8      |
 
+#Scenario: Execute a foreach using In Recordset with incorrect recordset
+#	Given There is a recordset in the datalist with this shape
+#	| rs             | value |
+#	| [[rs().field]] | 1     |
+#	| [[rs().field]] | 2     |
+#	| [[rs().field]] | 3     |
+#	| [[rs().field]] | 6     |	
+#	And I have selected the foreach type as "InRecordset" and used "[[rs()]%^&]"	
+#	And the underlying dropped activity is a(n) "Tool"
+#	When the foreach tool is executed	
+#	Then the foreach executes 4 times
+#	And the execution has "AN" error
+#	And the debug inputs as
+#	|                | Recordset           |
+#	| * in Recordset | [[rs(1).field]] = 1 |
+#	|                | [[rs(2).field]] = 2 |
+#	|                | [[rs(3).field]] = 3 |
+#	|                | [[rs(4).field]] = 6 |
+
+
+
+
+
+
+
+
+
+
