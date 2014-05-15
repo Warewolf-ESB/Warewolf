@@ -901,8 +901,9 @@ namespace Dev2.Data.Util
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
+        /// <param name="isDbService"></param>
         /// <returns></returns>
-        public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
+        public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false, bool isDbService = false)
         {
             StringBuilder result = new StringBuilder();
             IList<IDev2Definition> defs = null;
@@ -925,8 +926,10 @@ namespace Dev2.Data.Util
             }
             else
             {
-
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, !(isInput));
+                IRecordSetCollection recCol = isDbService ?
+                    DataListFactory.CreateRecordSetCollectionForDbService(defs, !(isInput)) :
+                    DataListFactory.CreateRecordSetCollection(defs, !(isInput));
+                
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
 
                 // open datashape

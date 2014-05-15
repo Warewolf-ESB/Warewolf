@@ -225,7 +225,7 @@
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
     <Compile Include="PathOperationTests\PathIOTestingUtils.cs" />
     <Compile Include="DataListCompilerTest.cs" />
-    <Compile Include="DataListTest.cs" />
+    <Compile Include="DataListFactoryTest.cs" />
     <Compile Include="DataListCleaningUtilTest.cs" />
     <Compile Include="Dev2DataLanguageParserTest.cs" />
     <Compile Include="ParserStrings.Designer.cs">

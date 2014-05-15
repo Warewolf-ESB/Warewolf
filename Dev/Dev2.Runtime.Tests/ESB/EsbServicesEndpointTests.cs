@@ -1,12 +1,14 @@
 ﻿using System;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
 {
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class EsbServicesEndpointTests
     {
         [TestMethod]
@@ -45,6 +47,61 @@ namespace Dev2.Tests.Runtime.ESB
 
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedIsLocal, isLocalInvoke);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EsbServicesEndpoint_ShapeForSubRequest")]
+        public void EsbServicesEndpoint_ShapeForSubRequest_RemoteServiceTypeIsDbServiceOrInvokeStoredProcTypesAndHasOutputDefinitions_ShapedData()
+        {
+            ShapeForSubRequest("DbService");
+            ShapeForSubRequest("InvokeStoredProc");
+        }
+
+        static void ShapeForSubRequest(string serviceType)
+        {
+            var esb = new EsbServicesEndpoint();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(d => d.RemoteInvokerID).Returns(Guid.NewGuid().ToString());
+            dataObject.Setup(d => d.IsRemoteWorkflow).Returns(true);
+            dataObject.Setup(d => d.RemoteServiceType).Returns(serviceType);
+            dataObject.Setup(d => d.ServiceName).Returns("xxxx");
+            ErrorResultTO error;
+            const string outputDefs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[mapRecSet(*).LocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+            const string inputDefs = @"";
+            //------------Execute Test---------------------------
+            var result = esb.ShapeForSubRequest(dataObject.Object, inputDefs, outputDefs, out error);
+            //------------Assert Results-----------------   --------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EsbServicesEndpoint_ShapeForSubRequest")]
+        public void EsbServicesEndpoint_ShapeForSubRequest_RemoteServiceTypeIsWorkflowTypeAndHasOutputDefinitions_ShapedData()
+        {
+            //------------Setup for test--------------------------
+            var esb = new EsbServicesEndpoint();
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(d => d.RemoteInvokerID).Returns(Guid.NewGuid().ToString());
+            dataObject.Setup(d => d.IsRemoteWorkflow).Returns(true);
+            dataObject.Setup(d => d.RemoteServiceType).Returns("Workflow");
+            dataObject.Setup(d => d.ServiceName).Returns("xxxx");
+            ErrorResultTO error;
+            const string outputDefs = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[mapRecSet(*).LocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+            const string inputDefs = @"";
+            //------------Execute Test---------------------------
+            var result = esb.ShapeForSubRequest(dataObject.Object, inputDefs, outputDefs, out error);
+            //------------Assert Results-----------------   --------
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(enDev2ArgumentType.Output, result[0].Key);
+            Assert.AreEqual(1, result[0].Value.Count);
+            var val = result[0].Value[0];
+            Assert.IsNotNull(val);
+            Assert.AreEqual("MapLocationID", val.MapsTo);
+            Assert.AreEqual("MapLocationID", val.Name);
+            Assert.AreEqual("[[mapRecSet(*).LocationID]]", val.RawValue);
+            Assert.AreEqual("dbo_proc_GetAllMapLocations", val.RecordSetName);
         }
     }
 }

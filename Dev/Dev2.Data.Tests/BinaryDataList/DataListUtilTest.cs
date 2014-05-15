@@ -198,8 +198,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsFalse(isFragment);
             Assert.IsTrue(isHTML);
         }
-
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListUtil_ShapeDefsToDataList")]
@@ -361,7 +360,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
-            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
+            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors, isDbService:true);
 
             //------------Assert Results-------------------------
             const string expected = @"<ADL>
@@ -861,6 +860,44 @@ namespace Dev2.Data.Tests.BinaryDataList
             var isOpeningBrace = DataListUtil.IsRecordsetOpeningBrace("([[var");
             //------------Assert Results-------------------------
             Assert.IsTrue(isOpeningBrace);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListUtil_ShapeDefinitionsToDataList")]
+        public void DataListUtil_ShapeDefinitionsToDataList_ArgumentTypeIsNeitherInputOrOutput_Error()
+        {
+            //------------Execute Test---------------------------
+            ErrorResultTO invokeErrors;
+            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, flipGeneration: false, isDbService: true);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(invokeErrors);
+            var errors = invokeErrors.FetchErrors();
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual("could not locate any data of type [ DB_ForEach ]", errors[0]);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListUtil_ShapeDefinitionsToDataList")]
+        public void DataListUtil_ShapeDefinitionsToDataList_FlipGenerationIsTrue_DefinitionIsTreatedAsInput()
+        {
+            //------------Setup for test--------------------------
+            const string defs = @"<Outputs><Output Name=""TableCountry"" MapsTo=""TableCountry"" Value=""[[string_NewDataSet().TableCountry]]"" Recordset=""string_NewDataSet"" /><Output Name=""TableCity"" MapsTo=""[[City]]"" Value=""[[City]]"" Recordset=""string_NewDataSet"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            ErrorResultTO invokeErrors;
+            var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
+
+            //------------Assert Results-------------------------
+            const string expected = @"<ADL>
+<string_NewDataSet>
+	<TableCountry></TableCountry>
+	<TableCity></TableCity>
+</string_NewDataSet>
+
+</ADL>";
+            Assert.AreEqual(expected, result);
         }
     }
 }

@@ -4,14 +4,14 @@ using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataListTset
+namespace Dev2.Tests
 {
     /// <summary>
     /// Summary description for check-in
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class DataListTest
+    public class DataListFactoryTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -34,15 +34,15 @@ namespace DataListTset
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("DataListFactory_CreateRecordSetCollection")]
-        public void DataListFactory_CreateRecordSetCollection_WhenTwoRecordsetsArePresent_ExpectTwoRecordsetDefinitions()
+        [TestCategory("DataListFactory_CreateRecordSetCollectionForDbService")]
+        public void DataListFactory_CreateRecordSetCollectionForDbService_WhenTwoRecordsetsArePresent_ExpectTwoRecordsetDefinitions()
         {
             //------------Setup for test--------------------------
             const string arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
             var defs = DataListFactory.CreateOutputParser().Parse(arguments);
 
             //------------Execute Test---------------------------
-            var result = DataListFactory.CreateRecordSetCollection(defs, true);
+            var result = DataListFactory.CreateRecordSetCollectionForDbService(defs, true);
 
             //------------Assert Results-------------------------
 
@@ -61,7 +61,7 @@ namespace DataListTset
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("DataListFactory_CreateRecordSetCollection")]
+        [TestCategory("DataListFactory_CreateRecordSetCollectionForDbService")]
         public void DataListFactory_ParseAndAllowBlanks_WhenTwoRecordsetsArePresentWithBlankMapsToAndName_ExpectTwoRecordsetDefinitionsBlankColumnNotIncluded()
         {
             //------------Setup for test--------------------------
@@ -69,7 +69,7 @@ namespace DataListTset
             var defs = DataListFactory.CreateOutputParser().ParseAndAllowBlanks(arguments);
 
             //------------Execute Test---------------------------
-            var result = DataListFactory.CreateRecordSetCollection(defs, true);
+            var result = DataListFactory.CreateRecordSetCollectionForDbService(defs, true);
 
             //------------Assert Results-------------------------
 
@@ -116,7 +116,7 @@ namespace DataListTset
         public void TestOutputParsingRecordSet()
         {
             IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingRecordSets);
-            IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, true);
+            IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollectionForDbService(defs, true);
 
             IDev2Definition d = defs[0];
 

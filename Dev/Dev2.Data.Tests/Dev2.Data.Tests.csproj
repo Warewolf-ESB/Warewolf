@@ -116,6 +116,7 @@
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
     <Compile Include="BinaryDataList\Dev2DataListUpsertPayloadBuilderTest.cs" />
+    <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
     <Compile Include="ConverterTest\DataListConverterTest.cs" />
     <Compile Include="DecisionsTests\NotBetweenTests.cs" />
     <Compile Include="DecisionsTests\NotContainsTests.cs" />

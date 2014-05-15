@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Builders;
 using Dev2.Data.DataListCache;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
@@ -18,7 +19,7 @@ namespace Dev2.DataList.Contract
     {
         #region Class Members
 
-        private static readonly object _cacheGuard = new object();
+        private static readonly object CacheGuard = new object();
         private static volatile IEnvironmentModelDataListCompiler _serverCompilerCache;
         private static volatile IDataListServer _serverCache;
 
@@ -61,10 +62,21 @@ namespace Dev2.DataList.Contract
 
         public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput)
         {
+            return RecordSetCollection(parsedOutput, isOutput, false);
+        }
+
+        public static IRecordSetCollection CreateRecordSetCollectionForDbService(IList<IDev2Definition> parsedOutput, bool isOutput)
+        {
+            return RecordSetCollection(parsedOutput, isOutput, true);
+        }
+        
+        static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
+        {
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
 
-            b.setParsedOutput(parsedOutput);
+            b.SetParsedOutput(parsedOutput);
             b.IsOutput = isOutput;
+            b.IsDbService = isDbService;
             IRecordSetCollection result = b.Generate();
 
             return result;
@@ -129,7 +141,7 @@ namespace Dev2.DataList.Contract
         {
             if(_serverCompilerCache == null)
             {
-                lock(_cacheGuard)
+                lock(CacheGuard)
                 {
                     if(_serverCompilerCache == null)
                     {
@@ -149,7 +161,7 @@ namespace Dev2.DataList.Contract
         {
             if(_serverCache == null)
             {
-                lock(_cacheGuard)
+                lock(CacheGuard)
                 {
                     if(_serverCache == null)
                     {
@@ -226,19 +238,19 @@ namespace Dev2.DataList.Contract
             return new Dev2DataLanguageIntellisensePart(name, desc, null);
         }
 
-        public static OutputTO CreateOutputTO(string OutputDescription)
+        public static OutputTO CreateOutputTO(string outputDescription)
         {
-            return new OutputTO(OutputDescription);
+            return new OutputTO(outputDescription);
         }
 
-        public static OutputTO CreateOutputTO(string OutputDescription, IList<string> OutputStrings)
+        public static OutputTO CreateOutputTO(string outputDescription, IList<string> outputStrings)
         {
-            return new OutputTO(OutputDescription, OutputStrings);
+            return new OutputTO(outputDescription, outputStrings);
         }
 
-        public static OutputTO CreateOutputTO(string OutputDescription, string OutputString)
+        public static OutputTO CreateOutputTO(string outputDescription, string outputString)
         {
-            return new OutputTO(OutputDescription, new List<string> { OutputString });
+            return new OutputTO(outputDescription, new List<string> { outputString });
         }
 
         /// <summary>

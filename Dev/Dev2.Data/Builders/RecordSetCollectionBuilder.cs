@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Builders
 {
     public class RecordSetCollectionBuilder
     {
 
-        private IList<IDev2Definition> _parsedOutput;
+        public IList<IDev2Definition> ParsedOutput {get; private set;}
 
         public bool IsOutput { get; set; }
+        public bool IsDbService { get; set; }
 
-        public void setParsedOutput(IList<IDev2Definition> parsedOutput)
+        public void SetParsedOutput(IList<IDev2Definition> parsedOutput)
         {
-            _parsedOutput = parsedOutput;
+            ParsedOutput = parsedOutput ?? new List<IDev2Definition>();
         }
 
         public IRecordSetCollection Generate()
@@ -20,22 +22,19 @@ namespace Dev2.DataList.Contract
             IDictionary<string, IList<IDev2Definition>> tmpCollections = new Dictionary<string, IList<IDev2Definition>>();
             IList<string> tmpNames = new List<string>();
 
-            foreach(IDev2Definition tmp in _parsedOutput)
+            foreach(IDev2Definition tmp in ParsedOutput)
             {
-                var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value); // last .Name
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 var scanRsName = tmp.RecordSetName;
-
+                
                 if(IsOutput)
                 {
-                    if(!string.IsNullOrEmpty(rsName))
+                    if(IsDbService)
                     {
-                        scanRsName = rsName;
-                    }
-                    else
-                    {
-                        // ReSharper disable RedundantAssignment
-                        rsName = scanRsName;
-                        // ReSharper restore RedundantAssignment
+                        if(!string.IsNullOrEmpty(rsName))
+                        {
+                            scanRsName = rsName;
+                        }
                     }
                 }
                 else

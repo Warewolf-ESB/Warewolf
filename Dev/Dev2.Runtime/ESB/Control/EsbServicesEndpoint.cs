@@ -442,7 +442,8 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
-                theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors);
+                bool isDbService = dataObject.RemoteServiceType == "DbService" || dataObject.RemoteServiceType == "InvokeStoredProc";
+                theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors, isDbService);
                 errors.MergeErrors(invokeErrors);
             }
 
@@ -650,14 +651,15 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="inputs">The inputs.</param>
         /// <param name="outputs">The outputs.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="isDbService"></param>
         /// <returns></returns>
-        string ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors)
+        string ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors, bool isDbService)
         {
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
-            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors);
+            var oDL = DataListUtil.ShapeDefinitionsToDataList(outputs, enDev2ArgumentType.Output, out invokeErrors, isDbService: isDbService);
             errors.MergeErrors(invokeErrors);
-            var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors);
+            var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors, isDbService: isDbService);
             errors.MergeErrors(invokeErrors);
 
             var result = GlueInputAndOutputMappingSegments(iDL, oDL, out invokeErrors);
