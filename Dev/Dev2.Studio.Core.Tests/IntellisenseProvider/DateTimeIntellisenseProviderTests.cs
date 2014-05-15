@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -11,7 +12,8 @@ using Moq;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-   // ReSharper disable InconsistentNaming
+    [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class DateTimeIntellisenseProviderTests
     {
         [TestMethod]
@@ -27,7 +29,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(24, provider.IntellisenseResults.Count);
             Assert.IsFalse(provider.Optional);
         }
-        
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DateTimeIntellisenseProvider_GetIntellisenseResults")]
@@ -54,12 +56,12 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         {
             //------------Setup for test--------------------------
             var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
-            
-      
+
+
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(dateTimeIntellisenseProvider.Optional);
-            Assert.IsTrue(dateTimeIntellisenseProvider.IntellisenseResults.Count >0);
+            Assert.IsTrue(dateTimeIntellisenseProvider.IntellisenseResults.Count > 0);
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -76,7 +78,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             //------------Assert Results-------------------------
             Assert.IsNotNull(dateTimeIntellisenseProvider.Optional);
             Assert.IsTrue(dateTimeIntellisenseProvider.IntellisenseResults.Count == 1);
-            Assert.AreEqual(res.Object,dateTimeIntellisenseProvider.IntellisenseResults[0]);
+            Assert.AreEqual(res.Object, dateTimeIntellisenseProvider.IntellisenseResults[0]);
         }
 
         [TestMethod]
@@ -94,7 +96,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
         }
 
-        [TestMethod,ExpectedException(typeof(NotSupportedException))]
+        [TestMethod, ExpectedException(typeof(NotSupportedException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DateTimeIntellisenseProvider_PerformInsertion")]
         public void DateTimeIntellisenseProvider_PerformInsertion_ExpectException()
@@ -110,7 +112,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
 
-            
+
             //------------Execute Test---------------------------
 
             dateTimeIntellisenseProvider.PerformResultInsertion("blah", context);
@@ -160,10 +162,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             //------------Execute Test---------------------------
 
-           var results = dateTimeIntellisenseProvider.GetIntellisenseResultsImpl( context);
+            var results = dateTimeIntellisenseProvider.GetIntellisenseResultsImpl(context);
 
             //------------Assert Results-------------------------
-           Assert.AreEqual(count,results.Count);
+            Assert.AreEqual(count, results.Count);
 
         }
 
@@ -190,7 +192,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             res.Setup(a => a.IsClosedRegion).Returns(false);
             res.Setup(a => a.Message).Returns("bob");
             res.Setup(a => a.Option).Returns(opt.Object);
-            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> {res.Object});
+            var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider(new List<IIntellisenseResult> { res.Object });
             var count = dateTimeIntellisenseProvider.IntellisenseResults.Count;
 
             //------------Execute Test---------------------------
@@ -198,8 +200,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0,results.Count); // check nothing added
-            Assert.AreEqual(count,1); // check that there was stuff to add
+            Assert.AreEqual(0, results.Count); // check nothing added
+            Assert.AreEqual(count, 1); // check that there was stuff to add
         }
 
         [TestMethod]
@@ -279,7 +281,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, results.Count); 
+            Assert.AreEqual(1, results.Count);
             Assert.AreEqual(count, 1); // check that there was stuff to add
 
         }

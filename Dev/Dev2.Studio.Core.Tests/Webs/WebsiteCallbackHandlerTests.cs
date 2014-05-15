@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -12,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Webs
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebsiteCallbackHandlerTests
     {
         private IResourceModel _resourceModel;
