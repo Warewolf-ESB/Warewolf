@@ -256,9 +256,44 @@ Scenario: Find unique records using a * for Return Field
 #	And the debug output as 
 #	|  |  |
 
-
-
-
-
-
+#Scenario: Find unique records from two Recordset Fields Return Field
+#	Given I have the following duplicated recordset
+#	| rs       | val |
+#	| rs().row | 1   |
+#	| rs().row | 2   |
+#	| rs().row | 2   |
+#	| rs().row | 3   |
+#	| rs().new | 2   |
+#	| rs().new | 4   |
+#	| rs().new | 4   |
+#	| rs().new | 6   |
+#	And I want to find unique in field "[[rs().row]],[[rs().new" with the return field "[[rs().row]],[[rs().new]]"
+#	And The result variable is "[[rec().unique]]"
+#	When the unique tool is executed	
+#	Then the unique result will be
+#	| rec          | unique |
+#	| rec().unique | 1      |
+#	| rec().unique | 2      |
+#	| rec().unique | 3      |
+#	| rec().unique | 4      |
+#	| rec().unique | 6      |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| #           |                   | Return Fields               |
+#	| In Field(s) | [[rs(1).row]] = 1 |                             |
+#	|             | [[rs(2).row]] = 2 |                             |
+#	|             | [[rs(3).row]] = 2 |                             |
+#	|             | [[rs(4).row]] = 3 |                             |
+#	|             | [[rs(1).new]] = 2 |                             |
+#	|             | [[rs(2).new]] = 4 |                             |
+#	|             | [[rs(3).new]] = 4 |                             |
+#	|             | [[rs(4).new]] = 6 |                             |
+#	|             |                   | [[rs(*).row]],[[rs(*).new]] |
+#	And the debug output as 
+#	| # |                       |
+#	| 1 | [[rec(1).unique]] = 1 |
+#	|   | [[rec(2).unique]] = 2 |
+#	|   | [[rec(3).unique]] = 3 |
+#	|   | [[rec(2).unique]] = 4 |
+#	|   | [[rec(3).unique]] = 6 |
 	
