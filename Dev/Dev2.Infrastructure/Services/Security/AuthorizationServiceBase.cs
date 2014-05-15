@@ -124,8 +124,25 @@ namespace Dev2.Services.Security
 
             try
             {
-                // THIS IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
-                isInRole = principal.IsInRole(p.WindowsGroup);
+                // If its our admin group ( Warewolf ), we need to check membership differently 
+                // Prefixing with computer name does not work with Warewolf and IsInRole
+                // Plain does not work with IsInRole
+                // Hence this conditional check and divert
+                if(p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                {
+                    // We need to get the group as it is local then look for principle's membership
+                    var principleName = principal.Identity.Name;
+                    if(!string.IsNullOrEmpty(principleName))
+                    {
+                        // TODO : Examine group for this member ;)  
+                        isInRole = true;
+                    }
+                }
+                else
+                {
+                    // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
+                    isInRole = principal.IsInRole(p.WindowsGroup);
+                }
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
@@ -145,7 +162,7 @@ namespace Dev2.Services.Security
         {
             if(!_isLocalConnection)
             {
-                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(GlobalConstants.BuiltInAdministrator));
+                var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
                 if(adminGroup != null)
                 {
                     groupPermissions.Remove(adminGroup);

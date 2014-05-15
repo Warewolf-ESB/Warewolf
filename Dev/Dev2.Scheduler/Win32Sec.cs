@@ -229,7 +229,9 @@ public class SecurityWrapper : ISecurityWrapper
         // Domain failed. Try local pc.
         using(var pcLocal = new PrincipalContext(ContextType.Machine))
         {
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var grp in FetchSchedulerGroups())
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
                 if(group != null)
@@ -331,9 +333,7 @@ public class SecurityWrapper : ISecurityWrapper
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
         if(Value.Length > 0x7ffe) throw new ArgumentException("String too long");
-        var lus = new LSA_UNICODE_STRING();
-        lus.Buffer = Value;
-        lus.Length = (ushort)(Value.Length * sizeof(char));
+        var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
         lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
         return lus;
     }
@@ -342,7 +342,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         userName = CleanUser(userName);
 
-        IPrincipal identity = null;
+        IPrincipal identity;
         try
         {
             identity = new WindowsPrincipal(new WindowsIdentity(userName));
@@ -351,10 +351,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             var groups = GetLocalUserGroupsForTaskSchedule(userName);
             var tmp = new GenericIdentity(userName);
-            if(tmp != null)
-            {
-                identity = new GenericPrincipal(tmp, groups.ToArray());
-            }
+            identity = new GenericPrincipal(tmp, groups.ToArray());
         }
 
         if(_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceGuid))

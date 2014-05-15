@@ -1,9 +1,10 @@
-﻿using Dev2.Services.Security;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using Dev2.Common;
+using Dev2.Services.Security;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -346,7 +347,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
             //------------Setup for test--------------------------
             var resource = Guid.NewGuid();
-            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = "BuiltIn\\Administrators" };
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
@@ -370,7 +371,32 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
             //------------Setup for test--------------------------
             var resource = Guid.NewGuid();
-            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = "BuiltIn\\Administrators" };
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            user.Setup(u => u.Identity.Name).Returns("TestUser");
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServerWithNullIdentityName_WithOnlyBuiltInAdminGroup_UserIsNotAuthorized()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
             var securityService = new Mock<ISecurityService>();
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
@@ -384,7 +410,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            Assert.IsFalse(authorized);
         }
 
         [TestMethod]

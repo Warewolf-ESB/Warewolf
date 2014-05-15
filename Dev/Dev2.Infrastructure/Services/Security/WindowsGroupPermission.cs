@@ -1,7 +1,7 @@
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Newtonsoft.Json;
 using System;
 using System.Windows.Input;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Newtonsoft.Json;
 
 namespace Dev2.Services.Security
 {
@@ -11,7 +11,8 @@ namespace Dev2.Services.Security
         {
             EnableCellEditing = true;
         }
-        public const string BuiltInAdministratorsText = "BuiltIn\\Administrators";
+
+        public const string BuiltInAdministratorsText = "Warewolf Administrators";
         public const string BuiltInGuestsText = "Public";
 
         bool _isServer;
@@ -117,8 +118,8 @@ namespace Dev2.Services.Security
             {
                 return IsServer && IsBuiltInGuestsForExecution;
             }
-        }      
-        
+        }
+
         [JsonIgnore]
         public bool IsBuiltInGuestsForExecution
         {

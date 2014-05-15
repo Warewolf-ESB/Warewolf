@@ -698,7 +698,7 @@ You need Administrator permission.", viewModel.Errors);
                 {
                     new WindowsGroupPermission
                     {
-                        IsServer = true, WindowsGroup = "BuiltIn\\Administrators",
+                        IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
                         View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
                     },
                     new WindowsGroupPermission 

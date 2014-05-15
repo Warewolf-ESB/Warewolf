@@ -151,6 +151,7 @@
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
+    <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
     <Compile Include="Services\GetScheduledResourcesTest.cs" />
@@ -365,6 +366,7 @@
     <EmbeddedResource Include="Json\PrimitivePluginReturningXmlString.json" />
     <EmbeddedResource Include="Json\PrimitivePluginReturningJsonString.json" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -460,9 +462,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\PluginServiceEmitComplexType.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Workspaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="XML\say hello remote.xml" />
     <EmbeddedResource Include="XML\say hello world.xml" />

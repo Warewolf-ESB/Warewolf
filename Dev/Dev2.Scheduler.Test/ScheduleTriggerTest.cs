@@ -54,9 +54,6 @@ namespace Dev2.Scheduler.Test
             mockTask.VerifyGet(a => a.XmlText);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
-
-
-
         }
 
 

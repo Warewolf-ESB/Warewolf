@@ -45,15 +45,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                         encryptedData = reader.ReadToEnd();
                     }
                 }
+
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
                     var currentSecuritySettingsTO = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
-                    var hasGuestPermission = currentSecuritySettingsTO.WindowsGroupPermissions.Any(permission => permission.IsBuiltInGuests);
+                    var permissionGroup = currentSecuritySettingsTO.WindowsGroupPermissions;
+
+                    // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
+                    if(permissionGroup.Count > 0)
+                    {
+                        var adminGrp = permissionGroup[0].WindowsGroup;
+                        if(adminGrp == "BuiltIn\\Administrators")
+                        {
+                            permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
+                            decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTO);
+                        }
+                    }
+
+                    var hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
                     if(!hasGuestPermission)
                     {
-                        currentSecuritySettingsTO.WindowsGroupPermissions.Add(WindowsGroupPermission.CreateGuests());
-                        currentSecuritySettingsTO.WindowsGroupPermissions.Sort(QuickSortForPermissions);
+                        permissionGroup.Add(WindowsGroupPermission.CreateGuests());
+                        permissionGroup.Sort(QuickSortForPermissions);
                         decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTO);
                     }
                     return new StringBuilder(decryptData);

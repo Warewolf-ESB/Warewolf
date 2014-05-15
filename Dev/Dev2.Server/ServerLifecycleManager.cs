@@ -19,6 +19,7 @@ using Dev2.Data;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.InstallerActions;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -262,6 +263,22 @@ namespace Dev2
             bool didBreak = false;
 
             Tracker.StartServer();
+
+            // ** Perform Moq Installer Actions For Development ( DEBUG and TEST ) **
+#if !RELEASE
+
+            try
+            {
+                MoqInstallerActions miq = MoqInstallerActionFactory.CreateInstallerActions();
+                miq.ExecuteMoqInstallerActions();
+            }
+            catch(Exception e)
+            {
+                // Throw new exception to make it easy for developer to understand issue
+                throw new Exception("Failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
+            }
+#endif
+
 
             if(!SetWorkingDirectory())
             {
@@ -979,7 +996,7 @@ namespace Dev2
                             }
                         }
 
-                        group.Add(new WorkflowEntry(name, arguments.ToArray()));
+                        group.Add(new WorkflowEntry(name));
                     }
                 }
 
@@ -1636,18 +1653,13 @@ namespace Dev2
         sealed class WorkflowEntry
         {
             readonly string _name;
-            readonly KeyValuePair<string, string>[] _arguments;
             // ReSharper disable UnusedMember.Local
             public string Name { get { return _name; } }
             // ReSharper restore UnusedMember.Local
 
-            public KeyValuePair<string, string>[] Arguments { get { return _arguments; } }
-
-
-            public WorkflowEntry(string name, KeyValuePair<string, string>[] arguments)
+            public WorkflowEntry(string name)
             {
                 _name = name;
-                _arguments = arguments;
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common;
 using Dev2.Dialogs;
 using Dev2.Help;
 using Dev2.Services.Security;
@@ -1121,7 +1122,7 @@ namespace Dev2.Core.Tests.Settings
             {
                 new WindowsGroupPermission
                 {
-                    IsServer = true, WindowsGroup = "BuiltIn\\Administrators",
+                    IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
                     View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
                 },
                 new WindowsGroupPermission

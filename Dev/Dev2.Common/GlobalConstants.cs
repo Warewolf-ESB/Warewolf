@@ -185,7 +185,8 @@ namespace Dev2.Common
         public static int ResourceCatalogPruneAmt = 15;
 
         // Security
-        public static String BuiltInAdministrator = "BuiltIn\\Administrators";
+        //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
+        public const string WarewolfGroup = "Warewolf Administrators";
         public static String PublicUsername = @"\";
 
         // GAC

@@ -106,7 +106,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WindowsGroupPermissionComparer_Compare")] //This is to ensure that Public comes after adminstrators
+        [TestCategory("WindowsGroupPermissionComparer_Compare")] //This is to ensure that Public comes after administrators
         public void WindowsGroupPermissionComparer_Compare_XIsBuiltInGuest_ReturnsMinValuePlusOne()
         {
             //------------Setup for test-------------------------
@@ -121,7 +121,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WindowsGroupPermissionComparer_Compare")]//This is to ensure that Public comes after adminstrators
+        [TestCategory("WindowsGroupPermissionComparer_Compare")]//This is to ensure that Public comes after administrators
         public void WindowsGroupPermissionComparer_Compare_YIsBuiltInGuest_ReturnsMaxValueLessOne()
         {
             //------------Setup for test-------------------------
