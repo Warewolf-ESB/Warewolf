@@ -1302,6 +1302,69 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a variable inside a variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
+        public virtual void MergeAVariableInsideAVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable inside a variable", ((string[])(null)));
+#line 329
+this.ScenarioSetup(scenarioInfo);
+#line 330
+ testRunner.Given("a merge variable \"[[a]]\" equal to \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 331
+ testRunner.And("a merge variable \"[[b]]\" equal to \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 332
+ testRunner.And("a merge variable \"[[c]]\" equal to \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 333
+ testRunner.And("a merge variable \"[[test]]\" equal to \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 334
+ testRunner.And("an Input \"[[[[[[[[a]]]]]]]]\" and merge type \"Index\" and string at as \"8\" and Padd" +
+                    "ing \"\" and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 335
+ testRunner.And("an Input \"[[c]]\" and merge type \"Index\" and string at as \"4\" and Padding \"\" and A" +
+                    "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 336
+ testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 337
+ testRunner.Then("the merged result is \"Warewolftest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 338
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Pad",
+                        "Align"});
+            table43.AddRow(new string[] {
+                        "1",
+                        "[[[[[[[[a]]]]]]]] = Warewolf",
+                        "Index",
+                        "\"8\"",
+                        "\"\"",
+                        "Left"});
+            table43.AddRow(new string[] {
+                        "2",
+                        "[[c]]             = test",
+                        "Index",
+                        "\"4\"",
+                        "\"\"",
+                        "Left"});
+#line 339
+ testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table44.AddRow(new string[] {
+                        "[[result]] = Warewolftest"});
+#line 343
+ testRunner.And("the debug output as", ((string)(null)), table44, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
