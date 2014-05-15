@@ -1,0 +1,41 @@
+
+<Service ID="3e726c4f-2e1b-4149-bc6b-ef17609c036c" Version="1.0" Name="DeleteCategoryInWarewolfShoppingCartDb" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_spDeleteCategory" Type="InvokeStoredProc" SourceID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" SourceName="WarewolfShoppingCartDB" SourceMethod="dbo.spDeleteCategory">
+      <Inputs>
+        <Input Name="CategoryID" Source="CategoryID" EmptyToNull="false" DefaultValue="" NativeType="" />
+      </Inputs>
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>DeleteCategoryInWarewolfShoppingCartDb</DisplayName>
+  <Category>SAMPLE PROJECT</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>yrFKqj19NiCdf5OOpkvRGIQOd8Q=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>h/EXFwgOhdiTMHBwWnJ9l6t4aRlz5xwWfBNP0J/qUs7Q0dx04fYiGXBrIpocPvVEEVCu/8dSXIBheX4YkWHekFtso2DvDpUGl5Cen33Z0GOcnAXGHaEZT3QOybxpUP3b6WHvgbmJveybJskGLQvlwmVzClWHSJ7EEOzbQzov82k=</SignatureValue>
+  </Signature>
+</Service>
