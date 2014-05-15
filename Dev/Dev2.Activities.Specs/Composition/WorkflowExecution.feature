@@ -624,79 +624,6 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 	  | # |                   |
 	  | 1 | [[b]] =  warewolf |
 
-
-Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
-      Given I have a workflow "workflowithAssignandsequence"
-      And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
-      | variable    | value    |
-      | [[rec().a]] | test     |
-      | [[rec().b]] | nothing  |
-      | [[rec().a]] | warewolf |
-      | [[rec().b]] | nothing  |
-      And "workflowithAssignandsequence" contains a Sequence "Test1" as
-	  And "Test1" contains Data Merge "Data Merge" into "[[result]]" as	
-	  | Variable     | Type  | Using | Padding | Alignment |
-	  | [[rec(1).a]] | Index | 4     |         | Left      |
-	  | [[rec(2).a]] | Index | 8     |         | Left      |
-	  And "Test1" contains Data Split "Data Split" as
-	  | String       | Variable     | Type  | At | Include    | Escape |
-	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
-	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
-	  And "Test1" contains Find Index "Index" into "[[indexResult]]" as
-	  | In Fields    | Index           | Character | Direction     |
-	  | [[rec().a]] | First Occurence | e         | Left to Right |
-	  And "Test1" contains Replace "Replacing" into "[[replaceResult]]" as	
-	  | In Fields  | Find | Replace With |
-	  | [[rec(*)]] | e    | REPLACED     |
-	  When "workflowithAssignandsequence" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | test      |
-	  | 2 | [[rec().b]] = | nothing   |
-	  | 3 | [[rec().a]] = | warewolf  |
-	  | 4 | [[rec().b]] = | nothing   |
-	  And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = test     |
-	  | 2 | [[rec(1).b]] = nothing  |
-	  | 3 | [[rec(2).a]] = warewolf |
-	  | 4 | [[rec(2).b]] = nothing  |
-	  And the "Data Merge" debug inputs as  
-	  | # |                         | With  | Using | Pad | Align |
-	  | 1 | [[rec(1).a]] = test     | Index | "4"   | ""  | Left  |
-	  | 2 | [[rec(2).a]] = warewolf | Index | "8"   | ""  | Left  |
-	  And the "Data Merge" debug outputs as 
-	  |                           |
-	  | [[result]] = testwarewolf |
-	  And the "Data Split" debug inputs as  
-	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
-	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
-	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
-	  And the "Data Split" debug outputs as
-	  | # |                         |
-	  | 1 | [[rec(1).b]] = test     |
-	  | 2 | [[rec(2).b]] = warewolf |
-      And the "Index" debug inputs as
-	  | In Field                | Index           | Characters | Direction     |
-	  | [[rec(2).a]] = warewolf | First Occurence | e          | Left to Right |
-	  And the "Index" debug outputs as
-	  |                     |
-	  | [[indexResult]] = 4 |
-	  And the "Replacing" debug inputs as 
-	  | In Field(s)             | Find | Replace With |
-	  | [[rec(1).a]] = test     |      |              |
-	  | [[rec(1).b]] = test     |      |              |
-	  | [[rec(2).a]] = warewolf |      |              |
-	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
-	  And the "Replacing" debug outputs as 
-	  |                                |
-	  | [[rec(1).a]] = tREPLACEDst     |
-	  | [[rec(1).b]] = tREPLACEDst     |
-	  | [[rec(2).a]] = warREPLACEDwolf |
-	  | [[rec(2).b]] = warREPLACEDwolf |
-	  | [[replaceResult]] = 4          |
-
 #This test scenario should be passed after the bug 11818 is fixed
 #Scenario: Workflow with Assign and Gather System Information
 #      Given I have a workflow "workflowithAssignandGatherSystemInformation"
@@ -721,7 +648,35 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 #	  | # |                        |
 #	  | 1 | [[test[[1]]]] = String |
 
-
+#This test should be passed after the bug 11837 is fixed
+#Scenario: Workflow with assign and webservice with incorrect output variables
+#	 Given I have a workflow "TestService"
+#	 And "TestService" contains an Assign "Inputsvar" as
+#	  | variable | value |
+#	  | [[test]] | a&    |
+#	  | [[a]]    | d     |
+#	 And "TestService" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+#	  | Input to Service | From Variable | Output from Service      | To Variable                 |
+#	  | extension        | json          | Countries(*).CountryID   | [[Countries().CountryID]]   |
+#	  | prefix           | [[[[test]]]]  | Countries(*).Description | [[Countries().Description]] |
+#	  When "TestService" is executed
+#	  Then the workflow execution has "AN" error
+#	   And the 'Inputsvar' in WorkFlow 'TestService' debug inputs as 
+#	  | # | Variable   | New Value |
+#	  | 1 | [[test]] = | a         |
+#	  | 2 | [[a]]    = | d         |
+#	  And the 'Inputsvar' in Workflow 'TestService' debug outputs as    
+#	  | # |              |
+#	  | 1 | [[test]] = a |
+#	  | 2 | [[a]] = d    |
+#	  And the 'InternalCountriesServiceTest' in WorkFlow 'TestService' debug inputs as
+#	  |                       |
+#	  | json                  |
+#	  | [[[[test]]]] = [[d&]] |
+#	  And the 'InternalCountriesServiceTest' in Workflow 'TestService' debug outputs as
+#	  |                                 |
+#	  | [[Countries(10).CountryID]] =   |
+#	  | [[Countries(10).Description]] = |
 
 
 
