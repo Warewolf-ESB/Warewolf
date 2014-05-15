@@ -1,0 +1,20 @@
+
+<Source ID="dd868047-10a9-4e81-b34f-a2636f2347bb" Name="Leon" Type="Dev2Server" ConnectionString="AppServerUri=http://rsaklftrevorwilliams:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <TypeOf>Dev2Server</TypeOf>
+  <DisplayName>Leon</DisplayName>
+  <Category>Servers</Category>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>uTp7DmlwT9Vjbdc7AsZciLAf5gY=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>ffDEstWMaViLw8dUtoeAeJy/o7WN2SknUKNzHEsoTC9NkleNXTZ3/iQ3QmTV9Pv0HV/utmyvOy/C2zs7/bNQ1sWne3zFc9M5xSelpzfexx4FsRqtaRqcVeIDQ5/TftMmfHEjNcdcdvZQ11NsjpMGgPVK4rk/WiRJu30kUMChy+w=</SignatureValue>
+  </Signature>
+</Source>

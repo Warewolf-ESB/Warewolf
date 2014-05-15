@@ -1,0 +1,44 @@
+
+<Service ID="69e6d309-91fe-4121-b048-5be457176b91" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="paypal_gettoken" ResourceType="Unknown" IsValid="false">
+  <DisplayName>paypal_gettoken</DisplayName>
+  <Category>Sample Project</Category>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <IconPath>pack://application:,,,/Warewolf Studio;component/images/WebService-32.png</IconPath>
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <DataList />
+  <Actions>
+    <Action Name="paypal_gettoken" Type="InvokeWebService" SourceID="6197be96-64ba-4cf0-bc32-2158dde4ed09" SourceName="paypal" SourceMethod="" RequestUrl="" RequestMethod="Post" JsonPath="">
+      <RequestHeaders><![CDATA[Authorization: Basic [[auth]];Accept: application/json;Content-Type:application/x-www-form-urlencoded]]></RequestHeaders>
+      <RequestBody><![CDATA[grant_type=client_credentials]]></RequestBody>
+      <Inputs>
+        <Input Name="auth" Source="auth" EmptyToNull="false" DefaultValue="" NativeType="" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="scope" Name="scope" MapsTo="scope" Value="[[scope]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="access_token" Name="access_token" MapsTo="access_token" Value="[[access_token]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="token_type" Name="token_type" MapsTo="token_type" Value="[[token_type]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="app_id" Name="app_id" MapsTo="app_id" Value="[[app_id]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="expires_in" Name="expires_in" MapsTo="expires_in" Value="[[expires_in]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">scope</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">scope</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[scope]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card https://api.paypal.com/v1/vault/credit-card/.*</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">access_token</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">access_token</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[access_token]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">EEwJ6tF9x5WCIZDYzyZGaz6Khbw7raYRIBV_WxVvgmsG</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">token_type</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">token_type</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[token_type]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Bearer</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">app_id</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">app_id</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[app_id]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">APP-6XR95014BA15863X</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">expires_in</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">expires_in</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[expires_in]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">28800</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>3mhxl0mhkidFfyLmQaxmZ0yQhJs=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>KwQqFt103o7kuo0tPZQEuFeB0rO2ijCxS4c9HaRHqmjZZzNYap1WLkQRBfsvAu6F+t6Df+pBRQr8yBpMRAaO2g2LPO7pjufdA9w2MpAmRx+9xmE+cQBQAtrB2/9DKxcFv0USbdKp8Q8ipMZKSQ0jqPqwHOaguLpbfaslX0SyNw4=</SignatureValue>
+  </Signature>
+</Service>
