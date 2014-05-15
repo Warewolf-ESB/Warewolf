@@ -541,16 +541,93 @@ Scenario: Workflow with Assign Create and Delete folder tools executing against 
 #	  |                    |
 #	  | [[res2]] = Failure |
 
+Scenario: Workflow with 2 Assign tools executing against the server
+	  Given I have a workflow "WorkflowWith2Assigntools"
+	  And "WorkflowWith3Assigntools" contains an Assign "tool1" as
+	  | variable | value    |
+	  | [[a]]    | b        |
+	  | [[b]]    | test     |
+	  | [[test]] | warewolf |
+	  And "WorkflowWith2Assigntools" contains an Assign "tool2" as
+	  | variable  | value         |
+	  | [[[[a]]]] | [[[[[[a]]]]]] |
+	  When "WorkflowWith2Assigntools" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'tool1' in WorkFlow 'WorkflowWith2Assigntools' debug inputs as
+	  | # | Variable   | New Value |
+	  | 1 | [[a]] =    | b         |
+	  | 2 | [[b]] =    | test      |
+	  | 3 | [[test]] = | warewolf  |
+	  And the 'tool1' in Workflow 'WorkflowWith2Assigntools' debug outputs as  
+	  | # |                     |
+	  | 1 | [[a]] = b           |
+	  | 2 | [[b]] = test        |
+	  | 3 | [[test]] = warewolf |
+	  And the 'tool2' in WorkFlow 'WorkflowWith2Assigntools' debug inputs as
+	  | # | Variable         | New Value                |
+	  | 1 | [[[[a]]]] = test | [[[[[[a]]]]]] = warewolf |
+	  And the 'tool2' in Workflow 'WorkflowWith2Assigntools' debug outputs as  
+	  | # |                   |
+	  | 1 | [[b]] =  warewolf |
 
 
+#This Test Scenario should be passed after the issue 11834 is fixed	  
+#Scenario: Workflow with 2 Assign tools by using recordsets in fields executing against the server
+#	  Given I have a workflow "WorkflowWith2Assigntoolswithrecordsets"
+#	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec1" as
+#	  | variable     | value    |
+#	  | [[rec().a]]  | rec(2).a |
+#	  | [[rec(2).a]] | test     |
+#	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec2" as
+#	  | variable         | value    |
+#	  | [[[[rec(1).a]]]] | warewolf |
+#	  When "WorkflowWith2Assigntoolswithrecordsets" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'rec1' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec().a]] =  | rec(2).a  |
+#	  | 2 | [[rec(2).a]] = | test      |
+#	  And the 'rec1' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
+#	  | # |                         |
+#	  | 1 | [[rec(1).a]] = rec(2).a |
+#	  | 2 | [[rec(2).a]] = test     |
+#	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
+#	  | # | Variable                | New Value |
+#	  | 1 | [[[[rec(1).a]]]] = test | warewolf  |
+#	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
+#	  | # |                          |
+#	  | 1 | [[rec(2).a]] =  warewolf |
 
-
-  
+Scenario: Workflow with 2 Assign tools by using Scalars as variables executing against the server
+	  Given I have a workflow "WorkflowWith2Assigntoolswithrscalars"
+	  And "WorkflowWith2Assigntoolswithscalars" contains an Assign "scl1" as
+	  | variable | value |
+	  | [[a]]    | b     |
+	  | [[b]]    | test  |
+	  And "WorkflowWith2Assigntoolswithrscalars" contains an Assign "scl2" as
+	  | variable  | value    |
+	  | [[[[a]]]] | warewolf |
+	  When "WorkflowWith2Assigntoolswithrscalars" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'scl1' in WorkFlow 'WorkflowWith2Assigntoolswithrscalars' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | test      |
+	  And the 'scl1' in Workflow 'WorkflowWith2Assigntoolswithrscalars' debug outputs as  
+	  | # |              |
+	  | 1 | [[a]] = b    |
+	  | 2 | [[b]] = test |
+	  And the 'scl2' in WorkFlow 'WorkflowWith2Assigntoolswithrscalars' debug inputs as
+	  | # | Variable         | New Value |
+	  | 1 | [[[[a]]]] = test | warewolf  |
+	  And the 'scl2' in Workflow 'WorkflowWith2Assigntoolswithrscalars' debug outputs as  
+	  | # |                   |
+	  | 1 | [[b]] =  warewolf |
 
 
 Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
       Given I have a workflow "workflowithAssignandsequence"
-       And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
+      And "workflowithAssignandsequence" contains an Assign "Assign for sequence" as
       | variable    | value    |
       | [[rec().a]] | test     |
       | [[rec().b]] | nothing  |
@@ -579,7 +656,7 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 	  | 2 | [[rec().b]] = | nothing   |
 	  | 3 | [[rec().a]] = | warewolf  |
 	  | 4 | [[rec().b]] = | nothing   |
-	   And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
+	  And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = test     |
 	  | 2 | [[rec(1).b]] = nothing  |
@@ -620,14 +697,29 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 	  | [[rec(2).b]] = warREPLACEDwolf |
 	  | [[replaceResult]] = 4          |
 
-
-
-
-
-
-
-
-
+#This test scenario should be passed after the bug 11818 is fixed
+#Scenario: Workflow with Assign and Gather System Information
+#      Given I have a workflow "workflowithAssignandGatherSystemInformation"
+#	  And "workflowithAssignandGatherSystemInformation" contains an Assign "Assign for sys" as
+#	  | variable | value |
+#	  | [[b]]    | 1     |    
+#	   And "workflowithAssignandGatherSystemInformation" contains Gather System Info "System info" as
+#	  | Variable      | Selected    |
+#	  | [[test[[b]]]] | Date & Time |
+#	  When "workflowithAssignandGatherSystemInformation" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Assign for sys' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[b]] =  | 1         |
+#	  And the 'Assign for sys' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as    
+#	  | # |          |
+#	  | 1 | [b]] = 1 |
+#	  And the 'System info' in WorkFlow 'workflowithAssignandGatherSystemInformation' debug inputs as
+#	  | # |                 |             |
+#	  | 1 | [[test[[b]]]] = | Date & Time |
+#	  And the 'System info' in Workflow 'workflowithAssignandGatherSystemInformation' debug outputs as   
+#	  | # |                        |
+#	  | 1 | [[test[[1]]]] = String |
 
 
 
