@@ -122,7 +122,8 @@ namespace Dev2.CodedUI.Tests
             // Drag a Calculate control on
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
 
-            KeyboardCommands.SendTabs(3, 100);
+            Playback.Wait(500);
+            KeyboardCommands.SendTabs(3, 200);
             KeyboardCommands.SendKey("sum{(}");
 
             // Find the control
@@ -144,7 +145,15 @@ namespace Dev2.CodedUI.Tests
             }
 
             Mouse.Click(clickPint);
-            Playback.Wait(500);
+            Playback.Wait(200);
+
+            // now back to the text box to get the tool-tip to appear
+            var boundingRect = calculateOnWorkflow.BoundingRectangle;
+
+            Point magicPoint = new Point(boundingRect.X + 100, boundingRect.Y + 35);
+            Mouse.Click(magicPoint);
+            Playback.Wait(250);
+
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();
 

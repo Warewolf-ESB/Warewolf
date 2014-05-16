@@ -11,12 +11,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
         readonly UITestControl _activeTab;
 
         #region Automation Id's
-        private const string GroupsTextBoxId = "UI_AddWindowsGroupsTextBox_AutoID";
+
         private const string SaveButtonId = "UI_SaveSettingsbtn_AutoID";
         private const string ResourceViewCheckBoxId = "UI_SecuritySettingResourceViewchk_AutoID";
         private const string ResourceExecuteCheckBoxId = "UI_SecuritySettingResourceExecutechk_AutoID";
         private const string ResourceContributeCheckBoxId = "UI_SecuritySettingResourceContributechk_AutoID";
-        private const string AddResourceButtonId = "UI_AddResourceToSecuritySettingsbtn_AutoID";
         private const string ServerHelpButtonId = "ServerHelpToggleButton";
         private const string ResourceHelpButtonId = "ResourceHelpToggleButton";
         private const string HelpViewCloseButtonId = "UI_HelpViewCloseHelpBtn_AutoID";
@@ -34,7 +33,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
         {
             RibbonUIMap.ClickManageSecuritySettings();
             _activeTab = TabManagerUIMap.GetActiveTab();
-            Playback.Wait(3000);
+            Playback.Wait(1500);
         }
 
         public void AddResource(string resourceName, string category, string folder)
@@ -45,7 +44,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
 
             var foundIt = false;
 
-            if(kids.Count == 2)
+            if(kids.Count >= 2)
             {
                 var theRow = kids[1];
                 var grandKids = theRow.GetChildren();
@@ -71,18 +70,42 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
             }
         }
 
-        public void SetWindowsGroupText(string groupName)
+        public UITestControl SetWindowsGroupText(string groupName)
         {
-            UITestControl addWindowsGoupTextBox = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-                .FindByAutomationId(GroupsTextBoxId);
-            addWindowsGoupTextBox.EnterText(groupName);
+            UITestControl addWindowsGoupTextBox = FetchSecurityGroupTextbox();
+
+            addWindowsGoupTextBox.Click();
+            KeyboardCommands.SelectAll();
+            KeyboardCommands.SendDel();
+            KeyboardCommands.SendKey(groupName);
+
+            return addWindowsGoupTextBox;
         }
 
-        public string GetWindowsGroupText()
+        internal UITestControl FetchSecurityGroupTextbox()
         {
-            UITestControl addWindowsGoupTextBox = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-                .FindByAutomationId(GroupsTextBoxId);
-            return addWindowsGoupTextBox.GetText();
+            UITestControl addWindowsGoupTextBox = _activeTab.GetChildByAutomationIDPath(_resourceGridPath);
+
+            var kids = addWindowsGoupTextBox.GetChildren();
+
+            if(kids.Count >= 2)
+            {
+                var theRow = kids[1];
+                var grandKids = theRow.GetChildren();
+                if(grandKids.Count > 0)
+                {
+                    // 0 = header 
+                    var magicCell = grandKids[2];
+                    var grandGrandKids = magicCell.GetChildren();
+                    if(grandGrandKids.Count == 2)
+                    {
+                        var windowsGroup = grandGrandKids[0];
+                        return windowsGroup;
+                    }
+                }
+            }
+
+            throw new Exception("Failed to locate security group text box");
         }
 
         internal void ClickSaveButton()
@@ -97,25 +120,49 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
             return saveButton.IsEnabled();
         }
 
+        internal UITestControl FetchCheckbox(int boxNumber = 0)
+        {
+            UITestControl row = _activeTab.GetChildByAutomationIDPath(_resourceGridPath);
+
+            var kids = row.GetChildren();
+
+            if(kids.Count >= 2)
+            {
+                var theRow = kids[1];
+                var grandKids = theRow.GetChildren();
+                if(grandKids.Count > 0)
+                {
+                    // 0 = header 
+                    var idx = boxNumber + 3;
+                    var magicCell = grandKids[idx];
+                    var grandGrandKids = magicCell.GetChildren();
+                    if(grandGrandKids.Count == 1)
+                    {
+                        var viewCheckbox = grandGrandKids[0];
+                        return viewCheckbox;
+                    }
+                }
+            }
+
+            throw new Exception("Failed to locate permission checkbox");
+        }
+
         internal void SetViewCheckBox(bool isChecked)
         {
-            UITestControl control = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-               .FindByAutomationId(ResourceViewCheckBoxId);
-            control.Check(isChecked);
+            var checkBox = FetchCheckbox();
+            checkBox.Check(isChecked);
         }
 
         internal void SetExecuteCheckBox(bool isChecked)
         {
-            UITestControl control = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-              .FindByAutomationId(ResourceExecuteCheckBoxId);
-            control.Check(isChecked);
+            var checkBox = FetchCheckbox(1);
+            checkBox.Check(isChecked);
         }
 
         internal void SetContributeCheckBox(bool isChecked)
         {
-            UITestControl control = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
-             .FindByAutomationId(ResourceContributeCheckBoxId);
-            control.Check(isChecked);
+            var checkBox = FetchCheckbox(2);
+            checkBox.Check(isChecked);
         }
 
         internal void ToggleServerHelpButton()

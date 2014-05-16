@@ -56,6 +56,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 Mouse.Click(fixErrorsButton, new Point(5, 5));
             }
+            Playback.Wait(150);
         }
 
         public string GetDoneButtonDisplayName()

@@ -25,6 +25,14 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string LogLocation = @"C:\Builds\UITestRunWorkspace\UI_Test.log";
 
+        public static string RootSourceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Sources\";
+        public static string RootServiceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Services\";
+
+        public static string ShadowSourceLocation = @"C:\Builds\UITestRunWorkspace\Sources\";
+        public static string ShadowServiceLocation = @"C:\Builds\UITestRunWorkspace\Services\";
+
+        public static string WorkspaceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Workspaces\";
+
         public static int WaitMS = 5000;
 
         public static void Init()
@@ -45,6 +53,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // term any existing server processes ;)
                 KillProcess(serverProcess);
 
+                RemoveWorkspaces();
+
                 StartServer();
                 StartStudio();
 
@@ -53,6 +63,73 @@ namespace Dev2.Studio.UI.Tests.Utils
             else
             {
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
+            }
+
+
+        }
+
+        /// <summary>
+        /// Tear downs this instance.
+        /// </summary>
+        public static void Teardown()
+        {
+            if(ServerProc != null && !ServerProc.HasExited)
+            {
+                ServerProc.Kill();
+            }
+
+
+            //Server was deployed and started, stop it now.
+            KillProcess(TryGetProcess(ServerProcName));
+
+
+            if(StudioProc != null && !StudioProc.HasExited)
+            {
+                StudioProc.Kill();
+            }
+
+
+            //Studio was deployed and started, stop it now.
+            KillProcess(TryGetProcess(StudioProcName));
+
+            // Now clean up resource for next test run ;)
+
+        }
+
+        /// <summary>
+        /// Deletes the source.
+        /// </summary>
+        /// <param name="sourceName">Name of the source.</param>
+        public static void DeleteSource(string sourceName)
+        {
+            var path = RootSourceLocation + sourceName;
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the service.
+        /// </summary>
+        /// <param name="serviceName">Name of the service.</param>
+        public static void DeleteService(string serviceName)
+        {
+            var path = RootServiceLocation + serviceName;
+            if(File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        /// <summary>
+        /// Removes the workspaces.
+        /// </summary>
+        static void RemoveWorkspaces()
+        {
+            if(Directory.Exists(WorkspaceLocation))
+            {
+                Directory.Delete(WorkspaceLocation);
             }
         }
 
@@ -128,31 +205,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        /// <summary>
-        /// Tear downs this instance.
-        /// </summary>
-        public static void Teardown()
-        {
-            if(ServerProc != null && !ServerProc.HasExited)
-            {
-                ServerProc.Kill();
-            }
 
-
-            //Server was deployed and started, stop it now.
-            KillProcess(TryGetProcess(ServerProcName));
-
-
-            if(StudioProc != null && !StudioProc.HasExited)
-            {
-                StudioProc.Kill();
-            }
-
-
-            //Studio was deployed and started, stop it now.
-            KillProcess(TryGetProcess(StudioProcName));
-
-        }
 
         // here to force exit all processes 
         [AssemblyCleanup]

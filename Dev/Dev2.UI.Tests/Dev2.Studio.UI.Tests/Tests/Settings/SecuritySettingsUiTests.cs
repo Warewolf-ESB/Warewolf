@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Dev2.Services.Security;
+using Dev2.Studio.UI.Tests.Extensions;
 using Dev2.Studio.UI.Tests.UIMaps.Settings;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,9 +32,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
             {
                 //Add resource and set privileges
                 securityWrapper.AddResource("Utility - Email", "WORKFLOWS", "EXAMPLES");
-                securityWrapper.SetWindowsGroupText("Administrators");
+                var groupTextBox = securityWrapper.SetWindowsGroupText("Administrators");
                 securityWrapper.ClickSaveButton();
-                Assert.AreEqual("Administrators", securityWrapper.GetWindowsGroupText());
+                Assert.AreEqual("Administrators", groupTextBox.GetText());
                 Assert.IsFalse(securityWrapper.IsSaveButtonEnabled());
 
                 //Modify the properties
@@ -48,7 +49,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
                 securityWrapper.SetWindowsGroupText(string.Empty);
                 securityWrapper.SetViewCheckBox(false);
                 securityWrapper.ClickSaveButton();
-                Assert.AreEqual(string.Empty, securityWrapper.GetWindowsGroupText());
+                Assert.AreEqual(groupTextBox.GetText(), string.Empty);
             }
         }
 

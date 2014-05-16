@@ -98,9 +98,9 @@ namespace Dev2.Studio.UI.Tests
             KeyboardCommands.SendSpace();
 
             // Save
-            KeyboardCommands.SendTabs(4, 50);
+            KeyboardCommands.SendTabs(4, 250);
             KeyboardCommands.SendEnter();
-            //ResourceChangedPopUpUIMap.ClickCancel();
+            ResourceChangedPopUpUIMap.ClickCancel();
 
             UITestControl activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, dbResourceName);
 
@@ -110,50 +110,11 @@ namespace Dev2.Studio.UI.Tests
                 Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button not visible");
 
                 activityUiMap.ClickFixErrors();
-                KeyboardCommands.SendKey("[[Name]]");
+                KeyboardCommands.SendKey("[[Name]]", 25);
+
 
                 activityUiMap.ClickCloseMapping();
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
-            }
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("DesignTimeErrorHandling_CodedUiTests")]
-        public void DesignTimeErrorHandling_CodedUiTests_WhenOpeningMapping_FixButtonIsVisible()
-        {
-            //------------Setup for test--------------------------
-            var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
-            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
-
-            UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
-
-            using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
-            {
-
-                activityUiMap.ClickEdit();
-                WizardsUIMap.WaitForWizard();
-
-                //Wizard actions
-                DatabaseServiceWizardUIMap.ClickMappingTab();
-                DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
-                DatabaseServiceWizardUIMap.ClickSaveButton(2);
-                ResourceChangedPopUpUIMap.ClickCancel();
-
-
-                //------------Assert Results-------------------------
-
-                //Assert the the error button is there
-                Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
-                //Click the fix errors button
-                activityUiMap.ClickOpenMapping();
-                Assert.AreEqual("Fix", activityUiMap.GetDoneButtonDisplayName());
-                activityUiMap.ClickDoneButton();
-                Assert.AreEqual("Done", activityUiMap.GetDoneButtonDisplayName());
-                activityUiMap.ClickDoneButton();
-                //Assert that the fix errors button isnt there anymore
-                Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
-                //------------Execute Test---------------------------
             }
         }
     }

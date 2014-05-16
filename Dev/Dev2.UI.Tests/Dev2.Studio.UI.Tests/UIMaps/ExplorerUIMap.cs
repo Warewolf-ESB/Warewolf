@@ -683,7 +683,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(4000);
             if(serverName != "localhost")
             {
-                Playback.Wait(10000);
+                Playback.Wait(5000);
             }
         }
     }

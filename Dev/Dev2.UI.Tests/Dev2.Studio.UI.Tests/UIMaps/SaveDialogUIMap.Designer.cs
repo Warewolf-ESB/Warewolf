@@ -55,8 +55,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             #endregion
 
             KeyboardCommands.SendTabs(6, 150);
-            KeyboardCommands.SendKey(textToType);
-            MouseCommands.ClickPoint(new Point(145, 364), 100);
+            KeyboardCommands.SendKey(textToType, 200);
+            KeyboardCommands.SendDel();
+            //MouseCommands.ClickPoint(new Point(145, 364), 100);
             KeyboardCommands.SendTabs(2, 150);
             KeyboardCommands.SendEnter();
         }

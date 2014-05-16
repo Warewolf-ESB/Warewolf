@@ -177,6 +177,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()
         {
+
+            // NOTE : Needs to use Dev2TestingDB
+
             const string TextToSearchWith = "DBSource";
             string userName;
 
@@ -203,12 +206,15 @@ namespace Dev2.Studio.UI.Tests
                 //Change it back
                 ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
                 userName = DatabaseSourceUIMap.GetUserName();
-                DatabaseSourceUIMap.ChangeAuthenticationTypeToWindowsFromUser();
-                DatabaseSourceUIMap.ClickSaveDbConnectionFromWindowsRadioButton();
+
+                DatabaseSourceUIMap.EnterUsernameAndPassword("testuser", "test123");
+                DatabaseSourceUIMap.TestConnection();
+                Playback.Wait(5000);
+                DatabaseSourceUIMap.ClickSaveDbConnectionFromTestConnection();
                 SaveDialogUIMap.ClickSave();
             }
 
-            Assert.AreEqual("testuser", userName, "Cannot edit remote db source");
+            Assert.AreEqual("testuser2", userName, "Cannot edit remote db source");
         }
 
         [TestMethod]
@@ -261,6 +267,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
+            // NOTE : Needs to use Dev2TestingDB
+            // IF RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited breaks it will also break this test
+
             const string TextToSearchWith = "RemoteDBService";
 
             //Edit remote db service
@@ -341,6 +350,11 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
+            // NOTE : 
+            // Requires a Plugin Directory on server with :
+            // Plugins\PrimativesTestDLL.dll 
+            // And Plugins\PrimativesTestDLL - Copy.dll
+
             const string TextToSearchWith = "PluginSource";
 
             //Edit remote plugin source
@@ -352,20 +366,27 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual("Edit - PluginSource", actualLeftTitleText);
             Assert.AreEqual(remoteConnectionString, actualRightTitleText);
 
-
-            PluginSourceMap.ClickPluginSourceAssemblyPath();
-            PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT} - Copy"), 100);
+            KeyboardCommands.SendTabs(2, 250);
+            KeyboardCommands.SelectAll();
+            KeyboardCommands.SendDel();
+            KeyboardCommands.SendKey("Plugins\\PrimativesTestDLL - Copy.dll");
             PluginServiceWizardUIMap.PressButtonOnWizard(1);
             SaveDialogUIMap.ClickSave();
 
-            //Change it back                        
+            // Change it back                        
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
-            string path = PluginSourceMap.GetAssemblyPathText();
-            PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}"), 100);
+            KeyboardCommands.SendTabs(2, 250);
+            KeyboardCommands.SelectAll();
+
+            // get the path to see what it saved as ;)
+            var path = KeyboardCommands.SendCopy();
+
+            KeyboardCommands.SendDel();
+            KeyboardCommands.SendKey("Plugins\\PrimativesTestDLL.dll");
             PluginServiceWizardUIMap.PressButtonOnWizard(1);
             SaveDialogUIMap.ClickSave();
 
-            Assert.AreEqual(@"C:\DevelopmentDropOff\Integration Tests\Pugin1 - Copy.dll", path, "Cannot change remote plugin source");
+            Assert.AreEqual(path, @"Plugins\PrimativesTestDLL - Copy.dll", "Cannot change remote plugin source");
         }
 
         [TestMethod]
@@ -373,22 +394,35 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
+            // NOTE : 
+            // Requires PluginSource points the correct location as set below...
+
+            // Requires a Plugin Directory on server with :
+            // Plugins\PrimativesTestDLL.dll 
+            // And Plugins\PrimativesTestDLL - Copy.dll
+
             const string TextToSearchWith = "PluginService";
 
             //Edit remote plugin service
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
-            PluginServiceWizardUIMap.ClickActionAtIndex(3);
-            PluginServiceWizardUIMap.ClickTest();
-            PluginServiceWizardUIMap.ClickOK();
+            PluginServiceWizardUIMap.ClickActionAtIndex(4);
+            KeyboardCommands.SendTabs(8, 250);
+            KeyboardCommands.SendEnter(500); // test it
+
+            KeyboardCommands.SendTabs(5, 250);
+            KeyboardCommands.SendEnter(500); // save it
 
             //Change it back
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             string actionName = PluginServiceWizardUIMap.GetActionName();
-            PluginServiceWizardUIMap.ClickActionAtIndex(4);
-            PluginServiceWizardUIMap.ClickTest();
-            PluginServiceWizardUIMap.ClickOK();
+            PluginServiceWizardUIMap.ClickActionAtIndex(13);
+            KeyboardCommands.SendTabs(8, 250);
+            KeyboardCommands.SendEnter(500); // test it
 
-            Assert.AreEqual("ToStrin", actionName, "Cannot change remote plugin service");
+            KeyboardCommands.SendTabs(5, 250);
+            KeyboardCommands.SendEnter(500); // save it
+
+            Assert.AreEqual("FetchCharValue", actionName, "Cannot change remote plugin service");
         }
 
         [TestMethod]

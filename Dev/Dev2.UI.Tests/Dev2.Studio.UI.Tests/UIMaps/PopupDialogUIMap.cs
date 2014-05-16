@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
@@ -21,7 +22,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForDialog()
         {
-            Playback.Wait(7000);
+            Playback.Wait(4500);
         }
 
         public void AddAResource(string serverName, string serviceType, string folderName, string projectName)
@@ -35,10 +36,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl control = GetServiceItem(serverName, serviceType, folderName, projectName);
-            //Mouse.DoubleClick(control,new Point(control.BoundingRectangle.X,control.BoundingRectangle.Y));
             if(control != null)
             {
-                control.DoubleClick();
+                var magicPoint = new Point(control.BoundingRectangle.X + 75, control.BoundingRectangle.Y + 10);
+                Mouse.Move(magicPoint);
+                Mouse.DoubleClick();
             }
             else
             {

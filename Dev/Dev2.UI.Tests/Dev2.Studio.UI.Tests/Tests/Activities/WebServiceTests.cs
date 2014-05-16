@@ -74,21 +74,25 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             string newWebserviceName = "WebService" + remove;
 
             //Open wizard
+            const int tabWait = 200;
             RibbonUIMap.ClickNewWebService();
-            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendTabs(2, tabWait);
             KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SendTabs(8, tabWait);
+            KeyboardCommands.SendDownArrows(1); // first resource is faulty, we need the second ;)
+            KeyboardCommands.SendTabs(4, tabWait);
             KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendDel();
             KeyboardCommands.SendKey("?[[a]]=[[b]][[c]]&[[d]]=[[f]]");
             KeyboardCommands.SendLeftArrows(2);
             KeyboardCommands.SendKey("e");
-            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendTabs(2, tabWait);
+            KeyboardCommands.SendEnter(1500);
+            KeyboardCommands.SendTabs(1, tabWait);
             KeyboardCommands.SendEnter(5000);
-            KeyboardCommands.SendTabs(1);
-            KeyboardCommands.SendEnter(1000);
-            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
-            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendTabs(1, tabWait);
             KeyboardCommands.SendEnter(200);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
@@ -113,20 +117,25 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             string remove = newGuid.Remove(8);
             string newWebserviceName = "WebService" + remove;
 
+
             //Open wizard
+            const int tabWait = 200;
             RibbonUIMap.ClickNewWebService();
-            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendTabs(2, tabWait);
             KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SendTabs(8, tabWait);
+            KeyboardCommands.SendDownArrows(1); // first resource is faulty, we need the second ;)
+            KeyboardCommands.SendTabs(4, tabWait);
             KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendDel();
             KeyboardCommands.SendKey("?[[a]][[b]]=[[c]]");
-            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendTabs(2, tabWait);
+            KeyboardCommands.SendEnter(1500);
+            KeyboardCommands.SendTabs(1, tabWait);
             KeyboardCommands.SendEnter(5000);
-            KeyboardCommands.SendTabs(1);
-            KeyboardCommands.SendEnter(1000);
-            KeyboardCommands.SendTabs(3);
+            KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
-            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendTabs(1, tabWait);
             KeyboardCommands.SendEnter(200);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);

@@ -552,7 +552,7 @@ namespace Dev2.Studio.UI.Tests
                 newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
 
-            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
             {
                 Assert.Fail("The control was not resized properly.");
             }

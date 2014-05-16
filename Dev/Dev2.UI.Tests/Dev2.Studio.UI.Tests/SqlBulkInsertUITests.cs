@@ -1,10 +1,11 @@
-﻿using Dev2.Studio.UI.Tests.Enums;
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Drawing;
-using System.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Studio.UI.Tests
@@ -143,6 +144,12 @@ namespace Dev2.Studio.UI.Tests
 
             // THIS IS FAULTY LOGIC!!!!
             var getFirstTextbox = WorkflowDesignerUIMap.GetSqlBulkInsertLargeViewFirstInputTextbox(controlOnWorkflow);
+
+            if(getFirstTextbox == null)
+            {
+                throw new Exception("Failed to Locate Text Box");
+            }
+
             Mouse.Click(getFirstTextbox);
 
             KeyboardCommands.SendKey("^a^xrecord().id");

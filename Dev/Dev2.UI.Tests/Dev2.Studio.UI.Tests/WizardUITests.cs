@@ -126,6 +126,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             WebServiceWizardUIMap.SaveWebService(serviceName);
 
+            // clean up ;)
+            Bootstrap.DeleteService(serviceName);
+            Bootstrap.DeleteSource(sourceName);
+
             //Assert
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists(serviceName, "Unassigned"));
 
@@ -164,6 +168,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //Create the Db Service
             DatabaseServiceWizardUIMap.CreateDbService(serviceName);
 
+            // clean up ;)
+            Bootstrap.DeleteService(serviceName);
+            Bootstrap.DeleteSource(sourceName);
+
             //Assert
             Assert.IsTrue(ExplorerUIMap.ValidateServiceExists(serviceName, cat));
             Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(sourceName, cat));
@@ -192,6 +200,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //Create Email Source
             EmailSourceWizardUIMap.CreateEmailSource(name);
+
+            // clean up ;)
+            Bootstrap.DeleteSource(sourceName);
 
             //Assert
             Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(name, "Unassigned"), "Email source was not created.");

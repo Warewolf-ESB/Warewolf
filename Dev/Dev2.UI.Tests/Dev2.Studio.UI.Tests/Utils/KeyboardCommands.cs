@@ -28,6 +28,16 @@ namespace Dev2.Studio.UI.Tests
         #endregion Properties
 
         #region Methods
+        public static string SendCopy()
+        {
+            SendKey(CopyCommand);
+            return System.Windows.Clipboard.GetText();
+        }
+
+        public static void SelectAll()
+        {
+            SendKey(SelectAllCommand);
+        }
 
         public static void SendBackspaces(int amtOfPresses, int waitAmt = 15)
         {

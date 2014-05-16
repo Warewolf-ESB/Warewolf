@@ -66,12 +66,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         {
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
-            for(int i = 0; i <= numberOfTabsToSaveButton; i++)
-            {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
-            }
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendTabs(numberOfTabsToSaveButton, 200);
+            KeyboardCommands.SendEnter();
             Playback.Wait(500);
         }
 

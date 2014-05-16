@@ -9,7 +9,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     public class WizardsUIMap : UIMapBase
     // ReSharper restore InconsistentNaming
     {
-        private const int DefaultTimeOut = 5000;
+        private const int DefaultTimeOut = 3000;
         /// <summary>
         /// Returns true if found in the timeout period.
         /// </summary>

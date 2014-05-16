@@ -50,7 +50,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 //Wizard actions
                 DatabaseServiceWizardUIMap.ClickMappingTab();
                 DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
-                DatabaseServiceWizardUIMap.ClickSaveButton(2);
+                DatabaseServiceWizardUIMap.ClickSaveButton(4); // IT IS THE STRANGES THING. 3 IF RUN FROM DESKTOP, 4 FOR RDP SESSION?!
                 ResourceChangedPopUpUIMap.ClickCancel();
                 //Assert the the error button is there
                 Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());

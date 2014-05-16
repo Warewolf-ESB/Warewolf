@@ -684,23 +684,16 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(10000);
         }
 
-        public void EnterTextIntoWizardTextBox(int numberOfTabsToGetToTextBox, string textToEnter, int waitAftertextEntered = 0)
+        public void EnterTextIntoWizardTextBox(int numTabs, string textToEnter, int waitAftertextEntered = 0)
         {
-            for(int i = 0; i < numberOfTabsToGetToTextBox; i++)
-            {
-                Keyboard.SendKeys("{TAB}");
-                Playback.Wait(50);
-            }
+            KeyboardCommands.SendTabs(numTabs, 250);
             Keyboard.SendKeys(textToEnter);
             Playback.Wait(waitAftertextEntered);
         }
 
         public void PressButtonOnWizard(int numberOfTabsToGetToButton, int waitAfterButtonPress = 0)
         {
-            for(int i = 0; i < numberOfTabsToGetToButton; i++)
-            {
-                Keyboard.SendKeys("{TAB}");
-            }
+            KeyboardCommands.SendTabs(numberOfTabsToGetToButton, 250);
             Keyboard.SendKeys("{ENTER}");
             Playback.Wait(waitAfterButtonPress);
         }

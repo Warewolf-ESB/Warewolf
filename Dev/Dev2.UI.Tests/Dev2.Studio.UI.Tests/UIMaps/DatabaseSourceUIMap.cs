@@ -13,12 +13,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
     {
         public string GetUserName()
         {
-            var persistClipboard = Clipboard.GetText();
+            KeyboardCommands.SendTabs(3, 250);
+            KeyboardCommands.SelectAll();
+            KeyboardCommands.SendKey(KeyboardCommands.CopyCommand);
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
-            Mouse.DoubleClick(wizard, new Point(306, 168));
-            Keyboard.SendKeys(wizard, "{CTRL}c");
             var userName = Clipboard.GetText();
-            Clipboard.SetText(persistClipboard);
+            //Clipboard.SetText(persistClipboard);
             Mouse.Click(wizard, new Point(584, 160));
             return userName;
         }
@@ -37,7 +37,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseSourceUIMapClasses
 
         public void EnterUsernameAndPassword(string user, string pass)
         {
-            KeyboardCommands.SendTab();
+            KeyboardCommands.SendTabs(3, 200);
             KeyboardCommands.SendKey(user);
             KeyboardCommands.SendTab();
             KeyboardCommands.SendKey(pass);

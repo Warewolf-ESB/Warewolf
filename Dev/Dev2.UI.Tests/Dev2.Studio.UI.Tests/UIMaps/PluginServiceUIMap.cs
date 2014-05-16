@@ -150,7 +150,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
 
         public void ClickActionAtIndex(int i)
         {
-            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, (164 + (30 * i))));
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[2], new Point(172, (164 + (25 * i))));
         }
 
         public string GetActionName()
@@ -158,7 +158,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             var persistClipboard = Clipboard.GetText();
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             Mouse.StartDragging(wizard, new Point(398, 83));
-            Mouse.StopDragging(wizard, 55, 0);
+            Mouse.StopDragging(wizard, 125, 0);
             Keyboard.SendKeys(wizard, "{CTRL}c");
             var actionName = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
