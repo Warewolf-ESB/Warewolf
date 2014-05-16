@@ -16,7 +16,7 @@ namespace Dev2
     // ReSharper restore CheckNamespace
 
     /// <summary>
-    /// Used for internal security reasons
+    /// Used for internal security reasons 
     /// </summary>
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
@@ -67,7 +67,7 @@ namespace Dev2
 
             int idx = path.IndexOf("\\", StringComparison.Ordinal);
 
-            if(idx > 0)
+            if (idx > 0)
             {
                 result = path.Substring((idx + 1));
             }
@@ -86,7 +86,7 @@ namespace Dev2
 
             int idx = path.IndexOf("\\", StringComparison.Ordinal);
 
-            if(idx > 0)
+            if (idx > 0)
             {
                 result = path.Substring(0, idx);
             }
@@ -116,13 +116,13 @@ namespace Dev2
                 bool loginOk = LogonUser(user, domain, pass, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
-                if(loginOk)
+                if (loginOk)
                 {
-                    using(safeTokenHandle)
+                    using (safeTokenHandle)
                     {
 
                         WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
                             // Do the operation here
                             result = CheckPermissions(newID, path, rights);
@@ -137,7 +137,7 @@ namespace Dev2
                     throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " + path + " ] ");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ServerLogger.LogError("FileIO", ex);
                 throw;
@@ -159,11 +159,11 @@ namespace Dev2
             DirectoryInfo di = new DirectoryInfo(path);
             AuthorizationRuleCollection acl;
 
-            if(fi.Exists)
+            if (fi.Exists)
             {
                 acl = fi.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
             }
-            else if(di.Exists)
+            else if (di.Exists)
             {
                 acl = di.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
             }
@@ -182,13 +182,13 @@ namespace Dev2
             FileSystemRights allowRights = 0;
 
             // iterates on rules to compute denyRights and allowRights
-            foreach(FileSystemAccessRule rule in userRules)
+            foreach (FileSystemAccessRule rule in userRules)
             {
-                if(rule.AccessControlType.Equals(AccessControlType.Deny))
+                if (rule.AccessControlType.Equals(AccessControlType.Deny))
                 {
                     denyRights = denyRights | rule.FileSystemRights;
                 }
-                else if(rule.AccessControlType.Equals(AccessControlType.Allow))
+                else if (rule.AccessControlType.Equals(AccessControlType.Allow))
                 {
                     allowRights = allowRights | rule.FileSystemRights;
                 }
