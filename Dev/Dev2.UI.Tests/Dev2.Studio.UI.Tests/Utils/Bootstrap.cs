@@ -129,7 +129,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         {
             if(Directory.Exists(WorkspaceLocation))
             {
-                Directory.Delete(WorkspaceLocation);
+                Directory.Delete(WorkspaceLocation, true);
             }
         }
 
