@@ -244,25 +244,25 @@ Scenario: Convert a negative recordset index to lowercase
 #	When the case conversion tool is executed
 #	Then the execution has "AN" error
 #	And the debug inputs as  
-#	| # | Convert      | To     |
-#	| 1 | [[a]][[b]] = | <Case> |
+	| # | #                     | Convert                     | To     |
+	| # | 1                     | [[a]][[b]] = Warewolf Rocks | <Case> |
 #	And the debug output as  
-#	| # |  |
+	| # | #                     |                               |
 #Examples: 
-#    | Case       |
-#    | UPPER      |
-#    | Lower      |
-#    | SENTENCE   |
-#    | TITLE CASE |
+	| # | Case                  |
+	| # | UPPER                 |
+	| # | Lower                 |
+	| # | SENTENCE              |
+	| # | TITLE CASE            |
 #
 #Scenario Outline: Convert variables with data in one row
 #	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
-#	And I convert a variable "[[a]]test" to '<Case>'		
+#	And I convert a variable "[[a]]test[[b]]" to '<Case>'		
 #	When the case conversion tool is executed
 #	Then the execution has "AN" error
 #	And the debug inputs as  
-#	| # | Convert     | To     |
-#	| 1 | [[a]]test = | <Case> |
+	| # | #                     | Convert                       | To |
+	| # | 1                     | [[a]]test[[b]] = Warewolftest | <Case> |
 #	And the debug output as  
 #	| # |                       |
 #Examples: 
