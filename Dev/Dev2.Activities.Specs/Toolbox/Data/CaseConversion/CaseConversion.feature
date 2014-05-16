@@ -237,44 +237,43 @@ Scenario: Convert a negative recordset index to lowercase
 	And the debug output as  
 	| # |                       |
 	| 1 | [[my(-1).sentenct]] = |
-#
+
 #Scenario Outline: Convert two variables in one row
 #	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
 #	And I convert a variable "[[a]][[b]]" to '<Case>'		
 #	When the case conversion tool is executed
 #	Then the execution has "AN" error
 #	And the debug inputs as  
-	| # | #                     | Convert                     | To     |
-	| # | 1                     | [[a]][[b]] = Warewolf Rocks | <Case> |
+#	| # | Convert                       | To     |
+#	| 1 | [[a]][[b]] = Warewolf Rocks   | <Case> |
 #	And the debug output as  
-	| # | #                     |                               |
+#	|  |     |        |
 #Examples: 
-	| # | Case                  |
-	| # | UPPER                 |
-	| # | Lower                 |
-	| # | SENTENCE              |
-	| # | TITLE CASE            |
-#
+#	| no | Case       |
+#	| 1  | UPPER      |
+#	| 2  | Lower      |
+#	| 3  | SENTENCE   |
+#	| 4  | TITLE CASE |
+
+
 #Scenario Outline: Convert variables with data in one row
 #	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
 #	And I convert a variable "[[a]]test[[b]]" to '<Case>'		
 #	When the case conversion tool is executed
 #	Then the execution has "AN" error
 #	And the debug inputs as  
-	| # | #                     | Convert                       | To |
-	| # | 1                     | [[a]]test[[b]] = Warewolftest | <Case> |
+#	| #  | Convert                       | To     |
+#	| 1  | [[a]]test[[b]] = Warewolftest | <Case> |
 #	And the debug output as  
-#	| # |                       |
+#	| #  |                               |        |
 #Examples: 
-#    | Case       |
-#    | UPPER      |
-#    | Lower      |
-#    | SENTENCE   |
-#    | TITLE CASE |
-#
-#
-#
+#	| no | Case                          |
+#	| 1  | UPPER                         |
+#	| 2  | Lower                         |
+#	| 3  | SENTENCE                      |
+#	| 4  | TITLE CASE                    |
 
+@ignore
 #Scenario Outline: Error messages when convert a Invalid variable
 #	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
 #	And I convert a variable '<Variable>' to '<To>"		

@@ -684,3 +684,19 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

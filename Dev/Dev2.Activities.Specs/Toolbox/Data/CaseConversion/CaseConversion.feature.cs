@@ -774,7 +774,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table35.AddRow(new string[] {
                         "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks",
+                        "[[my(-1).sentenct]] =",
                         "UPPER"});
 #line 222
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
@@ -784,7 +784,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table36.AddRow(new string[] {
                         "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks"});
+                        "[[my(-1).sentenct]] ="});
 #line 225
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
@@ -815,7 +815,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table37.AddRow(new string[] {
                         "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks",
+                        "[[my(-1).sentenct]] =",
                         "lower"});
 #line 234
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
@@ -825,91 +825,9 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table38.AddRow(new string[] {
                         "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks"});
+                        "[[my(-1).sentenct]] ="});
 #line 237
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a negative recordset index to Sentence")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
-        public virtual void ConvertANegativeRecordsetIndexToSentence()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to Sentence", ((string[])(null)));
-#line 241
-this.ScenarioSetup(scenarioInfo);
-#line 242
- testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
-                    "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 243
- testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 244
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 245
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Convert",
-                        "To"});
-            table39.AddRow(new string[] {
-                        "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks",
-                        "Sentence"});
-#line 246
- testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table40.AddRow(new string[] {
-                        "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks"});
-#line 249
- testRunner.And("the debug output as", ((string)(null)), table40, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a negative recordset index to Title Case")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
-        public virtual void ConvertANegativeRecordsetIndexToTitleCase()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to Title Case", ((string[])(null)));
-#line 253
-this.ScenarioSetup(scenarioInfo);
-#line 254
- testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
-                    "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 255
- testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 257
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Convert",
-                        "To"});
-            table41.AddRow(new string[] {
-                        "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks",
-                        "Title Case"});
-#line 258
- testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table42.AddRow(new string[] {
-                        "1",
-                        "[[my(-1).sentenct]] = Warewolf Rocks"});
-#line 261
- testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
