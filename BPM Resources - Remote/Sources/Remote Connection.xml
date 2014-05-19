@@ -1,0 +1,23 @@
+
+<Source ID="30184b9d-4cae-41e0-9049-3b8c21295924" Version="1.0" Name="Remote Connection" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=http://Test-2:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Type="Dev2Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Remote Connection</DisplayName>
+  <Category>RemoteCodedUi</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>9oDQaVjxsYw7gxpD4DKU9RYc6Gk=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>iWkFqJAyfLxuLhLrAbfdOfKFiXgCPKr8lrr++z/PiefgkDOEbdBEtRIuilgneXhFN46Bn7YNsX5KfBcHjm2J2oO4PWWZPP8n4LDwAblMjmriv6/zgxM1m5lehfo8fbmmUfQCEH12D29fteyGSkhnnhMQvNSFgMLFE53Pvydm0kA=</SignatureValue>
+  </Signature>
+</Source>

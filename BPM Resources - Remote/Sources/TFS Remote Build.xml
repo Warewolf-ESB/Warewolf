@@ -1,0 +1,29 @@
+
+<Source Name="TFS Remote Build" Type="Plugin" AssemblyName="TFSModule.TFSWorker" AssemblyLocation="Plugins/TFSModule.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="401e6dc5-aa89-4289-b476-fef26ed7e474" Version="1.0" ResourceType="PluginSource">
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>A .NET assembly that is responsible for file based operations like transferring a file
+from one location to another.</Comment>
+  <Category>System</Category>
+  <Tags>System</Tags>
+  <HelpLink>http://www.google.co.za</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>IPGIeCbvwGBOtMsRFnnFVZlefTU=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>V9GLNDlDKoCgW4rG/1ydXAGt84oSIC8EAam2VMhIIV81Hh6Z6CEr9oiR1ZOVzwyKCQ0cgHENznX65K0NKadEYwuuDEm2Zk1CyQG6l4s7xKptS5uJtoufHMrLfoJQIeRrZvl7pZ5Bt6f3XieelDAzI9gzvKTmrR/xryGq9bDI0Jc=</SignatureValue>
+  </Signature>
+</Source>

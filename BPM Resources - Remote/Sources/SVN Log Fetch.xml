@@ -1,0 +1,29 @@
+
+<Source Name="SVN Log Fetch" Type="Plugin" AssemblyName="SvnBds.SvnCheckOut" AssemblyLocation="Plugins/SvnCheckOutBpm.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="56f60389-57a5-4ed8-8e95-65a7b7d85401" Version="1.0" ResourceType="PluginSource">
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>A .NET assembly that is responsible for file based operations like transferring a file
+from one location to another.</Comment>
+  <Category>System</Category>
+  <Tags>System</Tags>
+  <HelpLink>http://www.google.co.za</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>92sBaJ4GtnCLH8sIBBaU8N9ERFw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>hB7FmHTunOSMA7JaqAI33QmoUwWpvvw3dvpXcTn8fFQFLasCADr8bPw+P5vzh1N/OnPWYGpgZZ3G+tGNekGamN4uOao7DO17tQl5KoMd9ZuzC6Riow3SIAn2rYiH7Ek0P0I45duG25GUOeJHllezj/ttQkscXqtdLAuIaEREzHU=</SignatureValue>
+  </Signature>
+</Source>

@@ -1,0 +1,31 @@
+
+<Source Name="travsNewDbSource" Type="SqlDatabase" ConnectionString="server=RSAKLFSVRGENDEV;database=Cities;integrated security=true;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="ce8bfce0-8669-4676-8f0e-e7189988b442" Version="1.0" ResourceType="DbSource">
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>SQL Database</Comment>
+  <Category>Database Source</Category>
+  <HelpLink>http://filler.link</HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Database</TypeOf>
+  <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>rK06LGcgdiAPfqJJwQpyvwF+Gl4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>fHDlezvC5fEZkvHV8HBhUYJZy5m2RpzK1bapFxVe+FBH1y/H8onZZYozgQCAw8y+jZTj728kZf2t78+wdBZV9DkBryppAlfimP4IDkKIlXECmVzNnuXwVzY6XHiNA0U/T3p4hxGpAtHND00hpFRqcY3K/HtKj/ecrSIE/goFnWc=</SignatureValue>
+  </Signature>
+</Source>
