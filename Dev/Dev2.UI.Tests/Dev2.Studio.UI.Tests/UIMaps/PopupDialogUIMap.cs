@@ -77,6 +77,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                         {
                             var id = kid.GetProperty("AutomationID").ToString();
 
+                            // localhost fixes for now local remote server
+                            if(serverName == "localhost" && id.IndexOf("4142", StringComparison.Ordinal) > 0)
+                            {
+                                break;
+                            }
+
+
                             if(id.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.FriendlyName.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||

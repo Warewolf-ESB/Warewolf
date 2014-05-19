@@ -151,6 +151,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                                 kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.ClassName.ToUpper().Contains(arg.ToUpper()))
                             {
+                                // we need to do extra filtering too now ;)
+                                // Our remote server is also localhost, we need to make sure we want proper local host
+                                if(id.IndexOf("4142") > 0 && arg == "localhost")
+                                {
+                                    break;
+                                }
+
                                 if(arg == projectName)
                                 {
                                     if(id == "UI_" + projectName + "_AutoID")

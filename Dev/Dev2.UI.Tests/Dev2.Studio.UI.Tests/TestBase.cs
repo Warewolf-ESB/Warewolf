@@ -59,8 +59,6 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
-            RibbonUIMap.CreateNewWorkflow();
-
             const string ResourceName = "NewForeachUpgradeDifferentExecutionTests";
             // Open the workflow
             ExplorerUIMap.DoubleClickWorkflow(ResourceName, "INTEGRATION TEST SERVICES");
@@ -107,7 +105,7 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        // Should be unit test
+        [Ignore] // Faulty Logic - Needs to be unit test ;)
         public void TypeInCalcBoxExpectedTooltipAppears()
         {
             //Create the Workflow for the test

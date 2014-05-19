@@ -365,15 +365,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
-            Mouse.Move(theServer, new Point(50, 5));
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(1500);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(1500);
-            Keyboard.SendKeys("{Down}");
-            Playback.Wait(500);
-            Keyboard.SendKeys("{Enter}");
-            Playback.Wait(9500);
+            Mouse.Move(theServer, new Point(30, 5));
+            Mouse.Click();
+            Playback.Wait(5500);
         }
 
         public void Server_RightClick_NewWorkflow(string serverName)
@@ -531,13 +525,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <summary>
         /// Drags the resource from the explorer to the active tab.
         /// </summary>
-        /// <param name="tabToDropOnto">The tab to drop the resource onto.</param>
         /// <param name="resourceName">The name of the resource.</param>
         /// <param name="categoryName">The name of the category.</param>
-        /// <param name="serviceType">Type of the service.</param>
         /// <param name="serverName">Name of the server (Will default to "localhost").</param>
-        /// <param name="pointToDragTo">The point to drop the resource on the designer (Will default to just below the start node).</param>
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
+        /// <returns></returns>
         public UITestControl DoubleClickWorkflow(string resourceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
         {
             DoubleClickResource(ServiceType.Workflows, resourceName, categoryName, serverName, overrideDblClickBehavior);

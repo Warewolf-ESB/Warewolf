@@ -33,6 +33,10 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string WorkspaceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Workspaces\";
 
+        public static string RemoteServerLocation = @"C:\Builds\UITestRunWorkspace\Binaries-Remote\";
+        public static string RemoteServer = RemoteServerLocation + "Warewolf Server.exe";
+        public static string RemoteServerConfig = RemoteServerLocation + "Warewolf Server.exe.config";
+
         public static int WaitMS = 5000;
 
         public static void Init()
@@ -53,9 +57,10 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // term any existing server processes ;)
                 KillProcess(serverProcess);
 
+                // remote workspaces to avoid mutation issues
                 RemoveWorkspaces();
 
-                StartServer();
+                StartServer(ServerLocation);
                 StartStudio();
 
                 Thread.Sleep(WaitMS);
@@ -119,6 +124,39 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
+        public static void StartRemoteServer()
+        {
+            // Just needs the remote resources now ;(
+            AmendRemoteConfigForTest();
+
+            StartServer(RemoteServer);
+
+            Thread.Sleep(WaitMS);
+        }
+
+        public static void AmendRemoteConfigForTest()
+        {
+
+            if(File.Exists(RemoteServerConfig))
+            {
+                var data = File.ReadAllText(RemoteServerConfig);
+
+                if(data.IndexOf("<add key=\"webServerPort\" value=\"3142\"/>", StringComparison.Ordinal) > 0)
+                {
+                    // we need to amend it ;)
+                    data = data.Replace("<add key=\"webServerPort\" value=\"3142\"/>", "<add key=\"webServerPort\" value=\"4142\"/>");
+
+                    if(data.IndexOf("<add key=\"webServerSslPort\" value=\"3143\"/>", StringComparison.Ordinal) > 0)
+                    {
+                        // we need to amend it ;)
+                        data = data.Replace("<add key=\"webServerSslPort\" value=\"3143\"/>", "<add key=\"webServerSslPort\" value=\"4143\"/>");
+                    }
+
+                    File.WriteAllText(RemoteServerConfig, data);
+                }
+            }
+        }
+
         static void CloseAllInstancesOfIE()
         {
             var browsers = new[] { "iexplore", "chrome" };
@@ -147,9 +185,16 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         static void RemoveWorkspaces()
         {
-            if(Directory.Exists(WorkspaceLocation))
+            try
             {
-                Directory.Delete(WorkspaceLocation, true);
+                if(Directory.Exists(WorkspaceLocation))
+                {
+                    Directory.Delete(WorkspaceLocation, true);
+                }
+            }
+            catch(Exception e)
+            {
+                LogTestRunMessage(e.Message, true);
             }
         }
 
@@ -183,11 +228,11 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        static void StartServer()
+        static void StartServer(string location)
         {
             const string args = "-t";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = ServerLocation };
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = location };
 
             var started = false;
             var startCnt = 0;
@@ -224,8 +269,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
             }
         }
-
-
 
         // here to force exit all processes 
         [AssemblyCleanup]

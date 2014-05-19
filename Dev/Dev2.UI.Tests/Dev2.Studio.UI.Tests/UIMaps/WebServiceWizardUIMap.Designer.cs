@@ -61,7 +61,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             for(int i = 0; i <= numberOfTabsToSaveButton; i++)
             {
                 SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                Playback.Wait(250);
             }
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(500);

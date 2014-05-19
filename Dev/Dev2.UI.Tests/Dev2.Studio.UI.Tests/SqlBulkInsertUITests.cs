@@ -118,19 +118,19 @@ namespace Dev2.Studio.UI.Tests
                 var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDb));
                 Mouse.Click(databaseName, new Point(5, 5));
             }
-            WaitForControlLoad();
+            WaitForControlLoad(5000);
 
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
-            WaitForControlLoad();
+            WaitForControlLoad(10000);
             if(tableDropDown != null)
             {
                 var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
                 WaitForControlLoad();
                 Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             }
-            WaitForControlLoad();
+            WaitForControlLoad(5000);
 
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
@@ -138,7 +138,7 @@ namespace Dev2.Studio.UI.Tests
             //Open the large view using context menu
             WorkflowDesignerUIMap.OpenCloseLargeViewUsingContextMenu(theTab, "DsfSqlBulkInsertActivity");
 
-            WaitForControlLoad();
+            WaitForControlLoad(5000);
 
             //Enter a few mappings
 
