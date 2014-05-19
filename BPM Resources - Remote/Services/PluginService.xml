@@ -1,14 +1,12 @@
 
 <Service ID="f095cc2d-4920-4977-a1d2-37f56f5e68a4" Version="1.0" Name="PluginService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <Actions>
-    <Action Name="PluginService" Type="Plugin" SourceID="de62b3c6-f8db-403f-8f23-3099ba9a4459" SourceName="PluginSource" SourceMethod="ToUpper" Namespace="Pugin1.StringParsed">
-      <Inputs>
-        <Input Name="input" Source="input" EmptyToNull="false" DefaultValue="" NativeType="System.String">
-          <Validator Type="Required" />
-        </Input>
-      </Inputs>
-      <Outputs />
-      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    <Action Name="PluginService" Type="Plugin" SourceID="de62b3c6-f8db-403f-8f23-3099ba9a4459" SourceName="PluginSource" SourceMethod="FetchCharValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="PrimitiveReturnValue" Name="PrimitiveReturnValue" MapsTo="PrimitiveReturnValue" Value="[[PrimitiveReturnValue]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">PrimitiveReturnValue</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">PrimitiveReturnValue</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[PrimitiveReturnValue]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">z</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
     </Action>
   </Actions>
   <AuthorRoles />
@@ -35,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>fsI4yTpkaiUxMfIhsU3w2jAncz4=</DigestValue>
+        <DigestValue>aYHtliS3VBbJ+GuG+qtTH3k8Fwg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lhQ6tJBhKHO4xtz+PS9O7aaAAuz4YZ8Mpi/6fipWhnUjOGxosvsN6/TMJwZXsnkhKOIC/g0mNM/+yFexFNXKWnuKI/VIPGmV04BlFIDw8ORLd3FMkTLkIPylJjk2Bp0BrWFAvYAX/TXjwq7/Fg0ml/EYIc/ZOiBpvY4Qd2YjELM=</SignatureValue>
+    <SignatureValue>lB0ORtTzYFs2Kij21iNPt3WBcY8LdOqQpufr6d9sPcUsEEkJDtrZy+TckxRbvbcyPvXEK5oJPvBinjsyMzB+5J14BDZPoo7cAWVQ1AGipdjiyqdbaIUvICD3ErgUW0I7ATRp5bYpwP8WhHXChJDVSnFXy/Ps1ndutBDuaEXWcC8=</SignatureValue>
   </Signature>
 </Service>
