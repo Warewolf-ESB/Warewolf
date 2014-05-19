@@ -148,12 +148,12 @@
              Use this class to track your applications
             </summary>
         </member>
-        <member name="M:Trackerbird.Tracker.TBApp.Start">
+        <member name="M:Trackerbird.Tracker.TBApp.Start(System.Boolean,System.Boolean)">
             <summary>
             This signals that your application has started. This should be placed before calling any other Trackerbird method (Except SetProxy when using a proxy).
             </summary>
         </member>
-        <member name="M:Trackerbird.Tracker.TBApp.Sync">
+        <member name="M:Trackerbird.Tracker.TBApp.Sync(System.Boolean)">
             <summary>
             Attempts to sync all of the logs and information gathered from the machine to the server.
             </summary>
@@ -191,7 +191,7 @@
             </summary>      
             <param name="sessionID">A unique session ID to identify the user session</param>
         </member>
-        <member name="M:Trackerbird.Tracker.TBApp.StartAutoSync">
+        <member name="M:Trackerbird.Tracker.TBApp.StartAutoSync(System.Boolean)">
             <summary>
             This signals the start of autosynchronization with the server. After calling this method a sync will be done automatically every fixed period of time
             Call on TBApp.StopAutoSync() to stop the automatic synchronization.
