@@ -152,7 +152,7 @@ namespace Dev2.CodedUI.Tests
 
             Point magicPoint = new Point(boundingRect.X + 100, boundingRect.Y + 35);
             Mouse.Click(magicPoint);
-            Playback.Wait(250);
+            Playback.Wait(550);
 
 
             string helpText = realfxBox.GetProperty("Helptext").ToString();

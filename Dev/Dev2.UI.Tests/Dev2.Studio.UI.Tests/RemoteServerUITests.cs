@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests
                 activityUiMapBase.TheTab = tab;
                 activityUiMapBase.DragToolOntoDesigner(ToolType.Assign);
                 var activeTabName = TabManagerUIMap.GetActiveTabName();
-                Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
+                StringAssert.Contains(activeTabName, "Find Records - Remote Connection *");
             }
         }
 
@@ -288,7 +288,7 @@ namespace Dev2.Studio.UI.Tests
             KeyboardCommands.SendTabs(5);
             KeyboardCommands.SendEnter();
             //Assert remote db service changed its action
-            Assert.AreEqual("dbo.FetchHtmlFr", actionName, "Cannot edit remote db service");
+            Assert.AreEqual("dbo.FetchHtmlFrag", actionName, "Cannot edit remote db service");
         }
 
         [TestMethod]

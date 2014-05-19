@@ -46,6 +46,7 @@ Using recordset () will add a new record and (*) will assign every record.";
             {
 
                 dsfActivityUiMap.DragWorkflowOntoDesigner("Sql Bulk Insert Test", "TEST");
+                Playback.Wait(500);
                 dsfActivityUiMap.ClickHelp();
                 string actualHelpText = dsfActivityUiMap.GetHelpText();
                 Assert.AreEqual(expectedHelpText, actualHelpText);

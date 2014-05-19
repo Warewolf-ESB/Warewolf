@@ -64,8 +64,6 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
-
-
         }
 
         /// <summary>
@@ -78,10 +76,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                 ServerProc.Kill();
             }
 
-
             //Server was deployed and started, stop it now.
             KillProcess(TryGetProcess(ServerProcName));
-
 
             if(StudioProc != null && !StudioProc.HasExited)
             {
@@ -92,7 +88,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             //Studio was deployed and started, stop it now.
             KillProcess(TryGetProcess(StudioProcName));
 
-            // Now clean up resource for next test run ;)
+            // Now clean up next test run ;)
+            CloseAllInstancesOfIE();
 
         }
 
@@ -120,6 +117,29 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 File.Delete(path);
             }
+        }
+
+        static void CloseAllInstancesOfIE()
+        {
+            var browsers = new[] { "iexplore", "chrome" };
+
+            foreach(var browser in browsers)
+            {
+                Process[] processList = Process.GetProcessesByName(browser);
+                foreach(Process p in processList)
+                {
+                    try
+                    {
+                        p.Kill();
+                    }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch
+                    // ReSharper restore EmptyGeneralCatchClause
+                    {
+                    }
+                }
+            }
+
         }
 
         /// <summary>

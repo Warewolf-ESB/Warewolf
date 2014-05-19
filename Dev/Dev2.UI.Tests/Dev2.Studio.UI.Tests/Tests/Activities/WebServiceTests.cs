@@ -100,11 +100,11 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-                Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
-                Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
-                Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
-                Assert.AreEqual("d", activity.GetInputMappingToServiceValue(4));
-                Assert.AreEqual("fe", activity.GetInputMappingToServiceValue(5));
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(1), "a");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(2), "b");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(3), "c");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(4), "d");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(5), "fe");
             }
         }
 
@@ -143,9 +143,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
-                Assert.AreEqual("a", activity.GetInputMappingToServiceValue(1));
-                Assert.AreEqual("b", activity.GetInputMappingToServiceValue(2));
-                Assert.AreEqual("c", activity.GetInputMappingToServiceValue(3));
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(1), "a");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(2), "b");
+                StringAssert.Contains(activity.GetInputMappingToServiceValue(3), "c");
             }
         }
 
