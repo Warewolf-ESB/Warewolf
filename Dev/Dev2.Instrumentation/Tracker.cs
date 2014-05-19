@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 // ReSharper disable RedundantUsingDirective
-using Dev2.Studio.Utils;
 // ReSharper restore RedundantUsingDirective
 using Trackerbird.Tracker;
 
@@ -26,7 +25,7 @@ namespace Dev2.Instrumentation
 #if !TEST
             // RELEASE
             Start("2386158864", "http://40589.tbnet1.com");
-            TBApp.StartAutoSync();
+            TBApp.StartAutoSync(true);
 #endif
         }
 
