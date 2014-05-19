@@ -273,6 +273,50 @@ Scenario: Convert a negative recordset index to lowercase
 #	| 3  | SENTENCE                      |
 #	| 4  | TITLE CASE                    |
 
+#Scenario: Convert an recordset to Upper by using index as scalar
+#	Given I have a CaseConversion recordset
+#	| rs       | val      |
+#	| rs().row | warewolf |
+#	| a        | 1        |
+#	And I convert a variable "[[rs([[a]]).row]]" to "UPPER"
+#	When the case conversion tool is executed
+#	Then the execution has "NO" error
+#	And the debug inputs as  
+#	| # | Convert                             | To    |
+#	| 1 | [[rs([[a]]).row]] = [[rs(1).row]] = | UPPER |
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[rs(1).row]] = WAREWOLF |
+#
+#Scenario: Convert an recordset to Upper by using index as Recordset
+#	Given I have a CaseConversion recordset
+#	| rs         | val      |
+#	| rs().row   | warewolf |
+#	| rs().index | 1        |
+#	And I convert a variable "[[rs([[rs(1).index]]).row]]" to "UPPER"
+#	When the case conversion tool is executed
+#    Then the execution has "NO" error
+#	And the debug inputs as  
+#	| # | Convert                                       | To    |
+#	| 1 | [[rs([[rs(1).index]]).row]] = [[rs(1).row]] = | UPPER |
+#	And the debug output as  
+#	| # |                          |
+#	| 1 | [[rs(1).row]] = WAREWOLF |
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @ignore
 #Scenario Outline: Error messages when convert a Invalid variable
 #	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
