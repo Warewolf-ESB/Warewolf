@@ -109,7 +109,7 @@ Scenario: Workflow with an assign and remote workflow
 	 And "TestAssignAndRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection" with mapping as
+	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| input            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).upper     | [[values().up]]  |

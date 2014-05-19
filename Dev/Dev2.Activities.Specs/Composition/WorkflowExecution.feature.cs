@@ -417,7 +417,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[values().low]]"});
 #line 112
  testRunner.And("\"TestAssignAndRemote\" contains \"WorkflowUsedBySpecs\" from server \"Remote Connecti" +
-                    "on\" with mapping as", ((string)(null)), table21, "And ");
+                    "on Integration\" with mapping as", ((string)(null)), table21, "And ");
 #line 117
    testRunner.When("\"TestAssignAndRemote\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 118
