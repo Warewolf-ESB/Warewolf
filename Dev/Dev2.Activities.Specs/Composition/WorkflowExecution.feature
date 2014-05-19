@@ -208,7 +208,7 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = |           |
-	 And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Failure |
 
@@ -679,17 +679,64 @@ Scenario: Workflow with 2 Assign tools by using Scalars as variables executing a
 #	  | [[Countries(10).Description]] = |
 
 
-
-
-
-
-
-
-
-
-
-
-
+Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignCountDataMerge&2Delete"
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains an Assign "countrecordval1" as
+	  | variable    | value |
+	  | [[rec().a]] | 21    |
+	  | [[rec().a]] | 22    |
+	  | [[rec().a]] |       |
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt1" on "[[rec()]]" into "[[result1]]
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Delete "Delrec" as
+	  | Recordset | Result      |
+	  | [[rec()]] | [[result2]] |
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Data Merge "DataMerge1" into "[[rec().a]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 2     |         | Left      |
+	  | [[rec(2).a]] | Index | 2     |         | Left      |
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt2" on "[[rec()]]" into "[[result3]]
+	  When "WorkflowWith2Assigntoolswithrscalars" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'countrecordval1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | 21        |
+	  | 2 | [[rec(2).a]] = | 22        |
+	  | 3 | [[rec(3).a]] = |           |
+	  And the 'countrecordval1' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = 21 |
+	  | 2 | [[rec(2).a]] = 22 |
+	  | 3 | [[rec(3).a]] =    |
+	  And the 'Cnt1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as 
+	  | Recordset         |
+	  | [[rec(1).a]] = 21 |
+	  | [[rec(2).a]] = 22 |
+	  | [[rec(3).a]] = 3  |
+	  And the 'Cnt1' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
+	  |                 |
+	  | [[result1]] = 3 |
+	  And the 'Delrec' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(3).a]] = |           |
+	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
+	  | # |                       |
+	  | 1 | [[result2]] = Success |
+	
+	  And the 'DataMerge1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
+	  | # |                   | With  | Using | Pad | Align |
+	  | 1 | [[rec(1).a]] = 21 | Index | "2"   | ""  | Left  |
+	  | 2 | [[rec(2).a]] = 22 | Index | "2"   | ""  | Left  |
+	  And the 'DataMerge1' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
+	  |                     |
+	  | [[rec(3).a]] = 2122 |
+	   And the 'Cnt2' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as 
+	  | Recordset           |
+	  | [[rec(1).a]] = 21   |
+	  | [[rec(2).a]] = 22   |
+	  | [[rec(3).a]] = 2122 |
+	  And the 'Cnt2' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
+	  |                 |
+	  | [[result3]] = 3 |
 
 
 

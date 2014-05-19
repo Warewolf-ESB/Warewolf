@@ -734,7 +734,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[result2]] = Failure"});
 #line 211
-  testRunner.And("the \'Delet2\' in Workflow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug outp" +
+   testRunner.And("the \'Delet2\' in Workflow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug outp" +
                     "uts as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1815,6 +1815,210 @@ this.ScenarioSetup(scenarioInfo);
                         "[[b]] =  warewolf"});
 #line 623
    testRunner.And("the \'scl2\' in Workflow \'WorkflowWith2Assigntoolswithrscalars\' debug outputs as", ((string)(null)), table109, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign Count Data Merge and 2 Delete  tools executing against the s" +
+            "erver")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void WorkflowWithAssignCountDataMergeAnd2DeleteToolsExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Count Data Merge and 2 Delete  tools executing against the s" +
+                    "erver", ((string[])(null)));
+#line 682
+this.ScenarioSetup(scenarioInfo);
+#line 683
+   testRunner.Given("I have a workflow \"WorkflowWithAssignCountDataMerge&2Delete\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table110.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "21"});
+            table110.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "22"});
+            table110.AddRow(new string[] {
+                        "[[rec().a]]",
+                        ""});
+#line 684
+   testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains an Assign \"countrecordval1\" a" +
+                    "s", ((string)(null)), table110, "And ");
+#line 689
+   testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains Count Record \"Cnt1\" on \"[[rec" +
+                    "()]]\" into \"[[result1]]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset",
+                        "Result"});
+            table111.AddRow(new string[] {
+                        "[[rec()]]",
+                        "[[result2]]"});
+#line 690
+   testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains Delete \"Delrec\" as", ((string)(null)), table111, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Type",
+                        "Using",
+                        "Padding",
+                        "Alignment"});
+            table112.AddRow(new string[] {
+                        "[[rec(1).a]]",
+                        "Index",
+                        "2",
+                        "",
+                        "Left"});
+            table112.AddRow(new string[] {
+                        "[[rec(2).a]]",
+                        "Index",
+                        "2",
+                        "",
+                        "Left"});
+#line 693
+   testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains Data Merge \"DataMerge1\" into " +
+                    "\"[[rec().a]]\" as", ((string)(null)), table112, "And ");
+#line 697
+   testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains Count Record \"Cnt2\" on \"[[rec" +
+                    "()]]\" into \"[[result3]]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 698
+   testRunner.When("\"WorkflowWith2Assigntoolswithrscalars\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 699
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table113.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] =",
+                        "21"});
+            table113.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] =",
+                        "22"});
+            table113.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).a]] =",
+                        ""});
+#line 700
+   testRunner.And("the \'countrecordval1\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debu" +
+                    "g inputs as", ((string)(null)), table113, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table114.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = 21"});
+            table114.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = 22"});
+            table114.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).a]] ="});
+#line 705
+   testRunner.And("the \'countrecordval1\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debu" +
+                    "g outputs as", ((string)(null)), table114, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset"});
+            table115.AddRow(new string[] {
+                        "[[rec(1).a]] = 21"});
+            table115.AddRow(new string[] {
+                        "[[rec(2).a]] = 22"});
+            table115.AddRow(new string[] {
+                        "[[rec(3).a]] = 3"});
+#line 710
+   testRunner.And("the \'Cnt1\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs as" +
+                    "", ((string)(null)), table115, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table116.AddRow(new string[] {
+                        "[[result1]] = 3"});
+#line 715
+   testRunner.And("the \'Cnt1\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug outputs a" +
+                    "s", ((string)(null)), table116, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table117.AddRow(new string[] {
+                        "1",
+                        "[[rec(3).a]] =",
+                        ""});
+#line 718
+   testRunner.And("the \'Delrec\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs " +
+                    "as", ((string)(null)), table117, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table118.AddRow(new string[] {
+                        "1",
+                        "[[result2]] = Success"});
+#line 721
+   testRunner.And("the \'Delrec\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug outputs" +
+                    " as", ((string)(null)), table118, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Pad",
+                        "Align"});
+            table119.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = 21",
+                        "Index",
+                        "\"2\"",
+                        "\"\"",
+                        "Left"});
+            table119.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = 22",
+                        "Index",
+                        "\"2\"",
+                        "\"\"",
+                        "Left"});
+#line 725
+   testRunner.And("the \'DataMerge1\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inp" +
+                    "uts as", ((string)(null)), table119, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table120.AddRow(new string[] {
+                        "[[rec(3).a]] = 2122"});
+#line 729
+   testRunner.And("the \'DataMerge1\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug out" +
+                    "puts as", ((string)(null)), table120, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Recordset"});
+            table121.AddRow(new string[] {
+                        "[[rec(1).a]] = 21"});
+            table121.AddRow(new string[] {
+                        "[[rec(2).a]] = 22"});
+            table121.AddRow(new string[] {
+                        "[[rec(3).a]] = 2122"});
+#line 732
+    testRunner.And("the \'Cnt2\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs as" +
+                    "", ((string)(null)), table121, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table122.AddRow(new string[] {
+                        "[[result3]] = 3"});
+#line 737
+   testRunner.And("the \'Cnt2\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug outputs a" +
+                    "s", ((string)(null)), table122, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
