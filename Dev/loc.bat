@@ -1,0 +1,1 @@
+cloc-1.60.exe --report-file=warewolf.txt .
