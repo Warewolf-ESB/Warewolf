@@ -668,15 +668,15 @@ namespace Dev2.Integration.Tests.Activities
             //------------Setup for test--------------------------
             var dev2FileSystemProvider = new Dev2FileSystemProvider();
             //string baseFolderDirectory = Path.GetTempPath() + @"\ListDirectoryTestFolder";
-            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder1";
-            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder2";
-            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File1.txt";
-            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File2.txt";
+            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned\Folder1";
+            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned\Folder2";
+            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned\File1.txt";
+            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned\File2.txt";
             CreateDirectory(tmpFolderLocal);
             CreateDirectory(tmpFolderLocal2);
             CreateLocalPath(tmpFileLocal1);
             CreateLocalPath(tmpFileLocal2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned", "", "");
 
             //------------Execute Test---------------------------
 
@@ -689,7 +689,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.IsTrue(folderList[0].Path.EndsWith("Folder1"));
             Assert.IsTrue(folderList[1].Path.EndsWith("Folder2"));
 
-            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolder");
+            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolderAllFoldersInDirectoryReturned");
         }
 
         [TestMethod]
@@ -700,15 +700,15 @@ namespace Dev2.Integration.Tests.Activities
             //------------Setup for test--------------------------
             var dev2FileSystemProvider = new Dev2FileSystemProvider();
             //string baseFolderDirectory = Path.GetTempPath() + @"\ListDirectoryTestFolder";
-            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder1";
-            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\Folder2";
-            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File1.txt";
-            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolder\File2.txt";
+            string tmpFolderLocal = Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned\Folder1";
+            string tmpFolderLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned\Folder2";
+            string tmpFileLocal1 = Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned\File1.txt";
+            string tmpFileLocal2 = Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned\File2.txt";
             CreateDirectory(tmpFolderLocal);
             CreateDirectory(tmpFolderLocal2);
             CreateLocalPath(tmpFileLocal1);
             CreateLocalPath(tmpFileLocal2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned", "", "");
 
             //------------Execute Test---------------------------
 
@@ -721,7 +721,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.IsTrue(fileList[0].Path.EndsWith("File1.txt"));
             Assert.IsTrue(fileList[1].Path.EndsWith("File2.txt"));
 
-            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolder");
+            DeleteDirectory(Path.GetTempPath() + @"\ListDirectoryTestFolderNormal_AllFilesInDirectoryReturned");
         }
 
         [TestMethod]

@@ -75,8 +75,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, debugItems.Count);
-            StringAssert.Contains(debugItems[1].ErrorMessage, string.Empty);
+            Assert.AreEqual("TRUE",debugItems[2].Outputs[0].FetchResultsList()[1].Value);
+            StringAssert.Contains(debugItems[5].ErrorMessage, string.Empty);
         }
 
         [TestMethod]

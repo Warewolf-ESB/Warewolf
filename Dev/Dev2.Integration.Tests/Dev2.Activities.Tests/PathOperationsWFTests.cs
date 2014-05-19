@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingRecordsetWithRecordsetWithIndex");
-            const string expected = @"<Recordset index=""1""><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
+            const string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><Recordset index=""1""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -49,7 +49,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             // Why is this using a specific IP Address?? Is this service only on this machine?
             //string PostData = String.Format("{0}{1}", "http://192.168.104.33:1234/services", "CreateFileUsingRecordsetWithStar");
-            string expected = @"<Recorset index=""1""><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recorset><Recorset index=""2""><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt</record></Recorset><Recorset index=""3""><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt</record></Recorset><Recorset index=""4""><record>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt</record></Recorset><DeleteFileRes>Success</DeleteFileRes><RESULT index=""1""><RES>Success</RES></RESULT><RESULT index=""2""><RES>Success</RES></RESULT><RESULT index=""3""><RES>Success</RES></RESULT><RESULT index=""4""><RES>Success</RES></RESULT>";
+            string expected =
+                @"<DeleteFileRes>Success</DeleteFileRes><Recorset index=""1""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithStar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recorset><Recorset index=""2""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithStar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt</record></Recorset><Recorset index=""3""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithStar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt</record></Recorset><Recorset index=""4""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithStar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt</record></Recorset><RESULT index=""1""><RES>Success</RES></RESULT><RESULT index=""2""><RES>Success</RES></RESULT><RESULT index=""3""><RES>Success</RES></RESULT><RESULT index=""4""><RES>Success</RES></RESULT>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -60,7 +61,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CreateFileUsingScalar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileUsingScalar");
-            string expected = @"<Path>C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</Path><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
+            string expected = @"<Path>C:\Temp\PathOperationsTestFolder\CreateFileUsingScalar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</Path><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -136,7 +137,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFolderFromFileSystemTest");
-            const string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><ReadFolderResult index=""1""><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult index=""2""><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult>";
+            const string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><ReadFolderResult index=""1""><results>C:\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult index=""2""><results>C:\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
