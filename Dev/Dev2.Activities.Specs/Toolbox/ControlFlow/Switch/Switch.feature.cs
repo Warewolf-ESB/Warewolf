@@ -156,14 +156,14 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Switch on"});
             table5.AddRow(new string[] {
-                        "[[rec(-1).val]] = Moses Mabida Stadium"});
+                        "[[rec(-1).val]] ="});
 #line 34
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
-                        "Moses Mabida Stadium"});
+                        ""});
 #line 37
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden

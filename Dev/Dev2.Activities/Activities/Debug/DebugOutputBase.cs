@@ -57,18 +57,25 @@ namespace Dev2.Activities.Debug
             // TODO : Fix this to handle using the complex expression junk
 
             // handle our standard debug output ;)
-            if(dlEntry.ComplexExpressionAuditor == null)
+            if (dlEntry.ComplexExpressionAuditor == null)
             {
                 int groupIndex = 0;
                 enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
 
-                if(dlEntry.IsRecordset && (DataListUtil.IsValueRecordset(expression) && (rsType == enRecordsetIndexType.Star || (rsType == enRecordsetIndexType.Numeric && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty)  || (rsType == enRecordsetIndexType.Blank && DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
+                if (dlEntry.IsRecordset &&
+                    (DataListUtil.IsValueRecordset(expression) &&
+                     (rsType == enRecordsetIndexType.Star ||
+                      (rsType == enRecordsetIndexType.Numeric &&
+                       DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty) ||
+                      (rsType == enRecordsetIndexType.Blank &&
+                       DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
-                    if(!dlEntry.IsEmpty())
+                    if (!dlEntry.IsEmpty())
                     {
-                        IList<DebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty, -1, labelText);
-                        if(collection.Count < 2 && collection.Count > 0)
+                        IList<DebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty,
+                                                                                      -1, labelText);
+                        if (collection.Count < 2 && collection.Count > 0)
                         {
                             collection[0].GroupName = "";
                         }
@@ -88,20 +95,21 @@ namespace Dev2.Activities.Debug
                 }
                 else
                 {
-                    if(DataListUtil.IsValueRecordset(expression) && (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
+                    if (DataListUtil.IsValueRecordset(expression) &&
+                        (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                     {
                         IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                         IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
-                        if(indexToUse == -1)
+                        if (indexToUse == -1)
                         {
                             IBinaryDataListEntry tmpEntry;
                             string error;
                             dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression),
                                                  out tmpEntry, out error);
-                            if(tmpEntry != null)
+                            if (tmpEntry != null)
                             {
                                 int index = tmpEntry.FetchAppendRecordsetIndex() - 1;
-                                if(index > 0)
+                                if (index > 0)
                                 {
                                     groupIndex = index;
                                     expression = expression.Replace("().", string.Concat("(", index, ")."));
@@ -113,8 +121,34 @@ namespace Dev2.Activities.Debug
                             expression = expression.Replace("().", string.Concat("(", indexToUse, ")."));
                         }
                     }
-                    IBinaryDataListItem item = dlEntry.FetchScalar();
-                    CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+
+                    if (dlEntry.IsRecordset)
+                    {
+                        var strIndx = DataListUtil.ExtractIndexRegionFromRecordset(expression);
+                        int indx;
+                        if (int.TryParse(strIndx, out indx))
+                        {
+                            if (indx > 0)
+                            {
+                                IBinaryDataListItem item = dlEntry.FetchScalar();
+                                CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                            }
+                            else
+                            {
+                                CreateScalarDebugItems(expression, "", labelText, results, "", groupIndex);
+                            }
+                        }
+                        else
+                        {
+                            IBinaryDataListItem itemx = dlEntry.FetchScalar();
+                            CreateScalarDebugItems(expression, itemx.TheValue, labelText, results, "", groupIndex);
+                        }
+                    }
+                    else
+                    {
+                        IBinaryDataListItem item = dlEntry.FetchScalar();
+                        CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                    }
                 }
             }
             else
@@ -124,16 +158,17 @@ namespace Dev2.Activities.Debug
 
                 int idx = 1;
 
-                foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
+                foreach (ComplexExpressionAuditItem item in auditor.FetchAuditItems())
                 {
                     int grpIdx = idx;
                     string groupName = item.RawExpression;
                     string displayExpression = item.RawExpression;
-                    if(displayExpression.Contains("()."))
+                    if (displayExpression.Contains("()."))
                     {
-                        displayExpression = displayExpression.Replace("().", string.Concat("(", auditor.GetMaxIndex(), ")."));
+                        displayExpression = displayExpression.Replace("().",
+                                                                      string.Concat("(", auditor.GetMaxIndex(), ")."));
                     }
-                    if(displayExpression.Contains("(*)."))
+                    if (displayExpression.Contains("(*)."))
                     {
                         displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
                     }

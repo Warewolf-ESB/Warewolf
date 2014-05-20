@@ -374,8 +374,8 @@ Scenario: Convert negative recordset index from text to binary
 	Then the result is ""	
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert             | From | To     |
-	| 1 | [[my(-1).var]] = AA | Text | Binary |
+	| # | Convert          | From | To     |
+	| 1 | [[my(-1).var]] = | Text | Binary |
 	And the debug output as  
 	| # |           |	
 
@@ -386,8 +386,8 @@ Scenario: Convert negative recordset index from text to hexadecimal
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert             | From | To  |
-	| 1 | [[my(-1).var]] = AA | Text | Hex |
+	| # | Convert          | From | To  |
+	| 1 | [[my(-1).var]] = | Text | Hex |
 	And the debug output as  
 	| # |           |
 	
@@ -398,8 +398,8 @@ Scenario: Convert negative recordset index from text to base64
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert             | From | To      |
-	| 1 | [[my(-1).var]] = AA | Text | Base 64 |
+	| # | Convert          | From | To      |
+	| 1 | [[my(-1).var]] = | Text | Base 64 |
 	And the debug output as  
 	| # |           |	
 
@@ -410,8 +410,8 @@ Scenario: Convert negative recordset index from binary to text
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                           | From   | To   |
-	| 1 | [[my(-1).var]] = 0100000101000001 | Binary | Text |
+	| # | Convert          | From   | To   |
+	| 1 | [[my(-1).var]] = | Binary | Text |
 	And the debug output as  
 	| # |                  |
 		
@@ -422,8 +422,8 @@ Scenario: Convert negative recordset index from binary to hexadecimal
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                           | From   | To  |
-	| 1 | [[my(-1).var]] = 0100000101000001 | Binary | Hex |
+	| # | Convert          | From   | To  |
+	| 1 | [[my(-1).var]] = | Binary | Hex |
 	And the debug output as  
 	| # |                  |	
 
@@ -434,8 +434,8 @@ Scenario: Convert negative recordset index from binary to base64
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                           | From   | To      |
-	| 1 | [[my(-1).var]] = 0100000101000001 | Binary | Base 64 |
+	| # | Convert          | From   | To      |
+	| 1 | [[my(-1).var]] = | Binary | Base 64 |
 	And the debug output as  
 	| # |                  |	
 
@@ -446,8 +446,8 @@ Scenario: Convert negative recordset index from hexadecimal to text
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                 | From | To   |
-	| 1 | [[my(-1).var]] = 0x4141 | Hex  | Text |
+	| # | Convert          | From | To   |
+	| 1 | [[my(-1).var]] = | Hex  | Text |
 	And the debug output as  
 	| # |           |	
 
@@ -458,8 +458,8 @@ Scenario: Convert negative recordset index from hexadecimal to binary
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                 | From | To     |
-	| 1 | [[my(-1).var]] = 0x4141 | Hex  | Binary |
+	| # | Convert          | From | To     |
+	| 1 | [[my(-1).var]] = | Hex  | Binary |
 	And the debug output as  
 	| # |           |
 
@@ -470,8 +470,8 @@ Scenario: Convert negative recordset index from hexadecimal to base64
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert                 | From | To      |
-	| 1 | [[my(-1).var]] = 0x4141 | Hex  | Base 64 |
+	| # | Convert          | From | To      |
+	| 1 | [[my(-1).var]] = | Hex  | Base 64 |
 	And the debug output as  
 	| # |                  |	
 
@@ -482,8 +482,8 @@ Scenario: Convert negative recordset index from base64 to hexadecimal
 	Then the result is ""	
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert               | From    | To  |
-	| 1 | [[my(-1).var]] = QUE= | Base 64 | Hex |
+	| # | Convert          | From    | To  |
+	| 1 | [[my(-1).var]] = | Base 64 | Hex |
 	And the debug output as  
 	| # |                  |	
 
@@ -494,8 +494,8 @@ Scenario: Convert negative recordset index from base64 to text
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert               | From    | To   |
-	| 1 | [[my(-1).var]] = QUE= | Base 64 | Text |
+	| # | Convert          | From    | To   |
+	| 1 | [[my(-1).var]] = | Base 64 | Text |
 	And the debug output as  
 	| # |                  |	
 
@@ -506,8 +506,8 @@ Scenario: Convert negative recordset index from base64 to binary
 	Then the result is ""
 	And the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert               | From    | To     |
-	| 1 | [[my(-1).var]] = QUE= | Base 64 | Binary |
+	| # | Convert          | From    | To     |
+	| 1 | [[my(-1).var]] = | Base 64 | Binary |
 	And the debug output as  
 	| #  |              |
 #

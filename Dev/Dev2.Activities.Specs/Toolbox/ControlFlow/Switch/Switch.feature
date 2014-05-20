@@ -12,8 +12,8 @@ Scenario: Ensure that a variable evaluates to the value on the datalist
 	| Switch on   |
 	| [[A]] =  30 |
 	And the debug output as
-	|         |
-	| 30     |
+	|    |
+	| 30 |
 
 Scenario: Ensure that a blank variable evaluates to blank
 	Given I need to switch on variable "[[A]]" with the value ""		
@@ -24,8 +24,8 @@ Scenario: Ensure that a blank variable evaluates to blank
 	| Switch on |
 	| [[A]] =   |
 	And the debug output as
-	|         |
-	| " "    |
+	|     |
+	| " " |
 
 Scenario: Ensure that a negative index throws an error	
 	Given I need to switch on variable "[[rec(-1).val]]" with the value "Moses Mabida Stadium"		

@@ -1327,7 +1327,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table57.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = AA",
+                        "[[my(-1).var]] =",
                         "Text",
                         "Binary"});
 #line 376
@@ -1368,7 +1368,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table59.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = AA",
+                        "[[my(-1).var]] =",
                         "Text",
                         "Hex"});
 #line 388
@@ -1409,7 +1409,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table61.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = AA",
+                        "[[my(-1).var]] =",
                         "Text",
                         "Base 64"});
 #line 400
@@ -1450,7 +1450,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table63.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0100000101000001",
+                        "[[my(-1).var]] =",
                         "Binary",
                         "Text"});
 #line 412
@@ -1491,7 +1491,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table65.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0100000101000001",
+                        "[[my(-1).var]] =",
                         "Binary",
                         "Hex"});
 #line 424
@@ -1532,7 +1532,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table67.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0100000101000001",
+                        "[[my(-1).var]] =",
                         "Binary",
                         "Base 64"});
 #line 436
@@ -1573,7 +1573,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table69.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0x4141",
+                        "[[my(-1).var]] =",
                         "Hex",
                         "Text"});
 #line 448
@@ -1614,7 +1614,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table71.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0x4141",
+                        "[[my(-1).var]] =",
                         "Hex",
                         "Binary"});
 #line 460
@@ -1655,7 +1655,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table73.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = 0x4141",
+                        "[[my(-1).var]] =",
                         "Hex",
                         "Base 64"});
 #line 472
@@ -1696,7 +1696,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table75.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = QUE=",
+                        "[[my(-1).var]] =",
                         "Base 64",
                         "Hex"});
 #line 484
@@ -1737,7 +1737,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table77.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = QUE=",
+                        "[[my(-1).var]] =",
                         "Base 64",
                         "Text"});
 #line 496
@@ -1778,7 +1778,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table79.AddRow(new string[] {
                         "1",
-                        "[[my(-1).var]] = QUE=",
+                        "[[my(-1).var]] =",
                         "Base 64",
                         "Binary"});
 #line 508
