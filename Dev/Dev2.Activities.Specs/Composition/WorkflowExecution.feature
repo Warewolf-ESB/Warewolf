@@ -158,16 +158,16 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | [[rec(1).a]] | Text | Base64 |
 	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Rec To Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | 50        |
-	  | 2 | [[rec(2).a]] = | test      |
-	  | 3 | [[rec(3).a]] = | 100       |
-	   And the 'Rec To Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-	  | # |                |      |
-	  | 1 | [[rec(1).a]] = | 50   |
-	  | 2 | [[rec(2).a]] = | test |
-	  | 3 | [[rec(3).a]] = | 100  |
+	  | 1 | [[rec().a]] = | 50        |
+	  | 2 | [[rec().a]] = | test      |
+	  | 3 | [[rec().a]] = | 100       |
+	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = 50   |
+	  | 2 | [[rec(2).a]] = test |
+	  | 3 | [[rec(3).a]] = 100  |
 	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Convert             | To    |
 	  | 1 | [[rec(2).a]] = test | UPPER |
@@ -175,7 +175,8 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | # |                     |
 	  | 1 | [[rec(2).a]] = TEST |
 	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-	  | 1 | [[rec(1).a]] = 50 | Text  | Base64 |
+	  | # | Convert           | From | To     |
+	  | 1 | [[rec(1).a]] = 50 | Text | Base64 |
       And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
@@ -190,7 +191,7 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  | [[rec(1)]] | [[result1]] |
       And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
 	   | Variable   | result        |
-	   | [[rec(1)]] | [[result2]]] |
+	   | [[rec(1)]] | [[result2]] |
 	  When "WorkflowWithAssignand2Deletetools" is executed
       Then the workflow execution has "NO" error
 	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
@@ -206,11 +207,11 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  |                       |
 	  | [[result1]] = Success |
 	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = |           |
+	   | Records        |
+	   | [[rec(1).a]] = |
 	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
-	  | # |                       |
-	  | 1 | [[result2]] = Failure |
+	  |                       |
+	  | [[result2]] = Failure |
 
 Scenario: Workflow with 3 Assigns tools executing against the server
 	  Given I have a workflow "WorkflowWith3Assigntools"
@@ -277,44 +278,44 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 
 
 Scenario: Workflow with Assigns DataMerge and DataSplit executing against the server
-      Given I have a workflow "WorkflowWithAssignDataMergeandDataSplittools""
-	  And "WorkflowWithAssignDataMergeandDataSplittools" contains an Assign "Assign To merge" as
+      Given I have a workflow "WorkflowWithAssignDataMergeAndDataSplittools"
+	  And "WorkflowWithAssignDataMergeAndDataSplittools" contains an Assign "Assign To merge" as
       | variable      | value    |
       | [[a]]         | Test     |
       | [[b]]         | Warewolf |
       | [[split().a]] | Workflow |
-	  And "WorkflowWithAssignDataMergeandDataSplittools" contains Data Merge "Data Merge" into "[[result]]" as	
+	  And "WorkflowWithAssignDataMergeAndDataSplittools" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable | Type  | Using | Padding | Alignment |
 	  | [[a]]    | Index | 4     |         | Left      |
 	  | [[b]]    | Index | 8     |         | Left      |
-	  And "WorkflowWithAssignDataMergeandDataSplittools" contains Data Split "Data Split" as
+	  And "WorkflowWithAssignDataMergeAndDataSplittools" contains Data Split "Data Split" as
 	  | String                  | Variable     | Type  | At | Include    | Escape |
-	  | [[result]][[split().a]] | [[rec(1).b]] | Index | 8  | Unselected |        |
-	  |                         | [[rec(2).b]] | Index | 8  | Unselected |        |
-	  When "WorkflowWithAssignDataMergeandDataSplittools" is executed
-	  Then the execution has "NO" error
-	  And the 'Assign To merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+	  | [[result]][[split().a]] | [[rec().b]] | Index | 8  | Unselected |        |
+	  |                         | [[rec().b]] | Index | 8  | Unselected |        |
+	  When "WorkflowWithAssignDataMergeAndDataSplittools" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign To merge' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
 	  | # | Variable        | New Value |
 	  | 1 | [[a]] =         | Test      |
 	  | 2 | [[b]] =         | Warewolf  |
 	  | 3 | [[split().a]] = | Workflow  |
-	 And the 'Assign To merge' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as   
+	 And the 'Assign To merge' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as   
 	  | # |                           |
 	  | 1 | [[a]]         =  Test     |
 	  | 2 | [[b]]         =  Warewolf |
-	  | 3 | [[split().a]] =  Workflow |
-	  And the 'Data Merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
+	  | 3 | [[split(1).a]] =  Workflow |
+	  And the 'Data Merge' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
 	  | # |                   | With  | Using | Pad | Align |
-	  | 1 | [[a]] =  Test     | Index | "4"   | ""  | Left  |
-	  | 2 | [[b]] =  warewolf | Index | "8"   | ""  | Left  |
-	  And the 'Data Merge' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+	  | 1 | [[a]] = Test     | Index | "4"   | ""  | Left  |
+	  | 2 | [[b]] = Warewolf | Index | "8"   | ""  | Left  |
+	  And the 'Data Merge' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  |                           |
-	  | [[result]] = Testwarewolf |
-	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
-	  | String to Split                                 | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
-	  | [[result]][[split(1).a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
-	  |                                                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
-	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+	  | [[result]] = TestWarewolf |
+	  And the 'Data Split' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
+	  | String to Split                                 | Process Direction | Skip blank rows | # |                | With  | Using | Include | Escape |
+	  | [[result]][[split(1).a]] = TestWarewolfWorkflow | Forward           | No              | 1 | [[rec(1).b]] = | Index | 4     | No      |        |
+	  |                                                 |                   |                 | 2 | [[rec(2).b]] = | Index | 8     | No      |        |
+	  And the 'Data Split' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as  
 	  | # |                         |
 	  | 1 | [[rec(1).a]] = Test     |
 	  | 2 | [[rec(2).a]] = Warewolf |
@@ -700,9 +701,9 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  Then the workflow execution has "NO" error
 	  And the 'countrecordval1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
 	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | 21        |
-	  | 2 | [[rec(2).a]] = | 22        |
-	  | 3 | [[rec(3).a]] = |           |
+	  | 1 | [[rec().a]] = | 21        |
+	  | 2 | [[rec().a]] = | 22        |
+	  | 3 | [[rec().a]] = | ""        |
 	  And the 'countrecordval1' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 21 |
@@ -720,9 +721,8 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  | Records        |
 	  | [[rec(3).a]] = |
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
-	  | # |                       |
-	  | 1 | [[result2]] = Success |
-	
+	  |                       |
+	  | [[result2]] = Success |	
 	  And the 'DataMerge1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
 	  | # |                   | With  | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 21 | Index | "2"   | ""  | Left  |

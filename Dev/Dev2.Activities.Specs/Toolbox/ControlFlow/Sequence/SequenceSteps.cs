@@ -288,7 +288,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var at = tableRow["At"];
                 var include = tableRow["Include"] == "Selected";
                 //var escapeChar = tableRow["Escape"];
-
+                CommonSteps.AddVariableToVariableList(variable);
                 if(!string.IsNullOrEmpty(valueToSplit))
                 {
                     activity.SourceString = valueToSplit;
