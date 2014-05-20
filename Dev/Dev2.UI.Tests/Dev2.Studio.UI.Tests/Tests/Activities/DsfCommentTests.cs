@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ToolDesigners_CommentSmallView")]
-        public void ToolDesigners_AssignSmallView_EnteringMultipleRows_IndexingWorksFine()
+        public void ToolDesigners_CommentSmallView_Debug_DebugOutputWorksFine()
         {
             using(var dsfActivityUiMap = new DsfCommentUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
             {

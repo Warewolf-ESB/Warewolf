@@ -87,9 +87,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendLeftArrows(2);
             KeyboardCommands.SendKey("e");
             KeyboardCommands.SendTabs(2, tabWait);
-            KeyboardCommands.SendEnter(1500);
+            KeyboardCommands.SendEnter(8000);
             KeyboardCommands.SendTabs(1, tabWait); // Test
-            KeyboardCommands.SendEnter(15000);
+            KeyboardCommands.SendEnter(5000);
             KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1, tabWait);
@@ -130,9 +130,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendDel();
             KeyboardCommands.SendKey("?[[a]][[b]]=[[c]]");
             KeyboardCommands.SendTabs(2, tabWait);
-            KeyboardCommands.SendEnter(1500);
+            KeyboardCommands.SendEnter(8000);
             KeyboardCommands.SendTabs(1, tabWait);
-            KeyboardCommands.SendEnter(15000); // Test
+            KeyboardCommands.SendEnter(5000); // Test
             KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1, tabWait);
