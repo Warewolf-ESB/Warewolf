@@ -665,15 +665,15 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"WorkflowWithAssignand2Deletetools\" contains Delete \"Delet1\" as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
+                        "Variable",
+                        "result"});
             table40.AddRow(new string[] {
                         "[[rec(1)]]",
                         "[[result2]]]"});
 #line 191
       testRunner.And("\"WorkflowWithAssignand2Deletetools\" contains Delete \"Delet2\" as", ((string)(null)), table40, "And ");
 #line 194
-   testRunner.When("\"WorkflowWithAssignBaseConvertandCaseconvert\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"WorkflowWithAssignand2Deletetools\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 195
       testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -686,8 +686,8 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec().a]] =",
                         "50"});
 #line 196
-   testRunner.And("the \'Assign to delete\' in WorkFlow \'WorkflowWithAssignBaseConvertandCaseconvert\' " +
-                    "debug inputs as", ((string)(null)), table41, "And ");
+   testRunner.And("the \'Assign to delete\' in WorkFlow \'WorkflowWithAssignand2Deletetools\' debug inpu" +
+                    "ts as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -696,24 +696,22 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rec(1).a]] = 50"});
 #line 199
-   testRunner.And("the \'Assign to delete\' in Workflow \'WorkflowWithAssignBaseConvertandCaseconvert\' " +
-                    "debug outputs as", ((string)(null)), table42, "And ");
+   testRunner.And("the \'Assign to delete\' in Workflow \'WorkflowWithAssignand2Deletetools\' debug outp" +
+                    "uts as", ((string)(null)), table42, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
             table43.AddRow(new string[] {
                         "[[rec(1).a]] = 50"});
 #line 202
-   testRunner.And("the \'Delet1\' in WorkFlow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug inpu" +
-                    "ts as", ((string)(null)), table43, "And ");
+   testRunner.And("the \'Delet1\' in WorkFlow \'WorkflowWithAssignand2Deletetools\' debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table44.AddRow(new string[] {
                         "[[result1]] = Success"});
 #line 205
-   testRunner.And("the \'Delet1\' in Workflow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug outp" +
-                    "uts as", ((string)(null)), table44, "And ");
+   testRunner.And("the \'Delet1\' in Workflow \'WorkflowWithAssignand2Deletetools\' debug outputs as", ((string)(null)), table44, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -724,8 +722,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(1).a]] =",
                         ""});
 #line 208
-   testRunner.And("the \'Delet2\' in WorkFlow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug inpu" +
-                    "ts as", ((string)(null)), table45, "And ");
+   testRunner.And("the \'Delet2\' in WorkFlow \'WorkflowWithAssignand2Deletetools\' debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -734,8 +731,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[result2]] = Failure"});
 #line 211
-   testRunner.And("the \'Delet2\' in Workflow \'WorkflowWithAssignBaseConvertandCaseconvert\' debug outp" +
-                    "uts as", ((string)(null)), table46, "And ");
+   testRunner.And("the \'Delet2\' in Workflow \'WorkflowWithAssignand2Deletetools\' debug outputs as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

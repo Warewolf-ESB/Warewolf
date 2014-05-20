@@ -189,26 +189,26 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  | Variable   | result      |
 	  | [[rec(1)]] | [[result1]] |
       And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
-	   | variable   | value        |
+	   | Variable   | result       |
 	   | [[rec(1)]] | [[result2]]] |
-	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
+	  When "WorkflowWithAssignand2Deletetools" is executed
       Then the workflow execution has "NO" error
-	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Assign to delete' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | 50        |
-	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
-	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
 	  | Records          |
 	  | [[rec(1).a]] = 50 |
-	  And the 'Delet1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result1]] = Success |
-	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = |           |
-	  And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Failure |
 
