@@ -34,6 +34,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static string WorkspaceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Workspaces\";
 
         public static string RemoteServerLocation = @"C:\Builds\UITestRunWorkspace\Binaries-Remote\";
+
+        // must be removed to have proper codedui runs
+        public static string ServerSourceToDelete = @"Remote Connection Integration.xml";
         public static string RemoteServer = RemoteServerLocation + "Warewolf Server.exe";
         public static string RemoteServerConfig = RemoteServerLocation + "Warewolf Server.exe.config";
 
@@ -59,6 +62,9 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                 // remote workspaces to avoid mutation issues
                 RemoveWorkspaces();
+
+                // remove hanging source that causes issues
+                RemoveProblemServerSources();
 
                 StartServer(ServerLocation);
                 StartStudio();
@@ -155,6 +161,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                     File.WriteAllText(RemoteServerConfig, data);
                 }
             }
+        }
+
+        static void RemoveProblemServerSources()
+        {
+            DeleteSource(ServerSourceToDelete);
         }
 
         static void CloseAllInstancesOfIE()

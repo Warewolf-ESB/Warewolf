@@ -288,7 +288,7 @@ namespace Dev2.Studio.UI.Tests
             KeyboardCommands.SendTabs(5);
             KeyboardCommands.SendEnter();
             //Assert remote db service changed its action
-            Assert.AreEqual("dbo.FetchHtmlFr", actionName, "Cannot edit remote db service");
+            StringAssert.Contains(actionName, "dbo.FetchHtmlFr");
         }
 
         [TestMethod]
@@ -422,7 +422,7 @@ namespace Dev2.Studio.UI.Tests
             KeyboardCommands.SendTabs(5, 250);
             KeyboardCommands.SendEnter(500); // save it
 
-            Assert.AreEqual("FetchCharValue", actionName, "Cannot change remote plugin service");
+            StringAssert.Contains(actionName, "FetchCharVal");
         }
 
         [TestMethod]
