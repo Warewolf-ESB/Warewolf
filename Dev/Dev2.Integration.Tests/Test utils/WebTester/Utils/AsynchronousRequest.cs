@@ -134,7 +134,9 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             }
             stopWatch.Stop();
             long elapseTime = stopWatch.ElapsedMilliseconds;
-            Console.WriteLine("----------------------- ELAPSED TIME BETWEEN CALLS ---------------------\n{0}: {1} {2} ms on threadId " + Thread.CurrentThread.ManagedThreadId + "\n------------------------------------------------------------------------", "Get Execution on url ", url.ToString(), elapseTime.ToString());
+// ReSharper disable LocalizableElement
+            Console.WriteLine("----------------------- ELAPSED TIME BETWEEN CALLS ---------------------\n{0}: {1} {2} ms on threadId " + Thread.CurrentThread.ManagedThreadId + "\n------------------------------------------------------------------------", "Get Execution on url ", url, elapseTime.ToString());
+// ReSharper restore LocalizableElement
             stopWatch.Reset();
         }
 
