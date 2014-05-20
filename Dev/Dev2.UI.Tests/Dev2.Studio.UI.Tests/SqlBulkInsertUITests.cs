@@ -94,19 +94,14 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SqlBulkInsertUITests")]
-        // 05/11 - Failure is Intermittent - Problems finding LargeView button ;)
         public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView()
         {
-            //// Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
+            // Open the Explorer
+            ExplorerUIMap.EnterExplorerSearchText("Sql Bulk Insert Large View");
+
+            // Open the Workflow
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI Test", "Sql Bulk Insert Large View");
             var theTab = TabManagerUIMap.GetActiveTab();
-
-            // Get some variables
-            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
-            var point = new Point(startPoint.X, startPoint.Y + 200);
-
-            // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.SqlBulkInsert, point, "Sql Bulk");
 
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
@@ -131,7 +126,6 @@ namespace Dev2.Studio.UI.Tests
                 Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
             }
             WaitForControlLoad(5000);
-
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
 
