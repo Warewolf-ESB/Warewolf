@@ -89,6 +89,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
 
             var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
+            if (!File.Exists(sourceFile))
+            {
+                sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
+            }
             var destFile = Path.Combine(destDir, ExeName);
 
             Directory.CreateDirectory(destDir);
@@ -118,7 +122,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" \"output\"";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" \"output\"";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -150,7 +159,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" \"output\"";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" \"output\"";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -182,7 +196,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" output";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -264,7 +283,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             // ------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" error";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if(!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" error";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -292,7 +316,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" +toolPath+"\" output";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[recset1().field1]]";
             TestStartNode = new FlowStep
@@ -325,7 +354,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" output";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[recset1(*).field1]]";
             TestStartNode = new FlowStep
@@ -358,7 +392,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" output";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[recset1(1).field1]]";
             SetUpForExecution(activity, "<root></root>", "<ADL><recset1><field1/></recset1></ADL>");
@@ -387,7 +426,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var randomString = "\"" + toolPath + "\" output";
             activity.CommandFileName = "[[recset1(1).rec1]]";
             activity.CommandResult = "[[recset1(1).field1]]";
             var testData = "<root><recset1><field1></field1><rec1>" + randomString + "</rec1></recset1></root>";
@@ -412,8 +456,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var command2 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" differentoutput";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var command1 = "\"" + toolPath + "\" output";
+            var command2 = "\"" + toolPath + "\" differentoutput";
             activity.CommandFileName = "[[recset1(*).rec1]]";
             activity.CommandResult = "[[recset2().field1]]";
             var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
@@ -436,8 +485,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var command2 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" differentoutput";
+            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            if (!File.Exists(toolPath))
+            {
+                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
+            }
+            var command1 = "\"" + toolPath + "\" output";
+            var command2 = "\"" + toolPath + "\" differentoutput";
             activity.CommandFileName = "[[recset1(*).rec1]]";
             activity.CommandResult = "[[OutVar1]]";
             var testData = "<root><recset1><rec1>" + command1 + "</rec1></recset1><recset1><rec1>" + command2 + "</rec1></recset1></root>";
