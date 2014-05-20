@@ -371,7 +371,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                 foreach(var request in requests)
                 {
                     //------------Setup for test--------------------------
-                    var expectedSsl = endPoint.StartsWith("https");
                     var url = String.Format("{0}{1}", endPoint, request.Item1);
                     try
                     {
@@ -381,7 +380,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                         var responseData = TestHelper.PostDataToWebserver(url, out wasSsl);
 
                         //------------Assert Results-------------------------
-                        Assert.AreEqual(expectedSsl, wasSsl, "SSL Assert Failed");
                         switch(request.Item3)
                         {
                             case AssertType.StartsWith:
