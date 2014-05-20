@@ -581,16 +581,6 @@ Scenario: Convert negative recordset index from base64 to binary
 
 
 
-
-
-
-
-
-
-
-
-
-@ignore
 #Scenario Outline: Validation messages when Convert Invalid Variables  
 #	Given I have a convert variable '<Variable>' with a value of '<Value>'
 #	And I convert a variable '<Variable> from type '<From>' to type '<To>' 
