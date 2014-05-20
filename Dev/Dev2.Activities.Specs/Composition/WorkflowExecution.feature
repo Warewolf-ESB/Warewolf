@@ -46,31 +46,31 @@ Scenario: Workflow with multiple tools executing against the server
 	  | [[count]] = 2 |
 	
 Scenario: Simple workflow executing against the server with a database service
-	 Given I have a workflow "TestWFWithDatabaseService"
-	 And "TestWFWithDatabaseService" contains a "database" service "Fetch" with mappings
+	 Given I have a workflow "TestWFWithDBService"
+	 And "TestWFWithDBService" contains a "database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
-	  |                  |               | dbo_proc_SmallFetch(*).Value | [[rec().fetch]] |
-	 And "TestWFWithDatabaseService" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
-	  When "TestWFWithDatabaseService" is executed
+	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
+	 And "TestWFWithDBService" contains Count Record "Count" on "[[dbo_proc_SmallFetch()]]" into "[[count]]"
+	  When "TestWFWithDBService" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Fetch' in WorkFlow 'TestWFWithDatabaseService' debug inputs as
+	  And the 'Fetch' in WorkFlow 'TestWFWithDBService' debug inputs as
 	  |  |
 	  |  |
-	  And the 'Fetch' in Workflow 'TestWFWithDatabaseService' debug outputs as
+	  And the 'Fetch' in Workflow 'TestWFWithDBService' debug outputs as
 	  |                      |
-	  | [[rec(9).fetch]] = 5 |
-	  And the 'Count' in WorkFlow 'TestWFWithDatabaseService' debug inputs as
+	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
+	  And the 'Count' in WorkFlow 'TestWFWithDBService' debug inputs as
 	  | Recordset            |
-	  | [[rec(1).fetch]] = 1 |
-	  | [[rec(2).fetch]] = 2 |
-	  | [[rec(3).fetch]] = 1 |
-	  | [[rec(4).fetch]] = 2 |
-	  | [[rec(5).fetch]] = 1 |
-	  | [[rec(6).fetch]] = 2 |
-	  | [[rec(7).fetch]] = 1 |
-	  | [[rec(8).fetch]] = 2 |
-	  | [[rec(9).fetch]] = 5 |
-	 And the 'Count' in Workflow 'TestWFWithDatabaseService' debug outputs as    
+	  | [[dbo_proc_SmallFetch(1).Value]] = 1 |
+	  | [[dbo_proc_SmallFetch(2).Value]] = 2 |
+	  | [[dbo_proc_SmallFetch(3).Value]] = 1 |
+	  | [[dbo_proc_SmallFetch(4).Value]] = 2 |
+	  | [[dbo_proc_SmallFetch(5).Value]] = 1 |
+	  | [[dbo_proc_SmallFetch(6).Value]] = 2 |
+	  | [[dbo_proc_SmallFetch(7).Value]] = 1 |
+	  | [[dbo_proc_SmallFetch(8).Value]] = 2 |
+	  | [[dbo_proc_SmallFetch(9).Value]] = 5 |
+	 And the 'Count' in Workflow 'TestWFWithDBService' debug outputs as    
 	 |               |
 	 | [[count]] = 9 |
 

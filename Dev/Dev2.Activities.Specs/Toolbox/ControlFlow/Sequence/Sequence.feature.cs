@@ -1958,15 +1958,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 528
     testRunner.And("assign error to variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 529
-    testRunner.And("call the web service \"http://tst-ci-remote:3142/services/OnError_WriteToFile.xml?" +
-                    "errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("call the web service \"http://tst-ci-remote:3142/services/OnError_WriteToFileSeque" +
+                    "nce.xml?errorLog=[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 530
     testRunner.When("the Sequence tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 531
     testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 532
     testRunner.And("the result from the web service \"http://tst-ci-remote:3142/services/OnError_ReadF" +
-                    "romFile.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "romFileSeq.xml\" will have the same data as variable \"[[error]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input 1",
