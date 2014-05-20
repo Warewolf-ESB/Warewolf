@@ -199,16 +199,16 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
-	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
+	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | Records          |
 	  | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result1]] = Success |
-	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
+	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = |           |
-	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
+	  And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Failure |
 

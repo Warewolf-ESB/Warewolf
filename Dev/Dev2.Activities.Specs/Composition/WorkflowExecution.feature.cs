@@ -714,21 +714,15 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("the \'Delet1\' in Workflow \'WorkflowWithAssignand2Deletetools\' debug outputs as", ((string)(null)), table44, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
+                        "Records"});
             table45.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).a]] =",
                         ""});
 #line 208
    testRunner.And("the \'Delet2\' in WorkFlow \'WorkflowWithAssignand2Deletetools\' debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
                         ""});
             table46.AddRow(new string[] {
-                        "1",
                         "[[result2]] = Failure"});
 #line 211
    testRunner.And("the \'Delet2\' in Workflow \'WorkflowWithAssignand2Deletetools\' debug outputs as", ((string)(null)), table46, "And ");
