@@ -689,14 +689,14 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  | [[rec().a]] |       |
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt1" on "[[rec()]]" into "[[result1]]"
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Delete "Delrec" as
-	  | Recordset | Result      |
+	  | Variable  | result      |
 	  | [[rec()]] | [[result2]] |
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Data Merge "DataMerge1" into "[[rec().a]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 2     |         | Left      |
 	  | [[rec(2).a]] | Index | 2     |         | Left      |
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt2" on "[[rec()]]" into "[[result3]]"
-	  When "WorkflowWith2Assigntoolswithrscalars" is executed
+	  When "WorkflowWithAssignCountDataMerge&2Delete" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'countrecordval1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
 	  | # | Variable       | New Value |
@@ -712,16 +712,17 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  | Recordset         |
 	  | [[rec(1).a]] = 21 |
 	  | [[rec(2).a]] = 22 |
-	  | [[rec(3).a]] = 3  |
+	  | [[rec(3).a]] =    |
 	  And the 'Cnt1' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
 	  |                 |
 	  | [[result1]] = 3 |
 	  And the 'Delrec' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(3).a]] = |           |
+	  | Records        |
+	  | [[rec(3).a]] = |
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Success |
+	
 	  And the 'DataMerge1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
 	  | # |                   | With  | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 21 | Index | "2"   | ""  | Left  |
@@ -737,13 +738,6 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  And the 'Cnt2' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
 	  |                 |
 	  | [[result3]] = 3 |
-
-
-
-
-
-
-
 
 
 

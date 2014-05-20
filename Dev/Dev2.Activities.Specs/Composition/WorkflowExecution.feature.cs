@@ -1672,8 +1672,8 @@ this.ScenarioSetup(scenarioInfo);
                     "()]]\" into \"[[result1]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset",
-                        "Result"});
+                        "Variable",
+                        "result"});
             table102.AddRow(new string[] {
                         "[[rec()]]",
                         "[[result2]]"});
@@ -1705,7 +1705,7 @@ this.ScenarioSetup(scenarioInfo);
    testRunner.And("\"WorkflowWithAssignCountDataMerge&2Delete\" contains Count Record \"Cnt2\" on \"[[rec" +
                     "()]]\" into \"[[result3]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 699
-   testRunner.When("\"WorkflowWith2Assigntoolswithrscalars\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"WorkflowWithAssignCountDataMerge&2Delete\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 700
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1752,7 +1752,7 @@ this.ScenarioSetup(scenarioInfo);
             table106.AddRow(new string[] {
                         "[[rec(2).a]] = 22"});
             table106.AddRow(new string[] {
-                        "[[rec(3).a]] = 3"});
+                        "[[rec(3).a]] ="});
 #line 711
    testRunner.And("the \'Cnt1\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs as" +
                     "", ((string)(null)), table106, "And ");
@@ -1766,13 +1766,9 @@ this.ScenarioSetup(scenarioInfo);
                     "s", ((string)(null)), table107, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
+                        "Records"});
             table108.AddRow(new string[] {
-                        "1",
-                        "[[rec(3).a]] =",
-                        ""});
+                        "[[rec(3).a]] ="});
 #line 719
    testRunner.And("the \'Delrec\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs " +
                     "as", ((string)(null)), table108, "And ");
@@ -1808,7 +1804,7 @@ this.ScenarioSetup(scenarioInfo);
                         "\"2\"",
                         "\"\"",
                         "Left"});
-#line 725
+#line 726
    testRunner.And("the \'DataMerge1\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inp" +
                     "uts as", ((string)(null)), table110, "And ");
 #line hidden
@@ -1816,7 +1812,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table111.AddRow(new string[] {
                         "[[rec(3).a]] = 2122"});
-#line 729
+#line 730
    testRunner.And("the \'DataMerge1\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug out" +
                     "puts as", ((string)(null)), table111, "And ");
 #line hidden
@@ -1828,7 +1824,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(2).a]] = 22"});
             table112.AddRow(new string[] {
                         "[[rec(3).a]] = 2122"});
-#line 732
+#line 733
     testRunner.And("the \'Cnt2\' in WorkFlow \'WorkflowWithAssignCountDataMerge&2Delete\' debug inputs as" +
                     "", ((string)(null)), table112, "And ");
 #line hidden
@@ -1836,7 +1832,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table113.AddRow(new string[] {
                         "[[result3]] = 3"});
-#line 737
+#line 738
    testRunner.And("the \'Cnt2\' in Workflow \'WorkflowWithAssignCountDataMerge&2Delete\' debug outputs a" +
                     "s", ((string)(null)), table113, "And ");
 #line hidden
