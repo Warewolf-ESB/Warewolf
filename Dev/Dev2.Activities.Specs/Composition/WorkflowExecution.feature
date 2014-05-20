@@ -159,15 +159,15 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
-	  | # | Variable       | New Value |
+	  | # | Variable      | New Value |
 	  | 1 | [[rec().a]] = | 50        |
 	  | 2 | [[rec().a]] = | test      |
 	  | 3 | [[rec().a]] = | 100       |
 	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 50   |
-	  | 2 | [[rec(2).a]] = test |
-	  | 3 | [[rec(3).a]] = 100  |
+	  | # |                      |
+	  | 1 | [[rec(1).a]] =  50   |
+	  | 2 | [[rec(2).a]] =  test |
+	  | 3 | [[rec(3).a]] =  100  |
 	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Convert             | To    |
 	  | 1 | [[rec(2).a]] = test | UPPER |
@@ -207,8 +207,8 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  |                       |
 	  | [[result1]] = Success |
 	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-	   | Records        |
-	   | [[rec(1).a]] = |
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = |           |
 	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result2]] = Failure |
@@ -299,12 +299,12 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  | 1 | [[a]] =         | Test      |
 	  | 2 | [[b]] =         | Warewolf  |
 	  | 3 | [[split().a]] = | Workflow  |
-	 And the 'Assign To merge' in Workflow 'WorkflowWithAssignDataMergeAndDataSplittools' debug outputs as   
+	 And the 'Assign To merge' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as   
 	  | # |                           |
 	  | 1 | [[a]]         =  Test     |
 	  | 2 | [[b]]         =  Warewolf |
-	  | 3 | [[split(1).a]] =  Workflow |
-	  And the 'Data Merge' in WorkFlow 'WorkflowWithAssignDataMergeAndDataSplittools' debug inputs as 
+	  | 3 | [[split().a]] =  Workflow |
+	  And the 'Data Merge' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
 	  | # |                   | With  | Using | Pad | Align |
 	  | 1 | [[a]] = Test     | Index | "4"   | ""  | Left  |
 	  | 2 | [[b]] = Warewolf | Index | "8"   | ""  | Left  |
