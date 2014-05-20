@@ -339,6 +339,50 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             CommonSteps.AddActivityToActivityList(activityName, activity);
         }
 
+        [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
+        public void GivenContainsAnCreateAs(string parentName, string activityName, Table table)
+        {
+            DsfPathCreate activity = new DsfPathCreate { DisplayName = activityName };
+            foreach(var tableRow in table.Rows)
+            {
+                var variable = tableRow["File or Folder"];
+                var exist = tableRow["If it exits"];
+                var userName = tableRow["Username"];
+                var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.Username = userName;
+                activity.Password = password;
+                activity.Overwrite = exist == "True";
+                activity.OutputPath = variable;
+
+                CommonSteps.AddVariableToVariableList(result);
+            }
+            CommonSteps.AddActivityToActivityList(activityName, activity);
+        }
+
+
+        [Given(@"""(.*)"" contains an Delete Folder ""(.*)"" as")]
+        public void GivenContainsAnDeleteFolderAs(string parentName, string activityName, Table table)
+        {
+            DsfPathDelete activity = new DsfPathDelete { DisplayName = activityName };
+            foreach(var tableRow in table.Rows)
+            {
+                var variable = tableRow["Recordset"];
+                //var userName = tableRow["Username"];
+                //var password = tableRow["Password"];
+                var result = tableRow["Result"];
+
+                activity.Result = result;
+                activity.InputPath = variable;
+                //activity.Username = userName;
+                //activity.Password = password;
+
+                CommonSteps.AddVariableToVariableList(result);
+            }
+            CommonSteps.AddActivityToActivityList(activityName, activity);
+        }
 
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
@@ -415,7 +459,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             }
             DebugDispatcher.Instance.Add(Guid.Empty, testDebugWriter);
             IDSFDataObject result = ExecuteProcess(isDebug: true, channel: esbChannel, throwException: false);
-            DebugDispatcher.Instance.Remove(Guid.Empty);
+            try
+            {
+                DebugDispatcher.Instance.Remove(Guid.Empty);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                //May already been removed
+            }
             var debugStates = testDebugWriter.DebugStates.ToList();
             testDebugWriter.DebugStates.Clear();
             ScenarioContext.Current.Add("result", result);

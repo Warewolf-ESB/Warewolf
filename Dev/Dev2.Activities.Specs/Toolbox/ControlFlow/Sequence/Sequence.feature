@@ -526,10 +526,10 @@ Scenario: Sending Error in error variable and calling webservice when inner acti
 	  | Input1     | Input2     | Input Format | Output In | Result      |
 	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd | Years     | [[result1]] |  
     And assign error to variable "[[error]]"
-    And call the web service "http://test-2:3142/services/OnError_WriteToFile.xml?errorLog=[[error]]"
+    And call the web service "http://tst-ci-remote:3142/services/OnError_WriteToFile.xml?errorLog=[[error]]"
     When the Sequence tool is executed
     Then the execution has "AN" error
-    And the result from the web service "http://test-2:3142/services/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
+    And the result from the web service "http://tst-ci-remote:3142/services/OnError_ReadFromFile.xml" will have the same data as variable "[[error]]"
    And the "Date&Time" debug inputs as  
 	  | Input 1    | Input 2    | Input Format | Output In |
 	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd   | Years     |

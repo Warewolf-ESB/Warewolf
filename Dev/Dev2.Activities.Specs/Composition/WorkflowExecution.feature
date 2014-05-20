@@ -46,20 +46,20 @@ Scenario: Workflow with multiple tools executing against the server
 	  | [[count]] = 2 |
 	
 Scenario: Simple workflow executing against the server with a database service
-	 Given I have a workflow "TestDbServiceWF"
-	 And "TestDbServiceWF" contains a "database" service "Fetch" with mappings
+	 Given I have a workflow "TestWFWithDatabaseService"
+	 And "TestWFWithDatabaseService" contains a "database" service "Fetch" with mappings
 	  | Input to Service | From Variable | Output from Service          | To Variable     |
 	  |                  |               | dbo_proc_SmallFetch(*).Value | [[rec().fetch]] |
-	 And "TestDbServiceWF" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
-	  When "TestDbServiceWF" is executed
+	 And "TestWFWithDatabaseService" contains Count Record "Count" on "[[rec()]]" into "[[count]]"
+	  When "TestWFWithDatabaseService" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Fetch' in WorkFlow 'TestDbServiceWF' debug inputs as
+	  And the 'Fetch' in WorkFlow 'TestWFWithDatabaseService' debug inputs as
 	  |  |
 	  |  |
-	  And the 'Fetch' in Workflow 'TestDbServiceWF' debug outputs as
+	  And the 'Fetch' in Workflow 'TestWFWithDatabaseService' debug outputs as
 	  |                      |
 	  | [[rec(9).fetch]] = 5 |
-	  And the 'Count' in WorkFlow 'TestDbServiceWF' debug inputs as
+	  And the 'Count' in WorkFlow 'TestWFWithDatabaseService' debug inputs as
 	  | Recordset            |
 	  | [[rec(1).fetch]] = 1 |
 	  | [[rec(2).fetch]] = 2 |
@@ -70,7 +70,7 @@ Scenario: Simple workflow executing against the server with a database service
 	  | [[rec(7).fetch]] = 1 |
 	  | [[rec(8).fetch]] = 2 |
 	  | [[rec(9).fetch]] = 5 |
-	 And the 'Count' in Workflow 'TestDbServiceWF' debug outputs as    
+	 And the 'Count' in Workflow 'TestWFWithDatabaseService' debug outputs as    
 	 |               |
 	 | [[count]] = 9 |
 
@@ -189,7 +189,7 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  | Variable   | result      |
 	  | [[rec(1)]] | [[result1]] |
       And "WorkflowWithAssignand2Deletetools" contains Delete "Delet2" as
-	   | Variable   | result       |
+	   | Variable   | result        |
 	   | [[rec(1)]] | [[result2]]] |
 	  When "WorkflowWithAssignand2Deletetools" is executed
       Then the workflow execution has "NO" error
@@ -199,16 +199,16 @@ Scenario: Workflow with Assign and 2 Delete tools executing against the server
 	  And the 'Assign to delete' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = 50 |
-	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Delet1' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
 	  | Records          |
 	  | [[rec(1).a]] = 50 |
 	  And the 'Delet1' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  |                       |
 	  | [[result1]] = Success |
-	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
 	  | # | Variable       | New Value |
 	  | 1 | [[rec(1).a]] = |           |
-	  And the 'Delet2' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Failure |
 
@@ -365,42 +365,43 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 #	  | 1 | [[rec(1).a]] = lf |
 #	
 	  
-Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
-	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
-	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
-	  | variable    | value     |
-	  | [[rec().a]] | '<value>' |
-	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
-	  | Variable     | From     | To     |
-	  | [[rec(1).a]] | '<from>' | '<to>' |
-	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
-	  |       |          |
-	  | [[a]] | '<cond>' |
-	  When "WorkflowWithAssignBaseConvertandDecision" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | <value>   |
-	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  | # |                |         |
-	  | 1 | [[rec(1).a]] = | <value> |
-	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
-      And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  | # |                         |
-	  | 1 | [[rec(1).a]] = <result> |
-	  And the 'Decision' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
-	  |  | Statement | Require All decisions to be True |
-	  |  | String    | YES                              |
-	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
-	  |          |
-	  | <output> |
-Examples: 
-     | no | Value    | from | to     | result       | cond      | output |
-     | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
-     | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
-     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
-     | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
+#@ignore 	  
+#Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
+#	  Given I have a workflow "WorkflowWithAssignBaseConvertandDecision"
+#	  And "WorkflowWithAssignBaseConvertandDecision" contains an Assign "Assign1" as
+#	  | variable    | value     |
+#	  | [[rec().a]] | '<value>' |
+#	  And "WorkflowWithAssignBaseConvertandDecision" contains Base convert "BaseConvert" as
+#	  | Variable     | From     | To     |
+#	  | [[rec(1).a]] | '<from>' | '<to>' |
+#	  And "WorkflowWithAssignBaseConvertandDecision" contains Decision "Decision" as
+#	  |       |          |
+#	  | [[a]] | '<cond>' |
+#	  When "WorkflowWithAssignBaseConvertandDecision" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | <value>   |
+#	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+#	  | # |                |         |
+#	  | 1 | [[rec(1).a]] = | <value> |
+#	  And the 'BaseConvert' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+#	  | 1 | [[rec(1).a]] = warewolf | <text>  |<to> |
+#      And the 'BaseConvert' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+#	  | # |                         |
+#	  | 1 | [[rec(1).a]] = <result> |
+#	  And the 'Decision' in WorkFlow 'WorkflowWithAssignBaseConvertandDecision' debug inputs as
+#	  |  | Statement | Require All decisions to be True |
+#	  |  | String    | YES                              |
+#	  And the 'Decision' in Workflow 'WorkflowWithAssignBaseConvertandDecision' debug outputs as  
+#	  |          |
+#	  | <output> |
+#Examples: 
+#     | no | Value    | from | to     | result       | cond      | output |
+#     | 1  | warewolf | Text | Base64 | d2FyZxdvbGY= | Is Base64 | YES    |
+#     | 2  | a        | Text | Binary | 01100001     | Is Binary | YES    |
+#     | 3  | a        | Text | Hex    | 0x61         | Is Hex    | YES    |
+#     | 4  | 2013/01  | Text | Text   | 2013/01      | Is Date   | YES    |
 
 
 
@@ -686,7 +687,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  | [[rec().a]] | 21    |
 	  | [[rec().a]] | 22    |
 	  | [[rec().a]] |       |
-	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt1" on "[[rec()]]" into "[[result1]]
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt1" on "[[rec()]]" into "[[result1]]"
 	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Delete "Delrec" as
 	  | Recordset | Result      |
 	  | [[rec()]] | [[result2]] |
@@ -694,7 +695,7 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 2     |         | Left      |
 	  | [[rec(2).a]] | Index | 2     |         | Left      |
-	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt2" on "[[rec()]]" into "[[result3]]
+	  And "WorkflowWithAssignCountDataMerge&2Delete" contains Count Record "Cnt2" on "[[rec()]]" into "[[result3]]"
 	  When "WorkflowWith2Assigntoolswithrscalars" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'countrecordval1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
@@ -721,7 +722,6 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  And the 'Delrec' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as  
 	  | # |                       |
 	  | 1 | [[result2]] = Success |
-	
 	  And the 'DataMerge1' in WorkFlow 'WorkflowWithAssignCountDataMerge&2Delete' debug inputs as
 	  | # |                   | With  | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = 21 | Index | "2"   | ""  | Left  |
