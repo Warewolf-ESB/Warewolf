@@ -155,7 +155,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | [[rec(2).a]] | UPPER |
 	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains Base convert "Base to Convert" as
 	  | Variable     | From | To     |
-	  | [[rec(1).a]] | Text | Base64 |
+	  | [[rec(1).a]] | Text | Base 64 |
 	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
@@ -176,7 +176,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | 1 | [[rec(2).a]] = TEST |
 	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
 	  | # | Convert           | From | To     |
-	  | 1 | [[rec(1).a]] = 50 | Text | Base64 |
+	  | 1 | [[rec(1).a]] = 50 | Text | Base 64 |
       And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
@@ -448,34 +448,34 @@ Scenario: Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find 
 	  | 2 | [[rec(1).b]] = nothing  |
 	  | 3 | [[rec(2).a]] = warewolf |
 	  | 4 | [[rec(2).b]] = nothing  |
-	  And the "Data Merge" debug inputs as  
+	  And the 'Data Merge' in WorkFlow 'Test1' debug inputs as
 	  | # |                         | With  | Using | Pad | Align |
 	  | 1 | [[rec(1).a]] = test     | Index | "4"   | ""  | Left  |
 	  | 2 | [[rec(2).a]] = warewolf | Index | "8"   | ""  | Left  |
-	  And the "Data Merge" debug outputs as 
+	  And the 'Data Merge' in Workflow 'Test1' debug outputs as
 	  |                           |
 	  | [[result]] = testwarewolf |
-	  And the "Data Split" debug inputs as  
+	  And the 'Data Split' in WorkFlow 'Test1' debug inputs as  
 	  | String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
 	  | testwarewolf    | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | 4     | No      |        |
 	  |                 |                   |                 | 2 | [[rec(2).b]] = nothing | Index | 8     | No      |        |
-	  And the "Data Split" debug outputs as
+	  And the 'Data Split' in Workflow 'Test1' debug outputs as
 	  | # |                         |
 	  | 1 | [[rec(1).b]] = test     |
 	  | 2 | [[rec(2).b]] = warewolf |
-      And the "Index" debug inputs as
+      And the 'Index' in WorkFlow 'Test1' debug inputs as
 	  | In Field                | Index           | Characters | Direction     |
 	  | [[rec(2).a]] = warewolf | First Occurence | e          | Left to Right |
-	  And the "Index" debug outputs as
+	  And the 'Index' in Workflow 'Test1' debug outputs as
 	  |                     |
 	  | [[indexResult]] = 4 |
-	  And the "Replacing" debug inputs as 
+	  And the 'Replacing' in WorkFlow 'Test1' debug inputs as 
 	  | In Field(s)             | Find | Replace With |
 	  | [[rec(1).a]] = test     |      |              |
 	  | [[rec(1).b]] = test     |      |              |
 	  | [[rec(2).a]] = warewolf |      |              |
 	  | [[rec(2).b]] = warewolf | e    | REPLACED     |
-	  And the "Replacing" debug outputs as 
+	  And the 'Replacing' in Workflow 'Test1' debug outputs as
 	  |                                |
 	  | [[rec(1).a]] = tREPLACEDst     |
 	  | [[rec(1).b]] = tREPLACEDst     |

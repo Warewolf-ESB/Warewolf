@@ -281,7 +281,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
         }
 
-        public static void AddActivityToActivityList(string activityName, Activity activity)
+        public static void AddActivityToActivityList(string parentName, string activityName, Activity activity)
         {
             Dictionary<string, Activity> activityList;
             if(!ScenarioContext.Current.TryGetValue("activityList", out activityList))
@@ -289,7 +289,20 @@ namespace Dev2.Activities.Specs.BaseTypes
                 activityList = new Dictionary<string, Activity>();
                 ScenarioContext.Current.Add("activityList", activityList);
             }
-            activityList.Add(activityName, activity);
+
+            Activity parentActivity;
+            if(activityList.TryGetValue(parentName, out parentActivity))
+            {
+                if(parentActivity is DsfSequenceActivity)
+                {
+                    var seq = parentActivity as DsfSequenceActivity;
+                    seq.Activities.Add(activity);
+                }
+            }
+            else
+            {
+                activityList.Add(activityName, activity);
+            }
         }
 
         public static Dictionary<string, Activity> GetActivityList()

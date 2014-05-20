@@ -543,7 +543,7 @@ this.ScenarioSetup(scenarioInfo);
             table31.AddRow(new string[] {
                         "[[rec(1).a]]",
                         "Text",
-                        "Base64"});
+                        "Base 64"});
 #line 156
    testRunner.And("\"WorkflowWithAssignBaseConvertandCaseconvert\" contains Base convert \"Base to Conv" +
                     "ert\" as", ((string)(null)), table31, "And ");
@@ -619,7 +619,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rec(1).a]] = 50",
                         "Text",
-                        "Base64"});
+                        "Base 64"});
 #line 177
    testRunner.And("the \'Base to Convert\' in WorkFlow \'WorkflowWithAssignBaseConvertandCaseconvert\' d" +
                     "ebug inputs as", ((string)(null)), table36, "And ");
@@ -1138,14 +1138,14 @@ this.ScenarioSetup(scenarioInfo);
                         "\"\"",
                         "Left"});
 #line 451
-   testRunner.And("the \"Data Merge\" debug inputs as", ((string)(null)), table63, "And ");
+   testRunner.And("the \'Data Merge\' in WorkFlow \'Test1\' debug inputs as", ((string)(null)), table63, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table64.AddRow(new string[] {
                         "[[result]] = testwarewolf"});
 #line 455
-   testRunner.And("the \"Data Merge\" debug outputs as", ((string)(null)), table64, "And ");
+   testRunner.And("the \'Data Merge\' in Workflow \'Test1\' debug outputs as", ((string)(null)), table64, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "String to Split",
@@ -1178,7 +1178,7 @@ this.ScenarioSetup(scenarioInfo);
                         "No",
                         ""});
 #line 458
-   testRunner.And("the \"Data Split\" debug inputs as", ((string)(null)), table65, "And ");
+   testRunner.And("the \'Data Split\' in WorkFlow \'Test1\' debug inputs as", ((string)(null)), table65, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1190,7 +1190,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "[[rec(2).b]] = warewolf"});
 #line 462
-   testRunner.And("the \"Data Split\" debug outputs as", ((string)(null)), table66, "And ");
+   testRunner.And("the \'Data Split\' in Workflow \'Test1\' debug outputs as", ((string)(null)), table66, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
                         "In Field",
@@ -1203,14 +1203,14 @@ this.ScenarioSetup(scenarioInfo);
                         "e",
                         "Left to Right"});
 #line 466
-      testRunner.And("the \"Index\" debug inputs as", ((string)(null)), table67, "And ");
+      testRunner.And("the \'Index\' in WorkFlow \'Test1\' debug inputs as", ((string)(null)), table67, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table68.AddRow(new string[] {
                         "[[indexResult]] = 4"});
 #line 469
-   testRunner.And("the \"Index\" debug outputs as", ((string)(null)), table68, "And ");
+   testRunner.And("the \'Index\' in Workflow \'Test1\' debug outputs as", ((string)(null)), table68, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
                         "In Field(s)",
@@ -1233,7 +1233,7 @@ this.ScenarioSetup(scenarioInfo);
                         "e",
                         "REPLACED"});
 #line 472
-   testRunner.And("the \"Replacing\" debug inputs as", ((string)(null)), table69, "And ");
+   testRunner.And("the \'Replacing\' in WorkFlow \'Test1\' debug inputs as", ((string)(null)), table69, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
@@ -1248,7 +1248,7 @@ this.ScenarioSetup(scenarioInfo);
             table70.AddRow(new string[] {
                         "[[replaceResult]] = 4"});
 #line 478
-   testRunner.And("the \"Replacing\" debug outputs as", ((string)(null)), table70, "And ");
+   testRunner.And("the \'Replacing\' in Workflow \'Test1\' debug outputs as", ((string)(null)), table70, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

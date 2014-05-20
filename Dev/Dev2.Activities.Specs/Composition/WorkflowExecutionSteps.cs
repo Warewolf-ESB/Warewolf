@@ -103,7 +103,7 @@ namespace Dev2.Activities.Specs.Composition
                 activity.DisplayName = serviceName;
                 activity.OutputMapping = outputMapping;
                 activity.InputMapping = inputMapping;
-                CommonSteps.AddActivityToActivityList(serviceName, activity);
+                CommonSteps.AddActivityToActivityList(wf, serviceName, activity);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Specs.Composition
                     activity.DisplayName = remoteWf;
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
-                    CommonSteps.AddActivityToActivityList(remoteWf, activity);
+                    CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
                 }
             }
         }
@@ -244,6 +244,14 @@ namespace Dev2.Activities.Specs.Composition
             return outputSb;
         }
 
+        [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
+        public void GivenContainsASequenceAs(string parentName, string activityName)
+        {
+            var dsfSequence = new DsfSequenceActivity { DisplayName = activityName };
+            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
+        }
+
+
         static StringBuilder GetInputMapping(Table table, IResourceModel resource)
         {
             var inputSb = new StringBuilder();
@@ -348,6 +356,7 @@ namespace Dev2.Activities.Specs.Composition
 
             ExecuteWorkflow(resourceModel);
         }
+
 
         [Then(@"the '(.*)' in WorkFlow '(.*)' debug inputs as")]
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
