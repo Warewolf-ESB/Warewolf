@@ -504,13 +504,13 @@ Scenario: Workflow with Assign Create and Delete folder tools executing against 
 	  | 1 | [[rec(1).a]] = C:\copied00.txt      |
 	 And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecord' debug inputs as
 	  | File or Folder                | Overwrite | Username | Password |
-	  | [[rec().a]] = C:\copied00.txt | True      |          |          |  
+	  | [[rec(1).a]] = C:\copied00.txt | True      | ""       | ""       |  
 	   And the 'Create1' in Workflow 'WorkflowWithAssignCreateandDeleteRecord' debug outputs as    
 	   |                    |
 	   | [[res1]] = Success |
 	  And the 'DeleteFolder' in WorkFlow 'WorkflowWithAssignCreateandDeleteRecord' debug inputs as
 	  | Input Path                    | Username | Password |
-	  | [[rec().a]] = C:\copied00.txt |          |          |
+	  | [[rec(1).a]] = C:\copied00.txt | ""       | ""       |
 	  And the 'DeleteFolder' in Workflow 'WorkflowWithAssignCreateandDeleteRecord' debug outputs as    
 	  |                    |
 	  | [[res2]] = Success |

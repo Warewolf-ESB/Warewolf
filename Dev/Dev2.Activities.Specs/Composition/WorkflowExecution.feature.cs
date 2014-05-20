@@ -1426,10 +1426,10 @@ this.ScenarioSetup(scenarioInfo);
                         "Username",
                         "Password"});
             table85.AddRow(new string[] {
-                        "[[rec().a]] = C:\\copied00.txt",
+                        "[[rec(1).a]] = C:\\copied00.txt",
                         "True",
-                        "",
-                        ""});
+                        "\"\"",
+                        "\"\""});
 #line 505
   testRunner.And("the \'Create1\' in WorkFlow \'WorkflowWithAssignCreateandDeleteRecord\' debug inputs " +
                     "as", ((string)(null)), table85, "And ");
@@ -1447,9 +1447,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Username",
                         "Password"});
             table87.AddRow(new string[] {
-                        "[[rec().a]] = C:\\copied00.txt",
-                        "",
-                        ""});
+                        "[[rec(1).a]] = C:\\copied00.txt",
+                        "\"\"",
+                        "\"\""});
 #line 511
    testRunner.And("the \'DeleteFolder\' in WorkFlow \'WorkflowWithAssignCreateandDeleteRecord\' debug in" +
                     "puts as", ((string)(null)), table87, "And ");
