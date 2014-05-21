@@ -15,7 +15,7 @@ namespace Dev2.InstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
-        public void AddWarewolfGroup()
+        public void WarewolfSecurityOperations_AddWarewolfGroup_ExpectGroupAdded()
         {
             var grpOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             grpOps.DeleteWarewolfGroup();
