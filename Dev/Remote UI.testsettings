@@ -2,9 +2,9 @@
 <TestSettings name="UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote ui test run.</Description>
 	<Deployment>
-		<DeploymentItem filename="" />
+		<DeploymentItem filename="TestBinaries/" />
 	</Deployment>
-  <Scripts setupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Startup - Studio.bat" cleanupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Cleanup - Studio.bat" />
+  <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - Studio.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - Studio.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts runTimeout="5400000" testTimeout="300000" />
