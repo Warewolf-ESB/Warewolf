@@ -1751,6 +1751,98 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow with Assign and Base Convert(Evaluating scalar variable inside va" +
+            "riable)executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void SimpleWorkflowWithAssignAndBaseConvertEvaluatingScalarVariableInsideVariableExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow with Assign and Base Convert(Evaluating scalar variable inside va" +
+                    "riable)executing against the server", ((string[])(null)));
+#line 798
+this.ScenarioSetup(scenarioInfo);
+#line 799
+  testRunner.Given("I have a workflow \"WorkflowWithAssignandBase\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table105.AddRow(new string[] {
+                        "[[a]]",
+                        "b"});
+            table105.AddRow(new string[] {
+                        "[[b]]",
+                        "12"});
+#line 800
+  testRunner.And("\"WorkflowWithAssignandBase\" contains an Assign \"Base Var\" as", ((string)(null)), table105, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "From",
+                        "To"});
+            table106.AddRow(new string[] {
+                        "[[[[a]]]]",
+                        "Text",
+                        "Base 64"});
+#line 804
+    testRunner.And("\"WorkflowWithAssignandBase\" contains Base convert \"Base\" as", ((string)(null)), table106, "And ");
+#line 807
+   testRunner.When("\"WorkflowWithAssignandBase\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 808
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table107.AddRow(new string[] {
+                        "1",
+                        "[[a]] =",
+                        "b"});
+            table107.AddRow(new string[] {
+                        "2",
+                        "[[b]] =",
+                        "12"});
+#line 809
+   testRunner.And("the \'Base Var\' in WorkFlow \'WorkflowWithAssignandBase\' debug inputs as", ((string)(null)), table107, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table108.AddRow(new string[] {
+                        "1",
+                        "[[a]] = b"});
+            table108.AddRow(new string[] {
+                        "2",
+                        "[[b]] = 12"});
+#line 813
+   testRunner.And("the \'Base Var\' in Workflow \'WorkflowWithAssignandBase\' debug outputs as", ((string)(null)), table108, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Convert",
+                        "From",
+                        "To"});
+            table109.AddRow(new string[] {
+                        "1",
+                        "[[[[a]]]] = 12",
+                        "Text",
+                        "Base 64"});
+#line 817
+    testRunner.And("the \'Base\' in WorkFlow \'WorkflowWithAssignandBase\' debug inputs as", ((string)(null)), table109, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table110.AddRow(new string[] {
+                        "1",
+                        "[[b]] = MTI="});
+#line 820
+      testRunner.And("the \'Base\' in Workflow \'WorkflowWithAssignandBase\' debug outputs as", ((string)(null)), table110, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

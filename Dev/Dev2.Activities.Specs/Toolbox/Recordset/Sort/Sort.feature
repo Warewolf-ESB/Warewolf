@@ -277,7 +277,7 @@ Scenario: Sort a recordset backwards recordset  with one row
 #	| rs(6).row | c     |
 #	| rs(8).row | b     |
 #	And I sort a record "[[rs(*).row]]"
-#	And my sort order is "B"
+#	And my sort order is "Backwards"
 #	When the sort records tool is executed
 #	Then the sorted recordset "[[rs().row]]"  will be 
 #	| rs        | value |
