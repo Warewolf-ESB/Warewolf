@@ -65,7 +65,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
-                    throw;
+               
                 }
             }
 
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 catch(Exception)
                 {
                     //The file may already be deleted
-                    throw;
+        
                 }
             }
 
