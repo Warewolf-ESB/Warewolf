@@ -1,9 +1,8 @@
 ﻿using System;
-using Dev2.InstallerActions;
 
-namespace Dev2
+namespace Dev2.MoqInstallerActions
 {
-    public class InstallerActionsForDevelopment : MoqInstallerActions
+    public class InstallerActionsForDevelopment : IMoqInstallerActions
     {
         public const string WarewolfGroup = "Warewolf Administrators";
         public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
@@ -25,7 +24,7 @@ namespace Dev2
         /// </summary>
         private void CreateWarewolfGroupAndAddCurrentUser()
         {
-            WarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
             // start from fresh each time ;)
             if(wso.DoesWarewolfGroupExist())

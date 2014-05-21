@@ -1,7 +1,7 @@
 ﻿
-namespace Dev2.InstallerActions
+namespace Dev2.MoqInstallerActions
 {
-    public interface MoqInstallerActions
+    public interface IMoqInstallerActions
     {
         void ExecuteMoqInstallerActions();
     }

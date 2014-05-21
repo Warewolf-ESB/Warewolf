@@ -19,8 +19,8 @@ using Dev2.Data;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.InstallerActions;
 using Dev2.Instrumentation;
+using Dev2.MoqInstallerActions;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -59,7 +59,7 @@ namespace Dev2
         /// <param name="arguments">Command line arguments passed to executable.</param>
         static int Main(string[] arguments)
         {
-            int result = 0;
+            var result = 0;
 
             CommandLineParameters options = new CommandLineParameters();
             CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
@@ -269,7 +269,7 @@ namespace Dev2
 
             try
             {
-                MoqInstallerActions miq = MoqInstallerActionFactory.CreateInstallerActions();
+                var miq = MoqInstallerActionFactory.CreateInstallerActions();
                 miq.ExecuteMoqInstallerActions();
             }
             catch(Exception e)
@@ -306,7 +306,7 @@ namespace Dev2
                 didBreak = true;
             }
 
-            if(!didBreak && !StartGCManager())
+            if(!didBreak && !StartGcManager())
             {
                 result = 7;
                 didBreak = true;
@@ -392,7 +392,7 @@ namespace Dev2
             }
             else
             {
-                TerminateGCManager();
+                TerminateGcManager();
             }
 
             Write(string.Format("Existing with exitcode {0}", result));
@@ -527,7 +527,9 @@ namespace Dev2
                 builder.AppendLine("\t\t<Error Enabled=\"true\" />");
                 builder.AppendLine("\t\t<Info Enabled=\"true\" />");
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                 if(!LogTraceInfo)
+                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
@@ -605,7 +607,7 @@ namespace Dev2
 
                         if(String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
                         {
-                            if(!ProcessGCManager(section))
+                            if(!ProcessGcManager(section))
                             {
                                 result = false;
                             }
@@ -668,7 +670,7 @@ namespace Dev2
         }
 
 
-        bool ProcessGCManager(XmlNode section)
+        bool ProcessGcManager(XmlNode section)
         {
             XmlAttributeCollection sectionAttribs = section.Attributes;
 
@@ -872,7 +874,9 @@ namespace Dev2
                             }
                         }
 
+                        // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
                         if(path == null)
+                        // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                         {
                             group.Add(new AssemblyReference(current.InnerText, version, culture, publicKeyToken));
                         }
@@ -1190,12 +1194,12 @@ namespace Dev2
 
         #region GC Handling
 
-        bool StartGCManager()
+        bool StartGcManager()
         {
             if(_enableGcManager)
             {
                 WriteLine("SLM garbage collection manager enabled.");
-                _gcmThreadStart = GCM_EntryPoint;
+                _gcmThreadStart = GcmEntryPoint;
                 _lastKnownWorkingSet = -1L;
                 _nextForcedCollection = DateTime.Now.AddSeconds(5.0);
                 _gcmRunning = true;
@@ -1210,7 +1214,7 @@ namespace Dev2
             return true;
         }
 
-        void GCM_EntryPoint()
+        void GcmEntryPoint()
         {
             while(_gcmRunning)
             {
@@ -1245,7 +1249,7 @@ namespace Dev2
             }
         }
 
-        void TerminateGCManager()
+        void TerminateGcManager()
         {
             if(_enableGcManager)
             {
@@ -1381,7 +1385,6 @@ namespace Dev2
                         int realWebServerSslPort;
                         Int32.TryParse(webServerSslPort, out realWebServerSslPort);
 
-                        // TODO : Enable ssl cert generation ;)
                         var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
                         if(!string.IsNullOrEmpty(sslCertPath))
@@ -1462,7 +1465,7 @@ namespace Dev2
                 LogException(e);
             }
 
-            TerminateGCManager();
+            TerminateGcManager();
 
             return result;
         }

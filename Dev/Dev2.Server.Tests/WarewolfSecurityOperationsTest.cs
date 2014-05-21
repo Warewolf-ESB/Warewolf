@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.InstallerActions
+// ReSharper restore CheckNamespace
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class WarewolfSecurityOperationsTest
     {
+        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_AddWarewolfGroup")]
@@ -24,7 +28,7 @@ namespace Dev2.InstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_DoesWarewolfGroupExist")]
-        public void WarewolfSecurityOperations_DoesWarewolfGroupExist_WhenGroupDoesNotExist_ExpectFalse()
+        public void WarewolfSecurityOperationsDoesWarewolfGroupExistWhenGroupDoesNotExistExpectFalse()
         {
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
@@ -217,5 +221,7 @@ namespace Dev2.InstallerActions
         }
 
         #endregion
+
+        // ReSharper restore InconsistentNaming
     }
 }

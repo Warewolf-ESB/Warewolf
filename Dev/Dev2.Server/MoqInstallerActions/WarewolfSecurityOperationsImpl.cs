@@ -1,15 +1,14 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.DirectoryServices;
 using System.Linq;
 
-namespace Dev2.InstallerActions
+namespace Dev2.MoqInstallerActions
 {
     /// <summary>
     /// This is the group operations class used in the installer
     /// </summary>
-    internal class WarewolfSecurityOperationsImpl : WarewolfSecurityOperations
+    internal class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
     {
         public const string WarewolfGroup = "Warewolf Administrators";
         public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
@@ -87,7 +86,9 @@ namespace Dev2.InstallerActions
         {
             if(string.IsNullOrEmpty(currentUser))
             {
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Null or Empty User");
+                // ReSharper restore NotResolvedInText
             }
 
             using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))

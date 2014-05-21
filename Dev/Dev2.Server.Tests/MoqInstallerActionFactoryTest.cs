@@ -1,4 +1,4 @@
-﻿using Dev2.InstallerActions;
+﻿using Dev2.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Server.Tests
@@ -9,6 +9,7 @@ namespace Dev2.Server.Tests
     [TestClass]
     public class MoqInstallerActionFactoryTest
     {
+        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -33,5 +34,7 @@ namespace Dev2.Server.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
         }
+
+        // ReSharper restore InconsistentNaming
     }
 }
