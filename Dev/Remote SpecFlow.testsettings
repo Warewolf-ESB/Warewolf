@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Acceptance" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
-    <Deployment>
-        <DeploymentItem filename="TestBinaries\" />
-    </Deployment>
+  <Deployment>
+    <DeploymentItem filename="TestBinaries\" />
+  </Deployment>
   <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - Server.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - Server.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
@@ -29,10 +29,6 @@
       <SelectionCriteria>
         <AgentProperty name="Pool" value="Sandbox" />
       </SelectionCriteria>
-      <DataCollectors>
-        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
-        </DataCollector>
-      </DataCollectors>
     </AgentRule>
   </Execution>
 </TestSettings>
