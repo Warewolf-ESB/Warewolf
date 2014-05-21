@@ -65,7 +65,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
-                    //The file may already be deleted
+                    throw;
                 }
             }
 
@@ -87,6 +87,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 catch(Exception)
                 {
                     //The file may already be deleted
+                    throw;
                 }
             }
 
@@ -103,10 +104,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     Server.Bindings.Clear();
                     Server.Stop();
+                 
                 }
             }
             catch
             {
+                throw;
                 //Server may already be stopped
             }
 
