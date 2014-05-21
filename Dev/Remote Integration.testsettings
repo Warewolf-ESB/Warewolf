@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a local test run.</Description>
-  <Deployment>
-    <DeploymentItem filename="Dev2.Server\Bin\Test\" />
-  </Deployment>
-  <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Startup.bat" cleanupScript="\\RSAKLFSVRTFSBLD\DevelopmentDropOff\AutomationScripts\Cleanup.bat" />
+  <Description>These are default test settings for a remote integration test run.</Description>
+	<Deployment>
+		<DeploymentItem filename="" />
+	</Deployment>
+  <Scripts setupScript="Startup.bat" cleanupScript="Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="120000" />
@@ -26,10 +25,14 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="Run in Ashley's Testing Environment Pool">
+    <AgentRule name="Run in Sandbox">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Integration Testing" />
+        <AgentProperty name="Pool" value="Sandbox" />
       </SelectionCriteria>
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+        </DataCollector>
+      </DataCollectors>
     </AgentRule>
   </Execution>
 </TestSettings>
