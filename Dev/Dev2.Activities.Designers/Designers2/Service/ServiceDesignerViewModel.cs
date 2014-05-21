@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
@@ -17,6 +18,7 @@ using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
@@ -604,8 +606,20 @@ namespace Dev2.Activities.Designers2.Service
                 var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
                 if(resourceModel != null)
                 {
-                    var xe = resourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
-                    var srcId = xe.AttributeSafe("SourceID");
+                    string srcId;
+                    var workflowXML = resourceModel.WorkflowXaml;
+                    try
+                    {
+                        var xe = workflowXML.Replace("&", "&amp;").ToXElement();
+                        srcId = xe.AttributeSafe("SourceID");
+                    }
+                    catch(XmlException xe)
+                    {
+                        this.LogError(xe);
+                        // invalid xml, we need to extract the sourceID another way ;)
+                        srcId = workflowXML.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                    }
+
                     Guid sourceId;
                     if(Guid.TryParse(srcId, out sourceId))
                     {
@@ -619,6 +633,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                 }
             }
+
             return true;
         }
 

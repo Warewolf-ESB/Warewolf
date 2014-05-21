@@ -152,33 +152,28 @@ namespace Dev2.Common.Common
 
         private static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
-            if(sb != null)
+            var length = sb.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+            MemoryStream ms = new MemoryStream(length);
+            for(int i = 0; i < rounds; i++)
             {
-                var length = sb.Length;
-                var startIdx = 0;
-                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-                MemoryStream ms = new MemoryStream(length);
-                for(int i = 0; i < rounds; i++)
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if(len > (sb.Length - startIdx))
                 {
-                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if(len > (sb.Length - startIdx))
-                    {
-                        len = (sb.Length - startIdx);
-                    }
-
-                    var bytes = encoding.GetBytes(sb.Substring(startIdx, len));
-                    ms.Write(bytes, 0, bytes.Length);
-
-                    startIdx += len;
+                    len = (sb.Length - startIdx);
                 }
 
-                ms.Flush();
-                ms.Position = 0;
+                var bytes = encoding.GetBytes(sb.Substring(startIdx, len));
+                ms.Write(bytes, 0, bytes.Length);
 
-                return ms;
+                startIdx += len;
             }
 
-            return new MemoryStream();
+            ms.Flush();
+            ms.Position = 0;
+
+            return ms;
         }
 
         /// <summary>
@@ -327,18 +322,14 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
-            if(elm != null)
-            {
-                StringBuilder result = new StringBuilder();
-                using(StringWriter sw = new StringWriter(result))
-                {
-                    elm.Save(sw, SaveOptions.DisableFormatting);
-                }
 
-                return result.CleanEncodingHeaderForXmlSave();
+            StringBuilder result = new StringBuilder();
+            using(StringWriter sw = new StringWriter(result))
+            {
+                elm.Save(sw, SaveOptions.DisableFormatting);
             }
 
-            return new StringBuilder();
+            return result.CleanEncodingHeaderForXmlSave();
         }
 
         public static bool IsEqual(this StringBuilder sb, StringBuilder that)
@@ -360,6 +351,31 @@ namespace Dev2.Common.Common
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Extracts the XML attribute from unsafe XML. 
+        /// </summary>
+        /// <param name="sb">The sb.</param>
+        /// <param name="searchTagStart">The search tag start.</param>
+        /// <param name="searchTagEnd">The search tag end.</param>
+        /// <returns></returns>
+        public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart, string searchTagEnd = "\"")
+        {
+            // 10 chars long
+            var startIndex = sb.IndexOf(searchTagStart, 0, false);
+            if(startIndex < 0)
+            {
+                return string.Empty;
+            }
+
+            var tagLength = searchTagStart.Length;
+            startIndex += tagLength;
+            var endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
+            var length = endIdx - startIndex;
+
+            return sb.Substring(startIndex, length);
+
         }
 
 

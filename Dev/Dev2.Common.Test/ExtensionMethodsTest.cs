@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,6 +12,331 @@ namespace Dev2.Common.Tests
     [TestClass]
     public class ExtensionMethodsTest
     {
+
+        // ReturnAsTagSet
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToByteArray")]
+        public void ExtensionMethods_ReturnAsTagSet_WhenValidString_ExpectTagSet()
+        {
+            //------------Setup for test--------------------------
+            const string tag = "foo";
+            //------------Execute Test---------------------------
+
+            var tagSet = tag.ReturnAsTagSet();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, tagSet.Length);
+            StringAssert.Contains(tagSet[0], "<foo>");
+            StringAssert.Contains(tagSet[1], "</foo>");
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToByteArray")]
+        public void ExtensionMethods_ToByteArray_WhenValidString_ExpectValidBytes()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using(Stream s = new MemoryStream(bytes))
+            {
+                var result = s.ToByteArray();
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(result.ToString(), bytes.ToString());
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToBase64String")]
+        public void ExtensionMethods_ToBase64String_WhenValidString_ExpectBase64Data()
+        {
+            //------------Setup for test--------------------------
+            const string input = "test message";
+            var bytes = Encoding.UTF8.GetBytes(input);
+            //------------Execute Test---------------------------
+            using(Stream s = new MemoryStream(bytes))
+            {
+                var result = s.ToBase64String();
+
+                //------------Assert Results-------------------------
+                Assert.AreEqual(result, "dGVzdCBtZXNzYWdl");
+            }
+
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToObservableCollection")]
+        public void ExtensionMethods_ToObservableCollection_WhenIEnumableContainsData_ExpectCollection()
+        {
+            //------------Setup for test--------------------------
+            List<string> input = new List<string> { "foo", "bar" };
+
+            //------------Execute Test---------------------------
+            var result = input.ToObservableCollection();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("foo", result[0]);
+            Assert.AreEqual("bar", result[1]);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToObservableCollection")]
+        public void ExtensionMethods_ToObservableCollection_WhenIEnumableContainsNothing_ExpectEmptyCollection()
+        {
+            //------------Setup for test--------------------------
+            List<string> input = new List<string>();
+
+            //------------Execute Test---------------------------
+            var result = input.ToObservableCollection();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementStringSafe")]
+        public void ExtensionMethods_ElementStringSafe_WhenElementExist_ExpectElement()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementStringSafe("y");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, "<y>y value</y>");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementSafeStringBuilder")]
+        public void ExtensionMethods_ElementStringSafe_WhenElementDoesNotExist_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementStringSafe("q");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, string.Empty);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementSafeStringBuilder")]
+        public void ExtensionMethods_ElementSafeStringBuilder_WhenElementExist_ExpectElement()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementSafeStringBuilder("y");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), "y");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementSafeStringBuilder")]
+        public void ExtensionMethods_ElementSafeStringBuilder_WhenElementDoesNotExist_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementSafeStringBuilder("q");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result.ToString(), string.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementSafeStringBuilder")]
+        public void ExtensionMethods_ElementSafe_WhenElementExist_ExpectElement()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementSafe("y");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, "y");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ElementSafeStringBuilder")]
+        public void ExtensionMethods_ElementSafe_WhenElementDoesNotExist_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x><y>y value</y></x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.ElementSafe("q");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, string.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_AttributeSafe")]
+        public void ExtensionMethods_AttributeSafe_WhenAttributeExist_ExpectAttributeValue()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x foo=\"bar\">test message</x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.AttributeSafe("foo");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, "bar");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_AttributeSafe")]
+        public void ExtensionMethods_AttributeSafe_WhenAttributeDoesNotExist_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x foo=\"bar\">test message</x>";
+            var sb = new StringBuilder(msg);
+
+            //------------Execute Test---------------------------
+
+            var xe = sb.ToXElement();
+            var result = xe.AttributeSafe("foo2");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result, string.Empty);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_EncodeForXmlDocument")]
+        public void ExtensionMethods_EncodeForXmlDocument_WhenValidUTF8XmlDocument_ExpectStream()
+        {
+            //------------Setup for test--------------------------
+            const string msg = "<x>test message</x>";
+            var sb = new StringBuilder(msg);
+            //------------Execute Test---------------------------
+
+            using(var result = sb.EncodeForXmlDocument())
+            {
+
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(result);
+                Assert.AreEqual(0, result.Position);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_EncodeForXmlDocument")]
+        public void ExtensionMethods_EncodeForXmlDocument_WhenValidUnicodeXmlDocument_ExpectStream()
+        {
+            //------------Setup for test--------------------------
+            byte[] bytes = new[] { (byte)'<', (byte)'x', (byte)'/', (byte)'>' };
+
+            var msg = Encoding.Unicode.GetString(bytes);
+            var sb = new StringBuilder(msg);
+            //------------Execute Test---------------------------
+
+            using(var result = sb.EncodeForXmlDocument())
+            {
+
+                //------------Assert Results-------------------------
+                Assert.IsNotNull(result);
+                Assert.AreEqual(0, result.Position);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_EncodeForXmlDocument")]
+        [ExpectedException(typeof(XmlException))]
+        public void ExtensionMethods_EncodeForXmlDocument_WhenInvalidXmlDocument_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var sb = new StringBuilder("aa");
+            //------------Execute Test---------------------------
+
+            sb.EncodeForXmlDocument();
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_GetAllMessages")]
+        public void ExtensionMethods_GetAllMessages_WhenUnrollingException_ExpectFullExceptionList()
+        {
+            //------------Setup for test--------------------------
+            var innerException = new Exception("Inner Exception");
+            var ex = new Exception("Test Error", innerException);
+            const string expected = "Test Error\r\nInner Exception";
+
+            //------------Execute Test---------------------------
+            var result = ex.GetAllMessages();
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, expected);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_IsEqual")]
+        public void ExtensionMethods_IsEqual_WhenComparingTwoStringBuilder_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            var thisValue = new StringBuilder("<a></a>");
+            var thatValue = new StringBuilder("<b></b>");
+
+            //------------Execute Test---------------------------
+            var result = thisValue.IsEqual(thatValue);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExtensionMethods_IsEqual")]
@@ -46,7 +373,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ToStringBuilder_XElement_ExpectStringBuilder()
         {
             //------------Setup for test--------------------------
-            var expected = "<x><y /></x>";
+            const string expected = "<x><y /></x>";
             var xe = XElement.Parse(expected);
 
             //------------Execute Test---------------------------
@@ -86,7 +413,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             var tmpFile = Path.GetTempFileName();
-            var val = "<x><y>1</y></x>";
+            const string val = "<x><y>1</y></x>";
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
@@ -131,17 +458,30 @@ namespace Dev2.Common.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExtensionMethods_ToStreamForXmlLoad")]
-        public void ExtensionMethods_ToStreamForXmlLoad_WhenLoadingXElement_ExpectValidXElement()
+        [ExpectedException(typeof(XmlException))]
+        public void ExtensionMethods_ToStreamForXmlLoad_WhenLoadingXElement_ExpectException()
         {
             //------------Setup for test--------------------------
-            var val = "<x><y>1</y></x>";
+            const string val = "<x><y>1</y>.</</x>";
             StringBuilder value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
-            string result;
+            value.ToXElement();
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ToStreamForXmlLoad")]
+        public void ExtensionMethods_ToStreamForXmlLoad_WhenLoadingXElement_ExpectValidXElement()
+        {
+            //------------Setup for test--------------------------
+            const string val = "<x><y>1</y></x>";
+            StringBuilder value = new StringBuilder(val);
+
+            //------------Execute Test---------------------------
             var xe = value.ToXElement();
 
-            result = xe.ToString(SaveOptions.DisableFormatting);
+            string result = xe.ToString(SaveOptions.DisableFormatting);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(val, result);
@@ -386,5 +726,52 @@ namespace Dev2.Common.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(12, result);
         }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ExtractXmlAttributeFromUnsafeXml")]
+        public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributePresent_ExpectAttributeValue()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+
+            //------------Execute Test---------------------------
+            var result = value.ExtractXmlAttributeFromUnsafeXml("SourceName=\"");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains("bug11827src", result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ExtractXmlAttributeFromUnsafeXml")]
+        public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributeNotPresent_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+
+            //------------Execute Test---------------------------
+            var result = value.ExtractXmlAttributeFromUnsafeXml("SourceNamePlanPath=\"");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(string.Empty, result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ExtensionMethods_ExtractXmlAttributeFromUnsafeXml")]
+        public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributePresentAndEndTagInvalid_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+
+            //------------Execute Test---------------------------
+            var result = value.ExtractXmlAttributeFromUnsafeXml("SourceNamePlanPath=\"", "!!");
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(string.Empty, result);
+        }
+
     }
 }

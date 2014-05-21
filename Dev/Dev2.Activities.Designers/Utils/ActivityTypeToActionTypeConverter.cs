@@ -16,6 +16,8 @@ namespace Dev2.Activities.Utils
                     return enActionType.Plugin;
                 case "DbService":
                     return enActionType.InvokeStoredProc;
+                case "RemoteService":
+                    return enActionType.RemoteService;
                 default:
                     return enActionType.BizRule;
             }
