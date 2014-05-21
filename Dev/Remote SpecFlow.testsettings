@@ -2,7 +2,7 @@
 <TestSettings name="Acceptance" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
     <Deployment>
-        <DeploymentItem filename="TestBinaries/" />
+        <DeploymentItem filename="TestBinaries\" />
     </Deployment>
   <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - Server.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - Server.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
