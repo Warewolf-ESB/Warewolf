@@ -105,3 +105,17 @@ Scenario: Calculate using isnumber and blank
 	| "if(isnumber(""),"Is number","Not number")" |	
 	And the execution has "NO" error
 
+#This scenario should pass after the bug 11871 is fixed
+#Scenario: Calculate Assign by evaluating a variable inside a variable
+#	Given I have a calculate variable "[[a]]" equal to "b"
+#	And I have a calculate variable "[[b]]" equal to "20"
+#	And I have the formula "[[[[a]]]]+1"
+#	When the calculate tool is executed
+#	Then the calculate result should be "21"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| fx =               |
+#	| [[[[a]]]]+1 = 20+1 |	
+#	And the debug output as 
+#	|                 |
+#	| [[result]] = 21 |
