@@ -107,9 +107,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                  
                 }
             }
-            catch
+            catch(Exception err)
             {
-                throw;
+                Console.WriteLine(err.Message);
+                Console.WriteLine(err.StackTrace);
                 //Server may already be stopped
             }
 
