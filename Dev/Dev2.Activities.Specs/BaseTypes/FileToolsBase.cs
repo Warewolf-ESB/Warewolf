@@ -111,6 +111,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Console.WriteLine(err.Message);
                 Console.WriteLine(err.StackTrace);
+                Server = null;
+               
                 //Server may already be stopped
             }
 
