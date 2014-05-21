@@ -12,7 +12,8 @@ namespace Dev2.Activities.Specs.BaseTypes
     {
         public static SftpServer Server;
         public static readonly object ServerLock = new object();
-
+        public static int port = 2345;
+        public static bool UsesSFTP = false;
         #region Overrides of RecordSetBases
 
         protected override void BuildDataList()
@@ -22,9 +23,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         /// <summary>
         /// Starts the SFTP server.
         /// </summary>
-        protected static void StartSftpServer()
+        public static void StartSftpServer()
         {
-            lock(ServerLock)
+            lock (ServerLock)
             {
                 if(Server == null)
                 {
@@ -96,22 +97,25 @@ namespace Dev2.Activities.Specs.BaseTypes
             // ;)
         }
 
-        protected static void ShutdownSftpServer()
+        public static void ShutdownSftpServer()
         {
             try
             {
-                if(Server != null)
+                lock (ServerLock)
                 {
-                    Server.Bindings.Clear();
-                    Server.Stop();
-                 
+                    if (Server != null)
+                    {
+                        Server.Bindings.Clear();
+                        Server.Stop();
+
+                    }
                 }
             }
             catch(Exception err)
             {
                 Console.WriteLine(err.Message);
                 Console.WriteLine(err.StackTrace);
-                Server = null;
+                    
                
                 //Server may already be stopped
             }
