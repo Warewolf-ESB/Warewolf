@@ -334,16 +334,19 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static void LogTestRunMessage(string msg, bool isError = false)
         {
-            if(isError)
+            if (Directory.Exists(Path.GetDirectoryName(LogLocation)))
             {
-                File.AppendAllText(LogLocation, "ERROR :: " + msg);
-            }
-            else
-            {
-                File.AppendAllText(LogLocation, "INFO :: " + msg);
-            }
+                if (isError)
+                {
+                    File.AppendAllText(LogLocation, "ERROR :: " + msg);
+                }
+                else
+                {
+                    File.AppendAllText(LogLocation, "INFO :: " + msg);
+                }
 
-            File.AppendAllText(LogLocation, Environment.NewLine);
+                File.AppendAllText(LogLocation, Environment.NewLine);
+            }
         }
     }
 }
