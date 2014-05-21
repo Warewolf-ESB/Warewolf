@@ -359,9 +359,6 @@
     <None Include="UIMaps\WebpageServiceWizardUIMap.uitest" />
     <None Include="UIMaps\WorkflowDesignerUIMap.uitest" />
     <None Include="UIMaps\WorkflowWizardUIMap.uitest" />
-    <None Include="Utils\LoadTest1.loadtest">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Binaries\" />
