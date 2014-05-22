@@ -106,9 +106,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
 
-            //Studio was deployed and started, stop it now.
-            KillProcess(TryGetProcess(StudioProcName));
-
             // Now clean up next test run ;)
             CloseAllInstancesOfIE();
 
