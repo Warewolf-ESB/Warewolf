@@ -801,7 +801,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 	  | variable | value |
 	  | [[a]]    | b     |
 	  | [[b]]    | 12    |	
-	   And "WorkflowWithAssignandBase" contains Base convert "Base" as
+	  And "WorkflowWithAssignandBase" contains Base convert "Base" as
 	  | Variable  | From | To      |
 	  | [[[[a]]]] | Text | Base 64 |
 	  When "WorkflowWithAssignandBase" is executed
@@ -936,13 +936,58 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 #	  | # |                           |
 #	  | 1 | [[result]] = warewolftest |
 
+Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandFindIndex"
+	 And "WorkflowWithAssignandFindIndex" contains an Assign "IndexVal" as
+	  | variable | value |
+	  | [[a]]    | b     |
+	  | [[b]]    | test  |	 	  
+     And "WorkflowWithAssignandFindIndex" contains Find Index "Indexchar" into "[[indexResult]]" as
+	  | In Fields | Index           | Character | Direction     |
+	  | [[[[a]]]] | First Occurence | s         | Left to Right |
+	  When "WorkflowWithAssignandFindIndex" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandFindIndex' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | test      |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as  
+	  | # |              |
+	  | 1 | [[a]] = b    |
+	  | 2 | [[b]] = test |
+	   And the 'Indexchar' in WorkFlow 'WorkflowWithAssignandFindIndex' debug inputs as 	
+	  | In Field         | Index           | Characters | Direction     |
+	  | [[[[a]]]] = test | First Occurence | s          | Left to Right |
+	  And the 'Indexchar' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as 
+	  |                     |
+	  | [[indexResult]] = 3 |
 
-
-
-
-
-
-
+#	  This Scenario should pass after the issue 11878 is fixed
+#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
+#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    |	 	  
+#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
+#	  | In Fields       | Index           | Character | Direction     |
+#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
+#	  When "WorkflowWithAssignandFindIndex1" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
+#	  | In Field               | Index           | Characters | Direction     |
+#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
+#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
+#	  |                     |
+#	  | [[indexResult]] = 3 |
 
 
 

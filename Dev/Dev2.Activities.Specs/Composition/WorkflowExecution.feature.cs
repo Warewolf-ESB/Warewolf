@@ -1786,7 +1786,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Text",
                         "Base 64"});
 #line 804
-    testRunner.And("\"WorkflowWithAssignandBase\" contains Base convert \"Base\" as", ((string)(null)), table106, "And ");
+   testRunner.And("\"WorkflowWithAssignandBase\" contains Base convert \"Base\" as", ((string)(null)), table106, "And ");
 #line 807
    testRunner.When("\"WorkflowWithAssignandBase\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 808
@@ -1840,6 +1840,99 @@ this.ScenarioSetup(scenarioInfo);
                         "[[b]] = MTI="});
 #line 820
       testRunner.And("the \'Base\' in Workflow \'WorkflowWithAssignandBase\' debug outputs as", ((string)(null)), table110, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow with Assign and Find Index(Evaluating scalar variable inside vari" +
+            "able)executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void SimpleWorkflowWithAssignAndFindIndexEvaluatingScalarVariableInsideVariableExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow with Assign and Find Index(Evaluating scalar variable inside vari" +
+                    "able)executing against the server", ((string[])(null)));
+#line 939
+this.ScenarioSetup(scenarioInfo);
+#line 940
+  testRunner.Given("I have a workflow \"WorkflowWithAssignandFindIndex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table111.AddRow(new string[] {
+                        "[[a]]",
+                        "b"});
+            table111.AddRow(new string[] {
+                        "[[b]]",
+                        "test"});
+#line 941
+  testRunner.And("\"WorkflowWithAssignandFindIndex\" contains an Assign \"IndexVal\" as", ((string)(null)), table111, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Index",
+                        "Character",
+                        "Direction"});
+            table112.AddRow(new string[] {
+                        "[[[[a]]]]",
+                        "First Occurence",
+                        "s",
+                        "Left to Right"});
+#line 945
+     testRunner.And("\"WorkflowWithAssignandFindIndex\" contains Find Index \"Indexchar\" into \"[[indexRes" +
+                    "ult]]\" as", ((string)(null)), table112, "And ");
+#line 948
+   testRunner.When("\"WorkflowWithAssignandFindIndex\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 949
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table113.AddRow(new string[] {
+                        "1",
+                        "[[a]] =",
+                        "b"});
+            table113.AddRow(new string[] {
+                        "2",
+                        "[[b]] =",
+                        "test"});
+#line 950
+   testRunner.And("the \'IndexVal\' in WorkFlow \'WorkflowWithAssignandFindIndex\' debug inputs as", ((string)(null)), table113, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table114.AddRow(new string[] {
+                        "1",
+                        "[[a]] = b"});
+            table114.AddRow(new string[] {
+                        "2",
+                        "[[b]] = test"});
+#line 954
+   testRunner.And("the \'IndexVal\' in Workflow \'WorkflowWithAssignandFindIndex\' debug outputs as", ((string)(null)), table114, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Field",
+                        "Index",
+                        "Characters",
+                        "Direction"});
+            table115.AddRow(new string[] {
+                        "[[[[a]]]] = test",
+                        "First Occurence",
+                        "s",
+                        "Left to Right"});
+#line 958
+    testRunner.And("the \'Indexchar\' in WorkFlow \'WorkflowWithAssignandFindIndex\' debug inputs as", ((string)(null)), table115, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table116.AddRow(new string[] {
+                        "[[indexResult]] = 3"});
+#line 961
+   testRunner.And("the \'Indexchar\' in Workflow \'WorkflowWithAssignandFindIndex\' debug outputs as", ((string)(null)), table116, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
