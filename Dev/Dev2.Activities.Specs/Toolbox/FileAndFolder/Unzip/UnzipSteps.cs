@@ -12,7 +12,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
-        //
+        
         [Given(@"zip credentials as '(.*)' and '(.*)'")]
         public void GivenZipCredentialsAsAnd(string userName, string password)
         {
@@ -62,10 +62,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                             true);
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
-            const string ResourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
+            const string resourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
             List<string> filesToCleanup = new List<string>();
-            using(Stream stream = assembly.GetManifestResourceStream(ResourceName))
+            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if(stream != null)
                 {
