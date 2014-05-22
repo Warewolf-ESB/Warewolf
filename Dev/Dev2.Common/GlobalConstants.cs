@@ -12,14 +12,19 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        // ReSharper disable InconsistentNaming
         //Default TimeoutValue
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
 
         // Max String Size
+        // ReSharper disable InconsistentNaming
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
+        // ReSharper restore InconsistentNaming
 
         // Max storage buffer size to avoid LOH ;)
+        // ReSharper disable InconsistentNaming
         public const int MAX_BUFFER_SIZE = 35000;
+        // ReSharper restore InconsistentNaming
 
         // Force Webserver Constants
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
@@ -31,10 +36,14 @@ namespace Dev2.Common
         public const string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
 
         // WF Constants
+        // ReSharper disable InconsistentNaming
         public const int _xamlPoolSize = 5;
+        // ReSharper restore InconsistentNaming
 
         // Constant for unique batch size processing 
+        // ReSharper disable InconsistentNaming
         public const int _uniqueBatchSize = 1000;
+        // ReSharper restore InconsistentNaming
 
         //Network
         public const int NetworkTimeOut = 30000; //Bug 8796
@@ -58,8 +67,12 @@ namespace Dev2.Common
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
+        // ReSharper disable InconsistentNaming
         public const string OpenJSON = "<JSON>";
+        // ReSharper restore InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public const string CloseJSON = "</JSON>";
+        // ReSharper restore InconsistentNaming
 
         // Service Action Constants
         public const string OutputDefOpenTag = "<Outputs>";
@@ -73,8 +86,12 @@ namespace Dev2.Common
         public const string NullEntryNamespace = "NullEntryNamespace";
         public const string ManagementServicePayload = "Dev2System.ManagmentServicePayload";
         public const string ErrorPayload = "Dev2System.Dev2Error";
+        // ReSharper disable InconsistentNaming
         public const string ActivityRSResult = "Dev2ActivityResults";
+        // ReSharper restore InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public const string ActivityRSField = "Dev2Result";
+        // ReSharper restore InconsistentNaming
         public const string StarExpression = "*";
         public const string EqualsExpression = "=";
         public const int AllIndexes = -1;
@@ -120,7 +137,9 @@ namespace Dev2.Common
         public const string DecisionWizardLocation = "wwwroot/decisions/wizard";
         public const string DefaultTrueArmText = "True";
         public const string DefaultFalseArmText = "False";
+        // ReSharper disable InconsistentNaming
         public const string VBSerializerToken = "__!__";
+        // ReSharper restore InconsistentNaming
 
         public const string DisplayNamePropertyText = "DisplayName"; // PBI 9220 - 2013.04.29 - TWR
 
@@ -140,7 +159,9 @@ namespace Dev2.Common
 
         // Brendon Hack Constants
         public const string PostData = "postData";
+        // ReSharper disable InconsistentNaming
         public const string DLID = "dlid";
+        // ReSharper restore InconsistentNaming
 
         public const string DecisionWizardErrorString = "Couldn't find the resource needed to configure the Decision.";
         public const string DecisionWizardErrorHeading = "Missing System Model Dev2DecisionStack";
@@ -281,5 +302,7 @@ namespace Dev2.Common
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
         public const string ResourceTreeViewModelFormat = "Dev2.Studio.ViewModels.Navigation.ResourceTreeViewModel";
+
+        // ReSharper restore InconsistentNaming
     }
 }
