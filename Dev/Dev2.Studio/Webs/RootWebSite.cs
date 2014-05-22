@@ -10,8 +10,9 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Webs
+// ReSharper restore CheckNamespace
 {
     public static class RootWebSite
     {
@@ -140,8 +141,17 @@ namespace Dev2.Studio.Webs
             // ReSharper restore ImpureMethodCallOnReadonlyValueField
             if(resourceModel.WorkflowXaml != null)
             {
-                var xe = resourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
-                srcID = xe.AttributeSafe("SourceID");
+                var workflowXaml = resourceModel.WorkflowXaml;
+
+                try
+                {
+                    var xe = workflowXaml.Replace("&", "&amp;").ToXElement();
+                    srcID = xe.AttributeSafe("SourceID");
+                }
+                catch
+                {
+                    srcID = workflowXaml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                }
             }
 
             return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
