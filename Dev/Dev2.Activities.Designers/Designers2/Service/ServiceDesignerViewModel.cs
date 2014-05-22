@@ -484,7 +484,9 @@ namespace Dev2.Activities.Designers2.Service
             return true;
         }
 
+        // ReSharper disable InconsistentNaming
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
+        // ReSharper restore InconsistentNaming
         {
             _worker.Start(() => GetResourceModel(e.Model), CheckVersions);
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
@@ -607,17 +609,17 @@ namespace Dev2.Activities.Designers2.Service
                 if(resourceModel != null)
                 {
                     string srcId;
-                    var workflowXML = resourceModel.WorkflowXaml;
+                    var workflowXml = resourceModel.WorkflowXaml;
                     try
                     {
-                        var xe = workflowXML.Replace("&", "&amp;").ToXElement();
+                        var xe = workflowXml.Replace("&", "&amp;").ToXElement();
                         srcId = xe.AttributeSafe("SourceID");
                     }
                     catch(XmlException xe)
                     {
                         this.LogError(xe);
                         // invalid xml, we need to extract the sourceID another way ;)
-                        srcId = workflowXML.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                        srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
 
                     Guid sourceId;
