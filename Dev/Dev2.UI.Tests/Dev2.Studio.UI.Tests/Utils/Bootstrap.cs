@@ -82,19 +82,29 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         public static void Teardown()
         {
-            if(ServerProc != null && !ServerProc.HasExited)
+            if (File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
-                ServerProc.Kill();
+                if (ServerProc != null && !ServerProc.HasExited)
+                {
+                    ServerProc.Kill();
+                }
+
+                //Server was deployed and started, stop it now.
+                KillProcess(TryGetProcess(ServerProcName));
+
+                if (StudioProc != null && !StudioProc.HasExited)
+                {
+                    StudioProc.Kill();
+                }
+
+
+                //Studio was deployed and started, stop it now.
+                KillProcess(TryGetProcess(StudioProcName));
             }
-
-            //Server was deployed and started, stop it now.
-            KillProcess(TryGetProcess(ServerProcName));
-
-            if(StudioProc != null && !StudioProc.HasExited)
+            else
             {
-                StudioProc.Kill();
+                LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
-
 
             //Studio was deployed and started, stop it now.
             KillProcess(TryGetProcess(StudioProcName));
