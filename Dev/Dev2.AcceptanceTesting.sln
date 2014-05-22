@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Testing.SFTPServer", "
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 25
+		SccNumberOfProjects = 26
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccProjectUniqueName0 = Dev2.Activities.Specs\\Dev2.Activities.Specs.csproj
@@ -183,6 +183,11 @@ Global
 		SccAuxPath24 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath24 = Dev2.UndoFramework
 		SccProvider24 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName25 = SFTPServer\\Dev2.Testing.SFTPServer.csproj
+		SccProjectName25 = SFTPServer
+		SccAuxPath25 = http://rsaklfsvrgendev:8080/tfs/defaultcollection
+		SccLocalPath25 = SFTPServer
+		SccProvider25 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

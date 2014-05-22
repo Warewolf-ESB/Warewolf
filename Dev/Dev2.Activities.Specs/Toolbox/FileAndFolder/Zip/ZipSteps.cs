@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
             {
                 Action = zip
             };
-
+            // CI
             ScenarioContext.Current.Add("activity", zip);
         }
     }
