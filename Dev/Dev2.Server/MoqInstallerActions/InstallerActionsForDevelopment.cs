@@ -18,6 +18,11 @@ namespace Dev2.MoqInstallerActions
             {
                 wso.AddWarewolfGroup();
             }
+            else
+            {
+                wso.DeleteWarewolfGroup();
+                wso.AddWarewolfGroup();
+            }
 
             CreateWarewolfGroupAndAddCurrentUser();
             AddAdministratorsToWarewolfGroup();
