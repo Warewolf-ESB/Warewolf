@@ -1099,6 +1099,262 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 #	  |                      |
 #	  | [[fresult]] = 12.342 |
 
+#	  This Scenario should pass after the issue 11878 is fixed
+#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
+#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    |	 	  
+#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
+#	  | In Fields       | Index           | Character | Direction     |
+#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
+#	  When "WorkflowWithAssignandFindIndex1" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
+#	  | In Field               | Index           | Characters | Direction     |
+#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
+#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
+#	  |                     |
+#	  | [[indexResult]] = 3 |
+#
+#This scenario should pass after the bug 11887 is fixed
+#Scenario: Simple workflow with Assign and Random(Evaluating recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandRandom"
+#	 And "WorkflowWithAssignandRandom" contains an Assign "Valforrandno" as
+#	  | variable    | value   |
+#	  | [[a]]       | b       |
+#	  | [[b]]       | 10      |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | 20      |	 	  
+#	   And "WorkflowWithAssignandRandom" contains Random "Rand" as
+#	  | Type    | From      | To              | Result        |
+#	  | Numbers | [[[[a]]]] | [[[[rec().a]]]] | [[ranresult]] |
+#	  When "WorkflowWithAssignandRandom" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Valforrandno' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[a]] =       | b         |
+#	  | 2 | [[b]] =       | 10        |
+#	  | 3 | [[rec().a]] = | new().a   |
+#	  | 4 | [[new().a]] = | 20        |
+#	  And the 'Valforrandno' in Workflow 'WorkflowWithAssignandRandom' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[a]] = b              |
+#	  | 2 | [[b]] = 10             |
+#	  | 3 | [[rec(1).a]] = new().a |
+#	  | 4 | [[new(1).a]] = 20      |
+#	  And the 'Random' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
+#	  | Random  | From           | To                   |
+#	  | Numbers | [[[[a]]]] = 10 | [[[[rec().a]]]] = 20 |
+#	  And the 'Random' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
+#	  |                       |
+#	  | [[ranresult]] = Int32 |
+
+#This test scenario should pass after the bug 11888 is fixed
+#Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandDateTimetool"
+#	 And "WorkflowWithAssignandDateTimetool" contains an Assign "Dateandtime" as
+#	  | variable    | value      |
+#	  | [[a]]       | b          |
+#	  | [[b]]       | 01/02/2014 |
+#	  | [[rec().a]] | new().a    |
+#	  | [[new().a]] | dd/mm/yyyy |	 	  
+#	  And "WorkflowWithAssignandDateTimetool" contains Date and Time "AddDate" as
+#      | Input     | Input Format    | Add Time | Output Format | Result  |
+#      | [[[[a]]]] | [[[[rec().a]]]] | 1        | dd/mm/yyyy    | [[res]] |
+#	  When "WorkflowWithAssignandDateTimetool" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
+#	  | # | Variable      | New Value  |
+#	  | 1 | [[a]] =       | b          |
+#	  | 2 | [[b]] =       | 01/02/2014 |
+#	  | 3 | [[rec().a]] = | new().a    |
+#	  | 4 | [[new().a]] = |  dd/mm/yyyy|
+#	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as  
+#	   | # |                            |
+#	   | 1 | [[a]] = b                  |
+#	   | 2 | [[b]] = 01/02/2014         |
+#	   | 3 | [[rec(1).a]] = new().a     |
+#	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
+#	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
+#	   | Input                  | Input Format                 | Add Time |   | Output Format |
+#	   | [[[[a]]]] = 01/02/2014 | [[[[rec().a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
+#	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
+#	   |                      |
+#	   | [[res]] = 01/02/2015 |
+#
+#  
+#this test scenario should pass after the bug 11888 is fixed
+#Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset variable inside variable)executing against the server
+#	  Given I have a workflow "WorkflowWithAssignandDateTimeDiff"
+#	  And "WorkflowWithAssignandDateTimeDiff" contains an Assign "Dateandtime" as
+#	   | variable    | value      |
+#	   | [[a]]       | b          |
+#	   | [[b]]       | 01/02/2016 |
+#	   | [[rec().a]] | new().a    |
+#	   | [[new().a]] | 01/02/2014 |	 	  
+#	  And "WorkflowWithAssignandDateTimeDiff" contains Date and Time Difference "DateTimedif" as
+#       | Input1          | Input2    | Input Format | Output In | Result     |
+#       | [[[[rec().a]]]] | [[[[a]]]] | dd/mm/yyyy   | Years     | [[result]] |  
+#	   When "WorkflowWithAssignandDateTimeDiff" is executed
+#	   Then the workflow execution has "NO" error
+#	   And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
+#	   | # | Variable      | New Value  |
+#	   | 1 | [[a]] =       | b          |
+#	   | 2 | [[b]] =       | 01/02/2016 |
+#	   | 3 | [[rec().a]] = | new().a    |
+#	   | 4 | [[new().a]] = | 01/02/2014 |
+#	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as  
+#	   | # |                           |
+#	   | 1 | [[a]] = b                 |
+#	   | 2 | [[b]] = 01/02/2016        |
+#	   | 3 | [[rec(1).a]] = new().a    |
+#	   | 4 | [[new(1).a]] = 01/02/2014 |
+#	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
+#	   | Input 1                      | Input 2                | Input Format | Output In |
+#	   | [[[[rec().a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
+#	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
+#	   |                |
+#	   | [[result]] = 2 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandReplace"
+	 And "WorkflowWithAssignandReplace" contains an Assign "IndexVal" as
+	  | variable | value |
+	  | [[a]]    | b     |
+	  | [[b]]    | test  |	 	  
+      And "WorkflowWithAssignandReplace" contains Replace "Replac" into "[[replaceResult]]" as	
+	  | In Fields | Find | Replace With |
+	  | [[[[a]]]] | s    | REPLACE      |
+	  When "WorkflowWithAssignandReplace" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | test      |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandReplace' debug outputs as  
+	  | # |              |
+	  | 1 | [[a]] = b    |
+	  | 2 | [[b]] = test |
+	  And the 'Replac' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as 	
+	 | In Field(s)         | Find | Replace With |
+	 | [[[[a]]]] = test | s    | REPLACE      |
+	    And the 'Replac' in Workflow 'WorkflowWithAssignandReplace' debug outputs as 
+	  |                       |
+	  | [[b]] = teREPLACEt    |
+	  | [[replaceResult]] = 1 |
+#
+#This Scenario should be passed after the bug 11789 is fixed
+#Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
+#	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    | 
+#      And "WorkflowWithAssignandReplacebyrec" contains Replace "Rep" into "[[replaceResult]]" as	
+#	  | In Fields | Find | Replace With |
+#	  | [[[[rec(1).a]]]] | s    | REPLACE      |
+#	  When "WorkflowWithAssignandReplacebyrec" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Vals' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'Vals' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
+#	  | In Field(s)             | Find | Replace With |
+#	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+#	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
+#	  |                          |
+#	  | [[new().a]] = teREPLACEt |
+#	  | [[replaceResult]] = 1    |
+
+
+
+Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar variable inside variable)executing against the server
+	  Given I have a workflow "WorkflowWithAssignandFormat"
+	  And "WorkflowWithAssignandFormat" contains an Assign "IndexVal" as
+	  | variable | value   |
+	  | [[a]]    | b       |
+	  | [[b]]    | 12.3412 |	 	  
+      And "WorkflowWithAssignandFormat" contains Format Number "Fnumber" as 
+	  | Number    | Rounding Selected | Rounding To | Decimal to show | Result      |
+	  | [[[[a]]]] | Up                | 3           | 3               | [[fresult]] |
+	  When "WorkflowWithAssignandFormat" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | 12.3412   |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandFormat' debug outputs as  
+	  | # |                 |
+	  | 1 | [[a]] = b       |
+	  | 2 | [[b]] = 12.3412 |
+	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
+	  | Number              | Rounding | Rounding Value | Decimals to show |
+	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
+	  |                      |
+	  | [[fresult]] = 12.342 |
+
+#This test is should be passed after the bug 11884
+#Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
+#	  Given I have a workflow "WorkflowWithAssignandFormatn"
+#	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    |	 	  
+#      And "WorkflowWithAssignandFormatn" contains Format Number "Fnumb" as 
+#	  | Number          | Rounding Selected | Rounding To | Decimal to show | Result      |
+#	  | [[[[rec().a]]]] | Up                | 3           | 3               | [[fresult]] |
+#	  When "WorkflowWithAssignandFormatn" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'IndVal' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'IndVal' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
+#	  | Number                    | Rounding | Rounding Value | Decimals to show |
+#	  | [[[[rec().a]]]] = 12.3412 | Up       | 3              | 3                |
+#	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
+#	  |                      |
+#	  | [[fresult]] = 12.342 |
+
 
 
 
