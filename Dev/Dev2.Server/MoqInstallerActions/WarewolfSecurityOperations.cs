@@ -14,5 +14,9 @@ namespace Dev2.MoqInstallerActions
         void DeleteWarewolfGroup();
 
         string FormatUserForInsert(string currentUser, string machineName);
+
+        void AddAdministratorsGroupToWarewolf();
+
+        bool IsAdminMemberOfWarewolf();
     }
 }

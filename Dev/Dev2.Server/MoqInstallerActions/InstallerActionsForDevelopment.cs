@@ -12,12 +12,26 @@ namespace Dev2.MoqInstallerActions
 
         public void ExecuteMoqInstallerActions()
         {
+            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            if(!wso.DoesWarewolfGroupExist())
+            {
+                wso.AddWarewolfGroup();
+            }
+
             CreateWarewolfGroupAndAddCurrentUser();
+            AddAdministratorsToWarewolfGroup();
         }
 
         #endregion
 
         #region Private Actions
+
+        private void AddAdministratorsToWarewolfGroup()
+        {
+            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+            wso.AddAdministratorsGroupToWarewolf();
+        }
 
         /// <summary>
         /// Creates the warewolf group and adds the current user.
@@ -25,14 +39,6 @@ namespace Dev2.MoqInstallerActions
         private void CreateWarewolfGroupAndAddCurrentUser()
         {
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-
-            // start from fresh each time ;)
-            if(wso.DoesWarewolfGroupExist())
-            {
-                return;
-            }
-
-            wso.AddWarewolfGroup();
 
             // Get the current executing user ;)
             var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);

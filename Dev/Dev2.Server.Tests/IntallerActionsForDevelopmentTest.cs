@@ -27,6 +27,8 @@ namespace Dev2.Server.Tests
             Assert.IsTrue(isGroupCreated);
             var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
             Assert.IsTrue(result);
+            var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
+            Assert.IsTrue(isAdminAMember);
         }
 
         [TestMethod]
@@ -49,7 +51,9 @@ namespace Dev2.Server.Tests
             var isGroupCreated = warewolfGroupOps.DoesWarewolfGroupExist();
             Assert.IsTrue(isGroupCreated);
             var result = warewolfGroupOps.IsUserInGroup(currentUser.Name);
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
+            var isAdminAMember = warewolfGroupOps.IsAdminMemberOfWarewolf();
+            Assert.IsTrue(isAdminAMember);
         }
 
         // ReSharper restore InconsistentNaming

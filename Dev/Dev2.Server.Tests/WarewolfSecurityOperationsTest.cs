@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Dev2.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -74,6 +75,64 @@ namespace Dev2.InstallerActions
             //------------Assert Results-------------------------
 
             // Will throw exception on failure ;)
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAMember_ExpectNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            //------------Execute Test---------------------------
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenNotAlreadyMember_ExpectAdministratorsMemberOfWarewolf()
+        {
+            //------------Setup for test--------------------------
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            //------------Execute Test---------------------------
+            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WarewolfSecurityOperations_AddWarewolfGroupToAdministrators")]
+        [ExpectedException(typeof(TargetInvocationException))]
+        public void WarewolfSecurityOperations_AddWarewolfGroupToAdministrators_WhenAlreadyMember_ExpectException()
+        {
+
+            //------------Setup for test--------------------------
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+
+            //------------Execute Test---------------------------
+            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
         }
 
         [TestMethod]
