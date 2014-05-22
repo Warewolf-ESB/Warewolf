@@ -12,7 +12,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
-
+        //
         [Given(@"zip credentials as '(.*)' and '(.*)'")]
         public void GivenZipCredentialsAsAnd(string userName, string password)
         {
