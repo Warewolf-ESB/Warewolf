@@ -801,7 +801,7 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
 	  | variable | value |
 	  | [[a]]    | b     |
 	  | [[b]]    | 12    |	
-	  And "WorkflowWithAssignandBase" contains Base convert "Base" as
+	   And "WorkflowWithAssignandBase" contains Base convert "Base" as
 	  | Variable  | From | To      |
 	  | [[[[a]]]] | Text | Base 64 |
 	  When "WorkflowWithAssignandBase" is executed
@@ -961,6 +961,156 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable 
 	  And the 'Indexchar' in Workflow 'WorkflowWithAssignandFindIndex' debug outputs as 
 	  |                     |
 	  | [[indexResult]] = 3 |
+
+#	  This Scenario should pass after the issue 11878 is fixed
+#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
+#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    |	 	  
+#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
+#	  | In Fields       | Index           | Character | Direction     |
+#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
+#	  When "WorkflowWithAssignandFindIndex1" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
+#	  | In Field               | Index           | Characters | Direction     |
+#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
+#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
+#	  |                     |
+#	  | [[indexResult]] = 3 |
+
+Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandReplace"
+	 And "WorkflowWithAssignandReplace" contains an Assign "IndexVal" as
+	  | variable | value |
+	  | [[a]]    | b     |
+	  | [[b]]    | test  |	 	  
+      And "WorkflowWithAssignandReplace" contains Replace "Replac" into "[[replaceResult]]" as	
+	  | In Fields | Find | Replace With |
+	  | [[[[a]]]] | s    | REPLACE      |
+	  When "WorkflowWithAssignandReplace" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | test      |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandReplace' debug outputs as  
+	  | # |              |
+	  | 1 | [[a]] = b    |
+	  | 2 | [[b]] = test |
+	  And the 'Replac' in WorkFlow 'WorkflowWithAssignandReplace' debug inputs as 	
+	 | In Field(s)         | Find | Replace With |
+	 | [[[[a]]]] = test | s    | REPLACE      |
+	    And the 'Replac' in Workflow 'WorkflowWithAssignandReplace' debug outputs as 
+	  |                       |
+	  | [[b]] = teREPLACEt    |
+	  | [[replaceResult]] = 1 |
+#
+#This Scenario should be passed after the bug 11789 is fixed
+#Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
+#	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
+#	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    | 
+#      And "WorkflowWithAssignandReplacebyrec" contains Replace "Rep" into "[[replaceResult]]" as	
+#	  | In Fields | Find | Replace With |
+#	  | [[[[rec(1).a]]]] | s    | REPLACE      |
+#	  When "WorkflowWithAssignandReplacebyrec" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Vals' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'Vals' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
+#	  | In Field(s)             | Find | Replace With |
+#	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+#	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
+#	  |                          |
+#	  | [[new().a]] = teREPLACEt |
+#	  | [[replaceResult]] = 1    |
+
+
+
+Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar variable inside variable)executing against the server
+	  Given I have a workflow "WorkflowWithAssignandFormat"
+	  And "WorkflowWithAssignandFormat" contains an Assign "IndexVal" as
+	  | variable | value   |
+	  | [[a]]    | b       |
+	  | [[b]]    | 12.3412 |	 	  
+      And "WorkflowWithAssignandFormat" contains Format Number "Fnumber" as 
+	  | Number    | Rounding Selected | Rounding To | Decimal to show | Result      |
+	  | [[[[a]]]] | Up                | 3           | 3               | [[fresult]] |
+	  When "WorkflowWithAssignandFormat" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndexVal' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | 12.3412   |
+	  And the 'IndexVal' in Workflow 'WorkflowWithAssignandFormat' debug outputs as  
+	  | # |                 |
+	  | 1 | [[a]] = b       |
+	  | 2 | [[b]] = 12.3412 |
+	  And the 'Fnumber' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
+	  | Number              | Rounding | Rounding Value | Decimals to show |
+	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
+	  And the 'Fnumber' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
+	  |                      |
+	  | [[fresult]] = 12.342 |
+
+#This test is should be passed after the bug 11884
+#Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
+#	  Given I have a workflow "WorkflowWithAssignandFormatn"
+#	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
+#	  | variable    | value   |
+#	  | [[rec().a]] | new().a |
+#	  | [[new().a]] | test    |	 	  
+#      And "WorkflowWithAssignandFormatn" contains Format Number "Fnumb" as 
+#	  | Number          | Rounding Selected | Rounding To | Decimal to show | Result      |
+#	  | [[[[rec().a]]]] | Up                | 3           | 3               | [[fresult]] |
+#	  When "WorkflowWithAssignandFormatn" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'IndVal' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | new().a   |
+#	  | 2 | [[new().a]] = | test      |
+#	  And the 'IndVal' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as  
+#	  | # |                        |
+#	  | 1 | [[rec(1).a]] = new().a |
+#	  | 2 | [[new(1).a]] = test    |
+#	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
+#	  | Number                    | Rounding | Rounding Value | Decimals to show |
+#	  | [[[[rec().a]]]] = 12.3412 | Up       | 3              | 3                |
+#	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
+#	  |                      |
+#	  | [[fresult]] = 12.342 |
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #	  This Scenario should pass after the issue 11878 is fixed
 #Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server

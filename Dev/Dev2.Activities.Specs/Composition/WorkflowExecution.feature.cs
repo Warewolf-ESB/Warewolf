@@ -1786,7 +1786,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Text",
                         "Base 64"});
 #line 804
-   testRunner.And("\"WorkflowWithAssignandBase\" contains Base convert \"Base\" as", ((string)(null)), table106, "And ");
+    testRunner.And("\"WorkflowWithAssignandBase\" contains Base convert \"Base\" as", ((string)(null)), table106, "And ");
 #line 807
    testRunner.When("\"WorkflowWithAssignandBase\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 808
@@ -1933,6 +1933,191 @@ this.ScenarioSetup(scenarioInfo);
                         "[[indexResult]] = 3"});
 #line 961
    testRunner.And("the \'Indexchar\' in Workflow \'WorkflowWithAssignandFindIndex\' debug outputs as", ((string)(null)), table116, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow with Assign and Replace(Evaluating scalar variable inside variabl" +
+            "e)executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void SimpleWorkflowWithAssignAndReplaceEvaluatingScalarVariableInsideVariableExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow with Assign and Replace(Evaluating scalar variable inside variabl" +
+                    "e)executing against the server", ((string[])(null)));
+#line 992
+this.ScenarioSetup(scenarioInfo);
+#line 993
+  testRunner.Given("I have a workflow \"WorkflowWithAssignandReplace\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table117.AddRow(new string[] {
+                        "[[a]]",
+                        "b"});
+            table117.AddRow(new string[] {
+                        "[[b]]",
+                        "test"});
+#line 994
+  testRunner.And("\"WorkflowWithAssignandReplace\" contains an Assign \"IndexVal\" as", ((string)(null)), table117, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Find",
+                        "Replace With"});
+            table118.AddRow(new string[] {
+                        "[[[[a]]]]",
+                        "s",
+                        "REPLACE"});
+#line 998
+      testRunner.And("\"WorkflowWithAssignandReplace\" contains Replace \"Replac\" into \"[[replaceResult]]\"" +
+                    " as", ((string)(null)), table118, "And ");
+#line 1001
+   testRunner.When("\"WorkflowWithAssignandReplace\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1002
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table119.AddRow(new string[] {
+                        "1",
+                        "[[a]] =",
+                        "b"});
+            table119.AddRow(new string[] {
+                        "2",
+                        "[[b]] =",
+                        "test"});
+#line 1003
+   testRunner.And("the \'IndexVal\' in WorkFlow \'WorkflowWithAssignandReplace\' debug inputs as", ((string)(null)), table119, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table120.AddRow(new string[] {
+                        "1",
+                        "[[a]] = b"});
+            table120.AddRow(new string[] {
+                        "2",
+                        "[[b]] = test"});
+#line 1007
+   testRunner.And("the \'IndexVal\' in Workflow \'WorkflowWithAssignandReplace\' debug outputs as", ((string)(null)), table120, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Field(s)",
+                        "Find",
+                        "Replace With"});
+            table121.AddRow(new string[] {
+                        "[[[[a]]]] = test",
+                        "s",
+                        "REPLACE"});
+#line 1011
+   testRunner.And("the \'Replac\' in WorkFlow \'WorkflowWithAssignandReplace\' debug inputs as", ((string)(null)), table121, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table122.AddRow(new string[] {
+                        "[[b]] = teREPLACEt"});
+            table122.AddRow(new string[] {
+                        "[[replaceResult]] = 1"});
+#line 1014
+     testRunner.And("the \'Replac\' in Workflow \'WorkflowWithAssignandReplace\' debug outputs as", ((string)(null)), table122, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Simple workflow with Assign and Format Numbers(Evaluating scalar variable inside " +
+            "variable)executing against the server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void SimpleWorkflowWithAssignAndFormatNumbersEvaluatingScalarVariableInsideVariableExecutingAgainstTheServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow with Assign and Format Numbers(Evaluating scalar variable inside " +
+                    "variable)executing against the server", ((string[])(null)));
+#line 1049
+this.ScenarioSetup(scenarioInfo);
+#line 1050
+   testRunner.Given("I have a workflow \"WorkflowWithAssignandFormat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table123.AddRow(new string[] {
+                        "[[a]]",
+                        "b"});
+            table123.AddRow(new string[] {
+                        "[[b]]",
+                        "12.3412"});
+#line 1051
+   testRunner.And("\"WorkflowWithAssignandFormat\" contains an Assign \"IndexVal\" as", ((string)(null)), table123, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding Selected",
+                        "Rounding To",
+                        "Decimal to show",
+                        "Result"});
+            table124.AddRow(new string[] {
+                        "[[[[a]]]]",
+                        "Up",
+                        "3",
+                        "3",
+                        "[[fresult]]"});
+#line 1055
+      testRunner.And("\"WorkflowWithAssignandFormat\" contains Format Number \"Fnumber\" as", ((string)(null)), table124, "And ");
+#line 1058
+   testRunner.When("\"WorkflowWithAssignandFormat\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1059
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table125.AddRow(new string[] {
+                        "1",
+                        "[[a]] =",
+                        "b"});
+            table125.AddRow(new string[] {
+                        "2",
+                        "[[b]] =",
+                        "12.3412"});
+#line 1060
+   testRunner.And("the \'IndexVal\' in WorkFlow \'WorkflowWithAssignandFormat\' debug inputs as", ((string)(null)), table125, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table126.AddRow(new string[] {
+                        "1",
+                        "[[a]] = b"});
+            table126.AddRow(new string[] {
+                        "2",
+                        "[[b]] = 12.3412"});
+#line 1064
+   testRunner.And("the \'IndexVal\' in Workflow \'WorkflowWithAssignandFormat\' debug outputs as", ((string)(null)), table126, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show"});
+            table127.AddRow(new string[] {
+                        "[[[[a]]]] = 12.3412",
+                        "Up",
+                        "3",
+                        "3"});
+#line 1068
+   testRunner.And("the \'Fnumber\' in WorkFlow \'WorkflowWithAssignandFormat\' debug inputs as", ((string)(null)), table127, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table128.AddRow(new string[] {
+                        "[[fresult]] = 12.342"});
+#line 1071
+   testRunner.And("the \'Fnumber\' in Workflow \'WorkflowWithAssignandFormat\' debug outputs as", ((string)(null)), table128, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
