@@ -3,7 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
+// ReSharper disable CheckNamespace
 namespace UndoFramework.Tests
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Summary description for ActionManagerTests
@@ -33,7 +35,7 @@ namespace UndoFramework.Tests
         // public static void MyClassCleanup() { }
         //
         // Use TestInitialize to run code before running each test 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             mockAction.Setup(c => c.CanExecute()).Returns(true).Verifiable();
