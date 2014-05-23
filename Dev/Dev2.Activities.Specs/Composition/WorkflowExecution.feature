@@ -328,48 +328,44 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 
 #This test is going to pass after the issue 11804 is fixed
 #@Ignore 
-#Scenario: Workflow with Assigns Calculate and DataSplit executing against the server
-#      Given I have a workflow "WorkflowWithAssignCalculateandDataSplittools""
-#	  And "WorkflowWithAssignCalculateandDataSplittools" contains an Assign "splitvalues1" as
-#      | variable  | value    |
-#      | [[a]]     | 1        |
-#      | [[b]]     | 2        |
-#      | [[c]]     | test     |
-#      | [[split]] | warewolf |
-#	  And "WorkflowWithAssignCalculateandDataSplittools" contains an Assign "splitvalues2" as
-#      | variable | value  |
-#      | [[test]] | result |
-#	  And "WorkflowWithAssignCalculateandDataSplittools" contains Calculate "Calculate" with formula "[[a]]+[[b]]" into "[[result]]"
-#	  And "WorkflowWithAssignCalculateandDataSplittools" contains Data Split "Data Spliting" as
-#	  | String    | Variable     | Type  | At        | Include    | Escape |
-#	  | [[split]] | [[rec(1).b]] | Index | [[[[c]]]] | Unselected |        |
-#	  When "WorkflowWithAssignCalculateandDataSplittools" is executed
+#Scenario: Workflow with Assigns and DataSplit executing against the server
+#      Given I have a workflow "WorkflowWithAssignandDataSplittools""
+#	  And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues1" as
+#      | variable    | value |
+#      | [[a]]       | b     |
+#      | [[b]]       | 2     |
+#      | [[rs(1).a]] | test  |
+#	   And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues2" as
+#      | variable | value    |
+#      | [[test]] | warewolf |
+#	  And "WorkflowWithAssignandDataSplittools" contains Data Split "Data Spliting" as
+#	  | String          | Variable     | Type  | At        | Include    | Escape |
+#	  | [[[[rs(1).a]]]] | [[rec(1).b]] | Index | [[[[a]]]] | Unselected |        |
+#	  When "WorkflowWithAssignandDataSplittools" is executed
 #	  Then the execution has "NO" error
-#	  And the 'splitvalues1' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
-#	  | # | Variable        | New Value |
-#	  | 1 | [[a]] =         | 1         |
-#	  | 2 | [[b]] =         | 2         |
-#	  | 3 | [[c]] =         | test      |
-#	  | 4 | [[split]] = | workflow  |
-#	 And the 'splitvalues1' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as   
+#	  And the 'splitvalues1' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+#	  | # | Variable      | New Value |
+#	  | 1 | [[a]] =       | b         |
+#	  | 2 | [[b]] =       | 2         |
+#	  | 3 | [[rs(1).a]] = | test      |
+#	 And the 'splitvalues1' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
 #	  | # |                       |
-#	  | 1 | [[a]]         =  1    |
+#	  | 1 | [[a]]         =  b    |
 #	  | 2 | [[b]]         =  2    |
-#	  | 3 | [[c]]         =  test |
-#	  | 4 | [[split]] = workflow  |
-#	  And the 'splitvalues2' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
-#      | fx =              |
-#      | [[a]]+[[b]] = 1+2 |          
-#      And the 'splitvalues12' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
-#	  |                |
-#	  | [[result]] = 3 |
-#	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignDataMergeandDataSplittools' debug inputs as 
-#	  | String to Split      | Process Direction | Skip blank rows | # |                        | With  | Using     | Include | Escape |
-#	  | [[split]] = workflow | Forward           | No              | 1 | [[rec(1).b]] = nothing | Index | [[[[c]]]] | No      |        |
-#	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignDataMergeandDataSplittools' debug outputs as  
+#	  | 3 | [[rs(1).a]]   =  test |
+#	 And the 'splitvalues2' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+#	  | # | Variable   | New Value |
+#	  | 1 | [[test]] = | warewolf  | 
+#	 And the 'splitvalues2' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
+#	  | # |                      |
+#	  | 1 | [[test]] =  warewolf |
+#	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+#	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
+#	  | [[[[rs(1).a]]]] = workflow | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[c]]]] = 2 | No      |        |
+#	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 #	  | # |                   |
 #	  | 1 | [[rec(1).a]] = lf |
-#	
+##	
 	  
 #@ignore 	  
 #Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
@@ -1496,4 +1492,69 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 #	  | 1 | [[new(1).a]] = test     |
 #	  | 2 | [[rec(2).a]] = warewolf |
 
-	  		
+Scenario: Workflow with Assign Calculate. 
+      Given I have a workflow "WorkflowWithAssignCalculateindexrecordset""
+	  And "WorkflowWithAssignCalculateindexrecordset" contains an Assign "values1" as
+      | variable       | value |
+      | [[a]]          | 1     |
+      | [[rec(1).a]]   | 2     |
+      | [[index(1).a]] | 1     |
+      | [[rec(2).a]]   | 6     |
+	  And "WorkflowWithAssignCalculateindexrecordset" contains Calculate "Calculate1" with formula "[[rec([[index(1).a]].a]]+[[a]]" into "[[result]]"
+	  When "WorkflowWithAssignCalculateindexrecordset" is executed
+	  Then the execution has "NO" error
+	  And the 'values1' in WorkFlow 'WorkflowWithAssignCalculateindexrecordset' debug inputs as 
+	  | # | Variable         | New Value |
+	  | 1 | [[a]] =          | 1         |
+	  | 2 | [[rec(1).a]] =   | 2         |
+	  | 3 | [[index(1).a]] = | 1         |
+	  | 4 | [[rec(2).a]] =   | 6         |
+	 And the 'values1' in Workflow 'WorkflowWithAssignCalculateindexrecordset' debug outputs as   
+	  | # |                    |
+	  | 1 | [[a]]         =  1 |
+	  | 2 | [[rec(1).a]]  =  2 |
+	  | 3 | [[index(1).a]] = 1 |
+	  | 4 | [[rec(2).a]]   = 6 |
+	  And the 'Calculate1' in WorkFlow 'WorkflowWithAssignCalculateindexrecordset' debug inputs as 
+      | fx =                                 |
+      | [[rec([[index(1).a]].a]]+[[a]] = 2+1 |           
+      And the 'Calculate1' in Workflow 'WorkflowWithAssignCalculateindexrecordset' debug outputs as  
+	  |                |
+	  | [[result]] = 3 |
+
+#This scenario should pass after the issue 11896 is fixed
+#Scenario Outline: Simple workflow with Assign and Format Numbers recordset index variable.
+#      Given I have a workflow "WorkflowWithAssignFormats"
+#	  And "WorkflowWithAssignFormats" contains an Assign "Vl1" as
+#	  | variable     | value    |
+#	  | [[a]]        | 2        |
+#	  | [[ind(1).a]] | 1        |
+#	  | [[rec(1).a]] | 123.2342 |
+#	  | [[rec(2).a]] | 656.235  | 	  
+#      And "WorkflowWithAssignFormats" contains Format Number "Fn1" as 
+#	  | Number     | Rounding Selected | Rounding To | Decimal to show | Result   |
+#	  | '<number>' | Normal            | 1           | 4               | [[fres]] |
+#	  When "WorkflowWithAssignFormats" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Vl1' in WorkFlow 'WorkflowWithAssignFormats' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[a]] =        | 2         |
+#	  | 2 | [[ind(1).a]] = | 1         |
+#	  | 3 | [[rec(1).a]] = | 123.2342  |
+#	  | 4 | [[rec(2).a]] = | 656.235   |
+#	  And the 'Vl1' in Workflow 'WorkflowWithAssignFormats' debug outputs as  
+#	  | # |                         |
+#	  | 1 | [[a]] = 2               |
+#	  | 2 | [[ind(1).a]] = 1        |
+#	  | 3 | [[rec(1).a]] = 123.2342 |
+#	  | 4 | [[rec(2).a]] = 656.235  |
+#	  And the 'Fn1' in WorkFlow 'WorkflowWithAssignFormats' debug inputs as 	
+#	  | Number           | Rounding | Rounding Value | Decimals to show |
+#	  | <number> = <val> | Normal   | 1              | 4                |
+#	  And the 'Fn1' in Workflow 'WorkflowWithAssignFormats' debug outputs as 
+#	  |                  |
+#	  | [[fres]] = <res> |
+#Examples: 
+#      | no | number                  | val     | res      |
+#      | 1  | [[rec([[a]]).a]]        | 656.235 | 656.2000 |
+#      | 2  | [[rec([[ind(1).a]]).a]] | 123.342 | 123.2000 |
