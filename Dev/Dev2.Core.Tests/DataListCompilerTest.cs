@@ -17,14 +17,13 @@ namespace Dev2.Tests
     [ExcludeFromCodeCoverage]
     public class DataListCompilerTest
     {
+        // ReSharper disable InconsistentNaming
 
-
-        //private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
-        private IBinaryDataList dl1;
-        private IBinaryDataList dl2;
+        private IBinaryDataList _dl1;
+        private IBinaryDataList _dl2;
         private ErrorResultTO _errors = new ErrorResultTO();
         private string _error;
-        private IBinaryDataListEntry entry;
+        private IBinaryDataListEntry _entry;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -41,56 +40,56 @@ namespace Dev2.Tests
 
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
 
-            dl1 = Dev2BinaryDataListFactory.CreateDataList();
-            dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
-            dl1.TryCreateScalarValue("[[otherScalar]]", "myScalar", out error);
+            _dl1 = Dev2BinaryDataListFactory.CreateDataList();
+            _dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
+            _dl1.TryCreateScalarValue("[[otherScalar]]", "myScalar", out error);
 
-            dl1.TryCreateScalarTemplate(string.Empty, "otherScalar", "A scalar", true, out error);
-            dl1.TryCreateScalarValue("testRegion", "otherScalar", out error);
+            _dl1.TryCreateScalarTemplate(string.Empty, "otherScalar", "A scalar", true, out error);
+            _dl1.TryCreateScalarValue("testRegion", "otherScalar", out error);
 
-            dl1.TryCreateScalarTemplate(string.Empty, "scalar1", "A scalar", true, out error);
-            dl1.TryCreateScalarValue("foobar", "scalar1", out error);
+            _dl1.TryCreateScalarTemplate(string.Empty, "scalar1", "A scalar", true, out error);
+            _dl1.TryCreateScalarValue("foobar", "scalar1", out error);
 
             IList<Dev2Column> cols = new List<Dev2Column>();
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
 
-            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            _dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
 
-            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
-            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
-            dl1.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
+            _dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            _dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            _dl1.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
 
-            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
-            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
-            dl1.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
+            _dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            _dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+            _dl1.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
             // skip 3 ;)
 
-            dl1.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 4, out error);
-            dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
-            dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
+            _dl1.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 4, out error);
+            _dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
+            _dl1.TryCreateRecordsetValue("r4.f3.value", "f3", "recset", 4, out error);
 
-            dataListCompiler.PushBinaryDataList(dl1.UID, dl1, out _errors);
+            dataListCompiler.PushBinaryDataList(_dl1.UID, _dl1, out _errors);
             //_compiler.UpsertSystemTag(dl1.UID, enSystemTag.EvaluateIteration, "true", out errors);
 
             /*  list 2 */
-            dl2 = Dev2BinaryDataListFactory.CreateDataList();
-            dl2.TryCreateScalarTemplate(string.Empty, "idx", "A scalar", true, out error);
-            dl2.TryCreateScalarValue("1", "idx", out error);
+            _dl2 = Dev2BinaryDataListFactory.CreateDataList();
+            _dl2.TryCreateScalarTemplate(string.Empty, "idx", "A scalar", true, out error);
+            _dl2.TryCreateScalarValue("1", "idx", out error);
 
-            dl2.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            _dl2.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
 
-            dl2.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
-            dl2.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
-            dl2.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
+            _dl2.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            _dl2.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            _dl2.TryCreateRecordsetValue("r1.f3.value", "f3", "recset", 1, out error);
 
-            dl2.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
-            dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
-            dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
+            _dl2.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            _dl2.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+            _dl2.TryCreateRecordsetValue("r2.f3.value", "f3", "recset", 2, out error);
 
-            dataListCompiler.PushBinaryDataList(dl2.UID, dl2, out _errors);
+            dataListCompiler.PushBinaryDataList(_dl2.UID, _dl2, out _errors);
             //_compiler.UpsertSystemTag(dl2.UID, enSystemTag.EvaluateIteration, "true", out errors);
         }
 
@@ -107,7 +106,7 @@ namespace Dev2.Tests
             string error;
 
             //------------Execute Test---------------------------
-            var result = dlc.Evaluate(dl1.UID, enActionType.User, "[[recset(3).f1]]", false, out errors);
+            var result = dlc.Evaluate(_dl1.UID, enActionType.User, "[[recset(3).f1]]", false, out errors);
             var res = result.TryFetchLastIndexedRecordsetUpsertPayload(out error);
 
             //------------Assert Results-------------------------
@@ -142,13 +141,13 @@ namespace Dev2.Tests
             // Iteration evaluation is tested via the shape method ;)
             var compiler = DataListFactory.CreateDataListCompiler();
             const string defs = @"<Inputs><Input Name=""scalar1"" Source=""[[myScalar]]"" /></Inputs>";
-            Guid id = compiler.Shape(dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
+            Guid id = compiler.Shape(_dl1.UID, enDev2ArgumentType.Input, defs, out _errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(id, out _errors);
 
-            bdl.TryGetEntry("scalar1", out entry, out _error);
+            bdl.TryGetEntry("scalar1", out _entry, out _error);
 
-            var res = entry.FetchScalar().TheValue;
+            var res = _entry.FetchScalar().TheValue;
 
             Assert.AreEqual("[[otherScalar]]", res);
 
@@ -426,11 +425,13 @@ namespace Dev2.Tests
         {
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            IBinaryDataListEntry binaryDataListEntry = dataListCompiler.Evaluate(dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
+            IBinaryDataListEntry binaryDataListEntry = dataListCompiler.Evaluate(_dl2.UID, enActionType.User, "[[recset(1).f1]]", false, out errors);
 
             Assert.AreEqual("r1.f1.value", binaryDataListEntry.FetchScalar().TheValue);
         }
 
         #endregion
+
+        // ReSharper restore InconsistentNaming
     }
 }
