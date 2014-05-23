@@ -144,6 +144,52 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        public void RecursiveEvaluationWithEvaluatedIndex()
+        {
+            _fieldCollection.Clear();
+            _fieldCollection.Add(new ActivityDTO("[[recset]]", "gRec", _fieldCollection.Count));
+            _fieldCollection.Add(new ActivityDTO("[[field]]", "opt", _fieldCollection.Count));
+
+            _fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[[[recset]]([[cRec(1).opt]]).[[field]]]]", _fieldCollection.Count));
+            SetupArguments(
+                            @"<DataList>
+  <cRec>
+    <opt>1</opt>
+    <display />
+  </cRec>
+  <gRec>
+    <opt></opt>
+    <display></display>
+  </gRec>
+  <recset></recset>
+  <field></field>
+</DataList>"
+                          , @"<DataList>
+  <cRec>
+    <opt></opt>
+    <display />
+  </cRec>
+  <gRec>
+    <opt>Value1</opt>
+    <display>display1</display>
+  </gRec>
+  <recset>gRec</recset>
+  <field>opt</field>
+</DataList>");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            const string expected = "Value1";
+            string error;
+            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error).First();
+
+            // remove test datalist
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void AssignRecordSetWithEvaluatedDoubleExpressionSameRecordSet()
         {
             _fieldCollection.Clear();
