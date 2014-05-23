@@ -57,7 +57,9 @@ namespace Dev2.Security
         public override void Read()
         {
             // ReSharper disable once UnusedVariable
+#pragma warning disable 168
             var task = ReadAsync();
+#pragma warning restore 168
         }
 
         public virtual async Task ReadAsync()

@@ -12,6 +12,8 @@ namespace Dev2.Tests.Runtime.Security
     [TestClass]
     public class ServerAuthorizationServiceTests
     {
+        // ReSharper disable InconsistentNaming
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerAuthorizationService_Instance")]
@@ -197,15 +199,15 @@ namespace Dev2.Tests.Runtime.Security
             const string UrlFormat = "http://localhost:1234/wwwroot/{0}?wid={1}&rid={2}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/dbservice", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Help/GetDictionary", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/PathsAndNames", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/Sources", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Search", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Get?", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "sservices/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
-                new TestAuthorizationRequest(AuthorizationContext.Contribute, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Save", workspaceID, resourceID), queryString.Object, resource: resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/dbservice", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Help/GetDictionary", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/PathsAndNames", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Resources/Sources", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Search", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Get?", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "sservices/Service/DbSources/Get", workspaceID, resourceID), queryString.Object, resourceID.ToString()),
+                new TestAuthorizationRequest(AuthorizationContext.Contribute, WebServerRequestType.WebInvokeService, string.Format(UrlFormat, "services/Service/Services/Save", workspaceID, resourceID), queryString.Object, resourceID.ToString())
             };
 
             Verify_IsAuthorized(requests);
@@ -225,17 +227,17 @@ namespace Dev2.Tests.Runtime.Security
             const string UrlFormat = "http://localhost:1234/wwwroot/{0}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGet, string.Format(UrlFormat, "services/webservice?rid=" + ResourceID), queryStringWithResource.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetContent, string.Format(UrlFormat, "content/Site.css"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object, resource: ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGet, string.Format(UrlFormat, "services/webservice?rid=" + ResourceID), queryStringWithResource.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetContent, string.Format(UrlFormat, "content/Site.css"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object, ResourceID),
                 
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDecisions, string.Format(UrlFormat, "decisions/wizard.htm"), queryStringWithResource.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDialogs, string.Format(UrlFormat, "dialogs/savedialog.htm"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetServices, string.Format(UrlFormat, "services/webservice.htm"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetSources, string.Format(UrlFormat, "sources/pluginsource.htm"), queryString.Object, resource: ResourceID),
-                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetSwitch, string.Format(UrlFormat, "switch/drag.htm"), queryString.Object, resource: ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDecisions, string.Format(UrlFormat, "decisions/wizard.htm"), queryStringWithResource.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDialogs, string.Format(UrlFormat, "dialogs/savedialog.htm"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetServices, string.Format(UrlFormat, "services/webservice.htm"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetSources, string.Format(UrlFormat, "sources/pluginsource.htm"), queryString.Object, ResourceID),
+                new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetSwitch, string.Format(UrlFormat, "switch/drag.htm"), queryString.Object, ResourceID)
             };
 
             Verify_IsAuthorized(requests);
@@ -253,8 +255,8 @@ namespace Dev2.Tests.Runtime.Security
             const string UrlFormat = "http://localhost:1234/services/{0}{1}";
             var requests = new[]
             {
-                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, resource: ResourceName),
-                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, resource: ResourceName),
+                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebBookmarkWorkflow, string.Format(UrlFormat, ResourceName, "/instances/id/bookmark/bmk"), queryString.Object, ResourceName),
+                new TestAuthorizationRequest(AuthorizationContext.Execute, WebServerRequestType.WebExecuteWorkflow, string.Format(UrlFormat, ResourceName, ""), queryString.Object, ResourceName)
             };
 
             Verify_IsAuthorized(requests);
@@ -270,7 +272,7 @@ namespace Dev2.Tests.Runtime.Security
             const string Url = "http://localhost:1234/dsf/";
             var requests = new[]
             {
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.HubConnect, Url, queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.HubConnect, Url, queryString.Object)
             };
 
             Verify_IsAuthorized(requests);
@@ -293,7 +295,7 @@ namespace Dev2.Tests.Runtime.Security
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbWrite, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbOnConnected, Url, queryString.Object),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.EsbFetchExecutePayloadFragment, Url, queryString.Object),
-                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.ResourcesSendMemo, Url, queryString.Object),
+                new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.ResourcesSendMemo, Url, queryString.Object)
             };
 
             Verify_IsAuthorized(requests);
@@ -364,5 +366,7 @@ namespace Dev2.Tests.Runtime.Security
             Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",
                 authorizationRequest.UserIsInRole, allowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
         }
+
+        // ReSharper restore InconsistentNaming
     }
 }
