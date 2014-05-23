@@ -1463,4 +1463,37 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 	#  | 1 | [[d]] = ware        |
 	#  | 2 | [[rec(2).a]] = wolf |
 
+#This scenario should be passed after the bug 11890 is resolved.
+#Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
+#	 Given I have a workflow "WorkflowWithAssignandAssign"
+#	 And "WorkflowWithAssignandAssign" contains an Assign "Data1" as
+#	  | variable       | value |
+#	  | [[a]]          | 1     |
+#	  | [[rec(1).a]]   | 2     |
+#	  | [[index(1).a]] | 2     |
+#	   And "WorkflowWithAssignandAssign" contains an Assign "Data2" as
+#	  | variable             | value    |
+#	  | [[new([[a]]).a]]     | test     |
+#	  | [[rec([[index(1).a]] | warewolf |
+#	  When "WorkflowWithAssignandAssign" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Data1' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[a]] =          | 1         |
+#	  | 2 | [[rec(1).a]] =   | 2         |
+#	  | 3 | [[index(1).a]] = | 2         |
+#	  And the 'Data1' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
+#	  | # |                    |
+#	  | 1 | [[a]] = 1          |
+#	  | 2 | [[rec(1).a]] = 2   |
+#	  | 3 | [[index(1).a]] = 2 |
+#	   And the 'Data2' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
+#	  | # | Variable                  | New Value |
+#	  | 1 | [[new([[a]]).a]] =        | test      |
+#	  | 2 | [[rec(index(1).a]]).a]] = | warewolf  |
+#	  And the 'Data2' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
+#	  | # |                         |
+#	  | 1 | [[new(1).a]] = test     |
+#	  | 2 | [[rec(2).a]] = warewolf |
 
+	  		
