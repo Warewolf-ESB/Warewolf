@@ -20,29 +20,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
         }
 
-        /// <summary>
-        /// Starts the SFTP server.
-        /// </summary>
-        public static void StartSftpServer()
-        {
-            lock (ServerLock)
-            {
-                if(Server == null)
-                {
-                    //SshKey rsaKey = SshKey.Generate(SshKeyAlgorithm.RSA, 1024);
-                    //SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
 
-                    //// add keys, bindings and users
-                    //Server = new SftpServer { Log = Console.Out };
-                    //Server.Keys.Add(rsaKey);
-                    //Server.Keys.Add(dssKey);
-                    //Server.Bindings.Add(IPAddress.Any, 22);
-                    //Server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp"));
-                    //// start the server                                                    
-                    //Server.Start();
-                }
-            }
-        }
 
         protected static void RemovedFilesCreatedForTesting()
         {
@@ -97,31 +75,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             // ;)
         }
 
-        public static void ShutdownSftpServer()
-        {
-            //try
-            //{
-            //    lock (ServerLock)
-            //    {
-            //        if (Server != null)
-            //        {
-            //            Server.Bindings.Clear();
-            //            Server.Stop();
-
-            //        }
-            //    }
-            //}
-            //catch(Exception err)
-            //{
-            //    Console.WriteLine(err.Message);
-            //    Console.WriteLine(err.StackTrace);
-                    
-               
-            //    //Server may already be stopped
-            //}
-
-            //Server = null;
-        }
+  
         #endregion
     }
 }
