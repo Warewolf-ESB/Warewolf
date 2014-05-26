@@ -1123,37 +1123,37 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 #	  | [[indexResult]] = 3 |
 #
 #This scenario should be passed after the bug 11887 is fixed
-#Scenario: Simple workflow with Assign and Random(Evaluating recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandRandom"
-#	 And "WorkflowWithAssignandRandom" contains an Assign "Valforrandno" as
-#	  | variable    | value   |
-#	  | [[a]]       | b       |
-#	  | [[b]]       | 10      |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | 20      |	 	  
-#	   And "WorkflowWithAssignandRandom" contains Random "Rand" as
-#	  | Type    | From      | To              | Result        |
-#	  | Numbers | [[[[a]]]] | [[[[rec().a]]]] | [[ranresult]] |
-#	  When "WorkflowWithAssignandRandom" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Valforrandno' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[a]] =       | b         |
-#	  | 2 | [[b]] =       | 10        |
-#	  | 3 | [[rec().a]] = | new().a   |
-#	  | 4 | [[new().a]] = | 20        |
-#	  And the 'Valforrandno' in Workflow 'WorkflowWithAssignandRandom' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[a]] = b              |
-#	  | 2 | [[b]] = 10             |
-#	  | 3 | [[rec(1).a]] = new().a |
-#	  | 4 | [[new(1).a]] = 20      |
-#	  And the 'Random' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
-#	  | Random  | From           | To                   |
-#	  | Numbers | [[[[a]]]] = 10 | [[[[rec().a]]]] = 20 |
-#	  And the 'Random' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
-#	  |                       |
-#	  | [[ranresult]] = Int32 |
+Scenario: Simple workflow with Assign and Random(Evaluating recordset variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandRandom"
+	 And "WorkflowWithAssignandRandom" contains an Assign "Valforrandno" as
+	  | variable    | value   |
+	  | [[a]]       | b       |
+	  | [[b]]       | 10      |
+	  | [[rec().a]] | new().a |
+	  | [[new().a]] | 20      |	 	  
+	   And "WorkflowWithAssignandRandom" contains Random "Rand" as
+	  | Type    | From      | To              | Result        |
+	  | Numbers | [[[[a]]]] | [[[[rec().a]]]] | [[ranresult]] |
+	  When "WorkflowWithAssignandRandom" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Valforrandno' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[a]] =       | b         |
+	  | 2 | [[b]] =       | 10        |
+	  | 3 | [[rec().a]] = | new().a   |
+	  | 4 | [[new().a]] = | 20        |
+	  And the 'Valforrandno' in Workflow 'WorkflowWithAssignandRandom' debug outputs as  
+	  | # |                        |
+	  | 1 | [[a]] = b              |
+	  | 2 | [[b]] = 10             |
+	  | 3 | [[rec(1).a]] = new().a |
+	  | 4 | [[new(1).a]] = 20      |
+	  And the 'Random' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
+	  | Random  | From           | To                   |
+	  | Numbers | [[[[a]]]] = 10 | [[[[rec(1).a]]]] = 20 |
+	  And the 'Random' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
+	  |                       |
+	  | [[ranresult]] = Int32 |
 
 #This test scenario should be passed after the bug 11888 is fixed
 #Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset variable inside variable)executing against the server
