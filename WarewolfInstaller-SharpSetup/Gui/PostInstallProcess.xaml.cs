@@ -370,7 +370,7 @@ namespace Gui
                     // Add Warewolf Group and current user to it ;)
                     try
                     {
-                        AddUserToWarewolfGroup();
+                        PerformWarewolfGroupActions();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch(Exception e1)
@@ -427,7 +427,7 @@ namespace Gui
 
         #region Custom Installer Operations
 
-        private void AddUserToWarewolfGroup()
+        private void PerformWarewolfGroupActions()
         {
             var warewolfGroupOps = new WarewolfGroupOps();
             var theUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
