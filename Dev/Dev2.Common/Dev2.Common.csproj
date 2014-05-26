@@ -97,7 +97,6 @@
     <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
-    <Compile Include="ExtMethods\DoubleMetaphone.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />

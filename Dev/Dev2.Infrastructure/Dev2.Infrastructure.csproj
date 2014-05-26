@@ -65,6 +65,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -157,6 +158,11 @@
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
     <Compile Include="Services\Security\IAuthorizationRequest.cs" />
+    <Compile Include="Services\Security\MoqInstallerActions\InstallerActionsForDevelopment.cs" />
+    <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActionFactory.cs" />
+    <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActions.cs" />
+    <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperations.cs" />
+    <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperationsImpl.cs" />
     <Compile Include="Services\Security\PermissionsModifiedService.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
     <Compile Include="Services\Security\IPermissionsModifiedService.cs" />
@@ -207,9 +213,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service Catalog\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

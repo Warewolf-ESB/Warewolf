@@ -13,6 +13,7 @@ namespace Dev2.Services.Security
         }
 
         public const string BuiltInAdministratorsText = "Warewolf Administrators";
+        public const string AdministratorsText = "BuiltIn\\Administrators";
         public const string BuiltInGuestsText = "Public";
 
         bool _isServer;

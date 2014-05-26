@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -134,8 +136,23 @@ namespace Dev2.Services.Security
                     var principleName = principal.Identity.Name;
                     if(!string.IsNullOrEmpty(principleName))
                     {
-                        // TODO : Examine group for this member ;)  
-                        isInRole = true;
+                        // Examine if BuiltIn\Administrators is still present as a Member
+                        // Then inspect BuiltIn\Administrators
+
+                        // Examine group for this member ;)  
+                        isInRole = principal.IsInRole(p.WindowsGroup);
+
+                        // if that fails, check Administrators group membership in the Warewolf Administrators group
+                        if(!isInRole)
+                        {
+                            if(AreAdministratorsMemebersOfWarewolf())
+                            {
+                                // Check user's administrator membership
+                                isInRole = principal.IsInRole(WindowsGroupPermission.AdministratorsText);
+                            }
+                        }
+
+                        return isInRole;
                     }
                 }
                 else
@@ -149,6 +166,38 @@ namespace Dev2.Services.Security
             // ReSharper restore EmptyGeneralCatchClause
 
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        static bool AreAdministratorsMemebersOfWarewolf()
+        {
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach(DirectoryEntry dChildEntry in ad.Children)
+                {
+                    if(dChildEntry.Name == "Warewolf Administrators")
+                    {
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
+
+                        if(members != null)
+                        {
+                            foreach(var member in (IEnumerable)members)
+                            {
+                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                {
+                                    if(memberEntry.Name == "Administrators")
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)

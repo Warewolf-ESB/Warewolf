@@ -202,7 +202,6 @@
     <Compile Include="Diagnostics\DebugStateTests.cs" />
     <Compile Include="Diagnostics\DebugItemTests.cs" />
     <Compile Include="DirectoryHelperTests.cs" />
-    <Compile Include="ExtMethods\DoubleMetaphoneTest.cs" />
     <Compile Include="GatherSystemInformationTOTests.cs" />
     <Compile Include="Logging\DummyDebugProvider.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
@@ -296,6 +295,9 @@
     <None Include="App.config" />
     <CodeAnalysisDictionary Include="Fakes\mscorlib.fakes" />
     <CodeAnalysisDictionary Include="Fakes\System.fakes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExtMethods\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">

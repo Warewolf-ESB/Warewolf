@@ -113,6 +113,9 @@
     <Compile Include="Communication\PermissionsModifiedMemoTests.cs" />
     <Compile Include="Logs\LoggerTests.cs" />
     <Compile Include="Logs\CustomTraceListnerTests.cs" />
+    <Compile Include="MoqInstallerActions\IntallerActionsForDevelopmentTest.cs" />
+    <Compile Include="MoqInstallerActions\MoqInstallerActionFactoryTest.cs" />
+    <Compile Include="MoqInstallerActions\WarewolfSecurityOperationsTest.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfoTests.cs" />
     <Compile Include="Providers\Events\EventPublisherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
