@@ -1,12 +1,12 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.Data.Compilers
 {
@@ -167,6 +167,8 @@ namespace Dev2.Data.Compilers
                 return _internalKeyMap.Values.FirstOrDefault();
             }
 
+            var replaceValue = string.Empty;
+
             // Right now we assume there are not ;)
             foreach(var idx in _internalMap.Keys)
             {
@@ -280,6 +282,7 @@ namespace Dev2.Data.Compilers
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
                                     template = template.Replace(token, toReplace);
+                                    replaceValue = template;
                                     _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
                                     Errors.AddError(error);
 
@@ -295,7 +298,12 @@ namespace Dev2.Data.Compilers
                             }
 
                             // clean up
-                            CompiledExpression = CompiledExpression.Replace(token, string.Empty);
+                            //CompiledExpression = CompiledExpression.Replace(token, string.Empty);
+
+                            // replace it with the expression value to facilitate recursive evaluation
+                            // be sure to remove brackets to avoid double evaluation
+                            replaceValue = DataListUtil.RemoveLanguageBrackets(replaceValue);
+                            CompiledExpression = CompiledExpression.Replace(token, replaceValue);
                         }
                     }
                     else

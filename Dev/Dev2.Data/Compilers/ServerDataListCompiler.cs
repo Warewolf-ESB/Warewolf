@@ -36,7 +36,7 @@ namespace Dev2.Server.Datalist
     /// </summary>
     internal class ServerDataListCompiler : IEnvironmentModelDataListCompiler
     {
-
+        // ReSharper disable InconsistentNaming
         private readonly IDev2DataLanguageParser _parser = DataListFactory.CreateLanguageParser();
         // DataList Server
         private readonly IDataListServer _dlServer;
@@ -2611,6 +2611,7 @@ namespace Dev2.Server.Datalist
 
         #endregion
 
+        // ReSharper restore InconsistentNaming
 
     }
 }

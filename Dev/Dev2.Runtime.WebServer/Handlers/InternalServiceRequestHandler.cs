@@ -71,15 +71,15 @@ namespace Dev2.Runtime.WebServer.Handlers
                     // Protect against Thread being disposed before coded is executed
                     // Only seems to happen when the studio starts server service ?! ;(
                     var princple = Thread.CurrentPrincipal;
-                    var t = new Thread(() =>
-                    {
-                        Thread.CurrentPrincipal = princple;
-                        dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
-                    });
+                var t = new Thread(() =>
+                {
+                    Thread.CurrentPrincipal = princple;
+                    dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                });
 
-                    t.Start();
+                t.Start();
 
-                    t.Join();
+                t.Join();
                 }
                 catch(Exception e)
                 {
