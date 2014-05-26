@@ -1492,33 +1492,33 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 #	  | 1 | [[new(1).a]] = test     |
 #	  | 2 | [[rec(2).a]] = warewolf |
 
-Scenario: Workflow with Assign Calculate. 
-      Given I have a workflow "WorkflowWithAssignCalculateindexrecordset""
-	  And "WorkflowWithAssignCalculateindexrecordset" contains an Assign "values1" as
+Scenario: Workflow with Assign Calculate
+      Given I have a workflow "WFWithAssignCalculateindexrecordset"
+	  And "WFWithAssignCalculateindexrecordset" contains an Assign "values1" as
       | variable       | value |
       | [[a]]          | 1     |
       | [[rec(1).a]]   | 2     |
       | [[index(1).a]] | 1     |
       | [[rec(2).a]]   | 6     |
-	  And "WorkflowWithAssignCalculateindexrecordset" contains Calculate "Calculate1" with formula "[[rec([[index(1).a]].a]]+[[a]]" into "[[result]]"
-	  When "WorkflowWithAssignCalculateindexrecordset" is executed
-	  Then the execution has "NO" error
-	  And the 'values1' in WorkFlow 'WorkflowWithAssignCalculateindexrecordset' debug inputs as 
+	  And "WFWithAssignCalculateindexrecordset" contains Calculate "Calculate1" with formula "[[rec([[index(1).a]]).a]]+[[a]]" into "[[result]]"
+	  When "WFWithAssignCalculateindexrecordset" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'values1' in WorkFlow 'WFWithAssignCalculateindexrecordset' debug inputs as 
 	  | # | Variable         | New Value |
 	  | 1 | [[a]] =          | 1         |
 	  | 2 | [[rec(1).a]] =   | 2         |
 	  | 3 | [[index(1).a]] = | 1         |
 	  | 4 | [[rec(2).a]] =   | 6         |
-	 And the 'values1' in Workflow 'WorkflowWithAssignCalculateindexrecordset' debug outputs as   
+	 And the 'values1' in Workflow 'WFWithAssignCalculateindexrecordset' debug outputs as   
 	  | # |                    |
 	  | 1 | [[a]]         =  1 |
 	  | 2 | [[rec(1).a]]  =  2 |
 	  | 3 | [[index(1).a]] = 1 |
 	  | 4 | [[rec(2).a]]   = 6 |
-	  And the 'Calculate1' in WorkFlow 'WorkflowWithAssignCalculateindexrecordset' debug inputs as 
+	  And the 'Calculate1' in WorkFlow 'WFWithAssignCalculateindexrecordset' debug inputs as 
       | fx =                                 |
-      | [[rec([[index(1).a]].a]]+[[a]] = 2+1 |           
-      And the 'Calculate1' in Workflow 'WorkflowWithAssignCalculateindexrecordset' debug outputs as  
+      | [[rec([[index(1).a]]).a]]+[[a]] = [[rec(1).a]]+1 = 2+1 |           
+      And the 'Calculate1' in Workflow 'WFWithAssignCalculateindexrecordset' debug outputs as  
 	  |                |
 	  | [[result]] = 3 |
 
