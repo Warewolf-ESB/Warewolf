@@ -64,7 +64,9 @@ namespace Gui
                 {
                     RemoveService();
                 }
+// ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
+// ReSharper restore EmptyGeneralCatchClause
                 { }
             }
 
@@ -189,7 +191,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
+// ReSharper disable InconsistentNaming
         public void PreUnInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
             try
             {

@@ -12,11 +12,11 @@ namespace Gui
     /// </summary>
     public partial class InstallationStep
     {
-        readonly InstallationMode mode;
+        readonly InstallationMode _mode;
         public InstallationStep(InstallationMode mode, int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
-            this.mode = mode;
+            _mode = mode;
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
@@ -25,7 +25,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
+// ReSharper disable InconsistentNaming
         private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
 
             try
@@ -34,7 +36,7 @@ namespace Gui
 
                 InstallVariables.InstallRoot = instLoc;
 
-                if(mode == InstallationMode.Uninstall)
+                if(_mode == InstallationMode.Uninstall)
                 {
                     MsiConnection.Instance.Uninstall();
 
@@ -59,15 +61,15 @@ namespace Gui
                     TerminateFiles(studioServerDir);
 
                     // clean up the ssl generation stuff ;)
-                    var SSLGeneration = instLoc + "/Server/SSL Generation";
-                    TerminateFiles(SSLGeneration);
+                    var sslGeneration = instLoc + "/Server/SSL Generation";
+                    TerminateFiles(sslGeneration);
 
                     // remove the Instance Store directory ;)
                     var instDir = instLoc + "/Server/InstanceStore";
                     TerminateFiles(instDir);
 
                 }
-                else if(mode == InstallationMode.Install)
+                else if(_mode == InstallationMode.Install)
                 {
                     PrerequisiteManager.Instance.Install();
 

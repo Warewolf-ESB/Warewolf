@@ -8,21 +8,25 @@ namespace Gui
     /// <summary>
     /// Interaction logic for WelcomeStep.xaml
     /// </summary>
+// ReSharper disable RedundantExtendsListEntry
     public partial class WelcomeStep : ModernInfoStep
+// ReSharper restore RedundantExtendsListEntry
     {
 
-        readonly InstallationMode mode;
+        readonly InstallationMode _mode;
         public WelcomeStep(InstallationMode mode, int stepNumber, List<string> listOfStepNames)
         {
-            this.mode = mode;
+            _mode = mode;
             InitializeComponent();
             //lblMode.Text = Properties.Resources.ResourceManager.GetString("WelcomeStepGreeting" + mode) ?? lblMode.Text;
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
+// ReSharper disable InconsistentNaming
         private void WelcomeStep_MoveNext(object sender, ChangeStepRoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
-            Wizard.LifecycleAction(LifecycleActionType.ModeSelected, mode);
+            Wizard.LifecycleAction(LifecycleActionType.ModeSelected, _mode);
         }
     }
 }

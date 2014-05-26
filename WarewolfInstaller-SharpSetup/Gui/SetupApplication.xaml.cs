@@ -17,7 +17,9 @@ namespace Gui
     {
         public static bool IsCancel = false;
 
+// ReSharper disable InconsistentNaming
         private void Application_Startup(object sender, StartupEventArgs e)
+// ReSharper restore InconsistentNaming
         {
 
             SetupHelper.Initialize(e.Args);
@@ -34,7 +36,9 @@ namespace Gui
             //}
         }
 
+// ReSharper disable InconsistentNaming
         void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+// ReSharper restore InconsistentNaming
         {
             // Begin dragging the window 
             MainWindow.DragMove();
@@ -46,7 +50,11 @@ namespace Gui
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         // ReSharper disable UnusedMember.Local
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedParameter.Local
         void SetupHelper_SilentInstall(object sender, EventArgs e)
+// ReSharper restore UnusedParameter.Local
+// ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Local
         {
             // TODO : Something logical ;)
@@ -59,7 +67,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+// ReSharper disable InconsistentNaming
         void SetupHelper_Install(object sender, EventArgs e)
+// ReSharper restore InconsistentNaming
         {
             MainWindow = new SetupWizard();
             MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
@@ -194,7 +204,9 @@ namespace Gui
         /// <summary>
         /// Sets the webs acl.
         /// </summary>
+// ReSharper disable UnusedMember.Local
         private void SetWebsACL()
+// ReSharper restore UnusedMember.Local
         {
             // Set Webs ACL
             if(InstallVariables.IsInstallMode && !string.IsNullOrEmpty(InstallVariables.InstallRoot))

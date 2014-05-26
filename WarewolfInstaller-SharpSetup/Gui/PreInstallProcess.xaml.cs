@@ -132,7 +132,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
+// ReSharper disable InconsistentNaming
         public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
             try
             {
@@ -195,7 +197,9 @@ namespace Gui
         /// <summary>
         /// Installs the vc++ 2k8 SP1.
         /// </summary>
+// ReSharper disable InconsistentNaming
         private void InstallVCPlusPlus2k8Sp1()
+// ReSharper restore InconsistentNaming
         {
 
             var stream = ResourceExtractor.FetchDependency("vcredist_x86.exe");
@@ -243,7 +247,9 @@ namespace Gui
         /// Determines whether vc++ 2k8 sp1 x86 is installed
         /// </summary>
         /// <returns></returns>
+// ReSharper disable InconsistentNaming
         public static bool IsVCPlusPlus2k8Sp1Installed()
+// ReSharper restore InconsistentNaming
         {
             ProductInstallation productInstallation = new ProductInstallation(InstallVariables.Vcplusplus2k8sp1x86Key, null, UserContexts.Machine);
 

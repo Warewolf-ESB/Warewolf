@@ -15,7 +15,9 @@ namespace Gui
             InitializeComponent();
         }
 
+// ReSharper disable InconsistentNaming
         private void InitializationStep_Entered(object sender, RoutedEventArgs e)
+// ReSharper restore InconsistentNaming
         {
             var mainMsiFile = Properties.Resources.MainMsiFile;
             if(File.Exists(mainMsiFile))
