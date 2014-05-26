@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Services.Security;
+using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -391,10 +392,24 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect_WhenNotInWarewolfGroup")]
-        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithBuiltInAdminstratorsOnlyWarewolfAdministratorsGroupMember_UserIsAuthorized()
+        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup_ExpectTrue()
         {
             //------------Setup for test--------------------------
+
+            // permissions setup
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            warewolfGroupOps.AddAdministratorsGroupToWarewolf();
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            Assert.IsTrue(result);
+
+            // Setup rest of test ;)
             var resource = Guid.NewGuid();
             var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
 
@@ -402,7 +417,79 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
 
             var user = new Mock<IPrincipal>();
-            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+            user.Setup(u => u.Identity.Name).Returns("TestUser");
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isMember);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AuthorizationServiceBase_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsMembersOfTheGroup")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_AdministratorsMembersOfWarewolfGroup_WhenAdministratorsAreNotMembersOfTheGroup_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+
+            // permissions setup
+            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+
+            // Delete warewolf if already a member...
+            warewolfGroupOps.DeleteWarewolfGroup();
+            warewolfGroupOps.AddWarewolfGroup();
+
+            var result = warewolfGroupOps.IsAdminMemberOfWarewolf();
+
+            Assert.IsFalse(result);
+
+            // Setup rest of test ;)
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.Identity.Name).Returns("TestUser");
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object, true, true, true) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var isMember = authorizationService.AreAdministratorsMembersOfWarewolfAdministrators();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isMember);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect_WhenNotDirectlyInWarewolfGroup")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_ToLocalServer_WithBuiltInAdminstratorsOnlyWarewolfAdministratorsGroupMember_UserIsAuthorized()
+        {
+            //------------Setup for test--------------------------
+            // Setup rest of test ;)
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View, WindowsGroup = GlobalConstants.WarewolfGroup };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns<string>(role =>
+            {
+                if(role == "Warewolf Administrators")
+                {
+                    return false;
+                }
+
+                return true;
+            });
+
             user.Setup(u => u.Identity.Name).Returns("TestUser");
 
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };

@@ -5,9 +5,13 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 {
     public class TestAuthorizationServiceBase : AuthorizationServiceBase
     {
-        public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true)
+        public TestAuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection = true, bool areAdminsWarewolfMembers = true, bool overrideAreAdminsFn = false)
             : base(securityService, isLocalConnection)
         {
+            if(!overrideAreAdminsFn)
+            {
+                AreAdministratorsMembersOfWarewolfAdministrators = () => areAdminsWarewolfMembers;
+            }
         }
 
         public int RaisePermissionsChangedHitCount { get; private set; }

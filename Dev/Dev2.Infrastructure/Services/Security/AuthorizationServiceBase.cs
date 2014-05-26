@@ -15,6 +15,8 @@ namespace Dev2.Services.Security
         readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
+        public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
+
         protected AuthorizationServiceBase(ISecurityService securityService, bool isLocalConnection)
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
@@ -22,6 +24,40 @@ namespace Dev2.Services.Security
             _isLocalConnection = isLocalConnection;
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
+
+            // set up the func for normal use ;)
+            AreAdministratorsMembersOfWarewolfAdministrators = delegate
+            {
+                using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                {
+                    ad.Children.SchemaFilter.Add("group");
+                    foreach(DirectoryEntry dChildEntry in ad.Children)
+                    {
+                        if(dChildEntry.Name == "Warewolf Administrators")
+                        {
+                            // Now check group membership ;)
+                            var members = dChildEntry.Invoke("Members");
+
+                            if(members != null)
+                            {
+                                foreach(var member in (IEnumerable)members)
+                                {
+                                    using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                    {
+                                        if(memberEntry.Name == "Administrators")
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
+            };
+
         }
 
         public event EventHandler PermissionsChanged;
@@ -120,7 +156,7 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        static bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
 
@@ -145,7 +181,7 @@ namespace Dev2.Services.Security
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
-                            if(AreAdministratorsMemebersOfWarewolf())
+                            if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
                             {
                                 // Check user's administrator membership
                                 isInRole = principal.IsInRole(WindowsGroupPermission.AdministratorsText);
@@ -166,38 +202,6 @@ namespace Dev2.Services.Security
             // ReSharper restore EmptyGeneralCatchClause
 
             return isInRole || p.IsBuiltInGuestsForExecution;
-        }
-
-        static bool AreAdministratorsMemebersOfWarewolf()
-        {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-            {
-                ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
-                {
-                    if(dChildEntry.Name == "Warewolf Administrators")
-                    {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
-
-                        if(members != null)
-                        {
-                            foreach(var member in (IEnumerable)members)
-                            {
-                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
-                                {
-                                    if(memberEntry.Name == "Administrators")
-                                    {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
