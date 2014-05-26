@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
-                    Thread.Sleep(5000);
+               
                 }
             }
 
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
-                    Thread.Sleep(5000);
+        
                     //The file may already be deleted
                     //
                 }
