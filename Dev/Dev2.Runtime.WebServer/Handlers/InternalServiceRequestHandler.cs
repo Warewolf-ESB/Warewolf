@@ -65,17 +65,26 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 Guid dlID = Guid.Empty;
                 ErrorResultTO errors;
-                var princple = Thread.CurrentPrincipal;
 
-                var t = new Thread(() =>
+                try
                 {
-                    Thread.CurrentPrincipal = princple;
-                    dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
-                });
+                    // Protect against Thread being disposed before coded is executed
+                    // Only seems to happen when the studio starts server service ?! ;(
+                    var princple = Thread.CurrentPrincipal;
+                    var t = new Thread(() =>
+                    {
+                        Thread.CurrentPrincipal = princple;
+                        dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                    });
 
-                t.Start();
+                    t.Start();
 
-                t.Join();
+                    t.Join();
+                }
+                catch(Exception e)
+                {
+                    this.LogError(e);
+                }
 
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -90,6 +99,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     compiler.ForceDeleteDataListByID(dlID);
                     return new StringBuilder("Completed Debug");
                 }
+
                 var result = new StringBuilder(compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors));
                 compiler.ForceDeleteDataListByID(dlID);
                 return result;
