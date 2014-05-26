@@ -439,9 +439,16 @@ namespace Gui
                 groupOps.AddWarewolfGroup();
             }
 
+            // check user membership
             if(!groupOps.IsUserInGroup(theUser.Name))
             {
                 groupOps.AddUserToWarewolf(userStr);
+            }
+
+            // check administrators membership
+            if(!groupOps.IsAdminMemberOfWarewolf())
+            {
+                groupOps.AddAdministratorsGroupToWarewolf();
             }
         }
 

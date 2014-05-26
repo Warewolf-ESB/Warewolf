@@ -8,6 +8,7 @@ namespace Gui.Utility
     public class WarewolfGroupOps
     {
         public const string WarewolfGroup = "Warewolf Administrators";
+        public const string AdministratorsGroup = "Administrators";
         public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
         public void AddWarewolfGroup()
@@ -18,6 +19,55 @@ namespace Gui.Utility
                 newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
                 newGroup.CommitChanges();
             }
+        }
+
+        public void AddAdministratorsGroupToWarewolf()
+        {
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach(DirectoryEntry dChildEntry in ad.Children)
+                {
+                    if(dChildEntry.Name == WarewolfGroup)
+                    {
+                        const string Entry = "WinNT://./" + AdministratorsGroup;
+                        dChildEntry.Invoke("Add", new object[] { Entry });
+                    }
+                }
+            }
+        }
+
+        public bool IsAdminMemberOfWarewolf()
+        {
+
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach(DirectoryEntry dChildEntry in ad.Children)
+                {
+                    if(dChildEntry.Name == WarewolfGroup)
+                    {
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
+
+                        if(members != null)
+                        {
+                            foreach(var member in (IEnumerable)members)
+                            {
+                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                {
+                                    if(memberEntry.Name == AdministratorsGroup)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         public bool DoesWarewolfGroupExist()
