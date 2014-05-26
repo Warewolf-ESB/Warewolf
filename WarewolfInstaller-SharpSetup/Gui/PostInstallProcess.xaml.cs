@@ -285,7 +285,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
+        // ReSharper disable InconsistentNaming
         private void PostInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
+        // ReSharper restore InconsistentNaming
         {
 
             CanGoNext = false;
@@ -457,18 +459,18 @@ namespace Gui
         /// </summary>
         private void AddTrustedSites()
         {
-            const string domainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
-            const string domain = @"localhost";
+            const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+            const string Domain = @"localhost";
             //const int intratnet = 0x1; // 0x2
-            const int trustedSiteZone = 0x1; // 0x2
+            const int TrustedSiteZone = 0x1; // 0x2
 
             RegistryKey currentUserKey = Registry.CurrentUser;
 
-            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(domainsKeyLocation, domain, true);
+            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(DomainsKeyLocation, Domain, true);
 
             try
             {
-                localKey.SetValue("https", trustedSiteZone, RegistryValueKind.DWord);
+                localKey.SetValue("https", TrustedSiteZone, RegistryValueKind.DWord);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
@@ -476,7 +478,7 @@ namespace Gui
 
             try
             {
-                localKey.SetValue("http", trustedSiteZone, RegistryValueKind.DWord);
+                localKey.SetValue("http", TrustedSiteZone, RegistryValueKind.DWord);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch { }
@@ -484,7 +486,7 @@ namespace Gui
 
         }
 
-        private static string outputData = string.Empty;
+        private static string _outputData = string.Empty;
         private bool VerifyPortsAreOpen()
         {
             // WindowStyle = ProcessWindowStyle.Hidden 
@@ -496,9 +498,9 @@ namespace Gui
             p.WaitForExit(30);
 
             // Now scan outputData for magical strings ;)
-            if(outputData.IndexOf("http://*:3142/", StringComparison.Ordinal) >= 0)
+            if(_outputData.IndexOf("http://*:3142/", StringComparison.Ordinal) >= 0)
             {
-                if(outputData.IndexOf("https://*:3143/", StringComparison.Ordinal) >= 0)
+                if(_outputData.IndexOf("https://*:3143/", StringComparison.Ordinal) >= 0)
                 {
                     return true;
                 }
@@ -513,7 +515,7 @@ namespace Gui
             var data = outLine.Data;
             if(!String.IsNullOrEmpty(data))
             {
-                outputData += data;
+                _outputData += data;
             }
         }
 
