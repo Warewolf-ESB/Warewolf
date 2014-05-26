@@ -205,7 +205,9 @@ namespace Gui
         /// Sets the webs acl.
         /// </summary>
 // ReSharper disable UnusedMember.Local
+// ReSharper disable InconsistentNaming
         private void SetWebsACL()
+// ReSharper restore InconsistentNaming
 // ReSharper restore UnusedMember.Local
         {
             // Set Webs ACL
