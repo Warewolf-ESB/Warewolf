@@ -781,9 +781,18 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         string CreateTmpFile()
         {
-            var tmpFile = Path.GetTempFileName();
-            _filesToDelete.Add(tmpFile);
-            return tmpFile;
+            try
+            {
+                var tmpFile = Path.GetTempFileName();
+                _filesToDelete.Add(tmpFile);
+                return tmpFile;
+            }
+            catch (Exception e)
+            {
+               this.LogError(e);
+                throw;
+            }
+
         }
 
         /// <summary>
@@ -792,15 +801,33 @@ namespace Dev2.PathOperations
         /// <param name="path"></param>
         void RemoveTmpFile(string path)
         {
-            File.Delete(path);
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception e)
+            {
+                this.LogError(e);
+                throw;
+            }
+            
         }
 
         string CreateTmpDirectory()
         {
-            var tmpDir = Path.GetTempPath();
-            var di = Directory.CreateDirectory(tmpDir + "\\" + Guid.NewGuid());
+            try
+            {
+                var tmpDir = Path.GetTempPath();
+                var di = Directory.CreateDirectory(tmpDir + "\\" + Guid.NewGuid());
 
-            return (di.FullName);
+                return (di.FullName);
+            }
+            catch (Exception err)
+            {
+               this.LogError(err);
+                throw;
+            }
+
         }
 
         static void EnsureFilesDontExists(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst)
