@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Threading;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Nuane.Net;
@@ -44,7 +45,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
-               
+                    Thread.Sleep(5000);
                 }
             }
 
@@ -65,8 +66,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch(Exception)
                 {
+                    Thread.Sleep(5000);
                     //The file may already be deleted
-        
+                    //
                 }
             }
 
