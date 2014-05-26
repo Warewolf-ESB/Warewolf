@@ -2220,14 +2220,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[[[a]]]] = 10",
                         "[[[[rec(1).a]]]] = 20"});
 #line 1151
-   testRunner.And("the \'Random\' in WorkFlow \'WorkflowWithAssignandRandom\' debug inputs as", ((string)(null)), table133, "And ");
+   testRunner.And("the \'Rand\' in WorkFlow \'WorkflowWithAssignandRandom\' debug inputs as", ((string)(null)), table133, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table134.AddRow(new string[] {
                         "[[ranresult]] = Int32"});
 #line 1154
-   testRunner.And("the \'Random\' in Workflow \'WorkflowWithAssignandRandom\' debug outputs as", ((string)(null)), table134, "And ");
+   testRunner.And("the \'Rand\' in Workflow \'WorkflowWithAssignandRandom\' debug outputs as", ((string)(null)), table134, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

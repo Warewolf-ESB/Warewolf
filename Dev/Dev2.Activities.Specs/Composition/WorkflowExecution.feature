@@ -1148,10 +1148,10 @@ Scenario: Simple workflow with Assign and Random(Evaluating recordset variable i
 	  | 2 | [[b]] = 10             |
 	  | 3 | [[rec(1).a]] = new().a |
 	  | 4 | [[new(1).a]] = 20      |
-	  And the 'Random' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
+	  And the 'Rand' in WorkFlow 'WorkflowWithAssignandRandom' debug inputs as 
 	  | Random  | From           | To                   |
 	  | Numbers | [[[[a]]]] = 10 | [[[[rec(1).a]]]] = 20 |
-	  And the 'Random' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
+	  And the 'Rand' in Workflow 'WorkflowWithAssignandRandom' debug outputs as
 	  |                       |
 	  | [[ranresult]] = Int32 |
 
