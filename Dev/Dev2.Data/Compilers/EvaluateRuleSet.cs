@@ -282,7 +282,22 @@ namespace Dev2.Data.Compilers
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
                                     template = template.Replace(token, toReplace);
-                                    replaceValue = template;
+
+                                    // In cases when [[[{0}]] is the result, we need to inject the template value
+                                    // In cases when [[rec({0}).a]] we need to replace the template pattern ;)
+                                    var tmp = CompiledExpression.Replace("[", "").Replace("]", "").Replace(token, string.Empty);
+                                    // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+                                    if(tmp.Length > 0)
+                                    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                                    {
+                                        // we have a [[rec({0}.a]] case ;)
+                                        replaceValue = toReplace;
+                                    }
+                                    else
+                                    {
+                                        replaceValue = template;
+                                    }
+
                                     _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
                                     Errors.AddError(error);
 
