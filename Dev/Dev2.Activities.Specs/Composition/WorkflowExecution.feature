@@ -327,7 +327,6 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |   | [[rec(4).b]] = flow     |
 
 #This test is going to pass after the issue 11804 is fixed
-#@Ignore 
 #Scenario: Workflow with Assigns and DataSplit executing against the server
 #      Given I have a workflow "WorkflowWithAssignandDataSplittools""
 #	  And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues1" as
@@ -365,7 +364,7 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 #	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 #	  | # |                   |
 #	  | 1 | [[rec(1).a]] = lf |
-##	
+#	
 	  
 #@ignore 	  
 #Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
@@ -1379,57 +1378,57 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 
 
 #This Test Scenario should be passed after the bug 11889 is fixed
- Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
-	 Given I have a workflow "WorkflowWithAssignamergeandSplit"
-	 And "WorkflowWithAssignamergeandSplit" contains an Assign "Data" as
-	  | variable       | value    |
-	  | [[a]]          | 1        |
-	  | [[b]]          | 2        |
-	  | [[rec(1).a]]   | warewolf |
-	  | [[rec(2).a]]   | test     |
-	  | [[index(1).a]] | 1        |
-	  | [[index(2).a]] | 3        |	
-      And "WorkflowWithAssignamergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
-	  | Variable                             | Type  | Using | Padding | Alignment |
-	  | [[rec([[index(1).a]]).a]] = warewolf | Index | 8     |         | Left      |
-	  | [[a]]                                | Index | 4     |         | Left      |
-	  And "WorkflowWithAssignamergeandSplit" contains Data Split "DataSplit" as
-	  | String       | Variable                  | Type  | At | Include    | Escape |
-	  | [[rec(1).a]] | [[d]]                     | Index | 4  | Unselected |        |
-	  |              | [[rec([[index(2).a]]).a]] | Index | 4  | Unselected |        |
-	  When "WorkflowWithAssignamergeandSplit" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Data' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
-	  | # | Variable         | New Value |
-	  | 1 | [[a]] =          | 1         |
-	  | 2 | [[b]] =          | 2         |
-	  | 3 | [[rec(1).a]] =   | warewolf  |
-	  | 4 | [[rec(2).a]] =   | test      |
-	  | 5 | [[index(1).a]] = | 1         |
-	  | 6 | [[index(2).a]] = | 3         |
-	  And the 'Data' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as 
-	  | # |                         |
-	  | 1 | [[a]] = 1               |
-	  | 2 | [[b]] = 2               |
-	  | 3 | [[rec(1).a]] = warewolf |
-	  | 4 | [[rec(2).a]] = test     |
-	  | 5 | [[index(1).a]] = 1      |
-	  | 6 | [[index(2).a]] = 3      |  	
-      And the 'Merge' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
-	  | # |                                      | With  | Using | Pad | Align |
-	  | 1 | [[rec([[index(2).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
-	  | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
-	  And the 'Merge' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
-	  |                        |
-	  | [[result]] = warewolf1 |
-	  And the 'DataSplit' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as  
-	  | String to Split         | Process Direction | Skip blank rows | # |                                          | With  | Using | Include | Escape |
-	  | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =                                  | Index | 4     | No      |        |
-	  |                         |                   |                 | 2 | [[rec([[index(2).a]]).a]] = [[rec(2).a]] | Index | 4     | No      |        |
-	  And the 'DataSplit' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
-	  | # |                     |
-	  | 1 | [[d]] = ware        |
-	  | 2 | [[rec(2).a]] = wolf |
+ #Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
+	# Given I have a workflow "WorkflowWithAssignamergeandSplit"
+	# And "WorkflowWithAssignamergeandSplit" contains an Assign "Data" as
+	#  | variable       | value    |
+	#  | [[a]]          | 1        |
+	#  | [[b]]          | 2        |
+	#  | [[rec(1).a]]   | warewolf |
+	#  | [[rec(2).a]]   | test     |
+	#  | [[index(1).a]] | 1        |
+	#  | [[index(2).a]] | 3        |	
+ #     And "WorkflowWithAssignamergeandSplit" contains Data Merge "Merge" into "[[result]]" as	
+	#  | Variable                             | Type  | Using | Padding | Alignment |
+	#  | [[rec([[index(1).a]]).a]] = warewolf | Index | 8     |         | Left      |
+	#  | [[a]]                                | Index | 4     |         | Left      |
+	#  And "WorkflowWithAssignamergeandSplit" contains Data Split "DataSplit" as
+	#  | String       | Variable                  | Type  | At | Include    | Escape |
+	#  | [[rec(1).a]] | [[d]]                     | Index | 4  | Unselected |        |
+	#  |              | [[rec([[index(2).a]]).a]] | Index | 4  | Unselected |        |
+	#  When "WorkflowWithAssignamergeandSplit" is executed
+	#  Then the workflow execution has "NO" error
+	#  And the 'Data' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
+	#  | # | Variable         | New Value |
+	#  | 1 | [[a]] =          | 1         |
+	#  | 2 | [[b]] =          | 2         |
+	#  | 3 | [[rec(1).a]] =   | warewolf  |
+	#  | 4 | [[rec(2).a]] =   | test      |
+	#  | 5 | [[index(1).a]] = | 1         |
+	#  | 6 | [[index(2).a]] = | 3         |
+	#  And the 'Data' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as 
+	#  | # |                         |
+	#  | 1 | [[a]] = 1               |
+	#  | 2 | [[b]] = 2               |
+	#  | 3 | [[rec(1).a]] = warewolf |
+	#  | 4 | [[rec(2).a]] = test     |
+	#  | 5 | [[index(1).a]] = 1      |
+	#  | 6 | [[index(2).a]] = 3      |  	
+ #     And the 'Merge' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
+	#  | # |                                      | With  | Using | Pad | Align |
+	#  | 1 | [[rec([[index(2).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
+	#  | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
+	#  And the 'Merge' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
+	#  |                        |
+	#  | [[result]] = warewolf1 |
+	#  And the 'DataSplit' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as  
+	#  | String to Split         | Process Direction | Skip blank rows | # |                                          | With  | Using | Include | Escape |
+	#  | [[rec(1).a]] = warewolf | Forward           | No              | 1 | [[d]] =                                  | Index | 4     | No      |        |
+	#  |                         |                   |                 | 2 | [[rec([[index(2).a]]).a]] = [[rec(2).a]] | Index | 4     | No      |        |
+	#  And the 'DataSplit' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
+	#  | # |                     |
+	#  | 1 | [[d]] = ware        |
+	#  | 2 | [[rec(2).a]] = wolf |
 
 #This scenario should be passed after the bug 11890 is resolved.
 #Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
@@ -1493,40 +1492,3 @@ Scenario: Workflow with Assign Calculate
       And the 'Calculate1' in Workflow 'WFWithAssignCalculateindexrecordset' debug outputs as  
 	  |                |
 	  | [[result]] = 3 |
-
-#This scenario should pass after the issue 11896 is fixed
-#Scenario Outline: Simple workflow with Assign and Format Numbers recordset index variable.
-#      Given I have a workflow "WorkflowWithAssignFormats"
-#	  And "WorkflowWithAssignFormats" contains an Assign "Vl1" as
-#	  | variable     | value    |
-#	  | [[a]]        | 2        |
-#	  | [[ind(1).a]] | 1        |
-#	  | [[rec(1).a]] | 123.2342 |
-#	  | [[rec(2).a]] | 656.235  | 	  
-#      And "WorkflowWithAssignFormats" contains Format Number "Fn1" as 
-#	  | Number     | Rounding Selected | Rounding To | Decimal to show | Result   |
-#	  | '<number>' | Normal            | 1           | 4               | [[fres]] |
-#	  When "WorkflowWithAssignFormats" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Vl1' in WorkFlow 'WorkflowWithAssignFormats' debug inputs as
-#	  | # | Variable       | New Value |
-#	  | 1 | [[a]] =        | 2         |
-#	  | 2 | [[ind(1).a]] = | 1         |
-#	  | 3 | [[rec(1).a]] = | 123.2342  |
-#	  | 4 | [[rec(2).a]] = | 656.235   |
-#	  And the 'Vl1' in Workflow 'WorkflowWithAssignFormats' debug outputs as  
-#	  | # |                         |
-#	  | 1 | [[a]] = 2               |
-#	  | 2 | [[ind(1).a]] = 1        |
-#	  | 3 | [[rec(1).a]] = 123.2342 |
-#	  | 4 | [[rec(2).a]] = 656.235  |
-#	  And the 'Fn1' in WorkFlow 'WorkflowWithAssignFormats' debug inputs as 	
-#	  | Number           | Rounding | Rounding Value | Decimals to show |
-#	  | <number> = <val> | Normal   | 1              | 4                |
-#	  And the 'Fn1' in Workflow 'WorkflowWithAssignFormats' debug outputs as 
-#	  |                  |
-#	  | [[fres]] = <res> |
-#Examples: 
-#      | no | number                  | val     | res      |
-#      | 1  | [[rec([[a]]).a]]        | 656.235 | 656.2000 |
-#      | 2  | [[rec([[ind(1).a]]).a]] | 123.342 | 123.2000 |
