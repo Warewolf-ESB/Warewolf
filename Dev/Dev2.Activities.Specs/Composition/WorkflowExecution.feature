@@ -1156,71 +1156,71 @@ Scenario: Simple workflow with Assign and Random(Evaluating recordset variable i
 	  | [[ranresult]] = Int32 |
 
 #This test scenario should be passed after the bug 11888 is fixed
-#Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandDateTimetool"
-#	 And "WorkflowWithAssignandDateTimetool" contains an Assign "Dateandtime" as
-#	  | variable    | value      |
-#	  | [[a]]       | b          |
-#	  | [[b]]       | 01/02/2014 |
-#	  | [[rec().a]] | new().a    |
-#	  | [[new().a]] | dd/mm/yyyy |	 	  
-#	  And "WorkflowWithAssignandDateTimetool" contains Date and Time "AddDate" as
-#      | Input     | Input Format    | Add Time | Output Format | Result  |
-#      | [[[[a]]]] | [[[[rec().a]]]] | 1        | dd/mm/yyyy    | [[res]] |
-#	  When "WorkflowWithAssignandDateTimetool" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[a]] =       | b          |
-#	  | 2 | [[b]] =       | 01/02/2014 |
-#	  | 3 | [[rec().a]] = | new().a    |
-#	  | 4 | [[new().a]] = |  dd/mm/yyyy|
-#	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as  
-#	   | # |                            |
-#	   | 1 | [[a]] = b                  |
-#	   | 2 | [[b]] = 01/02/2014         |
-#	   | 3 | [[rec(1).a]] = new().a     |
-#	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
-#	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
-#	   | Input                  | Input Format                 | Add Time |   | Output Format |
-#	   | [[[[a]]]] = 01/02/2014 | [[[[rec().a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
-#	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
-#	   |                      |
-#	   | [[res]] = 01/02/2015 |
+Scenario: Simple workflow with Assign and Date and Time(Evaluating recordset variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandDateTimetool"
+	 And "WorkflowWithAssignandDateTimetool" contains an Assign "Dateandtime" as
+	  | variable    | value      |
+	  | [[a]]       | b          |
+	  | [[b]]       | 01/02/2014 |
+	  | [[rec().a]] | new().a    |
+	  | [[new().a]] | dd/mm/yyyy |	 	  
+	  And "WorkflowWithAssignandDateTimetool" contains Date and Time "AddDate" as
+      | Input     | Input Format    | Add Time | Output Format | Result  |
+      | [[[[a]]]] | [[[[rec(1).a]]]] | 1        | dd/mm/yyyy    | [[res]] |
+	  When "WorkflowWithAssignandDateTimetool" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
+	  | # | Variable      | New Value  |
+	  | 1 | [[a]] =       | b          |
+	  | 2 | [[b]] =       | 01/02/2014 |
+	  | 3 | [[rec().a]] = | new().a    |
+	  | 4 | [[new().a]] = |  dd/mm/yyyy|
+	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as  
+	   | # |                            |
+	   | 1 | [[a]] = b                  |
+	   | 2 | [[b]] = 01/02/2014         |
+	   | 3 | [[rec(1).a]] = new().a     |
+	   | 4 | [[new(1).a]] =  dd/mm/yyyy |
+	   And the 'AddDate' in WorkFlow 'WorkflowWithAssignandDateTimetool' debug inputs as
+	   | Input                  | Input Format                  | Add Time |   | Output Format |
+	   | [[[[a]]]] = 01/02/2014 | [[[[rec(1).a]]]] = dd/mm/yyyy | Years    | 1 | dd/mm/yyyy    |	
+	   And the 'AddDate' in Workflow 'WorkflowWithAssignandDateTimetool' debug outputs as   
+	   |                      |
+	   | [[res]] = 01/02/2015 |
 #
 #  
 #This test scenario should be passed after the bug 11888 is fixed
-#Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset variable inside variable)executing against the server
-#	  Given I have a workflow "WorkflowWithAssignandDateTimeDiff"
-#	  And "WorkflowWithAssignandDateTimeDiff" contains an Assign "Dateandtime" as
-#	   | variable    | value      |
-#	   | [[a]]       | b          |
-#	   | [[b]]       | 01/02/2016 |
-#	   | [[rec().a]] | new().a    |
-#	   | [[new().a]] | 01/02/2014 |	 	  
-#	  And "WorkflowWithAssignandDateTimeDiff" contains Date and Time Difference "DateTimedif" as
-#       | Input1          | Input2    | Input Format | Output In | Result     |
-#       | [[[[rec().a]]]] | [[[[a]]]] | dd/mm/yyyy   | Years     | [[result]] |  
-#	   When "WorkflowWithAssignandDateTimeDiff" is executed
-#	   Then the workflow execution has "NO" error
-#	   And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
-#	   | # | Variable      | New Value  |
-#	   | 1 | [[a]] =       | b          |
-#	   | 2 | [[b]] =       | 01/02/2016 |
-#	   | 3 | [[rec().a]] = | new().a    |
-#	   | 4 | [[new().a]] = | 01/02/2014 |
-#	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as  
-#	   | # |                           |
-#	   | 1 | [[a]] = b                 |
-#	   | 2 | [[b]] = 01/02/2016        |
-#	   | 3 | [[rec(1).a]] = new().a    |
-#	   | 4 | [[new(1).a]] = 01/02/2014 |
-#	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
-#	   | Input 1                      | Input 2                | Input Format | Output In |
-#	   | [[[[rec().a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
-#	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
-#	   |                |
-#	   | [[result]] = 2 |
+Scenario: Simple workflow with Assign and DateTimeDiff(Evaluating recordset variable inside variable)executing against the server
+	  Given I have a workflow "WorkflowWithAssignandDateTimeDiff"
+	  And "WorkflowWithAssignandDateTimeDiff" contains an Assign "Dateandtime" as
+	   | variable    | value      |
+	   | [[a]]       | b          |
+	   | [[b]]       | 01/02/2016 |
+	   | [[rec().a]] | new().a    |
+	   | [[new().a]] | 01/02/2014 |	 	  
+	  And "WorkflowWithAssignandDateTimeDiff" contains Date and Time Difference "DateTimedif" as
+       | Input1           | Input2    | Input Format | Output In | Result     |
+       | [[[[rec(1).a]]]] | [[[[a]]]] | dd/mm/yyyy   | Years     | [[result]] |  
+	   When "WorkflowWithAssignandDateTimeDiff" is executed
+	   Then the workflow execution has "NO" error
+	   And the 'Dateandtime' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
+	   | # | Variable      | New Value  |
+	   | 1 | [[a]] =       | b          |
+	   | 2 | [[b]] =       | 01/02/2016 |
+	   | 3 | [[rec().a]] = | new().a    |
+	   | 4 | [[new().a]] = | 01/02/2014 |
+	   And the 'Dateandtime' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as  
+	   | # |                           |
+	   | 1 | [[a]] = b                 |
+	   | 2 | [[b]] = 01/02/2016        |
+	   | 3 | [[rec(1).a]] = new().a    |
+	   | 4 | [[new(1).a]] = 01/02/2014 |
+	   And the 'DateTimedif' in WorkFlow 'WorkflowWithAssignandDateTimeDiff' debug inputs as
+	   | Input 1                       | Input 2                | Input Format | Output In |
+	   | [[[[rec(1).a]]]] = 01/02/2014 | [[[[a]]]] = 01/02/2016 | dd/mm/yyyy   | Years     |
+	   And the 'DateTimedif' in Workflow 'WorkflowWithAssignandDateTimeDiff' debug outputs as   
+	   |                |
+	   | [[result]] = 2 |
 
 Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a varable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignReplace"
