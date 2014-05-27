@@ -1069,31 +1069,31 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating scalar varia
 	  | [[fresult]] = 12.342 |
 
 #This test is should be passed after the bug 11884
-#Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
-#	  Given I have a workflow "WorkflowWithAssignandFormatn"
-#	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    |	 	  
-#      And "WorkflowWithAssignandFormatn" contains Format Number "Fnumb" as 
-#	  | Number          | Rounding Selected | Rounding To | Decimal to show | Result      |
-#	  | [[[[rec().a]]]] | Up                | 3           | 3               | [[fresult]] |
-#	  When "WorkflowWithAssignandFormatn" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'IndVal' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'IndVal' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
-#	  | Number                    | Rounding | Rounding Value | Decimals to show |
-#	  | [[[[rec().a]]]] = 12.3412 | Up       | 3              | 3                |
-#	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
-#	  |                      |
-#	  | [[fresult]] = 12.342 |
+Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
+	  Given I have a workflow "WorkflowWithAssignandFormatn"
+	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
+	  | variable    | value   |
+	  | [[rec().a]] | new().a |
+	  | [[new().a]] | 12.3412 |	 	  
+      And "WorkflowWithAssignandFormatn" contains Format Number "Fnumb" as 
+	  | Number          | Rounding Selected | Rounding To | Decimal to show | Result      |
+	  | [[[[rec().a]]]] | Up                | 3           | 3               | [[fresult]] |
+	  When "WorkflowWithAssignandFormatn" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'IndVal' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | new().a   |
+	  | 2 | [[new().a]] = | 12.3412   |
+	  And the 'IndVal' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as  
+	  | # |                        |
+	  | 1 | [[rec(1).a]] = new().a |
+	  | 2 | [[new(1).a]] = 12.3412 |
+	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
+	  | Number                    | Rounding | Rounding Value | Decimals to show |
+	  | [[[[rec(1).a]]]] = 12.3412 | Up       | 3              | 3                |
+	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
+	  |                      |
+	  | [[fresult]] = 12.342 |
 
 #	  This Scenario should be passed after the issue 11878 is fixed
 #Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
@@ -1278,7 +1278,6 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 #	  | [[replaceResult]] = 1    |
 
 
-
 Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable inside variable in format number tool)executing against the server
       Given I have a workflow "WorkflowWithAssignandFormat"
 	  And "WorkflowWithAssignandFormat" contains an Assign "IndexVal1" as
@@ -1304,33 +1303,6 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable ins
 	  And the 'Fnumber1' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
-
-#This test is should be passed after the bug 11884
-#Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset variable inside variable)executing against the server
-#	  Given I have a workflow "WorkflowWithAssignandFormatn"
-#	  And "WorkflowWithAssignandFormatn" contains an Assign "IndVal" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    |	 	  
-#      And "WorkflowWithAssignandFormatn" contains Format Number "Fnumb" as 
-#	  | Number          | Rounding Selected | Rounding To | Decimal to show | Result      |
-#	  | [[[[rec().a]]]] | Up                | 3           | 3               | [[fresult]] |
-#	  When "WorkflowWithAssignandFormatn" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'IndVal' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'IndVal' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	  And the 'Fnumb' in WorkFlow 'WorkflowWithAssignandFormatn' debug inputs as 	
-#	  | Number                    | Rounding | Rounding Value | Decimals to show |
-#	  | [[[[rec().a]]]] = 12.3412 | Up       | 3              | 3                |
-#	  And the 'Fnumb' in Workflow 'WorkflowWithAssignandFormatn' debug outputs as 
-#	  |                      |
-#	  | [[fresult]] = 12.342 |
 
 #	  This Scenario should pass after the issue 11878 is fixed
 #Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
