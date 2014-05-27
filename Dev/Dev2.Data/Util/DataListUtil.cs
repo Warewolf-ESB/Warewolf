@@ -1047,7 +1047,7 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
             value = StripBracketsFromValue(value);
-            int dotIdx = value.IndexOf(".", StringComparison.Ordinal);
+            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
             if(dotIdx > 0)
             {
                 result = value.Substring((dotIdx + 1));
