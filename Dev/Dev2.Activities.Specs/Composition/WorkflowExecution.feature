@@ -1011,33 +1011,33 @@ Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable ins
 	  | [[b]] = teREPLACEt    |
 	  | [[replaceResult]] = 1 |
 #
-#This Scenario should be passed after the bug 11789 is fixed
-#Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
-#	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    | 
-#      And "WorkflowWithAssignandReplacebyrec" contains Replace "Rep" into "[[replaceResult]]" as	
-#	  | In Fields | Find | Replace With |
-#	  | [[[[rec(1).a]]]] | s    | REPLACE      |
-#	  When "WorkflowWithAssignandReplacebyrec" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Vals' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'Vals' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
-#	  | In Field(s)             | Find | Replace With |
-#	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
-#	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
-#	  |                          |
-#	  | [[new().a]] = teREPLACEt |
-#	  | [[replaceResult]] = 1    |
+#This Scenario should be passed after the bug 11879 is fixed
+Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
+	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
+	  | variable    | value   |
+	  | [[rec().a]] | new().a |
+	  | [[new().a]] | test    | 
+      And "WorkflowWithAssignandReplacebyrec" contains Replace "Rep" into "[[replaceResult]]" as	
+	  | In Fields        | Find | Replace With |
+	  | [[[[rec(1).a]]]] | s    | REPLACE      |
+	  When "WorkflowWithAssignandReplacebyrec" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Vals' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | new().a   |
+	  | 2 | [[new().a]] = | test      |
+	  And the 'Vals' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as  
+	  | # |                        |
+	  | 1 | [[rec(1).a]] = new().a |
+	  | 2 | [[new(1).a]] = test    |
+	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
+	  | In Field(s)             | Find | Replace With |
+	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
+	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
+	  |                           |
+	  | [[new(1).a]] = teREPLACEt |
+	  | [[replaceResult]] = 1     |
 
 
 
