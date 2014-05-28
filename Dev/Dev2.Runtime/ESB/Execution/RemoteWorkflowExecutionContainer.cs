@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -263,7 +264,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                     var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
-                    return serializableResources[0];
+                    return serializableResources.FirstOrDefault(resource => resource.ResourceType == ResourceType.WorkflowService);
                 }
             }
             catch(Exception)
