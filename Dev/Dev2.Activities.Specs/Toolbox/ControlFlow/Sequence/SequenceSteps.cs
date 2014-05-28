@@ -293,7 +293,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 {
                     activity.SourceString = valueToSplit;
                 }
-
+                CommonSteps.AddVariableToVariableList(variable);
                 activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
 

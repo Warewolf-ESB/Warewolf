@@ -327,44 +327,44 @@ Scenario: Workflow with Assigns DataMerge and DataSplit executing against the se
 	  |   | [[rec(4).b]] = flow     |
 
 #This test is going to pass after the issue 11804 is fixed
-#Scenario: Workflow with Assigns and DataSplit executing against the server
-#      Given I have a workflow "WorkflowWithAssignandDataSplittools""
-#	  And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues1" as
-#      | variable    | value |
-#      | [[a]]       | b     |
-#      | [[b]]       | 2     |
-#      | [[rs(1).a]] | test  |
-#	   And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues2" as
-#      | variable | value    |
-#      | [[test]] | warewolf |
-#	  And "WorkflowWithAssignandDataSplittools" contains Data Split "Data Spliting" as
-#	  | String          | Variable     | Type  | At        | Include    | Escape |
-#	  | [[[[rs(1).a]]]] | [[rec(1).b]] | Index | [[[[a]]]] | Unselected |        |
-#	  When "WorkflowWithAssignandDataSplittools" is executed
-#	  Then the execution has "NO" error
-#	  And the 'splitvalues1' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-#	  | # | Variable      | New Value |
-#	  | 1 | [[a]] =       | b         |
-#	  | 2 | [[b]] =       | 2         |
-#	  | 3 | [[rs(1).a]] = | test      |
-#	 And the 'splitvalues1' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
-#	  | # |                       |
-#	  | 1 | [[a]]         =  b    |
-#	  | 2 | [[b]]         =  2    |
-#	  | 3 | [[rs(1).a]]   =  test |
-#	 And the 'splitvalues2' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-#	  | # | Variable   | New Value |
-#	  | 1 | [[test]] = | warewolf  | 
-#	 And the 'splitvalues2' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
-#	  | # |                      |
-#	  | 1 | [[test]] =  warewolf |
-#	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-#	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
-#	  | [[[[rs(1).a]]]] = workflow | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[c]]]] = 2 | No      |        |
-#	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
-#	  | # |                   |
-#	  | 1 | [[rec(1).a]] = lf |
-#	
+Scenario: Workflow with Assigns and DataSplit executing against the server
+      Given I have a workflow "WorkflowWithAssignandDataSplittools"
+	  And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues1" as
+      | variable    | value |
+      | [[a]]       | b     |
+      | [[b]]       | 2     |
+      | [[rs(1).a]] | test  |
+	   And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues2" as
+      | variable | value    |
+      | [[test]] | warewolf |
+	  And "WorkflowWithAssignandDataSplittools" contains Data Split "Data Spliting" as
+	  | String          | Variable     | Type  | At        | Include    | Escape |
+	  | [[[[rs(1).a]]]] | [[rec(1).a]] | Index | [[[[a]]]] | Unselected |        |
+	  When "WorkflowWithAssignandDataSplittools" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'splitvalues1' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+	  | # | Variable      | New Value |
+	  | 1 | [[a]] =       | b         |
+	  | 2 | [[b]] =       | 2         |
+	  | 3 | [[rs(1).a]] = | test      |
+	 And the 'splitvalues1' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
+	  | # |                       |
+	  | 1 | [[a]]         =  b    |
+	  | 2 | [[b]]         =  2    |
+	  | 3 | [[rs(1).a]]   =  test |
+	 And the 'splitvalues2' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+	  | # | Variable   | New Value |
+	  | 1 | [[test]] = | warewolf  | 
+	 And the 'splitvalues2' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
+	  | # |                      |
+	  | 1 | [[test]] =  warewolf |
+	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
+	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
+	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).a]] = lf |
+	
 	  
 #@ignore 	  
 #Scenario Outline: Workflow with Assign Base Convert and Decision tools executing against the server
