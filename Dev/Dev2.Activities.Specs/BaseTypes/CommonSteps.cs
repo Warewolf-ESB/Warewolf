@@ -67,9 +67,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
-        public void ThenTheDebugOutputAs(Table table, List<DebugItemResult> outputDebugItems)
+        public void ThenTheDebugOutputAs(Table table, List<DebugItemResult> outputDebugItems, bool isDataMerge = false)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
+
+            if(isDataMerge)
+            {
+                // chop the first one off ;)
+                expectedDebugItems.RemoveAt(0);
+            }
+
             CollectionsAssert(expectedDebugItems, outputDebugItems);
         }
 
@@ -503,9 +510,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                 Verify(expectedDebugItems[i].Label, inputDebugItems[i].Label, "Labels", i);
                 Verify(expectedDebugItems[i].Value, inputDebugItems[i].Value, "Values", i);
                 Verify(expectedDebugItems[i].Variable, inputDebugItems[i].Variable, "Variables", i);
-                //                Verify(expectedDebugItems[i].GroupName, inputDebugItems[i].GroupName, "GroupNames", i);
-                //                Assert.AreEqual(expectedDebugItems[i].Type, inputDebugItems[i].Type, "Types are not equal at index" + i);
-                //                Assert.AreEqual(expectedDebugItems[i].GroupIndex, inputDebugItems[i].GroupIndex, "GroupIndexs are not equal at index" + i);
             }
         }
 

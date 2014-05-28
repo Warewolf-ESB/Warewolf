@@ -1,11 +1,11 @@
-﻿using ActivityUnitTests;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using ActivityUnitTests;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -69,7 +69,29 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void CaseConvertWithAllUpperAndMultipleRegionsInStringToConvertToConvertExpectedAllUpperCase()
+        [Owner("Travis Frisinger")]
+        [TestCategory("CaseConvert_Evaluate")]
+        public void CaseConvert_Evaluate_WhenRecursiveRegion_ExpectSingleWellFormedRegionAsResult()
+        {
+            //------------Setup for test--------------------------
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[[[testVar]]]]", "UPPER", "[[[[testVar]]]]", 1) };
+
+            SetupArguments(@"<root><NewVar>change this to upper case</NewVar><testVar>NewVar</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "NewVar", out actual, out error);
+
+            //------------Assert Results-------------------------
+            const string expected = @"CHANGE THIS TO UPPER CASE";
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestMethod]
+        public void CaseConvertWithAllUpperAndMultipleRegionsInStringToConvertWithSingleOutputTargetExpectedOneUpperCase()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testRecSet().field]], [[testVar]]", "UPPER", "[[testRecSet().field]]", 1) };
 
@@ -86,8 +108,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             const string expected = @"CHANGE THIS TO UPPER CASE";
-            Assert.AreEqual(expected, actualScalar);
-            Assert.AreEqual(expected, actualRecset[1].TheValue);
+            StringAssert.Contains(actualRecset[1].TheValue,expected);
+            StringAssert.Contains(actualScalar, "change this to upper case");
         }
 
         [TestMethod]

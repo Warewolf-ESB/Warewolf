@@ -312,11 +312,14 @@ namespace Dev2.Data.Compilers
                                 expIdx++; // inc result index ;)
                             }
 
-                            // clean up
-                            //CompiledExpression = CompiledExpression.Replace(token, string.Empty);
-
                             // replace it with the expression value to facilitate recursive evaluation
                             // be sure to remove brackets to avoid double evaluation
+                            // and be sure to respect the EvalauteToRootOnly flag ;)
+                            if(EvaluateToRootOnly)
+                            {
+                                // we need to mutate the Compiled expression so it returns a value the we can upsert to ;)
+                            }
+
                             replaceValue = DataListUtil.RemoveLanguageBrackets(replaceValue);
                             CompiledExpression = CompiledExpression.Replace(token, replaceValue);
                         }

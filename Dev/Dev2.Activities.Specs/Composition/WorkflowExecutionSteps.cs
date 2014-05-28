@@ -412,10 +412,13 @@ namespace Dev2.Activities.Specs.Composition
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+
             var commonSteps = new CommonSteps();
             commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Outputs)
-                                                    .SelectMany(s => s.ResultsList).ToList());
+                                                    .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)

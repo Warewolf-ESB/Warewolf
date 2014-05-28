@@ -1823,6 +1823,21 @@ namespace Dev2.Server.Datalist
                 var result = rules.BindCompiledExpression();
                 if(result != null)
                 {
+                    // this block of logic got stuck at the bottom.... Quite key to recursive evaluation.
+                    // must stay at this level since it triggers the root level evaluation behavior required for upsert ;)
+                    // else you get the value, not the expression.
+                    if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
+                    {
+                        // Create a new entry for return ;)
+                        string error;
+                        var field = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                        result = Dev2BinaryDataListFactory.CreateEntry(field, string.Empty, rules.BinaryDataList.UID);
+                        result.TryPutScalar(new BinaryDataListItem(rules.CompiledExpression, field), out error);
+                        rules.Errors.AddError(error);
+
+                        return result;
+                    }
+
                     // Check if compiled expression has more parts ;)
                     if(IsEvaluated(rules.CompiledExpression))
                     {
@@ -1839,6 +1854,7 @@ namespace Dev2.Server.Datalist
                     return null;
                 }
 
+                // not entirely sure how this block gets hit... 
                 if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
                 {
                     // Create a new entry for return ;)
@@ -1850,6 +1866,7 @@ namespace Dev2.Server.Datalist
 
                     return result;
                 }
+
 
                 // we need to drop in again for further evaluation ;)
                 EvaluateRuleSet ers2 = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };

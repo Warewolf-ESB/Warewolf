@@ -249,14 +249,13 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 1 | [[new]] = Warewolf |
 
 #This test is going to pass after the issue 11785 is fixed
-#@Ignore 
 #Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
 #	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools"
 #	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains an Assign "InputDates" as
 #	  | variable | value |
 #	  | [[a]]    | 2014  |
 #	  | [[b]]    | 10    |
-#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains Date and Time Difference "Date&Time" as	
+#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains Date and Time Difference "DateAndTime" as	
 #	  | Input1        | Input2     | Input Format | Output In | Result     |
 #	  | 2020/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     | [[result]] |  
 #	  When "WorkflowWithAssignAndDateTimeDifferencetools" is executed
@@ -269,10 +268,10 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 #	  | # |              |
 #	  | 1 | [[a]] = 2014 |
 #	  | 2 | [[b]] = 01.  |
-#	  And the 'Date&Time' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
+#	  And the 'DateAndTime' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 #	  | Input 1       | Input 2    | Input Format | Output In |
 #	  | 2014/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
-#	  And the 'Date&Time' in Workflow 'WorkflowWith3Assigntools' debug outputs as 
+#	  And the 'DateAndTime' in Workflow 'WorkflowWith3Assigntools' debug outputs as 
 #	  |               |
 #	  | [[result1]] = |
 
@@ -337,7 +336,7 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	   And "WorkflowWithAssignandDataSplittools" contains an Assign "splitvalues2" as
       | variable | value    |
       | [[test]] | warewolf |
-	  And "WorkflowWithAssignandDataSplittools" contains Data Split "Data Spliting" as
+	  And "WorkflowWithAssignandDataSplittools" contains Data Split "DataSpliting" as
 	  | String          | Variable     | Type  | At        | Include    | Escape |
 	  | [[[[rs(1).a]]]] | [[rec(1).a]] | Index | [[[[a]]]] | Unselected |        |
 	  When "WorkflowWithAssignandDataSplittools" is executed
@@ -358,10 +357,10 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	 And the 'splitvalues2' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as   
 	  | # |                      |
 	  | 1 | [[test]] =  warewolf |
-	  And the 'Data Spliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
+	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
 	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
 	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
-	  And the 'Data Spliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
+	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |
 	
@@ -815,121 +814,121 @@ Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variabl
       And the 'Base' in Workflow 'WorkflowWithAssignandBase' debug outputs as  
 	  | # |              |
 	  | 1 | [[b]] = MTI= |
-#
+
 #This scenario should pass after the bug 11872 is fixed	  
-#Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandBasec"
-#	 And "WorkflowWithAssignandBasec" contains an Assign "BaseVar" as
-#	  | variable    | value    |
-#	  | [[rs().a]]  | rec(1).a |
-#	  | [[rec().a]] | 12       |	
-#	   And "WorkflowWithAssignandBasec" contains Base convert "Base" as
-#	  | Variable       | From | To      |
-#	  | [[[[rs().a]]]] | Text | Base 64 |
-#	  When "WorkflowWithAssignandBasec" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'BaseVar' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rs().a]] =  | rec(1).a  |
-#	  | 2 | [[rec().a]] = | 12        |
-#	  And the 'BaseVar' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rs(1).a]] = rec(1).a |
-#	  | 2 | [[rec(1).a]] = 12      |
-#	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
-#	  | # | Convert              | From | To      |
-#	  | 1 | [[[[rs(1).a]]]] = 12 | Text | Base 64 |
-#      And the 'Base' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = MTI= |
-#	  
+Scenario: Simple workflow with Assign and Base Convert(Evaluating Recordset variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandBasec"
+	 And "WorkflowWithAssignandBasec" contains an Assign "BaseVar" as
+	  | variable    | value    |
+	  | [[rs().a]]  | rec(1).a |
+	  | [[rec().a]] | 12       |	
+	   And "WorkflowWithAssignandBasec" contains Base convert "Base" as
+	  | Variable       | From | To      |
+	  | [[[[rs().a]]]] | Text | Base 64 |
+	  When "WorkflowWithAssignandBasec" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'BaseVar' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | rec(1).a  |
+	  | 2 | [[rec().a]] = | 12        |
+	  And the 'BaseVar' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
+	  | # |                        |
+	  | 1 | [[rs(1).a]] = rec(1).a |
+	  | 2 | [[rec(1).a]] = 12      |
+	   And the 'Base' in WorkFlow 'WorkflowWithAssignandBasec' debug inputs as
+	  | # | Convert              | From | To      |
+	  | 1 | [[[[rs(1).a]]]] = 12 | Text | Base 64 |
+      And the 'Base' in Workflow 'WorkflowWithAssignandBasec' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = MTI= |
+	  
 #The below 2 scenarios should be passed after the bug 11873 is fixed
-#Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variable inside variable)executing against the server.
-#	 Given I have a workflow "WorkflowWithAssignandcCse"
-#	 And "WorkflowWithAssignandcCse" contains an Assign "Case Var" as
-#	  | variable | value    |
-#	  | [[a]]    | b        |
-#	  | [[b]]    | warewolf |	
-#	   And "WorkflowWithAssignandcCse" contains case convert "CaseConvert" as
-#	  | Variable  | Type  |
-#	  | [[[[a]]]] | UPPER |
-#	  When "WorkflowWithAssignandcCse" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Case Var' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | b         |
-#	  | 2 | [[b]] =  | warewolf  |
-#	  And the 'Case Var' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[a]] = b        |
-#	  | 2 | [[b]] = warewolf |
-#	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
-#	  | # | Convert              | To    |
-#	  | 1 | [[[[a]]]] = warewolf | UPPER |
-#	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[b]] = WAREWOLF |
-#
-#Scenario: Simple workflow with Assign and Case Convert(Evaluating Recordset variable inside variable)executing against the server.
-#	 Given I have a workflow "WorkflowWithAssignandcCase"
-#	 And "WorkflowWithAssignandcCase" contains an Assign "Case Var" as
-#	   | variable    | value    |
-#	   | [[rs().a]]  | rec(1).a |
-#	   | [[rec().a]] | warewolf |	
-#	   And "WorkflowWithAssignandcCase" contains case convert "CaseConvert" as
-#	  | Variable        | Type  |
-#	  | [[[[rs(1).a]]]] | UPPER |
-#	  When "WorkflowWithAssignandcCase" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Case Var' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rs().a]] =  | rec(1).a  |
-#	  | 2 | [[rec().a]] = | warewolf  |
-#	  And the 'Case Var' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
-#	  | # |                         |
-#	  | 1 | [[rs(1).a]] = rec(1).a  |
-#	  | 2 | [[rec(1).a]] = warewolf |
-#	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
-#	  | # | Convert                    | To    |
-#	  | 1 | [[[[rs(1).a]]]] = warewolf | UPPER |
-#	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = WAREWOLF |
+Scenario: Simple workflow with Assign and Case Convert(Evaluating scalar variable inside variable)executing against the server.
+	 Given I have a workflow "WorkflowWithAssignandcCse"
+	 And "WorkflowWithAssignandcCse" contains an Assign "Case Var" as
+	  | variable | value    |
+	  | [[a]]    | b        |
+	  | [[b]]    | warewolf |	
+	   And "WorkflowWithAssignandcCse" contains case convert "CaseConvert" as
+	  | Variable  | Type  |
+	  | [[[[a]]]] | UPPER |
+	  When "WorkflowWithAssignandcCse" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Case Var' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | b         |
+	  | 2 | [[b]] =  | warewolf  |
+	  And the 'Case Var' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
+	  | # |                  |
+	  | 1 | [[a]] = b        |
+	  | 2 | [[b]] = warewolf |
+	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCse' debug inputs as
+	  | # | Convert              | To    |
+	  | 1 | [[[[a]]]] = warewolf | UPPER |
+	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCse' debug outputs as  
+	  | # |                  |
+	  | 1 | [[b]] = WAREWOLF |
+
+Scenario: Simple workflow with Assign and Case Convert(Evaluating Recordset variable inside variable)executing against the server.
+	 Given I have a workflow "WorkflowWithAssignandcCase"
+	 And "WorkflowWithAssignandcCase" contains an Assign "Case Var" as
+	   | variable    | value    |
+	   | [[rs().a]]  | rec(1).a |
+	   | [[rec().a]] | warewolf |	
+	   And "WorkflowWithAssignandcCase" contains case convert "CaseConvert" as
+	  | Variable        | Type  |
+	  | [[[[rs(1).a]]]] | UPPER |
+	  When "WorkflowWithAssignandcCase" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Case Var' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | rec(1).a  |
+	  | 2 | [[rec().a]] = | warewolf  |
+	  And the 'Case Var' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rs(1).a]] = rec(1).a  |
+	  | 2 | [[rec(1).a]] = warewolf |
+	 And the 'CaseConvert' in WorkFlow 'WorkflowWithAssignandcCase' debug inputs as
+	  | # | Convert                    | To    |
+	  | 1 | [[[[rs(1).a]]]] = warewolf | UPPER |
+	  And the 'CaseConvert' in Workflow 'WorkflowWithAssignandcCase' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = WAREWOLF |
 
 #This Test Scenario should be Passed after the bug 11874 is fixed.
-#Scenario: Simple workflow with Assign and Data Merge (Evaluating variables inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandData"
-#	 And "WorkflowWithAssignandData" contains an Assign "Datam" as
-#	  | variable    | value    |
-#	  | [[a]]       | b        |
-#	  | [[b]]       | warewolf |
-#	  | [[rs().a]]  | rec(1).a |
-#	  | [[rec().a]] | test     |
-#     And "WorkflowWithAssignandData" contains Data Merge "Datamerge" into "[[result]]" as	
-#	  | Variable       | Type  | Using | Padding | Alignment |
-#	  | [[[[a]]]]      | Index | 8     |         | Left      |
-#	  | [[[[rs().a]]]] | Index | 4     |         | Left      |
-#	 When "WorkflowWithAssignandData" is executed
-#	 Then the workflow execution has "NO" error
-#	 And the 'Datam' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[a]] =       | b         |
-#	  | 2 | [[b]] =       | warewolf  |
-#	  | 3 | [[rs().a]] =  | rec(1).a  |
-#	  | 4 | [[rec().a]] = | test      |
-#	 And the 'Datam' in Workflow 'WorkflowWithAssignandData' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[a]] = b              |
-#	  | 2 | [[b]] = warewolf       |
-#	  | 3 | [[rs(1).a]] = rec(1).a |
-#	  | 4 | [[rec(1).a]] = test    |
-#	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
-#	  | # |                        | With  | Using | Pad | Align |
-#	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
-#	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
-#	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
-#	  | # |                           |
-#	  | 1 | [[result]] = warewolftest |
+Scenario: Simple workflow with Assign and Data Merge (Evaluating variables inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandData"
+	 And "WorkflowWithAssignandData" contains an Assign "Datam" as
+	  | variable    | value    |
+	  | [[a]]       | b        |
+	  | [[b]]       | warewolf |
+	  | [[rs().a]]  | rec(1).a |
+	  | [[rec().a]] | test     |
+     And "WorkflowWithAssignandData" contains Data Merge "Datamerge" into "[[result]]" as	
+	  | Variable       | Type  | Using | Padding | Alignment |
+	  | [[[[a]]]]      | Index | 8     |         | Left      |
+	  | [[[[rs().a]]]] | Index | 4     |         | Left      |
+	 When "WorkflowWithAssignandData" is executed
+	 Then the workflow execution has "NO" error
+	 And the 'Datam' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[a]] =       | b         |
+	  | 2 | [[b]] =       | warewolf  |
+	  | 3 | [[rs().a]] =  | rec(1).a  |
+	  | 4 | [[rec().a]] = | test      |
+	 And the 'Datam' in Workflow 'WorkflowWithAssignandData' debug outputs as  
+	  | # |                        |
+	  | 1 | [[a]] = b              |
+	  | 2 | [[b]] = warewolf       |
+	  | 3 | [[rs(1).a]] = rec(1).a |
+	  | 4 | [[rec(1).a]] = test    |
+	 And the 'Datamerge' in WorkFlow 'WorkflowWithAssignandData' debug inputs as
+	  | # |                        | With  | Using | Pad | Align |
+	  | 1 | [[[[a]]]] = warewolf   | Index | "8"   | ""  | Left  |
+	  | 2 | [[[[rs(1).a]]]] = test | Index | "4"   | ""  | Left  |
+	  And the 'Datamerge' in Workflow 'WorkflowWithAssignandData' debug outputs as  
+	  | # |                           |
+	  | 1 | [[result]] = warewolftest |
 
 Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandFindIndex"
@@ -957,32 +956,32 @@ Scenario: Simple workflow with Assign and Find Index(Evaluating scalar variable 
 	  |                     |
 	  | [[indexResult]] = 3 |
 
-#	  This Scenario should pass after the issue 11878 is fixed
-#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
-#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    |	 	  
-#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
-#	  | In Fields       | Index           | Character | Direction     |
-#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
-#	  When "WorkflowWithAssignandFindIndex1" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
-#	  | In Field               | Index           | Characters | Direction     |
-#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
-#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
-#	  |                     |
-#	  | [[indexResult]] = 3 |
+# This Scenario should pass after the issue 11878 is fixed
+Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
+	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
+	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
+	  | variable    | value   |
+	  | [[rec().a]] | new().a |
+	  | [[new().a]] | test    |	 	  
+     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
+	  | In Fields       | Index           | Character | Direction     |
+	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
+	  When "WorkflowWithAssignandFindIndex1" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | new().a   |
+	  | 2 | [[new().a]] = | test      |
+	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
+	  | # |                        |
+	  | 1 | [[rec(1).a]] = new().a |
+	  | 2 | [[new(1).a]] = test    |
+	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
+	  | In Field               | Index           | Characters | Direction     |
+	  | [[[[rec(1).a]]]] = test | First Occurence | s          | Left to Right |
+	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
+	  |                     |
+	  | [[indexResult]] = 3 |
 
 Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandReplace"
@@ -1010,7 +1009,7 @@ Scenario: Simple workflow with Assign and Replace(Evaluating scalar variable ins
 	  |                       |
 	  | [[b]] = teREPLACEt    |
 	  | [[replaceResult]] = 1 |
-#
+
 #This Scenario should be passed after the bug 11879 is fixed
 Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
