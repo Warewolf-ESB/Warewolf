@@ -573,31 +573,31 @@ Scenario: Workflow with 2 Assign tools executing against the server
 
 
 #This Test Scenario should be passed after the issue 11834 is fixed	  
-#Scenario: Workflow with 2 Assign tools by using recordsets in fields executing against the server
-#	  Given I have a workflow "WorkflowWith2Assigntoolswithrecordsets"
-#	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec1" as
-#	  | variable     | value    |
-#	  | [[rec().a]]  | rec(2).a |
-#	  | [[rec(2).a]] | test     |
-#	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec2" as
-#	  | variable         | value    |
-#	  | [[[[rec(1).a]]]] | warewolf |
-#	  When "WorkflowWith2Assigntoolswithrecordsets" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'rec1' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec().a]] =  | rec(2).a  |
-#	  | 2 | [[rec(2).a]] = | test      |
-#	  And the 'rec1' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = rec(2).a |
-#	  | 2 | [[rec(2).a]] = test     |
-#	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
-#	  | # | Variable                | New Value |
-#	  | 1 | [[[[rec(1).a]]]] = test | warewolf  |
-#	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
-#	  | # |                          |
-#	  | 1 | [[rec(2).a]] =  warewolf |
+Scenario: Workflow with 2 Assign tools by using recordsets in fields executing against the server
+	  Given I have a workflow "WorkflowWith2Assigntoolswithrecordsets"
+	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec1" as
+	  | variable     | value    |
+	  | [[rec().a]]  | rec(2).a |
+	  | [[rec(2).a]] | test     |
+	  And "WorkflowWith2Assigntoolswithrecordsets" contains an Assign "rec2" as
+	  | variable         | value    |
+	  | [[[[rec(1).a]]]] | warewolf |
+	  When "WorkflowWith2Assigntoolswithrecordsets" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'rec1' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rec().a]] =  | rec(2).a  |
+	  | 2 | [[rec(2).a]] = | test      |
+	  And the 'rec1' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = rec(2).a |
+	  | 2 | [[rec(2).a]] = test     |
+	  And the 'rec2' in WorkFlow 'WorkflowWith2Assigntoolswithrecordsets' debug inputs as
+	  | # | Variable                | New Value |
+	  | 1 | [[[[rec(1).a]]]] = rec(2).a | warewolf  |
+	  And the 'rec2' in Workflow 'WorkflowWith2Assigntoolswithrecordsets' debug outputs as  
+	  | # |                          |
+	  | 1 | [[rec(2).a]] =  warewolf |
 
 Scenario: Workflow with 2 Assign tools by using Scalars as variables executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntoolswithrscalars"
@@ -1093,33 +1093,7 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating Recordset va
 	  |                      |
 	  | [[fresult]] = 12.342 |
 
-#	  This Scenario should be passed after the issue 11878 is fixed
-#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
-#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    |	 	  
-#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
-#	  | In Fields       | Index           | Character | Direction     |
-#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
-#	  When "WorkflowWithAssignandFindIndex1" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
-#	  | In Field               | Index           | Characters | Direction     |
-#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
-#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
-#	  |                     |
-#	  | [[indexResult]] = 3 |
-#
+
 #This scenario should be passed after the bug 11887 is fixed
 Scenario: Simple workflow with Assign and Random(Evaluating recordset variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandRandom"
@@ -1246,35 +1220,6 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 	  |                       |
 	  | [[b]] = teREPLACEt    |
 	  | [[replaceResult]] = 1 |
-#
-#This Scenario should be passed after the bug 11789 is fixed
-#Scenario: Simple workflow with Assign and Replace(Evaluating Recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandReplacebyrec"
-#	 And "WorkflowWithAssignandReplacebyrec" contains an Assign "Vals" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    | 
-#      And "WorkflowWithAssignandReplacebyrec" contains Replace "Rep" into "[[replaceResult]]" as	
-#	  | In Fields | Find | Replace With |
-#	  | [[[[rec(1).a]]]] | s    | REPLACE      |
-#	  When "WorkflowWithAssignandReplacebyrec" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Vals' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'Vals' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	  And the 'Rep' in WorkFlow 'WorkflowWithAssignandReplacebyrec' debug inputs as 	
-#	  | In Field(s)             | Find | Replace With |
-#	  | [[[[rec(1).a]]]] = test | s    | REPLACE      |
-#	    And the 'Rep' in Workflow 'WorkflowWithAssignandReplacebyrec' debug outputs as 
-#	  |                          |
-#	  | [[new().a]] = teREPLACEt |
-#	  | [[replaceResult]] = 1    |
-
 
 Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable inside variable in format number tool)executing against the server
       Given I have a workflow "WorkflowWithAssignandFormat"
@@ -1301,33 +1246,6 @@ Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable ins
 	  And the 'Fnumber1' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
-
-#	  This Scenario should pass after the issue 11878 is fixed
-#Scenario: Simple workflow with Assign and Find Index(Evaluating recordset variable inside variable)executing against the server
-#	 Given I have a workflow "WorkflowWithAssignandFindIndex1"
-#	 And "WorkflowWithAssignandFindIndex1" contains an Assign "Index Val" as
-#	  | variable    | value   |
-#	  | [[rec().a]] | new().a |
-#	  | [[new().a]] | test    |	 	  
-#     And "WorkflowWithAssignandFindIndex1" contains Find Index "Index char" into "[[indexResult]]" as
-#	  | In Fields       | Index           | Character | Direction     |
-#	  | [[[[rec().a]]]] | First Occurence | s         | Left to Right |
-#	  When "WorkflowWithAssignandFindIndex1" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Index Val' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | new().a   |
-#	  | 2 | [[new().a]] = | test      |
-#	  And the 'Index Val' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as  
-#	  | # |                        |
-#	  | 1 | [[rec(1).a]] = new().a |
-#	  | 2 | [[new(1).a]] = test    |
-#	   And the 'Index char' in WorkFlow 'WorkflowWithAssignandFindIndex1' debug inputs as 	
-#	  | In Field               | Index           | Characters | Direction     |
-#	  | [[[[rec().a]]]] = test | First Occurence | s          | Left to Right |
-#	  And the 'Index char' in Workflow 'WorkflowWithAssignandFindIndex1' debug outputs as 
-#	  |                     |
-#	  | [[indexResult]] = 3 |
 
 Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating recordset variable as index variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignDatamergeandSplit"
@@ -1430,37 +1348,37 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 	#  | 2 | [[rec(2).a]] = wolf |
 
 #This scenario should be passed after the bug 11890 is resolved.
-#Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
-#	 Given I have a workflow "WorkflowWithAssignandAssign"
-#	 And "WorkflowWithAssignandAssign" contains an Assign "Data1" as
-#	  | variable       | value |
-#	  | [[a]]          | 1     |
-#	  | [[rec(1).a]]   | 2     |
-#	  | [[index(1).a]] | 2     |
-#	   And "WorkflowWithAssignandAssign" contains an Assign "Data2" as
-#	  | variable             | value    |
-#	  | [[new([[a]]).a]]     | test     |
-#	  | [[rec([[index(1).a]]).a]] | warewolf |
-#	  When "WorkflowWithAssignandAssign" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Data1' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
-#	  | # | Variable         | New Value |
-#	  | 1 | [[a]] =          | 1         |
-#	  | 2 | [[rec(1).a]] =   | 2         |
-#	  | 3 | [[index(1).a]] = | 2         |
-#	  And the 'Data1' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
-#	  | # |                    |
-#	  | 1 | [[a]] = 1          |
-#	  | 2 | [[rec(1).a]] = 2   |
-#	  | 3 | [[index(1).a]] = 2 |
-#	   And the 'Data2' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
-#	  | # | Variable                  | New Value |
-#	  | 1 | [[new([[a]]).a]] =        | test      |
-#	  | 2 | [[rec([[index(1).a]]).a]] = | warewolf  |
-#	  And the 'Data2' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
-#	  | # |                         |
-#	  | 1 | [[new(1).a]] = test     |
-#	  | 2 | [[rec(2).a]] = warewolf |
+Scenario: Simple workflow with 2 Assign tools evaluating recordset index variables.
+	 Given I have a workflow "WorkflowWithAssignandAssign"
+	 And "WorkflowWithAssignandAssign" contains an Assign "Data1" as
+	  | variable       | value |
+	  | [[a]]          | 1     |
+	  | [[rec(1).a]]   | 2     |
+	  | [[index(1).a]] | 2     |
+	   And "WorkflowWithAssignandAssign" contains an Assign "Data2" as
+	  | variable             | value    |
+	  | [[new([[a]]).a]]     | test     |
+	  | [[rec([[index(1).a]]).a]] | warewolf |
+	  When "WorkflowWithAssignandAssign" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Data1' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
+	  | # | Variable         | New Value |
+	  | 1 | [[a]] =          | 1         |
+	  | 2 | [[rec(1).a]] =   | 2         |
+	  | 3 | [[index(1).a]] = | 2         |
+	  And the 'Data1' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
+	  | # |                    |
+	  | 1 | [[a]] = 1          |
+	  | 2 | [[rec(1).a]] = 2   |
+	  | 3 | [[index(1).a]] = 2 |
+	   And the 'Data2' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
+	  | # | Variable                  | New Value |
+	  | 1 | [[new([[a]]).a]] =        | test      |
+	  | 2 | [[rec([[index(1).a]]).a]] = | warewolf  |
+	  And the 'Data2' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
+	  | # |                         |
+	  | 1 | [[new(1).a]] = test     |
+	  | 2 | [[rec(2).a]] = warewolf |
 
 Scenario: Workflow with Assign Calculate
       Given I have a workflow "WFWithAssignCalculateindexrecordset"

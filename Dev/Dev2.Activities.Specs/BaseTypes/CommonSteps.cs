@@ -71,7 +71,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
 
-            if(isDataMerge)
+            // Very specific case ;)
+            if(isDataMerge && expectedDebugItems.Count == 2)
             {
                 // chop the first one off ;)
                 expectedDebugItems.RemoveAt(0);
