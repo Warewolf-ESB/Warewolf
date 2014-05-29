@@ -139,7 +139,7 @@ namespace Dev2.Data.Compilers
         {
             if(binding == null)
             {
-                Errors.AddError("Could not evalaute { " + token.Option.DisplayValue + " }");
+                Errors.AddError("Could not evaluate { " + token.Option.DisplayValue + " }");
 
                 return;
             }
@@ -154,14 +154,14 @@ namespace Dev2.Data.Compilers
         public IBinaryDataListEntry BindCompiledExpression()
         {
 
-            // very short curcit if no items ;)
+            // very short circuit if no items ;)
             if(_internalKeyMap.Keys.Count == 0)
             {
                 CompiledExpression = null;
                 return null;
             }
 
-            // short curcit the long eval for mix mode data ;)
+            // short circuit the long eval for mix mode data ;)
             if(_internalMap.Keys.Count <= 1 && FetchEvaluationIterationCount(Expression) == 1 && CompiledExpression.Length == 3)
             {
                 return _internalKeyMap.Values.FirstOrDefault();
@@ -310,14 +310,6 @@ namespace Dev2.Data.Compilers
                                 }
 
                                 expIdx++; // inc result index ;)
-                            }
-
-                            // replace it with the expression value to facilitate recursive evaluation
-                            // be sure to remove brackets to avoid double evaluation
-                            // and be sure to respect the EvalauteToRootOnly flag ;)
-                            if(EvaluateToRootOnly)
-                            {
-                                // we need to mutate the Compiled expression so it returns a value the we can upsert to ;)
                             }
 
                             replaceValue = DataListUtil.RemoveLanguageBrackets(replaceValue);

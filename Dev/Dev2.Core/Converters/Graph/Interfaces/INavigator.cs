@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.Interfaces
+// ReSharper restore CheckNamespace
 {
     public interface INavigator : IDisposable
     {
