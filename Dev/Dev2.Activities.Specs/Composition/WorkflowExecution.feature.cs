@@ -3781,9 +3781,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleWorkflowWith2AssignToolsEvaluatingRecordsetIndexVariables_()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Simple workflow with 2 Assign tools evaluating recordset index variables.", ((string[])(null)));
-#line 1351
+#line 1354
 this.ScenarioSetup(scenarioInfo);
-#line 1352
+#line 1355
   testRunner.Given("I have a workflow \"WorkflowWithAssignandAssign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table225 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3798,7 +3798,7 @@ this.ScenarioSetup(scenarioInfo);
             table225.AddRow(new string[] {
                         "[[index(1).a]]",
                         "2"});
-#line 1353
+#line 1356
   testRunner.And("\"WorkflowWithAssignandAssign\" contains an Assign \"Data1\" as", ((string)(null)), table225, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table226 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3810,11 +3810,11 @@ this.ScenarioSetup(scenarioInfo);
             table226.AddRow(new string[] {
                         "[[rec([[index(1).a]]).a]]",
                         "warewolf"});
-#line 1358
+#line 1361
     testRunner.And("\"WorkflowWithAssignandAssign\" contains an Assign \"Data2\" as", ((string)(null)), table226, "And ");
-#line 1362
+#line 1365
    testRunner.When("\"WorkflowWithAssignandAssign\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1363
+#line 1366
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table227 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3833,7 +3833,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[index(1).a]] =",
                         "2"});
-#line 1364
+#line 1367
    testRunner.And("the \'Data1\' in WorkFlow \'WorkflowWithAssignandAssign\' debug inputs as", ((string)(null)), table227, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table228 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3848,7 +3848,7 @@ this.ScenarioSetup(scenarioInfo);
             table228.AddRow(new string[] {
                         "3",
                         "[[index(1).a]] = 2"});
-#line 1369
+#line 1372
    testRunner.And("the \'Data1\' in Workflow \'WorkflowWithAssignandAssign\' debug outputs as", ((string)(null)), table228, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table229 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3863,7 +3863,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "[[rec([[index(1).a]]).a]] =",
                         "warewolf"});
-#line 1374
+#line 1377
     testRunner.And("the \'Data2\' in WorkFlow \'WorkflowWithAssignandAssign\' debug inputs as", ((string)(null)), table229, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table230 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3875,7 +3875,7 @@ this.ScenarioSetup(scenarioInfo);
             table230.AddRow(new string[] {
                         "2",
                         "[[rec(2).a]] = warewolf"});
-#line 1378
+#line 1381
    testRunner.And("the \'Data2\' in Workflow \'WorkflowWithAssignandAssign\' debug outputs as", ((string)(null)), table230, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3887,9 +3887,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WorkflowWithAssignCalculate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign Calculate", ((string[])(null)));
-#line 1383
+#line 1386
 this.ScenarioSetup(scenarioInfo);
-#line 1384
+#line 1387
       testRunner.Given("I have a workflow \"WFWithAssignCalculateindexrecordset\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table231 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3907,14 +3907,14 @@ this.ScenarioSetup(scenarioInfo);
             table231.AddRow(new string[] {
                         "[[rec(2).a]]",
                         "6"});
-#line 1385
+#line 1388
    testRunner.And("\"WFWithAssignCalculateindexrecordset\" contains an Assign \"values1\" as", ((string)(null)), table231, "And ");
-#line 1391
+#line 1394
    testRunner.And("\"WFWithAssignCalculateindexrecordset\" contains Calculate \"Calculate1\" with formul" +
                     "a \"[[rec([[index(1).a]]).a]]+[[a]]\" into \"[[result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1392
+#line 1395
    testRunner.When("\"WFWithAssignCalculateindexrecordset\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1393
+#line 1396
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table232 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3937,7 +3937,7 @@ this.ScenarioSetup(scenarioInfo);
                         "4",
                         "[[rec(2).a]] =",
                         "6"});
-#line 1394
+#line 1397
    testRunner.And("the \'values1\' in WorkFlow \'WFWithAssignCalculateindexrecordset\' debug inputs as", ((string)(null)), table232, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table233 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3955,14 +3955,14 @@ this.ScenarioSetup(scenarioInfo);
             table233.AddRow(new string[] {
                         "4",
                         "[[rec(2).a]]   = 6"});
-#line 1400
+#line 1403
   testRunner.And("the \'values1\' in Workflow \'WFWithAssignCalculateindexrecordset\' debug outputs as", ((string)(null)), table233, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table234 = new TechTalk.SpecFlow.Table(new string[] {
                         "fx ="});
             table234.AddRow(new string[] {
                         "[[rec([[index(1).a]]).a]]+[[a]] = [[rec(1).a]]+1 = 2+1"});
-#line 1406
+#line 1409
    testRunner.And("the \'Calculate1\' in WorkFlow \'WFWithAssignCalculateindexrecordset\' debug inputs a" +
                     "s", ((string)(null)), table234, "And ");
 #line hidden
@@ -3970,7 +3970,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table235.AddRow(new string[] {
                         "[[result]] = 3"});
-#line 1409
+#line 1412
       testRunner.And("the \'Calculate1\' in Workflow \'WFWithAssignCalculateindexrecordset\' debug outputs " +
                     "as", ((string)(null)), table235, "And ");
 #line hidden

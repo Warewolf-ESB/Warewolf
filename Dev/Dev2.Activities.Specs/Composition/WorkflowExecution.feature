@@ -1295,6 +1295,9 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 
 
 #This Test Scenario should be passed after the bug 11889 is fixed
+# It will not since there is a bug in the Debug Input generation logic OF THE ACCEPTANCE TESTING when using DataMerge and recursive evaluation.
+# The server seems to generate exactly what it should
+# There might be a bug in studio rendering as well given item 3 never appears in the studio output
  #Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating index recordset variable)executing against the server
 	# Given I have a workflow "WorkflowWithAssignamergeandSplit"
 	# And "WorkflowWithAssignamergeandSplit" contains an Assign "Data" as
