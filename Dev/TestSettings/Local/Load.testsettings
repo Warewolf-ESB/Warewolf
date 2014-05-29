@@ -5,7 +5,7 @@
     <DeploymentItem filename="TestBinaries\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - Server.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - Server.bat" />
+  <Scripts setupScript="Startup - Server.bat" cleanupScript="Cleanup - Server.bat" />
   <Execution>
     <Timeouts testTimeout="300000" />
     <TestTypeSpecific>
