@@ -5,7 +5,7 @@
         <DeploymentItem filename="TestBinaries\" />
     </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="Startup - Server.bat" cleanupScript="Cleanup - Server.bat" />
+  <Scripts setupScript="Startup.bat" cleanupScript="Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="1000" />
