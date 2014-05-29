@@ -2,6 +2,9 @@
 using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System;
+using System.IO;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 {
@@ -24,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             var fileRead = new DsfFileRead
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                Username = ScenarioContext.Current.Get<string>(CorrectUsernameDomain(CommonSteps.SourceUsernameHolder)),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
             };
@@ -35,6 +38,26 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             };
 
             ScenarioContext.Current.Add("activity", fileRead);
+        }
+
+        private string CorrectUsernameDomain(string IncorrectUsername)
+        {
+            File.WriteAllText(@"\\TST7X64W\QTAgent\New Text Document.txt", "IncorrectUsername");
+            bool inDomain = false;
+            try
+            {
+                System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain()
+            }
+            catch(ActiveDirectoryObjectNotFoundException e)
+            {
+                inDomain = true;
+            }
+            var DomainPart = IncorrectUsername.IndexOf("\\");
+            if(DomainPart == -1 && inDomain)
+            {
+                return IncorrectUsername.Replace(IncorrectUsername.Substring(0, DomainPart + 1), ".\\");
+            }
+            return IncorrectUsername;
         }
     }
 }

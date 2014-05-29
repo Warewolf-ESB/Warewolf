@@ -73,6 +73,7 @@
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
