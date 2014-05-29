@@ -21,16 +21,16 @@ namespace Dev2.DataList.Contract.Builders
         IList<IBinaryDataListItem> _rowData;
         IBinaryDataListEntry _entry;
         int _upsertIdx = 1;
-        readonly Dev2RecordsetIndexScope dris = new Dev2RecordsetIndexScope();
+        readonly Dev2RecordsetIndexScope _dris = new Dev2RecordsetIndexScope();
 
-        readonly IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+        readonly IDataListCompiler _c = DataListFactory.CreateDataListCompiler();
 
         public LiveFlushIterator(Guid loc)
         {
             ErrorResultTO errors;
             _liveFlushingLocation = loc;
 
-            _bdl = c.FetchBinaryDataList(loc, out errors);
+            _bdl = _c.FetchBinaryDataList(loc, out errors);
 
             if(errors.HasErrors())
             {
@@ -45,7 +45,7 @@ namespace Dev2.DataList.Contract.Builders
             {
                 ErrorResultTO errors;
                 // push the existing version of the DataList on change ;)
-                c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
+                _c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
                 if(errors.HasErrors())
                 {
                     throw new Exception(errors.MakeDataListReady());
@@ -68,6 +68,25 @@ namespace Dev2.DataList.Contract.Builders
                 DataListPayloadFrameTO<string> tmp = scopedFrame.FetchNextFrameItem();
                 string exp = tmp.Expression; //.Replace("(*)", "()"); // force conversion ;)
                 string val = tmp.Value;
+
+                // correction, we now need to support recursive evaluation ;(
+                if(!DataListUtil.isRootVariable(exp))
+                {
+                    ErrorResultTO errors;
+                    var tmpToken = _c.Evaluate(_bdl.UID, enActionType.User, exp, true, out errors);
+                    if(errors.HasErrors())
+                    {
+                        throw new Exception(errors.MakeDisplayReady());
+                    }
+                    var scalar = tmpToken.FetchScalar();
+                    if(scalar == null)
+                    {
+                        // ReSharper disable RedundantAssignment
+                        exp = null;
+                        // ReSharper restore RedundantAssignment
+                    }
+                    exp = tmpToken.FetchScalar().TheValue;
+                }
 
                 IIntellisenseResult token = tc.ParseTokenForMatch(exp, _bdl.FetchIntellisenseParts());
 
@@ -118,7 +137,7 @@ namespace Dev2.DataList.Contract.Builders
 
                         enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
 
-                        int tmpIdx = dris.FetchRecordsetIndex(token, _entry, isFramed);
+                        int tmpIdx = _dris.FetchRecordsetIndex(token, _entry, isFramed);
 
                         if(tmpIdx != _upsertIdx)
                         {
@@ -186,13 +205,13 @@ namespace Dev2.DataList.Contract.Builders
                     throw new Exception(error);
                 }
 
-                dris.MoveIndexesToNextPosition();
+                _dris.MoveIndexesToNextPosition();
             }
 
             if(isTerminalFlush)
             {
                 ErrorResultTO errors;
-                c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
+                _c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
             }
 
             // clear out the buffer

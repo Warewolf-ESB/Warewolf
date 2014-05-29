@@ -66,14 +66,19 @@ namespace Dev2.Server.Datalist
         /// PLEASE NOTE THE META-DATA RETURNED FROM THIS METHOD IS TRANSIENT, THIS MEANS IT WILL ONLY BE EVENTUALLY CONSISTENT
         /// DO NOT RELY UPON IT FOR UI DRIVEN DETAILS, PLEASE WRITE YOUR OWN HELPER METHODS TO ACHIEVE YOUR GOAL
         /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="curDLID"></param>
-        /// <param name="typeOf"></param>
-        /// <param name="expression"></param>
-        /// <param name="errors"></param>
-        /// <param name="returnExpressionIfNoMatch"></param>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="expression">The expression.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="toRoot">if set to <c>true</c> [automatic root].</param>
         /// <returns></returns>
-        public IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool returnExpressionIfNoMatch = false)
+        /// <exception cref="System.Exception">
+        /// Cannot evaluate recordset index region [  + recsetIndexStr +  ]
+        /// or
+        /// Cannot evaluate recordset index region [  + recsetIndexStr +  ]
+        /// </exception>
+        public IBinaryDataListEntry Evaluate(NetworkContext ctx, Guid curDLID, enActionType typeOf, string expression, out ErrorResultTO errors, bool toRoot = false)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -86,7 +91,7 @@ namespace Dev2.Server.Datalist
             {
                 if(typeOf == enActionType.User)
                 {
-                    result = InternalEvaluate(expression, theDl, out errors);
+                    result = InternalEvaluate(expression, theDl, out errors, toRoot);
                     allErrors.MergeErrors(errors);
                 }
                 else if(typeOf == enActionType.System)
@@ -1734,8 +1739,9 @@ namespace Dev2.Server.Datalist
         /// <param name="expression">The expression.</param>
         /// <param name="bdl">The BDL.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="toRoot">if set to <c>true</c> [automatic root].</param>
         /// <returns></returns>
-        private IBinaryDataListEntry InternalEvaluate(string expression, IBinaryDataList bdl, out ErrorResultTO errors)
+        private IBinaryDataListEntry InternalEvaluate(string expression, IBinaryDataList bdl, out ErrorResultTO errors, bool toRoot = false)
         {
             IBinaryDataListEntry result;
 
@@ -1757,8 +1763,8 @@ namespace Dev2.Server.Datalist
             }
             else
             {
-                //  Force debug mode for now ;)
-                EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = expression, EvaluateToRootOnly = false, IsDebug = true };
+                //  Force debug mode for now
+                EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = expression, EvaluateToRootOnly = toRoot, IsDebug = true };
                 result = InternalDataListEvaluateV2(ers);
                 allErrors.MergeErrors(ers.Errors);
             }
