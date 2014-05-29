@@ -475,7 +475,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Index":
                         try
                         {
-                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
+                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, false, out errors);
                             string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             int indexNum = Convert.ToInt32(index);
                             if(indexNum > 0)

@@ -8,7 +8,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// Summary description for DsfDataSplitActivityWFTests
     /// </summary>
     [TestClass]
+// ReSharper disable InconsistentNaming
     public class DsfDataSplitActivityWFTests
+// ReSharper restore InconsistentNaming
     {
         readonly string WebserverURI = ServerSettings.WebserverURI;
 
