@@ -9,6 +9,7 @@ using Dev2.Services.Security;
 using Dev2.Tests.Runtime.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
@@ -38,7 +39,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenOldSecureConfigExist_MigratesAdministratorsToWarewolfAdministrators_ExpectSuccessfulMigration()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
+            if (File.Exists("secure.config"))
             {
                 File.Delete("secure.config");
             }
@@ -85,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithNoGuestPermission_ShouldHaveExistingPermissionsAndGuest()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
+            if (File.Exists("secure.config"))
             {
                 File.Delete("secure.config");
             }
@@ -105,31 +106,35 @@ namespace Dev2.Tests.Runtime.Services
             var readSecuritySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.AreEqual(3, readSecuritySettings.WindowsGroupPermissions.Count);
-            Assert.AreEqual(WindowsGroupPermission.BuiltInGuestsText, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
-            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].IsServer);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].View);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].Execute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].Contribute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].DeployTo);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].DeployFrom);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].Administrator);
-            Assert.AreEqual("NETWORK SERVICE", readSecuritySettings.WindowsGroupPermissions[1].WindowsGroup);
-            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[1].IsServer);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].View);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Execute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Contribute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].DeployTo);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].DeployFrom);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Administrator);
-            Assert.AreEqual(Environment.UserName, readSecuritySettings.WindowsGroupPermissions[2].WindowsGroup);
-            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[2].IsServer);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[2].View);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[2].Execute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[2].Contribute);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[2].DeployTo);
-            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[2].DeployFrom);
-            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[2].Administrator);
+            var guestPermission = readSecuritySettings.WindowsGroupPermissions.FirstOrDefault(p => p.WindowsGroup == WindowsGroupPermission.BuiltInGuestsText);
+            Assert.IsNotNull(guestPermission);
+            Assert.AreEqual(true, guestPermission.IsServer);
+            Assert.AreEqual(false, guestPermission.View);
+            Assert.AreEqual(false, guestPermission.Execute);
+            Assert.AreEqual(false, guestPermission.Contribute);
+            Assert.AreEqual(false, guestPermission.DeployTo);
+            Assert.AreEqual(false, guestPermission.DeployFrom);
+            Assert.AreEqual(false, guestPermission.Administrator);
 
+            var networkServicePermission = readSecuritySettings.WindowsGroupPermissions.FirstOrDefault(p => p.WindowsGroup == "NETWORK SERVICE");
+            Assert.IsNotNull(networkServicePermission);
+            Assert.AreEqual(true, networkServicePermission.IsServer);
+            Assert.AreEqual(false, networkServicePermission.View);
+            Assert.AreEqual(false, networkServicePermission.Execute);
+            Assert.AreEqual(false, networkServicePermission.Contribute);
+            Assert.AreEqual(false, networkServicePermission.DeployTo);
+            Assert.AreEqual(false, networkServicePermission.DeployFrom);
+            Assert.AreEqual(false, networkServicePermission.Administrator);
+
+            var userPermission = readSecuritySettings.WindowsGroupPermissions.FirstOrDefault(p => p.WindowsGroup == Environment.UserName);
+            Assert.IsNotNull(userPermission);
+            Assert.AreEqual(true, userPermission.IsServer);
+            Assert.AreEqual(false, userPermission.View);
+            Assert.AreEqual(false, userPermission.Execute);
+            Assert.AreEqual(false, userPermission.Contribute);
+            Assert.AreEqual(false, userPermission.DeployTo);
+            Assert.AreEqual(false, userPermission.DeployFrom);
+            Assert.AreEqual(true, userPermission.Administrator);
 
             Assert.AreEqual(new TimeSpan(0, 10, 0), readSecuritySettings.CacheTimeout);
         }
@@ -140,7 +145,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesExistWithGuestPermission_ShouldHaveExistingPermissions()
         {
             //------------Setup for test--------------------------
-            if(File.Exists("secure.config"))
+            if (File.Exists("secure.config"))
             {
                 File.Delete("secure.config");
             }
