@@ -42,7 +42,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 
         private string CorrectUsernameDomain(string IncorrectUsername)
         {
-            File.WriteAllText(@"\\TST7X64W\QTAgent\New Text Document.txt", "IncorrectUsername");
             bool inDomain = false;
             try
             {
