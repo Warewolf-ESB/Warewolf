@@ -4,7 +4,6 @@
   <Deployment>
       <DeploymentItem filename="TestBinaries\" />
   </Deployment>
-  <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - Studio.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - Studio.bat" />
   <Scripts setupScript="Startup - Studio.bat" cleanupScript="Cleanup - Studio.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
