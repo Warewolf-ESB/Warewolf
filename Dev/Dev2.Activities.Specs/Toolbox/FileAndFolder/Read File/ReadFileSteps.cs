@@ -47,12 +47,12 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             {
                 System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain();
             }
-            catch(ActiveDirectoryObjectNotFoundException e)
+            catch (ActiveDirectoryObjectNotFoundException)
             {
                 inDomain = true;
             }
             var DomainPart = IncorrectUsername.IndexOf("\\");
-            if(DomainPart == -1 && inDomain)
+            if (DomainPart == -1 && inDomain)
             {
                 return IncorrectUsername.Replace(IncorrectUsername.Substring(0, DomainPart + 1), ".\\");
             }
