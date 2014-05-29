@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             bool inDomain = false;
             try
             {
-                System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain()
+                System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain();
             }
             catch(ActiveDirectoryObjectNotFoundException e)
             {
