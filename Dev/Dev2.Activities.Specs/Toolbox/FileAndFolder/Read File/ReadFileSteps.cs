@@ -42,17 +42,17 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
 
         private string CorrectUsernameDomain(string IncorrectUsername)
         {
-            bool inDomain = false;
+            bool inDomain = true;
             try
             {
                 System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain();
             }
             catch (ActiveDirectoryObjectNotFoundException)
             {
-                inDomain = true;
+                inDomain = false;
             }
             var DomainPart = IncorrectUsername.IndexOf("\\");
-            if (DomainPart == -1 && inDomain)
+            if (DomainPart == -1 && !inDomain)
             {
                 return IncorrectUsername.Replace(IncorrectUsername.Substring(0, DomainPart + 1), ".\\");
             }

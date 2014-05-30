@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Dev2.Integration.Tests.Activities
 {
@@ -21,6 +22,8 @@ namespace Dev2.Integration.Tests.Activities
         private string uncfile2;
 
         private string uncdir1;
+
+        static bool inDomain = true;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -114,8 +117,21 @@ namespace Dev2.Integration.Tests.Activities
                 Directory.Delete(uncdir1, true);
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception) { }
+            catch (Exception) { }
             // ReSharper restore EmptyGeneralCatchClause
+        }
+
+        [ClassInitialize]
+        public static void GetInDomain(TestContext testctx)
+        {
+            try
+            {
+                System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain();
+            }
+            catch (ActiveDirectoryObjectNotFoundException)
+            {
+                inDomain = false;
+            }
         }
 
         #endregion
@@ -158,7 +174,7 @@ namespace Dev2.Integration.Tests.Activities
                 FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Assert.IsTrue(true);
             }
@@ -187,7 +203,7 @@ namespace Dev2.Integration.Tests.Activities
                 FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Assert.IsTrue(true);
             }
@@ -198,9 +214,9 @@ namespace Dev2.Integration.Tests.Activities
         {
             string uncPath = TestResource.PathOperations_UNC_Path + "Secure\\" + Guid.NewGuid() + ".test";
 
-            PathIOTestingUtils.CreateAuthedUNCPath(uncPath);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncPath, false, inDomain);
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncPath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             Stream result = FileSystemPro.Get(path, new List<string>());
 
@@ -215,14 +231,14 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void GetWithUserName_UNCInvalidPath_Expected_NoStream()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(TestResource.PathOperations_UNC_Path + "abc.txt", "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(TestResource.PathOperations_UNC_Path + "abc.txt", (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
                 FileSystemPro.Get(path, new List<string>());
                 Assert.Fail();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Assert.IsTrue(true);
             }
@@ -234,9 +250,9 @@ namespace Dev2.Integration.Tests.Activities
 
             string uncPath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
 
-            PathIOTestingUtils.CreateAuthedUNCPath(uncPath);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncPath, false, inDomain);
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncPath, "DEV2\\" + TestResource.PathOperations_Correct_Username + "abc", TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncPath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username + "abc", TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             try
@@ -248,7 +264,7 @@ namespace Dev2.Integration.Tests.Activities
                 PathIOTestingUtils.DeleteAuthedUNCPath(uncPath);
                 Assert.Fail();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 PathIOTestingUtils.DeleteAuthedUNCPath(uncPath);
                 Assert.IsTrue(true);
@@ -271,7 +287,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -295,7 +311,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -320,7 +336,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -347,7 +363,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -372,7 +388,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -396,7 +412,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 File.Delete(tmp);
@@ -420,7 +436,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 File.Delete(tmp);
@@ -445,7 +461,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = FileSystemPro.Get(src, new List<string>());
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 File.Delete(tmp);
@@ -464,7 +480,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
             int len = FileSystemPro.Put(stream, dst, opTO, null, new List<string>());
@@ -480,7 +496,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
             int len = FileSystemPro.Put(stream, dst, opTO, null, new List<string>());
@@ -497,13 +513,13 @@ namespace Dev2.Integration.Tests.Activities
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
             string tmp2 = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-            PathIOTestingUtils.CreateAuthedUNCPath(tmp);
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
-            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp2, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(tmp, false, inDomain);
+            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp2, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
             Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
             var directoryInfo = new FileInfo(src.Path).Directory;
-            if(directoryInfo != null)
+            if (directoryInfo != null)
             {
                 int len = FileSystemPro.Put(stream, dst, opTO, directoryInfo.ToString(), new List<string>());
                 stream.Close();
@@ -612,8 +628,8 @@ namespace Dev2.Integration.Tests.Activities
         public void DeleteUNCValidUserWith_FilePresent_Expected_DeleteSuccesful()
         {
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-            PathIOTestingUtils.CreateAuthedUNCPath(tmp);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(tmp, false, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.Delete(path);
             PathIOTestingUtils.DeleteAuthedUNCPath(tmp);
@@ -625,7 +641,7 @@ namespace Dev2.Integration.Tests.Activities
         public void DeleteUNCValidUserWith_NoFilePresent_Expected_DeleteUnsuccesful()
         {
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.Delete(path);
 
@@ -636,8 +652,8 @@ namespace Dev2.Integration.Tests.Activities
         public void DeleteUNCValidUserWith_DirPresent_Expected_DeleteSuccessful()
         {
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + "_dir";
-            PathIOTestingUtils.CreateAuthedUNCPath(tmp, true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(tmp, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.Delete(path);
 
@@ -649,7 +665,7 @@ namespace Dev2.Integration.Tests.Activities
         public void DeleteUNCValidUserWith_NoDirPresent_DeleteUnsuccesful()
         {
             string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + "_dir";
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmp, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.Delete(path);
 
@@ -741,7 +757,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            foreach(IActivityIOPath p in result)
+            foreach (IActivityIOPath p in result)
             {
                 File.Delete(p.Path);
             }
@@ -763,7 +779,7 @@ namespace Dev2.Integration.Tests.Activities
                 FileSystemPro.ListDirectory(path);
                 Assert.Fail("Missing Directory Found Data");
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Assert.IsTrue(true);
             }
@@ -821,16 +837,16 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUserWith_Contents_ListOfAllFilesInUNCPath()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
             string uncFile1 = basePath + "\\" + Guid.NewGuid();
             string uncFile2 = basePath + "\\" + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1);
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1, false, inDomain);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2, false, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 2);
         }
@@ -839,12 +855,12 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUSerWith_NoContents_Expected_NoFilesListed()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 0);
         }
@@ -853,14 +869,14 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUser_NotExist_Expected_ExceptionThrown()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
                 FileSystemPro.ListDirectory(path);
                 Assert.Fail("Missing Directory Found Data");
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Assert.IsTrue(true);
             }
@@ -872,16 +888,16 @@ namespace Dev2.Integration.Tests.Activities
         {
 
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
             string uncFile1 = basePath + "\\1.testfile";
             string uncFile2 = basePath + "\\2.testfile";
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1);
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.testfile", "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1, false, inDomain);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2, false, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.testfile", (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 2);
         }
@@ -890,12 +906,12 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUserStar_With_NoContents_Expected_EmptyListReturned()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.testfile", "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.testfile", (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 0);
         }
@@ -904,16 +920,16 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUSerStarDotStar_With_Contents_Expected_DirectoryListReturned()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
             string uncFile1 = basePath + "\\1.testfile";
             string uncFile2 = basePath + "\\2.testfile";
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1);
-            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.*", "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile1, false, inDomain);
+            PathIOTestingUtils.CreateAuthedUNCPath(uncFile2, false, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.*", (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 2);
         }
@@ -922,12 +938,12 @@ namespace Dev2.Integration.Tests.Activities
         public void ListDirectoryUNC_ValidUserStarDotStar_With_NoContents_Expected_EmptyListReturned()
         {
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.*", "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath + "\\*.*", (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result.Count == 0);
         }
@@ -989,46 +1005,42 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void CreateDirectoryUNCValidUSer_WithOverwriteFalse_NotPresent_Expected_DirectoryCreated()
         {
-            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool result = FileSystemPro.CreateDirectory(path, opTO);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void CreateDirectoryUNCValidUser_WithOverwriteFalse_Present_Expected_DirectoryNotCreated()
+        {
+            Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
+            string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            bool result = FileSystemPro.CreateDirectory(path, opTO);
 
-        // Mark To Fix
-        //BUILD
-        //[TestMethod]
-        //public void CreateDirectoryUNCValidUser_WithOverwriteFalse_Present_Expected_DirectoryNotCreated() {
-        //    Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-        //    string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-        //    PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
-        //    IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
-        //    IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-        //    bool result = FileSystemPro.CreateDirectory(path, opTO);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
-        //    PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
-
-        //    Assert.IsFalse(result);
-        //}
-
-        // Mark To Fix
+            Assert.IsFalse(result);
+        }
 
         [TestMethod]
         public void CreateDirectoryUNCValidUser_WithOverwriteTrue_NotPresent_DirectoryCreated()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool result = FileSystemPro.CreateDirectory(path, opTO);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result);
         }
@@ -1038,12 +1050,12 @@ namespace Dev2.Integration.Tests.Activities
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
             string basePath = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
+            PathIOTestingUtils.CreateAuthedUNCPath(basePath, true, inDomain);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(basePath, (inDomain ? "DEV2\\" : ".\\") + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool result = FileSystemPro.CreateDirectory(path, opTO);
 
-            PathIOTestingUtils.DeleteAuthedUNCPath(basePath);
+            PathIOTestingUtils.DeleteAuthedUNCPath(basePath, inDomain);
 
             Assert.IsTrue(result);
         }
