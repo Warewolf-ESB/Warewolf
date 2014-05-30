@@ -1336,7 +1336,7 @@ Scenario: Simple workflow with Assign DataMerge and DataSplit(Evaluating records
 	#  | 6 | [[index(2).a]] = 3      |  	
  #     And the 'Merge' in WorkFlow 'WorkflowWithAssignamergeandSplit' debug inputs as
 	#  | # |                                      | With  | Using | Pad | Align |
-	#  | 1 | [[rec([[index(2).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
+	#  | 1 | [[rec([[index(1).a]]).a]] = warewolf | Index | "8"   | ""  | Left  |
 	#  | 2 | [[a]] = 1                            | Index | "4"   | ""  | Left  |
 	#  And the 'Merge' in Workflow 'WorkflowWithAssignamergeandSplit' debug outputs as
 	#  |                        |
