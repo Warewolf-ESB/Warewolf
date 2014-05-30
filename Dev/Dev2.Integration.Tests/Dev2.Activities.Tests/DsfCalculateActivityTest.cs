@@ -9,7 +9,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfCalculateActivityTest
     {
-        private readonly string _webServerURI = ServerSettings.WebserverURI;
+        private readonly string _webServerUri = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -20,11 +20,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         #region Calculate Static Values Tests
 
         [TestMethod] // - OK
+// ReSharper disable InconsistentNaming
         public void Calculate_Activity_StaticValueSum_Expected_CorrectlySummed()
+// ReSharper restore InconsistentNaming
         {
-            string postData = string.Format("{0}{1}", _webServerURI, "Calculate_ScalarDataListItems_Multiplication");
+            string postData = string.Format("{0}{1}", _webServerUri, "Calculate_ScalarDataListItems_Multiplication");
 
-            string expected = @"57.4456264653803";
+            const string expected = @"57.4456264653803";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
@@ -42,14 +44,16 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         #region Calculate RecordSet Tests
 
         [TestMethod] // - OK      
+// ReSharper disable InconsistentNaming
         public void Calculate_Activity_RecordSetEvaluation_Expected_RecordSetResolutionCorrectlyEvaluated()
+// ReSharper restore InconsistentNaming
         {
-            string postData = string.Format("{0}{1}", _webServerURI, "Calculate_RecordSet_Subtract");
-            string expected = @"<result>920</result>";
+            string postData = string.Format("{0}{1}", _webServerUri, "Calculate_RecordSet_Subtract");
+            const string Expected = @"<result>920</result>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue(actual.Contains(expected));
+            Assert.IsTrue(actual.Contains(Expected));
 
         }
 

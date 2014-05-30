@@ -9,6 +9,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// Summary description for DsfBaseConvertActivityWFTests
     /// </summary>
     [TestClass]
+// ReSharper disable InconsistentNaming
     public class DsfBaseConvertActivityWFTests
     {
         /// <summary>
@@ -17,39 +18,17 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
         [TestMethod]
         public void BaseConvertRecsetWithStar()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithStar");
-            string ResponseData = TestHelper.PostDataToWebserver(PostData);
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithStar");
+            string responseData = TestHelper.PostDataToWebserver(postData);
 
-            const string expected1 = "<recSet index=\"1\"><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
-            const string expected2 = "<recSet index=\"2\"><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
+            const string Expected1 = "<recSet index=\"1\"><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
+            const string Expected2 = "<recSet index=\"2\"><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
 
-            StringAssert.Contains(ResponseData, expected1);
-            StringAssert.Contains(ResponseData, expected2);
+            StringAssert.Contains(responseData, Expected1);
+            StringAssert.Contains(responseData, Expected2);
         }
 
 
@@ -93,4 +72,6 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         }
 
     }
+
+    // ReSharper restore InconsistentNaming
 }

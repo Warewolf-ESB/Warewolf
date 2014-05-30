@@ -19,6 +19,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebService_Invoke")]
+        // ReSharper disable InconsistentNaming
         public void WebService_Invoke_IntegrationTest_ExpectPass()
         {
 
@@ -47,11 +48,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
             ////------------Assert Results-------------------------
 
-            Assert.AreEqual(debugItems.Count,2);
+            Assert.AreEqual(debugItems.Count, 2);
             Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.
  2 Recordset index (**) contains invalid character(s)
  3 Invalid Recordset Index For { [[rec(**).A]] }
- 4 Could not evalaute { [[rec(**).A]] }
+ 4 Could not evaluate { [[rec(**).A]] }
  5 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
  6 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
  7 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON
@@ -73,11 +74,12 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             ////------------Assert Results-------------------------
 
             Assert.AreEqual(debugItems.Count, 2);
-            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 6.
+            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.
  2 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
  3 Cannot locate the DataList for ID [ 00000000-0000-0000-0000-000000000000 ]
  4 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON
  5 Cache miss for [ 00000000-0000-0000-0000-000000000000 ]");
         }
     }
+    // ReSharper restore InconsistentNaming
 }
