@@ -137,6 +137,55 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_WhenRecusiveEvaluationWithRecordsetsSoNestedNoOneWillEverUseItThisWay_ExpectValue()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            string error;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>scalar1</f1></rs2><scalar2/></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[[[[[rs2(1).f1]]]]]]", out errors);
+
+            //------------Assert Results-------------------------
+            var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("f1.1", res1);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_WhenRecusiveEvaluationWithRecordsetsSoNestedNoOneWillEverUseItThisWayToRoot_ExpectValue()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>scalar1</f1></rs2><scalar2/></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[[[[[rs2(1).f1]]]]]]", out errors, true);
+
+            //------------Assert Results-------------------------
+            var res1 = result.FetchScalar().TheValue;
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("[[rs1(1).f1]]", res1);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
         public void ServerDataListCompiler_Evaluate_WhenRecusiveEvaluationToRoot_ExpectExpression()
         {
             //------------Setup for test--------------------------
