@@ -514,13 +514,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Chars":
                         if(!string.IsNullOrEmpty(t.At))
                         {
-                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
+                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, false, out errors);
 
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             string escape = t.EscapeChar;
                             if(!String.IsNullOrEmpty(escape))
                             {
-                                entry = compiler.Evaluate(dlID, enActionType.User, t.EscapeChar, true, out errors);
+                                entry = compiler.Evaluate(dlID, enActionType.User, t.EscapeChar, false, out errors);
                                 escape = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             }
 
@@ -549,7 +549,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 switch(t.SplitType)
                 {
                     case "Index":
-                        entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
+                        entry = compiler.Evaluate(dlID, enActionType.User, t.At, false, out errors);
                         AddDebugItem(new DebugItemVariableParams(t.At, "Using", entry, dlID), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
@@ -566,7 +566,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         break;
                     case "Chars":
-                        entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
+                        entry = compiler.Evaluate(dlID, enActionType.User, t.At, false, out errors);
                         AddDebugItem(new DebugItemVariableParams(t.At, "Using", entry, dlID), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.Include ? "Yes" : "No", "Include"), debugItem);
                         AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
