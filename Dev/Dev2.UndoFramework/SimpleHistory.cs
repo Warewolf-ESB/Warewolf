@@ -1,4 +1,6 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿// ReSharper disable CheckNamespace
+namespace Unlimited.Applications.BusinessDesignStudio.Undo
+// ReSharper restore CheckNamespace
 {
     using System;
     using System.Collections;
@@ -6,7 +8,7 @@
 
     internal class SimpleHistory : IActionHistory
     {
-        private SimpleHistoryNode mCurrentState = new SimpleHistoryNode();
+        private SimpleHistoryNode _mCurrentState = new SimpleHistoryNode();
 
         public event EventHandler CollectionChanged;
 
@@ -123,7 +125,7 @@
         {
             get
             {
-                return mCurrentState;
+                return _mCurrentState;
             }
             set
             {
@@ -133,7 +135,7 @@
                     throw new ArgumentNullException("CurrentState");
                     // ReSharper restore NotResolvedInText
                 }
-                mCurrentState = value;
+                _mCurrentState = value;
             }
         }
 
