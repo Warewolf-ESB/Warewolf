@@ -358,8 +358,8 @@ Scenario: Workflow with Assigns and DataSplit executing against the server
 	  | # |                      |
 	  | 1 | [[test]] =  warewolf |
 	  And the 'DataSpliting' in WorkFlow 'WorkflowWithAssignandDataSplittools' debug inputs as 
-	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using             | Include | Escape |
-	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = [[b]] | No      |        |
+	  | String to Split            | Process Direction | Skip blank rows | # |                | With  | Using         | Include | Escape |
+	  | [[[[rs(1).a]]]] = warewolf | Forward           | No              | 1 | [[rec(1).a]] = | Index | [[[[a]]]] = 2 | No      |        |
 	  And the 'DataSpliting' in Workflow 'WorkflowWithAssignandDataSplittools' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).a]] = lf |

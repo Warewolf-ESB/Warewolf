@@ -1098,7 +1098,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rec(1).a]] =",
                         "Index",
-                        "[[[[a]]]] = [[b]]",
+                        "[[[[a]]]] = 2",
                         "No",
                         ""});
 #line 360
