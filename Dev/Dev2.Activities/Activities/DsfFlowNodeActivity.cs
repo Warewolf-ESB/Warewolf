@@ -273,7 +273,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, expression, true, out errors);
+            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
             if(dlEntry.IsRecordset)
             {
                 if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
