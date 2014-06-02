@@ -774,4 +774,7 @@ Would you like to start the setup now?</value>
     <value>Error while saving: You don't have permission to change settings on this server.
 You need Administrator permission.</value>
   </data>
+  <data name="Warewolf_Checksum" xml:space="preserve">
+    <value>http://warewolf.io/checksum.txt</value>
+  </data>
 </root>

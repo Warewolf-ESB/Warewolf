@@ -293,6 +293,7 @@
     <Compile Include="CustomControls\Progress\IProgressFileDownloader.cs" />
     <Compile Include="CustomControls\Progress\IVersionChecker.cs" />
     <Compile Include="CustomControls\Progress\LatestWebGetter.cs" />
+    <Compile Include="CustomControls\Progress\ProgressDialogViewModel.cs" />
     <Compile Include="CustomControls\Progress\VersionChecker.cs" />
     <Compile Include="CustomControls\SplitterExpansionButton.cs" />
     <Compile Include="CustomControls\SplitterPanel.cs" />

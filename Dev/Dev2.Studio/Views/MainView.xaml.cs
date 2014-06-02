@@ -47,6 +47,11 @@ namespace Dev2.Studio.Views
                 {
                     e.Cancel = true;
                 }
+
+                if (mainViewModel.IsDownloading())
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }

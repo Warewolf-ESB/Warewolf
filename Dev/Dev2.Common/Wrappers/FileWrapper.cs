@@ -11,5 +11,25 @@ namespace Dev2.Common.Wrappers
         {
             return File.ReadAllText(fileName);
         }
+
+         public void Move(string source, string destination)
+         {
+              File.Move(source,destination);
+         }
+
+         public Stream Open(string fileName, FileMode fileMode)
+         {
+             return File.Open(fileName, fileMode);
+         }
+
+         public bool Exists(string path)
+         {
+             return File.Exists(path);
+         }
+
+         public void Delete(string tmpFileName)
+         {
+             File.Delete(tmpFileName);
+         }
     }
 }

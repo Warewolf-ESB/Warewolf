@@ -1,12 +1,13 @@
-﻿using System.Net;
+﻿using Dev2.Common.Utils;
+using Dev2.Common.Wrappers.Interfaces;
 using Dev2.Studio.Core.Helpers;
 
 namespace Dev2.CustomControls.Progress
 {
     class TestProgressFileDownloader : ProgressFileDownloader
     {
-        public TestProgressFileDownloader(IDev2WebClient webClient, IProgressDialog progressDialog)
-            : base(webClient, progressDialog)
+        public TestProgressFileDownloader(IDev2WebClient webClient,IFile file,ICryptoProvider crypt)
+            : base(webClient, file,crypt)
         {
         }
 
@@ -25,9 +26,9 @@ namespace Dev2.CustomControls.Progress
             StartUpdate(fileName, cancelled);
         }
 
-        public IProgressDialog GetProgressDialog()
+        public IProgressNotifier GetProgressDialog()
         {
-            return _progressDialog;
+            return ProgressDialog;
         }
     }
 }

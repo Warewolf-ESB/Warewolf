@@ -7,11 +7,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
@@ -97,7 +101,30 @@ namespace Dev2.Studio
 
 #if ! (DEBUG)
             var versionChecker = new VersionChecker();
-            versionChecker.IsLatest(new ProgressFileDownloader(MainWindow), new ProgressDialog(MainWindow), new AsyncWorker());
+            var dialog = new ProgressDialog(MainWindow);
+            var dialogViewModel = new ProgressDialogViewModel(() => { }, dialog.Show, dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
+            ProgressFileDownloader progressFileDownloader = new ProgressFileDownloader(MainWindow);
+
+            if(_mainViewModel != null)
+            {
+                _mainViewModel.IsBusyDownloadingInstaller = () =>
+                    {
+                        if(progressFileDownloader.IsBusyDownloading)
+                        {
+                            IPopupController popup = new PopupController("Still downloading", "Do you want to cancel download ?", MessageBoxImage.Question, MessageBoxButton.YesNo);
+                            var result = popup.Show();
+                            if(result == MessageBoxResult.Yes)
+                            {
+                                progressFileDownloader.Cancel();
+                            }
+                        }
+                        return progressFileDownloader.IsBusyDownloading;
+                    };
+            }
+
+            versionChecker.IsLatest(progressFileDownloader, dialogViewModel, new AsyncWorker());
 #endif
         }
 
@@ -110,7 +137,7 @@ namespace Dev2.Studio
             {
                 _mainViewModel.PersistTabs(true);
             }
-
+            ProgressFileDownloader.PerformCleanup( new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();

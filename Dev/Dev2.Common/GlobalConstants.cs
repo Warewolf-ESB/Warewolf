@@ -302,7 +302,7 @@ namespace Dev2.Common
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
         public const string ResourceTreeViewModelFormat = "Dev2.Studio.ViewModels.Navigation.ResourceTreeViewModel";
-
+        public const string VersionDownloadPath = "Installers\\";
         // ReSharper restore InconsistentNaming
     }
 }

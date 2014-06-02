@@ -178,6 +178,10 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
+    <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
+    <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
@@ -271,7 +275,6 @@
     <Compile Include="Feedback\FeedbackInvokerTests.cs" />
     <Compile Include="Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
-    <Compile Include="Helpers\ProgressFileDownloaderTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTestClass.cs" />
     <Compile Include="Helpers\VersionCheckerTests.cs" />

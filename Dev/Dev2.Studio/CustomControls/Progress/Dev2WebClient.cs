@@ -53,7 +53,14 @@ namespace Dev2.Helpers
         // ReSharper restore UnusedAutoPropertyAccessor.Local
         public void DownloadFileAsync(Uri address, string fileName, string userToken)
         {
+            _webClient.DownloadDataCompleted+=_webClient_DownloadDataCompleted;
             _webClient.DownloadFileAsync(address, fileName, userToken);
+          
+        }
+
+        private void _webClient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+           // check version 
         }
 
         public void CancelAsync()

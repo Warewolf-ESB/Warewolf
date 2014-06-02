@@ -51,7 +51,7 @@ using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
 {
     // PBI 9397 - 2013.06.09 - TWR: made class non-sealed to facilitate testing i.e. creating mock sub-classes
@@ -129,9 +129,6 @@ namespace Dev2.Studio.ViewModels
 
         [Import(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
-
-
-
 
         #endregion imports
 
@@ -1598,13 +1595,10 @@ namespace Dev2.Studio.ViewModels
 
         private void CloseRemoteConnections()
         {
-            
            var connected=  EnvironmentRepository.All().Where(a => a.IsConnected);
            foreach (var environmentModel in connected)
            {
-
                environmentModel.Disconnect();
-                
            }
         }
 
@@ -1613,6 +1607,13 @@ namespace Dev2.Studio.ViewModels
         public void Handle(FileChooserMessage message)
         {
             RootWebSite.ShowFileChooser(ActiveEnvironment, message);
+        }
+
+        public Func<bool> IsBusyDownloadingInstaller;
+
+        public bool IsDownloading()
+        {
+            return IsBusyDownloadingInstaller != null && IsBusyDownloadingInstaller();
         }
     }
 }

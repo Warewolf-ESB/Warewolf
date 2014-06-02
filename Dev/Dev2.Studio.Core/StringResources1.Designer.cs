@@ -1457,6 +1457,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://warewolf.io/checksum.txt.
+        /// </summary>
+        public static string Warewolf_Checksum {
+            get {
+                return ResourceManager.GetString("Warewolf_Checksum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Warewolf_Homepage_Start {

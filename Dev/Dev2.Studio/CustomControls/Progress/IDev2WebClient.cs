@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.Net;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Helpers
+// ReSharper restore CheckNamespace
 {
     public interface IDev2WebClient : IDisposable
     {

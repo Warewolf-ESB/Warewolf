@@ -91,9 +91,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator", "Dev2.Crypto.HashGenerator\Dev2.Crypto.HashGenerator.csproj", "{E872FFC0-96F9-4FB8-A8D9-B498E158742B}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 39
+		SccNumberOfProjects = 40
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -211,6 +213,9 @@ Global
 		SccProjectUniqueName38 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
 		SccProjectName38 = Dev2.Scheduler.Test
 		SccLocalPath38 = Dev2.Scheduler.Test
+		SccProjectUniqueName39 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
+		SccProjectName39 = Dev2.Crypto.HashGenerator
+		SccLocalPath39 = Dev2.Crypto.HashGenerator
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -944,6 +949,24 @@ Global
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x64.ActiveCfg = Release|Any CPU
 		{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}.Test|x86.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|x64.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|x86.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|Any CPU.Build.0 = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|x64.ActiveCfg = Release|Any CPU
+		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
