@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices.ActiveDirectory;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,12 +12,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     public class FindDirectoryServiceTest
     {
         private readonly string WebserverUrl = TestResource.WebserverURI_Local;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void FindDirectoryService_ValidPath()
@@ -31,7 +26,16 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         [TestMethod]
         public void FindDirectoryService_ValidCredentials()
         {
-            string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=c:\&Domain=DEV2&Username=" + TestResource.PathOperations_Correct_Username + "&Password=" + TestResource.PathOperations_Correct_Password);
+            var inDomain = true;
+            try
+            {
+                Domain.GetComputerDomain();
+            }
+            catch (ActiveDirectoryObjectNotFoundException)
+            {
+                inDomain = false;
+            }
+            string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDirectoryService?DirectoryPath=c:\" + (inDomain ? "&Domain=DEV2" : string.Empty) + "&Username=" + TestResource.PathOperations_Correct_Username + "&Password=" + TestResource.PathOperations_Correct_Password);
             const string expected = "\"title\":\"Windows\", \"isFolder\": true";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
