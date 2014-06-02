@@ -1,12 +1,14 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using System.Threading.Tasks;
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
     [Binding]
@@ -56,10 +58,41 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 
         void CopyZipFileToSourceLocation()
         {
+            RunwithRetry(1);
+        }
+
+        static void RunwithRetry(int retrycount)
+        {
+            if (retrycount == 0)
+                return;
+            const int TimeOut = 15000;
+
+            var cancel = new CancellationTokenSource();
+            Task a = new Task(RunCopy, cancel.Token);
+            a.Start();
+            a.Wait(TimeOut);
+
+            if(a.Status == TaskStatus.Running)
+            {
+                cancel.Cancel();
+                a.Dispose();
+                RunwithRetry(retrycount - 1);
+            }
+            else if(a.Status == TaskStatus.Faulted)
+            {
+                if(a.Exception != null)
+                {
+                    throw a.Exception;
+                }
+            }
+        }
+
+        static void RunCopy()
+        {
             IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
-                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                            true);
+                                                                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                                                                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                                                                            true);
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
             const string resourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
