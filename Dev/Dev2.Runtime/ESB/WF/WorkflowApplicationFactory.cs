@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.WF
             return InvokeWorkflowImpl(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, dataTransferObject.IsDebug, out errors);
         }
 
-        private Guid FetchParentInstanceID(IDSFDataObject dataTransferObject)
+        private Guid FetchParentInstanceId(IDSFDataObject dataTransferObject)
         {
             Guid parentWorkflowInstanceId;
 
@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ESB.WF
 
             WorkflowApplication wfApp = null;
 
-            Guid parentInstanceID = FetchParentInstanceID(dataTransferObject);
+            Guid parentInstanceID = FetchParentInstanceId(dataTransferObject);
 
             if(parentInstanceID != Guid.Empty)
             {
@@ -161,7 +161,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 using(ManualResetEventSlim waitHandle = new ManualResetEventSlim(false))
                 {
-                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceID(dataTransferObject), isDebug, errors, exeToken);
+                    WorkflowApplicationRun run = new WorkflowApplicationRun(this, waitHandle, dataTransferObject, wfApp, workspace, executionExtensions, FetchParentInstanceId(dataTransferObject), isDebug, errors, exeToken);
 
 
                     if(instanceId == Guid.Empty)
