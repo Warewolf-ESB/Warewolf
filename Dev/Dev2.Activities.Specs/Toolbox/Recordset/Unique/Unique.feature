@@ -297,3 +297,42 @@ Scenario: Find unique records using a * for Return Field
 #	|   | [[rec(2).unique]] = 4 |
 #	|   | [[rec(3).unique]] = 6 |
 	
+#This Test is going to pass after the bug 11782 is fixed.
+#Scenario: Find unique records by using star notation in output recordset result variable.
+#	Given I have the following duplicated recordset
+#	| rs        | val |
+#	| rs().row  | 10  |
+#	| rs().data | 10  |
+#	| rs().row  | 40  |
+#	| rs().data | 20  |
+#	| rs().row  | 20  |
+#	| rs().data | 20  |
+#	| rs().row  | 30  |
+#	| rs().data | 40  |
+#	And I want to find unique in field "[[rs(*).row]],[[rs(*).data]]" with the return field "[[rs().row]]"
+#	And The result variable is "[[rec().unique]]"
+#	When the unique tool is executed	
+#	Then the unique result will be
+#		| rec           | unique |
+#		| rec(1).unique | 10     |
+#		| rec(2).unique | 40     |
+#		| rec(3).unique | 20     |
+#		| rec(4).unique | 30     |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| #           |                     | Return Fields |
+#	| In Field(s) | [[rs(1).row]] = 10  |               |
+#	|             | [[rs(2).row]] = 40  |               |
+#	|             | [[rs(3).row]] = 20  |               |
+#	|             | [[rs(4).row]] = 30  |               |
+#	|             | [[rs(1).data]] = 10 |               |
+#	|             | [[rs(2).data]] = 20 |               |
+#	|             | [[rs(3).data]] = 20 |               |
+#	|             | [[rs(4).data]] = 40 |               |
+#	|             |                     | [[rs().row]]  |
+#	And the debug output as 
+#	| # |                        |
+#	| 1 | [[rec(1).unique]] = 10 |
+#	|   | [[rec(2).unique]] = 40 |
+#	|   | [[rec(3).unique]] = 20 |
+#	|   | [[rec(4).unique]] = 30 |
