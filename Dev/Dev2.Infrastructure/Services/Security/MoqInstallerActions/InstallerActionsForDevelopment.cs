@@ -4,9 +4,6 @@ namespace Dev2.Services.Security.MoqInstallerActions
 {
     public class InstallerActionsForDevelopment : IMoqInstallerActions
     {
-        public const string WarewolfGroup = "Warewolf Administrators";
-        public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
-
 
         #region Implementation of MoqInstallerActions
 

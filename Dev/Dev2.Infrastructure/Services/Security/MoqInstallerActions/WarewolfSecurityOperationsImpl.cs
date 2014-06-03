@@ -10,9 +10,9 @@ namespace Dev2.Services.Security.MoqInstallerActions
     /// </summary>
     internal class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
     {
-        public const string WarewolfGroup = "Warewolf Administrators";
-        public const string AdministratorsGroup = "Administrators";
-        public const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
+        private const string WarewolfGroup = "Warewolf Administrators";
+        private const string AdministratorsGroup = "Administrators";
+        private const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
         // http://ss64.com/nt/syntax-security_groups.html
 
@@ -69,7 +69,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         {
                             foreach(var member in (IEnumerable)members)
                             {
-                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                using(var memberEntry = new DirectoryEntry(member))
                                 {
                                     if(memberEntry.Name == theUser)
                                     {
@@ -141,7 +141,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
                         {
                             foreach(var member in (IEnumerable)members)
                             {
-                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                using(var memberEntry = new DirectoryEntry(member))
                                 {
                                     if(memberEntry.Name == AdministratorsGroup)
                                     {

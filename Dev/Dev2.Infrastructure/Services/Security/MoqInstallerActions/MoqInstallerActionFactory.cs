@@ -1,7 +1,7 @@
 ﻿
 namespace Dev2.Services.Security.MoqInstallerActions
 {
-    public class MoqInstallerActionFactory
+    public static class MoqInstallerActionFactory
     {
 
         public static IMoqInstallerActions CreateInstallerActions()
