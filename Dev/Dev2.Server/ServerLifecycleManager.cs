@@ -20,10 +20,10 @@ using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
-using Dev2.MoqInstallerActions;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
+using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
