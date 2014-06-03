@@ -1412,3 +1412,28 @@ Scenario: Workflow with Assign Calculate
       And the 'Calculate1' in Workflow 'WFWithAssignCalculateindexrecordset' debug outputs as  
 	  |                |
 	  | [[result]] = 3 |
+
+#This Scenario should be passed after the bug 11714 is fixed
+#Scenario: Workflow with Assign and ForEach
+#     Given I have a workflow "WFWithForEach"
+#     And I have a ForEach "ForEachTest" as "NumOfExecution" executions "3"
+#	 And "ForEachTest" contains workflow "Test" with mapping as
+#	 | Input to Service | From Variable | Output from Service | To Variable |
+#	 | a                | Warewolf      |                     |             |
+#	 When "WFWithForEach" is executed
+#	 Then the workflow execution has "NO" error
+#	 And the 'ForEachTest' in WorkFlow 'WFWithForEach' debug inputs as 
+#	    |                 | Number |
+#	    | No. of Executes | 2      |
+#	    And the 'Test' in WorkFlow 'WFWithForEach' debug inputs as     
+#	        | # | Variable | New Value | inputs   | Execute workflow asynchronously |
+#	        | 1 | [[a]] =  | Warewolf  | Warewolf | False                           |
+#	    And the 'Test' in Workflow 'WFWithForEach' debug outputs as
+#	        | # |                   | Number of steps |
+#	        | 1 | [[a]] =  Warewolf | 1               |
+#        And the 'Test' in WorkFlow 'WFWithForEach' debug inputs as     
+#	        | # | Variable | New Value | inputs   | Execute workflow asynchronously |
+#	        | 1 | [[a]] =  | Warewolf  | Warewolf | False                           |
+#	    And the 'Test' in Workflow 'WFWithForEach' debug outputs as
+#	        | # |                   | Number of steps |
+#	        | 1 | [[a]] =  Warewolf | 2               |
