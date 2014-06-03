@@ -2152,7 +2152,9 @@ namespace Dev2.Server.Datalist
                                 }
                                 debugTO.LeftEntry = leftSide;
                                 debugTO.LeftEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                ProcessLeftSide(debugTO, frameItem);
+                                ErrorResultTO invokeError;
+                                ProcessLeftSide(debugTO, frameItem, bdl, out invokeError);
+                                allErrors.MergeErrors(invokeError);
                             }
                             allErrors.MergeErrors(errors);
 
@@ -2439,9 +2441,18 @@ namespace Dev2.Server.Datalist
                             }
                             if(payload.IsDebug)
                             {
-                                debugTO.RightEntry = evaluatedValue;
-                                debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                ProcessRightSide(debugTO, frameItem, bdl);
+                                if(evaluatedValue == null)
+                                {
+                                    allErrors.AddError("Problems Evaluating Expression [ "+frameItem.Value + " ]");
+                                }
+                                else
+                                {
+                                    debugTO.RightEntry = evaluatedValue;
+                                    debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                    ErrorResultTO invokeError;
+                                    ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
+                                    allErrors.MergeErrors(invokeError);   
+                                }
                             }
                             if(payload.IsDebug)
                             {
@@ -2552,20 +2563,50 @@ namespace Dev2.Server.Datalist
             }
         }
 
-        static void ProcessLeftSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame)
+        void ProcessLeftSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl, out ErrorResultTO invokeErrors)
         {
             var leftSide = frame.Expression;
             var leftEntry = debugTO.LeftEntry;
+            invokeErrors = new ErrorResultTO();
             if(DataListUtil.IsValueRecordset(leftSide))
             {
-                if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Star)
+                var idxType = DataListUtil.GetRecordsetIndexType(leftSide);
+
+                // we have an evaluated index ;)
+                if(idxType == enRecordsetIndexType.Error)
+                {
+                    var idx = DataListUtil.ExtractIndexRegionFromRecordset(leftSide);
+                    ErrorResultTO errors;
+                    var entry = InternalEvaluate(idx, bdl, out errors);
+                    invokeErrors.MergeErrors(errors);
+                    var value = entry.FetchScalar();
+                    if(value != null)
+                    {
+                        var idxValue = value.TheValue;
+                        // replace for emit too ;)
+                        if(leftSide != null)
+                        {
+                            leftSide = leftSide.Replace(idx, idxValue);
+                        }
+
+                        idxType = DataListUtil.GetRecordsetIndexTypeRaw(idxValue);
+                    }
+                }
+
+                // handle silly things where the index does not make sense ;)
+                if(idxType == enRecordsetIndexType.Error)
+                {
+                    invokeErrors.AddError("Error Parsing Recordset Index For Debug Item Generation");
+                }
+
+                if(idxType == enRecordsetIndexType.Star)
                 {
                     ProcessStarEntry(leftEntry, leftSide);
                 }
                 else
                 {
                     var leftValue = "";
-                    if(DataListUtil.GetRecordsetIndexType(leftSide) == enRecordsetIndexType.Numeric)
+                    if(idxType == enRecordsetIndexType.Numeric)
                     {
                         var stringIndexValue = DataListUtil.ExtractIndexRegionFromRecordset(leftSide);
                         var idx = int.Parse(stringIndexValue);
@@ -2581,10 +2622,11 @@ namespace Dev2.Server.Datalist
             }
         }
 
-        void ProcessRightSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl)
+        void ProcessRightSide<T>(DebugTO debugTO, DataListPayloadFrameTO<T> frame, IBinaryDataList bdl, out ErrorResultTO invokeErrors)
         {
             var rightSide = "";
             var boundValue = debugTO.RightEntry.FetchScalar().TheValue;
+            invokeErrors = new ErrorResultTO();
 
             if(typeof(T) == typeof(string))
             {
@@ -2596,6 +2638,7 @@ namespace Dev2.Server.Datalist
                     rightSide = string.Format("={0}", calculationExpression);
                     ErrorResultTO errors;
                     var binaryDataListEntry = InternalEvaluate(rightSide, bdl, out errors);
+                    invokeErrors.MergeErrors(errors);
                     boundValue = binaryDataListEntry.FetchScalar().TheValue;
                 }
             }
@@ -2603,7 +2646,36 @@ namespace Dev2.Server.Datalist
             var rightEntry = debugTO.RightEntry;
             if(DataListUtil.IsValueRecordset(rightSide))
             {
-                if(DataListUtil.GetRecordsetIndexType(rightSide) == enRecordsetIndexType.Star)
+
+                var idxType = DataListUtil.GetRecordsetIndexType(rightSide);
+
+                // we have an evaluated index ;)
+                if(idxType == enRecordsetIndexType.Error)
+                {
+                    var idx = DataListUtil.ExtractIndexRegionFromRecordset(rightSide);
+                    ErrorResultTO errors;
+                    var entry = InternalEvaluate(idx, bdl, out errors);
+                    invokeErrors.MergeErrors(errors);
+                    var value = entry.FetchScalar();
+                    if(value != null)
+                    {
+                        var idxValue = value.TheValue;
+                        // replace for emit too ;)
+                        if(rightSide != null)
+                        {
+                            rightSide = rightSide.Replace(idx, idxValue);
+                        }
+                        idxType = DataListUtil.GetRecordsetIndexTypeRaw(idxValue);
+                    }
+                }
+
+                // handle silly things where the index does not make sense ;)
+                if(idxType == enRecordsetIndexType.Error)
+                {
+                    invokeErrors.AddError("Error Parsing Recordset Index For Debug Item Generation");
+                }
+
+                if(idxType == enRecordsetIndexType.Star)
                 {
                     ProcessStarEntry(rightEntry, rightSide);
                 }

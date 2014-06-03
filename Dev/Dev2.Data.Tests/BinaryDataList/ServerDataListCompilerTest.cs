@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Test;
@@ -33,6 +34,448 @@ namespace Dev2.Data.Tests.BinaryDataList
         public TestContext TestContext { get; set; }
 
         #region Positive Evaluate Test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveIndexOfStar_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "[[rec(*).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            StringAssert.Contains(item.Expression, "[[rec2(1).b]]");
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2().b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2().b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfStarInFromExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            StringAssert.Contains(item.Expression, "[[rec2(1).b]]");
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2().b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2().b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfNumberInFromExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>1</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            StringAssert.Contains(item.Expression, "[[rec2(1).b]]");
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(1, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2().b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2().b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfBlankInFromExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx></idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            StringAssert.Contains(item.Expression, "[[rec2(1).b]]");
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(1, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2().b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2().b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec().a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec().a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfStarInToExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec(*).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            Assert.IsNull(item.Expression);
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2(*).b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2(1).b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfStarInToAndFromExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            Assert.IsNull(item.Expression);
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2(*).b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2(1).b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfNumberInToExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>1</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec(*).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            Assert.IsNull(item.Expression);
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2(1).b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2(1).b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfBlankInToExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx></idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec(*).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            Assert.IsNull(item.Expression);
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(3, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2().b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2().b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
+            StringAssert.Contains(rightAuditItems[1].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[1].RawExpression, "[[rec(2).a]]");
+            StringAssert.Contains(rightAuditItems[1].BoundValue, "2");
+            StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
+            StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndBadEvaluatedIndexInToExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>abc</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec(*).a]]");
+
+
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(errors.HasErrors());
+            StringAssert.Contains(errors.FetchErrors()[0], "Error Parsing Recordset Index For Debug Item Generation");
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndBadEvaluatedIndexInFromExpression_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>abc</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(errors.HasErrors());
+            StringAssert.Contains(errors.FetchErrors()[0], "Problems Evaluating Expression [ [[rec([[idx]]).a]] ]");
+
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
