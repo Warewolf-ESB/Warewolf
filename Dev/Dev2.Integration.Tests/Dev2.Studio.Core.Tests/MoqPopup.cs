@@ -44,6 +44,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey)
+        {
+            Description = description;
+            Header = header;
+            Buttons = buttons;
+            ImageType = image;
+            DontShowAgainKey = dontShowAgainKey;
+            return Show();
+        }
+
         public MessageBoxResult ShowNotConnected()
         {
             return _result;

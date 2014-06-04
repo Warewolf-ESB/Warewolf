@@ -15,8 +15,6 @@ namespace Dev2.Core.Tests.Feedback
     {
         #region Class Members
 
-        private TestContext testContextInstance;
-
         #endregion Class Members
 
         #region Properties
@@ -25,55 +23,16 @@ namespace Dev2.Core.Tests.Feedback
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #endregion Properties
-
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-        }
-
-        // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup]
-        public static void MyClassCleanup()
-        {
-        }
-
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-        }
-
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-        }
-
-        #endregion
 
         #region Test Methods
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void InvokeFeedback_Where_ActionCanProvideFeedback_Expected_StartFeedbackInvokedAndCurrentActionSet()
+
         {
             Mock<IFeedbackAction> feedbackAction = new Mock<IFeedbackAction>();
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
@@ -88,7 +47,7 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(0));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(0));
             feedbackAction.Verify(f => f.StartFeedback(), Times.Exactly(1));
             Assert.AreEqual(null, feedbackInvoker.CurrentAction);
         }
@@ -109,7 +68,7 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction.Verify(f => f.StartFeedback(), Times.Exactly(0));
             Assert.AreEqual(null, feedbackInvoker.CurrentAction);
         }
@@ -150,7 +109,7 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction2.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(1));
             feedbackAction1.Verify(f => f.StartFeedback(), Times.Exactly(0));
             Assert.AreEqual(feedbackAction2.Object, feedbackInvoker.CurrentAction);
@@ -193,8 +152,8 @@ namespace Dev2.Core.Tests.Feedback
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
 
             // Check all popups showed the correct amount of times
-            yesPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking yes
-            noPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking no
+            yesPopup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking yes
+            noPopup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking no
         }
 
         [TestMethod]
@@ -219,7 +178,7 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction2.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(0));
             feedbackAction1.Verify(f => f.StartFeedback(), Times.Exactly(1));
             Assert.AreEqual(null, feedbackInvoker.CurrentAction);
@@ -247,7 +206,7 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction2.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(0));
             feedbackAction1.Verify(f => f.StartFeedback(), Times.Exactly(0));
             Assert.AreEqual(null, feedbackInvoker.CurrentAction);
@@ -334,7 +293,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(1));
             feedbackAction.Verify(f => f.CancelFeedback(), Times.Exactly(1));
             feedbackAction1.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(1));
@@ -357,11 +316,13 @@ namespace Dev2.Core.Tests.Feedback
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
             feedbackAction.Verify(f => f.StartFeedback(It.IsAny<Action<Exception>>()), Times.Exactly(0));
             Assert.AreEqual(null, feedbackInvoker.CurrentAction);
         }
 
         #endregion Test Methods
+
+        // ReSharper restore InconsistentNaming
     }
 }

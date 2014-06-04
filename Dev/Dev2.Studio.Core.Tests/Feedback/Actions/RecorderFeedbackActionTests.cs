@@ -20,8 +20,6 @@ namespace Dev2.Core.Tests.Feedback.Actions
     {
         #region Class Members
 
-        private TestContext testContextInstance;
-
         #endregion Class Members
 
         #region Properties
@@ -30,54 +28,14 @@ namespace Dev2.Core.Tests.Feedback.Actions
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #endregion Properties
-
-        #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-        }
-
-        // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup]
-        public static void MyClassCleanup()
-        {
-        }
-
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-        }
-
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-        }
-
-        #endregion
 
         #region Test Methods
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void StartFeedback_Expected_RecordingStarted()
         {
             Mock<IFeedBackRecorder> feedbackRecorder = new Mock<IFeedBackRecorder>();
@@ -146,7 +104,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
 
             feedbackRecorder.Verify(r => r.StartRecording(It.IsAny<string>()), Times.Exactly(2));
             feedbackRecorder.Verify(r => r.KillAllRecordingTasks(), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(3));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(3));
         }
 
         [TestMethod]
@@ -180,7 +138,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             recorderFeedbackAction.StartFeedback();
 
             feedbackRecorder.Verify(r => r.StartRecording(It.IsAny<string>()), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(2));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -214,7 +172,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             recorderFeedbackAction.StartFeedback();
 
             feedbackRecorder.Verify(r => r.StartRecording(It.IsAny<string>()), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(2));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -261,7 +219,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             recorderFeedbackAction.FinishFeedBack();
 
             feedbackRecorder.Verify(r => r.StopRecording(), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -283,7 +241,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
             recorderFeedbackAction.FinishFeedBack();
 
             feedbackRecorder.Verify(r => r.StopRecording(), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -323,10 +281,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
             recorderFeedbackAction.CancelFeedback();
 
             feedbackRecorder.Verify(r => r.KillAllRecordingTasks(), Times.Exactly(1));
-            popup.Verify(p => p.Show(), Times.Exactly(1));
+            popup.Verify(p => p.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Exactly(1));
 
         }
 
         #endregion Test Methods
+
+        // ReSharper restore InconsistentNaming
     }
 }

@@ -465,7 +465,6 @@
     <Compile Include="AppResources\Exceptions\FeedbackRecordingTimeoutException.cs" />
     <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
-    <Compile Include="AppResources\ExtensionMethods\IPopUpExtensionMethods.cs" />
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Webs\Callbacks\ConnectCallbackHandler.cs" />

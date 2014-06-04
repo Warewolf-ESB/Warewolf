@@ -555,7 +555,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, _mainViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes);
 
             var activetx =
                 _mainViewModel.Items.ToList()
@@ -714,7 +714,7 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.Rollback()).Verifiable();
             _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
-            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.No);
             var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             _mainViewModel.CloseWorkSurfaceContext(activetx, null);
             _firstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when not saved.");
@@ -734,7 +734,7 @@ namespace Dev2.Core.Tests
             _firstResource.Setup(r => r.Commit()).Verifiable();
             _firstResource.Setup(r => r.Rollback()).Verifiable();
 
-            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
             _mainViewModel.CloseWorkSurfaceContext(activetx, null);
             _firstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
@@ -1551,7 +1551,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            mockPopUp.Setup(m => m.Show()).Verifiable();
+            mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
@@ -1567,7 +1567,7 @@ namespace Dev2.Core.Tests
             mockMainViewModel.ActivateItem(mockMainViewModel.Items[1]);
             mockMainViewModel.CallDeactivate(mockMainViewModel.Items[1]);
             Assert.AreEqual(mockMainViewModel.Items[1], mockMainViewModel.ActiveItem);
-            mockPopUp.Verify(m => m.Show(), Times.Once());
+            mockPopUp.Verify(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>()), Times.Once());
         }
 
         // PBI 9405 - 2013.06.13 - Massimo.Guerrera

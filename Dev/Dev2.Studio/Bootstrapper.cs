@@ -9,8 +9,8 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Services;
 using Dev2.Studio;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.WindowManagers;
 using Dev2.Studio.Core.Controller;
@@ -120,8 +120,11 @@ namespace Dev2
         {
             //Dev2MessageBoxViewModel.Show("cake you broke something with something ntuff cake you broke something with something ntuff", "heading cake", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            // ReSharper disable once ConvertToConstant.Local
+            // ReSharper disable JoinDeclarationAndInitializer
+            // ReSharper disable RedundantAssignment
             bool start = true;
+            // ReSharper restore RedundantAssignment
+            // ReSharper restore JoinDeclarationAndInitializer
 #if !DEBUG
             start = CheckWindowsService();
 #endif
@@ -159,47 +162,67 @@ namespace Dev2
         {
             IWindowsServiceManager windowsServiceManager = ImportService.GetExportValue<IWindowsServiceManager>();
             IPopupController popup = ImportService.GetExportValue<IPopupController>();
+            ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
 
-            if(windowsServiceManager == null)
+            if(ssc.DoesServiceExist())
             {
-                throw new Exception("Unable to instantiate the windows service manager.");
-            }
-
-            if(popup == null)
-            {
-                throw new Exception("Unable to instantiate the popup manager.");
-            }
-
-            if(!windowsServiceManager.Exists())
-            {
-                popup.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if(!windowsServiceManager.IsRunning())
-            {
-                MessageBoxResult promptResult = popup.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-                if(promptResult == MessageBoxResult.Cancel)
-                {
-                    return false;
-                }
-
-                if(promptResult == MessageBoxResult.No)
+                if(ssc.IsServiceRunning())
                 {
                     return true;
                 }
 
-                if(!windowsServiceManager.Start())
+                if(ssc.PromptUserToStartService())
                 {
-                    popup.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
+                    if(ssc.StartService())
+                    {
+                        _serverServiceStartedFromStudio = true;
+                        return true;
+                    }
                 }
-
-                _serverServiceStartedFromStudio = true;
             }
 
-            return true;
+            return false;
+
+            //if(windowsServiceManager == null)
+            //{
+            //    throw new Exception("Unable to instantiate the windows service manager.");
+            //}
+
+            //if(popup == null)
+            //{
+            //    throw new Exception("Unable to instantiate the popup manager.");
+            //}
+
+            //if(!windowsServiceManager.Exists())
+            //{
+            //    popup.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error, null);
+            //    return false;
+            //}
+
+            //if(!windowsServiceManager.IsRunning())
+            //{
+            //    MessageBoxResult promptResult = popup.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
+
+            //    if(promptResult == MessageBoxResult.Cancel)
+            //    {
+            //        return false;
+            //    }
+
+            //    if(promptResult == MessageBoxResult.No)
+            //    {
+            //        return true;
+            //    }
+
+            //    if(!windowsServiceManager.Start())
+            //    {
+            //        popup.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null);
+            //        return false;
+            //    }
+
+            //    _serverServiceStartedFromStudio = true;
+            //}
+
+            //return true;
         }
 
         private void PreloadReferences()

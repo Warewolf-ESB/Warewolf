@@ -445,6 +445,7 @@
     <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />
     <Compile Include="Services\Events\StudioSubscriptionService.cs" />
     <Compile Include="Services\IWindowsServiceManager.cs" />
+    <Compile Include="Services\ServerServiceConfiguration.cs" />
     <Compile Include="Services\System\ISystemInfoService.cs" />
     <Compile Include="Services\System\SystemInfoService.cs" />
     <Compile Include="Services\System\SystemInfoTO.cs" />

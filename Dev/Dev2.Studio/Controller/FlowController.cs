@@ -1,26 +1,27 @@
 ﻿#region
 
+using System.Activities.Presentation.Model;
+using System.ComponentModel.Composition;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Services.Events;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs;
 using Dev2.Studio.Webs.Callbacks;
 using Newtonsoft.Json;
-using System.Activities.Presentation.Model;
-using System.ComponentModel.Composition;
-using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 #endregion
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
+// ReSharper restore CheckNamespace
 {
     public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
                                   IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>
@@ -106,7 +107,7 @@ namespace Dev2.Studio.Controller
             {
                 _popupController.Show(GlobalConstants.DecisionWizardErrorString,
                                       GlobalConstants.DecisionWizardErrorHeading, MessageBoxButton.OK,
-                                      MessageBoxImage.Error);
+                                      MessageBoxImage.Error, null);
             }
         }
 
@@ -156,7 +157,7 @@ namespace Dev2.Studio.Controller
             {
                 _popupController.Show(GlobalConstants.SwitchWizardErrorString,
                                       GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                      MessageBoxImage.Error);
+                                      MessageBoxImage.Error, null);
             }
         }
 
@@ -186,7 +187,7 @@ namespace Dev2.Studio.Controller
             {
                 _popupController.Show(GlobalConstants.SwitchWizardErrorString,
                                       GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                      MessageBoxImage.Error);
+                                      MessageBoxImage.Error, null);
             }
         }
 
@@ -226,7 +227,7 @@ namespace Dev2.Studio.Controller
             {
                 _popupController.Show(GlobalConstants.SwitchWizardErrorString,
                                       GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
-                                      MessageBoxImage.Error);
+                                      MessageBoxImage.Error, null);
             }
         }
 

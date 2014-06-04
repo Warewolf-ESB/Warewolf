@@ -85,7 +85,7 @@ namespace Dev2.Studio.Feedback
                 if(asyncFeedback != null) // If a recording session is already in progress, ask the user if he wants to stop it.
                 {
 
-                    MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question,null);
                     if(result == MessageBoxResult.Yes)
                     {
                         asyncFeedback.FinishFeedBack();
@@ -93,7 +93,7 @@ namespace Dev2.Studio.Feedback
                 }
                 else // Else give him the normal message asking what he wants to do.
                 {
-                    MessageBoxResult result = Popup.Show("The ability to give feedback by recording steps is available on your system - Would you like to use it?", "Recorded Feedback", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                    MessageBoxResult result = Popup.Show("The ability to give feedback by recording steps is available on your system - Would you like to use it?", "Recorded Feedback", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
 
                     if(result == MessageBoxResult.Yes)
                     {
@@ -131,7 +131,7 @@ namespace Dev2.Studio.Feedback
 
             if(!feedbackAction.CanProvideFeedback)
             {
-                Popup.Show("Unable to provide feedback at this time.", "Feedback Unavailable", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Show("Unable to provide feedback at this time.", "Feedback Unavailable", MessageBoxButton.OK, MessageBoxImage.Error, null);
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace Dev2.Studio.Feedback
                 return true;
             }
 
-            MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error, null);
             if(result == MessageBoxResult.No)
             {
                 return false;

@@ -41,6 +41,16 @@ namespace Dev2.Studio.Controller
             return ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey);
         }
 
+        public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null)
+        {
+            Buttons = buttons;
+            Description = description;
+            Header = header;
+            ImageType = image;
+            DontShowAgainKey = dontShowAgainKey;
+            return Show();
+        }
+
         public Func<string, string, MessageBoxButton, MessageBoxImage, string, MessageBoxResult> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey);
 
         public MessageBoxResult ShowNotConnected()

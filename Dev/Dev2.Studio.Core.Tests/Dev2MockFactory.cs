@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
          * 
          */
         // required for IsSelected Property of LayoutGridObjectViewModel
-        private static bool[,] isSelected = { { false, false, false, false }, { false, false, false, false }, { false, false, false, false }, { false, false, false, false } };
+        private static readonly bool[,] isSelected = { { false, false, false, false }, { false, false, false, false }, { false, false, false, false }, { false, false, false, false } };
         private static ILayoutObjectViewModel _sillyMoqResult;
 
         public static void printIsSelected()
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests
             {
                 for(int q = 0; q < 4; q++)
                 {
-                    Console.WriteLine(i + "," + q + " " + isSelected[i, q]);
+                    Console.WriteLine(i + @"," + q + @" " + isSelected[i, q]);
                 }
             }
         }
@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(),false)).Callback(() => { });
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(), false)).Callback(() => { });
 
             return mockEnvironmentModel;
         }
@@ -566,7 +566,9 @@ namespace Dev2.Core.Tests
             _mockInOut.Setup(devDef => devDef.Required).Returns(isRequired);
             _mockInOut.Setup(devDef => devDef.DisplayName).Returns(displayName);
             _mockInOut.Setup(devDef => devDef.DefaultValue).Returns(defaultValue);
+            // ReSharper disable ObjectCreationAsStatement
             new ObservableCollection<IDataListItemModel> { SetupDataListItemViewModel().Object };
+            // ReSharper restore ObjectCreationAsStatement
 
             return _mockInOut;
         }
@@ -660,7 +662,7 @@ namespace Dev2.Core.Tests
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {
             Mock<IPopupController> result = new Mock<IPopupController>();
-            result.Setup(moq => moq.Show()).Returns(returningResult).Verifiable();
+            result.Setup(moq => moq.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(returningResult).Verifiable();
 
             return result;
         }

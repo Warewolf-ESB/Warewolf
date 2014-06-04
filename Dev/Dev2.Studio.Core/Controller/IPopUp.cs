@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Controller
+// ReSharper restore CheckNamespace
 {
 
     public interface IPopupController
@@ -13,6 +14,7 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxButton Buttons { get; set; }
         string DontShowAgainKey { get; set; }
         MessageBoxResult Show();
+        MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey);
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);

@@ -17,7 +17,6 @@ using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -667,7 +666,7 @@ namespace Dev2.Studio.ViewModels
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
         {
             var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName), StringResources.DialogTitle_NotSaved,
-                                            MessageBoxButton.YesNoCancel);
+                                            MessageBoxButton.YesNoCancel,MessageBoxImage.Question, null);
 
             switch(result)
             {
@@ -1072,7 +1071,7 @@ namespace Dev2.Studio.ViewModels
                     if(contextualResourceModel != null)
                     {
                         var deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, contextualResourceModel.Category);
-                        var deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        var deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning, null);
                         return (deleteAnswer == MessageBoxResult.Yes);
                     }
                 }
@@ -1084,7 +1083,7 @@ namespace Dev2.Studio.ViewModels
                         var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, contextualResourceModel.ResourceName,
                             contextualResourceModel.ResourceType.GetDescription());
                         var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
-                            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning, null);
 
                         var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
                         return shouldDelete;
@@ -1595,11 +1594,11 @@ namespace Dev2.Studio.ViewModels
 
         private void CloseRemoteConnections()
         {
-           var connected=  EnvironmentRepository.All().Where(a => a.IsConnected);
-           foreach (var environmentModel in connected)
-           {
-               environmentModel.Disconnect();
-           }
+            var connected = EnvironmentRepository.All().Where(a => a.IsConnected);
+            foreach(var environmentModel in connected)
+            {
+                environmentModel.Disconnect();
+            }
         }
 
         #endregion

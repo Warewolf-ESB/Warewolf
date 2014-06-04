@@ -1,19 +1,20 @@
-﻿using Dev2.Composition;
-using Dev2.Studio.AppResources.Exceptions;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows;
+using Dev2.Composition;
+using Dev2.Studio.AppResources.Exceptions;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Utils;
 
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Feedback.Actions
+// ReSharper restore CheckNamespace
 {
     [Export(typeof(IFeedbackAction))]
     [Export(typeof(IAsyncFeedbackAction))]
@@ -100,7 +101,7 @@ namespace Dev2.Studio.Feedback.Actions
             try
             {
                 _outputPath = GetOuputPath();
-                MessageBoxResult result = Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress");
+                MessageBoxResult result = Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress", MessageBoxButton.OK, MessageBoxImage.Information, null);
                 if(result == MessageBoxResult.None)
                 {
                     if(onOncompleted != null)
@@ -113,7 +114,7 @@ namespace Dev2.Studio.Feedback.Actions
             }
             catch(FeedbackRecordingInprogressException feedbackRecordingInprogressException)
             {
-                MessageBoxResult result = Popup.Show("A recording session is already in progress, would you like to try end it?", "Recording In Progress", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+                MessageBoxResult result = Popup.Show("A recording session is already in progress, would you like to try end it?", "Recording In Progress", MessageBoxButton.YesNoCancel, MessageBoxImage.Error, null);
                 if(result == MessageBoxResult.Yes)
                 {
                     FeedBackRecorder.KillAllRecordingTasks();
@@ -127,7 +128,7 @@ namespace Dev2.Studio.Feedback.Actions
             //2013.02.06: Ashley Lewis - Bug 8611
             catch(FeedbackRecordingProcessFailedToStartException feedbackRecordingProcessFailedToStartException)
             {
-                MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+                MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error, null);
                 if(result == MessageBoxResult.Yes)
                 {
                     new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction(new Dictionary<string, string>(), ServerUtil.GetLocalhostServer()));
@@ -164,7 +165,7 @@ namespace Dev2.Studio.Feedback.Actions
             }
             catch(FeedbackRecordingNoProcessesExcpetion feedbackRecordingNoProcessesExcpetion)
             {
-                Popup.Show("A recorded feedback session was ended but wasn't running. Please try start another recorded feedback session.", "No Recorded Feedback Session", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Show("A recorded feedback session was ended but wasn't running. Please try start another recorded feedback session.", "No Recorded Feedback Session", MessageBoxButton.OK, MessageBoxImage.Error, null);
                 if(_onCompleted != null)
                 {
                     _onCompleted(feedbackRecordingNoProcessesExcpetion);
@@ -173,7 +174,7 @@ namespace Dev2.Studio.Feedback.Actions
             }
             catch(FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
             {
-                Popup.Show("A timeout occured waiting for the recorded feedback session to end. Please try finish the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Show("A timeout occured waiting for the recorded feedback session to end. Please try finish the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null);
                 if(_onCompleted != null)
                 {
                     _onCompleted(feedbackRecordingTimeoutException);
@@ -212,7 +213,7 @@ namespace Dev2.Studio.Feedback.Actions
             }
             catch(FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
             {
-                Popup.Show("A timeout occured waiting for the recorded feedback session to end. Please try cancel the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
+                Popup.Show("A timeout occurred waiting for the recorded feedback session to end. Please try cancel the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null);
                 completedResult = feedbackRecordingTimeoutException;
             }
 

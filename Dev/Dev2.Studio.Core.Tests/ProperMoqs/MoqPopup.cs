@@ -43,6 +43,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             ShowHitCount++;
             return _result;
         }
+        // public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null)
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey)
+        {
+            Buttons = buttons;
+            Description = description;
+            Header = header;
+            ImageType = image;
+            DontShowAgainKey = dontShowAgainKey;
+            return Show();
+        }
 
         public int ShowHitCount { get; private set; }
 
