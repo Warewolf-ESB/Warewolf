@@ -2,8 +2,13 @@
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ESB.Execution;
 
-namespace Dev2.DynamicServices {
-    public interface IDynamicServicesInvoker {
+// ReSharper disable CheckNamespace
+namespace Dev2.DynamicServices
+{
+    // ReSharper restore CheckNamespace
+
+    public interface IEsbServiceInvoker
+    {
 
         /// <summary>
         /// Invokes the specified data object.
@@ -23,6 +28,14 @@ namespace Dev2.DynamicServices {
         /// <returns></returns>
         EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocal, Guid masterDataListID);
 
+        /// <summary>
+        /// Generates the invoke container.
+        /// </summary>
+        /// <param name="dataObject">The data object.</param>
+        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
+        /// <param name="masterDataListID">The master data list unique identifier.</param>
+        /// <returns></returns>
         EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListID);
     }
 }

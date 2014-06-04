@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.ESB
 
             var isLocalInvoke = !expectedIsLocal; 
 
-            var invoker = new Mock<IDynamicServicesInvoker>();
+            var invoker = new Mock<IEsbServiceInvoker>();
             invoker.Setup(i => i.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Callback(
                 (IDSFDataObject pDataObject, string pServiceName, bool pIsLocal, Guid pMasterDataListID) =>
                 {

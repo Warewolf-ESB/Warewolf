@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Network;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;

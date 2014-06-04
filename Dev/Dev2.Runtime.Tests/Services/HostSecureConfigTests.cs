@@ -18,8 +18,8 @@ namespace Dev2.Tests.Runtime.Services
         public const string DefaultSystemKeyPublic = "BgIAAACkAABSU0ExAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsQ==";
         public const string DefaultSystemKeyPrivate = "BwIAAACkAABSU0EyAAQAAAEAAQBzb9y6JXoJj70+TVeUgRc7hPjb6tTJR7B/ZHZKFQsTLkhQLHo+93x/f30Lj/FToE2xXqnuZPk9IV94L4ekt+5jgEFcf1ReuJT/G1dVb1POiEC0upGdagwW10T3PcBK+UzfSXz5kD0SiGhXamPnT/zuHiTtVjv87W+5WuvU1vsrsRV3gXwwGB0okX1ny1NBZLrWaMC/4AahE38jyNh2GVB7WRdqvhKbwUPb4O0KaOZkxxsQJadNsNc/xj5cQYbzkedn7tCxKTzYcz3G3eatwl6ZMuUZ6EdlVS1l2u3Bovyy/uKDTIaDEics7acXINtK1TQ/aYAUpCulQ4mfYHij49zD8Q/5GhYikM98C7v6z+88iGRGSef77nRm3RmTaAePqGyzywuupq17DyfJy1R8YQWmpcLb3pmVrtn/WeEyRkouSLMP32ck82NcWoi++udSfvkOg3i6gvdoSDPc1dS8Y9DXA5l8EOr0LQgLSgq/crwCJONeFZbgiBPGf2s3Sv16x6KCqySedTZewkXRFbb5tIp4oJJ0/kdVK7L9mwcEXujyfXn4FBbQLhctBIOSQ4U58v2YqIJuTD+GBdOVJuqn1eNokfwZi1iGnD6f6xXHkHEv1t9t6MEZhKyEZw5hTaolRsv3yFnoo5ajQOM4nPQLnXe4V68C1GMz6M4Ix/SNKNzbGbCaISyVvk0v5Z4SVhrQXcrXUjITSF5RxnFUR5ubxCg0ovlye9hWD+3wRrMOnw62JvH72rzUg2fn5K12ODXhdF8=";
 
-        static NameValueCollection NewSettings;
-        static NameValueCollection DefaultSettings;
+        static NameValueCollection _newSettings;
+        static NameValueCollection _defaultSettings;
 
         public static NameValueCollection CreateDefaultConfig()
         {
@@ -31,8 +31,8 @@ namespace Dev2.Tests.Runtime.Services
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            DefaultSettings = CreateDefaultConfig();
-            NewSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic);
+            _defaultSettings = CreateDefaultConfig();
+            _newSettings = HostSecureConfig.CreateSettings(string.Empty, string.Empty, DefaultSystemKeyPublic);
         }
 
         [ClassCleanup]
@@ -46,9 +46,13 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        // ReSharper disable InconsistentNaming
         public void HostSecureConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
+        // ReSharper restore InconsistentNaming
         {
-            var config = new HostSecureConfig(null);
+            // ReSharper disable ObjectCreationAsStatement
+            new HostSecureConfig(null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +67,7 @@ namespace Dev2.Tests.Runtime.Services
         //}
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
             TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, false);
@@ -80,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
 
         static void TestConfig(Guid expectedServerID, string expectedServerKey, string expectedSystemKey, bool isNewConfig)
         {
-            var config = new HostSecureConfigMock(isNewConfig ? NewSettings : DefaultSettings);
+            var config = new HostSecureConfigMock(isNewConfig ? _newSettings : _defaultSettings);
             TestConfig(expectedServerID, expectedServerKey, expectedSystemKey, isNewConfig, config);
         }
 
@@ -104,7 +109,7 @@ namespace Dev2.Tests.Runtime.Services
                 Assert.AreNotEqual(expectedServerKey, actualServerKey64);
 
                 Assert.IsNotNull(config.SaveConfigSettings);
-                Assert.AreNotEqual(NewSettings, config.SaveConfigSettings);
+                Assert.AreNotEqual(_newSettings, config.SaveConfigSettings);
 
                 Assert.AreEqual(1, config.SaveConfigHitCount);
                 Assert.AreEqual(1, config.ProtectConfigHitCount);
@@ -122,6 +127,8 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         #endregion
+
+        // ReSharper restore InconsistentNaming
 
     }
 }

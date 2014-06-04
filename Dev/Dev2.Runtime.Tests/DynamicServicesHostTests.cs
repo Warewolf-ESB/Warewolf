@@ -411,18 +411,5 @@ namespace Dev2.DynamicServices.Test
 
         #endregion
 
-        #region GenerateObjectGraphFromString
-
-        //[TestMethod]
-        //public void GenerateObjectGraphFromStringWithSourceWithoutIDExpectedAddsID()
-        //{
-        //}
-        //[TestMethod]
-        //public void GenerateObjectGraphFromStringWithSourceWithoutIDExpectedAddsID()
-        //{
-        //}
-
-        #endregion
-
     }
 }

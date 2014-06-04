@@ -6,17 +6,17 @@ namespace Dev2.Tests.Runtime.ESB
 {
     public class EsbServicesEndpointMock : EsbServicesEndpoint
     {
-        readonly IDynamicServicesInvoker _dynamicServicesInvoker;
+        readonly IEsbServiceInvoker _esbServiceInvoker;
 
-        public EsbServicesEndpointMock(IDynamicServicesInvoker dynamicServicesInvoker)
+        public EsbServicesEndpointMock(IEsbServiceInvoker esbServiceInvoker)
         {
-            VerifyArgument.IsNotNull("dynamicServicesInvoker", dynamicServicesInvoker);
-            _dynamicServicesInvoker = dynamicServicesInvoker;
+            VerifyArgument.IsNotNull("esbServiceInvoker", esbServiceInvoker);
+            _esbServiceInvoker = esbServiceInvoker;
         }
 
-        protected override IDynamicServicesInvoker CreateDynamicServicesInvoker(IWorkspace theWorkspace)
+        protected override IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {
-            return _dynamicServicesInvoker;
+            return _esbServiceInvoker;
         }
     }
 }

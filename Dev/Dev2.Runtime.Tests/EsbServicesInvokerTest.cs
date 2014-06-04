@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class DynamicServicesInvokerTest
+    public class EsbServicesInvokerTest
     {
         static readonly Guid TestWorkspaceID = new Guid("B1890C86-95D8-4612-A7C3-953250ED237A");
 
@@ -44,11 +44,11 @@ namespace Dev2.Tests.Runtime
 
         const string SourceName = "CitiesDatabase";
 
-        readonly Guid SourceID = Guid.NewGuid();
+        readonly Guid _sourceID = Guid.NewGuid();
 
-        readonly Guid ServiceID = Guid.NewGuid();
+        readonly Guid _serviceID = Guid.NewGuid();
 
-        readonly Guid UnsignedServiceID = Guid.NewGuid();
+        readonly Guid _unsignedServiceID = Guid.NewGuid();
 
         public const string ServerConnection1Name = "ServerConnection1";
 
@@ -76,8 +76,8 @@ namespace Dev2.Tests.Runtime
                 new[] { SourceName, ServerConnection1Name, ServerConnection2Name },
                 new[] { ServiceName, ServiceNameUnsigned },
                 out resources,
-                new[] { SourceID, Guid.Parse(ServerConnection1ID), Guid.Parse(ServerConnection2ID) },
-                new[] { ServiceID, UnsignedServiceID });
+                new[] { _sourceID, Guid.Parse(ServerConnection1ID), Guid.Parse(ServerConnection2ID) },
+                new[] { _serviceID, _unsignedServiceID });
 
             ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
         }
@@ -172,6 +172,7 @@ namespace Dev2.Tests.Runtime
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        // ReSharper disable InconsistentNaming
         public void FindResourcesByID_With_NullTypeParameter_Expected_ThrowsArgumentNullException()
         {
             var workspace = new Mock<IWorkspace>();
@@ -409,7 +410,7 @@ namespace Dev2.Tests.Runtime
 
             DebugDispatcher.Instance.Add(workspaceID, debugWriter.Object);
 
-            var dsi = new DynamicServicesInvoker(new Mock<IEsbChannel>().Object, null, workspace.Object);
+            var dsi = new EsbServiceInvoker(new Mock<IEsbChannel>().Object, null, workspace.Object);
             dsi.Invoke(dataObj.Object, out errors);
 
             Thread.Sleep(3000);  // wait for DebugDispatcher Write Queue 
@@ -449,5 +450,6 @@ namespace Dev2.Tests.Runtime
             return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
         }
 
+        // ReSharper restore InconsistentNaming
     }
 }

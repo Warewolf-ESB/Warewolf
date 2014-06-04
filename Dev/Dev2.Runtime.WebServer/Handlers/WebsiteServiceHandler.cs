@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.WebServer.Responses;
 
@@ -35,12 +36,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // NOTE: result.ToString() MUST return JSON
                 //
 
-                // This is where stuff starts going wrong!!!!
-                // We need to execute in context of the user requesting the execution, not the flipping server user ;)
+                // Ensure we execute as the correct user ;)
                 var userPrinciple = ctx.Request.User;
                 if(userPrinciple != null)
                 {
                     System.Threading.Thread.CurrentPrincipal = userPrinciple;
+                    ServerLogger.LogMessage("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
                 }
 
                 result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);

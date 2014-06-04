@@ -217,7 +217,18 @@ namespace Dev2.DynamicServices
         public Guid DataListID { get; set; }
         public ServiceAction ExecuteAction { get; set; }
 
-        public string RawPayload { get; set; }
+        private string _rawPayload;
+        public string RawPayload
+        {
+            get
+            {
+                return _rawPayload ?? string.Empty;
+            }
+            set
+            {
+                _rawPayload = value;
+            }
+        }
         public EmitionTypes ReturnType { get; set; }
 
         // Remote workflow additions ;)

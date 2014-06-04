@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.Runtime.WebServer.Responses;
+using System.Threading;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -28,9 +28,13 @@ namespace Dev2.Runtime.WebServer.Handlers
             requestTO.WebServerUrl = ctx.Request.Uri.ToString();
             requestTO.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
-            ctx.Send(responseWriter);
-        }
 
+            // Execute in its own thread to give proper context ;)
+            Thread.CurrentPrincipal = ctx.Request.User;
+
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
+            ctx.Send(responseWriter);
+
+        }
     }
 }

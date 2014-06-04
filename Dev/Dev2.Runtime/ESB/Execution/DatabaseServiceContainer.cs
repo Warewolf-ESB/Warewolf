@@ -18,10 +18,10 @@ namespace Dev2.Runtime.ESB.Execution
         public DatabaseServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel)
             : base(sa, dataObj, workspace, esbChannel)
         {
-           _databaseServiceExecution = new DatabaseServiceExecution(dataObj);    
+            _databaseServiceExecution = new DatabaseServiceExecution(dataObj);
         }
         public DatabaseServiceContainer(IServiceExecution databaseServiceExecution)
-            : base(databaseServiceExecution)
+            : base()
         {
             _databaseServiceExecution = databaseServiceExecution;
         }
@@ -34,14 +34,14 @@ namespace Dev2.Runtime.ESB.Execution
         {
             errors = new ErrorResultTO();
             _databaseServiceExecution.BeforeExecution(errors);
-            
+
             var databaseServiceExecution = _databaseServiceExecution as DatabaseServiceExecution;
-            if (databaseServiceExecution != null)
+            if(databaseServiceExecution != null)
             {
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
-            var result =_databaseServiceExecution.Execute(out errors);
+            var result = _databaseServiceExecution.Execute(out errors);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
         }

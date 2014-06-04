@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.Runtime.WebServer.Responses;
+using System.Threading;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -26,9 +26,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 requestTO.RawRequestPayload = data;
             }
 
-            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+            // Execute in its own thread to give proper context ;)
+            Thread.CurrentPrincipal = ctx.Request.User;
+
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
             ctx.Send(responseWriter);
         }
-
     }
 }

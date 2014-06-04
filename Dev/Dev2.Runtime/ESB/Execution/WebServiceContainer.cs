@@ -18,7 +18,6 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public WebServiceContainer(IServiceExecution webServiceExecution)
-            : base(webServiceExecution)
         {
             WebserviceExecution = webServiceExecution;
         }

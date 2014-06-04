@@ -126,7 +126,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ESB\Control\IDynamicServicesInvoker.cs" />
+    <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
+    <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="Network\StudioTemplates.cs" />
     <Compile Include="Network\StudioFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ESB\Control\DynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="TO\ServiceHydrationTO.cs" />
   </ItemGroup>

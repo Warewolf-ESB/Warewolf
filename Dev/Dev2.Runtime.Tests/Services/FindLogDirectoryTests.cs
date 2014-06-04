@@ -1,9 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using System.Threading;
+using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -43,16 +48,16 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execution
 
-        //[TestMethod]
-        //public void FindLogDirectoryWithNoWebServerUriReturnsError()
-        //{
-        //    var workspace = new Mock<IWorkspace>();
+        [TestMethod]
+        public void FindLogDirectoryWithNoWebServerUriReturnsError()
+        {
+            var workspace = new Mock<IWorkspace>();
 
-        //    var values = new Dictionary<string, string> {  };
-        //    var esb = new FindLogDirectory();
-        //    var result = esb.Execute(values, workspace.Object);
-        //    Assert.IsTrue(result.Contains("Value cannot be null"));
-        //}
+            Dictionary<string, StringBuilder> values = new Dictionary<string, StringBuilder>();
+            var esb = new FindLogDirectory();
+            var result = esb.Execute(values, workspace.Object);
+            Assert.IsTrue(result.Contains("Value cannot be null"));
+        }
 
         #endregion
 

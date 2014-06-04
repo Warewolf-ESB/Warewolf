@@ -16,12 +16,15 @@ namespace Dev2.Tests.Runtime.WebServer
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerRequest_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
+        // ReSharper disable InconsistentNaming
         public void WebServerRequest_Constructor_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+#pragma warning disable 168
             var webServerRequest = new WebServerRequest(null, null);
+#pragma warning restore 168
 
             //------------Assert Results-------------------------
         }
@@ -35,7 +38,9 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+#pragma warning disable 168
             var webServerRequest = new WebServerRequest(new HttpRequestMessage(), null);
+#pragma warning restore 168
 
             //------------Assert Results-------------------------
         }
@@ -108,5 +113,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
             Assert.AreEqual(expectedContent, content);
         }
+
+        // ReSharper restore InconsistentNaming
     }
 }

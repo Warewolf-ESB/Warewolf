@@ -15,6 +15,35 @@ namespace Dev2.Tests
     [ExcludeFromCodeCoverage]
     public class DataObjectTest
     {
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObject_RawPayload")]
+        public void DsfDataObject_RawPayload_WhenNull_ExpectEmptyString()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+
+            //------------Execute Test---------------------------
+            var result = dataObject.RawPayload;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, result, "RawPayload did not return and empty string");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObjectz_RawPayload")]
+        public void DsfDataObjectz_RawPayload_WhenNotNull_ExpectRawPayload()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "foo");
+
+            //------------Execute Test---------------------------
+            var result = dataObject.RawPayload;
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result, "foo");
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]

@@ -191,13 +191,13 @@ namespace Dev2.Runtime.ESB.Control
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors)
         {
             ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
-            Guid resultID = GlobalConstants.NullDataListID;
+            var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
-            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
-            ServerLogger.LogTrace("Execution Context User Is : " + principle.Identity.Name);
+            ServerLogger.LogMessage("EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -229,9 +229,8 @@ namespace Dev2.Runtime.ESB.Control
             try
             {
                 // Setup the invoker endpoint ;)
-                using(var invoker = new DynamicServicesInvoker(this, this, theWorkspace, request))
+                using(var invoker = new EsbServiceInvoker(this, this, theWorkspace, request))
                 {
-
                     // Should return the top level DLID
                     ErrorResultTO invokeErrors;
                     resultID = invoker.Invoke(dataObject, out invokeErrors);
@@ -272,7 +271,7 @@ namespace Dev2.Runtime.ESB.Control
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri, out ErrorResultTO errors)
         {
             errors = null;
-            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
             executionContainer.PerformLogExecution(uri);
         }
@@ -289,19 +288,19 @@ namespace Dev2.Runtime.ESB.Control
         public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            var invoker = CreateDynamicServicesInvoker(theWorkspace);
+            var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
+            var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
 
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow;
 
 
             var principle = Thread.CurrentPrincipal;
-            ServerLogger.LogTrace("Sub-Execution Context User Is : " + principle.Identity.Name);
+            ServerLogger.LogMessage("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
             var result = dataObject.DataListID;
             if(dataObject.RunWorkflowAsync)
@@ -322,7 +321,7 @@ namespace Dev2.Runtime.ESB.Control
                     result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
 
-                    // If Webservice or Plugin, skip the final shaping junk ;)
+                    // If Web-service or Plugin, skip the final shaping junk ;)
                     if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
                     {
                         if(!dataObject.IsDataListScoped && remainingMappings != null)
@@ -371,7 +370,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IDynamicServicesInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
         {
             var clonedDataObject = dataObject.Clone();
             var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
@@ -396,7 +395,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     var task = Task.Factory.StartNew(() =>
                     {
-                        ServerLogger.LogTrace("Async Execution Context User Is : " + Thread.CurrentPrincipal.Identity.Name);
+                        ServerLogger.LogMessage("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
                         executionContainer.Execute(out error);
@@ -442,7 +441,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             else
             {
-                bool isDbService = dataObject.RemoteServiceType == "DbService" || dataObject.RemoteServiceType == "InvokeStoredProc";
+                var isDbService = dataObject.RemoteServiceType == "DbService" || dataObject.RemoteServiceType == "InvokeStoredProc";
                 theShape = ShapeMappingsToTargetDataList(inputDefs, outputDefs, out invokeErrors, isDbService);
                 errors.MergeErrors(invokeErrors);
             }
@@ -478,11 +477,11 @@ namespace Dev2.Runtime.ESB.Control
         public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
         {
             var serviceID = dataObject.ResourceID;
-            IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
-            var invoker = new DynamicServicesInvoker(this, this, theWorkspace);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             var curDlid = generateInvokeContainer.Execute(out errors);
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var compiler = DataListFactory.CreateDataListCompiler();
             var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
             var jsonSerializerSettings = new JsonSerializerSettings();
             var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
@@ -534,8 +533,8 @@ namespace Dev2.Runtime.ESB.Control
         public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName);
-            string result = string.Empty;
+            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName);
+            var result = string.Empty;
 
             if(!string.IsNullOrEmpty(targetShape))
             {
@@ -605,9 +604,9 @@ namespace Dev2.Runtime.ESB.Control
 
             using(var stringReader = new StringReader(preShape))
             {
-                XDocument xDoc = XDocument.Load(stringReader);
+                var xDoc = XDocument.Load(stringReader);
 
-                XElement rootEl = xDoc.Element("DataList");
+                var rootEl = xDoc.Element("DataList");
                 if(rootEl == null) return xDoc.ToString();
 
                 rootEl.Elements().Where(el =>
@@ -634,7 +633,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        bool IsServiceWorkflow(Guid workspaceID, string serviceName)
+        static bool IsServiceWorkflow(Guid workspaceID, string serviceName)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
             if(resource == null)
@@ -728,16 +727,16 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
-        bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
+        static bool SubExecutionRequiresShape(Guid workspaceID, string serviceName)
         {
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
             return resource == null || (resource.ResourceType != ResourceType.WebService && resource.ResourceType != ResourceType.PluginService);
 
         }
 
-        protected virtual IDynamicServicesInvoker CreateDynamicServicesInvoker(IWorkspace theWorkspace)
+        protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
         {
-            return new DynamicServicesInvoker(this, this, theWorkspace);
+            return new EsbServiceInvoker(this, this, theWorkspace);
         }
     }
 }

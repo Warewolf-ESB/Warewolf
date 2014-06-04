@@ -18,10 +18,10 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
         public PluginServiceContainer(IServiceExecution pluginServiceExecution)
-            : base(pluginServiceExecution)
         {
             _pluginServiceExecution = pluginServiceExecution;
         }
+
         public override Guid Execute(out ErrorResultTO errors)
         {
             // set the output definition ;)

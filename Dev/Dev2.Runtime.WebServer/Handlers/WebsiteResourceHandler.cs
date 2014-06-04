@@ -13,7 +13,6 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             var uriString = ctx.Request.Uri.OriginalString;
 
-
             if(uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
                 // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
@@ -57,6 +56,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 uriString = uriString.Replace(path, "");
             }
+
             var result = GetFileFromPath(new Uri(uriString));
 
             ctx.Send(result);

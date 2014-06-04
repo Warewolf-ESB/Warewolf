@@ -7,13 +7,14 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
-using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
+        public IPrincipal ExecutingUser { get; set; }
+
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             var serviceName = GetServiceName(ctx);
@@ -36,8 +37,32 @@ namespace Dev2.Runtime.WebServer.Handlers
             formData.WebServerUrl = ctx.Request.Uri.ToString();
             formData.Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority);
 
-            IResponseWriter responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
-            ctx.Send(responseWriter);
+            if(ExecutingUser == null)
+            {
+                throw new Exception("Null Executing User");
+            }
+
+            try
+            {
+                // Execute in its own thread to give proper context ;)
+                var t = new Thread(() =>
+                {
+                    Thread.CurrentPrincipal = ExecutingUser;
+
+                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+                    ctx.Send(responseWriter);
+                });
+
+                t.Start();
+
+                t.Join();
+            }
+            catch(Exception e)
+            {
+                // ReSharper disable InvokeAsExtensionMethod
+                ServerLogger.LogError(this, e);
+                // ReSharper restore InvokeAsExtensionMethod
+            }
         }
 
         public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceID, Guid dataListID, string connectionId)
@@ -63,30 +88,34 @@ namespace Dev2.Runtime.WebServer.Handlers
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Errors.HasErrors())
             {
-                Guid dlID = Guid.Empty;
+                var dlID = Guid.Empty;
                 ErrorResultTO errors;
+
+                if(ExecutingUser == null)
+                {
+                    throw new Exception("Null Executing User");
+                }
 
                 try
                 {
-                    // Protect against Thread being disposed before coded is executed
-                    // Only seems to happen when the studio starts server service ?! ;(
-                    var princple = Thread.CurrentPrincipal;
-                var t = new Thread(() =>
-                {
-                    Thread.CurrentPrincipal = princple;
-                    dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
-                });
+                    // Execute in its own thread to give proper context ;)
+                    var t = new Thread(() =>
+                    {
+                        Thread.CurrentPrincipal = ExecutingUser;
+                        dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                    });
 
-                t.Start();
+                    t.Start();
 
-                t.Join();
+                    t.Join();
                 }
                 catch(Exception e)
                 {
                     this.LogError(e);
                 }
 
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+                var compiler = DataListFactory.CreateDataListCompiler();
 
                 if(request.ExecuteResult.Length > 0)
                 {
@@ -111,7 +140,5 @@ namespace Dev2.Runtime.WebServer.Handlers
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
         }
-
-        public IPrincipal ExecutingUser { get; set; }
     }
 }
