@@ -109,11 +109,11 @@ Scenario: Workflow with an assign and remote workflow
 	 And "TestAssignAndRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	  And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  | input            | [[inputData]] | output              | [[output]]       |
-	  |                  |               | values(*).upper     | [[values().up]]  |
-	  |                  |               | values(*).lower     | [[values().low]] |
+	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	| Input to Service | From Variable | Output from Service | To Variable      |
+	| input            | [[inputData]] | output              | [[output]]       |
+	|                  |               | values(*).upper     | [[values().up]]  |
+	|                  |               | values(*).lower     | [[values().low]] |
 	  When "TestAssignAndRemote" is executed
 	  Then the workflow execution has "NO" error
 	   And the 'AssignData' in WorkFlow 'TestAssignAndRemote' debug inputs as
@@ -141,6 +141,24 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+#
+#This Test should be passed after the bug 11612 is fixed
+#Scenario: Remote Workflow with an remote workflow
+#	  Given I have a workflow "RemoteWF" on server "Remote Connection Integration"
+#	  And "RemoteWF" contains "TestRemote" from server "Remote Connection Integration" with mapping as
+#	  | Input to Service | From Variable | Output from Service | To Variable |
+#	  | a                | Warewolf      |                     |             |
+#	  When "RemoteWF" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'TestRemote' in WorkFlow 'RemoteWF' debug inputs as
+#	  |                  |
+#	  | [[a]] = Warewolf |
+#	  And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
+#	  | # |                  |
+#	  | 1 | [[a]] = Warewolf |	  	 
+#	 And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
+#	  |                  |
+#	  | [[a]] = Warewolf |
 
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
