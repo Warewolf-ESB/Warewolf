@@ -109,11 +109,11 @@ Scenario: Workflow with an assign and remote workflow
 	 And "TestAssignAndRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
-	| Input to Service | From Variable | Output from Service | To Variable      |
-	| input            | [[inputData]] | output              | [[output]]       |
-	|                  |               | values(*).upper     | [[values().up]]  |
-	|                  |               | values(*).lower     | [[values().low]] |
+	  And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  | input            | [[inputData]] | output              | [[output]]       |
+	  |                  |               | values(*).upper     | [[values().up]]  |
+	  |                  |               | values(*).lower     | [[values().low]] |
 	  When "TestAssignAndRemote" is executed
 	  Then the workflow execution has "NO" error
 	   And the 'AssignData' in WorkFlow 'TestAssignAndRemote' debug inputs as
@@ -180,6 +180,8 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
       And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
+	  
+
 # Bug
 #Scenario: Workflow with Assign and 2 Delete tools executing against the server
 #	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
@@ -1437,3 +1439,64 @@ Scenario: Workflow with Assign Calculate
 #	    And the 'Test' in Workflow 'WFWithForEach' debug outputs as
 #	        | # |                   | Number of steps |
 #	        | 1 | [[a]] =  Warewolf | 2               |
+
+#This Test should pass after the bug 11539 is fixed
+#Scenario: Test Mappings for Assign and Calculate Workflow 
+#      Given I have a workflow "TestMappings"
+#	  And "TestMappings" contains an Assign "values1" as
+#      | variable       | value |
+#      | [[rec(1).a]]   | 1     |
+#      | [[rec(1).b]]   | 2     |
+#	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" inputs
+#	  | Inputs |
+#	  |        |
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" Outputs
+#	  | Outputs |
+#	  | rec().a |
+#	  | rec().b |
+#	  When "TestMappings" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | 1         |
+#	  | 2 | [[rec(1).b]] = | 2         |
+#	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
+#	  | # |                           |
+#	  | 1 | [[rec(1).a]]         =  1 |
+#	  | 2 | [[rec(1).b]]  =  2        |
+#	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
+#      | fx =                                 |
+#      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
+#      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
+#	  |                  |
+#	  | [[rec(1).c]] = 3 |
+#	  And the 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as
+#	  |                  |
+#	  | [[rec(1).a]] = 1 |
+#	  | [[rec(1).b]] = 2 |
+#	  | [[rec(1).c]] = 3 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
