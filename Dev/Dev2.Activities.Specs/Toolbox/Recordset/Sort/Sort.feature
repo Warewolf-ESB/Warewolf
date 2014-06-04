@@ -298,9 +298,81 @@ Scenario: Sort a recordset backwards recordset  with one row
 #	| [[rs(3).row]] = b |
 #	| [[rs(6).row]] = b |
 #	| [[rs(8).row]] = a |
-	
-	
 
+#This following 4 Scenarios should be passed after the bug 11838 is fixed	
+#Scenario: Sort 2 columns backwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
+#	And my sort order is "Backwards"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field                           | Sort Order |
+#	| [[rs(1).a]],[[rec(*).a]] = Australia | Forward    |
+#	And the debug output as
+#    |                          |
+#
+#Scenario: Sort 2 columns Forwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
+#	And my sort order is "Forward"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field                           | Sort Order |
+#	| [[rs(1).a]],[[rec(*).a]] = Australia | Forward    |
+#	And the debug output as
+#    |                          |
+#
+#Scenario: Sort Recordset without field Forwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*)]]"
+#	And my sort order is "Forward"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field               | Sort Order |
+#	| [[rs(1).a]] = Zambia     |            |
+#	| [[rs(2).a]] = America    |            |
+#	| [[rec(1).a]] = Mangolia  |            |
+#	| [[rec(2).a]] = Australia | Forward    |
+#	And the debug output as
+#    |                          |
+#				
+#Scenario: Sort Recordset without field Backwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*)]]"
+#	And my sort order is "Backwards"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field               | Sort Order |
+#	| [[rs(1).a]] = Zambia     |            |
+#	| [[rs(2).a]] = America    |            |
+#	| [[rec(1).a]] = Mangolia  |            |
+#	| [[rec(2).a]] = Australia | Forward    |
+#	And the debug output as
+#    |                          |
 
 
 
