@@ -134,7 +134,6 @@ namespace Gui
 
             var args = new[] { @"http delete urlacl url=http://*:3142/", @"http delete urlacl url=https://*:3143/" };
 
-            //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
                 foreach(var arg in args)
