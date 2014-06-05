@@ -81,6 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Debug\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Win32.TaskScheduler">
+      <HintPath>..\Assembler\Files\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="SharpSetup, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SharpSetup.Wpf, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -162,6 +165,7 @@
     </Compile>
     <Compile Include="Utility\RegistryKeyExtensionMethods.cs" />
     <Compile Include="Utility\ResourceExtractor.cs" />
+    <Compile Include="Utility\ScheduledTaskDeleteOp.cs" />
     <Compile Include="Utility\WarewolfCommand.cs" />
     <Compile Include="Utility\WarewolfGroupOps.cs" />
     <Compile Include="WelcomeStep.xaml.cs">

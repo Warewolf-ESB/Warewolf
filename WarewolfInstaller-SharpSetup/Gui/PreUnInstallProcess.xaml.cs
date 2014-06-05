@@ -5,6 +5,7 @@ using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Gui.Utility;
 using NetFwTypeLib;
 using SharpSetup.Base;
 
@@ -64,9 +65,9 @@ namespace Gui
                 {
                     RemoveService();
                 }
-// ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
-// ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
                 { }
             }
 
@@ -74,6 +75,24 @@ namespace Gui
             ClosePorts();
 
             return _serviceRemoved;
+        }
+
+        /// <summary>
+        /// Removes the scheduled task.
+        /// </summary>
+        private void RemoveScheduledTask()
+        {
+            try
+            {
+                ScheduledTaskDeleteOp stdo = new ScheduledTaskDeleteOp();
+                stdo.RemoveWarewolfScheduledTask();
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                // Just here to handle any funnies that may pop-up
+            }
         }
 
         /// <summary>
@@ -191,9 +210,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void PreUnInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             try
             {
@@ -215,7 +234,9 @@ namespace Gui
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.DoWork += delegate
                         {
-
+                            // Scheduled task removal
+                            RemoveScheduledTask();
+                            // Then service removal
                             RemoveService();
                         };
 
