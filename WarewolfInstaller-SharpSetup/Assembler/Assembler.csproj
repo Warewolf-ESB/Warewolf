@@ -84,6 +84,6 @@
     <IncludeInCab Include="Files\Microsoft.Deployment.Compression.Zip.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Files\Microsoft.Win32.TaskScheduler.dll" />
+    <IncludeInCab Include="Files\Microsoft.Win32.TaskScheduler.dll" />
   </ItemGroup>
 </Project>
