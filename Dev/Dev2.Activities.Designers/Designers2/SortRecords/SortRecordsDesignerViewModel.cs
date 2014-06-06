@@ -12,7 +12,7 @@ namespace Dev2.Activities.Designers2.SortRecords
         {
             AddTitleBarHelpToggle();
             SortOrderTypes = new List<string> { "Forward", "Backwards" };
-            SelectedSelectedSort = SortOrderTypes[0];
+            SelectedSelectedSort = string.IsNullOrEmpty(SelectedSort) ? SortOrderTypes[0] : SelectedSort;
         }
 
         public List<string> SortOrderTypes { get; private set; }
@@ -23,7 +23,9 @@ namespace Dev2.Activities.Designers2.SortRecords
             DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string SelectedSort { set { SetProperty(value); } }
+       private  string SelectedSort { set { SetProperty(value);  }
+            get { return  GetProperty<string>(); }
+        }
 
         static void OnSelectedSelectedSortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -43,6 +43,43 @@ namespace Dev2.Activities.Designers.Tests.SortRecords
             Assert.AreEqual(ExpectedValue, viewModel.SelectedSort);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SortRecordsDesignerViewModel_RehydratesSortOrder")]
+        public void SortRecordsDesignerViewModel_RehydratesSortOrder_ValidOrderType_ExpectUnderlyingValueBackwards()
+        {
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedSort","Backwards");
+            var viewModel = new TestSortRecordsDesignerViewModel(modelItem);
+            const string ExpectedValue = "Backwards";
+          
+            Assert.AreEqual(ExpectedValue, viewModel.SelectedSort);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SortRecordsDesignerViewModel_RehydratesSortOrder")]
+        public void SortRecordsDesignerViewModel_RehydratesSortOrder_ValidOrderType_ExpectUnderlyingValueForwards()
+        {
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedSort", "Forward");
+            var viewModel = new TestSortRecordsDesignerViewModel(modelItem);
+            const string ExpectedValue = "Forward";
+
+            Assert.AreEqual(ExpectedValue, viewModel.SelectedSort);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SortRecordsDesignerViewModel_RehydratesSortOrder")]
+        public void SortRecordsDesignerViewModel_RehydratesSortOrder_ValidOrderType_ExpectUnderlyingValueEmpty()
+        {
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedSort", "");
+            var viewModel = new TestSortRecordsDesignerViewModel(modelItem);
+            const string ExpectedValue = "Forward";
+
+            Assert.AreEqual(ExpectedValue, viewModel.SelectedSort);
+        }
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new DsfSortRecordsActivity());
