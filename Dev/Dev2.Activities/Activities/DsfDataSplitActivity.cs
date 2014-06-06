@@ -527,6 +527,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dtb.AddTokenOp(val, t.Include, escape);
                         }
                         break;
+                    default: { break; }
                 }
                 _indexCounter++;
             }

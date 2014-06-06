@@ -130,15 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            if(valueEntry != null)
-            {
-                //Added for Bug 9479 - Massimo Guerrera
-                if(expression.Contains("()."))
-                {
-                    expression = expression.Replace("().", "(*).");
-                }
-            }
-            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugInputItem(new DebugItemVariableParams((valueEntry != null && expression.Contains("().")) ? expression.Replace("().", "(*).") : expression, labelText, valueEntry, executionId));
             AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
         }
 

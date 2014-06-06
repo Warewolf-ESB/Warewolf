@@ -32,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         // ReSharper disable RedundantAssignment
-        public IDSFDataObject DataObject { get { return null; } set { value = null; } }
+        public IDSFDataObject DataObject { get { return null; } }
         // ReSharper restore RedundantAssignment
         public IDataListCompiler Compiler { get; set; }
         // END TODO: Remove legacy properties 
@@ -575,6 +575,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case StateType.After:
                         _debugState.Inputs.Clear();
                         break;
+                    default: { break; }
                 }
 
                 // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher

@@ -268,18 +268,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string GetEnviromentVariable(IDSFDataObject dataObject, NativeActivityContext context, string eval)
         {
-            if(dataObject != null)
+            if(dataObject == null)
             {
-                string bookmarkName = Guid.NewGuid().ToString();
-                eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
-                Uri hostUri;
-                if(Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
-                {
-                    eval = eval.Replace("@Host", ServiceHost);
-                }
-                eval = DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
+                return eval;
             }
-            return eval;
+            string bookmarkName = Guid.NewGuid().ToString();
+            eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
+            Uri hostUri;
+            if(Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
+            {
+                eval = eval.Replace("@Host", ServiceHost);
+            }
+            return DataListUtil.BindEnvironmentVariables(eval, dataObject.ServiceName);
         }
         #endregion
     }

@@ -46,18 +46,18 @@ namespace Dev2.Utilities
             {
                 // Time to extract the data
                 int start = val.IndexOf("(", StringComparison.Ordinal);
-                if(start > 0)
+                if(start <= 0)
                 {
-                    int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
+                    return val;
+                }
+                int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
-                    if(end > start)
-                    {
-                        start += 2;
-                        val = val.Substring(start, (end - start));
+                if(end > start)
+                {
+                    start += 2;
 
-                        // Convert back for usage ;)
-                        val = Dev2DecisionStack.FromVBPersitableModelToJSON(val);
-                    }
+                    // Convert back for usage ;)
+                    val = Dev2DecisionStack.FromVBPersitableModelToJSON(val.Substring(start, (end - start)));
                 }
             }
             return val;
