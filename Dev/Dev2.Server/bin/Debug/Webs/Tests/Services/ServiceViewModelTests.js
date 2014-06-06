@@ -48,25 +48,25 @@ module("Service Model Constructor");
 //});
 //*/
 
-module("Service Ok Test");
+//module("Service Ok Test");
 
-test("ConstructorExpectedModelResourceDbServiceOkDisabledOnLoad", function () {
+//test("ConstructorExpectedModelResourceDbServiceOkDisabledOnLoad", function () {
 
-    var model = new DbServiceViewModel();
-    ok(!model.isFormValid(), "DbService", "Ok Enabled By Default");
-});
+//    var model = new DbServiceViewModel();
+//    ok(!model.isFormValid(), "DbService", "Ok Enabled By Default");
+//});
 
-test("ConstructorExpectedModelResourceWebServiceOkDisabledOnLoad", function () {
+//test("ConstructorExpectedModelResourceWebServiceOkDisabledOnLoad", function () {
 
-    var model = new WebServiceViewModel();
-    ok(!model.isFormValid(), "WebService", "Ok Enabled By Default");
-});
+//    var model = new WebServiceViewModel();
+//    ok(!model.isFormValid(), "WebService", "Ok Enabled By Default");
+//});
 
-test("ConstructorExpectedModelResourcePluginServiceOkDisabledOnLoad", function () {
+//test("ConstructorExpectedModelResourcePluginServiceOkDisabledOnLoad", function () {
 
-    var model = new PluginServiceViewModel();
-    ok(!model.isFormValid(), "PluginService", "Ok Enabled By Default");
-});
+//    var model = new PluginServiceViewModel();
+//    ok(!model.isFormValid(), "PluginService", "Ok Enabled By Default");
+//});
 
 ///*
 //module("Service Model Form Validation");

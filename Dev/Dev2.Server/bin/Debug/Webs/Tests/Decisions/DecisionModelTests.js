@@ -10,14 +10,14 @@
 //*/
 
 
-module("Core DecisionModel Test");
+//module("Core DecisionModel Test");
 
 
-test("ConstructorWithNoParamsExpectedDecisionStackInitialized", function () {
+//test("ConstructorWithNoParamsExpectedDecisionStackInitialized", function () {
 
-    var model = new DecisionViewModel();
-    equal(model.data.TheStack().length, 0, "Did Decision Stack Initialize");
-});
+//    var model = new DecisionViewModel();
+//    equal(model.data.TheStack().length, 0, "Did Decision Stack Initialize");
+//});
 
 //test("DecisionTypeChangedClearsText", function () {
 
