@@ -229,10 +229,7 @@
       <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Network\DataList\" />
-    <Folder Include="Network\Execution\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>

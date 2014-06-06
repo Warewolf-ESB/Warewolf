@@ -139,6 +139,62 @@ namespace Dev2.Core.Tests.Network
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerProxy_Wait")]
+        public void ServerProxy_Wait_TaskThrowsHttpClientException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
+        {
+            //------------Setup for test--------------------------
+            const string ExMessage = "StatusCode: 403";
+            var result = new StringBuilder();
+            var task = new Task<string>(() =>
+            {
+                throw new HttpClientException(ExMessage);
+            });
+
+
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true
+            };
+
+            //------------Execute Test---------------------------
+            serverProxy.TestWait(task, result);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), ExMessage);
+            Assert.IsTrue(task.IsFaulted);
+            Assert.IsTrue(serverProxy.IsConnected);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServerProxy_Wait")]
+        public void ServerProxy_Wait_TaskThrowsException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
+        {
+            //------------Setup for test--------------------------
+            const string ExMessage = "Unknown Error Occurred";
+            var result = new StringBuilder();
+            var task = new Task<string>(() =>
+            {
+                throw new Exception(ExMessage);
+            });
+
+
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true
+            };
+
+            //------------Execute Test---------------------------
+            serverProxy.TestWait(task, result);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), ExMessage);
+            Assert.IsTrue(task.IsFaulted);
+            Assert.IsTrue(serverProxy.IsConnected);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -165,33 +221,6 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(serverProxy.IsConnected);
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ServerProxy_Wait")]
-        [ExpectedException(typeof(AggregateException))]
-        public void ServerProxy_Wait_TaskThrowsOtherException_ExceptionNotHandledAndTaskIsFaultedAndIsConnectedIsTrue()
-        {
-            //------------Setup for test--------------------------
-            const string ExMessage = "An unhandled error occurred";
-            var result = new StringBuilder();
-            var task = new Task<string>(() =>
-            {
-                throw new Exception(ExMessage);
-            });
-
-            var serverProxy = new TestServerProxy
-            {
-                IsConnected = true
-            };
-
-            //------------Execute Test---------------------------
-            serverProxy.TestWait(task, result);
-
-            //------------Assert Results-------------------------
-            StringAssert.Contains(result.ToString(), ExMessage);
-            Assert.IsTrue(task.IsFaulted);
-            Assert.IsTrue(serverProxy.IsConnected);
-        }
     }
 
     internal class TestServerProxy : ServerProxy
@@ -202,7 +231,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxy()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials,new AsyncWorker())
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new AsyncWorker())
         {
 
         }

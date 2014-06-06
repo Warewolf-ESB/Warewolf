@@ -58,12 +58,6 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-            // Travis Logging
-            //HubConnection.ConnectionSlow += () => this.LogError("************ Slow hub connection?!");
-            //HubConnection.Reconnecting += () => this.LogError("************ Reconnect hub");
-            //HubConnection.Closed += () => HubConnection.Dispose();
-            //HubConnection.TraceLevel = TraceLevels.All;
-            //HubConnection.TraceWriter = Console.Out;
 
             InitializeEsbProxy();
             _asyncWorker = worker;
@@ -296,9 +290,18 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            this.LogTrace("Permissions Received [ " + objString + " ]");
+            Logger.TraceInfo("PERMISSIONS MEMO OBJECT [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
-            ServerEvents.PublishObject(obj);
+            try
+            {
+                // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
+                // Handle it more gracefully ;)
+                ServerEvents.PublishObject(obj);
+            }
+            catch(Exception e)
+            {
+                Logger.LogError(this, e);
+            }
             RaisePermissionsChanged();
         }
 
@@ -452,10 +455,20 @@ namespace Dev2.Network
                     var ioex = ex as InvalidOperationException;
                     if(ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
                     {
+                        this.LogTrace("Connection is reconnecting");
                         return true; // This we know how to handle this
                     }
+                    // handle 403 errors when permissions have been removed ;)
+                    var hce = ex as HttpClientException;
+                    if(hce != null && hce.Message.Contains("StatusCode: 403"))
+                    {
+                        this.LogTrace("Forbidden - Most Likely Permissions Changed. Saving them causes a race condition");
+                        return true;
+                    }
+
+                    // handle generic errors ;)                   
                     Logger.LogError(this, ex);
-                    return false; // Let anything else stop the application.
+                    return true; // Let anything else stop the application.
                 });
                 if(hasDisconnected)
                 {

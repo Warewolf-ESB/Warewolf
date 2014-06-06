@@ -310,7 +310,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Security\Security.cd" />
     <None Include="SSL Generation\CreateCertificate.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
