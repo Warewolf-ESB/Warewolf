@@ -18,20 +18,23 @@ Global
 		SccProjectName1 = Dev2.Server/bin/Debug/Webs
 		SccLocalPath1 = Dev2.Server\\bin\\Debug\\Webs
 	EndGlobalSection
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = 9c9850a3-6308-4cfb-865f-a3037ce62c9f
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{46327255-E2D2-4FBE-A04C-0FA3E0360604}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 9c9850a3-6308-4cfb-865f-a3037ce62c9f
 	EndGlobalSection
 EndGlobal
