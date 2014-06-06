@@ -1,12 +1,12 @@
-﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
-/// <reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
-/// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Services/WebServiceViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Sources/WebSourceViewModel.js" />
-/// <reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
+﻿///// <reference path="../../wwwroot/Scripts/_references.js" />
+///// <reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
+///// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Services/WebServiceViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Sources/WebSourceViewModel.js" />
+///// <reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
 
 //module("ServiceViewModelTests", {
 //    setup: function() {
