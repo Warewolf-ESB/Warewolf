@@ -1495,26 +1495,31 @@ Scenario: Workflow with Assign Calculate
 #	  | [[rec(1).b]] = 2 |
 #	  | [[rec(1).c]] = 3 |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#This Test Should be passed after the bug 11994 is fixed
+#Scenario: Workflow with Assign and Find Record index
+#      Given I have a workflow "WFWithAssignandFindRecordindex"
+#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+#      | variable     | value    |
+#      | [[rec(1).a]] | Warewolf |
+#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
+#	  | In Field   | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+#	  | [[rec(*).a | 1 | =          | Warewolf | YES                            | NO                          |
+#	  When "WFWithAssignandFindRecordindex" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | Warewolf  | 
+#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+#	  | # |                                  |
+#	  | 1 | [[rec(1).a]]         =  Warewolf |
+#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+#	  |           |
+#	  | [[a]] = 1 |
+#	  | [[b]] = 1 |
+#	
+#
 
 
