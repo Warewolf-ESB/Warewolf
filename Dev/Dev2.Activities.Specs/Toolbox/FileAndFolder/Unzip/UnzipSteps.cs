@@ -31,6 +31,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             ScenarioContext.Current.Add("result", result);
         }
 
+        [When(@"the Unzip file tool is executed with a single file")]
+        public void WhenTheUnzipFileToolIsExecutedWithASingleFile()
+        {
+            ScenarioContext.Current.Add("singleFile",true );
+            BuildDataList();
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            ScenarioContext.Current.Add("result", result);
+        }
+
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -95,7 +104,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                                                                             true);
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
-            const string resourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
+            
+             string resourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
+             if (ScenarioContext.Current.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
+                 resourceName = "TestFile.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
             List<string> filesToCleanup = new List<string>();
             using(Stream stream = assembly.GetManifestResourceStream(resourceName))

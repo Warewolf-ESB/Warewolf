@@ -48,3 +48,28 @@ Scenario Outline: Unzip file at location
 	| FTP to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip          | ""                | ""       | [[path1]]   | sftp://localhost/ZIP2                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
 	| FTPS to SFTP   | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/ZIP3                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
 	| SFTP to SFTP   | [[path]] | sftp://localhost/test5.zip                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP5                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
+
+Scenario Outline: UnzipTOSFTP file at location
+	Given I have a source path '<source>' with value '<sourceLocation>'
+	And zip credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+	And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And result as '<resultVar>'	
+	And Archive Password as '<archivepassword>'
+    When the Unzip file tool is executed with a single file
+	Then the result variable '<resultVar>' will be '<result>'
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password |
+         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String           |         
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	| Name                 | source   | sourceLocation                                           | username          | password | destination | destinationLocation   | destUsername | destPassword | selected | archivepassword | resultVar  | result  | errorOccured |
+	| Local to SFTP Single | [[path]] | c:\test4.zip                                             | ""                | ""       | [[path1]]   | sftp://localhost/ZIP0 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
+	| UNC to SFTP Single   | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test4.zip | ""                | ""       | [[path1]]   | sftp://localhost/ZIP1 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
+	| FTP to SFTP Single   | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip          | ""                | ""       | [[path1]]   | sftp://localhost/ZIP2 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
+	| FTPS to SFTP Single  | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/ZIP3 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
+	| SFTP to SFTP Single  | [[path]] | sftp://localhost/test5.zip                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP5 | dev2         | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
