@@ -220,34 +220,31 @@ Scenario: Delete a scalar insted of a recordset
 #	|                      |
 #	| [[result]] = Failure |
 
-
-
-Scenario Outline: Deleting one recordset with two Delete tools.
-	Given I have the following recordset
-	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
-	| rs().row | 4   |
-	And I delete a record '<Delete1>'
-   And I delete a record '<Delete2>'
-	When the delete tool is executed
-	And the execution has "AN" error
-	Then the delete result should be "Failure"
-	And the recordset "[[rs().row]]" will be as follows
-	| rs       | row |
-	And the execution has "AN" error
-	And the debug inputs as  	
-	| Records        |
-	| [[rs(1).a]]  = 1 |
-	And the debug output as  
-	|                      |
-	| [[result]] = Failure |
-Examples: 
-| no | delete1     | delete2 |
-| 1  | [[rs(*)]]   | rs(1)]] |
-| 2  | [[rs(1)]]   | rs(1)]] |
-| 3  | [[rs(1).a]] | rs(1)]] |  
+#
+#Scenario Outline: Deleting one recordset with two Delete tools.
+#	Given I have the following recordset
+#	| rs       | val |
+#	| rs().row | 1   |
+#	| rs().row | 2   |
+#	| rs().row | 3   |
+#	| rs().row | 4   |
+#   And I delete a record "<Delete2>"
+#	When the delete tool is executed	
+#	Then the delete result should be "Failure"
+#	And the recordset "[[rs().row]]" will be as follows
+#	| rs       | row |
+#	And the execution has "AN" error
+#	And the debug inputs as  	
+#	| Records          |
+#	| [[rs(1).a]]  = 1 |
+#	And the debug output as  
+#	|                      |
+#	| [[result]] = Failure |
+#Examples: 
+#| no | delete1     | delete2 |
+#| 1  | [[rs(*)]]   | rs(1)]] |
+#| 2  | [[rs(1)]]   | rs(1)]] |
+#| 3  | [[rs(1).a]] | rs(1)]] |
 
 
 
