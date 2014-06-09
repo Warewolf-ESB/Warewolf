@@ -10,7 +10,9 @@ function PluginSourceViewModel(saveContainerID, environment) {
     var $sourcetabs = $("#sourcetabs");
     var $assemblyFileLocation = $("#pluginAssemblyFileLocation");
     var $dialogSaveButton = $("#saveButton");
-    $sourcetabs.tabs();
+    if ($sourcetabs.tabs != undefined) {
+        $sourcetabs.tabs();
+    }
 
     //2013.06.08: Ashley Lewis for PBI 9458
     self.titleSearchString = "Plugin Source";
@@ -76,23 +78,25 @@ function PluginSourceViewModel(saveContainerID, environment) {
         return self.data ? "<b>Plugin Source:</b> " + self.data.resourceName() : "";
     });
 
-    $assemblyFileLocation.autocomplete({
-        minLength: 2,
-        source: [],
-        select: function (event, ui) {
-            self.data.assemblyLocation(ui.item.value.match(".dll") == null ? ui.item.value + "\\" : ui.item.value);
-            $assemblyFileLocation.removeClass("ui-autocomplete-loading");
-            //self.loadTreePath(); TODO fix
-            return false;
-        },
-        //hoist autocomplete up up above assembly location textbox
-        open: function (event, ui) {
-            var autocomplete = $(".ui-autocomplete");
-            var oldTop = autocomplete.offset().top;
-            var newTop = oldTop - autocomplete.height() - $assemblyFileLocation.height() - 10;
-            autocomplete.css("top", newTop);
-        }
-    });
+    if ($assemblyFileLocation.autocomplete != undefined) {
+        $assemblyFileLocation.autocomplete({
+            minLength: 2,
+            source: [],
+            select: function (event, ui) {
+                self.data.assemblyLocation(ui.item.value.match(".dll") == null ? ui.item.value + "\\" : ui.item.value);
+                $assemblyFileLocation.removeClass("ui-autocomplete-loading");
+                //self.loadTreePath(); TODO fix
+                return false;
+            },
+            //hoist autocomplete up up above assembly location textbox
+            open: function (event, ui) {
+                var autocomplete = $(".ui-autocomplete");
+                var oldTop = autocomplete.offset().top;
+                var newTop = oldTop - autocomplete.height() - $assemblyFileLocation.height() - 10;
+                autocomplete.css("top", newTop);
+            }
+        });
+    }
 
     //get new intellisense results whenever assembly location ends with a slash
     //and do all validation
@@ -361,7 +365,9 @@ function PluginSourceViewModel(saveContainerID, environment) {
         //Form Init
         //
         $("#gacSearchTerm").value = "";
-        $sourcetabs.tabs("option", "active", 0);
+        if ($sourcetabs.tabs != undefined) {
+            $sourcetabs.tabs("option", "active", 0);
+        }
         self.treePathLoaded = false;
         //
         //Data Init
