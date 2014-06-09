@@ -230,7 +230,17 @@ namespace Dev2.Network
 
         public void Disconnect()
         {
-            HubConnection.Stop();
+            // It can take some time to shutdown when permissions have changed ;(
+            // Give 5 seconds, then force a dispose ;)
+            try
+            {
+                HubConnection.Stop(new TimeSpan(0, 0, 5));
+            }
+            catch(Exception e)
+            {
+                HubConnection.Dispose();
+                Logger.LogError(this, e);
+            }
         }
 
         public void Verify(Action<ConnectResult> callback, bool wait = true)
@@ -462,7 +472,9 @@ namespace Dev2.Network
                     var hce = ex as HttpClientException;
                     if(hce != null && hce.Message.Contains("StatusCode: 403"))
                     {
-                        this.LogTrace("Forbidden - Most Likely Permissions Changed. Saving them causes a race condition");
+                        this.LogTrace("Forbidden - Most Likely Permissions Changed.");
+                        // Signal not-authorized anymore ;)
+                        UpdateIsAuthorized(false);
                         return true;
                     }
 
