@@ -1,12 +1,12 @@
-﻿///// <reference path="../../wwwroot/Scripts/_references.js" />
-///// <reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
-///// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Services/WebServiceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Sources/WebSourceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
+﻿///<reference path="../../wwwroot/Scripts/_references.js" />
+/////<reference path="../../wwwroot/Scripts/Services/ServiceData.js" />
+///<reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+/////<reference path="../../wwwroot/Scripts/Services/PluginServiceViewModel.js" />
+/////<reference path="../../wwwroot/Scripts/Services/WebServiceViewModel.js" />
+///<reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
+/////<reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+/////<reference path="../../wwwroot/Scripts/Sources/WebSourceViewModel.js" />
+/////<reference path="../../wwwroot/Scripts/Sources/PluginSourceViewModel.js" />
 
 //module("ServiceViewModelTests", {
 //    setup: function() {
@@ -22,7 +22,6 @@
 
 //module("Service Model Constructor");
 
-///*
 //test("ConstructorWithInvalidResourcedIDExpectedIsEditingIsFalse", function () {
 
 //    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", "xxxx");
@@ -46,7 +45,19 @@
 //    var model = new DbServiceViewModel();
 //    equal(model.data.resourceType(), "DbService", "Is Resource Type DbService");
 //});
-//*/
+
+////test("ConstructorWithInvalidResourcedIDExpectedDataResourceIDIsEmptyGuid", function () {
+
+////    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", "xxxx");
+////    equal(model.data.resourceID(), $.Guid.Empty());
+////});
+
+////test("ConstructorWithValidResourcedIDExpectedDataResourceIDIsTheGivenResourceID", function () {
+
+////    var expectedID = "{97A9EFED-4127-4421-BCE8-1AC90CAFB7D4}";
+////    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", expectedID);
+////    equal(model.data.resourceID(), expectedID);
+////});
 
 //module("Service Ok Test");
 
@@ -68,7 +79,6 @@
 //    ok(!model.isFormValid(), "PluginService", "Ok Enabled By Default");
 //});
 
-///*
 //module("Service Model Form Validation");
 
 //test("FormValidationWithIsNotEdittingAndMethodNameChangedAndHasTestResultsAndOneRecordSetExpectedFormIsValid", function () {
@@ -131,18 +141,25 @@
 //    model.sourceMethods(["test method", "another test method"]);
 //    ok(model.sourceMethodSearchResults()[1], "Did Methods Return");
 //});
-//*/
-///*
-//test("SourceNameSubscriberWithChangingSourceNameExpectedSubscriberResetsMethodName", function () {
+
+//test("SourceNameSubscriberWithChangingSourceNameAndIsNotLoadingExpectedSubscriberResetsMethodName", function () {
     
 //    var model = new DbServiceViewModel();
 //    model.data.method.Name("new method name");
+//    model.isLoading = false;
 //    model.data.source("change source name");
 //    equal(model.data.method.Name(), "", "Did Methods Return");
 //});
-//*/
 
-///*
+//test("SourceNameSubscriberWithChangingSourceNameAndIsLoadingExpectedSubscriberDoesNotResetMethodName", function () {
+
+//    var model = new DbServiceViewModel();
+//    model.data.method.Name("new method name");
+//    model.isLoading = true;
+//    model.data.source("change source name");
+//    equal(model.data.method.Name(), "new method name", "Did Methods Return");
+//});
+
 //module("Validate With Recordset Name in Param List");
 
 //test("DbService_RecordsetAlias_Changed_UpdatesFieldRecordsetAlias", function () {
@@ -289,19 +306,6 @@
 ////    ok(model.title().indexOf("Edit") != -1);
 ////});
 
-////test("ConstructorWithInvalidResourcedIDExpectedDataResourceIDIsEmptyGuid", function () {
-
-////    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", "xxxx");
-////    equal(model.data.resourceID(), $.Guid.Empty());
-////});
-
-////test("ConstructorWithValidResourcedIDExpectedDataResourceIDIsTheGivenResourceID", function () {
-
-////    var expectedID = "{97A9EFED-4127-4421-BCE8-1AC90CAFB7D4}";
-////    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", expectedID);
-////    equal(model.data.resourceID(), expectedID);
-////});
-
 ////asyncTest("LoadExpectedAjaxPostToServicesGetMethod", 1, function () {
 ////    $.mockjax({
 ////        url: "Service/Services/Get",
@@ -343,4 +347,3 @@
 ////    });
 
 ////});
-//*/

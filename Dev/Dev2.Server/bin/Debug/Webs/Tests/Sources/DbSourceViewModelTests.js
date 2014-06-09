@@ -1,15 +1,15 @@
-﻿///// <reference path="../../wwwroot/Scripts/_references.js" />
-///// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
-///// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
+﻿/// <reference path="../../wwwroot/Scripts/_references.js" />
+/// <reference path="../../wwwroot/Scripts/Sources/DbSourceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Services/DbServiceViewModel.js" />
+/// <reference path="../../wwwroot/Scripts/Dialogs/SaveViewModel.js" />
 
-//module("DbSource Model Constructor");
+module("DbSource Model Constructor");
 
-//test("ConstructorWithNoParametersExpectedIsEditingIsFalse", function () {
+test("ConstructorWithNoParametersExpectedIsEditingIsFalse", function () {
 
-//    var model = new DbSourceViewModel();
-//    equal(model.title(), "New Database Source", "Did Title Initialize");
-//});
+    var model = new DbSourceViewModel();
+    equal(model.title(), "New Database Source", "Did Title Initialize");
+});
 
 //test("ConstructorWithNoParametersAndNewResourceNameExpectedResourceNameChanged", function() {
 

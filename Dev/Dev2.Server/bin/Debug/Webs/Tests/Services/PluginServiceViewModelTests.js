@@ -44,27 +44,7 @@ test("ConstructorExpectedModelResourceTypeIsDbService", function () {
 
 module("Plugin Service Model Form Validation");
 
-//test("FormValidationWithIsNotEdittingAndMethodNameChangedAndHasTestResultsAndOneRecordSetExpectedFormIsValid", function () {
-
-//    var model = new PluginServiceViewModel();
-//    model.isEditing = false;
-//    model.methodNameChanged(true);
-//    model.hasTestResults(true);
-//    model.data.recordset.Records(["testvar"]);
-//    ok(model.isFormValid(), "Is Form Valid" );
-//});
-
-//test("FormValidationWithIsEdittingAndMethodNameChangedAndHasTestResultsAndOneRecordSetExpectedFormIsValid", function () {
-
-//    var model = new PluginServiceViewModel();
-//    model.isEditing = true;
-//    model.methodNameChanged(true);
-//    model.hasTestResults(true);
-//    model.data.recordset.Records(["testvar"]);
-//    ok(model.isFormValid(), "Is Form Valid");
-//});
-
-test("FormValidationWithIsEdittingAndMethodNameNotChangedAndOneRecordSetExpectedFormIsValid", function () {
+test("FormValidationWithIsEdittingAndOneRecordSetExpectedFormIsValid", function () {
 
     var model = new PluginServiceViewModel();
     model.isEditing = true;
@@ -91,13 +71,6 @@ test("IsFormValidWithoutTestResultsExpectedFormIsNotValid", function () {
     ok(!model.isFormValid(), "Is Form Not Valid");
 });
 
-//test("MethodNameSubscriberWithChangingMethodNameExpectedSubscriberChangesMethodName", function () {
-
-//    var model = new PluginServiceViewModel();
-//    model.data.method.Name("change method name");
-//    ok(model.methodNameChanged(), "Did Subscriber Change Method Name");
-//});
-
 test("MethodSearchResultsWithoutTermExpectedMethodsReturned", function() {
 
     var model = new PluginServiceViewModel();
@@ -105,13 +78,14 @@ test("MethodSearchResultsWithoutTermExpectedMethodsReturned", function() {
     ok(model.sourceMethodSearchResults()[1], "Did Methods Return");
 });
 
-//test("SourceNameSubscriberWithChangingSourceNameExpectedSubscriberResetsMethodName", function () {
+test("SourceNameSubscriberWithChangingSourceNameExpectedSubscriberResetsMethodName", function () {
     
-//    var model = new PluginServiceViewModel();
-//    model.data.method.Name("new method name");
-//    model.data.source("change source name");
-//    equal(model.data.method.Name(), "", "Did Methods Return");
-//});
+    var model = new PluginServiceViewModel();
+    model.data.method.Name("new method name");
+    model.isLoading = false;
+    model.data.source("change source name");
+    equal(model.data.method.Name(), "", "Did Methods Return");
+});
 
 module("Plugin Service Model to Save Model Binding");
 
@@ -153,46 +127,43 @@ test("ChangeServiceModelSourceExpectedSaveModelSourceChanged", function () {
     equal(model.saveViewModel.data.source(), source, "Did SaveModel Source Name Change");
 });
 
-//test("ChangeServiceModelMethodExpectedSaveModelMethodDataChanged", function () {
+test("ChangeServiceModelMethodExpectedSaveModelMethodDataChanged", function () {
 
-//    var model = new PluginServiceViewModel();
+    var model = new PluginServiceViewModel();
     
-//    var methodName = "change method name";
-//    model.data.method.Name(methodName);
-//    equal(model.saveViewModel.data.method.Name(), methodName, "Did Save Model Method Name Change");
+    var methodName = "change method name";
+    model.data.method.Name(methodName);
+    equal(model.saveViewModel.data.method.Name(), methodName, "Did Save Model Method Name Change");
     
-//    var methodSourceCode = "change method source code";
-//    model.data.method.SourceCode(methodSourceCode);
-//    equal(model.saveViewModel.data.method.SourceCode(), methodSourceCode, "Did Save Model Method Source Code Change");
+    var methodSourceCode = "change method source code";
+    model.data.method.SourceCode(methodSourceCode);
+    equal(model.saveViewModel.data.method.SourceCode(), methodSourceCode, "Did Save Model Method Source Code Change");
     
-//    var methodParameters = "change method param";
-//    model.data.method.Parameters(methodParameters);
-//    equal(model.saveViewModel.data.method.Parameters(), methodParameters, "Did Save Model Method Parameter Change");
-//    });
+    var methodParameters = "change method param";
+    model.data.method.Parameters(methodParameters);
+    equal(model.saveViewModel.data.method.Parameters(), methodParameters, "Did Save Model Method Parameter Change");
+});
     
-//test("ChangeServiceModelRecordsetExpectedSaveModelRecordsetDataChanged", function () {
+test("ChangeServiceModelMethodAndRecordsetExpectedSaveModelMethodAndRecordsetDataChanged", function () {
 
-//    var model = new PluginServiceViewModel();
+    var model = new PluginServiceViewModel();
     
-//    var recordsetName = "change recordset name";
-//    model.data.recordset.Name(recordsetName);
-//    equal(model.saveViewModel.data.recordset.Name(), recordsetName, "Did Save Model Recordset Name Change");
+    var methodName = "change method name";
+    model.data.method.Name(methodName);
+    equal(model.saveViewModel.data.method.Name(), methodName, "Did Save Model Method Name Change");
 
-//    var recordsetFields = ["change recordset field", "another recordset field"];
-//    model.data.recordset.Fields(recordsetFields);
-//    equal(model.saveViewModel.data.recordset.Fields(), recordsetFields, "Did Save Model Recordset Fields Change");
+    var methodSourceCode = "method source code";
+    model.data.method.SourceCode(methodSourceCode);
+    equal(model.saveViewModel.data.method.SourceCode(), methodSourceCode, "Did Save Model Recordset Fields Change");
 
-//    var recordsetRecords = ["change recordset record", "a second recordset record"];
-//    model.data.recordset.Records(recordsetRecords);
-//    deepEqual(model.saveViewModel.data.recordset.Records(), recordsetRecords, "Did Save Model Recordset Records Change");
+    var methodParams = ["change method param", "another method param"];
+    model.data.method.Parameters(methodParams);
+    equal(model.saveViewModel.data.method.Parameters(), methodParams, "Did Save Model Recordset Fields Change");
 
-//    model.data.recordset.HasErrors(true);
-//    equal(model.saveViewModel.data.recordset.HasErrors(), true, "Did Save Model Recordset HasError Change");
-
-//    var errorMessage = "change recordset error";
-//    model.data.recordset.ErrorMessage(errorMessage);
-//    equal(model.saveViewModel.data.recordset.ErrorMessage(), errorMessage, "Did Save Model Recordset Error Message Change");
-//});
+    var recordsetRecords = ["change recordset record", "a second recordset record"];
+    model.data.recordsets(recordsetRecords);
+    deepEqual(model.saveViewModel.data.recordsets(), recordsetRecords, "Did Save Model Recordset Records Change");
+});
 
 module("Plugin Service Model to Plugin Source Model Binding");
 
