@@ -42,6 +42,12 @@ test("ConstructorExpectedModelResourceTypeIsDbService", function () {
     equal(model.data.resourceType(), "PluginService", "Is Resource Type PluginService");
 });
 
+test("ConstructorExpectedModelResourcePluginServiceOkDisabledOnLoad", function () {
+
+    var model = new PluginServiceViewModel();
+    ok(!model.isFormValid(), "PluginService", "Ok Enabled By Default");
+});
+
 module("Plugin Service Model Form Validation");
 
 test("FormValidationWithIsEdittingAndOneRecordSetExpectedFormIsValid", function () {
