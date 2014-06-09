@@ -2905,7 +2905,7 @@ TODO: better?
  * Widget $(..).dynatree
  */
 
-$.widget("ui.dynatree", {
+jQuery.widget("ui.dynatree", {
 /*
 	init: function() {
 		// ui.core 1.6 renamed init() to _init(): this stub assures backward compatibility
