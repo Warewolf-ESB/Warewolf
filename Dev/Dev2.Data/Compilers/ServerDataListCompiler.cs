@@ -2443,7 +2443,7 @@ namespace Dev2.Server.Datalist
                             {
                                 if(evaluatedValue == null)
                                 {
-                                    allErrors.AddError("Problems Evaluating Expression [ "+frameItem.Value + " ]");
+                                    allErrors.AddError("Problems Evaluating Expression [ " + frameItem.Value + " ]");
                                 }
                                 else
                                 {
@@ -2451,7 +2451,7 @@ namespace Dev2.Server.Datalist
                                     debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
                                     ErrorResultTO invokeError;
                                     ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
-                                    allErrors.MergeErrors(invokeError);   
+                                    allErrors.MergeErrors(invokeError);
                                 }
                             }
                             if(payload.IsDebug)
@@ -2568,7 +2568,7 @@ namespace Dev2.Server.Datalist
             var leftSide = frame.Expression;
             var leftEntry = debugTO.LeftEntry;
             invokeErrors = new ErrorResultTO();
-            if(DataListUtil.IsValueRecordset(leftSide))
+            if(DataListUtil.IsValueRecordsetWithFields(leftSide))
             {
                 var idxType = DataListUtil.GetRecordsetIndexType(leftSide);
 
@@ -2644,7 +2644,7 @@ namespace Dev2.Server.Datalist
             }
 
             var rightEntry = debugTO.RightEntry;
-            if(DataListUtil.IsValueRecordset(rightSide))
+            if(DataListUtil.IsValueRecordsetWithFields(rightSide))
             {
 
                 var idxType = DataListUtil.GetRecordsetIndexType(rightSide);
