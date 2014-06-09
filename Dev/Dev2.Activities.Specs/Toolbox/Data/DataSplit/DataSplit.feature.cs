@@ -1683,7 +1683,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index is not numeric - variable", ((string[])(null)));
 #line 417
-  this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 418
      testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 419
@@ -1708,7 +1708,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split text using Index where index > provided", ((string[])(null)));
 #line 425
-  this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 426
      testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 427
@@ -1731,7 +1731,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sending Error in error variable and calling webservice", ((string[])(null)));
 #line 432
-    this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 433
     testRunner.Given("A string to split with value \"@!?><\":}{+_)(*&^~\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 434
@@ -1889,6 +1889,133 @@ this.ScenarioSetup(scenarioInfo);
                         "[[vowels(-1).letters]] ="});
 #line 470
  testRunner.And("the debug output as", ((string)(null)), table51, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void SplitTextByUsingTwoVariablesInOneRow(string no, string varaibles, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text by using two variables in one row", exampleTags);
+#line 474
+this.ScenarioSetup(scenarioInfo);
+#line 475
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 476
+ testRunner.And("assign to variable \'<variables>\' split type \"Index\" at \"4\" and Include \"Selected\"" +
+                    " and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 477
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 478
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table52.AddRow(new string[] {
+                        "abcd",
+                        "Forward",
+                        "No",
+                        "1",
+                        "<variables> =",
+                        "Index",
+                        "4",
+                        "Yes",
+                        ""});
+#line 479
+ testRunner.And("the debug inputs as", ((string)(null)), table52, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table53.AddRow(new string[] {
+                        "1",
+                        "<variables> ="});
+#line 482
+ testRunner.And("the debug output as", ((string)(null)), table53, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text by using two variables in one row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varaibles", "[[vowels(1).letters]][[a]]")]
+        public virtual void SplitTextByUsingTwoVariablesInOneRow_1()
+        {
+            this.SplitTextByUsingTwoVariablesInOneRow("1", "[[vowels(1).letters]][[a]]", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text by using two variables in one row")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varaibles", "[[a]][[b]]")]
+        public virtual void SplitTextByUsingTwoVariablesInOneRow_2()
+        {
+            this.SplitTextByUsingTwoVariablesInOneRow("2", "[[a]][[b]]", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text by using variable inside varaibles")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
+        public virtual void SplitTextByUsingVariableInsideVaraibles()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text by using variable inside varaibles", ((string[])(null)));
+#line 490
+this.ScenarioSetup(scenarioInfo);
+#line 491
+ testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 492
+ testRunner.And("I have a variable \'[[a]]\' with a value \'rec().a\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 493
+ testRunner.And("assign to variable \"[[[[a]]]]\" split type \"Index\" at \"4\" and Include \"Selected\" a" +
+                    "nd Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 494
+ testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 495
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String to Split",
+                        "Process Direction",
+                        "Skip blank rows",
+                        "#",
+                        "",
+                        "With",
+                        "Using",
+                        "Include",
+                        "Escape"});
+            table54.AddRow(new string[] {
+                        "abcd",
+                        "Forward",
+                        "No",
+                        "1",
+                        "[[[[a]]]] = [[rec().a]]",
+                        "Index",
+                        "5",
+                        "Yes",
+                        ""});
+#line 496
+ testRunner.And("the debug inputs as", ((string)(null)), table54, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table55.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] = abcd"});
+#line 499
+ testRunner.And("the debug output as", ((string)(null)), table55, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

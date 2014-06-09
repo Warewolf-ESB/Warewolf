@@ -349,19 +349,19 @@ Scenario: Assign to a negative recordset index
 	| 1 | [[des(-1).val]] = | 10        |	
 	And the debug output as
 	| # |                      |
-#	
-#Scenario: Assign a scalar equal to a calculation
+#	BUG - NEEDS TO BE INVESTIGATED
+#Scenario: Assign a scalar equal to a calculation with a blank variable
 #	Given I assign the value "=[[cnt]]+1" to a variable "[[cnt]]"
 #	When the assign tool is executed
 #	Then the value of "[[cnt]]" equals "1"
 #	And the execution has "NO" error
 #	And the debug inputs as
-#	| # | Variable     | New Value  |
-#	| 1 | [[cnt]]    = | =[[cnt]]+1 |
+#	| # | Variable  | New Value         |
+#	| 1 | [[cnt]] = | =[[cnt]]+1 = =1+1 |
 #	And the debug output as
 #	| # |             |
 #	| 1 | [[var]] = 1 |
-#
+
 #
 #Scenario Outline: Assign to a invalid variable
 #   Given I assign the value 10 to a variable '<var>'

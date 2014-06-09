@@ -2,8 +2,8 @@
 {
     public class ImportServiceContext
     {
-        private object _value;
-        private int _hash;
+        private readonly object _value;
+        private readonly int _hash;
 
         public ImportServiceContext()
         {

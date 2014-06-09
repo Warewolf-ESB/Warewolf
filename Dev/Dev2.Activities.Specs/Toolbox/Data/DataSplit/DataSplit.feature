@@ -414,7 +414,7 @@ Scenario: Split text using a index with "," and space
 	 When the data split tool is executed
 	 Then the execution has "AN" error
 
-	 Scenario: Split text using Index where index is not numeric - variable
+Scenario: Split text using Index where index is not numeric - variable
      Given A string to split with value "123" 
 	 And I have a variable "[[idx]]" with a value “2”
      And assign to variable "[[var]]" split type "Index" at "[[idx]]" and Include "unselected"
@@ -422,14 +422,14 @@ Scenario: Split text using a index with "," and space
      Then the split result for "[[var]]" will be "12"
      And the execution has "NO" error
 
-	 Scenario: Split text using Index where index > provided
+Scenario: Split text using Index where index > provided
      Given A string to split with value "123" 
      And assign to variable "[[var]]" split type "Index" at "7" and Include "Selected" and Escape '\'
      When the data split tool is executed     
      Then the split result for "[[var]]" will be "123"
      And the execution has "NO" error
 
-    Scenario: Sending Error in error variable and calling webservice
+Scenario: Sending Error in error variable and calling webservice
     Given A string to split with value "@!?><":}{+_)(*&^~"
 	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected"
 	And the direction is "Backward"
@@ -471,52 +471,52 @@ Scenario: Split text into negative recordset index
 	| # |                            |
 	| 1 | [[vowels(-1).letters]] =   |
 	
-#Scenario Outline: Split Text by using two variables in one row
+Scenario Outline: Split Text by using two variables in one row
+	Given A string to split with value "abcd"
+	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
+	When the data split tool is executed
+	Then the execution has "AN" error	 
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
+	And the debug output as
+	| #               |                   |
+	| 1               | <variables> =     |
+Examples: 
+	| No | varaibles                  |
+	| 1  | [[vowels(1).letters]][[a]] |
+	| 2  | [[a]][[b]]                 |
+
+Scenario: Split Text by using variable inside varaibles    
+	Given  A string to split with value "abcd"
+	And I have a variable '[[a]]' with a value 'rec().a'
+	And assign to variable "[[[[a]]]]" split type "Index" at "4" and Include "Selected" and Escape ''	
+	When the data split tool is executed
+	Then the execution has "NO" error	 
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	| abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 5     | Yes     |        |
+	And the debug output as
+	| # |                    |
+	| 1 | [[rec().a]] = abcd |
+
+#SPECFLOW DOES NOT ALLOW MIXING SCENARIO AND SCENARIO OUTLINE LAYOUTS
+#Scenario Outline: Split Text by using two variables in one row second
 #	Given A string to split with value "abcd"
-#	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
+#	And assign to variable "[[rec().a]]" split type "Index" at '<Type>' and Include "Selected" and Escape ''
 #	When the data split tool is executed
-#	Then the execution has "AN" error	 
+#	Then the execution has "AN" error
 #	And the debug inputs as  
-#	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-#	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
+#	| # | # | String to Split | Process Direction | Skip blank rows | # |              | With  | Using | Include | Escape |
+#	| # | # | abcd            | Forward           | No              | 1 | [[rec().a]]= | Index | 4     | Yes     |        |
 #	And the debug output as
-#	| #               |                   |
-#	| 1               | <variables> =     |
+#	| # | # |               |
+#	| # | 1 | [[rec().a]] = |
 #Examples: 
-#	| No | varaibles                  |
-#	| 1  | [[vowels(1).letters]][[a]] |
-#	| 2  | [[a]][[b]]                 |
+#	| # | No | Type    |
+#	| # | 1  |         |
+#	| # | 2  | [[%#$]] |
 
-#Scenario: Split Text by using variable inside varaibles
-#    Given a variable [[a]] equal to "rec().a"
-#	And  A string to split with value "abcd"
-#	And assign to variable "[[[[a]]]]" split type "Index" at "4" and Include "Selected" and Escape ''	
-#	When the data split tool is executed
-#	Then the execution has "NO" error	 
-#	And the debug inputs as  
-#	| String to Split | Process Direction          | Skip blank rows | # |                        | With  | Using | Include | Escape |
-#	| abcd            | Forward                    | No              | 1 | [[[[a]]]] =[[rec().a]] | Index | 5     | Yes     |        |
-#	And the debug output as
-#	| # |                            |
-#	| 1 | [[rec().a]] = abcd         |
-
-#Scenario Outline: Split Text by using two variables in one row
-#	Given A string to split with value "abcd"
-#	And assign to variable "[[rec().a]]" split type "Index" at '<Type>' and Include "Selected" and Escape ''	
-#	When the data split tool is executed
-#	Then the execution has "AN" error	 
-#	And the debug inputs as  
-#	| # | #  | String to Split | Process Direction | Skip blank rows | # |              | With  | Using | Include | Escape |
-#	| # | #  | abcd            | Forward           | No              | 1 | [[rec().a]]= | Index | 4     | Yes     |  |
-#	And the debug output as
-#	| # | #  |                 |
-#	| # | 1  | [[rec().a]] =   |
-#Examples: 
-#	| # | No | Type            |
-#	| # | 1  |                 |
-#	| # | 2  | [[%#$]]         |
-
-@ignore	
 #Scenario Outline: Debug output Validation errors
 #	Given A string to split with value "Warewolf"
 #	And assign to variable '<Varaible>' split type "Index" at "5" and Include "Selected" and Escape ''	

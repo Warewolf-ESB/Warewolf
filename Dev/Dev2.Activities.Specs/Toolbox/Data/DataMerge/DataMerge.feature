@@ -13,8 +13,8 @@ Scenario: Merge a scalar to a scalar using merge type none
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                  | With | Using | Pad | Align |
-	| 1 | [[a]] = Warewolf | None |  ""     | ""    | Left  |
-	| 2 | [[b]] = Rocks    | None |    ""   |  ""   | Left  |
+	| 1 | [[a]] = Warewolf | None | ""    | ""  | Left  |
+	| 2 | [[b]] = Rocks    | None | ""    | ""  | Left  |
 	And the debug output as 
 	|                              |
 	| [[result]] = Warewolf Rocks |
@@ -35,8 +35,8 @@ Scenario: Merge a recordset table and free text using None
 	| 1 | [[rs(1).row]]0 = 10 |      |       |     |       |
 	|   | [[rs(2).row]]0 = 20 |      |       |     |       |
 	|   | [[rs(3).row]]0 = 30 |      |       |     |       |
-	|   |                     | None | ""      | ""    | Left  |
-	| 2 | 0                   | None |   ""    |  ""   | Left  |	
+	|   |                     | None | ""    | ""  | Left  |
+	| 2 | 0                   | None | ""    | ""  | Left  |	
 	And the debug output as 
 	|                         |  
 	| [[result]] = 100200300 |
@@ -321,10 +321,8 @@ Scenario: Merge a variable using index that is blank
 	| 1 | [[a]] = aA | Index | ""        | ""  | Left  |
 	| 2 | [[b]] = bB | Index | [[c]] = 1 | ""  | Left  |
 	And the debug output as 
-	|               |
+	|              |
 	| [[result]] = |
-
-
 
 Scenario: Merge a variable inside a variable
 	Given a merge variable "[[a]]" equal to "b"
@@ -344,19 +342,19 @@ Scenario: Merge a variable inside a variable
 	|                           |
 	| [[result]] = Warewolftest |
 
-#Scenario: Merge a variable inside the invalid varaible
-#	Given a merge variable "[[a]]" equal to "test%$ "
-#	And a merge variable "[[b]]" equal to "warewolf "
-#	And an Input "[[[[a]]]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
-#	When the data merge tool is executed
-#	Then the merged result is ""
-#	And the execution has "AN" error
-#	And the debug inputs as  
-#	| # |                        | With  | Using | Pad | Align |
-#	| 1 | [[[[a]]]] = [[test%$]] | Index | "4"   | ""  | Left  |
-#	And the debug output as 
-#	|              |
-#	| [[result]] = |
+Scenario: Merge a variable inside the invalid varaible
+	Given a merge variable "[[a]]" equal to "test%$ "
+	And a merge variable "[[b]]" equal to "warewolf "
+	And an Input "[[[[a]]]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the execution has "AN" error
+	And the debug inputs as  
+	| # |             | With  | Using | Pad | Align |
+	| 1 | [[[[a]]]] = | Index | ""    | ""  | Left  |
+	And the debug output as 
+	|              |
+	| [[result]] = |
 
 #Scenario Outline: Validation errors for all Invalid variables in datamerge 
 #	Given a merge variable '<Variable1>' equal to "aA "

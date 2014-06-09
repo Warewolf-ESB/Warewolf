@@ -135,7 +135,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"I have a variable ""(.*)"" with a value “(.*)”")]
-        public void GivenIHaveAVariableWithAValue(string variable, int value)
+        public void GivenIHaveAVariableWithAValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
