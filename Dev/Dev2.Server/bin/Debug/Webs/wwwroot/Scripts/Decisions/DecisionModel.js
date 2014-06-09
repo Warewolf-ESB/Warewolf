@@ -90,7 +90,11 @@ function DecisionViewModel() {
         $decisionView.scrollTo($span, 280); // height of container
 
         // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
+        //Trev said this is fine, its for testing
+        var selector = $("input[type=submit], a, button");
+        if (selector.button != undefined) {
+            selector.button();
+        }
 
     };
 
@@ -158,7 +162,11 @@ function DecisionViewModel() {
         self.data.TheStack.push(data);
         self.rowChanged(data);
         // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
+        //Trev said this is fine, its for testing
+        var selector = $("input[type=submit], a, button");
+        if (selector.button != undefined) {
+            selector.button();
+        }
     };
 
     self.afterRowAdd = function (element, index, data) {
