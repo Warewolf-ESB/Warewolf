@@ -99,6 +99,7 @@
     <Compile Include="Communication\FutureReceipt.cs" />
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
+    <Compile Include="Communication\ResultsCache.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
     <Compile Include="Communication\IMemo.cs" />

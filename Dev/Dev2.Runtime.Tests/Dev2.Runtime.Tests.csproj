@@ -248,6 +248,7 @@
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
     <Compile Include="WebServer\Hubs\EsbHubTests.cs" />
+    <Compile Include="WebServer\Hubs\ResultsCacheTest.cs" />
     <Compile Include="WebServer\InternalServiceRequestHandlerTest.cs" />
     <Compile Include="WebServer\Responses\StaticFileResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\StatusResponseWriterTests.cs" />

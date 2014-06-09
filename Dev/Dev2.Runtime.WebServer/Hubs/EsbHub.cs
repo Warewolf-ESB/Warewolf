@@ -25,7 +25,6 @@ namespace Dev2.Runtime.WebServer.Hubs
     public class EsbHub : ServerHub, IDebugWriter
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
-        static readonly ConcurrentDictionary<string, string> ResultCache = new ConcurrentDictionary<string, string>();
 
         public EsbHub()
         {
@@ -106,13 +105,26 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <returns></returns>
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
-            string value;
-            if(ResultCache.TryRemove(receipt.ToKey(), out value))
+            // Set Requesting User as per what is authorized ;)
+            // Sneaky people may try to forge packets to get payload ;)
+            if(Context.User.Identity.Name != null)
             {
+                receipt.User = Context.User.Identity.Name;
+            }
+
+            try
+            {
+                var value = ResultsCache.Instance.FetchResult(receipt);
                 var task = new Task<string>(() => value);
 
                 task.Start();
                 return await task;
+            }
+            catch(Exception e)
+            {
+                // ReSharper disable InvokeAsExtensionMethod
+                ServerLogger.LogError(this, e);
+                // ReSharper restore InvokeAsExtensionMethod
             }
 
             return null;
@@ -150,13 +162,15 @@ namespace Dev2.Runtime.WebServer.Hubs
                             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                             EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
 
+                            var user = string.Empty;
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
                             if(Context.User.Identity != null)
                             // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
+                                user = Context.User.Identity.Name;
                                 // set correct principle ;)
                                 System.Threading.Thread.CurrentPrincipal = Context.User;
-                                this.LogTrace("Execute Command Invoked For [ " + Context.User.Identity.Name + " ] For Service [ " + request.ServiceName + " ]");
+                                this.LogTrace("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                             }
 
                             var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceID, dataListID, Context.ConnectionId);
@@ -173,15 +187,17 @@ namespace Dev2.Runtime.WebServer.Hubs
                                     len = (length - startIdx);
                                 }
 
+                                // always place requesting user in here ;)
                                 var future = new FutureReceipt
                                             {
                                                 PartID = q,
-                                                RequestID = messageID
+                                                RequestID = messageID,
+                                                User = user
                                             };
 
                                 var value = processRequest.Substring(startIdx, len);
 
-                                if(!ResultCache.TryAdd(future.ToKey(), value))
+                                if(!ResultsCache.Instance.AddResult(future, value))
                                 {
                                     this.LogError(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
                                 }

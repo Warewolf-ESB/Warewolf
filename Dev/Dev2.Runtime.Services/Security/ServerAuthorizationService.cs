@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
+using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.Security
@@ -45,8 +46,24 @@ namespace Dev2.Runtime.Security
             {
                 authorized = IsAuthorizedImpl(request);
             }
-            authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
-            _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
+
+            // Only in the case when permissions change and we need to still fetch results ;)
+            if(!authorized && (request.RequestType == WebServerRequestType.HubConnect || request.RequestType == WebServerRequestType.EsbFetchExecutePayloadFragment))
+            {
+                // TODO : Check that the ResultsCache contains data to fetch for the user ;)
+                var identity = request.User.Identity;
+                if(ResultsCache.Instance.ContainsPendingRequestForUser(identity.Name))
+                {
+                    authorized = true;
+                }
+            }
+            else
+            {
+                // normal execution
+                authorizedRequest = new Tuple<bool, DateTime>(authorized, DateTime.Now);
+                _cachedRequests.AddOrUpdate(request.Key, authorizedRequest, (tuple, tuple1) => authorizedRequest);
+            }
+
             return authorized;
         }
 
@@ -111,7 +128,9 @@ namespace Dev2.Runtime.Security
                     DumpPermissionsOnError(request.User);
                 }
 
-                this.LogError("AUTH ERROR FOR USER : " + user);
+                // ReSharper disable InvokeAsExtensionMethod
+                ServerLogger.LogError(this, "AUTH ERROR FOR USER : " + user);
+                // ReSharper restore InvokeAsExtensionMethod
 
             }
 

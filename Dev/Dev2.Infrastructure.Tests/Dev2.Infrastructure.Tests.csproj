@@ -106,6 +106,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
+    <Compile Include="Communication\FutureRecieptTest.cs" />
     <Compile Include="Communication\JsonSerializerTest.cs" />
     <Compile Include="Communication\MemoTests.cs" />
     <Compile Include="Communication\DesignValidationMemoTests.cs" />
