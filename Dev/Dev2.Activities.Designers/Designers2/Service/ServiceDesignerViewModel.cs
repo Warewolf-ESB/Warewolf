@@ -937,7 +937,7 @@ namespace Dev2.Activities.Designers2.Service
                     ShowLarge = true;
                     if(!_versionsDifferent)
                     {
-                        var xml = XElement.Parse(WorstDesignError.FixData);
+                        var xml = FetchXElementFromFixData();
                         var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
                         var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
 
@@ -971,7 +971,7 @@ namespace Dev2.Activities.Designers2.Service
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
-                    var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
+                    var inputOutputViewModels = DeserializeMappings(true, FetchXElementFromFixData());
                     foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
                         IInputOutputViewModel model = inputOutputViewModel;
@@ -991,7 +991,24 @@ namespace Dev2.Activities.Designers2.Service
 
         #region GetMapping
 
-        static IEnumerable<IInputOutputViewModel> GetMapping(XContainer xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
+        XElement FetchXElementFromFixData()
+        {
+            if(WorstDesignError != null && !string.IsNullOrEmpty(WorstDesignError.FixData))
+            {
+                try
+                {
+                    return XElement.Parse(WorstDesignError.FixData);
+                }
+                catch(Exception e)
+                {
+                    this.LogError(e);
+                }
+            }
+
+            return XElement.Parse("<x/>");
+        }
+
+        IEnumerable<IInputOutputViewModel> GetMapping(XContainer xml, bool isInput, ObservableCollection<IInputOutputViewModel> oldMappings)
         {
             var result = new ObservableCollection<IInputOutputViewModel>();
 
@@ -1019,15 +1036,24 @@ namespace Dev2.Activities.Designers2.Service
             return result;
         }
 
-        static IEnumerable<IInputOutputViewModel> DeserializeMappings(bool isInput, XElement input)
+        IEnumerable<IInputOutputViewModel> DeserializeMappings(bool isInput, XElement input)
         {
-            var serializer = new Dev2JsonSerializer();
-            var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
-            IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
-            var newMappings = isInput
-                ? InputOutputViewModelFactory.CreateListToDisplayInputs(idefs)
-                : InputOutputViewModelFactory.CreateListToDisplayOutputs(idefs);
-            return newMappings;
+            try
+            {
+                var serializer = new Dev2JsonSerializer();
+                var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
+                IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
+                var newMappings = isInput
+                    ? InputOutputViewModelFactory.CreateListToDisplayInputs(idefs)
+                    : InputOutputViewModelFactory.CreateListToDisplayOutputs(idefs);
+                return newMappings;
+            }
+            catch(Exception e)
+            {
+                this.LogError(e);
+            }
+
+            return new List<IInputOutputViewModel>();
         }
 
         #endregion

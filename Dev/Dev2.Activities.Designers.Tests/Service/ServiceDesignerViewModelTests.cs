@@ -717,6 +717,80 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceDesignerViewModel_FixErrors")]
+        public void ServiceDesignerViewModel_FixErrorsCommand_ErrorMemoDataIsInvalidXml_NoInputsOrOutputsPresent()
+        {
+            //------------Setup for test--------------------------
+            var inputs = new List<IDev2Definition>();
+            var outputs = new List<IDev2Definition>();
+
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
+
+            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+
+            var instanceID = Guid.NewGuid();
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "fix me" };
+
+            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
+            vm.FixErrorsCommand.Execute(null);
+
+            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualOutputs = vm.DataMappingViewModel.Outputs;
+
+
+            //------------Assert Results-------------------------
+
+            // No exception, all is good ;)
+            Assert.AreEqual(0, actualInputs.Count);
+            Assert.AreEqual(0, actualOutputs.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceDesignerViewModel_FixErrors")]
+        public void ServiceDesignerViewModel_FixErrorsCommand_InputDefinitionsMalformed_NoInputsOneOutputPresent()
+        {
+            //------------Setup for test--------------------------
+            const string xml = @"<Args>
+                      <Input>[
+                      {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
+                      {""Name"":""n2"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
+                      {""Name"":""n3"",""MapsTo"":"""",""Value"":"""",IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false}]</Input>
+                      <Output>[{""Name"":""result"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false}]</Output>
+                    </Args>";
+
+            var inputs = new List<IDev2Definition>();
+            var outputs = new List<IDev2Definition>();
+
+            var inputMapping = CreateModelProperty("InputMapping", DataMappingListFactory.GenerateMapping(inputs, enDev2ArgumentType.Input));
+            var outputMapping = CreateModelProperty("OutputMapping", DataMappingListFactory.GenerateMapping(outputs, enDev2ArgumentType.Output));
+
+            inputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+            outputMapping.Setup(p => p.SetValue(It.IsAny<object>())).Verifiable();
+
+            var instanceID = Guid.NewGuid();
+            var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = xml };
+
+            var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, worstError);
+            vm.FixErrorsCommand.Execute(null);
+
+            var actualInputs = vm.DataMappingViewModel.Inputs;
+            var actualOutputs = vm.DataMappingViewModel.Outputs;
+
+
+            //------------Assert Results-------------------------
+
+            // No exception, all is good ;)
+            Assert.AreEqual(0, actualInputs.Count);
+            Assert.AreEqual(1, actualOutputs.Count);
+
+        }
+
 
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_FixErrors")]

@@ -313,8 +313,6 @@ namespace Dev2.Common.Common
             return -1;
         }
 
-        #endregion
-
         /// <summary>
         /// Turns xml into string builder
         /// </summary>
@@ -352,6 +350,8 @@ namespace Dev2.Common.Common
 
             return true;
         }
+
+        #endregion
 
         /// <summary>
         /// Extracts the XML attribute from unsafe XML. 
