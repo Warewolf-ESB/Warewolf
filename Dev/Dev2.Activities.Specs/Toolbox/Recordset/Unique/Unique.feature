@@ -336,3 +336,40 @@ Scenario: Find unique records using a * for Return Field
 #	|   | [[rec(2).unique]] = 40 |
 #	|   | [[rec(3).unique]] = 20 |
 #	|   | [[rec(4).unique]] = 30 |
+
+#This Test Scenario should be passed after the bug 11994 is fixed
+#Scenario: Find unique records and assigning result in two variables
+#	Given I have the following duplicated recordset
+#	| rs       | val |
+#	| rs().row | 10  |
+#	| rs().row | 20  |
+#	| rs().row | 20  |
+#	| rs().row | 30  |
+#	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
+#	And The result variable is "[[a]],[[b]]"
+#	When the unique tool is executed	
+#	Then the unique result will be
+#	|               | unique |
+#	| rec().unique | 10     |
+#	| rec().unique | 20     |
+#	| rec().unique | 30     |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| #           |                    | Return Fields  |
+#	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
+#	And the debug output as 
+#	| # |                  |
+#	| 1 | [[a]] = 10,20,30 |
+#	| 2 | [[b]] = 10,20,30  |
+
+
+
+
+
+
+
+
+
+
+
+	
