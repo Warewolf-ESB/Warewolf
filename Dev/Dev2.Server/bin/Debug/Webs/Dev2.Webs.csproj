@@ -66,14 +66,14 @@
   <ItemGroup>
     <Content Include="Tests\Decisions\DecisionModelTests.js" />
     <Content Include="Tests\Dialogs\SaveViewModelTests.js" />
+    <Content Include="Tests\Services\DbServiceViewModelTests - Copy.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tests\Services\WebsServiceViewModelTests.js" />
     <Content Include="Tests\Services\DbServiceViewModelTests.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
-    <Content Include="Tests\Services\WebServiceViewModelTests - Copy.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
     <Content Include="Tests\Sources\PluginSourceViewModelTests.js" />
     <Content Include="Tests\Sources\ServerViewModelTests.js" />
