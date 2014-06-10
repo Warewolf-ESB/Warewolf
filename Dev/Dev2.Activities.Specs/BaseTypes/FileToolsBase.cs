@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Threading;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Nuane.Net;
@@ -13,15 +12,36 @@ namespace Dev2.Activities.Specs.BaseTypes
     {
         public static SftpServer Server;
         public static readonly object ServerLock = new object();
-        public static int port = 2345;
-        public static bool UsesSFTP = false;
+
         #region Overrides of RecordSetBases
 
         protected override void BuildDataList()
         {
         }
 
+        /// <summary>
+        /// Starts the SFTP server.
+        /// </summary>
+        protected static void StartSftpServer()
+        {
+            lock (ServerLock)
+            {
+                if (Server == null)
+                {
+                    SshKey rsaKey = SshKey.Generate(SshKeyAlgorithm.RSA, 1024);
+                    SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
 
+                    // add keys, bindings and users
+                    Server = new SftpServer { Log = Console.Out };
+                    Server.Keys.Add(rsaKey);
+                    Server.Keys.Add(dssKey);
+                    Server.Bindings.Add(IPAddress.Any, 22);
+                    Server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp"));
+                    // start the server                                                    
+                    Server.Start();
+                }
+            }
+        }
 
         protected static void RemovedFilesCreatedForTesting()
         {
@@ -29,7 +49,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
-            if(ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
             {
                 IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
                     ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
@@ -38,19 +58,19 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
                 try
                 {
-                    if(dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
+                    if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
                     {
                         broker.Delete(dstEndPoint);
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-               
+                //    throw;
                 }
             }
 
             string sourceLocation;
-            if(ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+            if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
             {
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
                     ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
@@ -59,16 +79,15 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 try
                 {
-                    if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+                    if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                     {
                         broker.Delete(sourceEndPoint);
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-        
                     //The file may already be deleted
-                    //
+                   // throw;
                 }
             }
 
@@ -77,7 +96,25 @@ namespace Dev2.Activities.Specs.BaseTypes
             // ;)
         }
 
-  
+        protected static void ShutdownSftpServer()
+        {
+            try
+            {
+                if (Server != null)
+                {
+                    Server.Bindings.Clear();
+                    Server.Stop();
+
+                }
+            }
+            catch
+            {
+             //   throw;
+                //Server may already be stopped
+            }
+
+            Server = null;
+        }
         #endregion
     }
 }

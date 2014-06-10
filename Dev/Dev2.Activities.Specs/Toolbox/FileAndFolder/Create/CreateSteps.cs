@@ -45,12 +45,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         [BeforeScenario("fileFeature")]
         public static void SetupForTesting()
         {
- 
+            StartSftpServer();
         }
 
         [AfterScenario("fileFeature")]
         public void CleanUpFiles()
         {
+            ShutdownSftpServer();
             RemovedFilesCreatedForTesting();
           
         }
