@@ -71,7 +71,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tests\Services\PluginServiceViewModelTests.js" />
-    <Content Include="Tests\Services\WebServiceViewModelTests.js">
+    <Content Include="Tests\Services\WebServiceViewModelTests - Copy.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tests\Sources\DbSourceViewModelTests.js" />
