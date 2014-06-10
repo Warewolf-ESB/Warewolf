@@ -4,9 +4,9 @@ namespace Dev2.Communication
 {
     public class FutureReceipt
     {
-        public Guid RequestID { get; set; }
+        public Guid RequestID { private get; set; }
 
-        public int PartID { get; set; }
+        public int PartID { private get; set; }
 
         public string User { get; set; }
 

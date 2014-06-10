@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Communication;
-using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.WebServer.Hubs

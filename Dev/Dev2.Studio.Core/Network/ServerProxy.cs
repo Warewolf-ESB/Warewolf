@@ -238,7 +238,6 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                HubConnection.Dispose();
                 Logger.LogError(this, e);
             }
         }

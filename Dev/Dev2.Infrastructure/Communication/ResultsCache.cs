@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Dev2.Communication;
 
-namespace Dev2.Runtime.WebServer.Hubs
+namespace Dev2.Communication
 {
     public class ResultsCache
     {

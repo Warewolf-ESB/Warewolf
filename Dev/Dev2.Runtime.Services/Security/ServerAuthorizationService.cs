@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
-using Dev2.Runtime.WebServer.Hubs;
+using Dev2.Communication;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.Security
