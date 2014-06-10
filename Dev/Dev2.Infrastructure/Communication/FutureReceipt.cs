@@ -2,11 +2,16 @@
 
 namespace Dev2.Communication
 {
+    /// <summary>
+    /// Used to fetch execution request payloads
+    /// NEVER MAKE THE PROPERTIES GETTER PRIVATE AS PER SONAR
+    /// THIS WILL CAUSE SIGNALR'S SERIALIZATION TO FREAK OUT AND PASS EMPTY REQUESTID VALUES THROUGH
+    /// </summary>
     public class FutureReceipt
     {
-        public Guid RequestID { private get; set; }
+        public Guid RequestID { get; set; }
 
-        public int PartID { private get; set; }
+        public int PartID { get; set; }
 
         public string User { get; set; }
 

@@ -406,6 +406,14 @@ namespace Dev2.Network
                     var totalToFetch = invoke.Result.ResultParts;
                     for(int q = 0; q < totalToFetch; q++)
                     {
+                        if(messageID == Guid.Empty)
+                        {
+                            var a = 1;
+// ReSharper disable RedundantAssignment
+                            a += 2;
+// ReSharper restore RedundantAssignment
+                        }
+
                         Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
                         Wait(fragmentInvoke, result);
                         if(!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
