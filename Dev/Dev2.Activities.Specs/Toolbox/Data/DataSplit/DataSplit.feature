@@ -416,7 +416,7 @@ Scenario: Split text using a index with "," and space
 
 Scenario: Split text using Index where index is not numeric - variable
      Given A string to split with value "123" 
-	 And I have a variable "[[idx]]" with a value “2”
+	 And I have a variable "[[idx]]" with a value "2"	 
      And assign to variable "[[var]]" split type "Index" at "[[idx]]" and Include "unselected"
      When the data split tool is executed     
      Then the split result for "[[var]]" will be "12"
@@ -471,34 +471,34 @@ Scenario: Split text into negative recordset index
 	| # |                            |
 	| 1 | [[vowels(-1).letters]] =   |
 	
-Scenario Outline: Split Text by using two variables in one row
-	Given A string to split with value "abcd"
-	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
-	When the data split tool is executed
-	Then the execution has "AN" error	 
-	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
-	And the debug output as
-	| #               |                   |
-	| 1               | <variables> =     |
-Examples: 
-	| No | varaibles                  |
-	| 1  | [[vowels(1).letters]][[a]] |
-	| 2  | [[a]][[b]]                 |
-
-Scenario: Split Text by using variable inside varaibles    
-	Given  A string to split with value "abcd"
-	And I have a variable '[[a]]' with a value 'rec().a'
-	And assign to variable "[[[[a]]]]" split type "Index" at "4" and Include "Selected" and Escape ''	
-	When the data split tool is executed
-	Then the execution has "NO" error	 
-	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
-	| abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 5     | Yes     |        |
-	And the debug output as
-	| # |                    |
-	| 1 | [[rec().a]] = abcd |
+#Scenario Outline: Split Text by using two variables in one row
+#	Given A string to split with value "abcd"
+#	And assign to variable '<variables>' split type "Index" at "4" and Include "Selected" and Escape ''	
+#	When the data split tool is executed
+#	Then the execution has "AN" error	 
+#	And the debug inputs as  
+#	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+#	| abcd            | Forward           | No              | 1 | <variables> = | Index | 4     | Yes     |        |
+#	And the debug output as
+#	| #               |                   |
+#	| 1               | <variables> =     |
+#Examples: 
+#	| No | varaibles                  |
+#	| 1  | [[vowels(1).letters]][[a]] |
+#	| 2  | [[a]][[b]]                 |
+#
+#Scenario: Split Text by using variable inside varaibles    
+#	Given  A string to split with value "abcd"
+#	And I have a variable "[[a]]" with a value "rec().a"
+#	And assign to variable "[[[[a]]]]" split type "Index" at "4" and Include "Selected" and Escape ''	
+#	When the data split tool is executed
+#	Then the execution has "NO" error	 
+#	And the debug inputs as  
+#	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+#	| abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 5     | Yes     |        |
+#	And the debug output as
+#	| # |                    |
+#	| 1 | [[rec().a]] = abcd |
 
 #SPECFLOW DOES NOT ALLOW MIXING SCENARIO AND SCENARIO OUTLINE LAYOUTS
 #Scenario Outline: Split Text by using two variables in one row second

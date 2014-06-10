@@ -134,7 +134,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
         }
 
-        [Given(@"I have a variable ""(.*)"" with a value “(.*)”")]
+         [Given(@"I have a variable ""(.*)"" with a value ""(.*)""")]
         public void GivenIHaveAVariableWithAValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
@@ -148,9 +148,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
 
         }
-
-
-
+        
         [When(@"the data split tool is executed")]
         public void WhenTheDataSplitToolIsExecuted()
         {
