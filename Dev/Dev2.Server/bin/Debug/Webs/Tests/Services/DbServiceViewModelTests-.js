@@ -58,18 +58,11 @@ test("ConstructorExpectedModelResourceTypeIsDbService", function () {
     equal(model.data.resourceType(), "DbService", "Is Resource Type DbService");
 });
 
-//test("ConstructorWithInvalidResourcedIDExpectedDataResourceIDIsEmptyGuid", function () {
+test("ConstructorWithInvalidResourcedIDExpectedTitleContainsNew", function () {
 
-//    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", "xxxx");
-//    equal(model.data.resourceID(), $.Guid.Empty());
-//});
-
-//test("ConstructorWithValidResourcedIDExpectedDataResourceIDIsTheGivenResourceID", function () {
-
-//    var expectedID = "{97A9EFED-4127-4421-BCE8-1AC90CAFB7D4}";
-//    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", expectedID);
-//    equal(model.data.resourceID(), expectedID);
-//});
+    var model = new DbServiceViewModel("dbServiceSaveDialogContainer", "xxxx");
+    ok(model.title().indexOf("New") != -1, "Does Title Contain New");
+});
 
 module("Service Ok Test");
 
