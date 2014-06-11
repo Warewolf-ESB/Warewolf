@@ -118,23 +118,20 @@ namespace Dev2.Integration.Tests
                 {
                     using(var results = searcher.Get())
                     {
-                        foreach(var serverRes in results)
+                        ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+
+                        if(mo != null)
                         {
-                            ManagementObject mo = serverRes as ManagementObject;
+                            var id = mo.Properties["ProcessId"].Value.ToString();
 
-                            if(mo != null)
+                            int myID;
+                            Int32.TryParse(id, out myID);
+
+                            if(myID != runningServerID)
                             {
-                                var id = mo.Properties["ProcessId"].Value.ToString();
+                                var proc = Process.GetProcessById(myID);
 
-                                int myID;
-                                Int32.TryParse(id, out myID);
-
-                                if(myID != runningServerID)
-                                {
-                                    var proc = Process.GetProcessById(myID);
-
-                                    proc.Kill();
-                                }
+                                proc.Kill();
                             }
                         }
                     }
