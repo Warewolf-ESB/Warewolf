@@ -517,6 +517,140 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_NotNullableColumnWithNoValue_SetsErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[1];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            //------------Execute Test---------------------------
+            viewModel.InputMappings[0].InputColumn = string.Empty;
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            var errors = viewModel.Errors;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Count);
+            StringAssert.Contains(errors[0].Message, "Db0_Column_1_0 does not allow NULL");
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_NullableColumnWithNoValue_SetsNoErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2, true);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[1];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+
+            //------------Execute Test---------------------------
+            viewModel.InputMappings[0].InputColumn = string.Empty;
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            var errors = viewModel.Errors;
+            Assert.IsNull(errors);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_IdentityColumnWithNoValueKeepIdentitySet_SetsErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2, false, true);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[1];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+            viewModel.ModelItem.SetProperty("KeepIdentity", true);
+
+            //------------Execute Test---------------------------
+            viewModel.InputMappings[1].InputColumn = string.Empty;
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            var errors = viewModel.Errors;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Count);
+            StringAssert.Contains(errors[0].Message, "Db0_Column_1_1 is an IDENTITY. You must enter a mapping when the Keep Identity option is enabled.");
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_IdentityColumnWithNoValueKeepIdentityNotSet_SetsNoErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2, false, true);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[1];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+            viewModel.ModelItem.SetProperty("KeepIdentity", false);
+
+            //------------Execute Test---------------------------
+            viewModel.InputMappings[1].InputColumn = string.Empty;
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            var errors = viewModel.Errors;
+            Assert.IsNull(errors);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
+        public void SqlBulkInsertDesignerViewModel_Validate_IdentityColumnWithValueKeepIdentityNotSet_SetsErrors()
+        {
+            //------------Setup for test--------------------------
+            var databases = CreateDatabases(2, false, true);
+            var viewModel = CreateViewModel(databases);
+
+            var selectedDatabase = databases.Keys.First();
+            var selectedTables = databases[selectedDatabase];
+            var selectedTable = selectedTables.Items[1];
+
+            viewModel.SelectedDatabase = selectedDatabase;
+            viewModel.SelectedTable = selectedTable;
+            viewModel.ModelItem.SetProperty("KeepIdentity", false);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            var errors = viewModel.Errors;
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Count);
+            StringAssert.Contains(errors[0].Message, "Db0_Column_1_1 is an IDENTITY. You may not enter a mapping when the Keep Identity option is disabled.");
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlBulkInsertDesignerViewModel_Validate")]
         public void SqlBulkInsertDesignerViewModel_Validate_InvalidValues_SetsErrors()
@@ -632,6 +766,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
             modelItem.SetProperty("TableName", selectedTable.TableName);
+            //we need to make columns null-able to make test pass ;)
+            selectedTable.Columns.ForEach(c => c.IsNullable = true);
             modelItem.SetProperty("InputMappings", selectedTable.Columns
                 .Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = n++ == 0 ? "[[rs(*).f1]]" : null }).ToList());
 
@@ -912,23 +1048,23 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
 
             var tableJson = new DbTableList();
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 if(sources != null)
                 {
                     var tableList = sources[src];
                     tableJson = tableList;
                 }
-// ReSharper disable ImplicitlyCapturedClosure
+                // ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => tableJson);
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
 
             var columnsJson = new DbColumnList();
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             resourceRepo.Setup(r => r.GetDatabaseTableColumns(It.IsAny<DbSource>(), It.IsAny<DbTable>())).Callback((DbSource src, DbTable tbl) =>
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 var tableName = tbl.TableName;
                 if(sources != null)
@@ -945,9 +1081,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     }
                     columnsJson = columnList;
                 }
-// ReSharper disable ImplicitlyCapturedClosure
+                // ReSharper disable ImplicitlyCapturedClosure
             }).Returns(() => columnsJson);
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
 
             if(configureFindSingle)
             {
@@ -963,7 +1099,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             return ModelItemUtils.CreateModelItem(new DsfSqlBulkInsertActivity());
         }
 
-        static Dictionary<DbSource, DbTableList> CreateDatabases(int count)
+        static Dictionary<DbSource, DbTableList> CreateDatabases(int count, bool varcharNullable = false, bool intAsIdentity = false)
         {
             var result = new Dictionary<DbSource, DbTableList>();
 
@@ -982,10 +1118,10 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                         switch(t)
                         {
                             case 0:
-                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.VarChar, MaxLength = 50, });
+                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.VarChar, MaxLength = 50, IsNullable = varcharNullable });
                                 break;
                             case 1:
-                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.Int });
+                                columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.Int, IsAutoIncrement = intAsIdentity });
                                 break;
                             case 2:
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.Money });

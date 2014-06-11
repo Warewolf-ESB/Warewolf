@@ -74,6 +74,7 @@
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
@@ -139,6 +140,7 @@
     <Compile Include="Services\SubscriptionServiceTests.cs" />
     <Compile Include="Services\MemoSubscriptionServiceTests.cs" />
     <Compile Include="DbTableTests.cs" />
+    <Compile Include="SharedModels\DbColumnTest.cs" />
     <Compile Include="VerifyArgumentsTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -159,7 +159,7 @@
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
-    <Compile Include="Activities\ISqlBulkInserter.cs" />
+    <Compile Include="Activities\SqlBulkInsert\ISqlBulkInserter.cs" />
     <Compile Include="Activities\IWebRequestInvoker.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
@@ -178,7 +178,9 @@
     <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
     <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
-    <Compile Include="Activities\SqlBulkInserter.cs" />
+    <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
+    <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
+    <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />

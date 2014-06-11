@@ -151,6 +151,8 @@
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
+    <Compile Include="ActivityTests\SqlBulkInserterTests.cs" />
+    <Compile Include="ActivityTests\SqlBulkCopyWrapperTest.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\WebGetRequestActivityTests.cs" />

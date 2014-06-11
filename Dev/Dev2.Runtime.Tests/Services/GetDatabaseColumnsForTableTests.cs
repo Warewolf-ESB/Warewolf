@@ -1,4 +1,9 @@
-﻿using Dev2.DynamicServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
+using System.Text;
+using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -6,11 +11,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
-using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
@@ -133,7 +133,28 @@ namespace Dev2.Tests.Runtime.Services
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
-            Assert.AreEqual(4, result.Items.Count);            
+            Assert.AreEqual(4, result.Items.Count);
+
+            // Check Columns Returned ;)
+            Assert.IsFalse(result.Items[0].IsNullable);
+            Assert.IsTrue(result.Items[0].IsAutoIncrement);
+            StringAssert.Contains(result.Items[0].ColumnName, "CityID");
+            StringAssert.Contains(result.Items[0].SqlDataType.ToString(), "Int");
+
+            Assert.IsFalse(result.Items[1].IsNullable);
+            Assert.IsFalse(result.Items[1].IsAutoIncrement);
+            StringAssert.Contains(result.Items[1].ColumnName, "Description");
+            StringAssert.Contains(result.Items[1].SqlDataType.ToString(), "VarChar");
+
+            Assert.IsFalse(result.Items[2].IsNullable);
+            Assert.IsFalse(result.Items[2].IsAutoIncrement);
+            StringAssert.Contains(result.Items[2].ColumnName, "CountryID");
+            StringAssert.Contains(result.Items[2].SqlDataType.ToString(), "Int");
+
+            Assert.IsTrue(result.Items[3].IsNullable);
+            Assert.IsFalse(result.Items[3].IsAutoIncrement);
+            StringAssert.Contains(result.Items[3].ColumnName, "TestCol");
+            StringAssert.Contains(result.Items[3].SqlDataType.ToString(), "NChar");
         }
 
         [TestMethod]
@@ -154,7 +175,23 @@ namespace Dev2.Tests.Runtime.Services
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
-            Assert.AreEqual(7, result.Items.Count);
+            Assert.AreEqual(3, result.Items.Count);
+
+            // Check Columns Returned ;)
+            Assert.IsFalse(result.Items[0].IsNullable);
+            Assert.IsFalse(result.Items[0].IsAutoIncrement);
+            StringAssert.Contains(result.Items[0].ColumnName, "CityID");
+            StringAssert.Contains(result.Items[0].SqlDataType.ToString(), "Int");
+
+            Assert.IsFalse(result.Items[1].IsNullable);
+            Assert.IsFalse(result.Items[1].IsAutoIncrement);
+            StringAssert.Contains(result.Items[1].ColumnName, "Description");
+            StringAssert.Contains(result.Items[1].SqlDataType.ToString(), "VarChar");
+
+            Assert.IsFalse(result.Items[2].IsNullable);
+            Assert.IsFalse(result.Items[2].IsAutoIncrement);
+            StringAssert.Contains(result.Items[2].ColumnName, "CountryID");
+            StringAssert.Contains(result.Items[2].SqlDataType.ToString(), "Int");
         }
 
         [TestMethod]
@@ -175,10 +212,26 @@ namespace Dev2.Tests.Runtime.Services
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
-            Assert.AreEqual(7, result.Items.Count);
+            Assert.AreEqual(3, result.Items.Count);
+
+            // Check Columns Returned ;)
+            Assert.IsFalse(result.Items[0].IsNullable);
+            Assert.IsFalse(result.Items[0].IsAutoIncrement);
+            StringAssert.Contains(result.Items[0].ColumnName, "CityID");
+            StringAssert.Contains(result.Items[0].SqlDataType.ToString(), "Int");
+
+            Assert.IsFalse(result.Items[1].IsNullable);
+            Assert.IsFalse(result.Items[1].IsAutoIncrement);
+            StringAssert.Contains(result.Items[1].ColumnName, "Description");
+            StringAssert.Contains(result.Items[1].SqlDataType.ToString(), "VarChar");
+
+            Assert.IsFalse(result.Items[2].IsNullable);
+            Assert.IsFalse(result.Items[2].IsAutoIncrement);
+            StringAssert.Contains(result.Items[2].ColumnName, "CountryID");
+            StringAssert.Contains(result.Items[2].SqlDataType.ToString(), "Int");
         }
 
-        DbSource CreateDev2TestingDbSource()
+        static DbSource CreateDev2TestingDbSource()
         {
             var dbSource = new DbSource
             {

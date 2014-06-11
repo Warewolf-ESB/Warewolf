@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Properties;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -202,6 +203,8 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         string Timeout { get { return GetProperty<string>(); } }
 
         string Result { get { return GetProperty<string>(); } }
+
+        bool KeepIdentity { get { return GetProperty<bool>(); } }
 
         #endregion
 
@@ -478,11 +481,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             if(!IsDatabaseSelected)
             {
-                yield return new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = "A database must be selected." };
+                yield return new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.DatabaseMustBeSelectedMsg };
             }
             if(!IsTableSelected)
             {
-                yield return new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = "A table must be selected." };
+                yield return new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TableMustBeSelectedMsg };
             }
 
             var batchSize = BatchSize;
@@ -491,7 +494,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 int value;
                 if(!int.TryParse(batchSize, out value) || value < 0)
                 {
-                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = "Batch size must be a number greater than or equal to zero." };
+                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
                 }
             }
 
@@ -501,14 +504,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 int value;
                 if(!int.TryParse(timeout, out value) || value < 0)
                 {
-                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = "Timeout must be a number greater than or equal to zero." };
+                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
                 }
             }
 
             var nonEmptyCount = ModelItemCollection.Count(mi => !string.IsNullOrEmpty(((DataColumnMapping)mi.GetCurrentValue()).InputColumn));
             if(nonEmptyCount == 0)
             {
-                yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = "At least one input mapping must be provided." };
+                yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.AtLeastOneMappingMsg };
             }
         }
 
@@ -539,10 +542,40 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             foreach(DataColumnMapping dc in GetInputMappings())
             {
-                error = ValidateVariable(parser, dc.InputColumn, () => IsInputMappingsFocused = true);
+                var output = dc.OutputColumn;
+                var inputColumn = dc.InputColumn;
+                bool identityChecked = false;
+
+                // Now do the identity checks ;)
+                if(output.IsAutoIncrement)
+                {
+                    if(KeepIdentity && string.IsNullOrEmpty(inputColumn))
+                    {
+                        var msg = string.Format(ActivityResources.IdentityWithKeepOptionEnabledMsg, output.ColumnName);
+                        yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                    }
+
+                    if(!KeepIdentity && !string.IsNullOrEmpty(inputColumn))
+                    {
+                        var msg = string.Format(ActivityResources.IdentityWithKeepOptionDisabledMsg, output.ColumnName);
+                        yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                    }
+
+                    identityChecked = true;
+                }
+
+                // Check null-able property of the object ;)
+                if(!output.IsNullable && string.IsNullOrEmpty(inputColumn) && !identityChecked)
+                {
+                    var msg = string.Format(ActivityResources.NotNullableMsg, output.ColumnName);
+                    yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                }
+
+
+                error = ValidateVariable(parser, inputColumn, () => IsInputMappingsFocused = true);
                 if(error != null)
                 {
-                    error.Message = "Input Mapping To Field '" + dc.OutputColumn.ColumnName + "' " + error.Message;
+                    error.Message = "Input Mapping To Field '" + output.ColumnName + "' " + error.Message;
                     yield return error;
                 }
             }

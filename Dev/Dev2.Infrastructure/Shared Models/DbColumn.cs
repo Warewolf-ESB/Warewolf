@@ -16,11 +16,17 @@ namespace Dev2.Runtime.ServiceModel.Data
             ColumnName = dataColumn.ColumnName;
             DataType = dataColumn.DataType;
             MaxLength = dataColumn.MaxLength;
+            IsNullable = dataColumn.AllowDBNull;
+            IsAutoIncrement = dataColumn.AutoIncrement;
         }
 
         public string ColumnName { get; set; }
 
+        public bool IsNullable { get; set; }
+
         public Type DataType { get; set; }
+
+        public bool IsAutoIncrement { get; set; }
 
         public SqlDbType SqlDataType
         {
@@ -41,7 +47,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                if(SqlDataType == SqlDbType.VarChar || SqlDataType == SqlDbType.Char || SqlDataType == SqlDbType.NVarChar || SqlDataType == SqlDbType.NChar)
+                if(SqlDataType == SqlDbType.VarChar || SqlDataType == SqlDbType.Char || SqlDataType == SqlDbType.NVarChar || SqlDataType == SqlDbType.NChar || SqlDataType == SqlDbType.VarBinary || SqlDataType == SqlDbType.Binary)
                 {
                     return string.Format("{0} ({1})", SqlDataType, MaxLength).ToLower();
                 }

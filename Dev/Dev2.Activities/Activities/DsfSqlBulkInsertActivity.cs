@@ -1,8 +1,14 @@
-﻿using Dev2.Activities.Debug;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using Dev2.Activities.Debug;
+using Dev2.Activities.SqlBulkInsert;
 using Dev2.Common;
-using Dev2.Common.Enums;
 using Dev2.Data.Factories;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -12,13 +18,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -108,44 +107,52 @@ namespace Dev2.Activities
                 IDev2DataListEvaluateIterator timeoutItr;
                 var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
                 SqlBulkCopy sqlBulkCopy = null;
-                SqlBulkInserter.CurrentOptions = BuildSqlBulkCopyOptions();
+                var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
                 if(String.IsNullOrEmpty(BatchSize) && String.IsNullOrEmpty(Timeout))
                 {
-                    sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
+                    sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, currentOptions) { DestinationTableName = TableName };
                 }
                 else
                 {
                     while(parametersIteratorCollection.HasMoreData())
                     {
-                        sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase);
+                        sqlBulkCopy = SetupSqlBulkCopy(batchItr, parametersIteratorCollection, timeoutItr, runtimeDatabase, currentOptions);
                     }
                 }
                 if(sqlBulkCopy != null)
                 {
-
-                    if(!BuiltUsingSingleRecset(sqlBulkCopy, compiler, executionID, dataObject, out dataTableToInsert))
+                    // emit options ;)
+                    if(dataObject.IsDebugMode())
                     {
-                        dataTableToInsert = BuildDataTableToInsert();
+                        AddBatchSizeAndTimeOutToDebug(compiler, executionID);
+                        AddOptionsDebugItems();
+                    }
 
-                        if(InputMappings != null && InputMappings.Count > 0)
+                    // BuiltUsingSingleRecset was very poorly put together it assumes a 1-1 mapping between target and destination columns ?! ;(
+                    // And it forced a need for duplicate logic?!
+                    dataTableToInsert = BuildDataTableToInsert();
+
+                    if(InputMappings != null && InputMappings.Count > 0)
+                    {
+                        var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                        allErrors.MergeErrors(errorResultTO);
+                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
+
+                        FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
+
+                        foreach(var dataColumnMapping in InputMappings)
                         {
-                            var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                            allErrors.MergeErrors(errorResultTO);
-                            var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
-
-                            FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
-                            foreach(var dataColumnMapping in InputMappings)
+                            if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
                             {
-                                if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                                {
-                                    sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
-                                }
+                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
                             }
                         }
                     }
 
-                    SqlBulkInserter.Insert(sqlBulkCopy, dataTableToInsert);
+                    // Pass in wrapper now ;)
+                    var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
+                    SqlBulkInserter.Insert(wrapper, dataTableToInsert);
 
                     toUpsert.Add(Result, "Success");
                     compiler.Upsert(executionID, toUpsert, out errorsTo);
@@ -164,7 +171,9 @@ namespace Dev2.Activities
                 toUpsert.Add(Result, string.Format("Failure"));
                 compiler.Upsert(executionID, toUpsert, out errorsTo);
                 allErrors.AddError(e.Message);
-                this.LogError(e);
+                // ReSharper disable InvokeAsExtensionMethod
+                ServerLogger.LogError(this, e);
+                // ReSharper restore InvokeAsExtensionMethod
             }
             finally
             {
@@ -194,150 +203,6 @@ namespace Dev2.Activities
             }
         }
 
-        bool BuiltUsingSingleRecset(SqlBulkCopy sqlBulkCopy, IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, out DataTable dataTableToInsert)
-        {
-            var actualDataTable = new DataTable();
-            if(InputMappings != null && InputMappings.All(mapping => DataListUtil.IsValueRecordset(mapping.InputColumn) || String.IsNullOrEmpty(mapping.InputColumn)))
-            {
-                var currentRecSetName = "";
-                var hasMultiple = false;
-                foreach(var dataColumnMapping in InputMappings)
-                {
-                    var inputColumn = dataColumnMapping.InputColumn;
-                    if(!String.IsNullOrEmpty(inputColumn))
-                    {
-                        if(string.IsNullOrEmpty(currentRecSetName))
-                        {
-                            currentRecSetName = DataListUtil.ExtractRecordsetNameFromValue(inputColumn);
-                        }
-                        var currentRecSetType = DataListUtil.GetRecordsetIndexType(inputColumn);
-                        if(DataListUtil.ExtractRecordsetNameFromValue(inputColumn) != currentRecSetName || currentRecSetType == enRecordsetIndexType.Blank || currentRecSetType == enRecordsetIndexType.Numeric || currentRecSetType == enRecordsetIndexType.Error)
-                        {
-                            hasMultiple = true;
-                            break;
-                        }
-                        var inputFieldName = DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn);
-                        if(!actualDataTable.Columns.Contains(inputFieldName))
-                        {
-                            actualDataTable.Columns.Add(inputFieldName, dataColumnMapping.OutputColumn.DataType);
-                        }
-                    }
-                }
-                if(!hasMultiple)
-                {
-                    var binaryDataList = compiler.FetchBinaryDataList(executionID, out errorsTo);
-                    var populateOptions = PopulateOptions.IgnoreBlankRows;
-                    if(!IgnoreBlankRows)
-                    {
-                        populateOptions = PopulateOptions.PopulateBlankRows;
-                    }
-
-                    var indexCounter = 1;
-                    foreach(var dataColumnMapping in InputMappings)
-                    {
-                        var inputFieldName = DataListUtil.ExtractFieldNameFromValue(dataColumnMapping.InputColumn);
-                        if(!String.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                        {
-                            if(dataObject.IsDebugMode())
-                            {
-                                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, dataColumnMapping.InputColumn, false, out errorsTo);
-                                AddDebugInputItem(dataColumnMapping.InputColumn, dataColumnMapping.OutputColumn.ColumnName, expressionsEntry, dataColumnMapping.OutputColumn.DataTypeName, executionID, indexCounter);
-                                indexCounter++;
-                            }
-                            sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(inputFieldName, dataColumnMapping.OutputColumn.ColumnName));
-                        }
-                    }
-
-
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddBatchSizeAndTimeOutToDebug(compiler, executionID);
-                        AddOptionsDebugItems();
-                    }
-
-                    dataTableToInsert = compiler.ConvertToDataTable(binaryDataList, currentRecSetName, out errorsTo, populateOptions);
-                    foreach(DataRow dataRow in dataTableToInsert.Rows)
-                    {
-                        actualDataTable.ImportRow(dataRow);
-                    }
-                    dataTableToInsert = actualDataTable;
-
-                    return true;
-                }
-            }
-            dataTableToInsert = null;
-            return false;
-        }
-
-        SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase)
-        {
-            var batchSize = -1;
-            var timeout = -1;
-            GetParameterValuesForBatchSizeAndTimeOut(batchItr, parametersIteratorCollection, timeoutItr, ref batchSize, ref timeout);
-            var sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, SqlBulkInserter.CurrentOptions) { DestinationTableName = TableName };
-            if(batchSize != -1)
-            {
-                sqlBulkCopy.BatchSize = batchSize;
-            }
-            if(timeout != -1)
-            {
-                sqlBulkCopy.BulkCopyTimeout = timeout;
-            }
-            return sqlBulkCopy;
-        }
-
-        void AddBatchSizeAndTimeOutToDebug(IDataListCompiler compiler, Guid executionID)
-        {
-            DebugItem debugItem = new DebugItem();
-            if(!string.IsNullOrEmpty(BatchSize))
-            {
-                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", compiler, executionID, debugItem);
-            }
-            if(!String.IsNullOrEmpty(Timeout))
-            {
-                AddDebugInputItemFromEntry(Timeout, "Timeout  ", compiler, executionID, debugItem);
-            }
-            _debugInputs.Add(debugItem);
-        }
-
-        static void GetParameterValuesForBatchSizeAndTimeOut(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int batchSize, ref int timeout)
-        {
-            GetBatchSize(batchItr, parametersIteratorCollection, ref batchSize);
-            GetTimeOut(parametersIteratorCollection, timeoutItr, ref timeout);
-        }
-
-        static void GetTimeOut(IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int timeout)
-        {
-            if(timeoutItr != null)
-            {
-                var timeoutString = parametersIteratorCollection.FetchNextRow(timeoutItr).TheValue;
-                if(!String.IsNullOrEmpty(timeoutString))
-                {
-                    int parsedValue;
-                    if(int.TryParse(timeoutString, out parsedValue))
-                    {
-                        timeout = parsedValue;
-                    }
-                }
-            }
-        }
-
-        static void GetBatchSize(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, ref int batchSize)
-        {
-            if(batchItr != null)
-            {
-                var batchSizeString = parametersIteratorCollection.FetchNextRow(batchItr).TheValue;
-                if(!String.IsNullOrEmpty(batchSizeString))
-                {
-                    int parsedValue;
-                    if(int.TryParse(batchSizeString, out parsedValue))
-                    {
-                        batchSize = parsedValue;
-                    }
-                }
-            }
-        }
-
         void AddOptionsDebugItems()
         {
             var debugItem = new DebugItem();
@@ -354,6 +219,90 @@ namespace Dev2.Activities
             AddDebugItem(new DebugItemStaticDataParams(UseInternalTransaction ? "YES" : "NO", "Use Internal Transaction"), debugItem);
             AddDebugItem(new DebugItemStaticDataParams(IgnoreBlankRows ? "YES" : "NO", "Skip Blank Rows"), debugItem);
             _debugInputs.Add(debugItem);
+        }
+
+        void AddBatchSizeAndTimeOutToDebug(IDataListCompiler compiler, Guid executionID)
+        {
+            DebugItem debugItem = new DebugItem();
+            if(!string.IsNullOrEmpty(BatchSize))
+            {
+                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", compiler, executionID, debugItem);
+            }
+            if(!String.IsNullOrEmpty(Timeout))
+            {
+                AddDebugInputItemFromEntry(Timeout, "Timeout  ", compiler, executionID, debugItem);
+            }
+            _debugInputs.Add(debugItem);
+        }
+
+        void AddDebugInputItemFromEntry(string expression, string parameterName, IDataListCompiler compiler, Guid executionID, DebugItem debugItem)
+        {
+            ErrorResultTO errorsResultTO;
+            var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
+            AddDebugItem(new DebugItemVariableParams(expression, parameterName, expressionsEntry, executionID), debugItem);
+        }
+
+        public SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
+        {
+            var batchSize = -1;
+            var timeout = -1;
+            GetParameterValuesForBatchSizeAndTimeOut(batchItr, parametersIteratorCollection, timeoutItr, ref batchSize, ref timeout);
+            var sqlBulkCopy = new SqlBulkCopy(runtimeDatabase.ConnectionString, copyOptions) { DestinationTableName = TableName };
+            if(batchSize != -1)
+            {
+                sqlBulkCopy.BatchSize = batchSize;
+            }
+            if(timeout != -1)
+            {
+                sqlBulkCopy.BulkCopyTimeout = timeout;
+            }
+            return sqlBulkCopy;
+        }
+
+        void GetParameterValuesForBatchSizeAndTimeOut(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int batchSize, ref int timeout)
+        {
+            GetBatchSize(batchItr, parametersIteratorCollection, ref batchSize);
+            GetTimeOut(parametersIteratorCollection, timeoutItr, ref timeout);
+        }
+
+        void GetTimeOut(IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, ref int timeout)
+        {
+            if(timeoutItr != null)
+            {
+                var timeoutString = parametersIteratorCollection.FetchNextRow(timeoutItr).TheValue;
+                if(!String.IsNullOrEmpty(timeoutString))
+                {
+                    int parsedValue;
+                    if(int.TryParse(timeoutString, out parsedValue))
+                    {
+                        timeout = parsedValue;
+                    }
+                }
+            }
+            else
+            {
+                Int32.TryParse(Timeout, out timeout);
+            }
+        }
+
+        void GetBatchSize(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, ref int batchSize)
+        {
+            if(batchItr != null)
+            {
+                var batchSizeString = parametersIteratorCollection.FetchNextRow(batchItr).TheValue;
+                if(!String.IsNullOrEmpty(batchSizeString))
+                {
+                    int parsedValue;
+                    if(int.TryParse(batchSizeString, out parsedValue))
+                    {
+                        batchSize = parsedValue;
+                    }
+                }
+            }
+            else
+            {
+                Int32.TryParse(BatchSize, out batchSize);
+            }
         }
 
         IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionID, out IDev2DataListEvaluateIterator batchIterator, out IDev2DataListEvaluateIterator timeOutIterator)
@@ -383,16 +332,27 @@ namespace Dev2.Activities
         {
             while(iteratorCollection.HasMoreData())
             {
-                var dataRow = dataTableToInsert.NewRow();
-                var pos = 0;
+                // If the type is numeric blank cannot be added here - causes exception to be thrown even before its added to table ;)
+                // Instead build a list, then check it, then if all good add it ;)
+
+                var tmpData = new List<string>();
+                // ReSharper disable LoopCanBeConvertedToQuery
                 foreach(var value in from iterator in listOfIterators select iteratorCollection.FetchNextRow(iterator) into val where val != null select val.TheValue)
+                // ReSharper restore LoopCanBeConvertedToQuery
                 {
-                    dataRow[pos] = value;
-                    pos++;
+                    tmpData.Add(value);
                 }
-                if(IgnoreBlankRows && dataRow.ItemArray.All(o => o == null || (String.IsNullOrEmpty(o as string))))
+
+                if(IgnoreBlankRows && tmpData.All(o => o == null || (String.IsNullOrEmpty(o))))
                 {
                     continue;
+                }
+
+                // now we can create the row and add data ;)
+                var dataRow = dataTableToInsert.NewRow();
+                for(int pos = 0; pos < tmpData.Count; pos++)
+                {
+                    dataRow[pos] = tmpData[pos];
                 }
                 dataTableToInsert.Rows.Add(dataRow);
             }
@@ -430,14 +390,7 @@ namespace Dev2.Activities
             _debugInputs.Add(itemToAdd);
         }
 
-        void AddDebugInputItemFromEntry(string expression, string parameterName, IDataListCompiler compiler, Guid executionID, DebugItem debugItem)
-        {
-            ErrorResultTO errorsResultTO;
-            var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
-            AddDebugItem(new DebugItemVariableParams(expression, parameterName, expressionsEntry, executionID), debugItem);
-        }
-
-        SqlBulkCopyOptions BuildSqlBulkCopyOptions()
+        public SqlBulkCopyOptions BuildSqlBulkCopyOptions()
         {
             var sqlBulkOptions = SqlBulkCopyOptions.Default;
             if(CheckConstraints)
@@ -469,7 +422,42 @@ namespace Dev2.Activities
             var dataTableToInsert = new DataTable();
             foreach(var dataColumnMapping in InputMappings)
             {
-                if(String.IsNullOrEmpty(dataColumnMapping.InputColumn)) continue;
+                if(String.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                {
+                    // Nulls are ok ;)
+                    if(dataColumnMapping.OutputColumn.IsNullable)
+                    {
+                        continue;
+                    }
+
+                    // Check identity flag ;)
+                    if(dataColumnMapping.OutputColumn.IsAutoIncrement)
+                    {
+                        // check keep identity value ;)
+                        if(KeepIdentity)
+                        {
+                            // no mapping, identity and keep on, this is an issue ;)
+                            throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.");
+                        }
+
+                        // null, identity and no keep flag active ;)
+                        continue;
+                    }
+
+                    // Nulls are not ok ;)
+                    throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " does not allow NULL. Please check your mappings to ensure you have mapped data into it.");
+                }
+
+                // more identity checks - this time it has data ;)
+                if(dataColumnMapping.OutputColumn.IsAutoIncrement)
+                {
+                    if(!KeepIdentity)
+                    {
+                        // we have data in an identity column and the keep identity option is disabled - oh no!
+                        throw new Exception("The column " + dataColumnMapping.OutputColumn.ColumnName + " is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.");
+                    }
+                }
+
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(String))
                 {

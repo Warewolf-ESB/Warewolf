@@ -1,16 +1,16 @@
-﻿using Dev2.Communication;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -84,15 +84,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Connect to the database then retrieve the schema information.
                     connection.Open();
 
-                    // See http://msdn.microsoft.com/en-us/library/cc716722.aspx for restrictions
-                    var restrictions = new string[4];
-                    restrictions[0] = runtTimedbSource.DatabaseName;
-                    if(!string.IsNullOrEmpty(schema))
+                    // GUTTED TO RETURN ALL REQUIRED DATA ;)
+                    if(schema == null)
                     {
-                        restrictions[1] = schema.Trim(new[] { '"' });
+                        schema = string.Empty;
                     }
-                    restrictions[2] = tableName.Trim(new[] { '"' });
-                    columnInfo = connection.GetSchema("Columns", restrictions);
+
+                    var sql = @"select top 1 * from " + schema.Trim(new[] { '"' }) + "." + tableName.Trim(new[] { '"' });
+                    using(var sqlcmd = new SqlCommand(sql, connection))
+                    {
+                        // force it closed so we just get the proper schema ;)
+                        using(var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            columnInfo = sdr.GetSchemaTable();
+                        }
+                    }
                 }
 
                 var dbColumns = new DbColumnList();
@@ -101,16 +107,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     foreach(DataRow row in columnInfo.Rows)
                     {
-                        var columnName = row["COLUMN_NAME"] as string;
-                        var dbColumn = new DbColumn { ColumnName = columnName };
+                        var columnName = row["ColumnName"] as string;
+                        var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
+                        var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
+                        var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
 
                         SqlDbType sqlDataType;
-                        var typeValue = row["DATA_TYPE"] as string;
+                        var typeValue = row["DataTypeName"] as string;
                         if(Enum.TryParse(typeValue, true, out sqlDataType))
                         {
                             dbColumn.SqlDataType = sqlDataType;
                         }
-                        var columnLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+
+                        var columnLength = row["ColumnSize"] is int ? (int)row["ColumnSize"] : -1;
                         dbColumn.MaxLength = columnLength;
                         dbColumns.Items.Add(dbColumn);
                     }
