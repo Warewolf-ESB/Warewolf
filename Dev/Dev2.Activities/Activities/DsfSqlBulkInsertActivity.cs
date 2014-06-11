@@ -99,7 +99,7 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             var executionID = DataListExecutionID.Get(context);
             DataTable dataTableToInsert = null;
-
+            bool addExceptionToErrorList = true;
             InitializeDebug(dataObject);
             try
             {
@@ -122,13 +122,6 @@ namespace Dev2.Activities
                 }
                 if(sqlBulkCopy != null)
                 {
-                    // emit options ;)
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddBatchSizeAndTimeOutToDebug(compiler, executionID);
-                        AddOptionsDebugItems();
-                    }
-
                     // BuiltUsingSingleRecset was very poorly put together it assumes a 1-1 mapping between target and destination columns ?! ;(
                     // And it forced a need for duplicate logic?!
                     dataTableToInsert = BuildDataTableToInsert();
@@ -136,8 +129,25 @@ namespace Dev2.Activities
                     if(InputMappings != null && InputMappings.Count > 0)
                     {
                         var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, dataObject, iteratorCollection, out errorResultTO);
                         allErrors.MergeErrors(errorResultTO);
-                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, allErrors, dataObject, iteratorCollection, out errorResultTO);
+
+                        // oh no, we have an issue, bubble it out ;)
+                        // TODO : Test ;)
+                        // - When bad index it does not upsert ;)
+                        // - When exception thrown from here it does not add it ;)
+                        //if(allErrors.HasErrors())
+                        //{
+                        //    addExceptionToErrorList = false;
+                        //    throw new Exception("Problems with Iterators for SQLBulkInsert");
+                        //}
+
+                        // emit options ;)
+                        if(dataObject.IsDebugMode())
+                        {
+                            AddBatchSizeAndTimeOutToDebug(compiler, executionID);
+                            AddOptionsDebugItems();
+                        }
 
                         FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
 
@@ -170,7 +180,10 @@ namespace Dev2.Activities
             {
                 toUpsert.Add(Result, string.Format("Failure"));
                 compiler.Upsert(executionID, toUpsert, out errorsTo);
-                allErrors.AddError(e.Message);
+                if(addExceptionToErrorList)
+                {
+                    allErrors.AddError(e.Message);
+                }
                 // ReSharper disable InvokeAsExtensionMethod
                 ServerLogger.LogError(this, e);
                 // ReSharper restore InvokeAsExtensionMethod
@@ -358,7 +371,7 @@ namespace Dev2.Activities
             }
         }
 
-        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionID, ErrorResultTO allErrors, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTO)
+        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTO)
         {
             errorsResultTO = new ErrorResultTO();
             var listOfIterators = new List<IDev2DataListEvaluateIterator>();
@@ -366,8 +379,9 @@ namespace Dev2.Activities
             foreach(var row in InputMappings)
             {
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
-                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out errorsResultTO);
-                allErrors.MergeErrors(errorsResultTO);
+                ErrorResultTO invokeErrors;
+                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out invokeErrors);
+                errorsResultTO.MergeErrors(invokeErrors);
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataTypeName, executionID, indexCounter);
