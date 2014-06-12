@@ -4,7 +4,7 @@
     <Deployment>
         <DeploymentItem filename="TestBinaries\" />
     </Deployment>
-  <Scripts setupScript="Startup - With SFTPServer.bat" cleanupScript="Cleanup - With SFTPServer.bat" />
+  <Scripts setupScript="Startup" cleanupScript="Cleanup" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Buckets size="10000" />
