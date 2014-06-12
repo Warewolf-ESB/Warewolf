@@ -100,6 +100,7 @@
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
+    <Compile Include="Composition\DBSource\XmlFetch.cs" />
     <Compile Include="Composition\WorkflowExecution.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -621,6 +622,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\infile1WithCarriageReturn.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\outfile1WithCarriageReturn.txt" />
+    <EmbeddedResource Include="Composition\DBSource\testingDBSrc.xml" />
     <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\Test.zip" />
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">

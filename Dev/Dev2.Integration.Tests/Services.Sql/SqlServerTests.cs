@@ -13,6 +13,8 @@ namespace Dev2.Integration.Tests.Services.Sql
     [TestClass]
     public class SqlServerTests
     {
+        // ReSharper disable InconsistentNaming
+
         public static DbSource CreateDev2TestingDbSource(AuthenticationType authenticationType = AuthenticationType.User)
         {
             var dbSource = new DbSource
@@ -457,5 +459,7 @@ END
 
             Assert.AreEqual(ExpectedHelpText, actualHelpText);
         }
+
+        // ReSharper restore InconsistentNaming
     }
 }

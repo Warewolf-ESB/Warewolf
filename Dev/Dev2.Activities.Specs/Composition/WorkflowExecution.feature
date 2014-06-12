@@ -757,57 +757,62 @@ Scenario: Workflow with Assign Count Data Merge and 2 Delete  tools executing ag
 	  And the 'Cnt2' in Workflow 'WorkflowWithAssignCountDataMerge&2Delete' debug outputs as 
 	  |                 |
 	  | [[result3]] = 3 |
-#
+
 #Below 2 scenarios should be passed after the issue 11866 is fixed
-#Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing against the server
-#	  Given I have a workflow "WorkflowWithAssignAndSQLBulkInsert"
-#	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1     |
-#	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" as
-#	  | Id          | Name     | Email                |
-#	  | [[rec().a]] | Warewolf | Warewolf@2dev2.co.za |
-#	  When "WorkflowWithAssignAndSQLBulkInsert" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'InsertData' in WorkFlow 'WorkflowWithAssignAndSQLBulkInsert' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 1         |
-#	  And the 'InsertData' in Workflow 'WorkflowWithAssignAndSQLBulkInsert' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[rec(1).a]] = 1 |
-#	  And the 'BulkInsert' in WorkFlow 'WorkflowWithAssignAndSQLBulkInsert' debug inputs as
-#	  | # |                     | To Field | Type        | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |
-#	  | 1 | [[rec(1).a]] = 1    | Id       | int         |            |         |                   |                 |               |               |                          |                 |
-#	  | 2 | Warewolf            | Name     | varchar(50) |            |         |                   |                 |               |               |                          |                 |
-#	  | 3 | Warewolf@dev2.co.za | Email    | varchar(50) |            |         |                   |                 |               |               |                          |                 |
-#	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulkInsert' debug outputs as
-#	  |                      |
-#	  | [[result]] = Success |
-#
-#Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative Recordset Index executing against the server
-#	  Given I have a workflow "WorkflowWithAssignAndSQLBulk"
-#	  And "WorkflowWithAssignAndSQLBulk" contains an Assign "InsertData" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1     |
-#	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" as
-#	  | Id          | Name     | Email                |
-#	  | [[rec(-1).a]] | Warewolf | Warewolf@2dev2.co.za |
-#	  When "WorkflowWithAssignAndSQLBulk" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'InsertData' in WorkFlow 'WorkflowWithAssignAndSQLBulk' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec(1).a]] = | 1         |
-#	  And the 'InsertData' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as  
-#	  | # |                  |
-#	  | 1 | [[rec(1).a]] = 1 |
-#	  And the 'BulkInsert' in WorkFlow 'WorkflowWithAssignAndSQLBulk' debug inputs as
-#	  | # |                     | To Field | Type        | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |
-#	  | 1 | [[rec(-1).a]] =     | Id       | int         |            |         |                   |                 |               |               |                          |                 |
-#	  | 2 | Warewolf            | Name     | varchar(50) |            |         |                   |                 |               |               |                          |                 |
-#	  | 3 | Warewolf@dev2.co.za | Email    | varchar(50) |            |         |                   |                 |               |               |                          |                 |
-#	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
-#	  |                      |
-#	  | [[result]] = Failure |
+# Note the using database "xxx" MUST be loaded into DBSource directory else execution will fail ;)
+# And it must be in the server resources too ;(
+Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing against the server
+	  Given I have a workflow "WorkflowWithAssignAndSQLBulkInsert"
+	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
+	  | variable    | value    |
+	  | [[rec().a]] | Warewolf |
+	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
+	  | Id     |                     | false      | int          |           | true            |
+	  | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
+	  | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
+	  When "WorkflowWithAssignAndSQLBulkInsert" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'InsertData' in WorkFlow 'WorkflowWithAssignAndSQLBulkInsert' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | Warewolf  |
+	  And the 'InsertData' in Workflow 'WorkflowWithAssignAndSQLBulkInsert' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Warewolf |
+	  And the 'BulkInsert' in WorkFlow 'WorkflowWithAssignAndSQLBulkInsert' debug inputs as
+	  | # |                         | To Field | Type         | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |
+	  | 1 | [[rec(1).a]] = Warewolf | Name     | varchar (50) |            |         |                   |                 |               |               |                          |                 |
+	  | 2 | Warewolf@dev2.co.za     | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
+	  |   |                         |          |              | 0          | 0       | NO                | NO              | NO            | NO            | NO                       | YES             |
+	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulkInsert' debug outputs as
+	  |                      |
+	  | [[result]] = Success |
+
+Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative Recordset Index executing against the server
+	  Given I have a workflow "WorkflowWithAssignAndSQLBulk"
+	  And "WorkflowWithAssignAndSQLBulk" contains an Assign "InsertData" as
+	  | variable    | value |
+	  | [[rec().a]] | Warewolf     |
+	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
+	  | Id     |                     | false      | int          |           | true            |
+	  | Name   | [[rec(-1).a]]       | false      | varchar      | 50        | false           |
+	  | Email  | Warewolf@dev2.co.za | false      | varchar      | 50        | false           |
+	  When "WorkflowWithAssignAndSQLBulk" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'InsertData' in WorkFlow 'WorkflowWithAssignAndSQLBulk' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | Warewolf  |
+	  And the 'InsertData' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as  
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Warewolf |
+	  And the 'BulkInsert' in WorkFlow 'WorkflowWithAssignAndSQLBulk' debug inputs as
+	  | # |                     | To Field | Type         | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |
+	  | 1 | [[rec(-1).a]] =     | Name     | varchar (50) |            |         |                   |                 |               |               |                          |                 |
+	  | 2 | Warewolf@dev2.co.za | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
+	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
+	  |                      |
+	  | [[result]] = Failure |
 
 Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBase"

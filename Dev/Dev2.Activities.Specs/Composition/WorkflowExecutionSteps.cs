@@ -2,13 +2,16 @@
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Session;
 using Dev2.Studio.Core;
@@ -20,6 +23,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
+using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using TechTalk.SpecFlow;
@@ -422,6 +426,65 @@ namespace Dev2.Activities.Specs.Composition
             commonSteps.ThenTheDebugOutputAs(table, toolSpecificDebug
                                                     .SelectMany(s => s.Outputs)
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
+        }
+
+        [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
+        public void GivenContainsAnSqlBulkInsertAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
+        {
+            //ScenarioContext.Current.Pending();
+
+            // Fetch source from source name ;)
+            var resourceXml = XmlFetch.Fetch(dbSrcName);
+            if(resourceXml != null)
+            {
+
+                // extract keepIdentity value ;)
+                bool keepIdentityBool;
+                bool.TryParse(keepIdentity, out keepIdentityBool);
+
+                var dbSource = new DbSource(resourceXml);
+                // Configure activity ;)
+                var dsfSqlBulkInsert = new DsfSqlBulkInsertActivity { Result = result, DisplayName = activityName, TableName = tableName, Database = dbSource, KeepIdentity = keepIdentityBool };
+                // build input mapping
+                var mappings = new List<DataColumnMapping>();
+
+                var pos = 1;
+                // ReSharper disable LoopCanBeConvertedToQuery
+                foreach(var row in table.Rows)
+                // ReSharper restore LoopCanBeConvertedToQuery
+                {
+                    var outputColumn = row["Column"];
+                    var inputColumn = row["Mapping"];
+                    var isNullableStr = row["IsNullable"];
+                    var dataTypeName = row["DataTypeName"];
+                    var maxLengthStr = row["MaxLength"];
+                    var isAutoIncrementStr = row["IsAutoIncrement"];
+
+                    bool isNullable;
+                    bool isAutoIncrement;
+                    int maxLength;
+                    bool.TryParse(isNullableStr, out isNullable);
+                    bool.TryParse(isAutoIncrementStr, out isAutoIncrement);
+                    Int32.TryParse(maxLengthStr, out maxLength);
+                    SqlDbType dataType;
+                    Enum.TryParse(dataTypeName, true, out dataType);
+
+                    var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
+                    mappings.Add(mapping);
+                    pos++;
+
+                }
+
+                dsfSqlBulkInsert.InputMappings = mappings;
+
+                CommonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
+                CommonSteps.AddVariableToVariableList(result);
+
+            }
+            else
+            {
+                throw new Exception("Invalid Source Name [ " + dbSrcName + " ]. Ensure it has been properly added to the DBSource directory in this project.");
+            }
         }
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
