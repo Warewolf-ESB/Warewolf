@@ -40,7 +40,7 @@ namespace Dev2.Services
                     throw new Exception("Null Popup Controller");
                 }
 
-                var startResult = PopupController.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
+                var startResult = PopupController.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNo, MessageBoxImage.Question, null);
 
                 if(startResult == MessageBoxResult.None || startResult == MessageBoxResult.No || startResult == MessageBoxResult.Cancel)
                 {

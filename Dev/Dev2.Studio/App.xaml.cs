@@ -23,7 +23,9 @@ using Dev2.Threading;
 using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -34,7 +36,9 @@ namespace Dev2.Studio
         //This is ignored because when starting the studio twice the second one crashes without this line
         // ReSharper disable once RedundantDefaultFieldInitializer
         // ReSharper disable NotAccessedField.Local
+        // ReSharper disable RedundantDefaultFieldInitializer
         private Mutex _processGuard = null;
+        // ReSharper restore RedundantDefaultFieldInitializer
         // ReSharper restore NotAccessedField.Local
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
@@ -137,7 +141,7 @@ namespace Dev2.Studio
             {
                 _mainViewModel.PersistTabs(true);
             }
-            ProgressFileDownloader.PerformCleanup( new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
+            ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();

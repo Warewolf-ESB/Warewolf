@@ -182,47 +182,6 @@ namespace Dev2
             }
 
             return false;
-
-            //if(windowsServiceManager == null)
-            //{
-            //    throw new Exception("Unable to instantiate the windows service manager.");
-            //}
-
-            //if(popup == null)
-            //{
-            //    throw new Exception("Unable to instantiate the popup manager.");
-            //}
-
-            //if(!windowsServiceManager.Exists())
-            //{
-            //    popup.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error, null);
-            //    return false;
-            //}
-
-            //if(!windowsServiceManager.IsRunning())
-            //{
-            //    MessageBoxResult promptResult = popup.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
-
-            //    if(promptResult == MessageBoxResult.Cancel)
-            //    {
-            //        return false;
-            //    }
-
-            //    if(promptResult == MessageBoxResult.No)
-            //    {
-            //        return true;
-            //    }
-
-            //    if(!windowsServiceManager.Start())
-            //    {
-            //        popup.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null);
-            //        return false;
-            //    }
-
-            //    _serverServiceStartedFromStudio = true;
-            //}
-
-            //return true;
         }
 
         private void PreloadReferences()
