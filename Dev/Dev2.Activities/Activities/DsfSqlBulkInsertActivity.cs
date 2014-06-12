@@ -133,16 +133,13 @@ namespace Dev2.Activities
                         allErrors.MergeErrors(errorResultTO);
 
                         // oh no, we have an issue, bubble it out ;)
-                        // TODO : Test ;)
-                        // - When bad index it does not upsert ;)
-                        // - When exception thrown from here it does not add it ;)
-                        //if(allErrors.HasErrors())
-                        //{
-                        //    addExceptionToErrorList = false;
-                        //    throw new Exception("Problems with Iterators for SQLBulkInsert");
-                        //}
+                        if(allErrors.HasErrors())
+                        {
+                            addExceptionToErrorList = false;
+                            throw new Exception("Problems with Iterators for SQLBulkInsert");
+                        }
 
-                        // emit options ;)
+                        // emit options to debug as per acceptance test ;)
                         if(dataObject.IsDebugMode())
                         {
                             AddBatchSizeAndTimeOutToDebug(compiler, executionID);

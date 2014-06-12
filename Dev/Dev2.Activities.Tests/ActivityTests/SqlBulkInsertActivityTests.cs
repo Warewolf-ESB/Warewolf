@@ -918,6 +918,120 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithInvalidIndex_HasErrorAboutColumn()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<ISqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol", DataType = typeof(String), MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(-1).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2", DataType = typeof(Int32), MaxLength = 100}
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[val]]",
+                    OutputColumn = new DbColumn { ColumnName = "Val", DataType = typeof(String), MaxLength = 100 }
+                },new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3", DataType = typeof(char), MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4", DataType = typeof(decimal), MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            var dataObject = ExecuteProcess() as IDSFDataObject;
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
+            Assert.IsNull(returnedDataTable);
+            if(dataObject != null)
+            {
+                var dlID = dataObject.DataListID;
+                var compiler = DataListFactory.CreateDataListCompiler();
+                ErrorResultTO errors;
+                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                var executionErrors = bdl.FetchErrors();
+                StringAssert.Contains(executionErrors, "Recordset index [ -1 ] is not greater than zero");
+                Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
+            }
+            else
+            {
+                Assert.Fail("Bad cast!");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
+        public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithInvalidEvaluatedIndex_HasErrorAboutColumn()
+        {
+            //------------Setup for test--------------------------
+            DataTable returnedDataTable = null;
+            var mockSqlBulkInserter = new Mock<ISqlBulkInserter>();
+            mockSqlBulkInserter.Setup(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()))
+                .Callback<ISqlBulkCopy, DataTable>((sqlBulkCopy, dataTable) => returnedDataTable = dataTable);
+            var dataColumnMappings = new List<DataColumnMapping>
+            {
+                new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field1]]",
+                    OutputColumn = new DbColumn {ColumnName = "TestCol", DataType = typeof(String), MaxLength = 100},
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1([[val]]).field2]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol2", DataType = typeof(Int32), MaxLength = 100}
+                }
+                , new DataColumnMapping
+                {
+                    InputColumn = "[[val]]",
+                    OutputColumn = new DbColumn { ColumnName = "Val", DataType = typeof(String), MaxLength = 100 }
+                },new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field3]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol3", DataType = typeof(char), MaxLength = 100 }
+                }, new DataColumnMapping
+                {
+                    InputColumn = "[[recset1(*).field4]]",
+                    OutputColumn = new DbColumn { ColumnName = "TestCol4", DataType = typeof(decimal), MaxLength = 100 }
+                }
+            };
+            SetupArguments("<root><recset1><field1>Bob</field1><field2>2</field2><field3>C</field3><field4>21.2</field4></recset1><recset1><field1>Jane</field1><field2>3</field2><field3>G</field3><field4>26.4</field4></recset1><recset1><field1>Jill</field1><field2>1999</field2><field3>Z</field3><field4>60</field4></recset1><val>Hello</val></root>", "<root><recset1><field1/><field2/><field3/><field4/></recset1><val/></root>", mockSqlBulkInserter.Object, dataColumnMappings, "[[result]]");
+            //------------Execute Test---------------------------
+            var dataObject = ExecuteProcess() as IDSFDataObject;
+            //------------Assert Results-------------------------
+            mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<ISqlBulkCopy>(), It.IsAny<DataTable>()), Times.Never());
+            Assert.IsNull(returnedDataTable);
+            if(dataObject != null)
+            {
+                var dlID = dataObject.DataListID;
+                var compiler = DataListFactory.CreateDataListCompiler();
+                ErrorResultTO errors;
+                var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+                var executionErrors = bdl.FetchErrors();
+                StringAssert.Contains(executionErrors, "Input string was not in a correct format");
+                Assert.IsFalse(executionErrors.Contains("Problems with Iterators for SQLBulkInsert"), "Iterator exception has been added ;(");
+            }
+            else
+            {
+                Assert.Fail("Bad cast!");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfSqlBulkInsertActivity_Execute")]
         public void DsfSqlBulkInsertActivity_Execute_WithInputMappingsWithIdentityColumnWithNoDataMappedAndKeepIdentityOnWhenMultiTable_HasErrorAboutColumn()
         {
             //------------Setup for test--------------------------
