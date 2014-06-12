@@ -39,6 +39,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             string timeModifierAmount;
             ScenarioContext.Current.TryGetValue("timeModifierAmount", out timeModifierAmount);
 
+            //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
+            if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
+            {
+                inputDate = inputDate.Replace("(UTC+", "(GMT+").Replace("(UTC-", "(GMT-");
+            }
+
             var dateTime = new DsfDateTimeActivity
                 {
                     Result = ResultVariable,
@@ -99,9 +105,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-// ReSharper disable AssignNullToNotNullAttribute
+            // ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-// ReSharper restore AssignNullToNotNullAttribute
+            // ReSharper restore AssignNullToNotNullAttribute
             converter.ConvertFrom(actualValue);
         }
 
@@ -114,6 +120,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
+            //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
+            actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
             Assert.AreEqual(expectedResult, actualValue);
         }
     }
