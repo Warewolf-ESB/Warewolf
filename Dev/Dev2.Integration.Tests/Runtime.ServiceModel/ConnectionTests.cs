@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices.ActiveDirectory;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
@@ -10,25 +11,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
     [TestClass]
     public class ConnectionTests
     {
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("Connection_ServerMissingDsf")]
-        public void Connection_ServerMissingDsf_ServerUrlMissingSlashDsf_ExpectConnectionOk()
-        {
-            //------------Setup for test--------------------------
-            //Create Connection
-            Connection conn = SetupUserConnection("http://localhost:3142");
-            Connections connections = new Connections();
-
-            //------------Execute Test---------------------------
-            //Attemp to test the connection
-            ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(validationResult.IsValid);
-        }
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Connection_ServerMissingDsf")]
@@ -36,7 +18,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             //Create Connection
-            Connection conn = SetupUserConnection("http://localhost:3142/");
+            const string Address = "http://localhost:3142/";
+            Connection conn = SetupUserConnection(Address);
             Connections connections = new Connections();
 
             //------------Execute Test---------------------------
@@ -44,17 +27,18 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(validationResult.IsValid);
+            Assert.IsTrue(validationResult.IsValid, "Error connecting to " + Address + " " + validationResult.ErrorMessage);
         }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("Connection_ServerMissingDsf")]
-        public void Connection_ServerMissingDsf_ServerUrlMissingDsf_ExpectConnectionOk()
+        public void Connection_ServerMissingDsf_ServerUrlMissingSlash_ExpectConnectionOk()
         {
             //------------Setup for test--------------------------
             //Create Connection
-            Connection conn = SetupUserConnection("http://localhost:3142");
+            const string Address = "http://localhost:3142";
+            Connection conn = SetupUserConnection(Address);
             Connections connections = new Connections();
 
             //------------Execute Test---------------------------
@@ -62,10 +46,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(validationResult.IsValid);
+            Assert.IsTrue(validationResult.IsValid, "Error connecting to " + Address + " " + validationResult.ErrorMessage);
         }
-
-
 
         [TestMethod]
         public void Connection_Test_ValidServer_PositiveValidationResult()
@@ -77,7 +59,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             //Attemp to test the connection
             ValidationResult validationResult = connections.Test(conn.ToString(), Guid.Empty, Guid.Empty);
 
-            Assert.IsTrue(validationResult.IsValid);
+            Assert.IsTrue(validationResult.IsValid, validationResult.ErrorMessage);
 
         }
 
@@ -116,7 +98,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
         static Connection SetupUserConnection(string overRideAddress = "")
         {
-
             var address = ServerSettings.DsfAddress;
             if(overRideAddress != "")
             {
@@ -125,7 +106,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
             var testConnection = new Connection
             {
-
                 Address = address,
                 AuthenticationType = AuthenticationType.User,
                 Password = "I73573r0",
@@ -133,7 +113,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 ResourceName = "TestResourceIMadeUp",
                 ResourcePath = @"host\Server",
                 ResourceType = ResourceType.Server,
-                UserName = @"Dev2\IntegrationTester",
+                UserName = "IntegrationTester",
                 WebServerPort = 3142
             };
 

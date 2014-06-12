@@ -110,7 +110,7 @@ namespace Dev2.Integration.Tests
                 p.BeginOutputReadLine();
 
                 // Wait for Process to start, and get past the check for a duplicate process
-                Thread.Sleep(7500);
+                Thread.Sleep(10000);
 
                 // kill any hanging instances ;)
                 const string wmiQueryString = "SELECT ProcessId FROM Win32_Process WHERE Name LIKE 'Warewolf Server%'";
