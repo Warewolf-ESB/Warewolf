@@ -88,9 +88,10 @@ namespace Gui
                 stdo.RemoveWarewolfScheduledTask();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch
+            catch(Exception e)
             // ReSharper restore EmptyGeneralCatchClause
             {
+                MessageBox.Show(e.Message);
                 // Just here to handle any funnies that may pop-up
             }
         }
