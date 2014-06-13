@@ -17,7 +17,7 @@
   <DataList>
     <in Description="" IsEditable="True" ColumnIODirection="None" />
     <input Description="" IsEditable="True" ColumnIODirection="Input" />
-    <output Description="" IsEditable="True" ColumnIODirection="None" />
+    <output Description="" IsEditable="True" ColumnIODirection="Output" />
     <values Description="" IsEditable="True" ColumnIODirection="Output">
       <upper Description="" IsEditable="True" ColumnIODirection="Output" />
       <lower Description="" IsEditable="True" ColumnIODirection="Output" />
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>iSZRwHolkJfrpOjFt9jc2HbtdLA=</DigestValue>
+        <DigestValue>stFnDOzTaoebMKR1Gs7CZMN13gY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Jii9excjUlZkzEvCm6p4QtQku0Lah5JtXJ1X5zmFjJ/JKdl2W2NSBSDz+jQ2lMp7FcYYwMtRnOeuXwPz4UgX8tgs7TTmcLALHdFUKgsEnP3qzMflXWbVeHxPV1YDedUuTahUzkPwtSK+z3sLO/3Ciq+lRKAX6HKCU4zVGRVosQs=</SignatureValue>
+    <SignatureValue>j6AZnXUPZSRCw20spkHM4bvEs+LRUnuve+gAXOmxTmHg5nPhHt1B7fw8uGV0vAhfL79UehiW6kvcjZsbewKRrqTPJFcgg2r01x0wKDiiewM+Q8UVYKKMKYoQhnJeO85Ee0NXSRB9hm2j19zgXj73PT8ZX338jaFYZE8sKxavUCY=</SignatureValue>
   </Signature>
 </Service>
