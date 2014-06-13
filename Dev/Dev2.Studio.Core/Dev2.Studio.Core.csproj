@@ -527,7 +527,7 @@
       <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
@@ -555,7 +555,7 @@
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
-      <Project>{bc22e7c8-58a6-44b3-8934-48a29839876d}</Project>
+      <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
       <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">

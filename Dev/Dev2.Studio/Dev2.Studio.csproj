@@ -1282,7 +1282,7 @@
       <Name>Dev2.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-      <Project>{b0010505-9c54-4583-9b2f-3945e029fc92}</Project>
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
@@ -1290,7 +1290,7 @@
       <Name>Dev2.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{28f07054-4a21-4398-b094-27211fc2ada4}</Project>
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
