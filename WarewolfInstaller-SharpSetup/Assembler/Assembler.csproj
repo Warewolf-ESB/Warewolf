@@ -86,4 +86,7 @@
   <ItemGroup>
     <IncludeInCab Include="Files\Microsoft.Win32.TaskScheduler.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <IncludeInCab Include="Files\Microsoft.Win32.TaskSchedulerEditor.dll" />
+  </ItemGroup>
 </Project>
