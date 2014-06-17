@@ -15,9 +15,11 @@ using Dev2.Web;
 
 namespace Dev2.Data.Translators
 {
+    // ReSharper disable InconsistentNaming
     internal sealed class DataListXMLTranslatorWithOutSystemTags : IDataListTranslator
+    // ReSharper restore InconsistentNaming
     {
-        const string _rootTag = "DataList";
+        const string RootTag = "DataList";
         private readonly DataListFormat _format;
         private readonly Encoding _encoding;
         readonly TranslatorUtils _tu;
@@ -41,7 +43,7 @@ namespace Dev2.Data.Translators
 
             TranslatorUtils tu = new TranslatorUtils();
 
-            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
             errors = new ErrorResultTO();
 
             IList<string> itemKeys = payload.FetchAllUserKeys();
@@ -106,7 +108,7 @@ namespace Dev2.Data.Translators
 
             }
 
-            result.Append("</" + _rootTag + ">");
+            result.Append("</" + RootTag + ">");
 
             DataListTranslatedPayloadTO tmp = new DataListTranslatedPayloadTO(result.ToString());
 
@@ -116,7 +118,7 @@ namespace Dev2.Data.Translators
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string payload = Encoding.UTF8.GetString(input);
+            var payload = Encoding.UTF8.GetString(input);
 
             IBinaryDataList result = null;
 
@@ -159,7 +161,7 @@ namespace Dev2.Data.Translators
                                 IBinaryDataListEntry entry;
 
                                 string error;
-                                if(children.Count > 0 && !DataListUtil.IsMSXmlBugNode(children[0].Name))
+                                if(children.Count > 0 && !DataListUtil.IsMsXmlBugNode(children[0].Name))
                                 {
                                     #region Process children
 
@@ -276,7 +278,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test
@@ -296,7 +298,7 @@ namespace Dev2.Data.Translators
             errors.MergeErrors(invokeErrors);
             var parentDataList = compiler.FetchBinaryDataList(targetDataList.ParentUID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            var grandparentDL = compiler.FetchBinaryDataList(parentDataList.ParentUID, out invokeErrors);
+            var grandparentDl = compiler.FetchBinaryDataList(parentDataList.ParentUID, out invokeErrors);
 
             // as a result we need to re-set some alias operations that took place in the parent DataList where they happended ;)
             foreach(var entry in parentDataList.FetchRecordsetEntries())
@@ -305,9 +307,9 @@ namespace Dev2.Data.Translators
             }
 
             var parentID = parentDataList.UID;
-            if(grandparentDL != null)
+            if(grandparentDl != null)
             {
-                parentID = grandparentDL.UID;
+                parentID = grandparentDl.UID;
             }
 
             compiler.SetParentID(targetDl, parentID);
@@ -324,23 +326,23 @@ namespace Dev2.Data.Translators
                 throw new ArgumentNullException("payload");
             }
 
-            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
             errors = new ErrorResultTO();
 
             ErrorResultTO invokeErrors;
             TranslatorUtils tu = new TranslatorUtils();
 
-            IBinaryDataList targetDL = _tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            IBinaryDataList targetDl = _tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            IList<string> itemKeys = targetDL.FetchAllKeys();
+            IList<string> itemKeys = targetDl.FetchAllKeys();
 
             foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
                 IBinaryDataListEntry tmpEntry;
                 string error;
-                if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
+                if(payload.TryGetEntry(key, out entry, out error) && targetDl.TryGetEntry(key, out tmpEntry, out error))
                 {
 
                     if(entry.IsRecordset)
@@ -414,7 +416,7 @@ namespace Dev2.Data.Translators
 
             }
 
-            result.Append("</" + _rootTag + ">");
+            result.Append("</" + RootTag + ">");
 
             return result.ToString();
         }

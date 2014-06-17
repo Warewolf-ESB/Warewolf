@@ -26,27 +26,34 @@ namespace Dev2.Data.Tests.ConverterTest
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("XML_Without_SystemTags_MethodName")]
+        public void XML_Without_SystemTags_ConvertTo_WhenSingleRecordset_ExpectNoErrors()
+        {
+            //------------Setup for test--------------------------
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
+            ErrorResultTO errors;
+            const string data = "<DataList><hero index=\"1\"><name>Chuck Norris</name><pushups>All of them</pushups></hero></DataList>";
+            const string shape = @"<DataList>
+  <hero Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+    <name Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <pushups Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+  </hero>
+  <rect Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+    <set Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+  </rect>
+</DataList>";
+            //------------Execute Test---------------------------
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), data, shape, out errors);
+            var result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
+
+            //------------Assert Results-------------------------
+            const string expected = "<DataList><hero><name>Chuck Norris</name><pushups>All of them</pushups></hero></DataList>";
+
+            StringAssert.Contains(result, expected);
+        }
 
         [TestMethod]
         public void CanConvertFromDataListXMLTranslatorWithOutSystemTags()
@@ -115,13 +122,13 @@ namespace Dev2.Data.Tests.ConverterTest
         [TestMethod]
         public void CanConvertFromDataListToJsonMultipleScalarsMultipleRecordsets()
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><scalar>s1</scalar><otherScalar>s2</otherScalar><rs><val>1</val><otherVal>ABC</otherVal></rs><rs><val>2</val><otherVal>ZZZ</otherVal></rs><otherRS><val>1</val><myVal>ABC</myVal></otherRS><otherRS><val>90</val><myVal>123</myVal></otherRS></root>", "<root><scalar/><otherScalar/><rs><val/><otherVal/></rs><otherRS><val/><myVal/></otherRS></root>", out errors);
-            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._JSON), enTranslationDepth.Data, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><scalar>s1</scalar><otherScalar>s2</otherScalar><rs><val>1</val><otherVal>ABC</otherVal></rs><rs><val>2</val><otherVal>ZZZ</otherVal></rs><otherRS><val>1</val><myVal>ABC</myVal></otherRS><otherRS><val>90</val><myVal>123</myVal></otherRS></root>", "<root><scalar/><otherScalar/><rs><val/><otherVal/></rs><otherRS><val/><myVal/></otherRS></root>", out errors);
+            var data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._JSON), enTranslationDepth.Data, out errors);
 
-            string expected = "{\"scalar\":\"s1\",\"otherScalar\":\"s2\",\"rs\" : [{\"val\":\"1\",\"otherVal\":\"ABC\"}, {\"val\":\"2\",\"otherVal\":\"ZZZ\"}],\"otherRS\" : [{\"val\":\"1\",\"myVal\":\"ABC\"}, {\"val\":\"90\",\"myVal\":\"123\"}]}";
+            const string expected = "{\"scalar\":\"s1\",\"otherScalar\":\"s2\",\"rs\" : [{\"val\":\"1\",\"otherVal\":\"ABC\"}, {\"val\":\"2\",\"otherVal\":\"ZZZ\"}],\"otherRS\" : [{\"val\":\"1\",\"myVal\":\"ABC\"}, {\"val\":\"90\",\"myVal\":\"123\"}]}";
 
             Assert.AreEqual(expected, data, "Expected [ " + expected + " ] but got [ " + data + " ]");
         }
@@ -134,7 +141,7 @@ namespace Dev2.Data.Tests.ConverterTest
             errors.AddError("Error 2");
 
             var result = errors.MakeDataListReady(false);
-            var expected = "\"errors\": [ \"Error 1\",\"Error 2\"]";
+            const string expected = "\"errors\": [ \"Error 1\",\"Error 2\"]";
 
 
             Assert.AreEqual(expected, result, "Expected [ " + expected + " but got [ " + result + " ]");
@@ -465,7 +472,7 @@ namespace Dev2.Data.Tests.ConverterTest
             //------------Execute Test---------------------------
 
             var result = errorResultTO.MakeDataListReady(false);
-            var expected = "\"errors\": [ \"Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.\"]";
+            const string expected = "\"errors\": [ \"Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.\"]";
 
             // Assert Message Converted To Outdated Server Error
             Assert.AreEqual(expected, result, "Error message not relevent");
@@ -478,10 +485,10 @@ namespace Dev2.Data.Tests.ConverterTest
         public void Populate_WithScalarValuesInDatatable_AddsToDataList()
         {
             //-------------------Setup ----------------------------------
-            var outputDefs = "<Outputs><Output Name=\"One\" MapsTo=\"[[One]]\" Value=\"[[One]]\" /><Output Name=\"Two\" MapsTo=\"[[Two]]\" Value=\"[[Two]]\" /><Output Name=\"Three\" MapsTo=\"[[Three]]\" Value=\"[[Three]]\" /></Outputs>";
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            const string outputDefs = "<Outputs><Output Name=\"One\" MapsTo=\"[[One]]\" Value=\"[[One]]\" /><Output Name=\"Two\" MapsTo=\"[[Two]]\" Value=\"[[Two]]\" /><Output Name=\"Three\" MapsTo=\"[[Three]]\" Value=\"[[Three]]\" /></Outputs>";
+            var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><One/><Two/><Three/></root>", out errors);
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><One/><Two/><Three/></root>", out errors);
             // build up DataTable
             DataTable dbData = new DataTable("rs");
             dbData.Columns.Add("One", typeof(string));
@@ -505,10 +512,10 @@ namespace Dev2.Data.Tests.ConverterTest
         public void Populate_TwiceWithStarIndex_AddsToCorrectIndex()
         {
             //-------------------Setup ----------------------------------
-            var outputDefs = "<Outputs><Output Name=\"[[rs(*).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(*).num]]\" /></Outputs>";
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            const string outputDefs = "<Outputs><Output Name=\"[[rs(*).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(*).num]]\" /></Outputs>";
+            var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
             // build up DataTable
             DataTable dbData = new DataTable("rec");
             dbData.Columns.Add("num", typeof(string));
@@ -517,10 +524,10 @@ namespace Dev2.Data.Tests.ConverterTest
             dbData.Rows.Add("Three");
 
             // Execute Translator
-            Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
+            var dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);
             dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dlID, out errors);
 
-            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            var data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
 
             Assert.AreEqual("<DataList><rs><num>One</num></rs><rs><num>Two</num></rs><rs><num>Three</num></rs></DataList>", data);
         }
@@ -532,7 +539,7 @@ namespace Dev2.Data.Tests.ConverterTest
         public void Populate_TwiceWithAppendIndex_AddsToEnd()
         {
             //-------------------Setup ----------------------------------
-            var outputDefs = "<Outputs><Output Name=\"[[rs().num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs().num]]\" /></Outputs>";
+            const string outputDefs = "<Outputs><Output Name=\"[[rs().num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs().num]]\" /></Outputs>";
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);
@@ -559,7 +566,7 @@ namespace Dev2.Data.Tests.ConverterTest
         public void Populate_TwiceWithNumericIndex_PutsDataAtIndex()
         {
             //-------------------Setup ----------------------------------
-            var outputDefs = "<Outputs><Output Name=\"[[rs(2).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(2).num]]\" Recordset=\"rs\"/></Outputs>";
+            const string outputDefs = "<Outputs><Output Name=\"[[rs(2).num]]\" MapsTo=\"[[rec(*).num]]\" Value=\"[[rs(2).num]]\" Recordset=\"rs\"/></Outputs>";
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root></root>", "<root><rs><num></num></rs></root>", out errors);

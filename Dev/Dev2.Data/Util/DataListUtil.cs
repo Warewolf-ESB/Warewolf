@@ -25,14 +25,15 @@ namespace Dev2.Data.Util
         public const string ClosingSquareBrackets = "]]";
         public const string RecordsetIndexOpeningBracket = "(";
         public const string RecordsetIndexClosingBracket = ")";
-        
+
         private static readonly HashSet<string> SysTags = new HashSet<string>();
-        const string _emptyTag = "<Empty />";
-        const string _cdataStart = "<![CDATA[";
-        const string _cdataEnd = "]]>";
-        const string _adlRoot = "ADL";
-        private static readonly string[] stripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<DataList>", "</DataList>", "<ADL />" };
-        private static readonly string[] naughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
+        const string EmptyTag = "<Empty />";
+        const string CdataStart = "<![CDATA[";
+        const string CdataEnd = "]]>";
+        const string AdlRoot = "ADL";
+        // "<DataList>", "</DataList>",
+        private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
+        private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>", 
                                                          "<WebXMLConfiguration>", "</WebXMLConfiguration>", 
                                                          "<Dev2WebpartBindingData>", "</Dev2WebpartBindingData>", 
@@ -42,7 +43,7 @@ namespace Dev2.Data.Util
                                                          "<DL>","</DL>"
                                                        };
 
-        private static readonly XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         #endregion Class Members
 
@@ -80,7 +81,7 @@ namespace Dev2.Data.Util
             string extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
             return expression.Replace(extractIndexRegionFromRecordset, "()");
         }
-        
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -278,14 +279,14 @@ namespace Dev2.Data.Util
         public static string StripCrap(string payload)
         {
             string result = payload;
-            string[] veryNaughtyTags = naughtyTags;
+            string[] veryNaughtyTags = NaughtyTags;
 
             if(!string.IsNullOrEmpty(payload))
             {
 
-                if(stripTags != null)
+                if(StripTags != null)
                 {
-                    stripTags
+                    StripTags
                         .ToList()
                         .ForEach(tag =>
                         {
@@ -310,8 +311,10 @@ namespace Dev2.Data.Util
                 {
                     if(!IsXml(result))
                     {
-                        result = result.Replace(string.Concat("<", _adlRoot, ">"), string.Empty).Replace(string.Concat("</", _adlRoot, ">"), "");
-                        result = string.Concat("<", _adlRoot, ">", result, "</", _adlRoot, ">");
+                        // We need to replace DataList if present ;)
+                        result = result.Replace("<DataList>", "").Replace("</DataList>", "");
+                        result = result.Replace(string.Concat("<", AdlRoot, ">"), string.Empty).Replace(string.Concat("</", AdlRoot, ">"), "");
+                        result = string.Concat("<", AdlRoot, ">", result, "</", AdlRoot, ">");
                     }
                 }
 
@@ -403,7 +406,7 @@ namespace Dev2.Data.Util
         public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string[] attribute, string[] childTags)
         {
 
-            StringBuilder result = new StringBuilder(MakeOpenTag(_adlRoot));
+            StringBuilder result = new StringBuilder(MakeOpenTag(AdlRoot));
 
             try
             {
@@ -426,15 +429,15 @@ namespace Dev2.Data.Util
                     {
                         foreach(string tag in childTags)
                         {
-                            string innerXML = n.InnerXml;
+                            string innerXml = n.InnerXml;
                             // we have a match!
-                            int idx = innerXML.IndexOf(MakeOpenTag(tag), StringComparison.Ordinal);
+                            int idx = innerXml.IndexOf(MakeOpenTag(tag), StringComparison.Ordinal);
                             if(idx >= 0)
                             {
                                 // we have a match ;)
-                                int end = innerXML.IndexOf(MakeCloseTag(tag), StringComparison.Ordinal);
+                                int end = innerXml.IndexOf(MakeCloseTag(tag), StringComparison.Ordinal);
                                 int properStart = (idx + MakeOpenTag(tag).Length);
-                                string val = innerXML.Substring(properStart, (end - properStart));
+                                string val = innerXml.Substring(properStart, (end - properStart));
                                 result.Append(string.Concat(MakeOpenTag(tag), val, MakeCloseTag(tag)));
                             }
                         }
@@ -450,7 +453,7 @@ namespace Dev2.Data.Util
                 //TODO, EMPTY CATCH, Please add reasoning
             }
 
-            result.Append(MakeCloseTag(_adlRoot));
+            result.Append(MakeCloseTag(AdlRoot));
 
             return result.ToString();
         }
@@ -477,7 +480,7 @@ namespace Dev2.Data.Util
             {
                 if(isFragment)
                 {
-                    result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
+                    result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
                 }
                 else
                 {
@@ -485,13 +488,13 @@ namespace Dev2.Data.Util
                     xDoc.LoadXml(result);
                     if(xDoc.DocumentElement != null && xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
                     {
-                        result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
+                        result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
                     }
                 }
             }
             else
             {
-                result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
+                result = string.Concat(MakeOpenTag(AdlRoot), result, MakeCloseTag(AdlRoot));
             }
 
             return result;
@@ -532,7 +535,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool IsMSXmlBugNode(string value)
+        public static bool IsMsXmlBugNode(string value)
         {
             bool result = value == "#text" || value == "#cdata-section";
 
@@ -556,7 +559,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="dataList"></param>
         /// <returns></returns>
-        public static bool isNullADL(string dataList)
+        public static bool IsNullAdl(string dataList)
         {
             bool result = false;
 
@@ -566,7 +569,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                if(dataList == _emptyTag)
+                if(dataList == EmptyTag)
                 {
                     result = true;
                 }
@@ -600,7 +603,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        public static bool isNullInput(string inputs)
+        public static bool IsNullInput(string inputs)
         {
             bool result = false;
 
@@ -636,12 +639,12 @@ namespace Dev2.Data.Util
         /// <summary>
         /// Used to remove &lt; and &gt; from HTML data
         /// </summary>
-        /// <param name="HTML"></param>
+        /// <param name="html"></param>
         /// <returns></returns>
-        public static string RemoveHTMLEncoding(string HTML)
+        public static string RemoveHtmlEncoding(string html)
         {
-            string resultHTML = HTML.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
-            return resultHTML;
+            string resultHtml = html.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
+            return resultHtml;
         }
 
         /// <summary>
@@ -690,9 +693,9 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static string CDATAWrapText(string data)
+        public static string CdataWrapText(string data)
         {
-            return (string.Concat(_cdataStart, data, _cdataEnd));
+            return (string.Concat(CdataStart, data, CdataEnd));
         }
 
         /// <summary>
@@ -700,10 +703,10 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static string CDATAUnwrapText(string data)
+        public static string CdataUnwrapText(string data)
         {
             data = data.Replace("&lt;", "<").Replace("&gt;", ">");
-            return (data.Replace(_cdataStart, "").Replace(_cdataEnd, ""));
+            return (data.Replace(CdataStart, "").Replace(CdataEnd, ""));
         }
 
         /// <summary>
@@ -712,16 +715,16 @@ namespace Dev2.Data.Util
         /// <param name="field"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string CDATAWrapHTML(string field, string value)
+        public static string CdataWrapHtml(string field, string value)
         {
             string result = value;
 
             if(field.ToLower() == "fragment" || field.Equals("FormView"))
             {
                 // value.Replace("<", "&lt;").Replace(">", "&gt;")
-                if(!value.Contains(_cdataStart))
+                if(!value.Contains(CdataStart))
                 {
-                    result = string.Concat(_cdataStart, value, _cdataEnd);
+                    result = string.Concat(CdataStart, value, CdataEnd);
                 }
             }
 
@@ -733,21 +736,21 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string CDATAUnwrapHTML(string value)
+        public static string CdataUnwrapHtml(string value)
         {
             string result = value;
             result = result.Replace("&lt;", "<").Replace("&gt;", ">");
             result = result.Replace("&amp;lt;", "<").Replace("&amp;gt;", ">");
             while(result.Contains("<![CDATA"))
             {
-                result = result.Replace(_cdataStart, "");
-                result = result.Replace(_cdataEnd, "");
+                result = result.Replace(CdataStart, "");
+                result = result.Replace(CdataEnd, "");
             }
             return result;
         }
 
         /// <summary>
-        /// Used to determin if a tag is a system tag or not
+        /// Used to determine if a tag is a system tag or not
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
@@ -777,7 +780,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
         {
-            StringBuilder result = new StringBuilder("<" + _adlRoot + ">");
+            StringBuilder result = new StringBuilder("<" + AdlRoot + ">");
 
             Dictionary<string, string> rsMap = new Dictionary<string, string>();
 
@@ -794,22 +797,22 @@ namespace Dev2.Data.Util
                         {
                             tmp = rsMap[d.RecordSetName];
                         }
-                        string _name;
+                        string name;
                         if(d.Name.Contains("."))
                         {
-                            _name = d.Name.Split('.')[1];
+                            name = d.Name.Split('.')[1];
                         }
                         else
                         {
-                            _name = d.Name;
+                            name = d.Name;
                         }
                         if(withData)
                         {
-                            tmp = string.Concat(tmp, Environment.NewLine, "<", _name, ">", d.RawValue, "</", _name, ">");
+                            tmp = string.Concat(tmp, Environment.NewLine, "<", name, ">", d.RawValue, "</", name, ">");
                         }
                         else
                         {
-                            tmp = string.Concat(tmp, Environment.NewLine, "<", _name, "/>");
+                            tmp = string.Concat(tmp, Environment.NewLine, "<", name, "/>");
                         }
 
 
@@ -843,7 +846,7 @@ namespace Dev2.Data.Util
                 });
 
             result.Append(Environment.NewLine);
-            result.Append("</" + _adlRoot + ">");
+            result.Append("</" + AdlRoot + ">");
 
             return result.ToString();
         }
@@ -878,7 +881,7 @@ namespace Dev2.Data.Util
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, (isInput));
 
                 // open datashape
-                result.Append(string.Concat("<", _adlRoot, ">"));
+                result.Append(string.Concat("<", AdlRoot, ">"));
                 result.Append(Environment.NewLine);
 
                 // append scalar shape
@@ -888,7 +891,7 @@ namespace Dev2.Data.Util
 
                 // close datashape
                 result.Append(Environment.NewLine);
-                result.Append(string.Concat("</", _adlRoot, ">"));
+                result.Append(string.Concat("</", AdlRoot, ">"));
             }
 
             return result.ToString();
@@ -929,11 +932,11 @@ namespace Dev2.Data.Util
                 IRecordSetCollection recCol = isDbService ?
                     DataListFactory.CreateRecordSetCollectionForDbService(defs, !(isInput)) :
                     DataListFactory.CreateRecordSetCollection(defs, !(isInput));
-                
+
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
 
                 // open datashape
-                result.Append(string.Concat("<", _adlRoot, ">"));
+                result.Append(string.Concat("<", AdlRoot, ">"));
                 result.Append(Environment.NewLine);
 
                 // do we want to do funky things ?!
@@ -949,7 +952,7 @@ namespace Dev2.Data.Util
 
                 // close datashape
                 result.Append(Environment.NewLine);
-                result.Append(string.Concat("</", _adlRoot, ">"));
+                result.Append(string.Concat("</", AdlRoot, ">"));
             }
 
             return result.ToString();
@@ -993,7 +996,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static bool isRootVariable(string expression)
+        public static bool IsRootVariable(string expression)
         {
             bool result = true;
 
@@ -1071,7 +1074,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
+
         /// <summary>
         /// Strips the leading and trailing brackets from value.
         /// </summary>
@@ -1113,7 +1116,7 @@ namespace Dev2.Data.Util
         {
             return !string.IsNullOrEmpty(value) && value.StartsWith(OpeningSquareBrackets);
         }
-        
+
         /// <summary>
         /// Get the index of the closing tags in a variable
         /// </summary>
@@ -1121,9 +1124,9 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static int IndexOfClosingTags(string value)
         {
-            if (string.IsNullOrEmpty(value))
+            if(string.IsNullOrEmpty(value))
             {
-                return  -1;
+                return -1;
             }
 
             return value.LastIndexOf(ClosingSquareBrackets, StringComparison.Ordinal);
@@ -1215,7 +1218,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
+
 
         /// <summary>
         /// Determines if recordset has a star index
@@ -1224,7 +1227,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsStarIndex(string rs)
         {
-            if (string.IsNullOrEmpty(rs))
+            if(string.IsNullOrEmpty(rs))
             {
                 return false;
             }
@@ -1239,7 +1242,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsRecordsetOpeningBrace(string value)
         {
-            if (string.IsNullOrEmpty(value))
+            if(string.IsNullOrEmpty(value))
             {
                 return false;
             }
@@ -1409,7 +1412,7 @@ namespace Dev2.Data.Util
         }
 
         //used in the replace node method
-        private static readonly HashSet<char> _base64Characters = new HashSet<char>
+        private static readonly HashSet<char> Base64Characters = new HashSet<char>
             { 
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 
@@ -1429,7 +1432,7 @@ namespace Dev2.Data.Util
             {
                 return false;
             }
-            if(value.Any(c => !_base64Characters.Contains(c)))
+            if(value.Any(c => !Base64Characters.Contains(c)))
             {
                 return false;
             }
@@ -1483,7 +1486,7 @@ namespace Dev2.Data.Util
             {
                 using(TextReader tr = new StringReader(trimedData))
                 {
-                    using(XmlReader reader = XmlReader.Create(tr, _isXmlReaderSettings))
+                    using(XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
                     {
 
                         try
@@ -1546,8 +1549,8 @@ namespace Dev2.Data.Util
         {
             IList<string> result = new List<string>();
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-            IBinaryDataListEntry Entry = DataListFactory.CreateDataListCompiler().Evaluate(currentDataList, enActionType.User, expression, false, out errors);
-            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(Entry);
+            IBinaryDataListEntry entry = DataListFactory.CreateDataListCompiler().Evaluate(currentDataList, enActionType.User, expression, false, out errors);
+            IDev2DataListEvaluateIterator expressionIterator = Dev2ValueObjectFactory.CreateEvaluateIterator(entry);
             colItr.AddIterator(expressionIterator);
 
             while(colItr.HasMoreData())
@@ -1565,17 +1568,17 @@ namespace Dev2.Data.Util
         public static IList<string> GetRegionsFromExpression(string expression)
         {
             // Retrieve all the regions from an expression
-            const string openRegion = OpeningSquareBrackets;
-            const string closeRegion = ClosingSquareBrackets;
+            const string OpenRegion = OpeningSquareBrackets;
+            const string CloseRegion = ClosingSquareBrackets;
             StringBuilder expressionBuilder = new StringBuilder();
-            expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion, StringComparison.Ordinal), expression.LastIndexOf(closeRegion, StringComparison.Ordinal) - expression.IndexOf(openRegion, StringComparison.Ordinal)));
+            expressionBuilder.Append(expression.Substring(expression.IndexOf(OpenRegion, StringComparison.Ordinal), expression.LastIndexOf(CloseRegion, StringComparison.Ordinal) - expression.IndexOf(OpenRegion, StringComparison.Ordinal)));
             string expressionString = (expressionBuilder.ToString().Remove(0, 2));
             expressionString = expressionString.Remove(expressionString.Length - 2, 2);
             expressionBuilder.Clear().Append(expressionString);
             // find the text before the next open region
-            List<string> regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
+            List<string> regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(OpenRegion, StringComparison.Ordinal)) };
             // if there are still regions
-            if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
+            if(expressionBuilder.ToString().Contains(OpenRegion) && expressionBuilder.ToString().Contains(CloseRegion))
             {
                 regions.AddRange(GetRegionsFromExpression(expressionBuilder.ToString()));
             }
@@ -1594,9 +1597,9 @@ namespace Dev2.Data.Util
         public static string AdjustForEncodingIssues(string payload)
         {
             string trimedData = payload.Trim();
-            var isXML = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
+            var isXml = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
 
-            if(!isXML)
+            if(!isXml)
             {
                 // we need to adjust. there might be a silly encoding issue with first char!
                 if(trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')

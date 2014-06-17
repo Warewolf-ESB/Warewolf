@@ -70,7 +70,7 @@ namespace Dev2.DataList.Contract.Builders
                 string val = tmp.Value;
 
                 // correction, we now need to support recursive evaluation ;(
-                if(!DataListUtil.isRootVariable(exp))
+                if(!DataListUtil.IsRootVariable(exp))
                 {
                     ErrorResultTO errors;
                     var tmpToken = _c.Evaluate(_bdl.UID, enActionType.User, exp, true, out errors);

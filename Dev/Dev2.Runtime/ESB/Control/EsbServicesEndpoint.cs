@@ -365,7 +365,8 @@ namespace Dev2.Runtime.ESB.Control
                 if(fetchRemoteResource != null)
                 {
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
-                    dataObject.RemoteInvokeResultShape = fetchRemoteResource.DataList;
+                    var remoteDataList = fetchRemoteResource.DataList;
+                    dataObject.RemoteInvokeResultShape = remoteDataList;
                 }
             }
         }

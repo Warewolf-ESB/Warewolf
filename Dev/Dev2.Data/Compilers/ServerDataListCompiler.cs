@@ -1832,7 +1832,7 @@ namespace Dev2.Server.Datalist
                     // this block of logic got stuck at the bottom.... Quite key to recursive evaluation.
                     // must stay at this level since it triggers the root level evaluation behavior required for upsert ;)
                     // else you get the value, not the expression.
-                    if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
+                    if(rules.EvaluateToRootOnly && DataListUtil.IsRootVariable(rules.CompiledExpression))
                     {
                         // Create a new entry for return ;)
                         string error;
@@ -1861,7 +1861,7 @@ namespace Dev2.Server.Datalist
                 }
 
                 // not entirely sure how this block gets hit... 
-                if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
+                if(rules.EvaluateToRootOnly && DataListUtil.IsRootVariable(rules.CompiledExpression))
                 {
                     // Create a new entry for return ;)
                     string error;

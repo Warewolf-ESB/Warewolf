@@ -13,16 +13,13 @@ using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
-using Dev2.Studio.Controller;
+// ReSharper disable RedundantUsingDirective
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
-using Dev2.Threading;
 using Dev2.Util;
+// ReSharper restore RedundantUsingDirective
 
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio
 // ReSharper restore CheckNamespace
