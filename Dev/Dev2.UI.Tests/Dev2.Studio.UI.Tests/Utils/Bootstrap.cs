@@ -159,7 +159,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // Just needs the remote resources now ;(
                 AmendRemoteConfigForTest();
 
-                StartServer(RemoteServer);
+                StartServer();
 
                 Thread.Sleep(WaitMS);
             }
