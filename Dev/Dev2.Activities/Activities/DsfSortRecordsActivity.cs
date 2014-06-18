@@ -9,6 +9,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -80,6 +81,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     allErrors.AddError(error);
+                    IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => SortField);
+                    var single = rule.Check();
+                    if(single!= null)
+                        allErrors.AddError(single.Message);
 
                     // Check for fields
                     if(rsData != null && rsData.HasField(sortField))

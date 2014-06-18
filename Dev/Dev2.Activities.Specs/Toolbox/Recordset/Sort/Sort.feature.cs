@@ -752,6 +752,227 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort 2 columns backwards")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void Sort2ColumnsBackwards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort 2 columns backwards", ((string[])(null)));
+#line 303
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table33.AddRow(new string[] {
+                        "rs(1).a",
+                        "Zambia"});
+            table33.AddRow(new string[] {
+                        "rec(1).a",
+                        "Mangolia"});
+            table33.AddRow(new string[] {
+                        "rs(2).a",
+                        "America"});
+            table33.AddRow(new string[] {
+                        "rec(2).a",
+                        "Australia"});
+#line 304
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table33, "Given ");
+#line 310
+ testRunner.And("I sort a record \"[[rs(*).a]],[[rec(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 311
+ testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 312
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 313
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table34.AddRow(new string[] {
+                        "[[rs(*).a]],[[rec(*).a]] = America",
+                        "Backwards"});
+            table34.AddRow(new string[] {
+                        "",
+                        ""});
+#line 314
+ testRunner.And("the debug inputs as", ((string)(null)), table34, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table35.AddRow(new string[] {
+                        "[[rs(*).a]],[[rec(*).a]] = America"});
+#line 318
+ testRunner.And("the debug output as", ((string)(null)), table35, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort 2 columns Forwards")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void Sort2ColumnsForwards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort 2 columns Forwards", ((string[])(null)));
+#line 323
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table36.AddRow(new string[] {
+                        "rs(1).a",
+                        "Zambia"});
+            table36.AddRow(new string[] {
+                        "rec(1).a",
+                        "Mangolia"});
+            table36.AddRow(new string[] {
+                        "rs(2).a",
+                        "America"});
+            table36.AddRow(new string[] {
+                        "rec(2).a",
+                        "Australia"});
+#line 324
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table36, "Given ");
+#line 330
+ testRunner.And("I sort a record \"[[rs(*).a]],[[rec(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 331
+ testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 332
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 333
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table37.AddRow(new string[] {
+                        "[[rs(*).a]],[[rec(*).a]] = America",
+                        "Forward"});
+#line 334
+ testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table38.AddRow(new string[] {
+                        "[[rs(*).a]],[[rec(*).a]] = Zambia"});
+#line 337
+ testRunner.And("the debug output as", ((string)(null)), table38, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort Recordset without field Forwards")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void SortRecordsetWithoutFieldForwards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort Recordset without field Forwards", ((string[])(null)));
+#line 341
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table39.AddRow(new string[] {
+                        "rs(1).a",
+                        "Zambia"});
+            table39.AddRow(new string[] {
+                        "rec(1).a",
+                        "Mangolia"});
+            table39.AddRow(new string[] {
+                        "rs(2).a",
+                        "America"});
+            table39.AddRow(new string[] {
+                        "rec(2).a",
+                        "Australia"});
+#line 342
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table39, "Given ");
+#line 348
+ testRunner.And("I sort a record \"[[rs(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
+ testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 350
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 351
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table40.AddRow(new string[] {
+                        "[[rs(1).a]] = Zambia",
+                        ""});
+            table40.AddRow(new string[] {
+                        "[[rs(2).a]] = America",
+                        "Forward"});
+#line 352
+ testRunner.And("the debug inputs as", ((string)(null)), table40, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 356
+ testRunner.And("the debug output as", ((string)(null)), table41, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort Recordset without field Backwards")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void SortRecordsetWithoutFieldBackwards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort Recordset without field Backwards", ((string[])(null)));
+#line 359
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table42.AddRow(new string[] {
+                        "rs(1).a",
+                        "Zambia"});
+            table42.AddRow(new string[] {
+                        "rec(1).a",
+                        "Mangolia"});
+            table42.AddRow(new string[] {
+                        "rs(2).a",
+                        "America"});
+            table42.AddRow(new string[] {
+                        "rec(2).a",
+                        "Australia"});
+#line 360
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table42, "Given ");
+#line 366
+ testRunner.And("I sort a record \"[[rs(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 367
+ testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 369
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table43.AddRow(new string[] {
+                        "[[rs(1).a]] = Zambia",
+                        ""});
+            table43.AddRow(new string[] {
+                        "[[rs(2).a]] = America",
+                        "Backwards"});
+#line 370
+ testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+#line 374
+ testRunner.And("the debug output as", ((string)(null)), table44, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

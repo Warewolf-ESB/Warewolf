@@ -303,6 +303,28 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(res);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute")]
+        public void DsfSortRecordsActivity_Execute_MultipleColumnSort_ExpectError()
+        {
+            SetupArguments(
+                            TestData = ActivityStrings.SortDataList_Shape
+                          , TestData = ActivityStrings.SortDataList
+                          , "[[recset().DoesntExisit]],[[recset().DoesntExisit]]"
+                          , "Forward"
+                          );
+
+            TestData = ActivityStrings.SortDataList;
+            IDSFDataObject result = ExecuteProcess();
+
+            var res = Compiler.FetchErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual("1 The sort field is invalid. You may only sort on a single RecordSet columns", res.Trim());
+        }
+
         #endregion Negative Test Cases
 
         #region Get Input/Output Tests
@@ -353,6 +375,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(SortField, act.SortField);
         }
+
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -467,8 +491,78 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(SortField, dsfForEachItems[0].Name);
             Assert.AreEqual(SortField, dsfForEachItems[0].Value);
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute")]
+        public void DsfSortRecordsActivity_Execute_GetDebugInputs_ExpectCorrectInputs()
+        {
+            DsfSortRecordsActivity act = SetupArgumentsReturnObj(
+                            TestData = ActivityStrings.SortDataList_Shape
+                          , TestData = ActivityStrings.SortDataList
+                          , "[[recset().DoesntExisit]]"
+                          , "Forward"
+                          );
+
+            TestData = ActivityStrings.SortDataList;
+            IDSFDataObject result = ExecuteProcess(isDebug:true);
+            var debug = act.GetDebugInputs(null);
+            Assert.AreEqual(debug.Count,2);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+          }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute")]
+        public void DsfSortRecordsActivity_Execute_GetDebugOutputs_ExpectCorrectCount()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfSortRecordsActivity { SortField = "[[recset().Id]]", SelectedSort = "Forward" }
+
+            };
+
+            var act = SetupArgumentsReturnObj(
+                            ActivityStrings.SortDataList_Shape
+                          , ActivityStrings.SortDataList
+                          , "[[recset().Id]]"
+                          , "Forward"
+                          
+                          );
+            IDSFDataObject result = ExecuteProcess(isDebug:true);
 
 
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            var debugOut = act.GetDebugOutputs(null);
+            Assert.AreEqual(1,debugOut.Count);
+            Assert.AreEqual(10,debugOut[0].ResultsList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute")]
+        public void DsfSortRecordsActivity_Execute_SingleRecordSetRuleCalled_ExpectNoResultsSortFieldIncorrect()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfSortRecordsActivity { SortField = "[[recset()]]", SelectedSort = "Forward" }
+
+            };
+
+            var act = SetupArgumentsReturnObj(
+                            ActivityStrings.SortDataList_Shape
+                          , ActivityStrings.SortDataList
+                          , "[[recset()]]"
+                          , "Forward"
+
+                          );
+            IDSFDataObject result = ExecuteProcess(isDebug: true);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            var debugOut = act.GetDebugOutputs(null);
+            Assert.AreEqual(0, debugOut.Count);
+        }
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string sortField, string selectedSort)
@@ -481,7 +575,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = currentDL;
             TestData = testData;
         }
+        private DsfSortRecordsActivity SetupArgumentsReturnObj(string currentDL, string testData, string sortField, string selectedSort)
+        {
+            var act = new DsfSortRecordsActivity { SortField = sortField, SelectedSort = selectedSort };
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
 
+            CurrentDl = currentDL;
+            TestData = testData;
+            return  act;
+        }
         #endregion Private Test Methods
     }
 }

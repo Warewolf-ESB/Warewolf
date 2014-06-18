@@ -2,6 +2,10 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.Providers.Errors;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.SortRecords
 {
@@ -31,7 +35,7 @@ namespace Dev2.Activities.Designers2.SortRecords
         {
             var viewModel = (SortRecordsDesignerViewModel)d;
             var value = e.NewValue as string;
-
+            
             if(!string.IsNullOrWhiteSpace(value))
             {
                 viewModel.SelectedSort = value;
@@ -40,6 +44,18 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public override void Validate()
         {
+
+
+            IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => GetProperty<string>("SortField"));
+            var single = rule.Check();
+            if (single != null)
+            {
+                if (Errors == null )
+                    Errors = new List<IActionableErrorInfo>();
+                Errors.Add(single);
+            }
         }
+
+
     }
 }

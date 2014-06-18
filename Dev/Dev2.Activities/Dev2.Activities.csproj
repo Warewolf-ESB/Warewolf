@@ -263,6 +263,7 @@
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
+    <Compile Include="Validation\IsSingleRecordSetRule.cs" />
     <Compile Include="Validation\IsValidExpressionRule.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -121,7 +121,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true)
+        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true,bool isDebugMode=false)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -165,7 +165,8 @@ namespace ActivityUnitTests
                     // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                     //       if this is NOT provided which will cause the tests to fail!
                     ServerID = Guid.NewGuid(),
-                    ExecutingUser = User
+                    ExecutingUser = User,
+                    IsDebug = isDebugMode
                 };
 
             }
