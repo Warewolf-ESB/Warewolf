@@ -19,9 +19,6 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-REM ** Start The SFTPServer **
-START "%DeploymentDirectory%\SFTPServer.exe" /D %DeploymentDirectory% "SFTPServer.exe"
-
 REM ** Kill The Server **
 
 taskkill /im "Warewolf Server.exe"
@@ -33,7 +30,7 @@ REM ** Start The Server **
 
 START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
 
-REM  Wait 40 seconds ;)
-ping -n 40 127.0.0.1 > nul
+REM  Wait 30 seconds ;)
+ping -n 30 127.0.0.1 > nul
 
 exit 0
