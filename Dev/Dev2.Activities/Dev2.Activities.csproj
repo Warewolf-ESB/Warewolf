@@ -201,7 +201,7 @@
     <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\SequenceActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
-    <Compile Include="Hosting\WorkflowInstanceInfo.cs" />
+    <Compile Include="BussinessLogic\Hosting\WorkflowInstanceInfo.cs" />
     <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
     <Compile Include="BussinessLogic\FindRecsetOptions.cs" />
     <Compile Include="BussinessLogic\IFindRecsetOptions.cs" />

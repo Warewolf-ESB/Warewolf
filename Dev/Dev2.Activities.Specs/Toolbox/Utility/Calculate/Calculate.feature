@@ -119,3 +119,26 @@ Scenario: Calculate using isnumber and blank
 #	And the debug output as 
 #	|                 |
 #	| [[result]] = 21 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
