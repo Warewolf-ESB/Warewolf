@@ -5,7 +5,7 @@
         <DeploymentItem filename="..\..\TestBinaries\" />
     </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="Scripts\TestAutomationScripts\Integration\Startup.bat" cleanupScript="Scripts\TestAutomationScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Integration\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Integration\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="1000" />

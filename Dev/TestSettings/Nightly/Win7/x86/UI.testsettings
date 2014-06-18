@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings name="Nightly UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote UI test run.</Description>
   <Deployment>
       <DeploymentItem filename="TestBinaries\" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="Startup - Studio.bat" cleanupScript="Cleanup - Studio.bat" />
+  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Buckets size="1" />
