@@ -9,8 +9,9 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Server.DataList.Translators
+// ReSharper restore CheckNamespace
 {
     internal abstract class StudioTranslator
     {
@@ -217,14 +218,21 @@ namespace Dev2.Server.DataList.Translators
                                 if(!procssesNamespaces.Contains(c.Name))
                                 {
                                     // build columns
+                                    var columnDirection = enDev2ColumnArgumentDirection.None;
                                     foreach(XmlNode subc in c.ChildNodes)
                                     {
                                         // It is possible for the .Attributes property to be null, a check should be added
                                         if(subc.Attributes != null)
                                         {
                                             descAttribute = subc.Attributes["Description"];
+                                            columnIODirection = subc.Attributes["ColumnIODirection"];
+                                            if(columnIODirection != null)
+                                            {
+                                                Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                            }
                                         }
-                                        cols.Add(descAttribute != null ? DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value) : DataListFactory.CreateDev2Column(subc.Name, String.Empty));
+
+                                        cols.Add(descAttribute != null ? DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value, true, columnDirection) : DataListFactory.CreateDev2Column(subc.Name, String.Empty, true, columnDirection));
                                     }
                                     string myError;
                                     // It is possible for the .Attributes property to be null, a check should be added
@@ -233,8 +241,8 @@ namespace Dev2.Server.DataList.Translators
                                         descAttribute = c.Attributes["Description"];
                                         columnIODirection = c.Attributes["ColumnIODirection"];
                                     }
-                                    string descriptionValue = "";
-                                    var columnDirection = enDev2ColumnArgumentDirection.None;
+                                    var descriptionValue = "";
+                                    columnDirection = enDev2ColumnArgumentDirection.None;
                                     if(descAttribute != null)
                                     {
                                         descriptionValue = descAttribute.Value;

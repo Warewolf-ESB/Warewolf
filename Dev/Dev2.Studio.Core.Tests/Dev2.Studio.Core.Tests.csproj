@@ -244,6 +244,7 @@
     <Compile Include="ShareTests.cs" />
     <Compile Include="TestUtil.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
+    <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
@@ -463,7 +464,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Diagnostics\Debug\" />
-    <Folder Include="UtilsTests\ActivityDesignerUtilsTests\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />

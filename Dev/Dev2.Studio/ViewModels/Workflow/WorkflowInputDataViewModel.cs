@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -23,8 +24,9 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Workflow;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
+// ReSharper restore CheckNamespace
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
@@ -371,16 +373,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 DataList.TryGetEntry(itemToAdd.Recordset, out recordset, out error);
                 if(recordset != null)
                 {
-                    IList<Dev2Column> recsetCols = recordset.Columns;
-                    IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+                    IList<Dev2Column> recsetCols = recordset.Columns.Where(cc=>cc.ColumnIODirection == enDev2ColumnArgumentDirection.Input|| cc.ColumnIODirection == enDev2ColumnArgumentDirection.Both).ToList();
+                    var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
                     IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-                    IDataListItem lastItem = dataListItems.Last();
-                    int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    string indexString = lastItem.RecordsetIndex;
-                    int indexNum = Convert.ToInt32(indexString) + 1;
-                    IEnumerable<IDataListItem> lastRow = dataListItems.Where(c => c.RecordsetIndex == indexString);
-                    bool dontAddRow = true;
-                    foreach(IDataListItem item in lastRow)
+                    var lastItem = dataListItems.Last();
+                    var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                    var indexString = lastItem.RecordsetIndex;
+                    var indexNum = Convert.ToInt32(indexString) + 1;
+                    var lastRow = dataListItems.Where(c => c.RecordsetIndex == indexString);
+                    var dontAddRow = true;
+                    foreach(var item in lastRow)
                     {
                         if(item.Value != string.Empty)
                         {
@@ -403,12 +405,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
         {
             indexToSelect = 1;
-            bool itemsRemoved = false;
+            var itemsRemoved = false;
             if(itemToRemove != null && itemToRemove.IsRecordset)
             {
-                // ReSharper disable once InconsistentNaming
+                // ReSharper disable InconsistentNaming
                 IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
-                int numberOfRows = NumberOfRows.Count();
+                // ReSharper restore InconsistentNaming
+                var numberOfRows = NumberOfRows.Count();
                 List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.RecordsetIndex == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
 
                 if(numberOfRows == 2)

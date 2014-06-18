@@ -16,11 +16,19 @@ namespace Dev2.ViewModels.Workflow
 
             if(dataList != null)
             {
-                var listOfEntries = dataList.FetchAllEntries();
+                var listOfEntries = dataList.FetchScalarEntries();
 
+                // process scalars ;)
                 foreach(var entry in listOfEntries
-                    .Where(e => (e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
-                                 e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
+                    .Where(e => ((e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
+                                 e.ColumnIODirection == enDev2ColumnArgumentDirection.Both))))
+                {
+                    result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
+                }
+
+                // now process recordsets ;)
+                listOfEntries = dataList.FetchRecordsetEntries();
+                foreach(var entry in listOfEntries)
                 {
                     result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
                 }
@@ -38,23 +46,29 @@ namespace Dev2.ViewModels.Workflow
                 if(sizeOfCollection == 0) { sizeOfCollection++; }
                 var count = 0;
 
+                var fields = dataListEntry.Columns.Where(c => c.ColumnIODirection == enDev2ColumnArgumentDirection.Both || c.ColumnIODirection == enDev2ColumnArgumentDirection.Input).ToList();
+
                 while(count < sizeOfCollection)
                 {
                     string error;
                     var items = dataListEntry.FetchRecordAt(count + 1, out error);
                     foreach(var item in items)
                     {
-                        IDataListItem singleRes = new DataListItem();
-                        singleRes.IsRecordset = true;
-                        singleRes.Recordset = item.Namespace;
-                        singleRes.Field = item.FieldName;
-                        singleRes.RecordsetIndex = (count + 1).ToString(CultureInfo.InvariantCulture);
-                        singleRes.Value = item.TheValue;
+                        // check field mapping ;)
+                        if(fields.Any(f => f.ColumnName == item.FieldName))
+                        {
+                            IDataListItem singleRes = new DataListItem();
+                            singleRes.IsRecordset = true;
+                            singleRes.Recordset = item.Namespace;
+                            singleRes.Field = item.FieldName;
+                            singleRes.RecordsetIndex = (count + 1).ToString(CultureInfo.InvariantCulture);
+                            singleRes.Value = item.TheValue;
 
-                        singleRes.DisplayValue = item.DisplayValue;
-                        var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
-                        singleRes.Description = desc == null ? null : desc.ColumnDescription;
-                        result.Add(singleRes);
+                            singleRes.DisplayValue = item.DisplayValue;
+                            var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
+                            singleRes.Description = desc == null ? null : desc.ColumnDescription;
+                            result.Add(singleRes);
+                        }
                     }
                     count++;
                 }

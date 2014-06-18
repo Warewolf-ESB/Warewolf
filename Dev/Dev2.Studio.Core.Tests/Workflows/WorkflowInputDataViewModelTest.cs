@@ -189,6 +189,87 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowInputDataViewModel_AddRow")]
+        public void SetWorkflowInputData_AddRow_WhenNotAllColumnsInput_ExpectNewRowWithOnlyInputColumns()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var itemToAdd = new DataListItem { DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", IsRecordset = true, RecordsetIndex = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1" };
+
+            //------------Execute Test---------------------------
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            workflowInputDataViewModel.AddRow(itemToAdd);
+
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowInputDataViewModel_AddRow")]
+        public void SetWorkflowInputData_AddRow_WhenAddingScalarAndNotAllColumnsHaveInput_ExpectNoNewInputs()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><scalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var itemToAdd = new DataListItem { DisplayValue = "scalar", Field = "scalar", IsRecordset = false, Value = "1" };
+
+            //------------Execute Test---------------------------
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+            inputs[0].Value = "1"; // trick it into thinking this happened from the UI ;)
+            workflowInputDataViewModel.AddRow(itemToAdd);
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+        }
+
         #endregion SetWorkflowInputData
 
         #region CloseWorkflowTest
@@ -299,7 +380,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_InvokesSendViewInBrowserRequest_RecSet()
         {
             //------------Setup for test--------------------------
-            var datalist = @"<DataList><notInput /><rs ColumnIODirection=""Input""><val ColumnIODirection=""Input""/></rs></DataList>";
+            const string datalist = @"<DataList><notInput /><rs ColumnIODirection=""Input""><val ColumnIODirection=""Input""/></rs></DataList>";
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns("SomeOtherWorkflow");
@@ -321,8 +402,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
-            workflowInputDataViewModel.DebugTO.DataList = datalist;
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTO = { DataList = datalist } };
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.XmlData = @"<DataList><rs><val>1</val></rs><rs><val>2</val></rs></DataList>";
             workflowInputDataViewModel.SetWorkflowInputData();
@@ -342,7 +422,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowInputDataViewModel_ExecuteWorkflowViewInBrowser_InvokesSendViewInBrowserRequest_ScalarsOnly()
         {
             //------------Setup for test--------------------------
-            var datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
+            const string datalist = @"<DataList><val IsEditable=""True"" ColumnIODirection=""Input""/><res IsEditable=""True"" ColumnIODirection=""Input""/></DataList>";
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns("AnotherWorkflow");
@@ -365,8 +445,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
-            workflowInputDataViewModel.DebugTO.DataList = datalist;
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTO = { DataList = datalist } };
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.XmlData = @"<DataList><val>1</val><res>2</res></DataList>";
             workflowInputDataViewModel.SetWorkflowInputData();
@@ -426,8 +505,8 @@ namespace Dev2.Core.Tests.Workflows
 
         private OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
-            int numberOfRecords = 6;
-            int numberOfRecordFields = 2;
+            const int numberOfRecords = 6;
+            const int numberOfRecordFields = 2;
             OptomizedObservableCollection<IDataListItem> items = new OptomizedObservableCollection<IDataListItem>();
             items.AddRange(GetDataListItemScalar());
             items.AddRange(CreateTestDataListItemRecords(numberOfRecords, numberOfRecordFields));

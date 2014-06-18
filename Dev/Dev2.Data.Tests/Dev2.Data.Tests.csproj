@@ -175,9 +175,7 @@
     <EmbeddedResource Include="TestingResources\SampleTFS.trx" />
     <EmbeddedResource Include="TestingResources\SampleTFSNoNamespace.trx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

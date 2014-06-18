@@ -5,8 +5,9 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Server.DataList.Translators
+// ReSharper restore CheckNamespace
 {
     internal sealed class StudioDebugTranslator : StudioTranslator, IDataListTranslator
     {
@@ -74,8 +75,5 @@ namespace Dev2.Server.DataList.Translators
         #region Private Methods
 
         #endregion
-
-
-
     }
 }
