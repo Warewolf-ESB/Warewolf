@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Management;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -42,6 +43,20 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static int WaitMS = 5000;
 
+        /// <summary>
+        /// Inits the ServerLocation.
+        /// </summary>
+        /// <param name="testCtx">The test CTX.</param>
+        [AssemblyInitialize]
+        public static void AssemblyInit(TestContext testCtx)
+        {
+            if(!File.Exists(ServerLocation) && !File.Exists(StudioLocation))
+            {
+                ServerLocation = Path.Combine(testCtx.DeploymentDirectory, "Warewolf Server.exe");
+                StudioLocation = Path.Combine(testCtx.DeploymentDirectory, "Warewolf Studio.exe");
+            }
+        }
+
         public static void Init()
         {
             var serverProcess = TryGetProcess(ServerProcName);
@@ -66,7 +81,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // remove hanging source that causes issues
                 RemoveProblemServerSources();
 
-                StartServer(ServerLocation);
+                StartServer();
                 StartStudio();
 
                 Thread.Sleep(WaitMS);
@@ -82,9 +97,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         public static void Teardown()
         {
-            if (File.Exists(ServerLocation) && File.Exists(StudioLocation))
+            if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
-                if (ServerProc != null && !ServerProc.HasExited)
+                if(ServerProc != null && !ServerProc.HasExited)
                 {
                     ServerProc.Kill();
                 }
@@ -92,7 +107,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 //Server was deployed and started, stop it now.
                 KillProcess(TryGetProcess(ServerProcName));
 
-                if (StudioProc != null && !StudioProc.HasExited)
+                if(StudioProc != null && !StudioProc.HasExited)
                 {
                     StudioProc.Kill();
                 }
@@ -139,12 +154,15 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static void StartRemoteServer()
         {
-            // Just needs the remote resources now ;(
-            AmendRemoteConfigForTest();
+            if(File.Exists(RemoteServer))
+            {
+                // Just needs the remote resources now ;(
+                AmendRemoteConfigForTest();
 
-            StartServer(RemoteServer);
+                StartServer(RemoteServer);
 
-            Thread.Sleep(WaitMS);
+                Thread.Sleep(WaitMS);
+            }
         }
 
         public static void AmendRemoteConfigForTest()
@@ -246,11 +264,11 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        static void StartServer(string location)
+        static void StartServer()
         {
             const string args = "-t";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = location };
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = ServerLocation };
 
             var started = false;
             var startCnt = 0;
@@ -341,9 +359,9 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static void LogTestRunMessage(string msg, bool isError = false)
         {
-            if (Directory.Exists(Path.GetDirectoryName(LogLocation)))
+            if(Directory.Exists(Path.GetDirectoryName(LogLocation)))
             {
-                if (isError)
+                if(isError)
                 {
                     File.AppendAllText(LogLocation, "ERROR :: " + msg);
                 }
