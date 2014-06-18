@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a local test run.</Description>
-  <Deployment>
-    <DeploymentItem filename="TestBinaries\" />
-  </Deployment>
-  <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Cleanup.bat" />
+<TestSettings name="Acceptance" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote acceptance test run.</Description>
+    <Deployment>
+        <DeploymentItem filename="..\..\TestBinaries\" />
+    </Deployment>
+  <NamingScheme baseName="UT" />
+    <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Cleanup.bat" />
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution>
-    <Hosts skipUnhostableTests="false" />
-    <Timeouts runTimeout="5400000" testTimeout="300000" />
+    <Buckets size="100" />
+    <Timeouts testTimeout="60000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
