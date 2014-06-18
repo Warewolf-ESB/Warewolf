@@ -373,13 +373,123 @@ Scenario: Sort Recordset without field Backwards
 	| [[rs(2).a]] = America | Backwards  |
 	And the debug output as
     |                          |
-
-
-
-
-
-
-
+#
+#The below 4 Test Scenario should be passed after the bug 11997 is fixed
+#Scenario: Sort a recordset forwards by using gaps in input data
+#	Given I have the following recordset to sort
+#	| rs      | value |
+#	| rs(1).a | 10    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 30    |
+#	| rs(2).b | 6     |
+#	| rs(4).b | 4     |
+#	| rs(6).b | 2     |
+#	And I sort a record "[[rs(*).a]]"
+#	And my sort order is "Forward"
+#	When the sort records tool is executed
+#	Then the sorted recordset "[[rs().a]]"  will be 
+#	| rs      | value |
+#	| rs(1).a | 10    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 30    |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| Sort Field       | Sort Order |
+#	| [[rs(1).a]] = 10 |            |
+#	| [[rs(5).a]] = 20 |            |
+#	| [[rs(7).a]] = 30 | Forward    |
+#	And the debug output as
+#	|                  |
+#	| [[rs(1).a]] = 10 |
+#	| [[rs(5).a]] = 20 |
+#	| [[rs(7).a]] = 30 |
+#
+#Scenario: Sort a recordset Backwards by using gaps in input data
+#	Given I have the following recordset to sort
+#	| rs      | value |
+#	| rs(1).a | 10    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 30    |
+#	| rs(2).b | 6     |
+#	| rs(4).b | 4     |
+#	| rs(6).b | 2     |
+#	And I sort a record "[[rs(*).a]]"
+#	And my sort order is "Backward"
+#	When the sort records tool is executed
+#	Then the sorted recordset "[[rs().a]]"  will be 
+#	| rs      | value |
+#	| rs(1).a | 30    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 10    |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| Sort Field       | Sort Order |
+#	| [[rs(1).a]] = 10 |            |
+#	| [[rs(5).a]] = 20 |            |
+#	| [[rs(7).a]] = 30 | Forward    |
+#	And the debug output as
+#	|                  |
+#	| [[rs(1).a]] = 30 |
+#	| [[rs(5).a]] = 20 |
+#	| [[rs(7).a]] = 10 |
+#
+#Scenario: Sort a recordset forwards by using gaps in the input data
+#	Given I have the following recordset to sort
+#	| rs      | value |
+#	| rs(1).a | 10    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 30    |
+#	| rs(2).b | 6     |
+#	| rs(4).b | 4     |
+#	| rs(6).b | 2     |
+#	And I sort a record "[[rs(*).b]]"
+#	And my sort order is "Forward"
+#	When the sort records tool is executed
+#	Then the sorted recordset "[[rs().a]]"  will be 
+#	| rs      | value |
+#	| rs(2).b | 2     |
+#	| rs(3).b | 4     |
+#	| rs(4).b | 6     |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| Sort Field      | Sort Order |
+#	| [[rs(2).b]] = 6 |            |
+#	| [[rs(4).b]] = 4 |            |
+#	| [[rs(6).b]] = 2 | Forward    |
+#	And the debug output as
+#	|                 |
+#	| [[rs(2).b]] = 2 |
+#	| [[rs(4).b]] = 4 |
+#	| [[rs(6).b]] = 6 |
+#
+#Scenario: Sort a recordset Backwards by using gaps in the input data
+#	Given I have the following recordset to sort
+#	| rs      | value |
+#	| rs(1).a | 10    |
+#	| rs(5).a | 20    |
+#	| rs(7).a | 30    |
+#	| rs(2).b | 6     |
+#	| rs(4).b | 4     |
+#	| rs(6).b | 2     |
+#	And I sort a record "[[rs(*).b]]"
+#	And my sort order is "Backward"
+#	When the sort records tool is executed
+#	Then the sorted recordset "[[rs().a]]"  will be 
+#	| rs      | value |
+#	| rs(2).b | 6     |
+#	| rs(3).b | 4     |
+#	| rs(4).b | 2     |
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| Sort Field      | Sort Order |
+#	| [[rs(2).b]] = 6 |            |
+#	| [[rs(4).b]] = 4 |            |
+#	| [[rs(6).b]] = 2 | Backward    |
+#	And the debug output as
+#	|                 |
+#	| [[rs(2).b]] = 6 |
+#	| [[rs(4).b]] = 4 |
+#	| [[rs(6).b]] = 2 |
 
 
 
