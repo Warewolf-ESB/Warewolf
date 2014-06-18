@@ -4,7 +4,7 @@
   <Deployment>
     <DeploymentItem filename="TestBinaries\" />
   </Deployment>
-  <Scripts setupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Startup - With SFTPServer.bat" cleanupScript="\\rsaklfsvrtfsbld\DevelopmentDropOff\Test Automation Scripts\Cleanup - With SFTPServer.bat" />
+    <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="60000" />
