@@ -38,6 +38,8 @@ namespace Dev2.Network
             AuthenticationType = AuthenticationType.Windows;
         }
 
+        public static bool IsShuttingDown { get; private set; }
+
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
             IsAuthorized = true;
@@ -95,6 +97,10 @@ namespace Dev2.Network
         {
             this.LogTrace("*********** Hub connection down");
             IsConnected = false;
+            if(IsShuttingDown)
+            {
+                return;
+            }
             StartReconnectTimer();
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
         }
@@ -234,6 +240,7 @@ namespace Dev2.Network
             // Give 5 seconds, then force a dispose ;)
             try
             {
+                IsShuttingDown = true;
                 HubConnection.Stop(new TimeSpan(0, 0, 5));
             }
             catch(Exception e)
@@ -406,14 +413,6 @@ namespace Dev2.Network
                     var totalToFetch = invoke.Result.ResultParts;
                     for(int q = 0; q < totalToFetch; q++)
                     {
-                        if(messageID == Guid.Empty)
-                        {
-                            var a = 1;
-// ReSharper disable RedundantAssignment
-                            a += 2;
-// ReSharper restore RedundantAssignment
-                        }
-
                         Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
                         Wait(fragmentInvoke, result);
                         if(!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -450,15 +451,15 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(wasRemoved || oldCategoryNode == null)
             {
-            var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
+                var categoryDisplayName = resourceModel.Category == string.Empty ? StringResources.Navigation_Category_Unassigned.ToUpper() : resourceModelCategory;
 
-            var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
-                                  ?? new CategoryTreeViewModel(_eventPublisher, serviceTypeNode, categoryDisplayName, resourceModel.ResourceType);
+                var newCategoryNode = serviceTypeNode.Children.FirstOrDefault(cat => cat.DisplayName.ToUpper() == categoryDisplayName)
+                                      ?? new CategoryTreeViewModel(_eventPublisher, serviceTypeNode, categoryDisplayName, resourceModel.ResourceType);
 
-            var newResourceNode = newCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName)
-                                  ?? new ResourceTreeViewModel(_eventPublisher, newCategoryNode, resourceModel);
+                var newResourceNode = newCategoryNode.Children.FirstOrDefault(res => res.DisplayName == resourceModel.ResourceName)
+                                      ?? new ResourceTreeViewModel(_eventPublisher, newCategoryNode, resourceModel);
 
-            return newResourceNode;
+                return newResourceNode;
 
             }
 
@@ -753,8 +754,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             UpdateIsRefreshing(environment, true);
 
-            if(_asyncWorker != null)
+            if(_asyncWorker != null && !ServerProxy.IsShuttingDown)
             {
+                //  Who the fuck put this in?
                 await _asyncWorker.Start(() =>
                 {
                     if(!environment.IsConnected)

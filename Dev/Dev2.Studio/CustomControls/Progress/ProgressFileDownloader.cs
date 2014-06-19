@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,7 +13,6 @@ using Dev2.Common.Wrappers;
 using Dev2.Common.Wrappers.Interfaces;
 using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
-using System.Linq;
 namespace Dev2.CustomControls.Progress
 {
     public class ProgressFileDownloader : IProgressFileDownloader
@@ -23,7 +23,7 @@ namespace Dev2.CustomControls.Progress
         private readonly ICryptoProvider _cryptoProvider;
         private bool _dontStartUpdate;
         private readonly Window _owner;
-        private string _tmpFileName="";
+        private string _tmpFileName = "";
 
         #region Properties
 
@@ -32,22 +32,21 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region CTOR
-        [ExcludeFromCodeCoverage] 
+        [ExcludeFromCodeCoverage]
         public ProgressFileDownloader(Window owner) // cant cover this because a window needs to be shown to be a parent of something else. 
             : this(new Dev2WebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
         {
             _owner = owner;
         }
-  
-        public static Func<Window, Action, IProgressNotifier> GetProgressDialogViewModel = (owner ,cancelAction) =>
-            {
-                return DialogViewModel(owner, cancelAction);
-            };
-        [ExcludeFromCodeCoverage] 
+
+        public static Func<Window, Action, IProgressNotifier> GetProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
+
+        
+        [ExcludeFromCodeCoverage]
         static IProgressNotifier DialogViewModel(Window owner, Action cancelAction)
         {
             var dialog = new ProgressDialog(owner);
-            dialog.Closed += (sender, args) => { cancelAction(); };
+            dialog.Closed += (sender, args) => cancelAction();
             var dialogViewModel = new ProgressDialogViewModel(cancelAction, dialog.Show, dialog.Close);
             dialog.DataContext = dialogViewModel;
             return dialogViewModel;
@@ -66,19 +65,19 @@ namespace Dev2.CustomControls.Progress
             _webClient.DownloadProgressChanged += OnDownloadProgressChanged;
             _dontStartUpdate = false;
             ShutDownAction = ShutdownAndInstall;
-            
+
         }
 
-        public static void PerformCleanup(IDirectory dir,string path,IFile file)
+        public static void PerformCleanup(IDirectory dir, string path, IFile file)
         {
             try
             {
-                foreach (var v in dir.GetFiles(path).Where(a => a.Contains("tmp")))
+                foreach(var v in dir.GetFiles(path).Where(a => a.Contains("tmp")))
                     file.Delete(v);
             }
-// ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 //best effort.
             }
@@ -101,33 +100,33 @@ namespace Dev2.CustomControls.Progress
         public void Download(Uri address, string tmpFileName, bool dontStartUpdate, string fileName, string checkSum)
         {
             _tmpFileName = tmpFileName;
-            if (_file.Exists(_tmpFileName))
+            if(_file.Exists(_tmpFileName))
             {
                 _file.Delete(_tmpFileName);
             }
-           
+
             _dontStartUpdate = dontStartUpdate;
             _webClient.DownloadFileAsync(address, tmpFileName, tmpFileName);
             _webClient.DownloadFileCompleted += (o, args) =>
                 {
 
-                    if (!args.Cancelled && null==args.Error && PerformCheckSum(tmpFileName,checkSum))
+                    if(!args.Cancelled && null == args.Error && PerformCheckSum(tmpFileName, checkSum))
                     {
 
                         _file.Move(tmpFileName, fileName);
-                        OnDownloadFileCompleted(args,fileName);
+                        OnDownloadFileCompleted(args, fileName);
                     }
-                    else 
+                    else
                     {
                         _file.Delete(tmpFileName);
                         ProgressDialog.Close();
-        
+
                     }
 
-                    
-                  
+
+
                 };
- 
+
             ProgressDialog.Show();
             IsBusyDownloading = true;
         }
@@ -137,10 +136,10 @@ namespace Dev2.CustomControls.Progress
         public bool PerformCheckSum(string tmpFileName, string checkSum)
         {
             StringBuilder sb = new StringBuilder();
-            using (var stream = _file.Open(tmpFileName, FileMode.Open))
+            using(var stream = _file.Open(tmpFileName, FileMode.Open))
             {
                 var hash = _cryptoProvider.ComputeHash(stream);
-                foreach (var b in hash)
+                foreach(var b in hash)
                 {
                     sb.Append(b);
                 }
@@ -170,20 +169,20 @@ namespace Dev2.CustomControls.Progress
         [ExcludeFromCodeCoverage] // cant test this because the DownloadProgressChangedEventArgs has no public ctor
         void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs args)
         {
-          
+
             RehydrateDialog((string)args.UserState, args.ProgressPercentage, args.TotalBytesToReceive);
         }
 
         protected void RehydrateDialog(string fileName, int progressPercent, long totalBytes)
         {
-            ProgressDialog.StatusChanged(fileName,progressPercent,totalBytes);
+            ProgressDialog.StatusChanged(fileName, progressPercent, totalBytes);
         }
 
         #endregion
 
         #region OnDownloadFileCompleted
 
-        void OnDownloadFileCompleted(AsyncCompletedEventArgs args,string fileName)
+        void OnDownloadFileCompleted(AsyncCompletedEventArgs args, string fileName)
         {
             StartUpdate(fileName, args.Cancelled);
         }
@@ -192,7 +191,7 @@ namespace Dev2.CustomControls.Progress
         {
             ProgressDialog.Close();
             IsBusyDownloading = false;
-            if (!cancelled && !_dontStartUpdate)
+            if(!cancelled && !_dontStartUpdate)
             {
                 ShutDownAction(fileName);
             }

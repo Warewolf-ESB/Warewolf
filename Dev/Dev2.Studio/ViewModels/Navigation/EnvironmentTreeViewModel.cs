@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Caliburn.Micro;
+using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -8,11 +14,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Threading;
-using System;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -173,11 +174,14 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         void OnEnvironmentModelPermissionsChanged(object sender, EventArgs eventArgs)
         {
-            NotifyOfPropertyChange(() => IsAuthorized);
-            NotifyOfPropertyChange(() => IsAuthorizedDeployFrom);
-            NotifyOfPropertyChange(() => IsAuthorizedDeployTo);
+            if(_environmentModel != null && !ServerProxy.IsShuttingDown)
+            {
+                NotifyOfPropertyChange(() => IsAuthorized);
+                NotifyOfPropertyChange(() => IsAuthorizedDeployFrom);
+                NotifyOfPropertyChange(() => IsAuthorizedDeployTo);
 
-            DoUpdateBasedOnPermissions();
+                DoUpdateBasedOnPermissions();
+            }
         }
 
         public void DoUpdateBasedOnPermissions()

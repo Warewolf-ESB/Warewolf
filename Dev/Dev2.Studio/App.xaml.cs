@@ -14,9 +14,14 @@ using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
 // ReSharper disable RedundantUsingDirective
+using Dev2.Network;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
+using Dev2.Threading;
 using Dev2.Util;
 // ReSharper restore RedundantUsingDirective
 
@@ -121,6 +126,15 @@ namespace Dev2.Studio
                                 progressFileDownloader.Cancel();
                             }
                         }
+                        else
+                        {
+                            // silly people building crap code where I need to shit like this ;)
+                            if(ServerProxy.IsShuttingDown)
+                            {
+                                progressFileDownloader.Cancel();
+                            }
+                        }
+
                         return progressFileDownloader.IsBusyDownloading;
                     };
             }
