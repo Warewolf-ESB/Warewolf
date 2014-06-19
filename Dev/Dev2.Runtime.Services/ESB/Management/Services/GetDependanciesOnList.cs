@@ -66,7 +66,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 foreach(string resourceName in resourceNames)
                 {
-                    dependancyNames.AddRange(FetchRecursiveDependancies(resourceName, theWorkspace.ID));
+                    var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceName);
+                    if(resource != null)
+                    {
+                        dependancyNames.AddRange(FetchRecursiveDependancies(resource.ResourceID, theWorkspace.ID));
+                    }
                 }
             }
 
@@ -102,17 +106,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        private List<string> FetchRecursiveDependancies(string resourceName, Guid workspaceID)
+        private List<string> FetchRecursiveDependancies(Guid resourceID, Guid workspaceID)
         {
             List<string> results = new List<string>();
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceName);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID);
             if(resource != null)
             {
                 var dependencies = resource.Dependencies;
                 if(dependencies != null)
                 {
-                    dependencies.ForEach(c => results.Add(c.ResourceID.ToString()));
-                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceName, workspaceID)));
+                    dependencies.ForEach(c =>
+                    {
+                        if(c.ResourceID != Guid.Empty)
+                        {
+                            results.Add(c.ResourceID.ToString());
+                        }
+                    });
+                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceID)));
                 }
             }
             return results;
