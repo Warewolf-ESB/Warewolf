@@ -24,7 +24,7 @@ namespace Dev2.Load.Tests
         public void ForEach_Load_WhenSelfLoopedExecutionCausesMultipleForeachExecutions_ExpectPASS()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "ForEachLoadTest?exeLoopCount=3");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/ForEachLoadTest?exeLoopCount=3");
             const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------

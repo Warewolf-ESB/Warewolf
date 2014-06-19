@@ -38,7 +38,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }            
+            }
         }
 
         void ResourceSaved(IResource resource)
@@ -290,8 +290,8 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             this.LogTrace("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
-            var user = hubCallerConnectionContext.Caller;
-            //var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            //var user = hubCallerConnectionContext.Caller;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendDebugState(debugSerializated);
         }
 
