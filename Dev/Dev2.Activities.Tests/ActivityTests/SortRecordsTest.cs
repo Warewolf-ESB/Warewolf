@@ -61,6 +61,84 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute_Gaps")]
+        public void FieldSpecifiedSortForwards_Numeric_GapsInNonSortedField_Expected_Recordset_Sorted_Top_To_Bottom()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfSortRecordsActivity { SortField = "[[recset().Id]]", SelectedSort = "Forward" }
+
+            };
+
+            SetupArguments(
+                            ActivityStrings.SortDataList_Shape
+                          , ActivityStrings.SortDataListGaps
+                          , "[[recset().Id]]"
+                          , "Forward"
+                          );
+            IDSFDataObject result = ExecuteProcess();
+            List<string> expected = new List<string> { ""
+                                                     , ""
+                                                     , "1"
+                                                     , "1"
+                                                     , "2"
+                                                     , "3"
+                                                     , "6"
+                                                     , "7"
+                                                     , "9"
+                                                     , "10" };
+            string error;
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Id", out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfSortRecordsActivity_Execute_Gaps")]
+        public void FieldSpecifiedSortForwards_String_GapsInNonSortedField_Expected_Recordset_Sorted_Backwards()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfSortRecordsActivity { SortField = "[[recset().Name]]", SelectedSort = "Forward" }
+
+            };
+
+            SetupArguments(
+                            ActivityStrings.SortDataList_Shape
+                          , ActivityStrings.SortDataListGaps
+                          , "[[recset().Name]]"
+                          , "Forward"
+                          );
+            IDSFDataObject result = ExecuteProcess();
+            List<string> expected = new List<string> { ""
+                                                     , ""
+                                                     , ""
+                                                     , "A"
+                                                     , "B"
+                                                     , "F"
+                                                     , "F"
+                                                     , "L"
+                                                     , "Y"
+                                                     , "Z" };
+            string error;
+            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset", "Name", out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+        }
+
+
+
+
+        [TestMethod]
         public void SortActivity_DateTimeSortForward_Expected_RecordSetSortedAscendingDateTime()
         {
             TestStartNode = new FlowStep

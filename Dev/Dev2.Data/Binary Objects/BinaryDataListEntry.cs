@@ -186,15 +186,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Makes the flow through entry.
         /// </summary>
-        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="parentDlid">The parent dlid.</param>
         /// <param name="parentColumn">The parent column.</param>
         /// <param name="parentNamespace">The parent namespace.</param>
         /// <param name="childColumn">The child column.</param>
         /// <param name="errors">The errors.</param>
-        public void AdjustForIOMapping(Guid parentDLID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
+        public void AdjustForIOMapping(Guid parentDlid, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
             // Need to adjust the storage layer to retain the parent DLID storage location ;)
-            _internalObj.AddAlias(parentDLID, parentColumn, parentNamespace, childColumn, out errors);
+            _internalObj.AddAlias(parentDlid, parentColumn, parentNamespace, childColumn, out errors);
         }
 
         /// <summary>
@@ -807,27 +807,35 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 // Int
                 try
                 {
-                    sortedData = IntSort(toSort, colIdx, desc);
+                    sortedData = GenericSort(toSort, colIdx, desc,GetIntSortValue);
                 }
                 catch(Exception)
                 {
-                    // DateTime
+
                     try
                     {
-                        sortedData = DateTimeSort(toSort, colIdx, desc);
+                        sortedData = GenericSort(toSort, colIdx, desc, GetFloatSortValue);
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
-                        // String
+                        // DateTime
                         try
                         {
-                            sortedData = StringSort(toSort, colIdx, desc);
+                            sortedData = GenericSort(toSort, colIdx, desc, GetDateTimeSortValue);
                         }
-                        catch(Exception ex)
+                        catch (Exception)
                         {
-                            // Very naughty thing have happened....
-                            error = "Invalid format for sorting on field [ " + field + " ] ";
-                            this.LogError(ex);
+                            // String
+                            try
+                            {
+                                sortedData = GenericSort(toSort, colIdx, desc, GetStringSortValue);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Very naughty thing have happened....
+                                error = "Invalid format for sorting on field [ " + field + " ] ";
+                                this.LogError(ex);
+                            }
                         }
                     }
                 }
@@ -1028,75 +1036,30 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return result;
         }
 
-        /// <summary>
-        ///     Ints the sort.
-        /// </summary>
-        /// <param name="toSort"></param>
-        /// <param name="colIdx"></param>
-        /// <param name="desc">
-        ///     if set to <c>true</c> [desc].
-        /// </param>
-        IDictionary<int, IList<IBinaryDataListItem>> IntSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
+
+
+
+
+     public  static  IDictionary<int, IList<IBinaryDataListItem>> GenericSort<T>(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc,Func<int , KeyValuePair<int, IList<IBinaryDataListItem>>,T> getValue )
         {
             IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
-            if(!desc)
+            if (!desc)
             {
-                var data = toSort.OrderBy(x =>
-                {
-                    long val;
-                    string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
-                    {
-                        val = long.MinValue;
-                    }
-                    else
-                    {
-                        if(!long.TryParse(tmpVal, out val))
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    return val;
-                }).ToList();
-                int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
-                    idx++;
-                }
+                var data = toSort.OrderBy(x => getValue(colIdx, x)).ToList();
+                UpdateToSort(data, toSwap, toSort);
             }
             else
             {
-                var data = toSort.OrderByDescending(x =>
-                {
-                    long val;
-                    string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
-                    {
-                        val = long.MinValue;
-                    }
-                    else
-                    {
-                        if(!long.TryParse(tmpVal, out val))
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    return val;
-                }).ToList();
-                int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
-                    idx++;
-                }
+                var data = toSort.OrderByDescending(x => getValue(colIdx, x)).ToList();
+ 
+                UpdateToSort(data, toSwap,toSort);
             }
 
             toSort.Clear();
 
             // make the swap
-            foreach(int k in toSwap.Keys)
+            foreach (int k in toSwap.Keys)
             {
                 toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
@@ -1104,137 +1067,77 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return toSort;
         }
 
-        /// <summary>
-        ///     Dates the time sort.
-        /// </summary>
-        /// <param name="toSort"></param>
-        /// <param name="colIdx">The col idx.</param>
-        /// <param name="desc">
-        ///     if set to <c>true</c> [desc].
-        /// </param>
-        IDictionary<int, IList<IBinaryDataListItem>> DateTimeSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
+        public static void UpdateToSort(List<KeyValuePair<int, IList<IBinaryDataListItem>>> data, IDictionary toSwap, IDictionary<int, IList<IBinaryDataListItem>> toSort)
         {
-            IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
-
-            if(!desc)
+        
+            int idx = 1;
+            foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
             {
-                var data = toSort.OrderBy(x =>
-                {
-                    DateTime val;
-                    string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
-                    {
-                        val = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        if(!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    return val;
-                }).ToList();
-                int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
+                while (!toSort.Keys.Contains(idx))
                     idx++;
-                }
+                toSwap[idx] = tmp.Value;
+                idx++;
             }
-            else
-            {
-                var data = toSort.OrderByDescending(x =>
-                {
-                    DateTime val;
-                    string tmpVal = x.Value[colIdx].TheValue;
-                    if(string.IsNullOrWhiteSpace(tmpVal))
-                    {
-                        val = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        if(!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
-                        {
-                            throw new Exception();
-                        }
-                    }
-                    return val;
-                }).ToList();
-                int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
-                    idx++;
-                }
-            }
-
-            toSort.Clear();
-
-            // make the swap
-            foreach(int k in toSwap.Keys)
-            {
-                toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
-            }
-
-            return toSort;
         }
 
-        /// <summary>
-        /// Strings the sort.
-        /// </summary>
-        /// <param name="toSort">To sort.</param>
-        /// <param name="colIdx">The col idx.</param>
-        /// <param name="desc">if set to <c>true</c> [desc].</param>
-        /// <returns></returns>
-        IDictionary<int, IList<IBinaryDataListItem>> StringSort(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc)
+        public static long GetIntSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
         {
-
-            IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
-
-            if(!desc)
+            long val;
+            string tmpVal = x.Value[colIdx].TheValue;
+            if(string.IsNullOrWhiteSpace(tmpVal))
             {
-                var data = toSort.OrderBy(x =>
-                {
-                    string val = x.Value[colIdx].TheValue;
-
-                    return val;
-                }).ToList();
-
-                int idx = 1;
-
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
-                    idx++;
-                }
+                val = long.MinValue;
             }
             else
             {
-                var data = toSort.OrderByDescending(x =>
+                if(!long.TryParse(tmpVal, out val))
                 {
-                    string val = x.Value[colIdx].TheValue;
-                    return val;
-                }).ToList();
-
-                int idx = 1;
-                foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
-                {
-                    toSwap[idx] = tmp.Value;
-                    idx++;
+                    throw new Exception();
                 }
             }
-
-            toSort.Clear();
-
-            // make the swap
-            foreach(int k in toSwap.Keys)
+            return val;
+        }
+        public static float GetFloatSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
+        {
+            float val;
+            string tmpVal = x.Value[colIdx].TheValue;
+            if (string.IsNullOrWhiteSpace(tmpVal))
             {
-                toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
+                val = float.NegativeInfinity;
             }
+            else
+            {
+                if (!float.TryParse(tmpVal, out val))
+                {
+                    throw new Exception();
+                }
+            }
+            return val;
+        }
 
-            return toSort;
+        public static DateTime GetDateTimeSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
+        {
+            DateTime val;
+            string tmpVal = x.Value[colIdx].TheValue;
+            if(string.IsNullOrWhiteSpace(tmpVal))
+            {
+                val = DateTime.MinValue;
+            }
+            else
+            {
+                if(!DateTime.TryParse(x.Value[colIdx].TheValue, out val))
+                {
+                    throw new Exception();
+                }
+            }
+            return val;
+        }
 
+       public  static string GetStringSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
+        {
+            string val = x.Value[colIdx].TheValue;
+
+            return val;
         }
 
         /// <summary>

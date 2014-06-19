@@ -1871,6 +1871,54 @@ Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"
       And "workflowithAssignandsortrec" contains an Assign "sortval" as
 	  | variable    | value |
+	  | [[rs(1).a]] | 30    |
+	  | [[rs(5).a]] | 20    |
+	  | [[rs(7).a]] | 10    |
+	  | [[rs(2).b]] | 6     |
+	  | [[rs(4).b]] | 4     |
+	  | [[rs(6).b]] | 2     |
+	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
+	  | Sort Field | Sort Order |
+	  | [[rs(*).a | Forward    |
+	  When "workflowithAssignandsortrec" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 30        |
+	  | 2 | [[rs(5).a]] = | 20        |
+	  | 3 | [[rs(7).a]] = | 10        |
+	  | 4 | [[rs(2).b]] = | 6         |
+	  | 5 | [[rs(4).b]] = | 4         |
+	  | 6 | [[rs(6).b]] = | 2         |
+	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 30 |
+	  | 2 | [[rs(5).a]] = 20 |
+	  | 3 | [[rs(7).a]] = 10 |
+	  | 4 | [[rs(2).b]] = 6  |
+	  | 5 | [[rs(4).b]] = 4  |
+	  | 6 | [[rs(6).b]] = 2  |
+	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | Sort Field       | Sort Order |
+	  | [[rs(1).a]] = 30 |            |
+	  | [[rs(2).a]] =    |            |
+	  | [[rs(4).a]] =    |            |
+	  | [[rs(5).a]] = 20 |            |
+	  | [[rs(6).a]] =    |            |
+	  | [[rs(7).a]] = 10 | Forward    |
+	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
+	  |                  |
+	  | [[rs(1).a]] =  |
+	  | [[rs(2).a]] =  |
+	  | [[rs(4).a]] =  |
+	  | [[rs(5).a]] = 10 |
+	  | [[rs(6).a]] = 20 |
+	  | [[rs(7).a]] = 30 |
+
+Scenario: Workflow with Assign and Sort Backward to test gaps
+      Given I have a workflow "workflowithAssignandsortrec"
+      And "workflowithAssignandsortrec" contains an Assign "sortval" as
+	  | variable    | value |
 	  | [[rs(1).a]] | 10    |
 	  | [[rs(5).a]] | 20    |
 	  | [[rs(7).a]] | 30    |
@@ -1879,7 +1927,7 @@ Scenario: Workflow with Assign and Sort Forward to test gaps
 	  | [[rs(6).b]] | 2     |
 	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
 	  | Sort Field | Sort Order |
-	  | [[rec(*).a | Forward    |
+	  | [[rs(*).a]] | Backwards   |
 	  When "workflowithAssignandsortrec" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
@@ -1901,55 +1949,19 @@ Scenario: Workflow with Assign and Sort Forward to test gaps
 	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
 	  | Sort Field       | Sort Order |
 	  | [[rs(1).a]] = 10 |            |
+	  | [[rs(2).a]] =    |            |
+	  | [[rs(4).a]] =    |            |
 	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(7).a]] = 30 | Forward    |
-	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
-	  |                  |
-	  | [[rs(1).a]] = 10 |
-	  | [[rs(5).a]] = 20 |
-	  | [[rs(7).a]] = 30 |
-
-Scenario: Workflow with Assign and Sort Backward to test gaps
-      Given I have a workflow "workflowithAssignandsortrec"
-      And "workflowithAssignandsortrec" contains an Assign "sortval" as
-	  | variable    | value |
-	  | [[rs(1).a]] | 10    |
-	  | [[rs(5).a]] | 20    |
-	  | [[rs(7).a]] | 30    |
-	  | [[rs(2).b]] | 6     |
-	  | [[rs(4).b]] | 4     |
-	  | [[rs(6).b]] | 2     |
-	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
-	  | Sort Field | Sort Order |
-	  | [[rec(*).a | Backward   |
-	  When "workflowithAssignandsortrec" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rs(1).a]] = | 10        |
-	  | 2 | [[rs(5).a]] = | 20        |
-	  | 3 | [[rs(7).a]] = | 30        |
-	  | 4 | [[rs(2).b]] = | 6         |
-	  | 5 | [[rs(4).b]] = | 4         |
-	  | 6 | [[rs(6).b]] = | 2         |
-	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rs(1).a]] = 10 |
-	  | 2 | [[rs(5).a]] = 20 |
-	  | 3 | [[rs(7).a]] = 30 |
-	  | 4 | [[rs(2).b]] = 6  |
-	  | 5 | [[rs(4).b]] = 4  |
-	  | 6 | [[rs(6).b]] = 2  |
-	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
-	  | Sort Field       | Sort Order |
-	  | [[rs(1).a]] = 30 |            |
-	  | [[rs(5).a]] = 20 |            |
-	  | [[rs(7).a]] = 10 | Backward   |
+	  | [[rs(6).a]] =    |            |
+	  | [[rs(7).a]] = 30 | Backwards    |
 	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
 	  |                  |
 	  | [[rs(1).a]] = 30 |
-	  | [[rs(5).a]] = 20 |
-	  | [[rs(7).a]] = 10 |
+	  | [[rs(2).a]] = 20 |
+	  | [[rs(4).a]] = 10 |
+	  | [[rs(5).a]] =  |
+	  | [[rs(6).a]] =  |
+	  | [[rs(7).a]] =  |
 
 
 

@@ -486,6 +486,18 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+
+        [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
+        public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
+        {
+            var dsfSequence = new DsfSortRecordsActivity() { DisplayName = activityName };
+            dsfSequence.SortField = table.Rows[0][0];
+            dsfSequence.SelectedSort = table.Rows[0][1];
+            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
+        }
+
+
+
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null || resourceModel.Environment == null)

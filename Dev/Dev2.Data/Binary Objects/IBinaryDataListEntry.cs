@@ -98,12 +98,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <summary>
         /// Adjusts for io mapping.
         /// </summary>
-        /// <param name="parentDLID">The parent dlid.</param>
+        /// <param name="parentDlid">The parent dlid.</param>
         /// <param name="parentColumn">The parent column.</param>
         /// <param name="parentNamespace">The parent namespace.</param>
         /// <param name="childColumn">The child column.</param>
         /// <param name="errors">The errors.</param>
-        void AdjustForIOMapping(Guid parentDLID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors);
+        void AdjustForIOMapping(Guid parentDlid, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors);
 
         /// <summary>
         /// Adjusts the alias operation for external service populate.
