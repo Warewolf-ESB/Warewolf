@@ -355,6 +355,7 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
+            repository.Save(resourceModel, false);
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
